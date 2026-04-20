@@ -32,9 +32,10 @@ jobs:
       - name: Install dependencies (root workspace)
         run: bun install --frozen-lockfile
 
-      - name: Build web tokens
-        working-directory: packages/web
-        run: bun run build
+      - name: Build web tokens (from repo root)
+        # style-dictionary config の path (tokens/**, packages/web/dist/) は
+        # repo root からの相対なので、root cwd で実行する必要あり
+        run: bun run build:web
 
       - name: Verify dist/tokens.css exists
         run: test -s packages/web/dist/tokens.css
