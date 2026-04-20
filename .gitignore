@@ -8,6 +8,7 @@ bun.lockb
 packages/*/dist/
 packages/swift/.build/
 packages/rust/target/
+packages/rust/Cargo.lock
 .idea/
 .vscode/
 

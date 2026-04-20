@@ -17,6 +17,7 @@
 
 pub const VERSION: &str = "0.0.1";
 
+#[allow(dead_code)]
 pub mod tokens {
     include!("generated/tokens.rs");
 }
