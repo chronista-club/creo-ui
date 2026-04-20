@@ -1,6 +1,6 @@
 {
   "name": "@creo/ui-web",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Creo UI - Web package (CSS custom properties + Web Components)",
   "type": "module",
   "main": "./src/index.ts",

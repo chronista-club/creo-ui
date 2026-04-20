@@ -1,6 +1,6 @@
 {
   "name": "@creo/ui",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Creo UI - Design System for Creo ecosystem",
   "private": true,
   "type": "module",
