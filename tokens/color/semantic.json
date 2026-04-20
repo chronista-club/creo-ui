@@ -1,0 +1,46 @@
+{
+  "color": {
+    "semantic": {
+      "success": {
+        "$value": "#46c97a",
+        "$type": "color",
+        "$description": "Semantic — success (confirm, OK)"
+      },
+      "success-subtle": {
+        "$value": "#e4f8ec",
+        "$type": "color",
+        "$description": "Success subtle surface"
+      },
+      "warning": {
+        "$value": "#eab547",
+        "$type": "color",
+        "$description": "Semantic — warning (caution)"
+      },
+      "warning-subtle": {
+        "$value": "#fbeecf",
+        "$type": "color",
+        "$description": "Warning subtle surface"
+      },
+      "error": {
+        "$value": "#e5533d",
+        "$type": "color",
+        "$description": "Semantic — error (destructive, failure)"
+      },
+      "error-subtle": {
+        "$value": "#fadcd4",
+        "$type": "color",
+        "$description": "Error subtle surface"
+      },
+      "info": {
+        "$value": "#5aa8ea",
+        "$type": "color",
+        "$description": "Semantic — info (neutral notice)"
+      },
+      "info-subtle": {
+        "$value": "#dcecfa",
+        "$type": "color",
+        "$description": "Info subtle surface"
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "typography": {
+    "line-height": {
+      "tight": {
+        "$value": 1.25,
+        "$type": "number",
+        "$description": "Tight line-height — headings"
+      },
+      "normal": {
+        "$value": 1.5,
+        "$type": "number",
+        "$description": "Normal line-height — default body"
+      },
+      "relaxed": {
+        "$value": 1.75,
+        "$type": "number",
+        "$description": "Relaxed line-height — long-form text, CJK languages"
+      }
+    }
+  }
+}

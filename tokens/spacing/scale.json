@@ -1,0 +1,34 @@
+{
+  "spacing": {
+    "xs": {
+      "$value": "4px",
+      "$type": "dimension",
+      "$description": "Extra-small spacing — 4px (base unit)"
+    },
+    "sm": {
+      "$value": "8px",
+      "$type": "dimension",
+      "$description": "Small spacing — 8px"
+    },
+    "md": {
+      "$value": "16px",
+      "$type": "dimension",
+      "$description": "Medium spacing — 16px (default gap between UI elements)"
+    },
+    "lg": {
+      "$value": "24px",
+      "$type": "dimension",
+      "$description": "Large spacing — 24px"
+    },
+    "xl": {
+      "$value": "32px",
+      "$type": "dimension",
+      "$description": "Extra-large spacing — 32px"
+    },
+    "2xl": {
+      "$value": "48px",
+      "$type": "dimension",
+      "$description": "2× extra-large spacing — 48px (section separation)"
+    }
+  }
+}

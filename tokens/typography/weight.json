@@ -1,0 +1,26 @@
+{
+  "typography": {
+    "weight": {
+      "regular": {
+        "$value": 400,
+        "$type": "fontWeight",
+        "$description": "Regular body weight"
+      },
+      "medium": {
+        "$value": 500,
+        "$type": "fontWeight",
+        "$description": "Medium emphasis"
+      },
+      "semibold": {
+        "$value": 600,
+        "$type": "fontWeight",
+        "$description": "Semi-bold — subheadings, buttons"
+      },
+      "bold": {
+        "$value": 700,
+        "$type": "fontWeight",
+        "$description": "Bold — headings"
+      }
+    }
+  }
+}

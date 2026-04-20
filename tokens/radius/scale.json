@@ -1,0 +1,34 @@
+{
+  "radius": {
+    "none": {
+      "$value": "0px",
+      "$type": "dimension",
+      "$description": "No rounding"
+    },
+    "sm": {
+      "$value": "4px",
+      "$type": "dimension",
+      "$description": "Small radius — subtle rounding (buttons, inputs)"
+    },
+    "md": {
+      "$value": "8px",
+      "$type": "dimension",
+      "$description": "Medium radius — cards, popovers"
+    },
+    "lg": {
+      "$value": "12px",
+      "$type": "dimension",
+      "$description": "Large radius — modals, larger surfaces"
+    },
+    "xl": {
+      "$value": "16px",
+      "$type": "dimension",
+      "$description": "Extra-large radius — hero surfaces"
+    },
+    "full": {
+      "$value": "9999px",
+      "$type": "dimension",
+      "$description": "Fully rounded — pill shapes and circles"
+    }
+  }
+}

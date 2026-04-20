@@ -1,0 +1,21 @@
+{
+  "typography": {
+    "family": {
+      "sans": {
+        "$value": "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif",
+        "$type": "fontFamily",
+        "$description": "Default UI sans-serif family (multi-language: EN/JA/KO)"
+      },
+      "mono": {
+        "$value": "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace",
+        "$type": "fontFamily",
+        "$description": "Monospace family for code blocks, tokens, IDs"
+      },
+      "display": {
+        "$value": "'Creo Sans', -apple-system, 'Noto Sans JP', sans-serif",
+        "$type": "fontFamily",
+        "$description": "Display family — heroes, large marketing headlines"
+      }
+    }
+  }
+}

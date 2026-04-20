@@ -1,0 +1,41 @@
+{
+  "typography": {
+    "size": {
+      "xs": {
+        "$value": "12px",
+        "$type": "dimension",
+        "$description": "Caption / meta text"
+      },
+      "sm": {
+        "$value": "14px",
+        "$type": "dimension",
+        "$description": "Small body / helper text"
+      },
+      "base": {
+        "$value": "16px",
+        "$type": "dimension",
+        "$description": "Default body text"
+      },
+      "lg": {
+        "$value": "18px",
+        "$type": "dimension",
+        "$description": "Large body / subheading"
+      },
+      "xl": {
+        "$value": "20px",
+        "$type": "dimension",
+        "$description": "Heading level 4"
+      },
+      "2xl": {
+        "$value": "24px",
+        "$type": "dimension",
+        "$description": "Heading level 3"
+      },
+      "3xl": {
+        "$value": "30px",
+        "$type": "dimension",
+        "$description": "Heading level 2 / hero subtitle"
+      }
+    }
+  }
+}
