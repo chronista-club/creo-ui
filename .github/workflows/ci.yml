@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build & Lint (Web)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Build tokens (Web / Swift / Rust)
+        run: bun run build
+
+      - name: Token diff (ensure build output is consistent)
+        run: |
+          # Phase 1 以降、generated output を commit 対象にする場合は
+          # `git diff --exit-code` でズレを検出する。
+          echo "Phase 0: token build output は未 commit、diff check はスキップ。"
+
+  rust:
+    name: Rust build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: "1.94"
+
+      - name: Build
+        working-directory: packages/rust
+        run: cargo build --verbose
+
+      - name: Test
+        working-directory: packages/rust
+        run: cargo test --verbose
+
+  swift:
+    name: Swift build
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        working-directory: packages/swift
+        run: swift build
+
+      - name: Test
+        working-directory: packages/swift
+        run: swift test

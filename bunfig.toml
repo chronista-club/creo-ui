@@ -1,0 +1,8 @@
+# Bun configuration for @creo/ui monorepo
+# https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Use exact versions for reproducible builds
+exact = false
+
+# Workspaces are defined in package.json

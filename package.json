@@ -1,0 +1,22 @@
+{
+  "name": "@creo/ui",
+  "version": "0.0.0",
+  "description": "Creo UI - Design System for Creo ecosystem",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "build": "style-dictionary build --config transforms/config.web.js && style-dictionary build --config transforms/config.swift.js && style-dictionary build --config transforms/config.rust.js",
+    "build:web": "style-dictionary build --config transforms/config.web.js",
+    "build:swift": "style-dictionary build --config transforms/config.swift.js",
+    "build:rust": "style-dictionary build --config transforms/config.rust.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "format": "biome check . --write"
+  },
+  "devDependencies": {
+    "style-dictionary": "^4.0.0",
+    "typescript": "^5.5.0",
+    "@biomejs/biome": "^1.9.0"
+  }
+}

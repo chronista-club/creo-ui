@@ -1,0 +1,17 @@
+[package]
+name = "creo-ui"
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.94"
+description = "Creo UI - Design System tokens for Rust consumers"
+license = "Apache-2.0"
+repository = "https://github.com/chronista-club/creo-ui"
+readme = "README.md"
+
+[lib]
+name = "creo_ui"
+path = "src/lib.rs"
+
+[dependencies]
+
+[dev-dependencies]
