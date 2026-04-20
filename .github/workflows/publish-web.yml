@@ -1,0 +1,46 @@
+name: Publish @chronista-club/creo-ui-web to GHCR
+
+on:
+  push:
+    tags: ["web-v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (must match package.json or leave blank to use current)"
+        required: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@chronista-club"
+
+      - name: Install dependencies (root workspace)
+        run: bun install --frozen-lockfile
+
+      - name: Build web tokens
+        working-directory: packages/web
+        run: bun run build
+
+      - name: Verify dist/tokens.css exists
+        run: test -s packages/web/dist/tokens.css
+
+      - name: Publish to GHCR npm
+        working-directory: packages/web
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --access public
