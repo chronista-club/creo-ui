@@ -5,9 +5,15 @@ dist/
 .env
 .env.local
 bun.lockb
-bun.lock
 packages/*/dist/
 packages/swift/.build/
 packages/rust/target/
 .idea/
 .vscode/
+
+# Generated token outputs for Swift / Rust ARE checked in — cargo build /
+# swift build expect them to exist without first running `bun run build`.
+# Web tokens live under `packages/web/dist/` which is gitignored (shipped
+# only as npm publish artifact).
+!packages/swift/Sources/CreoUI/Generated/
+!packages/rust/src/generated/
