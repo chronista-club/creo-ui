@@ -13,10 +13,7 @@
     "./tokens.css": "./dist/tokens.css",
     "./tokens.js": "./dist/tokens.js"
   },
-  "files": [
-    "src",
-    "dist"
-  ],
+  "files": ["src", "dist"],
   "scripts": {
     "build": "style-dictionary build --config ../../transforms/config.web.js"
   },

@@ -7,13 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "ignore": [
-      "node_modules",
-      "dist",
-      "packages/*/dist",
-      ".github",
-      "*.md"
-    ]
+    "ignore": ["node_modules", "dist", "packages/*/dist", ".github", "*.md"]
   },
   "formatter": {
     "enabled": true,

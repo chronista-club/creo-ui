@@ -15,15 +15,8 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "types": ["bun-types"]
+    "types": []
   },
-  "include": [
-    "packages/*/src/**/*.ts",
-    "transforms/**/*.js"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "packages/*/dist"
-  ]
+  "include": ["packages/*/src/**/*.ts", "transforms/**/*.js"],
+  "exclude": ["node_modules", "dist", "packages/*/dist"]
 }
