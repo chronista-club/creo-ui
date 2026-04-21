@@ -45,10 +45,8 @@ tokens/
 | Platform | Build path | Format |
 |----------|-----------|--------|
 | Web CSS | `packages/web/dist/tokens.css` | `css/variables` |
-| Web JS | `packages/web/dist/tokens.js` + `.d.ts` | `javascript/es6` |
-| Swift | `packages/swift/Sources/CreoUI/Generated/Tokens.swift` | `ios-swift/class.swift` |
-| Rust | `packages/rust/src/generated/tokens.rs` | custom `rust/consts` |
+| Web JS | `packages/web/dist/tokens.js` + `.d.ts` | `javascript/es6` + `typescript/es6-declarations` |
+| Swift | `packages/swift/Sources/CreoUI/Generated/Tokens.swift` | custom `swift/creo-ui` |
+| Rust | `packages/rust/src/generated/tokens.rs` | custom `rust/creo-ui` |
 
-## Phase 0 注意
-
-Phase 0 時点では `tokens/` は空ディレクトリ。Phase 1 (CREO-86) で creo-memories の既存 CSS 変数から抽出して初期セットを配置する。
+Swift / Rust は標準 transform (iOS 向け UIKit / Rust 未提供) を使わず、`transforms/config.{swift,rust}.js` で hand-roll している。詳細は [CLAUDE.md](../CLAUDE.md) の「custom format のフォーマット仕様」参照。
