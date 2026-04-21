@@ -1,6 +1,6 @@
 {
   "name": "creo-ui-web",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Creo UI — Web package (CSS custom properties + JS tokens)",
   "type": "module",
   "exports": {

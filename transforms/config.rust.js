@@ -88,6 +88,10 @@ export default {
 
         const lines = []
         for (const token of dictionary.allTokens) {
+          // Dark theme variant は現状 Web 限定 (CREO-#1)。Rust は Phase 3 で
+          // 対応を検討 (ratatui は theme 概念薄)。dark path は skip する。
+          if (token.path.includes('dark')) continue
+
           const name = sanitizeIdent(SCREAMING_SNAKE(token.path))
           const type = token.$type ?? token.type
           const raw = token.$value ?? token.value
