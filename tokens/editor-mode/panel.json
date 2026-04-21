@@ -2,19 +2,19 @@
   "editor-mode": {
     "panel": {
       "field-label": {
-        "$value": "{color.text.secondary}",
+        "$value": "var(--color-text-secondary)",
         "$type": "color",
-        "$description": "Field label の text 色"
+        "$description": "Field label の text 色 (active theme の text secondary)"
       },
       "field-value": {
-        "$value": "{color.text.primary}",
+        "$value": "var(--color-text-primary)",
         "$type": "color",
-        "$description": "Field value の text 色"
+        "$description": "Field value の text 色 (active theme の text primary)"
       },
       "separator": {
-        "$value": "{color.surface.border-subtle}",
+        "$value": "var(--color-surface-border-subtle)",
         "$type": "color",
-        "$description": "Field group の区切り線"
+        "$description": "Field group の区切り線 (active theme の border subtle)"
       },
       "field-gap": {
         "$value": "8px",

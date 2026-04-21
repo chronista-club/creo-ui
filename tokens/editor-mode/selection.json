@@ -2,14 +2,14 @@
   "editor-mode": {
     "selection": {
       "outline-hover": {
-        "$value": "{color.brand.primary-subtle}",
+        "$value": "var(--color-brand-primary-subtle)",
         "$type": "color",
         "$description": "Editor mode 中の hover outline (ghost highlight、Content を触らず上に描画)"
       },
       "outline-active": {
-        "$value": "{color.brand.primary}",
+        "$value": "var(--color-brand-primary)",
         "$type": "color",
-        "$description": "選択中の要素 outline"
+        "$description": "選択中の要素 outline (active theme の brand primary)"
       },
       "outline-width": {
         "$value": "2px",

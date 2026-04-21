@@ -1,0 +1,230 @@
+{
+  "color": {
+    "themes": {
+      "contrast-light": {
+        "brand": {
+          "primary": {
+            "$value": "oklch(0.52 0.18 270)",
+            "$type": "color",
+            "$description": "Brand primary (base)"
+          },
+          "primary-hover": {
+            "$value": "oklch(0.47 0.19 270)",
+            "$type": "color",
+            "$description": "Brand primary — hover"
+          },
+          "primary-active": {
+            "$value": "oklch(0.42 0.2 270)",
+            "$type": "color",
+            "$description": "Brand primary — active / pressed"
+          },
+          "primary-subtle": {
+            "$value": "oklch(0.94 0.05 270)",
+            "$type": "color",
+            "$description": "Brand primary — subtle tint surface"
+          },
+          "secondary": {
+            "$value": "oklch(0.62 0.2 335)",
+            "$type": "color",
+            "$description": "Brand secondary (base)"
+          },
+          "secondary-hover": {
+            "$value": "oklch(0.57 0.21 335)",
+            "$type": "color",
+            "$description": "Brand secondary — hover"
+          },
+          "secondary-active": {
+            "$value": "oklch(0.52 0.22 335)",
+            "$type": "color",
+            "$description": "Brand secondary — active / pressed"
+          },
+          "secondary-subtle": {
+            "$value": "oklch(0.95 0.05 335)",
+            "$type": "color",
+            "$description": "Brand secondary — subtle tint surface"
+          }
+        },
+        "semantic": {
+          "success": {
+            "$value": "oklch(0.6 0.16 160)",
+            "$type": "color",
+            "$description": "Semantic success (base)"
+          },
+          "success-hover": {
+            "$value": "oklch(0.55 0.17 160)",
+            "$type": "color",
+            "$description": "Semantic success — hover"
+          },
+          "success-active": {
+            "$value": "oklch(0.5 0.18 160)",
+            "$type": "color",
+            "$description": "Semantic success — active"
+          },
+          "success-subtle": {
+            "$value": "oklch(0.95 0.04 160)",
+            "$type": "color",
+            "$description": "Semantic success — subtle surface"
+          },
+          "success-text": {
+            "$value": "oklch(0.35 0.12 160)",
+            "$type": "color",
+            "$description": "Semantic success — text on tinted bg"
+          },
+          "warning": {
+            "$value": "oklch(0.78 0.15 85)",
+            "$type": "color",
+            "$description": "Semantic warning (base)"
+          },
+          "warning-hover": {
+            "$value": "oklch(0.73 0.16 85)",
+            "$type": "color",
+            "$description": "Semantic warning — hover"
+          },
+          "warning-active": {
+            "$value": "oklch(0.68 0.17 85)",
+            "$type": "color",
+            "$description": "Semantic warning — active"
+          },
+          "warning-subtle": {
+            "$value": "oklch(0.96 0.05 85)",
+            "$type": "color",
+            "$description": "Semantic warning — subtle surface"
+          },
+          "warning-text": {
+            "$value": "oklch(0.4 0.12 85)",
+            "$type": "color",
+            "$description": "Semantic warning — text on tinted bg"
+          },
+          "error": {
+            "$value": "oklch(0.6 0.2 15)",
+            "$type": "color",
+            "$description": "Semantic error (base)"
+          },
+          "error-hover": {
+            "$value": "oklch(0.55 0.21 15)",
+            "$type": "color",
+            "$description": "Semantic error — hover"
+          },
+          "error-active": {
+            "$value": "oklch(0.5 0.22 15)",
+            "$type": "color",
+            "$description": "Semantic error — active"
+          },
+          "error-subtle": {
+            "$value": "oklch(0.95 0.04 15)",
+            "$type": "color",
+            "$description": "Semantic error — subtle surface"
+          },
+          "error-text": {
+            "$value": "oklch(0.4 0.15 15)",
+            "$type": "color",
+            "$description": "Semantic error — text on tinted bg"
+          },
+          "info": {
+            "$value": "oklch(0.6 0.12 195)",
+            "$type": "color",
+            "$description": "Semantic info (base)"
+          },
+          "info-hover": {
+            "$value": "oklch(0.55 0.13 195)",
+            "$type": "color",
+            "$description": "Semantic info — hover"
+          },
+          "info-active": {
+            "$value": "oklch(0.5 0.14 195)",
+            "$type": "color",
+            "$description": "Semantic info — active"
+          },
+          "info-subtle": {
+            "$value": "oklch(0.95 0.04 195)",
+            "$type": "color",
+            "$description": "Semantic info — subtle surface"
+          },
+          "info-text": {
+            "$value": "oklch(0.35 0.1 195)",
+            "$type": "color",
+            "$description": "Semantic info — text on tinted bg"
+          }
+        },
+        "surface": {
+          "bg-base": {
+            "$value": "oklch(0.98 0.008 280)",
+            "$type": "color",
+            "$description": "Root background — page canvas"
+          },
+          "bg-subtle": {
+            "$value": "oklch(0.96 0.01 280)",
+            "$type": "color",
+            "$description": "Subtle background — panels, sections"
+          },
+          "bg-emphasis": {
+            "$value": "oklch(0.88 0.015 280)",
+            "$type": "color",
+            "$description": "Emphasized background — highlighted regions"
+          },
+          "surface": {
+            "$value": "oklch(1 0 0)",
+            "$type": "color",
+            "$description": "Card / modal / elevated container surface"
+          },
+          "border": {
+            "$value": "oklch(0.86 0.015 280)",
+            "$type": "color",
+            "$description": "Default border / divider"
+          },
+          "border-subtle": {
+            "$value": "oklch(0.91 0.01 280)",
+            "$type": "color",
+            "$description": "Subtle border — quiet separators"
+          }
+        },
+        "text": {
+          "primary": {
+            "$value": "oklch(0.18 0.02 280)",
+            "$type": "color",
+            "$description": "Primary foreground text"
+          },
+          "secondary": {
+            "$value": "oklch(0.38 0.02 280)",
+            "$type": "color",
+            "$description": "Secondary text — supporting copy"
+          },
+          "tertiary": {
+            "$value": "oklch(0.52 0.01 280)",
+            "$type": "color",
+            "$description": "Tertiary text — captions, hints"
+          },
+          "disabled": {
+            "$value": "oklch(0.68 0.01 280)",
+            "$type": "color",
+            "$description": "Disabled text"
+          },
+          "inverse": {
+            "$value": "oklch(0.98 0 0)",
+            "$type": "color",
+            "$description": "Inverse text — on dark surfaces"
+          }
+        },
+        "shadow": {
+          "base": {
+            "$value": "oklch(0.2 0.03 280 / 0.1)",
+            "$type": "color",
+            "$description": "Shadow tint — default"
+          },
+          "strong": {
+            "$value": "oklch(0.2 0.03 280 / 0.2)",
+            "$type": "color",
+            "$description": "Shadow tint — strong"
+          }
+        },
+        "gradient": {
+          "hero": {
+            "$value": "linear-gradient(135deg, oklch(0.94 0.04 270) 0%, oklch(0.96 0.03 300) 50%, oklch(0.92 0.05 335) 100%)",
+            "$type": "color",
+            "$description": "Hero gradient — marketing / splash surfaces"
+          }
+        }
+      }
+    }
+  }
+}

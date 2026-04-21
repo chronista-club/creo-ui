@@ -2,9 +2,9 @@
   "editor-mode": {
     "region": {
       "bg-color": {
-        "$value": "{color.surface.bg-base}",
+        "$value": "var(--color-surface-bg-base)",
         "$type": "color",
-        "$description": "Region 背景の base RGB (alpha は bg-opacity で CSS 側合成)"
+        "$description": "Region 背景の base RGB (active theme に追従)"
       },
       "bg-opacity": {
         "$value": 0.92,
@@ -12,9 +12,9 @@
         "$description": "Region 背景の 不透明度 (0.0-1.0)。Content を完全に隠さず薄く透かす"
       },
       "border": {
-        "$value": "{color.surface.border}",
+        "$value": "var(--color-surface-border)",
         "$type": "color",
-        "$description": "Region の輪郭色"
+        "$description": "Region の輪郭色 (active theme に追従)"
       },
       "padding": {
         "$value": "12px",

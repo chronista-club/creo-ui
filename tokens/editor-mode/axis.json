@@ -2,24 +2,24 @@
   "editor-mode": {
     "axis": {
       "global": {
-        "$value": "{color.brand.secondary}",
+        "$value": "var(--color-brand-secondary)",
         "$type": "color",
-        "$description": "TOP 領域 accent — global tools / 視線の起点 (purple、俯瞰)"
+        "$description": "TOP 領域 accent — global tools / 視線の起点 (active theme の brand secondary に追従)"
       },
       "utility": {
-        "$value": "{color.text.tertiary}",
+        "$value": "var(--color-text-tertiary)",
         "$type": "color",
-        "$description": "BOTTOM 領域 accent — ローカル utility (neutral)"
+        "$description": "BOTTOM 領域 accent — ローカル utility (active theme の text tertiary)"
       },
       "past": {
-        "$value": "{color.semantic.info}",
+        "$value": "var(--color-semantic-info)",
         "$type": "color",
-        "$description": "LEFT 領域 accent — 時系列過去 / 参照 / 元ソース (cool blue)"
+        "$description": "LEFT 領域 accent — 時系列過去 / 参照 / 元ソース (active theme の semantic info)"
       },
       "future": {
-        "$value": "{color.brand.primary}",
+        "$value": "var(--color-brand-primary)",
         "$type": "color",
-        "$description": "RIGHT 領域 accent — 時系列未来 / ツール / 生成 (warm mint)"
+        "$description": "RIGHT 領域 accent — 時系列未来 / ツール / 生成 (active theme の brand primary)"
       }
     }
   }
