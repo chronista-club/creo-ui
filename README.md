@@ -117,15 +117,29 @@ cd packages/swift && swift build && swift test
 
 Editor Mode は instance ではなく **mode** (universal state)。4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) + Content 非侵襲性 + AI agent access を protocol で規定し、runtime 実装は consumer (`@creo/ui`, `CreoUI`, `creo-ui` crate) 側が担う。
 
+## Theme system (0.1.0+)
+
+4 family × light/dark = **8 theme** を内蔵。`:root` default は **Mint Dark**:
+
+| family | light | dark (★=default) | brand |
+|---|---|---|---|
+| Creo | `mint-light` | **`mint-dark`** ★ | mint green |
+| 空 (Sora) | `sora-light` | `sora-dark` | sky blue |
+| Contrast / Paradox | `contrast-light` | `contrast-dark` | purple × pink × cyan |
+| Old School | `oldschool-light` | `oldschool-dark` | teal × orange |
+
+切替は `[data-theme="{id}"]`。fleetstage 後方互換として `.dark` / `[data-theme="dark"]` = mint-dark、`[data-theme="light"]` = mint-light。system preference が light で `[data-theme]` 未指定なら mint-light に逆転。
+
+token 値は **OKLCH** で保持 (`oklch(l c h / a)`)、modern browser が直接解釈。Swift/Rust は Mint Dark のみ hex/Rgb に変換して emit。
+
 ## Phase Roadmap
 
 | Phase | 内容 | Status |
 |-------|------|--------|
 | 0 | Repo scaffold + CI skeleton | ✅ 完了 (CREO-85) |
-| 1 | Token MVP (creo-memories から抽出) + Web/SwiftUI/Rust 出力 + **Editor Mode protocol schema + editor-mode tokens** | **進行中** (CREO-86) |
-| 2 | `@creo/ui` に `EditorHost` runtime 実装 + MCP AI agent 連携 + DevEditor migration | Planned |
-| 3 | Theme 切替 (light / dark / high-contrast) を Editor Mode で prototyping + Swift 実装 | Planned |
-| 4 | Figma sync (tokens.studio 連携) | Planned |
+| 1 | Token MVP + Web/SwiftUI/Rust 出力 + Editor Mode protocol schema + editor-mode tokens + **8-theme matrix** (0.1.0) | **進行中** (CREO-86) |
+| 2 | `@creo/ui` に `EditorHost` runtime 実装 + MCP AI agent 連携 + DevEditor migration + Swift/Rust の multi-theme | Planned |
+| 3 | Figma sync (tokens.studio 連携) + theme authoring pipeline | Planned |
 
 詳細は [Epic CREO-84](https://linear.app/chronista/issue/CREO-84) を参照。
 

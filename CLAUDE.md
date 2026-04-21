@@ -11,6 +11,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ロジックや UI コンポーネントの具体実装は持たず、**「視覚的定数 + protocol schema」** のみを提供する。設計詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md)。
 
+### Theme system (0.1.0+)
+
+4 family × light/dark = 8 theme を同梱 (creo-memories preset 由来):
+
+| family | light id | dark id | brand hue |
+|---|---|---|---|
+| Creo (mint) | `mint-light` | **`mint-dark`** ★ default | 160 |
+| 空 (Sora) | `sora-light` | `sora-dark` | 230 |
+| Contrast / Paradox | `contrast-light` | `contrast-dark` | 270 (+335, +195) |
+| Old School | `oldschool-light` | `oldschool-dark` | 145 + 55 |
+
+★ = `:root` default。切替は `[data-theme="{id}"]`、fleetstage 互換 alias として `.dark` / `[data-theme="dark"]` = mint-dark、`[data-theme="light"]` = mint-light。system preference light で `:root:not([data-theme])` は mint-light に逆転。
+
+token 値は **OKLCH** で保持 (`oklch(l c h [/ a])`)、Web は literal で emit し modern browser が解釈。Swift/Rust は build 時に hex / Rgb に変換 (Mint Dark のみ)。
+
 Linear Epic: [CREO-84](https://linear.app/chronista/issue/CREO-84) / Phase は README.md に記載。
 
 ## コマンド
@@ -26,6 +41,9 @@ bun run build:rust     # Rust だけ
 bun run typecheck      # tsc --noEmit
 bun run lint           # Biome check
 bun run format         # Biome check --write (自動修正)
+bun run dev            # examples/web-demo (walking skeleton) を vite で起動
+bun run gen:themes     # creo-memories preset から 8 theme JSON を再生成
+bun run test:colors    # transforms/color-utils.js のテストを実行 (50 cases)
 
 # Rust (packages/rust で実行)
 cargo build && cargo test
@@ -77,11 +95,22 @@ Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
 
 ## Token 追加・変更フロー
 
-1. **`tokens/<category>/<file>.json` を編集**（SSOT）。DTCG 準拠を維持、3 階層まで、semantic は brand を直接参照せず alias レイヤを置く。
+1. **`tokens/<category>/<file>.json` を編集**（SSOT）。DTCG 準拠を維持、3 階層まで。
 2. `bun run build` で全 platform 出力を再生成。
 3. `bun run typecheck && bun run lint` を通す。
 4. **`packages/swift/Sources/CreoUI/Generated/Tokens.swift` と `packages/rust/src/generated/tokens.rs` の diff を必ず commit**（忘れると consumer の build が stale token を使う）。
 5. Web dist は commit しない（gitignore）。
+
+### Theme (8 preset) の再生成
+
+creo-memories 側 preset を更新したら:
+
+```bash
+bun run gen:themes   # → tokens/color/themes/*.json 8 ファイルを上書き
+bun run build        # 全 platform に反映
+```
+
+`scripts/generate-themes.mjs` が creo-memories の `packages/creo-ui/src/palette/presets/*.ts` を直接 import し、OKLCH object を DTCG JSON に変換する。path 形式は `color.themes.{theme-id}.{brand,semantic,surface,text,shadow,gradient}.*` で、Web custom format が themes segment を除いて `--color-{...}` variable 名を emit する (旧 0.0.4 までの var 名と互換)。
 
 ## 設定と規約
 

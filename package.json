@@ -13,7 +13,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "format": "biome check . --write",
-    "dev": "cd examples/web-demo && bun install --silent && bun run dev"
+    "dev": "cd examples/web-demo && bun install --silent && bun run dev",
+    "gen:themes": "bun scripts/generate-themes.mjs",
+    "test:colors": "bun test transforms/color-utils.test.js"
   },
   "devDependencies": {
     "style-dictionary": "^4.0.0",
