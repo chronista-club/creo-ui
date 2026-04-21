@@ -1,0 +1,46 @@
+{
+  "editor-mode": {
+    "region": {
+      "bg-color": {
+        "$value": "{color.surface.bg-base}",
+        "$type": "color",
+        "$description": "Region 背景の base RGB (alpha は bg-opacity で CSS 側合成)"
+      },
+      "bg-opacity": {
+        "$value": 0.92,
+        "$type": "number",
+        "$description": "Region 背景の 不透明度 (0.0-1.0)。Content を完全に隠さず薄く透かす"
+      },
+      "border": {
+        "$value": "{color.surface.border}",
+        "$type": "color",
+        "$description": "Region の輪郭色"
+      },
+      "padding": {
+        "$value": "12px",
+        "$type": "dimension",
+        "$description": "Region 内側の padding"
+      },
+      "top-height": {
+        "$value": "44px",
+        "$type": "dimension",
+        "$description": "TOP region の固定高さ (Content を大きく隠さないコンパクトサイズ)"
+      },
+      "bottom-height": {
+        "$value": "44px",
+        "$type": "dimension",
+        "$description": "BOTTOM region の固定高さ"
+      },
+      "left-width": {
+        "$value": "240px",
+        "$type": "dimension",
+        "$description": "LEFT region の default 幅 (collapsible)"
+      },
+      "right-width": {
+        "$value": "280px",
+        "$type": "dimension",
+        "$description": "RIGHT region の default 幅 (tool panel、左より広め)"
+      }
+    }
+  }
+}

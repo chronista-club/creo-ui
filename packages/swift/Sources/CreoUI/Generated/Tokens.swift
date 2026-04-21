@@ -35,9 +35,29 @@ public extension Color {
     static let colorTextSecondary = Color(red: 0.3373, green: 0.3569, blue: 0.4157) // Secondary text — supporting copy
     static let colorTextTertiary = Color(red: 0.4824, green: 0.5020, blue: 0.5647) // Tertiary text — captions, hints
     static let colorTextInverse = Color(red: 0.9804, green: 0.9843, blue: 0.9882) // Inverse text — rendered on dark surfaces
+    static let editorModeAxisGlobal = Color(red: 0.6039, green: 0.4784, blue: 0.8510) // TOP 領域 accent — global tools / 視線の起点 (purple、俯瞰)
+    static let editorModeAxisUtility = Color(red: 0.4824, green: 0.5020, blue: 0.5647) // BOTTOM 領域 accent — ローカル utility (neutral)
+    static let editorModeAxisPast = Color(red: 0.3529, green: 0.6588, blue: 0.9176) // LEFT 領域 accent — 時系列過去 / 参照 / 元ソース (cool blue)
+    static let editorModeAxisFuture = Color(red: 0.4510, green: 0.9059, blue: 0.6667) // RIGHT 領域 accent — 時系列未来 / ツール / 生成 (warm mint)
+    static let editorModePanelFieldLabel = Color(red: 0.3373, green: 0.3569, blue: 0.4157) // Field label の text 色
+    static let editorModePanelFieldValue = Color(red: 0.1255, green: 0.1412, blue: 0.1804) // Field value の text 色
+    static let editorModePanelSeparator = Color(red: 0.9098, green: 0.9176, blue: 0.9373) // Field group の区切り線
+    static let editorModeRegionBgColor = Color(red: 0.9882, green: 0.9882, blue: 0.9922) // Region 背景の base RGB (alpha は bg-opacity で CSS 側合成)
+    static let editorModeRegionBorder = Color(red: 0.8510, green: 0.8627, blue: 0.8863) // Region の輪郭色
+    static let editorModeSelectionOutlineHover = Color(red: 0.8941, green: 0.9725, blue: 0.9255) // Editor mode 中の hover outline (ghost highlight、Content を触らず上に描画)
+    static let editorModeSelectionOutlineActive = Color(red: 0.4510, green: 0.9059, blue: 0.6667) // 選択中の要素 outline
 }
 
 public enum CreoUITokens {
+    public static let editorModePanelFieldGap: CGFloat = 8 // Field 同士の縦間隔
+    public static let editorModePanelGroupGap: CGFloat = 16 // Field group 間の縦間隔
+    public static let editorModeRegionPadding: CGFloat = 12 // Region 内側の padding
+    public static let editorModeRegionTopHeight: CGFloat = 44 // TOP region の固定高さ (Content を大きく隠さないコンパクトサイズ)
+    public static let editorModeRegionBottomHeight: CGFloat = 44 // BOTTOM region の固定高さ
+    public static let editorModeRegionLeftWidth: CGFloat = 240 // LEFT region の default 幅 (collapsible)
+    public static let editorModeRegionRightWidth: CGFloat = 280 // RIGHT region の default 幅 (tool panel、左より広め)
+    public static let editorModeSelectionOutlineWidth: CGFloat = 2 // Selection outline の太さ
+    public static let editorModeSelectionOutlineOffset: CGFloat = 2 // 要素から outline までの offset (要素本体を遮らない)
     public static let radiusNone: CGFloat = 0 // No rounding
     public static let radiusSm: CGFloat = 4 // Small radius — subtle rounding (buttons, inputs)
     public static let radiusMd: CGFloat = 8 // Medium radius — cards, popovers
@@ -58,6 +78,8 @@ public enum CreoUITokens {
     public static let typographySize2xl: CGFloat = 24 // Heading level 3
     public static let typographySize3xl: CGFloat = 30 // Heading level 2 / hero subtitle
 
+    public static let editorModeOverlayBackdropOpacity: Double = 0 // Editor Layer 最背面の opacity。デフォルト 0 (完全透過) で Content Layer を遮らない
+    public static let editorModeRegionBgOpacity: Double = 0.92 // Region 背景の 不透明度 (0.0-1.0)。Content を完全に隠さず薄く透かす
     public static let typographyLineHeightTight: Double = 1.25 // Tight line-height — headings
     public static let typographyLineHeightNormal: Double = 1.5 // Normal line-height — default body
     public static let typographyLineHeightRelaxed: Double = 1.75 // Relaxed line-height — long-form text, CJK languages

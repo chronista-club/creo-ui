@@ -1,0 +1,31 @@
+{
+  "editor-mode": {
+    "panel": {
+      "field-label": {
+        "$value": "{color.text.secondary}",
+        "$type": "color",
+        "$description": "Field label の text 色"
+      },
+      "field-value": {
+        "$value": "{color.text.primary}",
+        "$type": "color",
+        "$description": "Field value の text 色"
+      },
+      "separator": {
+        "$value": "{color.surface.border-subtle}",
+        "$type": "color",
+        "$description": "Field group の区切り線"
+      },
+      "field-gap": {
+        "$value": "8px",
+        "$type": "dimension",
+        "$description": "Field 同士の縦間隔"
+      },
+      "group-gap": {
+        "$value": "16px",
+        "$type": "dimension",
+        "$description": "Field group 間の縦間隔"
+      }
+    }
+  }
+}

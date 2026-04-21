@@ -72,6 +72,50 @@ pub const COLOR_TEXT_SECONDARY: Rgb = Rgb::new(86, 91, 106);
 pub const COLOR_TEXT_TERTIARY: Rgb = Rgb::new(123, 128, 144);
 /// Inverse text — rendered on dark surfaces
 pub const COLOR_TEXT_INVERSE: Rgb = Rgb::new(250, 251, 252);
+/// TOP 領域 accent — global tools / 視線の起点 (purple、俯瞰)
+pub const EDITOR_MODE_AXIS_GLOBAL: Rgb = Rgb::new(154, 122, 217);
+/// BOTTOM 領域 accent — ローカル utility (neutral)
+pub const EDITOR_MODE_AXIS_UTILITY: Rgb = Rgb::new(123, 128, 144);
+/// LEFT 領域 accent — 時系列過去 / 参照 / 元ソース (cool blue)
+pub const EDITOR_MODE_AXIS_PAST: Rgb = Rgb::new(90, 168, 234);
+/// RIGHT 領域 accent — 時系列未来 / ツール / 生成 (warm mint)
+pub const EDITOR_MODE_AXIS_FUTURE: Rgb = Rgb::new(115, 231, 170);
+/// Editor Layer 最背面の opacity。デフォルト 0 (完全透過) で Content Layer を遮らない
+pub const EDITOR_MODE_OVERLAY_BACKDROP_OPACITY: f32 = 0_f32;
+/// Field label の text 色
+pub const EDITOR_MODE_PANEL_FIELD_LABEL: Rgb = Rgb::new(86, 91, 106);
+/// Field value の text 色
+pub const EDITOR_MODE_PANEL_FIELD_VALUE: Rgb = Rgb::new(32, 36, 46);
+/// Field group の区切り線
+pub const EDITOR_MODE_PANEL_SEPARATOR: Rgb = Rgb::new(232, 234, 239);
+/// Field 同士の縦間隔
+pub const EDITOR_MODE_PANEL_FIELD_GAP: f32 = 8_f32;
+/// Field group 間の縦間隔
+pub const EDITOR_MODE_PANEL_GROUP_GAP: f32 = 16_f32;
+/// Region 背景の base RGB (alpha は bg-opacity で CSS 側合成)
+pub const EDITOR_MODE_REGION_BG_COLOR: Rgb = Rgb::new(252, 252, 253);
+/// Region 背景の 不透明度 (0.0-1.0)。Content を完全に隠さず薄く透かす
+pub const EDITOR_MODE_REGION_BG_OPACITY: f32 = 0.92_f32;
+/// Region の輪郭色
+pub const EDITOR_MODE_REGION_BORDER: Rgb = Rgb::new(217, 220, 226);
+/// Region 内側の padding
+pub const EDITOR_MODE_REGION_PADDING: f32 = 12_f32;
+/// TOP region の固定高さ (Content を大きく隠さないコンパクトサイズ)
+pub const EDITOR_MODE_REGION_TOP_HEIGHT: f32 = 44_f32;
+/// BOTTOM region の固定高さ
+pub const EDITOR_MODE_REGION_BOTTOM_HEIGHT: f32 = 44_f32;
+/// LEFT region の default 幅 (collapsible)
+pub const EDITOR_MODE_REGION_LEFT_WIDTH: f32 = 240_f32;
+/// RIGHT region の default 幅 (tool panel、左より広め)
+pub const EDITOR_MODE_REGION_RIGHT_WIDTH: f32 = 280_f32;
+/// Editor mode 中の hover outline (ghost highlight、Content を触らず上に描画)
+pub const EDITOR_MODE_SELECTION_OUTLINE_HOVER: Rgb = Rgb::new(228, 248, 236);
+/// 選択中の要素 outline
+pub const EDITOR_MODE_SELECTION_OUTLINE_ACTIVE: Rgb = Rgb::new(115, 231, 170);
+/// Selection outline の太さ
+pub const EDITOR_MODE_SELECTION_OUTLINE_WIDTH: f32 = 2_f32;
+/// 要素から outline までの offset (要素本体を遮らない)
+pub const EDITOR_MODE_SELECTION_OUTLINE_OFFSET: f32 = 2_f32;
 /// No rounding
 pub const RADIUS_NONE: f32 = 0_f32;
 /// Small radius — subtle rounding (buttons, inputs)

@@ -1,0 +1,26 @@
+{
+  "editor-mode": {
+    "axis": {
+      "global": {
+        "$value": "{color.brand.secondary}",
+        "$type": "color",
+        "$description": "TOP 領域 accent — global tools / 視線の起点 (purple、俯瞰)"
+      },
+      "utility": {
+        "$value": "{color.text.tertiary}",
+        "$type": "color",
+        "$description": "BOTTOM 領域 accent — ローカル utility (neutral)"
+      },
+      "past": {
+        "$value": "{color.semantic.info}",
+        "$type": "color",
+        "$description": "LEFT 領域 accent — 時系列過去 / 参照 / 元ソース (cool blue)"
+      },
+      "future": {
+        "$value": "{color.brand.primary}",
+        "$type": "color",
+        "$description": "RIGHT 領域 accent — 時系列未来 / ツール / 生成 (warm mint)"
+      }
+    }
+  }
+}

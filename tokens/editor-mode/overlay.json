@@ -1,0 +1,11 @@
+{
+  "editor-mode": {
+    "overlay": {
+      "backdrop-opacity": {
+        "$value": 0,
+        "$type": "number",
+        "$description": "Editor Layer 最背面の opacity。デフォルト 0 (完全透過) で Content Layer を遮らない"
+      }
+    }
+  }
+}

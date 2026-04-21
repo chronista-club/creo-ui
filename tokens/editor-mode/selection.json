@@ -1,0 +1,26 @@
+{
+  "editor-mode": {
+    "selection": {
+      "outline-hover": {
+        "$value": "{color.brand.primary-subtle}",
+        "$type": "color",
+        "$description": "Editor mode 中の hover outline (ghost highlight、Content を触らず上に描画)"
+      },
+      "outline-active": {
+        "$value": "{color.brand.primary}",
+        "$type": "color",
+        "$description": "選択中の要素 outline"
+      },
+      "outline-width": {
+        "$value": "2px",
+        "$type": "dimension",
+        "$description": "Selection outline の太さ"
+      },
+      "outline-offset": {
+        "$value": "2px",
+        "$type": "dimension",
+        "$description": "要素から outline までの offset (要素本体を遮らない)"
+      }
+    }
+  }
+}
