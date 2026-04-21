@@ -110,14 +110,21 @@ cd packages/rust && cargo build && cargo test
 cd packages/swift && swift build && swift test
 ```
 
+## Creo UI の 2 本柱
+
+1. **視覚的定数の SSOT** — `tokens/**/*.json` (DTCG) → Style Dictionary → 3 platform 配布
+2. **Editor Mode protocol** — 任意 app にユニバーサルな "Editor Mode" を規定 (schema owner)。詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md)
+
+Editor Mode は instance ではなく **mode** (universal state)。4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) + Content 非侵襲性 + AI agent access を protocol で規定し、runtime 実装は consumer (`@creo/ui`, `CreoUI`, `creo-ui` crate) 側が担う。
+
 ## Phase Roadmap
 
 | Phase | 内容 | Status |
 |-------|------|--------|
 | 0 | Repo scaffold + CI skeleton | ✅ 完了 (CREO-85) |
-| 1 | Token MVP (creo-memories から抽出) + Web CSS 出力 + SwiftUI / Rust 出力 | **進行中** (CREO-86) |
-| 2 | Example consumer + crates.io publish + Web Components (Shadow DOM) | Planned |
-| 3 | Theme 切替 (light / dark / high-contrast) | Planned |
+| 1 | Token MVP (creo-memories から抽出) + Web/SwiftUI/Rust 出力 + **Editor Mode protocol schema + editor-mode tokens** | **進行中** (CREO-86) |
+| 2 | `@creo/ui` に `EditorHost` runtime 実装 + MCP AI agent 連携 + DevEditor migration | Planned |
+| 3 | Theme 切替 (light / dark / high-contrast) を Editor Mode で prototyping + Swift 実装 | Planned |
 | 4 | Figma sync (tokens.studio 連携) | Planned |
 
 詳細は [Epic CREO-84](https://linear.app/chronista/issue/CREO-84) を参照。

@@ -4,7 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクトの本質
 
-**Creo UI は Creo ecosystem の Design System。** 単一の W3C DTCG トークン (`tokens/**/*.json`) から、Web / Apple / Rust の 3 プラットフォーム向け成果物を **Style Dictionary v4 で生成** するリポジトリ。ロジックや UI コンポーネントは持たず、**「視覚的定数の配布」だけが責務**。
+**Creo UI は Creo ecosystem の Design System。** 責務は **2 本柱**:
+
+1. **視覚的定数の SSOT** — `tokens/**/*.json` (W3C DTCG) から Web / Apple / Rust の 3 プラットフォーム向け成果物を **Style Dictionary v4 で生成**
+2. **Editor Mode protocol の schema owner** — 各 app にユニバーサルな "Editor Mode" UI 状態を規定。field 宣言 / 4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) / Content 非侵襲性 / AI agent access を **schema + TS 型として定義**。runtime 実装は consumer 側 (`@creo/ui`, `CreoUI`, `creo-ui` crate) が担う
+
+ロジックや UI コンポーネントの具体実装は持たず、**「視覚的定数 + protocol schema」** のみを提供する。設計詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md)。
 
 Linear Epic: [CREO-84](https://linear.app/chronista/issue/CREO-84) / Phase は README.md に記載。
 
@@ -103,3 +108,6 @@ Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
 - `style-dictionary build` を `packages/*/` の CWD で実行する (path が root 相対なので壊れる)。
 - `rust-version` と mise の Rust バージョンをズラす (CLAUDE.md の global 方針)。
 - Rust generated に inner attribute / inner doc を足す (`include!` 先では構文エラー)。
+- Editor Mode を **instance 名** (Studio / DevEditor / etc) で呼ぶ。Editor は **universal mode**、instance 化しない (`docs/design/editor-mode.md` D-1)。
+- Editor Mode 関連で **runtime ロジックをこのリポジトリに書く**。Creo UI は protocol schema owner、runtime 実装は consumer (`@creo/ui` 等) が担う (D-11)。
+- Content Layer を Editor Mode が **押し退ける / layout 変える** 設計にする。非侵襲性 (D-6) は最上位原則。
