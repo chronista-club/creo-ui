@@ -15,7 +15,7 @@ Phase 0 Issue: [CREO-85 repo bootstrap](https://linear.app/chronista/issue/CREO-
 
 | Platform | Package | 出力 |
 |----------|---------|------|
-| Web | `@creo/ui-web` | CSS custom properties + (Phase 2〜) Web Components |
+| Web | `creo-ui-web` | CSS custom properties + (Phase 2〜) Web Components |
 | Apple (iOS / macOS / watchOS / tvOS) | `CreoUI` (SPM) | SwiftUI Color / CGFloat extensions |
 | Rust | `creo-ui` (crate) | `pub const` 定義 + (Phase 2〜) helper traits |
 

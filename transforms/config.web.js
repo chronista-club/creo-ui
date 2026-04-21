@@ -2,7 +2,7 @@
  * Style Dictionary config for Web platform.
  *
  * Generates CSS custom properties from W3C DTCG tokens.
- * Consumed by @creo/ui-web (packages/web).
+ * Consumed by creo-ui-web (packages/web).
  */
 
 export default {

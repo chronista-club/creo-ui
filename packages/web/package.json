@@ -1,5 +1,5 @@
 {
-  "name": "@chronista-club/creo-ui-web",
+  "name": "creo-ui-web",
   "version": "0.0.1",
   "description": "Creo UI — Web package (CSS custom properties + Web Components)",
   "type": "module",
@@ -13,11 +13,7 @@
     "./tokens.css": "./dist/tokens.css",
     "./tokens.js": "./dist/tokens.js"
   },
-  "files": [
-    "src",
-    "dist",
-    "README.md"
-  ],
+  "files": ["src", "dist", "README.md"],
   "repository": {
     "type": "git",
     "url": "https://github.com/chronista-club/creo-ui.git",
@@ -27,14 +23,8 @@
     "url": "https://github.com/chronista-club/creo-ui/issues"
   },
   "homepage": "https://github.com/chronista-club/creo-ui#readme",
-  "keywords": [
-    "design-system",
-    "css-custom-properties",
-    "design-tokens",
-    "creo-ui"
-  ],
+  "keywords": ["design-system", "css-custom-properties", "design-tokens", "creo-ui"],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "scripts": {
