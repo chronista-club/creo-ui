@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "vantage-point": {
+      "type": "stdio",
+      "command": "vp",
+      "args": ["mcp"]
+    },
+    "creo-memories": {
+      "type": "http",
+      "url": "https://mcp.creo-memories.in/"
+    },
+    "linear-chronista": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp"
+    }
+  }
+}

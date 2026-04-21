@@ -18,5 +18,11 @@
     "types": []
   },
   "include": ["packages/*/src/**/*.ts", "transforms/**/*.js"],
-  "exclude": ["node_modules", "dist", "packages/*/dist"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "packages/*/dist",
+    "examples/*/node_modules",
+    "examples/*/dist"
+  ]
 }

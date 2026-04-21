@@ -12,7 +12,8 @@
     "build:rust": "style-dictionary build --config transforms/config.rust.js",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
-    "format": "biome check . --write"
+    "format": "biome check . --write",
+    "dev": "cd examples/web-demo && bun install --silent && bun run dev"
   },
   "devDependencies": {
     "style-dictionary": "^4.0.0",
