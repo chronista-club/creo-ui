@@ -18,8 +18,19 @@ export default function App() {
         label: 'テーマ',
         type: 'select',
         semantic: 'global',
-        initial: 'auto',
-        constraints: { options: ['auto', 'light', 'dark'] },
+        initial: 'mint-dark',
+        constraints: {
+          options: [
+            'mint-dark',
+            'mint-light',
+            'sora-dark',
+            'sora-light',
+            'contrast-dark',
+            'contrast-light',
+            'oldschool-dark',
+            'oldschool-light',
+          ],
+        },
         role: 'user',
         order: -10,
         apply: (v) => {
@@ -50,17 +61,6 @@ export default function App() {
         cssVar: '--radius-md',
         role: 'dev',
         order: 1,
-      },
-      {
-        id: 'tokens.color.brand.primary',
-        label: 'color.brand.primary',
-        type: 'color',
-        semantic: 'tool',
-        group: 'Token',
-        initial: '#73e7aa',
-        cssVar: '--color-brand-primary',
-        role: 'dev',
-        order: 2,
       },
       // === App state fields (signal bind 的に、setter 直接) ===
       {
@@ -139,7 +139,7 @@ export default function App() {
             color: 'var(--color-brand-primary)',
             transition: 'color 120ms ease',
           }}
-          data-editor-fields="tokens.color.brand.primary,app.title"
+          data-editor-fields="app.title"
         >
           {title()}
         </h1>

@@ -119,10 +119,9 @@ export function EditorLayer() {
           </Show>
         </div>
 
-        {/* LEFT region (stub) */}
+        {/* LEFT region: ThemeEditor */}
         <div style={leftRegionStyle()}>
-          <h3 style={regionHeadingStyle('past')}>◀ ソース</h3>
-          <p style={emptyHintStyle()}>Phase 2a で実装 (履歴 / 参照データ)</p>
+          <ThemeEditor />
         </div>
 
         {/* BOTTOM region (stub) */}
@@ -133,6 +132,180 @@ export function EditorLayer() {
         </div>
       </Show>
     </div>
+  )
+}
+
+// --- ThemeEditor (LEFT region) ---
+
+/**
+ * 現在 active な theme の meta (名前・flavor) + 主要 color swatch grid。
+ * semantic="source" (過去・元データ) の位置付けで、Editor の参照情報として使う。
+ */
+const THEME_INFO: Record<string, { name: string; flavor: string; family: string }> = {
+  'mint-dark': {
+    name: 'Mint Dark',
+    family: 'Creo',
+    flavor: 'Dark theme with mint green accent — Creo Design System default',
+  },
+  'mint-light': {
+    name: 'Mint Light',
+    family: 'Creo',
+    flavor: 'Default light theme with mint green accent',
+  },
+  'sora-dark': {
+    name: '空 (Sora) Dark',
+    family: '空 (Sora)',
+    flavor: 'Night sky-inspired dark theme',
+  },
+  'sora-light': {
+    name: '空 (Sora)',
+    family: '空 (Sora)',
+    flavor: 'Sky-inspired light theme with sky blue accent',
+  },
+  'contrast-dark': {
+    name: 'Paradox Dark',
+    family: 'Contrast / Paradox',
+    flavor: 'The paradox at nightfall — purple × pink × cyan が暗闇で際立つ',
+  },
+  'contrast-light': {
+    name: 'Paradox Light',
+    family: 'Contrast / Paradox',
+    flavor: 'The paradox in daylight — 対立色が白の上で共存する矛盾',
+  },
+  'oldschool-dark': {
+    name: 'Old School Dark',
+    family: 'Old School',
+    flavor: 'Retro natural dark theme — teal × orange',
+  },
+  'oldschool-light': {
+    name: 'Old School',
+    family: 'Old School',
+    flavor: 'Retro natural light theme — teal × orange',
+  },
+}
+
+const SWATCH_ROWS: { label: string; cssVar: string }[] = [
+  { label: 'brand.primary', cssVar: '--color-brand-primary' },
+  { label: 'brand.primary-hover', cssVar: '--color-brand-primary-hover' },
+  { label: 'brand.primary-subtle', cssVar: '--color-brand-primary-subtle' },
+  { label: 'brand.secondary', cssVar: '--color-brand-secondary' },
+  { label: 'semantic.success', cssVar: '--color-semantic-success' },
+  { label: 'semantic.warning', cssVar: '--color-semantic-warning' },
+  { label: 'semantic.error', cssVar: '--color-semantic-error' },
+  { label: 'semantic.info', cssVar: '--color-semantic-info' },
+  { label: 'surface.bg-base', cssVar: '--color-surface-bg-base' },
+  { label: 'surface.bg-subtle', cssVar: '--color-surface-bg-subtle' },
+  { label: 'surface.surface', cssVar: '--color-surface-surface' },
+  { label: 'surface.border', cssVar: '--color-surface-border' },
+  { label: 'text.primary', cssVar: '--color-text-primary' },
+  { label: 'text.secondary', cssVar: '--color-text-secondary' },
+  { label: 'text.tertiary', cssVar: '--color-text-tertiary' },
+]
+
+function ThemeEditor() {
+  const values = useValues()
+  const themeId = () => String(values()['theme.mode'] ?? 'mint-dark')
+  const info = () => THEME_INFO[themeId()] ?? THEME_INFO['mint-dark']
+
+  return (
+    <>
+      <h3 style={regionHeadingStyle('past')}>◀ Theme</h3>
+
+      <div
+        style={{
+          'margin-bottom': 'var(--editor-mode-panel-group-gap)',
+          padding: '8px',
+          background: 'var(--color-surface-bg-subtle)',
+          border: '1px solid var(--editor-mode-region-border)',
+          'border-radius': '4px',
+        }}
+      >
+        <div
+          style={{
+            'font-size': '12px',
+            'font-weight': '700',
+            color: 'var(--color-text-primary)',
+            'margin-bottom': '2px',
+          }}
+        >
+          {info().name}
+        </div>
+        <div
+          style={{
+            'font-size': '10px',
+            color: 'var(--color-text-tertiary)',
+            'margin-bottom': '4px',
+            'font-family': 'var(--typography-family-mono)',
+          }}
+        >
+          family: {info().family}
+        </div>
+        <div
+          style={{
+            'font-size': '10px',
+            color: 'var(--color-text-secondary)',
+            'line-height': '1.4',
+          }}
+        >
+          {info().flavor}
+        </div>
+      </div>
+
+      <div
+        style={{
+          'font-size': '10px',
+          color: 'var(--editor-mode-panel-field-label)',
+          'text-transform': 'uppercase',
+          'letter-spacing': '0.05em',
+          'margin-bottom': '6px',
+        }}
+      >
+        Swatches
+      </div>
+      <div
+        style={{
+          display: 'grid',
+          'grid-template-columns': '1fr',
+          gap: '3px',
+        }}
+      >
+        <For each={SWATCH_ROWS}>
+          {(row) => (
+            <div
+              style={{
+                display: 'flex',
+                'align-items': 'center',
+                gap: '6px',
+                'font-size': '10px',
+                'font-family': 'var(--typography-family-mono)',
+              }}
+              title={`${row.label}\n${row.cssVar}`}
+            >
+              <div
+                style={{
+                  width: '14px',
+                  height: '14px',
+                  'min-width': '14px',
+                  'border-radius': '3px',
+                  background: `var(${row.cssVar})`,
+                  border: '1px solid var(--editor-mode-region-border)',
+                }}
+              />
+              <span
+                style={{
+                  color: 'var(--color-text-secondary)',
+                  'white-space': 'nowrap',
+                  overflow: 'hidden',
+                  'text-overflow': 'ellipsis',
+                }}
+              >
+                {row.label}
+              </span>
+            </div>
+          )}
+        </For>
+      </div>
+    </>
   )
 }
 
