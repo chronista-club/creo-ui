@@ -47,6 +47,8 @@ export interface EditorField<T = unknown> {
   order?: number
   /** CSS 変数を書き換える場合、変数名 (例: "--spacing-md") */
   cssVar?: string
+  /** cssVar 以外の副作用を宣言 (例: document attribute、signal update) */
+  apply?: (value: T) => void
 }
 
 export interface SelectionInfo {
@@ -92,6 +94,7 @@ export function registerFields(newFields: EditorField[]): () => void {
       if (!(f.id in next)) {
         next[f.id] = f.initial
         applyCssVar(f, f.initial)
+        f.apply?.(f.initial as never)
       }
     }
     return next
@@ -114,6 +117,7 @@ export function setValue<T>(id: string, v: T): void {
   if (!field) return
   setValues((prev) => ({ ...prev, [id]: v }))
   applyCssVar(field, v)
+  field.apply?.(v as never)
 }
 
 export function useFields(): Accessor<EditorField[]> {

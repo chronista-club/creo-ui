@@ -34,6 +34,11 @@ export function EditorLayer() {
     return toolFields.filter((f) => idSet.has(f.id))
   }
 
+  const globalFields = (): EditorField[] =>
+    fields()
+      .filter((f) => f.semantic === 'global')
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+
   return (
     <div
       data-editor-layer
@@ -52,31 +57,50 @@ export function EditorLayer() {
         </Show>
         <Show when={selection()}>{(s) => <Outline rect={s().rect} state="active" />}</Show>
 
-        {/* TOP region */}
+        {/* TOP region: 左に hint、右に global fields */}
         <div style={topRegionStyle()}>
-          <span>
+          <span style={{ flex: '1' }}>
             Editor Mode <strong>ON</strong> —{' '}
-            <Show when={selection()} fallback={<span>click an element to select</span>}>
+            <Show when={selection()} fallback={<span>要素をクリックで選択</span>}>
               {(s) => (
                 <span style={{ color: 'var(--editor-mode-axis-future)' }}>
-                  selected: {s().targetId}
+                  選択中: {s().targetId}
                 </span>
               )}
             </Show>{' '}
-            · <kbd style={kbdInlineStyle}>Esc</kbd>{' '}
-            <Show when={selection()} fallback={<span>exit</span>}>
-              <span>deselect</span>
+            · <kbd style={kbdInlineStyle}>Esc</kbd> で{' '}
+            <Show when={selection()} fallback={<span>終了</span>}>
+              <span>選択解除</span>
             </Show>{' '}
-            · <kbd style={kbdInlineStyle}>Ctrl+Shift+E</kbd> toggle
+            · <kbd style={kbdInlineStyle}>Ctrl+Shift+E</kbd> で切替
           </span>
+
+          <div
+            style={{
+              display: 'flex',
+              gap: '16px',
+              'align-items': 'center',
+              'padding-left': '12px',
+            }}
+          >
+            <For each={globalFields()}>
+              {(field) => (
+                <GlobalFieldInline
+                  field={field}
+                  value={values()[field.id]}
+                  onChange={(v) => setValue(field.id, v)}
+                />
+              )}
+            </For>
+          </div>
         </div>
 
         {/* RIGHT region */}
         <div style={rightRegionStyle()}>
-          <h3 style={regionHeadingStyle('future')}>▶ Tool</h3>
+          <h3 style={regionHeadingStyle('future')}>▶ ツール</h3>
           <Show
             when={visibleToolFields().length > 0}
-            fallback={<p style={emptyHintStyle()}>No fields bound to this selection.</p>}
+            fallback={<p style={emptyHintStyle()}>この選択に紐付く field はありません。</p>}
           >
             <For each={visibleToolFields()}>
               {(field) => (
@@ -90,24 +114,91 @@ export function EditorLayer() {
           </Show>
           <Show when={selection()}>
             <button type="button" onClick={() => clearSelection()} style={clearButtonStyle()}>
-              Show all tool fields
+              全 tool field を表示
             </button>
           </Show>
         </div>
 
         {/* LEFT region (stub) */}
         <div style={leftRegionStyle()}>
-          <h3 style={regionHeadingStyle('past')}>◀ Source</h3>
-          <p style={emptyHintStyle()}>Phase 2a で実装 (history / references)</p>
+          <h3 style={regionHeadingStyle('past')}>◀ ソース</h3>
+          <p style={emptyHintStyle()}>Phase 2a で実装 (履歴 / 参照データ)</p>
         </div>
 
         {/* BOTTOM region (stub) */}
         <div style={bottomRegionStyle()}>
           <span style={{ 'font-size': '11px', color: 'var(--color-text-tertiary)' }}>
-            🔧 utility — Phase 2a で実装 (batch / AI chat など)
+            🔧 ユーティリティ — Phase 2a で実装 (一括処理 / AI チャット など)
           </span>
         </div>
       </Show>
+    </div>
+  )
+}
+
+// --- Global field (TOP inline) ---
+
+function GlobalFieldInline(props: {
+  field: EditorField
+  value: unknown
+  onChange: (v: unknown) => void
+}) {
+  return (
+    <div style={{ display: 'flex', 'align-items': 'center', gap: '6px' }}>
+      <span
+        style={{
+          'font-size': '11px',
+          color: 'var(--editor-mode-panel-field-label)',
+          'white-space': 'nowrap',
+        }}
+      >
+        {props.field.label}:
+      </span>
+      {(() => {
+        switch (props.field.type) {
+          case 'select':
+            return (
+              <select
+                value={props.value as string}
+                onChange={(e) => props.onChange(e.currentTarget.value)}
+                style={{
+                  padding: '2px 6px',
+                  'font-size': '11px',
+                  'font-family': 'var(--typography-family-sans)',
+                  background: 'var(--color-surface-surface)',
+                  color: 'var(--color-text-primary)',
+                  border: '1px solid var(--editor-mode-region-border)',
+                  'border-radius': '3px',
+                }}
+              >
+                <For each={props.field.constraints?.options ?? []}>
+                  {(opt) => <option value={opt}>{opt}</option>}
+                </For>
+              </select>
+            )
+          case 'boolean':
+            return (
+              <input
+                type="checkbox"
+                checked={props.value as boolean}
+                onInput={(e) => props.onChange(e.currentTarget.checked)}
+                style={{ 'accent-color': 'var(--editor-mode-axis-global)' }}
+              />
+            )
+          default:
+            return (
+              <span
+                style={{
+                  'font-size': '11px',
+                  'font-family': 'var(--typography-family-mono)',
+                  color: 'var(--editor-mode-panel-field-value)',
+                }}
+              >
+                {String(props.value)}
+              </span>
+            )
+        }
+      })()}
     </div>
   )
 }

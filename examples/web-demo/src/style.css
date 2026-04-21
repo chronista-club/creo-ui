@@ -3,8 +3,10 @@ body {
   font-family: var(--typography-family-sans);
   color: var(--color-text-primary);
   background: var(--color-surface-bg-base);
+  color-scheme: light dark;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 160ms ease, color 160ms ease;
 }
 
 kbd {
@@ -15,4 +17,42 @@ kbd {
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+   Dark theme — Phase 1.5 walking skeleton 用の試験的な override
+   (tokens/color/ に正式な dark variant を入れるのは Phase 3)
+   ============================================================ */
+
+/* 1) Manual: data-theme="dark" で強制 dark */
+:root[data-theme="dark"] {
+  --color-surface-bg-base: #161821;
+  --color-surface-bg-subtle: #1e2030;
+  --color-surface-bg-emphasis: #2a2d3a;
+  --color-surface-surface: #1a1c25;
+  --color-surface-border: #373a46;
+  --color-surface-border-subtle: #2a2d3a;
+  --color-text-primary: #e8eaef;
+  --color-text-secondary: #acb0ba;
+  --color-text-tertiary: #7b8090;
+  --color-text-inverse: #20242e;
+  color-scheme: dark;
+}
+
+/* 2) Auto: system が dark のときのみ dark (data-theme が未設定 / "auto" / 明示なし) */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="auto"],
+  :root:not([data-theme]) {
+    --color-surface-bg-base: #161821;
+    --color-surface-bg-subtle: #1e2030;
+    --color-surface-bg-emphasis: #2a2d3a;
+    --color-surface-surface: #1a1c25;
+    --color-surface-border: #373a46;
+    --color-surface-border-subtle: #2a2d3a;
+    --color-text-primary: #e8eaef;
+    --color-text-secondary: #acb0ba;
+    --color-text-tertiary: #7b8090;
+    --color-text-inverse: #20242e;
+    color-scheme: dark;
+  }
 }

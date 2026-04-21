@@ -12,6 +12,20 @@ export default function App() {
     const uninstall = installEditorLayerHandlers()
 
     const unregister = registerFields([
+      // === Global field (TOP に出る、全体設定) ===
+      {
+        id: 'theme.mode',
+        label: 'テーマ',
+        type: 'select',
+        semantic: 'global',
+        initial: 'auto',
+        constraints: { options: ['auto', 'light', 'dark'] },
+        role: 'user',
+        order: -10,
+        apply: (v) => {
+          document.documentElement.setAttribute('data-theme', String(v))
+        },
+      },
       // === Token fields (CSS 変数 bind) ===
       {
         id: 'tokens.spacing.md',
@@ -51,7 +65,7 @@ export default function App() {
       // === App state fields (signal bind 的に、setter 直接) ===
       {
         id: 'app.title',
-        label: 'Page title',
+        label: 'ページタイトル',
         type: 'string',
         semantic: 'tool',
         group: 'App',
@@ -61,7 +75,7 @@ export default function App() {
       },
       {
         id: 'app.density',
-        label: 'Layout density',
+        label: 'レイアウト密度',
         type: 'select',
         semantic: 'tool',
         group: 'App',
@@ -72,7 +86,7 @@ export default function App() {
       },
       {
         id: 'app.show-footer',
-        label: 'Show footer',
+        label: 'フッター表示',
         type: 'boolean',
         semantic: 'tool',
         group: 'App',
@@ -136,9 +150,10 @@ export default function App() {
             margin: '0 0 var(--spacing-xl) 0',
           }}
         >
-          Walking skeleton for Editor Mode. Press <kbd>Ctrl+Shift+E</kbd> to open, <kbd>Esc</kbd> to
-          close. Hover any <strong>Card</strong> or <strong>headline</strong> to see the selection
-          outline, click to focus its bound fields.
+          Editor Mode の walking skeleton です。<kbd>Ctrl+Shift+E</kbd> で開き、
+          <kbd>Esc</kbd> で閉じます。<strong>カード</strong> や <strong>見出し</strong>{' '}
+          にホバーして選択 outline を確認、クリックで bind された field にフォーカス。TOP
+          の「テーマ」セレクトで light / dark / auto を切り替えられます。
         </p>
 
         <section
@@ -148,23 +163,23 @@ export default function App() {
           }}
         >
           <Card
-            title="Card 1 — spacing"
-            description="Click me, then drag spacing.md in the right panel. Watch padding react live."
+            title="カード 1 — 間隔"
+            description="クリックして、右パネルの spacing.md を動かしてみてください。padding が即座に反応します。"
             fields="tokens.spacing.md"
           />
           <Card
-            title="Card 2 — radius"
-            description="Click me, then drag radius.md. Corners round without any layout shift."
+            title="カード 2 — 角丸"
+            description="クリックして radius.md を動かすと、layout をずらさずに角の丸みだけが変わります。"
             fields="tokens.radius.md"
           />
           <Card
-            title="Card 3 — both"
-            description="Click me to edit spacing.md and radius.md together."
+            title="カード 3 — 両方"
+            description="spacing.md と radius.md を同時に編集できます。"
             fields="tokens.spacing.md,tokens.radius.md"
           />
           <Card
-            title="Card 4 — app state"
-            description="Click me to edit page title, density, and footer visibility."
+            title="カード 4 — アプリ状態"
+            description="ページタイトル / レイアウト密度 / フッター表示の on-off を編集できます。"
             fields="app.title,app.density,app.show-footer"
           />
         </section>
@@ -178,12 +193,12 @@ export default function App() {
               'line-height': 'var(--typography-line-height-normal)',
             }}
           >
-            Mode:{' '}
+            モード:{' '}
             <strong style={{ color: 'var(--color-text-primary)' }}>
               {editorMode.isEnabled() ? 'ON' : 'OFF'}
             </strong>{' '}
-            · Layout density: <code>{density()}</code> · Content layout is preserved across mode
-            toggles (D-6 non-invasive).
+            · レイアウト密度: <code>{density()}</code> · Mode toggle の前後で Content の layout
+            は不変 (D-6 非侵襲)。
           </footer>
         )}
       </main>
