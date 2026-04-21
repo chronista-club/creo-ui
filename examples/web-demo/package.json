@@ -1,0 +1,21 @@
+{
+  "name": "creo-ui-web-demo",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Walking skeleton example for Creo UI Editor Mode (Phase 2a reference implementation)",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "creo-ui-web": "file:../../packages/web",
+    "solid-js": "^1.9.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0",
+    "vite-plugin-solid": "^2.10.0"
+  }
+}
