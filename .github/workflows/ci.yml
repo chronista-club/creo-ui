@@ -29,11 +29,13 @@ jobs:
       - name: Build tokens (Web / Swift / Rust)
         run: bun run build
 
-      - name: Token diff (ensure build output is consistent)
+      - name: Token diff (Swift / Rust generated は commit 対象)
+        # tokens/ を編集した PR が Swift/Rust の generated 更新を
+        # 忘れていないか検証する。Web の dist/ は gitignore なので対象外。
         run: |
-          # Phase 1 以降、generated output を commit 対象にする場合は
-          # `git diff --exit-code` でズレを検出する。
-          echo "Phase 0: token build output は未 commit、diff check はスキップ。"
+          git diff --exit-code \
+            packages/swift/Sources/CreoUI/Generated/ \
+            packages/rust/src/generated/
 
   rust:
     name: Rust build
@@ -44,7 +46,7 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: "1.94"
+          toolchain: "1.95"
 
       - name: Build
         working-directory: packages/rust
