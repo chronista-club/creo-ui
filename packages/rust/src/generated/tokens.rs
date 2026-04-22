@@ -207,6 +207,16 @@ pub const SPACING_MD: f32 = 18_f32;
 pub const SPACING_LG: f32 = 24_f32;
 /// Extra-large spacing — 32px
 pub const SPACING_XL: f32 = 32_f32;
+/// Lead body — opening paragraph / intro (larger, invites reading)
+pub const TYPOGRAPHY_BODY_LEAD: f32 = 20_f32;
+/// Default body — regular paragraph text (最もよく使う)
+pub const TYPOGRAPHY_BODY_DEFAULT: f32 = 16_f32;
+/// Emphasis body — default size with stronger weight (意味的な強調、size は default と同じ)
+pub const TYPOGRAPHY_BODY_EMPHASIS: f32 = 16_f32;
+/// Helper text — form helper, status message, secondary info
+pub const TYPOGRAPHY_BODY_HELPER: f32 = 14_f32;
+/// Caption — image caption, footnote, meta info (smallest readable body)
+pub const TYPOGRAPHY_BODY_CAPTION: f32 = 12_f32;
 /// Display xs — smallest heading (h4 / section title / card title)
 pub const TYPOGRAPHY_DISPLAY_XS: f32 = 24_f32;
 /// Display sm — standard heading (h3 / article title / section headline)
@@ -239,6 +249,16 @@ pub const TYPOGRAPHY_SIZE_MD: f32 = 16_f32;
 pub const TYPOGRAPHY_SIZE_LG: f32 = 18_f32;
 /// Largest body / small heading (h4)
 pub const TYPOGRAPHY_SIZE_XL: f32 = 20_f32;
+/// Hero title — landing page mega headline (promotional / marketing)
+pub const TYPOGRAPHY_TITLE_HERO: f32 = 72_f32;
+/// Page title — h1 (article title, app screen heading)
+pub const TYPOGRAPHY_TITLE_PAGE: f32 = 44_f32;
+/// Section title — h2 (thematic block within a page)
+pub const TYPOGRAPHY_TITLE_SECTION: f32 = 32_f32;
+/// Subsection title — h3 (nested group within a section)
+pub const TYPOGRAPHY_TITLE_SUBSECTION: f32 = 24_f32;
+/// Card title — h4 (inline block title, table header, menu label)
+pub const TYPOGRAPHY_TITLE_CARD: f32 = 20_f32;
 /// Regular body weight
 pub const TYPOGRAPHY_WEIGHT_REGULAR: f32 = 400_f32;
 /// Medium emphasis

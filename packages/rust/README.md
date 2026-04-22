@@ -68,6 +68,8 @@ let pixel = image::Rgb(COLOR_BRAND_PRIMARY.as_array());
 | `typography.display.*` | `TYPOGRAPHY_DISPLAY_MD` 等 (heading, 5 step) | `f32` (px) |
 | `layout.gap.*` | `LAYOUT_GAP_SIBLING` 等 (semantic between-ness) | `f32` (px) |
 | `layout.target.*` | `LAYOUT_TARGET_TAP` (=44) / `FOCUS` / `HIT` (Apple HIG accessibility) | `f32` (px) |
+| `typography.title.*` | `TYPOGRAPHY_TITLE_PAGE` 等 (role-based headings, hero/page/section/subsection/card) | `f32` (px) |
+| `typography.body.*` | `TYPOGRAPHY_BODY_DEFAULT` 等 (role-based body, lead/default/emphasis/helper/caption) | `f32` (px) |
 | `typography.weight.*` | `TYPOGRAPHY_WEIGHT_REGULAR` 等 | `f32` |
 | `typography.family.*` / `shadow.*` | `TYPOGRAPHY_FAMILY_SANS`, `SHADOW_MD` 等 | `&'static str` |
 

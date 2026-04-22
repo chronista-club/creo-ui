@@ -80,7 +80,7 @@ function Demo() {
         <h1
           ref={title.selectable()}
           style={{
-            'font-size': 'var(--typography-display-md)',
+            'font-size': 'var(--typography-title-page)',
             margin: '0 0 var(--spacing-md) 0',
             color: 'var(--color-brand-primary)',
           }}
@@ -90,7 +90,7 @@ function Demo() {
         <p
           style={{
             'line-height': 'var(--typography-line-height-relaxed)',
-            'font-size': 'var(--typography-size-md)',
+            'font-size': 'var(--typography-body-lead)',
             margin: '0 0 var(--spacing-xl) 0',
           }}
         >
@@ -129,14 +129,14 @@ function Demo() {
             background: 'var(--color-surface-surface-muted)',
             border: '1px solid var(--color-surface-border)',
             'border-radius': 'var(--radius-md)',
-            'font-size': 'var(--typography-size-sm)',
+            'font-size': 'var(--typography-body-helper)',
             'line-height': 'var(--typography-line-height-normal)',
           }}
         >
           <h3
             style={{
               margin: '0 0 var(--spacing-sm) 0',
-              'font-size': 'var(--typography-size-md)',
+              'font-size': 'var(--typography-title-card)',
               'font-weight': 'var(--typography-weight-semibold)',
             }}
           >

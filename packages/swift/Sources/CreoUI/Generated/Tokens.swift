@@ -87,6 +87,11 @@ public enum CreoUITokens {
     public static let spacingMd: CGFloat = 18 // Medium spacing — 18px (default gap between UI elements)
     public static let spacingLg: CGFloat = 24 // Large spacing — 24px
     public static let spacingXl: CGFloat = 32 // Extra-large spacing — 32px
+    public static let typographyBodyLead: CGFloat = 20 // Lead body — opening paragraph / intro (larger, invites reading)
+    public static let typographyBodyDefault: CGFloat = 16 // Default body — regular paragraph text (最もよく使う)
+    public static let typographyBodyEmphasis: CGFloat = 16 // Emphasis body — default size with stronger weight (意味的な強調、size は default と同じ)
+    public static let typographyBodyHelper: CGFloat = 14 // Helper text — form helper, status message, secondary info
+    public static let typographyBodyCaption: CGFloat = 12 // Caption — image caption, footnote, meta info (smallest readable body)
     public static let typographyDisplayXs: CGFloat = 24 // Display xs — smallest heading (h4 / section title / card title)
     public static let typographyDisplaySm: CGFloat = 32 // Display sm — standard heading (h3 / article title / section headline)
     public static let typographyDisplayMd: CGFloat = 44 // Display md — default hero / h2 (Creo aesthetic: 柔らかく強い存在感)
@@ -97,6 +102,11 @@ public enum CreoUITokens {
     public static let typographySizeMd: CGFloat = 16 // Default body text
     public static let typographySizeLg: CGFloat = 18 // Large body / subheading
     public static let typographySizeXl: CGFloat = 20 // Largest body / small heading (h4)
+    public static let typographyTitleHero: CGFloat = 72 // Hero title — landing page mega headline (promotional / marketing)
+    public static let typographyTitlePage: CGFloat = 44 // Page title — h1 (article title, app screen heading)
+    public static let typographyTitleSection: CGFloat = 32 // Section title — h2 (thematic block within a page)
+    public static let typographyTitleSubsection: CGFloat = 24 // Subsection title — h3 (nested group within a section)
+    public static let typographyTitleCard: CGFloat = 20 // Card title — h4 (inline block title, table header, menu label)
 
     public static let editorModeOverlayBackdropOpacity: Double = 0 // Editor Layer 最背面の opacity。デフォルト 0 (完全透過) で Content Layer を遮らない
     public static let editorModeRegionBgOpacity: Double = 0.92 // Region 背景の 不透明度 (0.0-1.0)。Content を完全に隠さず薄く透かす

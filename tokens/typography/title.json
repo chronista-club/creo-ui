@@ -1,0 +1,31 @@
+{
+  "typography": {
+    "title": {
+      "hero": {
+        "$value": "{typography.display.xl}",
+        "$type": "dimension",
+        "$description": "Hero title — landing page mega headline (promotional / marketing)"
+      },
+      "page": {
+        "$value": "{typography.display.md}",
+        "$type": "dimension",
+        "$description": "Page title — h1 (article title, app screen heading)"
+      },
+      "section": {
+        "$value": "{typography.display.sm}",
+        "$type": "dimension",
+        "$description": "Section title — h2 (thematic block within a page)"
+      },
+      "subsection": {
+        "$value": "{typography.display.xs}",
+        "$type": "dimension",
+        "$description": "Subsection title — h3 (nested group within a section)"
+      },
+      "card": {
+        "$value": "{typography.size.xl}",
+        "$type": "dimension",
+        "$description": "Card title — h4 (inline block title, table header, menu label)"
+      }
+    }
+  }
+}

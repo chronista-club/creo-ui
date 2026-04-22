@@ -76,6 +76,8 @@ struct HeroView: View {
 | `typography.display.*` | `CreoUITokens.typographyDisplayMd` 等 (heading, 5 step) | `CGFloat` |
 | `layout.gap.*` | `CreoUITokens.layoutGapSibling` 等 (semantic between-ness) | `CGFloat` |
 | `layout.target.*` | `CreoUITokens.layoutTargetTap` (=44) / `Focus` / `Hit` (Apple HIG accessibility) | `CGFloat` |
+| `typography.title.*` | `CreoUITokens.typographyTitlePage` 等 (role-based headings) | `CGFloat` |
+| `typography.body.*` | `CreoUITokens.typographyBodyDefault` 等 (role-based body) | `CGFloat` |
 | `typography.weight.*` | `CreoUITokens.typographyWeightRegular` 等 | `Double` |
 | `typography.family.*` / `shadow.*` | `CreoUITokens.typographyFamilySans` 等 | `String` |
 

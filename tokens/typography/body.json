@@ -1,0 +1,31 @@
+{
+  "typography": {
+    "body": {
+      "lead": {
+        "$value": "{typography.size.xl}",
+        "$type": "dimension",
+        "$description": "Lead body — opening paragraph / intro (larger, invites reading)"
+      },
+      "default": {
+        "$value": "{typography.size.md}",
+        "$type": "dimension",
+        "$description": "Default body — regular paragraph text (最もよく使う)"
+      },
+      "emphasis": {
+        "$value": "{typography.size.md}",
+        "$type": "dimension",
+        "$description": "Emphasis body — default size with stronger weight (意味的な強調、size は default と同じ)"
+      },
+      "helper": {
+        "$value": "{typography.size.sm}",
+        "$type": "dimension",
+        "$description": "Helper text — form helper, status message, secondary info"
+      },
+      "caption": {
+        "$value": "{typography.size.xs}",
+        "$type": "dimension",
+        "$description": "Caption — image caption, footnote, meta info (smallest readable body)"
+      }
+    }
+  }
+}
