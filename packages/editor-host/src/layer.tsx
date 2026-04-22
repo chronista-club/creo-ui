@@ -13,6 +13,7 @@
  */
 import { For, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
+import { ExportBar } from './export-bar'
 import { FieldEditor, FieldEditorInline } from './fields'
 import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { useEditorHost } from './provider'
@@ -242,11 +243,9 @@ export function EditorLayer(): JSX.Element {
           <ThemeEditor />
         </div>
 
-        {/* BOTTOM region: utility (Phase 2 で AI chat などを実装予定) */}
+        {/* BOTTOM region: utility — Export bar で現 editor state を clipboard に出力 */}
         <div style={bottomRegionStyle}>
-          <span style={{ 'font-size': '11px', color: 'var(--color-text-tertiary)' }}>
-            🔧 ユーティリティ — Phase 2 で実装 (一括処理 / AI チャット など)
-          </span>
+          <ExportBar host={host} />
         </div>
       </Show>
     </div>

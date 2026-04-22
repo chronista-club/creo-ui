@@ -54,6 +54,7 @@ export type {
 // ---------- UI components ----------
 export { EditorLayer } from './layer'
 export { ThemeEditor } from './theme-editor'
+export { ExportBar } from './export-bar'
 
 // ---------- Theme meta ----------
 export {
