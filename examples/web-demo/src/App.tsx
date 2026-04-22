@@ -227,6 +227,64 @@ creoEditor.help()                     // 使い方一覧`}
           </div>
         </section>
 
+        <section
+          style={{
+            'margin-top': 'var(--layout-gap-sibling)',
+            padding: 'var(--spacing-md)',
+            background: 'var(--color-surface-surface)',
+            border: '1px solid var(--color-surface-border)',
+            'border-radius': 'var(--radius-md)',
+          }}
+        >
+          <h2
+            style={{
+              margin: '0 0 var(--spacing-md) 0',
+              'font-size': 'var(--typography-title-section)',
+              'font-weight': 'var(--typography-weight-semibold)',
+            }}
+          >
+            Input component showcase
+          </h2>
+          <div
+            style={{
+              display: 'grid',
+              gap: 'var(--spacing-sm)',
+              'max-width': '420px',
+            }}
+          >
+            <label for="demo-email" style={{ 'font-size': 'var(--typography-body-helper)' }}>
+              Email
+            </label>
+            <input id="demo-email" class="creo-input" type="email" placeholder="you@example.com" />
+            <label for="demo-pw" style={{ 'font-size': 'var(--typography-body-helper)' }}>
+              Password (filled, error state)
+            </label>
+            <input
+              id="demo-pw"
+              class="creo-input"
+              type="password"
+              data-variant="filled"
+              data-state="error"
+              aria-invalid="true"
+              aria-describedby="demo-pw-err"
+              value="短い"
+            />
+            <p id="demo-pw-err" class="creo-helper-text creo-helper-text--error">
+              パスワードは 8 文字以上必要です
+            </p>
+            <label for="demo-name" style={{ 'font-size': 'var(--typography-body-helper)' }}>
+              Name (sm)
+            </label>
+            <input
+              id="demo-name"
+              class="creo-input"
+              type="text"
+              data-size="sm"
+              placeholder="Mako"
+            />
+          </div>
+        </section>
+
         <Show when={showFooter()}>
           <footer
             style={{
@@ -255,21 +313,11 @@ function Card(props: {
 }) {
   const fieldsAttr = () => (props.bindIds ? props.bindIds.join(',') : (props.bindId ?? ''))
   return (
-    <article
-      data-editor-fields={fieldsAttr()}
-      style={{
-        padding: 'var(--spacing-md)',
-        background: 'var(--color-surface-surface)',
-        border: '1px solid var(--color-surface-border)',
-        'border-radius': 'var(--radius-md)',
-        'box-shadow': 'var(--shadow-sm)',
-        transition: 'padding 100ms ease, border-radius 100ms ease',
-      }}
-    >
+    <article class="creo-card" data-editor-fields={fieldsAttr()}>
       <h2
         style={{
           margin: '0 0 var(--spacing-sm) 0',
-          'font-size': 'var(--typography-size-lg)',
+          'font-size': 'var(--typography-title-card)',
           'font-weight': 'var(--typography-weight-semibold)',
         }}
       >
@@ -279,7 +327,7 @@ function Card(props: {
         style={{
           margin: '0',
           color: 'var(--color-text-secondary)',
-          'font-size': 'var(--typography-size-sm)',
+          'font-size': 'var(--typography-body-helper)',
           'line-height': 'var(--typography-line-height-normal)',
         }}
       >
