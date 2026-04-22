@@ -15,12 +15,20 @@
 
 #![forbid(unsafe_code)]
 
-pub const VERSION: &str = "0.0.1";
+pub const VERSION: &str = "0.1.0";
 
 #[allow(dead_code)]
 pub mod tokens {
     include!("generated/tokens.rs");
 }
+
+// ratatui interop — opt-in via `features = ["ratatui"]`
+#[cfg(feature = "ratatui")]
+pub mod ratatui;
+
+// egui / iced / dioxus は skeleton (feature gate のみ、実装は将来 issue)
+// #[cfg(feature = "egui")]
+// pub mod egui;
 
 #[cfg(test)]
 mod tests {
@@ -28,7 +36,7 @@ mod tests {
 
     #[test]
     fn version_is_set() {
-        assert_eq!(VERSION, "0.0.1");
+        assert_eq!(VERSION, "0.1.0");
     }
 
     #[test]
