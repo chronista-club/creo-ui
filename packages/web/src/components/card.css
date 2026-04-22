@@ -1,0 +1,75 @@
+/**
+ * Creo UI — Card component
+ *
+ * `.creo-card` base + data-variant (default / elevated / outlined) + data-padding (sm/md/lg)。
+ *
+ * Spec: docs/components/card.md
+ * Token: creo-ui-web/tokens.css (必須)
+ *
+ * Usage:
+ *   <article class="creo-card">...</article>
+ *   <article class="creo-card" data-variant="elevated" data-padding="lg">...</article>
+ *   <article class="creo-card" data-variant="outlined" data-interactive="true">...</article>
+ */
+
+.creo-card {
+  display: block;
+  background-color: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  color: var(--color-text-primary);
+  transition: background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease, transform
+    150ms ease;
+}
+
+/* ---------- Variants ---------- */
+
+.creo-card[data-variant="default"],
+.creo-card:not([data-variant]) {
+  background-color: var(--color-surface-surface);
+  border-color: var(--color-surface-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.creo-card[data-variant="elevated"] {
+  background-color: var(--color-surface-surface);
+  border-color: transparent;
+  box-shadow: var(--shadow-md);
+}
+
+.creo-card[data-variant="outlined"] {
+  background-color: transparent;
+  border-color: var(--color-surface-border);
+  border-width: 1.5px;
+  box-shadow: none;
+}
+
+/* ---------- Padding sizes ---------- */
+
+.creo-card[data-padding="sm"] {
+  padding: var(--spacing-sm);
+}
+.creo-card[data-padding="md"],
+.creo-card:not([data-padding]) {
+  padding: var(--spacing-md);
+}
+.creo-card[data-padding="lg"] {
+  padding: var(--spacing-lg);
+}
+
+/* ---------- Interactive state ---------- */
+
+.creo-card[data-interactive="true"] {
+  cursor: pointer;
+}
+.creo-card[data-interactive="true"]:hover {
+  border-color: var(--color-brand-primary);
+  transform: translateY(-1px);
+}
+.creo-card[data-interactive="true"][data-variant="elevated"]:hover {
+  box-shadow: var(--shadow-lg);
+}
+.creo-card[data-interactive="true"]:active {
+  transform: translateY(0);
+}
