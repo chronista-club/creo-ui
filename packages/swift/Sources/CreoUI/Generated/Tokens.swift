@@ -80,13 +80,16 @@ public enum CreoUITokens {
     public static let spacingMd: CGFloat = 18 // Medium spacing — 18px (default gap between UI elements)
     public static let spacingLg: CGFloat = 24 // Large spacing — 24px
     public static let spacingXl: CGFloat = 32 // Extra-large spacing — 32px
+    public static let typographyDisplayXs: CGFloat = 24 // Display xs — smallest heading (h4 / section title / card title)
+    public static let typographyDisplaySm: CGFloat = 32 // Display sm — standard heading (h3 / article title / section headline)
+    public static let typographyDisplayMd: CGFloat = 44 // Display md — default hero / h2 (Creo aesthetic: 柔らかく強い存在感)
+    public static let typographyDisplayLg: CGFloat = 56 // Display lg — page hero / h1
+    public static let typographyDisplayXl: CGFloat = 72 // Display xl — landing mega headline / promotional hero
     public static let typographySizeXs: CGFloat = 12 // Caption / meta text
     public static let typographySizeSm: CGFloat = 14 // Small body / helper text
-    public static let typographySizeBase: CGFloat = 16 // Default body text
+    public static let typographySizeMd: CGFloat = 16 // Default body text
     public static let typographySizeLg: CGFloat = 18 // Large body / subheading
-    public static let typographySizeXl: CGFloat = 20 // Heading level 4
-    public static let typographySize2xl: CGFloat = 24 // Heading level 3
-    public static let typographySize3xl: CGFloat = 30 // Heading level 2 / hero subtitle
+    public static let typographySizeXl: CGFloat = 20 // Largest body / small heading (h4)
 
     public static let editorModeOverlayBackdropOpacity: Double = 0 // Editor Layer 最背面の opacity。デフォルト 0 (完全透過) で Content Layer を遮らない
     public static let editorModeRegionBgOpacity: Double = 0.92 // Region 背景の 不透明度 (0.0-1.0)。Content を完全に隠さず薄く透かす

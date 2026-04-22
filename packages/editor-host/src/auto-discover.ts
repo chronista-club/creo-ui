@@ -17,7 +17,14 @@ import { color, number } from './control'
 import { cssVarNumberTarget, cssVarTarget } from './target'
 import type { EditorHost, EditorSemantic } from './types'
 
-const DEFAULT_PREFIXES = ['--color-', '--spacing-', '--radius-', '--typography-size-'] as const
+const DEFAULT_PREFIXES = [
+  '--color-',
+  '--spacing-',
+  '--margin-',
+  '--radius-',
+  '--typography-size-',
+  '--typography-display-',
+] as const
 
 const COLOR_PATTERN = /^(#[0-9a-fA-F]{3,8}|rgb|hsl|oklch|oklab|color\()/
 const NUMBER_WITH_UNIT_PATTERN = /^(-?\d+(?:\.\d+)?)(px|em|rem|%|s|ms)?$/

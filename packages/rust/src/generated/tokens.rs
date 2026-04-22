@@ -193,6 +193,16 @@ pub const SPACING_MD: f32 = 18_f32;
 pub const SPACING_LG: f32 = 24_f32;
 /// Extra-large spacing — 32px
 pub const SPACING_XL: f32 = 32_f32;
+/// Display xs — smallest heading (h4 / section title / card title)
+pub const TYPOGRAPHY_DISPLAY_XS: f32 = 24_f32;
+/// Display sm — standard heading (h3 / article title / section headline)
+pub const TYPOGRAPHY_DISPLAY_SM: f32 = 32_f32;
+/// Display md — default hero / h2 (Creo aesthetic: 柔らかく強い存在感)
+pub const TYPOGRAPHY_DISPLAY_MD: f32 = 44_f32;
+/// Display lg — page hero / h1
+pub const TYPOGRAPHY_DISPLAY_LG: f32 = 56_f32;
+/// Display xl — landing mega headline / promotional hero
+pub const TYPOGRAPHY_DISPLAY_XL: f32 = 72_f32;
 /// Default UI sans-serif family (multi-language: EN/JA/KO)
 pub const TYPOGRAPHY_FAMILY_SANS: &str = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif";
 /// Monospace family for code blocks, tokens, IDs
@@ -210,15 +220,11 @@ pub const TYPOGRAPHY_SIZE_XS: f32 = 12_f32;
 /// Small body / helper text
 pub const TYPOGRAPHY_SIZE_SM: f32 = 14_f32;
 /// Default body text
-pub const TYPOGRAPHY_SIZE_BASE: f32 = 16_f32;
+pub const TYPOGRAPHY_SIZE_MD: f32 = 16_f32;
 /// Large body / subheading
 pub const TYPOGRAPHY_SIZE_LG: f32 = 18_f32;
-/// Heading level 4
+/// Largest body / small heading (h4)
 pub const TYPOGRAPHY_SIZE_XL: f32 = 20_f32;
-/// Heading level 3
-pub const TYPOGRAPHY_SIZE_2XL: f32 = 24_f32;
-/// Heading level 2 / hero subtitle
-pub const TYPOGRAPHY_SIZE_3XL: f32 = 30_f32;
 /// Regular body weight
 pub const TYPOGRAPHY_WEIGHT_REGULAR: f32 = 400_f32;
 /// Medium emphasis

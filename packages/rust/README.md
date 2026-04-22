@@ -61,9 +61,11 @@ let pixel = image::Rgb(COLOR_BRAND_PRIMARY.as_array());
 | Category | 命名 | 型 |
 |----------|------|----|
 | `color.*` | `COLOR_BRAND_PRIMARY`, `COLOR_SEMANTIC_ERROR` 等 | `Rgb { r, g, b }` (u8) |
-| `spacing.*` | `SPACING_XS`, `SPACING_MD` 等 | `f32` (px) |
-| `radius.*` | `RADIUS_SM`, `RADIUS_FULL` 等 | `f32` |
-| `typography.size.*` | `TYPOGRAPHY_SIZE_MD` 等 | `f32` (px) |
+| `spacing.*` | `SPACING_XS`, `SPACING_MD` 等 (5 step) | `f32` (px) |
+| `margin.*` | `MARGIN_XS`, `MARGIN_MD` 等 (5 step) | `f32` (px) |
+| `radius.*` | `RADIUS_NONE`, `RADIUS_XS` ... `RADIUS_FULL` (5 step + special) | `f32` |
+| `typography.size.*` | `TYPOGRAPHY_SIZE_MD` 等 (body text, 5 step) | `f32` (px) |
+| `typography.display.*` | `TYPOGRAPHY_DISPLAY_MD` 等 (heading, 5 step) | `f32` (px) |
 | `typography.weight.*` | `TYPOGRAPHY_WEIGHT_REGULAR` 等 | `f32` |
 | `typography.family.*` / `shadow.*` | `TYPOGRAPHY_FAMILY_SANS`, `SHADOW_MD` 等 | `&'static str` |
 

@@ -69,9 +69,11 @@ struct HeroView: View {
 | Category | 命名 | 型 |
 |----------|------|----|
 | `color.*` | `Color.colorBrandPrimary`, `Color.colorSemanticError` 等 | `SwiftUI.Color` |
-| `spacing.*` | `CreoUITokens.spacingXs` ... `spacing2xl` | `CGFloat` |
-| `radius.*` | `CreoUITokens.radiusSm` ... `radiusFull` | `CGFloat` |
-| `typography.size.*` | `CreoUITokens.typographySizeMd` 等 | `CGFloat` |
+| `spacing.*` | `CreoUITokens.spacingXs` ... `spacingXl` (5 step) | `CGFloat` |
+| `margin.*` | `CreoUITokens.marginXs` ... `marginXl` (5 step) | `CGFloat` |
+| `radius.*` | `CreoUITokens.radiusNone`, `radiusXs` ... `radiusFull` (5 step + special) | `CGFloat` |
+| `typography.size.*` | `CreoUITokens.typographySizeMd` 等 (body, 5 step) | `CGFloat` |
+| `typography.display.*` | `CreoUITokens.typographyDisplayMd` 等 (heading, 5 step) | `CGFloat` |
 | `typography.weight.*` | `CreoUITokens.typographyWeightRegular` 等 | `Double` |
 | `typography.family.*` / `shadow.*` | `CreoUITokens.typographyFamilySans` 等 | `String` |
 

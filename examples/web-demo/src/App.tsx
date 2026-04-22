@@ -80,7 +80,7 @@ function Demo() {
         <h1
           ref={title.selectable()}
           style={{
-            'font-size': 'var(--typography-size-3xl)',
+            'font-size': 'var(--typography-display-md)',
             margin: '0 0 var(--spacing-md) 0',
             color: 'var(--color-brand-primary)',
           }}
@@ -90,7 +90,7 @@ function Demo() {
         <p
           style={{
             'line-height': 'var(--typography-line-height-relaxed)',
-            'font-size': 'var(--typography-size-base)',
+            'font-size': 'var(--typography-size-md)',
             margin: '0 0 var(--spacing-xl) 0',
           }}
         >
@@ -136,7 +136,7 @@ function Demo() {
           <h3
             style={{
               margin: '0 0 var(--spacing-sm) 0',
-              'font-size': 'var(--typography-size-base)',
+              'font-size': 'var(--typography-size-md)',
               'font-weight': 'var(--typography-weight-semibold)',
             }}
           >
