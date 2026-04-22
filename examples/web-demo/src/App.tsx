@@ -2,7 +2,6 @@ import {
   EditorHostProvider,
   EditorLayer,
   THEME_IDS,
-  ThemeEditor,
   type ThemeId,
   bind,
   boolean,
@@ -40,10 +39,9 @@ function Demo() {
     document.documentElement.setAttribute('data-theme', theme())
   })
 
-  // ---------- Left: ThemeEditor panel (palette swatch) ----------
-  // (ThemeEditor component は自身で LEFT region に描画、bind() 不要)
-
   // ---------- Tool fields: CSS token sliders ----------
+  // (LEFT region の ThemeEditor panel は EditorLayer が内包して描画、App 側の追加不要)
+
   const spacingMd = bind({
     target: cssVarNumberTarget('tokens.spacing.md', '--spacing-md', 16, 'px'),
     control: number({ min: 0, max: 48, step: 1, unit: 'px', variant: 'slider' }),
@@ -184,8 +182,6 @@ creoEditor.help()                     // 使い方一覧`}
           </footer>
         </Show>
       </main>
-
-      <ThemeEditor />
     </>
   )
 }
