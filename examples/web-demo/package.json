@@ -3,13 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Walking skeleton example for Creo UI Editor Mode (Phase 2a reference implementation)",
+  "description": "Live design surface demo for creo-ui-editor-host (consumer reference)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "creo-ui-editor-host": "workspace:*",
     "creo-ui-web": "^0.1.0",
     "solid-js": "^1.9.0"
   },

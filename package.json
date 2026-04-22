@@ -4,7 +4,7 @@
   "description": "Creo UI - Design System for Creo ecosystem",
   "private": true,
   "type": "module",
-  "workspaces": ["packages/*"],
+  "workspaces": ["packages/*", "examples/*"],
   "scripts": {
     "build": "style-dictionary build --config transforms/config.web.js && style-dictionary build --config transforms/config.swift.js && style-dictionary build --config transforms/config.rust.js",
     "build:web": "style-dictionary build --config transforms/config.web.js",
