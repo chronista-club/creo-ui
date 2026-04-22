@@ -41,7 +41,7 @@
   --color-bg: var(--color-surface-bg-base);
   --color-bg-subtle: var(--color-surface-bg-subtle);
   --color-surface: var(--color-surface-surface);
-  --color-surface-muted: var(--color-surface-surface-muted);
+  --color-surface-muted: var(--color-surface-bg-subtle);
   --color-border: var(--color-surface-border);
 
   --color-fg: var(--color-text-primary);

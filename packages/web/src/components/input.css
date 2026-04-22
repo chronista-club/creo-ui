@@ -40,7 +40,7 @@
 /* ---------- Variants ---------- */
 
 .creo-input[data-variant="filled"] {
-  background-color: var(--color-surface-surface-muted);
+  background-color: var(--color-surface-bg-subtle);
   border-color: transparent;
 }
 .creo-input[data-variant="filled"]:hover:not(:disabled):not(:focus) {

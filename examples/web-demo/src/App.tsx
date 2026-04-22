@@ -126,7 +126,7 @@ function Demo() {
         <aside
           style={{
             padding: 'var(--spacing-md)',
-            background: 'var(--color-surface-surface-muted)',
+            background: 'var(--color-surface-bg-subtle)',
             border: '1px solid var(--color-surface-border)',
             'border-radius': 'var(--radius-md)',
             'font-size': 'var(--typography-body-helper)',

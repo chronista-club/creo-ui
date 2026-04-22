@@ -71,7 +71,7 @@
   color: var(--color-text-primary);
 }
 .creo-btn[data-variant="secondary"]:hover:not(:disabled) {
-  background-color: var(--color-surface-surface-muted);
+  background-color: var(--color-surface-bg-subtle);
   border-color: var(--color-brand-primary);
 }
 .creo-btn[data-variant="secondary"]:active:not(:disabled) {
@@ -85,7 +85,7 @@
   color: var(--color-text-primary);
 }
 .creo-btn[data-variant="ghost"]:hover:not(:disabled) {
-  background-color: var(--color-surface-surface-muted);
+  background-color: var(--color-surface-bg-subtle);
 }
 .creo-btn[data-variant="ghost"]:active:not(:disabled) {
   background-color: var(--color-surface-bg-subtle);
@@ -137,7 +137,7 @@
   color: var(--color-brand-primary);
 }
 .creo-btn[data-variant="ghost"][aria-pressed="true"] {
-  background-color: var(--color-surface-surface-muted);
+  background-color: var(--color-surface-bg-subtle);
   color: var(--color-brand-primary);
 }
 

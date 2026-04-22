@@ -109,7 +109,7 @@
 .creo-header-nav a:hover,
 .creo-header-nav a[aria-current="page"] {
   color: var(--color-text-primary);
-  background-color: var(--color-surface-surface-muted);
+  background-color: var(--color-surface-bg-subtle);
 }
 
 .creo-header-actions {
