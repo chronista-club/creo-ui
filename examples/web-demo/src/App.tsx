@@ -169,7 +169,7 @@ creoEditor.help()                     // 使い方一覧`}
         <Show when={showFooter()}>
           <footer
             style={{
-              'margin-top': 'var(--spacing-2xl)',
+              'margin-top': 'var(--margin-xl)',
               'font-size': 'var(--typography-size-sm)',
               color: 'var(--color-text-tertiary)',
             }}

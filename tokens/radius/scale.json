@@ -3,32 +3,37 @@
     "none": {
       "$value": "0px",
       "$type": "dimension",
-      "$description": "No rounding"
+      "$description": "No rounding — explicit reset (special, outside step rule)"
+    },
+    "xs": {
+      "$value": "4px",
+      "$type": "dimension",
+      "$description": "Extra-small radius — minimal rounding (chips, tags)"
     },
     "sm": {
-      "$value": "4px",
+      "$value": "8px",
       "$type": "dimension",
       "$description": "Small radius — subtle rounding (buttons, inputs)"
     },
     "md": {
-      "$value": "8px",
+      "$value": "15px",
       "$type": "dimension",
-      "$description": "Medium radius — cards, popovers"
+      "$description": "Medium radius — cards, popovers (soft friendly feel)"
     },
     "lg": {
-      "$value": "12px",
+      "$value": "22px",
       "$type": "dimension",
       "$description": "Large radius — modals, larger surfaces"
     },
     "xl": {
-      "$value": "16px",
+      "$value": "28px",
       "$type": "dimension",
       "$description": "Extra-large radius — hero surfaces"
     },
     "full": {
       "$value": "9999px",
       "$type": "dimension",
-      "$description": "Fully rounded — pill shapes and circles"
+      "$description": "Fully rounded — pill shapes and circles (special, outside step rule)"
     }
   }
 }

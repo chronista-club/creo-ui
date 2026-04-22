@@ -11,9 +11,9 @@
       "$description": "Small spacing — 8px"
     },
     "md": {
-      "$value": "16px",
+      "$value": "18px",
       "$type": "dimension",
-      "$description": "Medium spacing — 16px (default gap between UI elements)"
+      "$description": "Medium spacing — 18px (default gap between UI elements)"
     },
     "lg": {
       "$value": "24px",
@@ -24,11 +24,6 @@
       "$value": "32px",
       "$type": "dimension",
       "$description": "Extra-large spacing — 32px"
-    },
-    "2xl": {
-      "$value": "48px",
-      "$type": "dimension",
-      "$description": "2× extra-large spacing — 48px (section separation)"
     }
   }
 }

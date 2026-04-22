@@ -149,17 +149,29 @@ pub const EDITOR_MODE_SELECTION_OUTLINE_ACTIVE: &str = "var(--color-brand-primar
 pub const EDITOR_MODE_SELECTION_OUTLINE_WIDTH: f32 = 2_f32;
 /// 要素から outline までの offset (要素本体を遮らない)
 pub const EDITOR_MODE_SELECTION_OUTLINE_OFFSET: f32 = 2_f32;
-/// No rounding
+/// Extra-small margin — tight stack (paragraph spacing, inline gap)
+pub const MARGIN_XS: f32 = 8_f32;
+/// Small margin — standard vertical rhythm between elements
+pub const MARGIN_SM: f32 = 16_f32;
+/// Medium margin — component block separation (default between sections)
+pub const MARGIN_MD: f32 = 24_f32;
+/// Large margin — section divider (between thematic blocks)
+pub const MARGIN_LG: f32 = 40_f32;
+/// Extra-large margin — major section or hero break (page-level breathing)
+pub const MARGIN_XL: f32 = 64_f32;
+/// No rounding — explicit reset (special, outside step rule)
 pub const RADIUS_NONE: f32 = 0_f32;
+/// Extra-small radius — minimal rounding (chips, tags)
+pub const RADIUS_XS: f32 = 4_f32;
 /// Small radius — subtle rounding (buttons, inputs)
-pub const RADIUS_SM: f32 = 4_f32;
-/// Medium radius — cards, popovers
-pub const RADIUS_MD: f32 = 8_f32;
+pub const RADIUS_SM: f32 = 8_f32;
+/// Medium radius — cards, popovers (soft friendly feel)
+pub const RADIUS_MD: f32 = 15_f32;
 /// Large radius — modals, larger surfaces
-pub const RADIUS_LG: f32 = 12_f32;
+pub const RADIUS_LG: f32 = 22_f32;
 /// Extra-large radius — hero surfaces
-pub const RADIUS_XL: f32 = 16_f32;
-/// Fully rounded — pill shapes and circles
+pub const RADIUS_XL: f32 = 28_f32;
+/// Fully rounded — pill shapes and circles (special, outside step rule)
 pub const RADIUS_FULL: f32 = 9999_f32;
 /// No shadow
 pub const SHADOW_NONE: &str = "none";
@@ -175,14 +187,12 @@ pub const SHADOW_XL: &str = "0 20px 25px -5px rgba(32, 36, 46, 0.12), 0 8px 10px
 pub const SPACING_XS: f32 = 4_f32;
 /// Small spacing — 8px
 pub const SPACING_SM: f32 = 8_f32;
-/// Medium spacing — 16px (default gap between UI elements)
-pub const SPACING_MD: f32 = 16_f32;
+/// Medium spacing — 18px (default gap between UI elements)
+pub const SPACING_MD: f32 = 18_f32;
 /// Large spacing — 24px
 pub const SPACING_LG: f32 = 24_f32;
 /// Extra-large spacing — 32px
 pub const SPACING_XL: f32 = 32_f32;
-/// 2× extra-large spacing — 48px (section separation)
-pub const SPACING_2XL: f32 = 48_f32;
 /// Default UI sans-serif family (multi-language: EN/JA/KO)
 pub const TYPOGRAPHY_FAMILY_SANS: &str = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif";
 /// Monospace family for code blocks, tokens, IDs

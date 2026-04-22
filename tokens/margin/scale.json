@@ -1,0 +1,29 @@
+{
+  "margin": {
+    "xs": {
+      "$value": "8px",
+      "$type": "dimension",
+      "$description": "Extra-small margin — tight stack (paragraph spacing, inline gap)"
+    },
+    "sm": {
+      "$value": "16px",
+      "$type": "dimension",
+      "$description": "Small margin — standard vertical rhythm between elements"
+    },
+    "md": {
+      "$value": "24px",
+      "$type": "dimension",
+      "$description": "Medium margin — component block separation (default between sections)"
+    },
+    "lg": {
+      "$value": "40px",
+      "$type": "dimension",
+      "$description": "Large margin — section divider (between thematic blocks)"
+    },
+    "xl": {
+      "$value": "64px",
+      "$type": "dimension",
+      "$description": "Extra-large margin — major section or hero break (page-level breathing)"
+    }
+  }
+}
