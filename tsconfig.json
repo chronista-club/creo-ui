@@ -15,9 +15,11 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "types": []
+    "types": [],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js"
   },
-  "include": ["packages/*/src/**/*.ts", "transforms/**/*.js"],
+  "include": ["packages/*/src/**/*.ts", "packages/*/src/**/*.tsx", "transforms/**/*.js"],
   "exclude": [
     "node_modules",
     "dist",
