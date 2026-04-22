@@ -70,11 +70,15 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
 
   /** field id → value change listeners */
   const subscribers = new Map<string, Set<(value: unknown) => void>>()
+  /** 全 field の change を一括で購読する listeners (cross-tab / history / FLIP で使用) */
+  const anyChangeListeners = new Set<(id: string, value: unknown) => void>()
 
   function notifySubscribers(id: string, value: unknown): void {
     const set = subscribers.get(id)
-    if (!set) return
-    for (const listener of set) listener(value)
+    if (set) {
+      for (const listener of set) listener(value)
+    }
+    for (const listener of anyChangeListeners) listener(id, value)
   }
 
   function getField(id: string): EditorField | undefined {
@@ -85,14 +89,21 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
     return values()[id] as T | undefined
   }
 
-  function setValue<T>(id: string, value: T): void {
+  function setValue<T>(id: string, value: T, options?: { silent?: boolean }): void {
     const field = getField(id) as EditorField<T> | undefined
     if (!field) return
     setValues((prev) => ({ ...prev, [id]: value }))
     applyCssVar(field, value)
     field.apply?.(value)
     writePersisted(namespace, field, value)
-    notifySubscribers(id, value)
+    if (!options?.silent) notifySubscribers(id, value)
+  }
+
+  function onAnyChange(listener: (id: string, value: unknown) => void): () => void {
+    anyChangeListeners.add(listener)
+    return () => {
+      anyChangeListeners.delete(listener)
+    }
   }
 
   function subscribe<T>(id: string, listener: (value: T) => void): () => void {
@@ -199,6 +210,7 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
     setValue,
     values,
     subscribe,
+    onAnyChange,
 
     selection,
     hover,

@@ -144,3 +144,5 @@ bun run build        # 全 platform に反映
 - Swift / Rust / 他 framework (React 等) の **runtime 実装を本リポジトリに書く**。Web runtime は `packages/editor-host` に限り reference 実装として保持 (EH-1 / EH-2)、他 platform は consumer 側または将来別 package で。
 - `packages/editor-host/` を **SolidJS 以外の framework 対応で抽象化する**。SolidJS 一本で進める方針 (EH-2)。物理分離を急がない。
 - `creo-memories/packages/creo-ui` の DevEditor を直接触る。参考に留め、 **migration は creo-memories lead の判断** (EH-4)。
+- 専用 MCP server (`editor-host-mcp`) を実装する。**claude-in-chrome + `window.creoEditor` で代替可能** (EH-5)。Phase 2b は recipes / AI pair design docs に scope 縮小。
+- Console REPL (`window.creoEditor`) を production で無条件に expose する。**dev 自動 expose / production は config で opt-out** (`exposeConsole: false`) が規定 (EH-6)。

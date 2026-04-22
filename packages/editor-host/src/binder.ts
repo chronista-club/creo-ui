@@ -40,7 +40,8 @@ export interface BindOptions<T> {
   placement: Placement
 }
 
-export interface Binder<T> extends Accessor<T> {
+// biome-ignore lint/suspicious/noExplicitAny: default any で multi-type 配列 (複数 binder を Binder[] で扱う) を許容
+export interface Binder<T = any> extends Accessor<T> {
   set(value: T): void
   readonly id: string
   readonly target: Target<T>

@@ -1,6 +1,14 @@
 # creo-ui-editor-host
 
-Creo UI — Editor Mode reference runtime for SolidJS. Target × Control 分離設計で **データ源と UI 操作体系を直交化**、`bind()` 1 本で field を宣言する high-level API。
+Creo UI — Editor Mode reference runtime for SolidJS。**Live design surface** として、デザイナ / エンジニア / AI agent が同じ app を rebuild なしで mutate できる paradigm を提供。
+
+- **Target × Control 2 軸直交設計** + `bind()` 1 本で field を宣言
+- **DevTools Console REPL** (`window.creoEditor.slider(...)` で即 slider 追加)
+- **DOM auto-discover** (既知 CSS 変数を自動 bind)
+- **URL shareable state** (`#creo=...` で URL 1 本で共有)
+- **Cross-tab sync** (同 origin の複数 tab で values 追従)
+- **Export to patch** (JSON / YAML / CSS / CSS-patch の serializer)
+- **AI pair design** (claude-in-chrome MCP + `window.creoEditor` で Claude が直接 field 操作)
 
 [docs/design/editor-mode.md](https://github.com/chronista-club/creo-ui/blob/main/docs/design/editor-mode.md) (D-1〜D-12) の protocol を実装。
 
@@ -80,6 +88,101 @@ function Main() {
 ```
 
 `Ctrl+Shift+E` で Editor Mode ON、TOP に `theme` select、LEFT に ThemeEditor (active theme の swatch)、RIGHT に `spacing` slider と `bg` color picker が自動で現れる。
+
+## Live design surface (F1-F5)
+
+### F1. Console REPL — 開発中に console から slider を生やす
+
+`<EditorHostProvider>` が mount されると、DevTools Console で `window.creoEditor` 経由で API が即使える。**rebuild なしで field を追加できる**ので、デザイナとのペアワークで効く。
+
+```js
+// DevTools Console で:
+creoEditor.slider('--spacing-md', 16, { min: 0, max: 48, unit: 'px' })
+creoEditor.picker('--color-brand-primary', '#73e7aa')
+creoEditor.flip('app.show-footer', true)
+creoEditor.chooser('theme.mode', 'mint-dark', ['mint-dark', 'sora-dark', ...])
+
+creoEditor.fields()            // 現 field list
+creoEditor.describe('foo.bar') // 特定 field の meta + current value
+
+// Safe experiment:
+const snap = creoEditor.snapshot()
+creoEditor.setValue('tokens.spacing.md', 48)   // 試す
+creoEditor.restore(snap)                        // 戻す
+
+creoEditor.mode.enable() / disable() / toggle() / is()
+creoEditor.help()              // 使い方 print
+```
+
+Full form も使える:
+```js
+creoEditor.bind({
+  target: creoEditor.t.cssVarNumber('x', '--my-gap', 16, 'px'),
+  control: creoEditor.c.number({ min: 0, max: 48, variant: 'slider' }),
+  placement: { label: 'Gap', semantic: 'tool' },
+})
+```
+
+**Opt-out**: `<EditorHostProvider config={{ exposeConsole: false }}>` / **name 変更**: `config: { consoleName: 'myEditor' }`。
+
+### F2. DOM auto-discover — 既知 CSS 変数を自動 bind
+
+`:root` の computed style から `--color-*` / `--spacing-*` / `--radius-*` / `--typography-size-*` を自動検出、型を infer して slider / picker を一括生成:
+
+```js
+creoEditor.autoDiscover()                          // default prefixes
+creoEditor.autoDiscover({ prefixes: ['--color-'] }) // 色だけ
+```
+
+明示 `bind()` なしで既存 token が全部触れるようになる。
+
+### F3. Export — 現 state を patch として書き出し
+
+```js
+creoEditor.export({ format: 'json' })       // 全 field の JSON
+creoEditor.export({ format: 'css-patch' })  // 変更分のみ CSS
+creoEditor.export({ format: 'yaml' })       // flat YAML
+```
+
+返り値は string のみ (clipboard 操作なし、consumer 側で `copy(out)` 等)。
+
+### F4. URL shareable state
+
+```tsx
+<EditorHostProvider config={{
+  urlSync: { autoSync: true, autoApply: true, key: 'creo' },
+}}>
+```
+
+Editor で値を動かすたび `#creo=<base64>` が URL に付く。別 tab / 別 session で URL を開くと editor state が即時復元される。
+
+```js
+creoEditor.share()   // 現 URL (更新済) を return
+```
+
+### F5. Cross-tab sync (BroadcastChannel)
+
+```tsx
+<EditorHostProvider config={{ crossTab: true }}>
+```
+
+同 origin の複数 tab で editor values を双方向 sync。デザイナが mobile と desktop の 2 tab で同時確認、slider 操作が両方に反映。
+
+## AI pair design with Claude (claude-in-chrome MCP)
+
+`window.creoEditor` が expose されると、**専用 MCP server なしで** Claude が editor を操作できる:
+
+```js
+// Claude が claude-in-chrome MCP の javascript_tool 経由で:
+creoEditor.fields()                          // 現 editor state を inspect
+creoEditor.slider('--spacing-md', 12, {...}) // 提案値で slider 追加
+creoEditor.setValue('tokens.spacing.md', 20) // 直接 値変更
+creoEditor.snapshot()                         // 実験前に保存
+creoEditor.restore(snap)                      // 気に入らなければ戻す
+creoEditor.export({ format: 'css-patch' })   // 最終 diff を取得
+```
+
+Claude が screenshot で結果確認 → setValue で微調整 → export で commit 候補を生成、の **rebuild なしデザイン iteration loop**。
 
 ## コンセプト: Target × Control の 2 軸
 

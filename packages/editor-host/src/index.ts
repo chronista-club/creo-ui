@@ -64,3 +64,30 @@ export {
   type ThemeInfo,
   type ThemeId,
 } from './theme-info'
+
+// ---------- Live design surface (Step 6: F1-F5) ----------
+
+// F1: Console REPL
+export type { ConsoleApi } from './console'
+
+// F2: DOM auto-discover
+export {
+  autoDiscover,
+  scanCssVars,
+  type AutoDiscoverOptions,
+  type DiscoveredVar,
+} from './auto-discover'
+
+// F3: Export
+export { exportSnapshot, type ExportFormat, type ExportOptions } from './export'
+
+// F4: URL share
+export {
+  shareUrl,
+  applyFromUrl,
+  installUrlSync,
+  type UrlSyncOptions,
+} from './url-sync'
+
+// F5: Cross-tab sync
+export { installCrossTabSync, type CrossTabOptions } from './cross-tab'

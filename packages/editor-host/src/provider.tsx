@@ -5,12 +5,17 @@
  * `useEditorFields()` / `useEditorValue<T>()` / `useEditorSelectable()` が
  * 使える。provider 自身が shortcut + selection handler を install / teardown する。
  */
-import { createContext, onCleanup, onMount, useContext } from 'solid-js'
+import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
+import { autoDiscover } from './auto-discover'
+import { buildConsoleApi, installConsoleApi } from './console'
+import { installCrossTabSync } from './cross-tab'
+import { exportSnapshot } from './export'
 import { createEditorHost } from './host'
 import { installSelectionHandlers } from './selection'
 import { installShortcut } from './shortcut'
 import type { EditorHost, EditorHostConfig } from './types'
+import { installUrlSync, shareUrl } from './url-sync'
 
 const EditorHostContext = createContext<EditorHost>()
 
@@ -27,14 +32,43 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   const host = props.host ?? createEditorHost(props.config ?? {})
 
   onMount(() => {
-    const uninstallShortcut = installShortcut({
-      host,
-      shortcut: props.config?.shortcut,
-    })
-    const uninstallSelection = installSelectionHandlers({ host })
+    const owner = getOwner()
+    const uninstallers: Array<() => void> = []
+
+    uninstallers.push(installShortcut({ host, shortcut: props.config?.shortcut }))
+    uninstallers.push(installSelectionHandlers({ host }))
+
+    // F4: URL sync (opt-in via config.urlSync)
+    if (props.config?.urlSync) {
+      uninstallers.push(installUrlSync(host, props.config.urlSync))
+    }
+
+    // F5: Cross-tab sync (opt-in via config.crossTab)
+    if (props.config?.crossTab) {
+      uninstallers.push(
+        installCrossTabSync(host, {
+          namespace: props.config.localStorageNamespace,
+          channel: props.config.crossTabChannel,
+        }),
+      )
+    }
+
+    // F1: Console REPL (default: true in non-production)
+    const exposeConsole = props.config?.exposeConsole ?? true
+    if (exposeConsole) {
+      const api = buildConsoleApi({
+        host,
+        owner,
+        exportSnapshot,
+        shareUrl: (h) => shareUrl(h, props.config?.urlSync),
+        autoDiscover: (h, o, opts) => autoDiscover(h, o, opts),
+      })
+      const consoleName = props.config?.consoleName ?? 'creoEditor'
+      uninstallers.push(installConsoleApi(api, consoleName))
+    }
+
     onCleanup(() => {
-      uninstallShortcut()
-      uninstallSelection()
+      for (const un of uninstallers.reverse()) un()
     })
   })
 

@@ -95,6 +95,39 @@ export interface EditorHostConfig {
    * URL hash / querystring 等で start-on に切替える用途向け。
    */
   initialMode?: EditorMode
+
+  /**
+   * window に console REPL API (creoEditor) を expose する。
+   * default: true (production opt-out は false を明示)。
+   */
+  exposeConsole?: boolean
+
+  /**
+   * Console REPL の global 名。default: "creoEditor"。
+   */
+  consoleName?: string
+
+  /**
+   * URL hash に editor state を同期する (autoApply: load 時に hash → values)。
+   * default: { autoApply: false, autoSync: false, key: 'creo' }。
+   */
+  urlSync?: {
+    autoApply?: boolean
+    autoSync?: boolean
+    key?: string
+    onlyChanged?: boolean
+  }
+
+  /**
+   * BroadcastChannel で複数 tab 間の values を同期する。
+   * default: false。enabled 時は channel 名は `creo-ui-editor-host:{namespace}`。
+   */
+  crossTab?: boolean
+
+  /**
+   * cross-tab の custom channel 名 (default: namespace ベース)。
+   */
+  crossTabChannel?: string
 }
 
 // ---------- MCP-ready subset ----------
@@ -138,12 +171,21 @@ export interface EditorHost {
 
   // --- Value read/write ---
   getValue<T>(id: string): T | undefined
-  setValue<T>(id: string, value: T): void
+  /**
+   * field の値を更新。chain: values() update → cssVar → apply → persist → subscribers
+   * 通知 → anyChange 通知。options.silent=true なら subscribers / anyChange を skip
+   * (cross-tab 受信側で loop 回避に使用)。
+   */
+  setValue<T>(id: string, value: T, options?: { silent?: boolean }): void
   readonly values: Accessor<Record<string, unknown>>
   /**
    * 特定 field の value 変更を購読。unregister 関数を返す。
    */
   subscribe<T>(id: string, listener: (value: T) => void): () => void
+  /**
+   * 全 field の変更を一括購読する (cross-tab / history / FLIP 等の infra 用)。
+   */
+  onAnyChange(listener: (id: string, value: unknown) => void): () => void
 
   // --- Selection ---
   readonly selection: Accessor<SelectionInfo | null>
