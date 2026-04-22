@@ -1,0 +1,57 @@
+name: Publish creo-ui-editor-host to npm
+
+on:
+  push:
+    tags: ["editor-host-v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (must match package.json, or leave blank to use current)"
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies (root workspace)
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Run editor-host tests
+        run: bun test packages/editor-host/src/
+
+      - name: Build editor-host (vite lib)
+        working-directory: packages/editor-host
+        # vite + vite-plugin-solid で JSX を事前 compile、vite-plugin-dts で .d.ts 生成。
+        # 出力は packages/editor-host/dist/ (gitignore) に入る。
+        run: bun run build
+
+      - name: Verify dist artifacts
+        run: |
+          test -s packages/editor-host/dist/index.js
+          test -s packages/editor-host/dist/index.d.ts
+
+      - name: Publish to npm
+        working-directory: packages/editor-host
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
