@@ -1,0 +1,117 @@
+/**
+ * Creo UI — Tabs component (ARIA tablist pattern)
+ *
+ * `.creo-tabs` wrapper + `.creo-tabs-list` (role=tablist) + `.creo-tabs-tab`
+ * (role=tab) + `.creo-tabs-panel` (role=tabpanel)。active 判定は
+ * `aria-selected="true"` を SSOT として CSS selector でスタイル切替。
+ *
+ * Spec: docs/components/tabs.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-tabs {
+  display: block;
+}
+
+/* ---------- Tab list (button 列) ---------- */
+
+.creo-tabs-list {
+  display: flex;
+  gap: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-surface-border);
+  overflow-x: auto;
+}
+
+.creo-tabs[data-variant="pill"] .creo-tabs-list {
+  border-bottom: none;
+  padding: var(--spacing-xs);
+  background-color: var(--color-surface-bg-subtle);
+  border-radius: var(--radius-md);
+  gap: var(--spacing-xs);
+}
+
+/* ---------- Tab button (base) ---------- */
+
+.creo-tabs-tab {
+  appearance: none;
+  background: transparent;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: var(--layout-target-tap);
+
+  font-family: inherit;
+  font-size: var(--typography-size-md);
+  font-weight: var(--typography-weight-medium);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+
+  position: relative;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.creo-tabs-tab:hover:not(:disabled) {
+  color: var(--color-text-primary);
+}
+
+.creo-tabs-tab:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+.creo-tabs-tab:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ---------- Active state (aria-selected=true) ---------- */
+
+/* underline variant (default): 下線で active を示す */
+.creo-tabs[data-variant="underline"] .creo-tabs-tab[aria-selected="true"],
+.creo-tabs:not([data-variant]) .creo-tabs-tab[aria-selected="true"] {
+  color: var(--color-brand-primary);
+}
+.creo-tabs[data-variant="underline"] .creo-tabs-tab[aria-selected="true"]::after,
+.creo-tabs:not([data-variant]) .creo-tabs-tab[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: var(--spacing-sm);
+  right: var(--spacing-sm);
+  bottom: -1px;
+  height: 2px;
+  background-color: var(--color-brand-primary);
+  border-radius: var(--radius-xs);
+}
+
+/* pill variant: background を埋めて active を示す */
+.creo-tabs[data-variant="pill"] .creo-tabs-tab {
+  border-radius: var(--radius-sm);
+}
+.creo-tabs[data-variant="pill"] .creo-tabs-tab[aria-selected="true"] {
+  background-color: var(--color-brand-primary);
+  color: var(--color-surface-bg-base);
+}
+
+/* ---------- Sizes ---------- */
+
+.creo-tabs[data-size="sm"] .creo-tabs-tab {
+  min-height: var(--layout-target-focus);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--typography-size-sm);
+}
+.creo-tabs[data-size="lg"] .creo-tabs-tab {
+  min-height: calc(var(--layout-target-tap) * 1.15);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--typography-size-lg);
+}
+
+/* ---------- Panel ---------- */
+
+.creo-tabs-panel {
+  padding: var(--spacing-md) 0;
+}
+.creo-tabs-panel[hidden] {
+  display: none;
+}

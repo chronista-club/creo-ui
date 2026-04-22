@@ -12,6 +12,13 @@ token SSOT (`creo-ui-web/tokens.css`) を必ず一緒に import すること。
 | Input | [input.md](./input.md) | `.creo-input` | bordered / filled × sm / md / lg |
 | Header | [header.md](./header.md) | `.creo-header` | app / marketing |
 
+## 0.4.0+ (2 追加)
+
+| Component | Spec | CSS | 主な variant |
+|-----------|------|-----|-------------|
+| FormField (utility) | [form-field.md](./form-field.md) | `.creo-form-field` + `-label` + `-required` | wrapper-only、label+input+helper stack |
+| Tabs | [tabs.md](./tabs.md) | `.creo-tabs` + `-list` + `-tab` + `-panel` | underline / pill × sm / md / lg |
+
 ## 共通設計方針
 
 ### Framework agnostic (CSS + data attribute)
@@ -61,14 +68,15 @@ component ごとに sm/md/lg が何を参照するかは各 spec の Token refer
 4. web-demo で showcase section を増やして visual check
 5. commit 1 つ、`feat(components): <name> MVP`
 
-## 将来 (0.4.0+ 候補)
+## 将来 (0.5.0+ 候補)
 
-- Form group (label + input + helper の セット)
-- Tabs / Segmented control
+- Segmented control
 - Dialog / Modal
 - Toast / Notification
 - Menu / Dropdown
 - Avatar / Badge
+- Checkbox / Radio / Switch (form primitives)
+- Table (dense data)
 
 ## 関連
 

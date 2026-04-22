@@ -1,0 +1,28 @@
+/**
+ * Creo UI — FormField utility
+ *
+ * label + input + helper-text を垂直 stack で束ねる minimal wrapper。
+ * component ではなく CSS class utility として提供。
+ *
+ * Spec: docs/components/form-field.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-form-field {
+  display: grid;
+  gap: var(--spacing-xs);
+}
+
+.creo-form-field-label {
+  font-size: var(--typography-body-helper);
+  font-weight: var(--typography-weight-medium);
+  color: var(--color-text-primary);
+  line-height: var(--typography-line-height-normal);
+}
+
+/* required モディファイア: label の末尾に * (semantic-error 色) を付与 */
+.creo-form-field-required::after {
+  content: " *";
+  color: var(--color-semantic-error);
+  font-weight: var(--typography-weight-medium);
+}
