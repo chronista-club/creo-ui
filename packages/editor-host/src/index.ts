@@ -91,3 +91,8 @@ export {
 
 // F5: Cross-tab sync
 export { installCrossTabSync, type CrossTabOptions } from './cross-tab'
+
+// ---------- Layout helpers ----------
+
+/** Corner concentric (Apple HIG iOS 16+): 親子同心円 radius helper */
+export { concentric, concentricTokens } from './helpers/concentric'
