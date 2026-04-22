@@ -1,6 +1,6 @@
 {
   "name": "creo-ui-editor-host",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Creo UI — Editor Mode reference runtime for SolidJS. Live design surface with console REPL, auto-discover, URL share, cross-tab sync, and export-to-patch.",
   "type": "module",
   "main": "./dist/index.js",
