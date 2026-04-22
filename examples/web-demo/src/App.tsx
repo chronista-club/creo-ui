@@ -166,6 +166,67 @@ creoEditor.help()                     // 使い方一覧`}
           </pre>
         </aside>
 
+        <section
+          style={{
+            'margin-top': 'var(--layout-gap-section)',
+            padding: 'var(--spacing-md)',
+            background: 'var(--color-surface-surface)',
+            border: '1px solid var(--color-surface-border)',
+            'border-radius': 'var(--radius-md)',
+          }}
+        >
+          <h2
+            style={{
+              margin: '0 0 var(--spacing-md) 0',
+              'font-size': 'var(--typography-title-section)',
+              'font-weight': 'var(--typography-weight-semibold)',
+            }}
+          >
+            Button component showcase
+          </h2>
+          <p
+            style={{
+              margin: '0 0 var(--spacing-md) 0',
+              color: 'var(--color-text-secondary)',
+              'font-size': 'var(--typography-body-helper)',
+            }}
+          >
+            <code>.creo-btn</code> + <code>data-variant</code> / <code>data-size</code>.
+            creo-ui-web@0.3.0 (予定) の最初の component。token 変更に全部追従するのを Editor Mode
+            で確認できます。
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              gap: 'var(--layout-gap-sibling)',
+              'flex-wrap': 'wrap',
+              'align-items': 'center',
+            }}
+          >
+            <button type="button" class="creo-btn" data-variant="primary">
+              Primary
+            </button>
+            <button type="button" class="creo-btn" data-variant="secondary">
+              Secondary
+            </button>
+            <button type="button" class="creo-btn" data-variant="ghost">
+              Ghost
+            </button>
+            <button type="button" class="creo-btn" data-variant="primary" data-size="sm">
+              Small
+            </button>
+            <button type="button" class="creo-btn" data-variant="primary" data-size="lg">
+              Large
+            </button>
+            <button type="button" class="creo-btn" data-variant="ghost" aria-pressed="true">
+              Toggle ON
+            </button>
+            <button type="button" class="creo-btn" data-variant="primary" disabled>
+              Disabled
+            </button>
+          </div>
+        </section>
+
         <Show when={showFooter()}>
           <footer
             style={{

@@ -5,6 +5,7 @@
   "type": "module",
   "exports": {
     "./tokens.css": "./dist/tokens.css",
+    "./components.css": "./dist/components.css",
     "./tokens.js": {
       "types": "./dist/tokens.d.ts",
       "import": "./dist/tokens.js"

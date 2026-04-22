@@ -1,0 +1,149 @@
+/**
+ * Creo UI — Button component
+ *
+ * data attribute で variant / size を表現。`.creo-btn` base + `data-variant` + `data-size`。
+ * Default: primary / md。
+ *
+ * Spec: docs/components/button.md
+ * Token: creo-ui-web/tokens.css (必須)
+ *
+ * Usage:
+ *   <button class="creo-btn" data-variant="primary">Label</button>
+ *   <button class="creo-btn" data-variant="secondary" data-size="sm">Small</button>
+ *   <button class="creo-btn" data-variant="ghost" aria-pressed="true">Toggle</button>
+ */
+
+.creo-btn {
+  /* Base layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--layout-gap-tight);
+  min-height: var(--layout-target-tap);
+  padding: var(--spacing-sm) var(--spacing-md);
+
+  /* Typography */
+  font-family: inherit;
+  font-size: var(--typography-size-md);
+  font-weight: var(--typography-weight-medium);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+
+  /* Shape */
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+
+  /* Default interaction */
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, transform
+    120ms ease;
+
+  /* Default (primary) — variant で override される */
+  background-color: var(--color-brand-primary);
+  color: var(--color-surface-bg-base);
+}
+
+/* ---------- Variants ---------- */
+
+.creo-btn[data-variant="primary"],
+.creo-btn:not([data-variant]) {
+  background-color: var(--color-brand-primary);
+  border-color: var(--color-brand-primary);
+  color: var(--color-surface-bg-base);
+}
+.creo-btn[data-variant="primary"]:hover:not(:disabled),
+.creo-btn:not([data-variant]):hover:not(:disabled) {
+  background-color: var(--color-brand-primary-hover);
+  border-color: var(--color-brand-primary-hover);
+}
+.creo-btn[data-variant="primary"]:active:not(:disabled),
+.creo-btn:not([data-variant]):active:not(:disabled) {
+  background-color: var(--color-brand-primary-active);
+  border-color: var(--color-brand-primary-active);
+  transform: translateY(1px);
+}
+
+.creo-btn[data-variant="secondary"] {
+  background-color: var(--color-surface-surface);
+  border-color: var(--color-surface-border);
+  color: var(--color-text-primary);
+}
+.creo-btn[data-variant="secondary"]:hover:not(:disabled) {
+  background-color: var(--color-surface-surface-muted);
+  border-color: var(--color-brand-primary);
+}
+.creo-btn[data-variant="secondary"]:active:not(:disabled) {
+  background-color: var(--color-surface-bg-subtle);
+  transform: translateY(1px);
+}
+
+.creo-btn[data-variant="ghost"] {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--color-text-primary);
+}
+.creo-btn[data-variant="ghost"]:hover:not(:disabled) {
+  background-color: var(--color-surface-surface-muted);
+}
+.creo-btn[data-variant="ghost"]:active:not(:disabled) {
+  background-color: var(--color-surface-bg-subtle);
+  transform: translateY(1px);
+}
+
+/* ---------- Sizes ---------- */
+
+.creo-btn[data-size="sm"] {
+  min-height: var(--layout-target-focus);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--typography-size-sm);
+  border-radius: var(--radius-xs);
+}
+
+/* data-size="md" は base と同じ、明示しなくても OK だが editor-mode 親和で一応ルール定義 */
+.creo-btn[data-size="md"] {
+  min-height: var(--layout-target-tap);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--typography-size-md);
+  border-radius: var(--radius-sm);
+}
+
+.creo-btn[data-size="lg"] {
+  min-height: calc(var(--layout-target-tap) * 1.15);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--typography-size-lg);
+  border-radius: var(--radius-md);
+}
+
+/* ---------- State: disabled ---------- */
+
+.creo-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ---------- State: toggle (aria-pressed) ---------- */
+
+.creo-btn[aria-pressed="true"] {
+  background-color: var(--color-brand-primary-active);
+  border-color: var(--color-brand-primary-active);
+  color: var(--color-surface-bg-base);
+}
+.creo-btn[data-variant="secondary"][aria-pressed="true"] {
+  background-color: var(--color-surface-bg-subtle);
+  border-color: var(--color-brand-primary);
+  color: var(--color-brand-primary);
+}
+.creo-btn[data-variant="ghost"][aria-pressed="true"] {
+  background-color: var(--color-surface-surface-muted);
+  color: var(--color-brand-primary);
+}
+
+/* ---------- Focus ring ---------- */
+
+.creo-btn:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}

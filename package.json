@@ -6,8 +6,8 @@
   "type": "module",
   "workspaces": ["packages/*", "examples/*"],
   "scripts": {
-    "build": "style-dictionary build --config transforms/config.web.js && style-dictionary build --config transforms/config.swift.js && style-dictionary build --config transforms/config.rust.js",
-    "build:web": "style-dictionary build --config transforms/config.web.js",
+    "build": "bun run build:web && bun run build:swift && bun run build:rust",
+    "build:web": "style-dictionary build --config transforms/config.web.js && bun scripts/build-web-components.mjs",
     "build:swift": "style-dictionary build --config transforms/config.swift.js",
     "build:rust": "style-dictionary build --config transforms/config.rust.js",
     "typecheck": "tsc --noEmit",
