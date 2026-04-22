@@ -56,6 +56,10 @@ jobs:
         working-directory: packages/rust
         run: cargo test --verbose
 
+      - name: Test (ratatui feature)
+        working-directory: packages/rust
+        run: cargo test --features ratatui --verbose
+
   swift:
     name: Swift build
     runs-on: macos-14
