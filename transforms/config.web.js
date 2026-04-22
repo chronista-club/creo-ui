@@ -16,6 +16,20 @@
  *
  *   editor-mode / spacing / radius / shadow / typography は theme 非依存で
  *   :root に 1 回だけ emit。
+ *
+ * Unit policy (0.2.0+):
+ *   dimension type の px 値は **build 時に rem に変換して emit** する
+ *   (1rem = 16px を前提、18px → 1.125rem)。user の browser font 設定
+ *   (zoom / 文字サイズ) に UI が比例追従する accessibility-friendly な
+ *   配布形が Creo UI Web の default。source tokens (tokens/<cat>/<file>.json)
+ *   は px のまま保持し、Swift / Rust はそちらを直接使用。
+ *
+ *   例外:
+ *     - `0px` → `0` (unit 不要)
+ *     - `1000px` を超える値 (例: radius.full = 9999px) は px のまま保持
+ *       (semantic に "実質無限" を表す数値、rem 化すると意味が失われる)
+ *     - shadow 内の px (spread / offset) は shadow 値全体の parse になるので
+ *       今は触らず保持 (将来: shadow 専用 parser で rem 化可能)
  */
 
 const DEFAULT_THEME_ID = 'mint-dark'
@@ -28,8 +42,28 @@ const themedVarName = (path) => `--color-${path.slice(3).join('-')}`
 const nonThemedVarName = (path) => `--${path.join('-')}`
 
 /**
- * token.$value から CSS 値を render する。DTCG alias ({path}) は var(--...)
- * 参照として emit、それ以外は値をそのまま。
+ * dimension token の px 値を rem に変換する (1rem = 16px 前提)。
+ *   - `0px` → `'0'`
+ *   - `|value| > 1000px` → 原値保持 (semantic-infinity 値は px のまま)
+ *   - それ以外 → 16 で割って 4 桁精度の rem 表現
+ *   - non-px (em / rem / %) や数値でない場合は null を返して呼び側で無視させる
+ */
+const pxToRem = (value) => {
+  if (typeof value !== 'string') return null
+  const m = /^(-?\d+(?:\.\d+)?)px$/.exec(value.trim())
+  if (!m) return null
+  const num = Number.parseFloat(m[1])
+  if (num === 0) return '0'
+  if (Math.abs(num) > 1000) return value // full=9999 等は px のまま
+  const rem = num / 16
+  return `${Number(rem.toFixed(4))}rem`
+}
+
+/**
+ * token.$value から CSS 値を render する。
+ *   1. DTCG alias (`{path}`) → `var(--...)` 参照として emit
+ *   2. dimension 型の px 値 → rem に変換 (pxToRem)
+ *   3. それ以外 → 値をそのまま
  */
 const renderValue = (token) => {
   const original = token.original?.$value ?? token.original?.value
@@ -37,7 +71,13 @@ const renderValue = (token) => {
     const refPath = original.slice(1, -1).split('.')
     return `var(--${refPath.join('-')})`
   }
-  return token.$value ?? token.value
+  const value = token.$value ?? token.value
+  const type = token.$type ?? token.type
+  if (type === 'dimension') {
+    const rem = pxToRem(value)
+    if (rem !== null) return rem
+  }
+  return value
 }
 
 const renderDescription = (token) => {
