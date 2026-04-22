@@ -65,7 +65,7 @@ public enum CreoUITokens {
     public static let editorModeSelectionOutlineOffset: CGFloat = 2 // 要素から outline までの offset (要素本体を遮らない)
     public static let marginXs: CGFloat = 8 // Extra-small margin — tight stack (paragraph spacing, inline gap)
     public static let marginSm: CGFloat = 16 // Small margin — standard vertical rhythm between elements
-    public static let marginMd: CGFloat = 24 // Medium margin — component block separation (default between sections)
+    public static let marginMd: CGFloat = 18 // Medium margin — component block separation (default、spacing.md と揃える)
     public static let marginLg: CGFloat = 40 // Large margin — section divider (between thematic blocks)
     public static let marginXl: CGFloat = 64 // Extra-large margin — major section or hero break (page-level breathing)
     public static let radiusNone: CGFloat = 0 // No rounding — explicit reset (special, outside step rule)

@@ -153,8 +153,8 @@ pub const EDITOR_MODE_SELECTION_OUTLINE_OFFSET: f32 = 2_f32;
 pub const MARGIN_XS: f32 = 8_f32;
 /// Small margin — standard vertical rhythm between elements
 pub const MARGIN_SM: f32 = 16_f32;
-/// Medium margin — component block separation (default between sections)
-pub const MARGIN_MD: f32 = 24_f32;
+/// Medium margin — component block separation (default、spacing.md と揃える)
+pub const MARGIN_MD: f32 = 18_f32;
 /// Large margin — section divider (between thematic blocks)
 pub const MARGIN_LG: f32 = 40_f32;
 /// Extra-large margin — major section or hero break (page-level breathing)

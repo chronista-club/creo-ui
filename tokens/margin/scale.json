@@ -11,9 +11,9 @@
       "$description": "Small margin — standard vertical rhythm between elements"
     },
     "md": {
-      "$value": "24px",
+      "$value": "18px",
       "$type": "dimension",
-      "$description": "Medium margin — component block separation (default between sections)"
+      "$description": "Medium margin — component block separation (default、spacing.md と揃える)"
     },
     "lg": {
       "$value": "40px",
