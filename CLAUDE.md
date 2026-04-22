@@ -4,12 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクトの本質
 
-**Creo UI は Creo ecosystem の Design System。** 責務は **2 本柱**:
+**Creo UI は Creo ecosystem の Design System。** 責務は **3 本柱**:
 
 1. **視覚的定数の SSOT** — `tokens/**/*.json` (W3C DTCG) から Web / Apple / Rust の 3 プラットフォーム向け成果物を **Style Dictionary v4 で生成**
-2. **Editor Mode protocol の schema owner** — 各 app にユニバーサルな "Editor Mode" UI 状態を規定。field 宣言 / 4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) / Content 非侵襲性 / AI agent access を **schema + TS 型として定義**。runtime 実装は consumer 側 (`@creo/ui`, `CreoUI`, `creo-ui` crate) が担う
+2. **Editor Mode protocol の schema owner** — 各 app にユニバーサルな "Editor Mode" UI 状態を規定。field 宣言 / 4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) / Content 非侵襲性 / AI agent access を **schema + TS 型として定義** ([docs/design/editor-mode.md](./docs/design/editor-mode.md))
+3. **Web reference runtime (`creo-ui-editor-host`)** — Editor Mode protocol の SolidJS 実装を `packages/editor-host/` に持つ (EH-1)。consumer は `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` で即利用可能。Swift / Rust は引き続き consumer 側 (Phase 2c)
 
-ロジックや UI コンポーネントの具体実装は持たず、**「視覚的定数 + protocol schema」** のみを提供する。設計詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md)。
+設計詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md) および [docs/design/theme-system.md](./docs/design/theme-system.md)。
 
 ### Theme system (0.1.0+)
 
@@ -38,12 +39,13 @@ bun run build          # 全 platform の token を再生成 (web + swift + rust
 bun run build:web      # Web だけ
 bun run build:swift    # Swift だけ
 bun run build:rust     # Rust だけ
-bun run typecheck      # tsc --noEmit
+bun run typecheck      # tsc --noEmit (root + editor-host + web など全パッケージ)
 bun run lint           # Biome check
 bun run format         # Biome check --write (自動修正)
 bun run dev            # examples/web-demo (walking skeleton) を vite で起動
 bun run gen:themes     # creo-memories preset から 8 theme JSON を再生成
 bun run test:colors    # transforms/color-utils.js のテストを実行 (50 cases)
+bun test packages/editor-host/src/host.test.ts  # editor-host core state のテスト (19 cases)
 
 # Rust (packages/rust で実行)
 cargo build && cargo test
@@ -138,5 +140,7 @@ bun run build        # 全 platform に反映
 - `rust-version` と mise の Rust バージョンをズラす (CLAUDE.md の global 方針)。
 - Rust generated に inner attribute / inner doc を足す (`include!` 先では構文エラー)。
 - Editor Mode を **instance 名** (Studio / DevEditor / etc) で呼ぶ。Editor は **universal mode**、instance 化しない (`docs/design/editor-mode.md` D-1)。
-- Editor Mode 関連で **runtime ロジックをこのリポジトリに書く**。Creo UI は protocol schema owner、runtime 実装は consumer (`@creo/ui` 等) が担う (D-11)。
 - Content Layer を Editor Mode が **押し退ける / layout 変える** 設計にする。非侵襲性 (D-6) は最上位原則。
+- Swift / Rust / 他 framework (React 等) の **runtime 実装を本リポジトリに書く**。Web runtime は `packages/editor-host` に限り reference 実装として保持 (EH-1 / EH-2)、他 platform は consumer 側または将来別 package で。
+- `packages/editor-host/` を **SolidJS 以外の framework 対応で抽象化する**。SolidJS 一本で進める方針 (EH-2)。物理分離を急がない。
+- `creo-memories/packages/creo-ui` の DevEditor を直接触る。参考に留め、 **migration は creo-memories lead の判断** (EH-4)。
