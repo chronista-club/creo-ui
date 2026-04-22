@@ -6,6 +6,7 @@
   "exports": {
     "./tokens.css": "./dist/tokens.css",
     "./components.css": "./dist/components.css",
+    "./token-shim.css": "./dist/token-shim.css",
     "./tokens.js": {
       "types": "./dist/tokens.d.ts",
       "import": "./dist/tokens.js"

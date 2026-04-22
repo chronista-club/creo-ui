@@ -1,0 +1,96 @@
+/**
+ * creo-ui-web — token-shim.css
+ *
+ * 既存プロジェクトが creo-ui-web 移行する際の **transitional alias 層**。
+ * 典型的な flat 1 階層 (`--color-primary`) / Tailwind 風 / Tabler 風の変数名を
+ * Creo UI の DTCG 3 階層 token へ alias する。
+ *
+ * 使い方:
+ * ```js
+ * import 'creo-ui-web/tokens.css'       // 1. SSOT token
+ * import 'creo-ui-web/token-shim.css'   // 2. transitional aliases
+ * // 3. 既存 CSS が徐々に新 token へ置換、shim は最後に削除
+ * ```
+ *
+ * 段階移行 (CREO-103 Phase 1 想定):
+ *   Phase A: tokens.css + shim.css + 既存 CSS (unchanged) — 背景/枠線/文字色は shim 経由で自動追従
+ *   Phase B: domain 単位で `bg-primary` → `bg-brand-primary` 等の class/var 置換
+ *   Phase C: shim 削除 → 完全移行完了
+ *
+ * **Creo UI 2 階層目以上の意味的 token** (例: `--color-text-secondary`) を
+ * `color-muted` にまとめる等、flat 構造への downgrade が主。逆向き (階層化)
+ * は consumer 側の設計判断に委ねる。
+ */
+
+:root {
+  /* ---------- Color: brand / surface / text の flat alias ---------- */
+
+  --color-primary: var(--color-brand-primary);
+  --color-primary-hover: var(--color-brand-primary-hover);
+  --color-primary-active: var(--color-brand-primary-active);
+  --color-primary-subtle: var(--color-brand-primary-subtle);
+  --color-secondary: var(--color-brand-secondary);
+  --color-accent: var(--color-brand-accent);
+
+  --color-success: var(--color-semantic-success);
+  --color-warning: var(--color-semantic-warning);
+  --color-error: var(--color-semantic-error);
+  --color-danger: var(--color-semantic-error); /* Tabler 流 */
+  --color-info: var(--color-semantic-info);
+
+  --color-bg: var(--color-surface-bg-base);
+  --color-bg-subtle: var(--color-surface-bg-subtle);
+  --color-surface: var(--color-surface-surface);
+  --color-surface-muted: var(--color-surface-surface-muted);
+  --color-border: var(--color-surface-border);
+
+  --color-fg: var(--color-text-primary);
+  --color-text: var(--color-text-primary);
+  --color-muted: var(--color-text-secondary);
+  --color-subtle: var(--color-text-tertiary);
+
+  /* ---------- Spacing flat alias (Tailwind/Bootstrap 風の数値名) ---------- */
+
+  --space-1: var(--spacing-xs); /* 4px */
+  --space-2: var(--spacing-sm); /* 8px */
+  --space-3: var(--spacing-md); /* 18px */
+  --space-4: var(--spacing-lg); /* 24px */
+  --space-5: var(--spacing-xl); /* 32px */
+
+  /* Bootstrap 5 互換 alias (0.25rem 刻み近似、px 化した shim) */
+  --bs-spacer: var(--spacing-md);
+
+  /* ---------- Radius flat alias ---------- */
+
+  --border-radius: var(--radius-md);
+  --border-radius-sm: var(--radius-sm);
+  --border-radius-lg: var(--radius-lg);
+  --border-radius-xl: var(--radius-xl);
+  --border-radius-pill: var(--radius-full);
+  --border-radius-circle: var(--radius-full);
+
+  /* Tabler 流: --tblr-border-radius */
+  --tblr-border-radius: var(--radius-md);
+
+  /* ---------- Typography flat alias ---------- */
+
+  --font-size-base: var(--typography-size-md);
+  --font-size-sm: var(--typography-size-sm);
+  --font-size-lg: var(--typography-size-lg);
+  --font-size-xs: var(--typography-size-xs);
+
+  --font-family-base: var(--typography-family-sans);
+  --font-family-mono: var(--typography-family-mono);
+  --font-family-serif: var(--typography-family-sans); /* default fallback */
+
+  --font-weight-normal: var(--typography-weight-regular);
+  --font-weight-medium: var(--typography-weight-medium);
+  --font-weight-bold: var(--typography-weight-semibold);
+
+  /* ---------- Shadow ---------- */
+
+  --shadow: var(--shadow-md);
+  --box-shadow: var(--shadow-md);
+  --box-shadow-sm: var(--shadow-sm);
+  --box-shadow-lg: var(--shadow-lg);
+}
