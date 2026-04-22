@@ -125,6 +125,20 @@ export interface ConsoleApi {
     skipExisting?: boolean
   }): Binder[]
 
+  // --- Dev write-back (tokens/<cat>/scale.json に直書き戻し) ---
+  /**
+   * 現 editor state を dev server の `/_creo/tokens/commit` に POST し、
+   * tokens/*.json の `$value` を書き換える。Vite plugin `creoTokensPlugin` が
+   * 同 endpoint を listen している前提。production では fetch 失敗 or 404 が返る。
+   */
+  commitToTokens(opts?: {
+    endpoint?: string
+    onlyChanged?: boolean
+  }): Promise<{
+    applied: { id: string; value: unknown; file: string }[]
+    skipped: string[]
+  }>
+
   // --- Meta ---
   help(): void
 }
@@ -316,6 +330,47 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
       return withOwner(() => deps.autoDiscover(host, owner, opts))
     },
 
+    // --- Dev write-back ---
+    async commitToTokens(opts = {}) {
+      const endpoint = opts.endpoint ?? '/_creo/tokens/commit'
+      const onlyChanged = opts.onlyChanged ?? false
+      const allValues = host.values()
+      let values: Record<string, unknown> = allValues
+      if (onlyChanged) {
+        values = {}
+        for (const field of host.fields()) {
+          if (!Object.is(allValues[field.id], field.initial)) {
+            values[field.id] = allValues[field.id]
+          }
+        }
+      }
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ values }),
+        })
+        if (!res.ok) {
+          console.error(`[creoEditor.commitToTokens] HTTP ${res.status}`, await res.text())
+          return { applied: [], skipped: Object.keys(values) }
+        }
+        const result = (await res.json()) as {
+          applied: { id: string; value: unknown; file: string }[]
+          skipped: string[]
+        }
+        if (result.applied.length > 0) {
+          console.log(
+            `[creoEditor] ✓ committed ${result.applied.length} token(s) to source files:`,
+            result.applied.map((a) => `${a.id}=${a.value}`).join(', '),
+          )
+        }
+        return result
+      } catch (err) {
+        console.error('[creoEditor.commitToTokens] failed:', err)
+        return { applied: [], skipped: Object.keys(values) }
+      }
+    },
+
     // --- Help ---
     help() {
       const msg = [
@@ -350,6 +405,10 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
         '  creoEditor.share()                          // URL に #creo=... を付与',
         "  creoEditor.export({ format: 'css-patch' })  // 差分 CSS 返却",
         '  creoEditor.autoDiscover()                    // 既知 CSS var を自動 bind',
+        '',
+        '[Dev write-back (Vite plugin 要 attach)]',
+        '  await creoEditor.commitToTokens()           // 現値を tokens/*.json に書き戻す',
+        '  await creoEditor.commitToTokens({ onlyChanged: true })  // 変更分のみ',
         '',
         '────────────────────────────────────────────────',
       ].join('\n')

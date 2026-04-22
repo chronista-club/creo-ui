@@ -20,11 +20,18 @@ const formats: readonly { value: ExportFormat | 'url'; label: string }[] = [
 interface ExportBarProps {
   host: EditorHost
   urlKey?: string
+  /** dev write-back endpoint (`creoTokensPlugin` 側と合わせる)。default: '/_creo/tokens/commit' */
+  commitEndpoint?: string
+  /** dev write-back ボタンを表示するか。default: true (fetch 失敗した場合は自動 error 表示) */
+  showCommit?: boolean
 }
+
+type Status = 'idle' | 'copied' | 'error' | 'committed'
 
 export function ExportBar(props: ExportBarProps): JSX.Element {
   const [format, setFormat] = createSignal<ExportFormat | 'url'>('css-patch')
-  const [status, setStatus] = createSignal<'idle' | 'copied' | 'error'>('idle')
+  const [status, setStatus] = createSignal<Status>('idle')
+  const [commitStatus, setCommitStatus] = createSignal<Status>('idle')
 
   const doCopy = async (): Promise<void> => {
     const fmt = format()
@@ -48,6 +55,34 @@ export function ExportBar(props: ExportBarProps): JSX.Element {
     window.setTimeout(() => setStatus('idle'), 1500)
   }
 
+  const doCommit = async (): Promise<void> => {
+    setCommitStatus('idle')
+    const endpoint = props.commitEndpoint ?? '/_creo/tokens/commit'
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ values: props.host.values() }),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const result = (await res.json()) as { applied: { id: string }[] }
+      if (result.applied.length > 0) {
+        setCommitStatus('committed')
+        console.log(
+          `[creoEditor ExportBar] ✓ committed ${result.applied.length} token(s) — rebuild tokens で反映`,
+        )
+      } else {
+        setCommitStatus('error')
+      }
+    } catch (err) {
+      console.error('[creoEditor ExportBar] commit failed:', err)
+      setCommitStatus('error')
+    }
+    window.setTimeout(() => setCommitStatus('idle'), 1800)
+  }
+
+  const showCommit = (): boolean => props.showCommit !== false
+
   return (
     <div style={containerStyle}>
       <span style={labelStyle}>🎨 Export</span>
@@ -60,10 +95,25 @@ export function ExportBar(props: ExportBarProps): JSX.Element {
       </select>
       <button type="button" onClick={doCopy} style={buttonStyle(status())}>
         <Show when={status() === 'idle'} fallback={status() === 'copied' ? '✓ copied!' : '× error'}>
-          Copy to clipboard
+          Copy
         </Show>
       </button>
-      <span style={hintStyle}>現 editor state を clipboard にコピー → PR / Slack に直貼り</span>
+      <Show when={showCommit()}>
+        <button
+          type="button"
+          onClick={doCommit}
+          style={buttonStyle(commitStatus(), 'semantic')}
+          title="現 editor state を tokens/*.json に書き戻す (dev-only)"
+        >
+          <Show
+            when={commitStatus() === 'idle'}
+            fallback={commitStatus() === 'committed' ? '✓ committed!' : '× error'}
+          >
+            Commit to tokens →
+          </Show>
+        </button>
+      </Show>
+      <span style={hintStyle}>Copy → PR/Slack · Commit → tokens/*.json 直書き (dev)</span>
     </div>
   )
 }
@@ -91,22 +141,28 @@ const selectStyle: JSX.CSSProperties = {
   color: 'var(--color-text-primary)',
 }
 
-const buttonStyle = (status: 'idle' | 'copied' | 'error'): JSX.CSSProperties => ({
-  'font-size': '11px',
-  padding: '4px 10px',
-  'border-radius': 'var(--radius-xs)',
-  border: '1px solid var(--color-brand-primary)',
-  background:
-    status === 'copied'
-      ? 'var(--color-semantic-success)'
-      : status === 'error'
-        ? 'var(--color-semantic-error)'
-        : 'var(--color-brand-primary)',
-  color: 'var(--color-surface-bg-base)',
-  cursor: 'pointer',
-  'font-weight': 'var(--typography-weight-medium)',
-  transition: 'background 120ms ease',
-})
+const buttonStyle = (
+  status: Status,
+  variant: 'brand' | 'semantic' = 'brand',
+): JSX.CSSProperties => {
+  const idle = variant === 'semantic' ? 'var(--color-semantic-info)' : 'var(--color-brand-primary)'
+  return {
+    'font-size': '11px',
+    padding: '4px 10px',
+    'border-radius': 'var(--radius-xs)',
+    border: '1px solid currentColor',
+    background:
+      status === 'copied' || status === 'committed'
+        ? 'var(--color-semantic-success)'
+        : status === 'error'
+          ? 'var(--color-semantic-error)'
+          : idle,
+    color: 'var(--color-surface-bg-base)',
+    cursor: 'pointer',
+    'font-weight': 'var(--typography-weight-medium)',
+    transition: 'background 120ms ease',
+  }
+}
 
 const hintStyle: JSX.CSSProperties = {
   flex: '1',
