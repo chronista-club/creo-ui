@@ -4,7 +4,7 @@
  * 現 editor state を clipboard へ copy する minimal utility。
  * Apple HIG 路線 (d) pipeline の UI 部。format select + Copy button + 短時間 feedback。
  */
-import { type JSX, Show, createSignal } from 'solid-js'
+import { For, type JSX, Show, createSignal } from 'solid-js'
 import { type ExportFormat, exportSnapshot } from './export'
 import type { EditorHost } from './types'
 import { shareUrl } from './url-sync'
@@ -56,11 +56,7 @@ export function ExportBar(props: ExportBarProps): JSX.Element {
         onChange={(e) => setFormat(e.currentTarget.value as ExportFormat | 'url')}
         style={selectStyle}
       >
-        {formats.map((f) => (
-          <option value={f.value} key={f.value}>
-            {f.label}
-          </option>
-        ))}
+        <For each={formats}>{(f) => <option value={f.value}>{f.label}</option>}</For>
       </select>
       <button type="button" onClick={doCopy} style={buttonStyle(status())}>
         <Show when={status() === 'idle'} fallback={status() === 'copied' ? '✓ copied!' : '× error'}>
