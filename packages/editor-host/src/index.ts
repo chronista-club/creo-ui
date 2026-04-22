@@ -1,36 +1,61 @@
 /**
- * creo-ui-editor-host — public API
+ * creo-ui-editor-host — public API (Step 5 + Target × Control 分離)
  *
- * consumer 向けの import 入口。creo-ui-web の tokens.css を import していれば
- * `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` だけで
- * Editor Mode の 4 region UI が立ち上がる。
+ * Consumer が import するのは bind() を中心とする high-level API。
+ * EditorField / EditorHost / register / createEditorHost 等の低レベルは
+ * internal に隠蔽 (package 内部でのみ使われる)。
  */
 
-// Types
-export * from './types'
-
-// Factory + low-level handlers
-export { createEditorHost } from './host'
-export { installSelectionHandlers } from './selection'
-export { installShortcut } from './shortcut'
-
-// SolidJS provider + hooks
-export { EditorHostProvider, useEditorHost } from './provider'
+// ---------- Target (対象、データ源) ----------
+export type { Target } from './target'
 export {
-  useEditorFields,
-  useEditorValue,
-  useEditorSelectable,
-  useEditorMode,
-  useEditorSelection,
-  useEditorHover,
-} from './hooks'
+  cssVarTarget,
+  cssVarNumberTarget,
+  signalTarget,
+  localStorageTarget,
+  ephemeralTarget,
+  editorHostTarget,
+} from './target'
 
-// UI components
+// ---------- Control (UI 操作体系) ----------
+export type {
+  Control,
+  NumberControl,
+  ColorControl,
+  BooleanControl,
+  SelectControl,
+  StringControl,
+  ReadonlyTextControl,
+  NumberVariant,
+  ColorVariant,
+  BooleanVariant,
+  SelectVariant,
+  StringVariant,
+} from './control'
+export { number, color, boolean, select, string, readonlyText } from './control'
+
+// ---------- Binder (Target × Control conductor) ----------
+export type { Binder, Placement, BindOptions } from './binder'
+export { bind } from './binder'
+
+// ---------- Provider + hooks ----------
+export { EditorHostProvider, useEditorHost } from './provider'
+export { useEditorMode, useEditorSelection, useEditorHover, useEditorSelectable } from './hooks'
+
+// ---------- Public semantic types ----------
+export type {
+  EditorSemantic,
+  EditorRole,
+  EditorPersistence,
+  EditorMode,
+  SelectionInfo,
+} from './types'
+
+// ---------- UI components ----------
 export { EditorLayer } from './layer'
-export { FieldEditor, FieldEditorInline } from './fields'
 export { ThemeEditor } from './theme-editor'
 
-// Theme meta (for custom consumer UI)
+// ---------- Theme meta ----------
 export {
   THEME_INFO,
   THEME_IDS,

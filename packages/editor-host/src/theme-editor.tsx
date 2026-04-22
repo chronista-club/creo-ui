@@ -9,7 +9,7 @@
  */
 import { For } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { useEditorValue } from './hooks'
+import { useEditorHost } from './provider'
 import { DEFAULT_THEME_ID, SWATCH_ROWS, THEME_INFO } from './theme-info'
 
 const headingStyle: JSX.CSSProperties = {
@@ -81,8 +81,12 @@ const swatchLabelStyle: JSX.CSSProperties = {
 }
 
 export function ThemeEditor(): JSX.Element {
-  const themeMode = useEditorValue<string>('theme.mode')
-  const info = () => THEME_INFO[themeMode() ?? DEFAULT_THEME_ID] ?? THEME_INFO[DEFAULT_THEME_ID]
+  const host = useEditorHost()
+  const themeMode = (): string => {
+    host.values() // reactive dependency
+    return host.getValue<string>('theme.mode') ?? DEFAULT_THEME_ID
+  }
+  const info = () => THEME_INFO[themeMode()] ?? THEME_INFO[DEFAULT_THEME_ID]
 
   return (
     <>
