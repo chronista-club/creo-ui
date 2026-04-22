@@ -28,7 +28,7 @@ public extension String {
 
     /// 先頭 n 文字 + ellipsis で省略 (n 文字以内ならそのまま)
     ///
-    /// - `"mako/vp-83-phase1-sidebar".head(6)` → `"mako/v..."`
+    /// - `"mako/vp-83-phase1-sidebar".head(6)` → `"mako/v…"`
     /// - `"short".head(6)` → `"short"` (閾値以内はそのまま)
     ///
     /// 中央省略 (`.truncationMode(.middle)`) と違い、**先頭固定幅 + 末尾省略**
@@ -36,5 +36,23 @@ public extension String {
     func head(_ n: Int, ellipsis: String = "…") -> String {
         if count <= n { return self }
         return String(prefix(n)) + ellipsis
+    }
+
+    /// Path-prefix (`/`) を保持して tail 部分を省略する smart head
+    ///
+    /// git branch のように `prefix/feature-name` 形式で、prefix (author や
+    /// namespace) を保ったまま feature 側だけ省略したい用途。
+    ///
+    /// - `"mako/vp-83-phase1-sidebar".smartHead(tailLimit: 12)` → `"mako/vp-83-phase1…"`
+    /// - `"mako/short".smartHead(tailLimit: 12)` → `"mako/short"` (閾値以内)
+    /// - `"no-slash-name-long".smartHead(tailLimit: 12)` → `"no-slash-nam…"` (slash 無しは head と同じ)
+    func smartHead(tailLimit: Int, ellipsis: String = "…") -> String {
+        guard let slashIdx = firstIndex(of: "/") else {
+            return head(tailLimit, ellipsis: ellipsis)
+        }
+        let prefix = String(self[...slashIdx])
+        let tail = self[index(after: slashIdx)...]
+        if tail.count <= tailLimit { return self }
+        return prefix + String(tail.prefix(tailLimit)) + ellipsis
     }
 }
