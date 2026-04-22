@@ -7,8 +7,19 @@ final class CreoUITests: XCTestCase {
         XCTAssertEqual(CreoUI.version, "0.0.1")
     }
 
-    func testSpacingMdIs16() {
-        XCTAssertEqual(CreoUITokens.spacingMd, 16.0, accuracy: 0.001)
+    func testSpacingMdIs18() {
+        // 5-step size-feel rule (2026-04-22)
+        XCTAssertEqual(CreoUITokens.spacingMd, 18.0, accuracy: 0.001)
+    }
+
+    func testMarginMdMatchesSpacingMd() {
+        // Creo UI 規約: 同じ "medium" は spacing.md と margin.md を揃える
+        XCTAssertEqual(CreoUITokens.marginMd, CreoUITokens.spacingMd, accuracy: 0.001)
+    }
+
+    func testLayoutTargetTapIs44pt() {
+        // Apple HIG minimum tap target
+        XCTAssertEqual(CreoUITokens.layoutTargetTap, 44.0, accuracy: 0.001)
     }
 
     func testRadiusFullIsPill() {
