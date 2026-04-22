@@ -74,6 +74,8 @@ struct HeroView: View {
 | `radius.*` | `CreoUITokens.radiusNone`, `radiusXs` ... `radiusFull` (5 step + special) | `CGFloat` |
 | `typography.size.*` | `CreoUITokens.typographySizeMd` 等 (body, 5 step) | `CGFloat` |
 | `typography.display.*` | `CreoUITokens.typographyDisplayMd` 等 (heading, 5 step) | `CGFloat` |
+| `layout.gap.*` | `CreoUITokens.layoutGapSibling` 等 (semantic between-ness) | `CGFloat` |
+| `layout.target.*` | `CreoUITokens.layoutTargetTap` (=44) / `Focus` / `Hit` (Apple HIG accessibility) | `CGFloat` |
 | `typography.weight.*` | `CreoUITokens.typographyWeightRegular` 等 | `Double` |
 | `typography.family.*` / `shadow.*` | `CreoUITokens.typographyFamilySans` 等 | `String` |
 

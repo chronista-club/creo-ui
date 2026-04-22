@@ -1,0 +1,26 @@
+{
+  "layout": {
+    "gap": {
+      "tight": {
+        "$value": "{spacing.xs}",
+        "$type": "dimension",
+        "$description": "Tight gap — icon+label inline, chip group, closely-related siblings"
+      },
+      "sibling": {
+        "$value": "{spacing.md}",
+        "$type": "dimension",
+        "$description": "Default sibling gap — between stacked elements (list items, form fields)"
+      },
+      "section": {
+        "$value": "{margin.lg}",
+        "$type": "dimension",
+        "$description": "Section-to-section gap — thematic block break (between content sections)"
+      },
+      "page": {
+        "$value": "{margin.xl}",
+        "$type": "dimension",
+        "$description": "Page-level break — hero / footer separation, landing page major divisions"
+      }
+    }
+  }
+}

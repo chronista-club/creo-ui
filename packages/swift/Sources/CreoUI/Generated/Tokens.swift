@@ -63,6 +63,13 @@ public enum CreoUITokens {
     public static let editorModeRegionRightWidth: CGFloat = 280 // RIGHT region の default 幅 (tool panel、左より広め)
     public static let editorModeSelectionOutlineWidth: CGFloat = 2 // Selection outline の太さ
     public static let editorModeSelectionOutlineOffset: CGFloat = 2 // 要素から outline までの offset (要素本体を遮らない)
+    public static let layoutGapTight: CGFloat = 4 // Tight gap — icon+label inline, chip group, closely-related siblings
+    public static let layoutGapSibling: CGFloat = 18 // Default sibling gap — between stacked elements (list items, form fields)
+    public static let layoutGapSection: CGFloat = 40 // Section-to-section gap — thematic block break (between content sections)
+    public static let layoutGapPage: CGFloat = 64 // Page-level break — hero / footer separation, landing page major divisions
+    public static let layoutTargetTap: CGFloat = 44 // Minimum tap target — Apple HIG accessibility requirement (modals, buttons on touch devices)
+    public static let layoutTargetFocus: CGFloat = 32 // Minimum focus target — pointer devices / desktop-first (smaller than tap but still comfortable)
+    public static let layoutTargetHit: CGFloat = 24 // Minimum hit target — dense UI (toolbars, inline actions), still WCAG-reasonable with hover affordance
     public static let marginXs: CGFloat = 8 // Extra-small margin — tight stack (paragraph spacing, inline gap)
     public static let marginSm: CGFloat = 16 // Small margin — standard vertical rhythm between elements
     public static let marginMd: CGFloat = 18 // Medium margin — component block separation (default、spacing.md と揃える)

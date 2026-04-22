@@ -102,8 +102,8 @@ function Demo() {
         <section
           style={{
             display: 'grid',
-            gap: 'var(--spacing-md)',
-            'margin-bottom': 'var(--spacing-xl)',
+            gap: 'var(--layout-gap-sibling)',
+            'margin-bottom': 'var(--layout-gap-section)',
           }}
         >
           <Card

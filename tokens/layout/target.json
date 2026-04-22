@@ -1,0 +1,21 @@
+{
+  "layout": {
+    "target": {
+      "tap": {
+        "$value": "44px",
+        "$type": "dimension",
+        "$description": "Minimum tap target — Apple HIG accessibility requirement (modals, buttons on touch devices)"
+      },
+      "focus": {
+        "$value": "32px",
+        "$type": "dimension",
+        "$description": "Minimum focus target — pointer devices / desktop-first (smaller than tap but still comfortable)"
+      },
+      "hit": {
+        "$value": "24px",
+        "$type": "dimension",
+        "$description": "Minimum hit target — dense UI (toolbars, inline actions), still WCAG-reasonable with hover affordance"
+      }
+    }
+  }
+}

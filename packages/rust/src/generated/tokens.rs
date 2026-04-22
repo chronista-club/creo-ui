@@ -149,6 +149,20 @@ pub const EDITOR_MODE_SELECTION_OUTLINE_ACTIVE: &str = "var(--color-brand-primar
 pub const EDITOR_MODE_SELECTION_OUTLINE_WIDTH: f32 = 2_f32;
 /// 要素から outline までの offset (要素本体を遮らない)
 pub const EDITOR_MODE_SELECTION_OUTLINE_OFFSET: f32 = 2_f32;
+/// Tight gap — icon+label inline, chip group, closely-related siblings
+pub const LAYOUT_GAP_TIGHT: f32 = 4_f32;
+/// Default sibling gap — between stacked elements (list items, form fields)
+pub const LAYOUT_GAP_SIBLING: f32 = 18_f32;
+/// Section-to-section gap — thematic block break (between content sections)
+pub const LAYOUT_GAP_SECTION: f32 = 40_f32;
+/// Page-level break — hero / footer separation, landing page major divisions
+pub const LAYOUT_GAP_PAGE: f32 = 64_f32;
+/// Minimum tap target — Apple HIG accessibility requirement (modals, buttons on touch devices)
+pub const LAYOUT_TARGET_TAP: f32 = 44_f32;
+/// Minimum focus target — pointer devices / desktop-first (smaller than tap but still comfortable)
+pub const LAYOUT_TARGET_FOCUS: f32 = 32_f32;
+/// Minimum hit target — dense UI (toolbars, inline actions), still WCAG-reasonable with hover affordance
+pub const LAYOUT_TARGET_HIT: f32 = 24_f32;
 /// Extra-small margin — tight stack (paragraph spacing, inline gap)
 pub const MARGIN_XS: f32 = 8_f32;
 /// Small margin — standard vertical rhythm between elements
