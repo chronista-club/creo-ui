@@ -25,4 +25,16 @@ public extension String {
             .map { $0.isEmpty ? $0 : $0.prefix(1).uppercased() + $0.dropFirst() }
             .joined(separator: " ")
     }
+
+    /// 先頭 n 文字 + ellipsis で省略 (n 文字以内ならそのまま)
+    ///
+    /// - `"mako/vp-83-phase1-sidebar".head(6)` → `"mako/v..."`
+    /// - `"short".head(6)` → `"short"` (閾値以内はそのまま)
+    ///
+    /// 中央省略 (`.truncationMode(.middle)`) と違い、**先頭固定幅 + 末尾省略**
+    /// で視覚的に列揃えしやすい。
+    func head(_ n: Int, ellipsis: String = "…") -> String {
+        if count <= n { return self }
+        return String(prefix(n)) + ellipsis
+    }
 }
