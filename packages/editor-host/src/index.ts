@@ -97,3 +97,8 @@ export { installCrossTabSync, type CrossTabOptions } from './cross-tab'
 
 /** Corner concentric (Apple HIG iOS 16+): 親子同心円 radius helper */
 export { concentric, concentricTokens } from './helpers/concentric'
+
+// ---------- i18n primitive (CREO-91) ----------
+
+export type { Locale, LocalizedText, Messages, LocaleProviderProps } from './i18n'
+export { LocaleProvider, useLocale, detectLocale, useT, translate } from './i18n'
