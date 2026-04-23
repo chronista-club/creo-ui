@@ -1,0 +1,138 @@
+/**
+ * Creo UI — Table
+ *
+ * Spec: docs/components/table.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: inherit;
+  font-size: var(--typography-size-md);
+  color: var(--color-text-primary);
+  background-color: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* ---------- Head ---------- */
+
+.creo-table-head .creo-table-row {
+  background-color: var(--color-surface-bg-subtle);
+}
+
+.creo-table-head .creo-table-cell {
+  font-size: var(--typography-body-caption);
+  font-weight: var(--typography-weight-medium);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: left;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-surface-border);
+}
+
+.creo-table[data-sticky-head="true"] .creo-table-head .creo-table-cell {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+/* ---------- Body cells ---------- */
+
+.creo-table-cell {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-surface-border-subtle, var(--color-surface-border));
+  vertical-align: middle;
+}
+
+/* 最終 row の下線を消す (radius を曇らせない) */
+.creo-table-body > .creo-table-row:last-child > .creo-table-cell {
+  border-bottom: none;
+}
+
+.creo-table-cell[data-align="center"] {
+  text-align: center;
+}
+.creo-table-cell[data-align="end"] {
+  text-align: right;
+}
+
+/* ---------- Sizes ---------- */
+
+.creo-table[data-size="sm"] .creo-table-cell {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--typography-size-sm);
+}
+.creo-table[data-size="lg"] .creo-table-cell {
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--typography-size-lg);
+}
+
+/* ---------- Variants ---------- */
+
+.creo-table[data-variant="striped"] .creo-table-body > .creo-table-row:nth-child(even) {
+  background-color: var(--color-surface-bg-subtle);
+}
+
+.creo-table[data-variant="bordered"] .creo-table-cell {
+  border-right: 1px solid var(--color-surface-border-subtle, var(--color-surface-border));
+}
+.creo-table[data-variant="bordered"] .creo-table-cell:last-child {
+  border-right: none;
+}
+
+/* ---------- Row states ---------- */
+
+.creo-table-body .creo-table-row:hover:not([data-selected="true"]):not([data-disabled="true"]) {
+  background-color: var(--color-surface-bg-subtle);
+}
+
+.creo-table-row[data-selected="true"] {
+  background-color: var(--color-brand-primary-subtle);
+}
+
+.creo-table-row[data-disabled="true"] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ---------- Sortable headers ---------- */
+
+.creo-table-sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.creo-table-sortable::after {
+  content: "↕";
+  display: inline-block;
+  margin-left: var(--spacing-xs);
+  color: var(--color-text-tertiary);
+  font-size: 0.85em;
+  vertical-align: baseline;
+  transition: color 120ms ease, transform 120ms ease;
+}
+
+.creo-table-sortable[aria-sort="ascending"]::after {
+  content: "▲";
+  color: var(--color-brand-primary);
+}
+
+.creo-table-sortable[aria-sort="descending"]::after {
+  content: "▼";
+  color: var(--color-brand-primary);
+}
+
+.creo-table-sortable:hover::after {
+  color: var(--color-text-primary);
+}
+
+.creo-table-sortable:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: -2px;
+}

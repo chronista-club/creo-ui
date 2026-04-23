@@ -42,6 +42,12 @@ token SSOT (`creo-ui-web/tokens.css`) を必ず一緒に import すること。
 | Menu | [menu.md](./menu.md) | `.creo-menu` + `-item/-separator/-label` (native popover) | default/destructive item |
 | Accordion | [accordion.md](./accordion.md) | `.creo-accordion` + `-summary/-title/-content` (native details/summary) | bordered/subtle × open |
 
+## 0.7.0+ (1 追加)
+
+| Component | Spec | CSS | 主な variant |
+|-----------|------|-----|-------------|
+| Table | [table.md](./table.md) | `.creo-table` + `-head/-body/-row/-cell/-sortable` | sm/md/lg × default/striped/bordered、data-selected/disabled、aria-sort で chevron 自動切替 |
+
 ## 共通設計方針
 
 ### Framework agnostic (CSS + data attribute)
@@ -91,15 +97,16 @@ component ごとに sm/md/lg が何を参照するかは各 spec の Token refer
 4. web-demo で showcase section を増やして visual check
 5. commit 1 つ、`feat(components): <name> MVP`
 
-## 将来 (0.7.0+ 候補)
+## 将来 (0.8.0+ 候補)
 
-- Table (dense data、sort / filter / pagination)
-- Popover (interactive content)
-- Command palette (⌘K)
+- Popover (interactive content、Dialog と Tooltip の中間)
+- Command palette (⌘K、fuzzy search + keyboard navigation)
 - Combobox / Autocomplete
 - Date / Time picker
-- Drawer (side sheet)
-- Stepper
+- Drawer (side sheet、Dialog の side 固定版)
+- Stepper / Wizard
+- Pagination (Table と組み合わせ)
+- Virtual list (大量データ用)
 
 ## 関連
 
