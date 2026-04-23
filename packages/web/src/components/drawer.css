@@ -1,0 +1,201 @@
+/**
+ * Creo UI — Drawer (side sheet、Dialog の placement 版)
+ *
+ * Spec: docs/components/drawer.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-drawer {
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--color-surface-border);
+  background-color: var(--color-surface-surface);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-xl, var(--shadow-lg));
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  font-family: inherit;
+  font-size: var(--typography-size-md);
+  line-height: var(--typography-line-height-normal);
+
+  animation: creoDrawerInRight 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.creo-drawer::backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* ---------- Placement ---------- */
+
+/* Right (default) */
+.creo-drawer[data-placement="right"],
+.creo-drawer:not([data-placement]) {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  width: min(90vw, 400px);
+  border-radius: 0;
+  border-right: none;
+  animation-name: creoDrawerInRight;
+}
+
+.creo-drawer[data-placement="left"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100vh;
+  width: min(90vw, 400px);
+  border-radius: 0;
+  border-left: none;
+  animation-name: creoDrawerInLeft;
+}
+
+.creo-drawer[data-placement="top"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: min(70vh, 50vh);
+  border-radius: 0;
+  border-top: none;
+  animation-name: creoDrawerInTop;
+}
+
+.creo-drawer[data-placement="bottom"] {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: auto;
+  width: 100vw;
+  height: min(70vh, 50vh);
+  border-radius: 0;
+  border-bottom: none;
+  animation-name: creoDrawerInBottom;
+}
+
+/* ---------- Sizes (horizontal = width / vertical = height) ---------- */
+
+.creo-drawer[data-placement="right"][data-size="sm"],
+.creo-drawer[data-placement="left"][data-size="sm"] {
+  width: min(90vw, 280px);
+}
+.creo-drawer[data-placement="right"][data-size="lg"],
+.creo-drawer[data-placement="left"][data-size="lg"] {
+  width: min(92vw, 560px);
+}
+.creo-drawer[data-placement="right"][data-size="xl"],
+.creo-drawer[data-placement="left"][data-size="xl"] {
+  width: min(94vw, 800px);
+}
+
+.creo-drawer[data-placement="top"][data-size="sm"],
+.creo-drawer[data-placement="bottom"][data-size="sm"] {
+  height: 40vh;
+}
+.creo-drawer[data-placement="top"][data-size="lg"],
+.creo-drawer[data-placement="bottom"][data-size="lg"] {
+  height: 65vh;
+}
+.creo-drawer[data-placement="top"][data-size="xl"],
+.creo-drawer[data-placement="bottom"][data-size="xl"] {
+  height: 80vh;
+}
+
+/* ---------- Entrance animations (per placement) ---------- */
+
+@keyframes creoDrawerInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes creoDrawerInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes creoDrawerInTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes creoDrawerInBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-drawer {
+    animation: none;
+  }
+}
+
+/* ---------- Slots ---------- */
+
+.creo-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-surface-border);
+  flex-shrink: 0;
+}
+
+.creo-drawer-title {
+  margin: 0;
+  font-size: var(--typography-title-subsection);
+  font-weight: var(--typography-weight-semibold);
+  color: var(--color-text-primary);
+  line-height: 1.3;
+}
+
+.creo-drawer-body {
+  padding: var(--spacing-md);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+.creo-drawer-body > * + * {
+  margin-top: var(--spacing-sm);
+}
+
+.creo-drawer-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--layout-gap-tight);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-top: 1px solid var(--color-surface-border);
+  flex-shrink: 0;
+}
