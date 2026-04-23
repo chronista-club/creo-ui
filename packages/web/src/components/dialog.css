@@ -1,0 +1,123 @@
+/**
+ * Creo UI — Dialog component (native <dialog> based)
+ *
+ * native `<dialog>` + `showModal()` で focus trap / Esc close / ARIA を browser に任せる。
+ * consumer は JS で showModal() / close() を呼ぶだけ。
+ *
+ * Spec: docs/components/dialog.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-dialog {
+  /* Reset native defaults */
+  padding: 0;
+  border: 1px solid var(--color-surface-border);
+
+  /* Shape */
+  background-color: var(--color-surface-surface);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+
+  /* Width */
+  width: min(90vw, 480px);
+  max-height: 85vh;
+  overflow: hidden;
+
+  /* Typography */
+  font-family: inherit;
+  font-size: var(--typography-size-md);
+  line-height: var(--typography-line-height-normal);
+
+  /* Entrance (開いた時の軽い lift) */
+  animation: creoDialogIn 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.creo-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+@keyframes creoDialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ---------- Sizes ---------- */
+
+.creo-dialog[data-size="sm"] {
+  width: min(90vw, 320px);
+}
+.creo-dialog[data-size="md"],
+.creo-dialog:not([data-size]) {
+  width: min(90vw, 480px);
+}
+.creo-dialog[data-size="lg"] {
+  width: min(92vw, 720px);
+}
+
+/* ---------- Slots ---------- */
+
+.creo-dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: 1px solid var(--color-surface-border);
+}
+
+.creo-dialog-title {
+  margin: 0;
+  font-size: var(--typography-title-subsection);
+  font-weight: var(--typography-weight-semibold);
+  color: var(--color-text-primary);
+  line-height: 1.3;
+}
+
+.creo-dialog[data-variant="destructive"] .creo-dialog-title {
+  color: var(--color-semantic-error);
+}
+
+.creo-dialog-body {
+  padding: var(--spacing-md);
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.creo-dialog-body > * + * {
+  margin-top: var(--spacing-sm);
+}
+
+.creo-dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--layout-gap-tight);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-top: 1px solid var(--color-surface-border);
+}
+
+/* ---------- Closing (opt-in、consumer が .is-closing を付けて trigger) ---------- */
+
+.creo-dialog.is-closing {
+  animation: creoDialogOut 140ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+@keyframes creoDialogOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+}
