@@ -19,6 +19,18 @@ token SSOT (`creo-ui-web/tokens.css`) を必ず一緒に import すること。
 | FormField (utility) | [form-field.md](./form-field.md) | `.creo-form-field` + `-label` + `-required` | wrapper-only、label+input+helper stack |
 | Tabs | [tabs.md](./tabs.md) | `.creo-tabs` + `-list` + `-tab` + `-panel` | underline / pill × sm / md / lg |
 
+## 0.5.0+ (6 追加)
+
+| Component | Spec | CSS | 主な variant |
+|-----------|------|-----|-------------|
+| Dialog | [dialog.md](./dialog.md) | `.creo-dialog` + `-header/-title/-body/-footer` (native `<dialog>`) | sm / md / lg × default / destructive、backdrop blur |
+| Checkbox | [form-controls.md](./form-controls.md) | `.creo-checkbox` + `-input` (accent-color brand) | native |
+| Radio | [form-controls.md](./form-controls.md) | `.creo-radio` + `-input` (accent-color brand) | native |
+| Switch | [form-controls.md](./form-controls.md) | `.creo-switch` + `-track/-thumb` (custom toggle) | 44×24 pill |
+| Avatar | [avatar.md](./avatar.md) | `.creo-avatar` + `-image/-initials/-status` | circle / square × sm / md / lg / xl + 4 status |
+| Badge | [badge.md](./badge.md) | `.creo-badge` | neutral / brand / success / warning / error / info × sm / md × pill / square |
+| Segmented | [segmented.md](./segmented.md) | `.creo-segmented` + `-option` | button group / radio group × fit / full × sm / md / lg |
+
 ## 共通設計方針
 
 ### Framework agnostic (CSS + data attribute)
@@ -68,15 +80,14 @@ component ごとに sm/md/lg が何を参照するかは各 spec の Token refer
 4. web-demo で showcase section を増やして visual check
 5. commit 1 つ、`feat(components): <name> MVP`
 
-## 将来 (0.5.0+ 候補)
+## 将来 (0.6.0+ 候補)
 
-- Segmented control
-- Dialog / Modal
 - Toast / Notification
 - Menu / Dropdown
-- Avatar / Badge
-- Checkbox / Radio / Switch (form primitives)
 - Table (dense data)
+- Progress bar / Spinner
+- Accordion / Disclosure
+- Tooltip
 
 ## 関連
 
