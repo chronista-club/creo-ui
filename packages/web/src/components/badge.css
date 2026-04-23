@@ -1,0 +1,59 @@
+/**
+ * Creo UI — Badge component (pill-shaped status / count / tag)
+ *
+ * Spec: docs/components/badge.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px var(--spacing-xs);
+  font-family: inherit;
+  font-size: var(--typography-size-sm);
+  font-weight: var(--typography-weight-medium);
+  line-height: 1;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+
+  /* default: neutral variant */
+  background-color: var(--color-surface-bg-subtle);
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Variants ---------- */
+
+.creo-badge[data-variant="brand"] {
+  background-color: var(--color-brand-primary-subtle);
+  color: var(--color-brand-primary);
+}
+.creo-badge[data-variant="success"] {
+  background-color: color-mix(in oklch, var(--color-semantic-success) 20%, transparent);
+  color: var(--color-semantic-success);
+}
+.creo-badge[data-variant="warning"] {
+  background-color: color-mix(in oklch, var(--color-semantic-warning) 20%, transparent);
+  color: var(--color-semantic-warning);
+}
+.creo-badge[data-variant="error"] {
+  background-color: color-mix(in oklch, var(--color-semantic-error) 20%, transparent);
+  color: var(--color-semantic-error);
+}
+.creo-badge[data-variant="info"] {
+  background-color: color-mix(in oklch, var(--color-semantic-info) 20%, transparent);
+  color: var(--color-semantic-info);
+}
+
+/* ---------- Sizes ---------- */
+
+.creo-badge[data-size="sm"] {
+  font-size: var(--typography-size-xs);
+  padding: 1px var(--spacing-xs);
+}
+
+/* ---------- Shapes ---------- */
+
+.creo-badge[data-shape="square"] {
+  border-radius: var(--radius-xs);
+}

@@ -1,0 +1,103 @@
+/**
+ * Creo UI — Avatar component
+ *
+ * 円形 (or square) の image / initials container。
+ *
+ * Spec: docs/components/avatar.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-brand-primary-subtle);
+  color: var(--color-text-primary);
+  overflow: hidden;
+  vertical-align: middle;
+  user-select: none;
+}
+
+/* ---------- Sizes ---------- */
+
+.creo-avatar[data-size="sm"] {
+  width: 24px;
+  height: 24px;
+}
+.creo-avatar[data-size="md"],
+.creo-avatar:not([data-size]) {
+  width: 32px;
+  height: 32px;
+}
+.creo-avatar[data-size="lg"] {
+  width: var(--layout-target-tap);
+  height: var(--layout-target-tap);
+}
+.creo-avatar[data-size="xl"] {
+  width: 64px;
+  height: 64px;
+}
+
+/* ---------- Shapes ---------- */
+
+.creo-avatar[data-shape="square"] {
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Image ---------- */
+
+.creo-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- Initials fallback ---------- */
+
+.creo-avatar-initials {
+  font-family: inherit;
+  font-size: var(--typography-size-sm);
+  font-weight: var(--typography-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.creo-avatar[data-size="sm"] .creo-avatar-initials {
+  font-size: var(--typography-size-xs);
+}
+.creo-avatar[data-size="lg"] .creo-avatar-initials {
+  font-size: var(--typography-size-md);
+}
+.creo-avatar[data-size="xl"] .creo-avatar-initials {
+  font-size: var(--typography-size-lg);
+}
+
+/* ---------- Status dot ---------- */
+
+.creo-avatar-status {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 25%;
+  height: 25%;
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-surface-surface);
+  background-color: var(--color-text-tertiary); /* offline default */
+}
+.creo-avatar-status[data-status="online"] {
+  background-color: var(--color-semantic-success);
+}
+.creo-avatar-status[data-status="busy"] {
+  background-color: var(--color-semantic-error);
+}
+.creo-avatar-status[data-status="away"] {
+  background-color: var(--color-semantic-warning);
+}
