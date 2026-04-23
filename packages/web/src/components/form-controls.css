@@ -1,0 +1,116 @@
+/**
+ * Creo UI — Form controls (Checkbox / Radio / Switch)
+ *
+ * native <input> を accent-color で brand 色に染める最小実装 + switch (native 非対応) の custom painting。
+ *
+ * Spec: docs/components/form-controls.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+/* ---------- Checkbox / Radio (label wrapper) ---------- */
+
+.creo-checkbox,
+.creo-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--layout-gap-tight);
+  font-size: var(--typography-size-md);
+  line-height: 1.4;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.creo-checkbox-input,
+.creo-radio-input {
+  accent-color: var(--color-brand-primary);
+  width: 1.1em;
+  height: 1.1em;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.creo-checkbox-input:focus-visible,
+.creo-radio-input:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+.creo-checkbox-input:disabled,
+.creo-radio-input:disabled,
+.creo-checkbox:has(> .creo-checkbox-input:disabled),
+.creo-radio:has(> .creo-radio-input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Switch (custom toggle) ---------- */
+
+.creo-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--layout-gap-tight);
+  font-size: var(--typography-size-md);
+  line-height: 1.4;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.creo-switch-input {
+  /* native checkbox を隠す (visually-hidden、a11y 保持) */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.creo-switch-track {
+  display: inline-block;
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background-color: var(--color-surface-bg-subtle);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-full);
+  transition: background-color 160ms ease, border-color 160ms ease;
+  flex-shrink: 0;
+}
+
+.creo-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-surface-surface);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.creo-switch-input:checked ~ .creo-switch-track {
+  background-color: var(--color-brand-primary);
+  border-color: var(--color-brand-primary);
+}
+
+.creo-switch-input:checked ~ .creo-switch-track .creo-switch-thumb {
+  transform: translateX(20px);
+}
+
+.creo-switch-input:focus-visible ~ .creo-switch-track {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+.creo-switch-input:disabled ~ .creo-switch-track,
+.creo-switch:has(> .creo-switch-input:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
