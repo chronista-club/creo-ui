@@ -1,0 +1,119 @@
+/**
+ * Creo UI — Pagination
+ *
+ * Spec: docs/components/pagination.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-pagination {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.creo-pagination[data-variant="compact"] {
+  gap: 0;
+}
+
+.creo-pagination-list {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.creo-pagination[data-variant="compact"] .creo-pagination-list {
+  gap: 0;
+}
+
+.creo-pagination-list > li {
+  list-style: none;
+}
+
+/* ---------- Item (button) ---------- */
+
+.creo-pagination-item {
+  appearance: none;
+  background: transparent;
+  border: 1px solid transparent;
+  min-width: var(--layout-target-focus);
+  min-height: var(--layout-target-focus);
+  padding: 0 var(--spacing-xs);
+  border-radius: var(--radius-sm);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: inherit;
+  font-size: var(--typography-size-md);
+  font-weight: var(--typography-weight-medium);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+
+  transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+
+.creo-pagination-item:hover:not(:disabled):not([aria-current="page"]) {
+  background-color: var(--color-surface-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+.creo-pagination-item:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+.creo-pagination-item:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---------- Active (aria-current=page) ---------- */
+
+.creo-pagination-item[aria-current="page"] {
+  background-color: var(--color-brand-primary);
+  color: var(--color-surface-bg-base);
+  border-color: var(--color-brand-primary);
+  cursor: default;
+}
+
+/* ---------- Sizes ---------- */
+
+.creo-pagination[data-size="sm"] .creo-pagination-item {
+  min-width: 24px;
+  min-height: 24px;
+  font-size: var(--typography-size-sm);
+  padding: 0 6px;
+  border-radius: var(--radius-xs);
+}
+
+.creo-pagination[data-size="lg"] .creo-pagination-item {
+  min-width: var(--layout-target-tap);
+  min-height: var(--layout-target-tap);
+  font-size: var(--typography-size-lg);
+  padding: 0 var(--spacing-sm);
+  border-radius: var(--radius-md);
+}
+
+/* ---------- Ellipsis ---------- */
+
+.creo-pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--layout-target-focus);
+  color: var(--color-text-tertiary);
+  user-select: none;
+  font-weight: var(--typography-weight-medium);
+}
+
+/* ---------- Prev/Next button 装飾 (data-action) ---------- */
+
+.creo-pagination-item[data-action="prev"],
+.creo-pagination-item[data-action="next"] {
+  color: var(--color-text-primary);
+}

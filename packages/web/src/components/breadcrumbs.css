@@ -1,0 +1,83 @@
+/**
+ * Creo UI — Breadcrumbs
+ *
+ * Spec: docs/components/breadcrumbs.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-breadcrumbs {
+  display: block;
+  font-size: var(--typography-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.creo-breadcrumbs[data-size="sm"] {
+  font-size: var(--typography-size-xs);
+}
+
+.creo-breadcrumbs-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.creo-breadcrumbs-item {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* ---------- Separator (::after on item、最後の item には付けない) ---------- */
+
+.creo-breadcrumbs-item:not([aria-current="page"])::after {
+  content: "›";
+  margin: 0 var(--spacing-xs);
+  color: var(--color-text-tertiary);
+  display: inline-block;
+  user-select: none;
+}
+
+.creo-breadcrumbs[data-separator="slash"] .creo-breadcrumbs-item:not([aria-current="page"])::after {
+  content: "/";
+}
+
+.creo-breadcrumbs[data-separator="dot"] .creo-breadcrumbs-item:not([aria-current="page"])::after {
+  content: "·";
+}
+
+/* ---------- Link ---------- */
+
+.creo-breadcrumbs-link {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  padding: var(--spacing-xs) 0;
+  border-radius: var(--radius-xs);
+  transition: color 120ms ease;
+
+  /* truncate support */
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.creo-breadcrumbs-link:hover {
+  color: var(--color-text-primary);
+}
+
+.creo-breadcrumbs-link:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+/* 現在 page: link じゃない (span)、font-weight 強調 */
+.creo-breadcrumbs-item[aria-current="page"] > .creo-breadcrumbs-link,
+.creo-breadcrumbs-item[aria-current="page"] > span {
+  color: var(--color-text-primary);
+  font-weight: var(--typography-weight-medium);
+  cursor: default;
+}
