@@ -31,6 +31,17 @@ token SSOT (`creo-ui-web/tokens.css`) を必ず一緒に import すること。
 | Badge | [badge.md](./badge.md) | `.creo-badge` | neutral / brand / success / warning / error / info × sm / md × pill / square |
 | Segmented | [segmented.md](./segmented.md) | `.creo-segmented` + `-option` | button group / radio group × fit / full × sm / md / lg |
 
+## 0.6.0+ (5 追加)
+
+| Component | Spec | CSS | 主な variant |
+|-----------|------|-----|-------------|
+| Tooltip | [tooltip.md](./tooltip.md) | `.creo-tooltip` + `-content` (CSS-only、hover/focus) | 4 placement × default/inverse |
+| Progress | [progress.md](./progress.md) | `.creo-progress` + `-fill` | sm/md/lg × brand/success/warning/error + indeterminate |
+| Spinner | [progress.md](./progress.md) | `.creo-spinner` | sm/md/lg × brand/neutral、prefers-reduced-motion 対応 |
+| Toast | [toast.md](./toast.md) | `.creo-toast-region` + `.creo-toast` + `-icon/-content/-close` | 6 placement × 5 variant (default/success/warning/error/info) |
+| Menu | [menu.md](./menu.md) | `.creo-menu` + `-item/-separator/-label` (native popover) | default/destructive item |
+| Accordion | [accordion.md](./accordion.md) | `.creo-accordion` + `-summary/-title/-content` (native details/summary) | bordered/subtle × open |
+
 ## 共通設計方針
 
 ### Framework agnostic (CSS + data attribute)
@@ -80,14 +91,15 @@ component ごとに sm/md/lg が何を参照するかは各 spec の Token refer
 4. web-demo で showcase section を増やして visual check
 5. commit 1 つ、`feat(components): <name> MVP`
 
-## 将来 (0.6.0+ 候補)
+## 将来 (0.7.0+ 候補)
 
-- Toast / Notification
-- Menu / Dropdown
-- Table (dense data)
-- Progress bar / Spinner
-- Accordion / Disclosure
-- Tooltip
+- Table (dense data、sort / filter / pagination)
+- Popover (interactive content)
+- Command palette (⌘K)
+- Combobox / Autocomplete
+- Date / Time picker
+- Drawer (side sheet)
+- Stepper
 
 ## 関連
 

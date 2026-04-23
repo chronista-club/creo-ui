@@ -1,0 +1,108 @@
+/**
+ * Creo UI — Accordion / Disclosure (native details/summary)
+ *
+ * ARIA / keyboard は browser native に任せる。CSS のみで styling + chevron rotate。
+ *
+ * Spec: docs/components/accordion.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-accordion {
+  display: block;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* bordered variant (default に見た目を与える) */
+.creo-accordion[data-variant="bordered"],
+.creo-accordion:not([data-variant]) {
+  background-color: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-sm);
+  padding: 0;
+  overflow: hidden;
+}
+
+.creo-accordion[data-variant="subtle"] {
+  background-color: var(--color-surface-bg-subtle);
+  border: none;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Summary (clickable header) ---------- */
+
+.creo-accordion-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-gap-tight);
+  padding: var(--spacing-sm) var(--spacing-md);
+  min-height: var(--layout-target-tap);
+  cursor: pointer;
+  user-select: none;
+  list-style: none; /* default chevron を消す */
+  transition: background-color 120ms ease;
+}
+
+/* Safari / Firefox の default marker を完全に消す */
+.creo-accordion-summary::-webkit-details-marker {
+  display: none;
+}
+.creo-accordion-summary::marker {
+  display: none;
+}
+
+.creo-accordion-summary:hover {
+  background-color: var(--color-surface-bg-subtle);
+}
+
+.creo-accordion-summary:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: -2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Chevron (自前で挿入) */
+.creo-accordion-summary::before {
+  content: "▸";
+  display: inline-block;
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+  transform: rotate(0deg);
+  transition: transform 180ms ease;
+  font-size: var(--typography-size-sm);
+  width: 1em;
+}
+
+.creo-accordion[open] .creo-accordion-summary::before {
+  transform: rotate(90deg);
+}
+
+/* ---------- Title ---------- */
+
+.creo-accordion-title {
+  flex: 1;
+  font-size: var(--typography-size-md);
+  font-weight: var(--typography-weight-medium);
+  color: var(--color-text-primary);
+  min-width: 0;
+}
+
+/* ---------- Content (expanded body) ---------- */
+
+.creo-accordion-content {
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+  font-size: var(--typography-size-md);
+  color: var(--color-text-primary);
+  line-height: var(--typography-line-height-normal);
+}
+
+.creo-accordion-content > * + * {
+  margin-top: var(--spacing-sm);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-accordion-summary::before {
+    transition: none;
+  }
+}

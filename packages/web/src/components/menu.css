@@ -1,0 +1,99 @@
+/**
+ * Creo UI — Menu (Dropdown, popover-based)
+ *
+ * native `popover` API を推奨。consumer は `<div popover="auto">` + `popovertarget` で
+ * open/close 制御、JS 最小化。
+ *
+ * Spec: docs/components/menu.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-menu {
+  /* popover 指定時は browser が position fixed + top-layer に配置するので、
+     ここは box-style のみを指定。placement (position) は consumer 側 JS or
+     data-placement + anchor positioning (browser 対応進行中) で後付け。 */
+  min-width: 180px;
+  padding: var(--spacing-xs);
+  background-color: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  font-size: var(--typography-size-md);
+
+  /* popover 無しで手動配置する場合の保険 */
+  position: absolute;
+  margin: 0;
+}
+
+/* popover backdrop: 薄く blur (native popover=auto の自動 backdrop) */
+.creo-menu::backdrop {
+  background-color: transparent;
+}
+
+/* ---------- Menu item ---------- */
+
+.creo-menu-item {
+  appearance: none;
+  background: transparent;
+  border: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--layout-gap-tight);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  min-height: var(--layout-target-focus);
+
+  font-family: inherit;
+  font-size: var(--typography-size-md);
+  color: var(--color-text-primary);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.creo-menu-item:hover:not(:disabled),
+.creo-menu-item:focus-visible {
+  background-color: var(--color-surface-bg-subtle);
+  outline: none;
+}
+
+.creo-menu-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Destructive variant ---------- */
+
+.creo-menu-item[data-variant="destructive"] {
+  color: var(--color-semantic-error);
+}
+.creo-menu-item[data-variant="destructive"]:hover:not(:disabled),
+.creo-menu-item[data-variant="destructive"]:focus-visible {
+  background-color: color-mix(in oklch, var(--color-semantic-error) 12%, transparent);
+}
+
+/* ---------- Separator ---------- */
+
+.creo-menu-separator {
+  height: 1px;
+  background-color: var(--color-surface-border);
+  border: none;
+  margin: var(--spacing-xs) 0;
+}
+
+/* ---------- Group label ---------- */
+
+.creo-menu-label {
+  padding: var(--spacing-xs) var(--spacing-sm) 2px;
+  font-size: var(--typography-body-caption);
+  font-weight: var(--typography-weight-medium);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
