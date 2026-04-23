@@ -6,15 +6,20 @@
  */
 import { For, type JSX, Show, createSignal } from 'solid-js'
 import { type ExportFormat, exportSnapshot } from './export'
+import { messages, useT } from './i18n'
+import type { LocalizedText } from './i18n'
 import type { EditorHost } from './types'
 import { shareUrl } from './url-sync'
 
-const formats: readonly { value: ExportFormat | 'url'; label: string }[] = [
-  { value: 'css-patch', label: 'CSS patch (diff)' },
-  { value: 'css', label: 'CSS (全量)' },
-  { value: 'json', label: 'JSON' },
-  { value: 'yaml', label: 'YAML' },
-  { value: 'url', label: 'Share URL' },
+const formats: readonly {
+  value: ExportFormat | 'url'
+  messageKey: keyof typeof messages.exportBar
+}[] = [
+  { value: 'css-patch', messageKey: 'formatCssPatch' },
+  { value: 'css', messageKey: 'formatCss' },
+  { value: 'json', messageKey: 'formatJson' },
+  { value: 'yaml', messageKey: 'formatYaml' },
+  { value: 'url', messageKey: 'formatShareUrl' },
 ]
 
 interface ExportBarProps {
@@ -32,6 +37,9 @@ export function ExportBar(props: ExportBarProps): JSX.Element {
   const [format, setFormat] = createSignal<ExportFormat | 'url'>('css-patch')
   const [status, setStatus] = createSignal<Status>('idle')
   const [commitStatus, setCommitStatus] = createSignal<Status>('idle')
+  const t = useT()
+  const tx = (key: keyof typeof messages.exportBar): string =>
+    t(messages.exportBar[key] as LocalizedText)
 
   const doCopy = async (): Promise<void> => {
     const fmt = format()
@@ -85,17 +93,20 @@ export function ExportBar(props: ExportBarProps): JSX.Element {
 
   return (
     <div style={containerStyle}>
-      <span style={labelStyle}>🎨 Export</span>
+      <span style={labelStyle}>{tx('label')}</span>
       <select
         value={format()}
         onChange={(e) => setFormat(e.currentTarget.value as ExportFormat | 'url')}
         style={selectStyle}
       >
-        <For each={formats}>{(f) => <option value={f.value}>{f.label}</option>}</For>
+        <For each={formats}>{(f) => <option value={f.value}>{tx(f.messageKey)}</option>}</For>
       </select>
       <button type="button" onClick={doCopy} style={buttonStyle(status())}>
-        <Show when={status() === 'idle'} fallback={status() === 'copied' ? '✓ copied!' : '× error'}>
-          Copy
+        <Show
+          when={status() === 'idle'}
+          fallback={status() === 'copied' ? tx('copied') : tx('errorStatus')}
+        >
+          {tx('copyAction')}
         </Show>
       </button>
       <Show when={showCommit()}>
@@ -103,17 +114,17 @@ export function ExportBar(props: ExportBarProps): JSX.Element {
           type="button"
           onClick={doCommit}
           style={buttonStyle(commitStatus(), 'semantic')}
-          title="現 editor state を tokens/*.json に書き戻す (dev-only)"
+          title={tx('commitTitle')}
         >
           <Show
             when={commitStatus() === 'idle'}
-            fallback={commitStatus() === 'committed' ? '✓ committed!' : '× error'}
+            fallback={commitStatus() === 'committed' ? tx('committed') : tx('errorStatus')}
           >
-            Commit to tokens →
+            {tx('commitAction')}
           </Show>
         </button>
       </Show>
-      <span style={hintStyle}>Copy → PR/Slack · Commit → tokens/*.json 直書き (dev)</span>
+      <span style={hintStyle}>{tx('hint')}</span>
     </div>
   )
 }

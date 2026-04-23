@@ -101,4 +101,4 @@ export { concentric, concentricTokens } from './helpers/concentric'
 // ---------- i18n primitive (CREO-91) ----------
 
 export type { Locale, LocalizedText, Messages, LocaleProviderProps } from './i18n'
-export { LocaleProvider, useLocale, detectLocale, useT, translate } from './i18n'
+export { LocaleProvider, useLocale, detectLocale, useT, translate, messages } from './i18n'

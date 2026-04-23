@@ -16,6 +16,7 @@ import type { JSX } from 'solid-js'
 import { ExportBar } from './export-bar'
 import { FieldEditor, FieldEditorInline } from './fields'
 import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
+import { messages, useT } from './i18n'
 import { useEditorHost } from './provider'
 import { ThemeEditor } from './theme-editor'
 import type { EditorField } from './types'
@@ -165,6 +166,7 @@ export function EditorLayer(): JSX.Element {
   const mode = useEditorMode()
   const selection = useEditorSelection()
   const hover = useEditorHover()
+  const t = useT()
 
   const globalFields = (): EditorField[] =>
     host
@@ -195,19 +197,20 @@ export function EditorLayer(): JSX.Element {
         {/* TOP region: 左に hint (selection 情報) / 右に global fields */}
         <div style={topRegionStyle}>
           <span style={{ flex: '1' }}>
-            Editor Mode <strong>ON</strong> —{' '}
-            <Show when={selection()} fallback={<span>要素をクリックで選択</span>}>
+            {t(messages.editorMode.label)} <strong>{t(messages.editorMode.on)}</strong> —{' '}
+            <Show when={selection()} fallback={<span>{t(messages.editorMode.clickToSelect)}</span>}>
               {(s) => (
                 <span style={{ color: 'var(--editor-mode-axis-future)' }}>
-                  選択中: {s().targetId}
+                  {t(messages.editorMode.selectedPrefix)}
+                  {s().targetId}
                 </span>
               )}
             </Show>{' '}
-            · <kbd style={kbdInlineStyle}>Esc</kbd> で{' '}
-            <Show when={selection()} fallback={<span>終了</span>}>
-              <span>選択解除</span>
+            · <kbd style={kbdInlineStyle}>Esc</kbd>{' '}
+            <Show when={selection()} fallback={<span>{t(messages.editorMode.escapeToExit)}</span>}>
+              <span>{t(messages.editorMode.escapeToDeselect)}</span>
             </Show>{' '}
-            · <kbd style={kbdInlineStyle}>Ctrl+Shift+E</kbd> で切替
+            · <kbd style={kbdInlineStyle}>Ctrl+Shift+E</kbd> {t(messages.editorMode.toggleShortcut)}
           </span>
 
           <div
@@ -224,16 +227,16 @@ export function EditorLayer(): JSX.Element {
 
         {/* RIGHT region: tool fields (selection あれば絞り込み) */}
         <div style={rightRegionStyle}>
-          <h3 style={rightHeadingStyle}>▶ ツール</h3>
+          <h3 style={rightHeadingStyle}>{t(messages.toolPanel.heading)}</h3>
           <Show
             when={visibleToolFields().length > 0}
-            fallback={<p style={emptyHintStyle}>この選択に紐付く field はありません。</p>}
+            fallback={<p style={emptyHintStyle}>{t(messages.toolPanel.noFieldsForSelection)}</p>}
           >
             <For each={visibleToolFields()}>{(field) => <FieldEditor field={field} />}</For>
           </Show>
           <Show when={selection()}>
             <button type="button" onClick={() => host.clearSelection()} style={clearButtonStyle}>
-              全 tool field を表示
+              {t(messages.toolPanel.showAllFields)}
             </button>
           </Show>
         </div>
