@@ -1,0 +1,88 @@
+/**
+ * Creo UI — Tooltip (CSS-only, JS 不要)
+ *
+ * `.creo-tooltip` wrapper に hover / focus-within で `.creo-tooltip-content` が可視化。
+ *
+ * Spec: docs/components/tooltip.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.creo-tooltip-content {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + var(--spacing-xs));
+  transform: translateX(-50%) translateY(4px);
+
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-surface-bg-emphasis);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-md);
+
+  font-size: var(--typography-body-caption);
+  font-weight: var(--typography-weight-regular);
+  line-height: 1.4;
+  white-space: nowrap;
+  max-width: 280px;
+
+  opacity: 0;
+  pointer-events: none;
+  z-index: 100;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+/* ---------- Hover / focus-within で可視化 ---------- */
+
+.creo-tooltip:hover > .creo-tooltip-content,
+.creo-tooltip:focus-within > .creo-tooltip-content {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ---------- Placement ---------- */
+
+.creo-tooltip-content[data-placement="bottom"] {
+  top: calc(100% + var(--spacing-xs));
+  bottom: auto;
+  transform: translateX(-50%) translateY(-4px);
+}
+.creo-tooltip:hover > .creo-tooltip-content[data-placement="bottom"],
+.creo-tooltip:focus-within > .creo-tooltip-content[data-placement="bottom"] {
+  transform: translateX(-50%) translateY(0);
+}
+
+.creo-tooltip-content[data-placement="left"] {
+  right: calc(100% + var(--spacing-xs));
+  left: auto;
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%) translateX(4px);
+}
+.creo-tooltip:hover > .creo-tooltip-content[data-placement="left"],
+.creo-tooltip:focus-within > .creo-tooltip-content[data-placement="left"] {
+  transform: translateY(-50%) translateX(0);
+}
+
+.creo-tooltip-content[data-placement="right"] {
+  left: calc(100% + var(--spacing-xs));
+  top: 50%;
+  bottom: auto;
+  transform: translateY(-50%) translateX(-4px);
+}
+.creo-tooltip:hover > .creo-tooltip-content[data-placement="right"],
+.creo-tooltip:focus-within > .creo-tooltip-content[data-placement="right"] {
+  transform: translateY(-50%) translateX(0);
+}
+
+/* ---------- Inverse variant ---------- */
+
+.creo-tooltip-content[data-variant="inverse"] {
+  background-color: var(--color-text-primary);
+  color: var(--color-surface-bg-base);
+}
