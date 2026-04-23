@@ -63,6 +63,13 @@ token SSOT (`creo-ui-web/tokens.css`) を必ず一緒に import すること。
 | Breadcrumbs | [breadcrumbs.md](./breadcrumbs.md) | `.creo-breadcrumbs` + `-list/-item/-link` | chevron/slash/dot separator × sm/md |
 | Pagination | [pagination.md](./pagination.md) | `.creo-pagination` + `-list/-item/-ellipsis` | sm/md/lg × default/compact |
 
+## 0.10.0+ (2 追加)
+
+| Component | Spec | CSS | 主な variant |
+|-----------|------|-----|-------------|
+| Alert | [alert.md](./alert.md) | `.creo-alert` + `-icon/-content/-close` | info/success/warning/error × default/subtle/banner |
+| Empty state | [empty-state.md](./empty-state.md) | `.creo-empty-state` + `-icon/-title/-description/-actions` | sm/md/lg |
+
 ## 共通設計方針
 
 ### Framework agnostic (CSS + data attribute)
@@ -112,15 +119,15 @@ component ごとに sm/md/lg が何を参照するかは各 spec の Token refer
 4. web-demo で showcase section を増やして visual check
 5. commit 1 つ、`feat(components): <name> MVP`
 
-## 将来 (0.10.0+ 候補)
+## 将来 (0.11.0+ 候補)
 
 - Command palette (⌘K、fuzzy search + keyboard navigation)
 - Combobox / Autocomplete
 - Date / Time picker
 - Stepper / Wizard
 - Virtual list (大量データ用)
-- Alert (inline status、Toast とは違う持続表示)
-- Empty state (list が空の時の illustration + message)
+- Timeline / activity feed
+- Form wizard (multi-step form submission)
 
 ## 関連
 
