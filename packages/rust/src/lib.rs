@@ -26,9 +26,11 @@ pub mod tokens {
 #[cfg(feature = "ratatui")]
 pub mod ratatui;
 
-// egui / iced / dioxus は skeleton (feature gate のみ、実装は将来 issue)
-// #[cfg(feature = "egui")]
-// pub mod egui;
+// egui interop — opt-in via `features = ["egui"]`
+#[cfg(feature = "egui")]
+pub mod egui;
+
+// iced / dioxus は skeleton (feature gate のみ、実装は将来 issue)
 
 #[cfg(test)]
 mod tests {
