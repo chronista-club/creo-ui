@@ -56,6 +56,47 @@ let bg = ratatui::style::Color::Rgb(
 let pixel = image::Rgb(COLOR_BRAND_PRIMARY.as_array());
 ```
 
+### ratatui interop (`features = ["ratatui"]`)
+
+`creo_ui::ratatui` 下に `Color` 変換と palette helper、character cell padding が生えている:
+
+```rust
+use creo_ui::ratatui as creo_rat;
+use creo_ui::tokens;
+
+let title_style = ratatui::style::Style::default()
+    .fg(creo_rat::color(tokens::COLOR_BRAND_PRIMARY))
+    .bg(creo_rat::palette::bg_base())
+    .add_modifier(ratatui::style::Modifier::BOLD);
+
+// spacing token を character cell 数 (8px/cell 仮定) で扱う
+let left_pad = creo_rat::pad::md(); // 18px → 2 cells
+```
+
+### egui interop (`features = ["egui"]`)
+
+`creo_ui::egui` で mint-dark baseline の `Visuals` を egui Context にワンショット
+適用できる。`Rgb` → `Color32` 変換も const fn として生えている:
+
+```rust
+use creo_ui::egui as creo_eg;
+use creo_ui::tokens;
+
+fn setup(ctx: &egui::Context) {
+    // Creo mint-dark theme を Visuals に一括反映 (surface / widgets / selection
+    // / hyperlink / error・warning tint まで)
+    creo_eg::apply_creo_theme(ctx);
+}
+
+// Visuals を直接取得して部分 override したい場合
+let mut v = creo_eg::creo_visuals();
+v.window_rounding = 8.0.into();
+
+// 単発の Color32 変換 (const 文脈でも OK)
+const BRAND: egui::Color32 = creo_eg::to_color32(tokens::COLOR_BRAND_PRIMARY);
+let info: egui::Color32 = tokens::COLOR_SEMANTIC_INFO.into();
+```
+
 ## 提供するトークン
 
 | Category | 命名 | 型 |

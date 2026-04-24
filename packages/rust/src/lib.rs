@@ -15,7 +15,7 @@
 
 #![forbid(unsafe_code)]
 
-pub const VERSION: &str = "0.1.0";
+pub const VERSION: &str = "0.2.0";
 
 #[allow(dead_code)]
 pub mod tokens {
@@ -38,7 +38,7 @@ mod tests {
 
     #[test]
     fn version_is_set() {
-        assert_eq!(VERSION, "0.1.0");
+        assert_eq!(VERSION, "0.2.0");
     }
 
     #[test]
