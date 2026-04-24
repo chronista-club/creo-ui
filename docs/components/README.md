@@ -70,6 +70,14 @@ token SSOT (`creo-ui-web/tokens.css`) を必ず一緒に import すること。
 | Alert | [alert.md](./alert.md) | `.creo-alert` + `-icon/-content/-close` | info/success/warning/error × default/subtle/banner |
 | Empty state | [empty-state.md](./empty-state.md) | `.creo-empty-state` + `-icon/-title/-description/-actions` | sm/md/lg |
 
+## 0.11.0+ (3 追加)
+
+| Component | Spec | CSS | 主な variant |
+|-----------|------|-----|-------------|
+| Stepper | [stepper.md](./stepper.md) | `.creo-stepper` + `-item/-marker/-label/-description` | horizontal/vertical × sm/md、status: completed/current/pending/error |
+| Timeline | [timeline.md](./timeline.md) | `.creo-timeline` + `-item/-marker/-content/-title/-meta/-description` | default/success/warning/error/info × sm/md |
+| Combobox | [combobox.md](./combobox.md) | `.creo-combobox` (native `<input list>` + `<datalist>`) | `.creo-input` の全 variant 継承 |
+
 ## 共通設計方針
 
 ### Framework agnostic (CSS + data attribute)

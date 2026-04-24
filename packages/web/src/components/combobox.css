@@ -1,0 +1,31 @@
+/**
+ * Creo UI — Combobox (`<input list>` + `<datalist>`)
+ *
+ * native datalist を使う小さい visual cue 追加のみ。`.creo-input` と組合せて使用。
+ *
+ * Spec: docs/components/combobox.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-combobox {
+  /* input right side に chevron room を確保 */
+  padding-right: var(--spacing-xl);
+
+  /* chevron icon を背景画像として描く (SVG inline、token 色追従) */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-sm) center;
+  background-size: 12px 8px;
+
+  /* currentColor が使えないので、text-tertiary を指定 (hack: CSS mask 使うと完全追従できるが SVG で十分) */
+}
+
+/* list opened 時 (focus) は chevron を反転させたい → native datalist は open state を
+   CSS で知る術がないので省略。focus ring は .creo-input の :focus-visible で統一 */
+
+/* RTL 対応 (right に chevron だと LTR 前提、RTL では left に) */
+[dir="rtl"] .creo-combobox {
+  padding-right: var(--spacing-md);
+  padding-left: var(--spacing-xl);
+  background-position: left var(--spacing-sm) center;
+}

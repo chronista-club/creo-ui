@@ -1,0 +1,124 @@
+/**
+ * Creo UI — Timeline (event / activity history)
+ *
+ * Spec: docs/components/timeline.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* ---------- Item ---------- */
+
+.creo-timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--spacing-sm);
+  padding: 0;
+}
+
+/* connector: 次 item との縦線 */
+.creo-timeline-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: calc(32px / 2 - 1px);
+  top: 32px;
+  bottom: calc(-1 * var(--spacing-md));
+  width: 2px;
+  background-color: var(--color-surface-border);
+}
+
+.creo-timeline[data-size="sm"] .creo-timeline-item:not(:last-child)::before {
+  left: calc(24px / 2 - 1px);
+  top: 24px;
+}
+
+/* ---------- Marker ---------- */
+
+.creo-timeline-marker {
+  grid-column: 1;
+  grid-row: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-bg-subtle);
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-surface-border);
+  font-size: var(--typography-size-sm);
+  font-weight: var(--typography-weight-semibold);
+  line-height: 1;
+  user-select: none;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.creo-timeline[data-size="sm"] .creo-timeline-marker {
+  width: 24px;
+  height: 24px;
+  font-size: var(--typography-size-xs);
+}
+
+/* ---------- Variants (marker 色) ---------- */
+
+.creo-timeline-item[data-variant="success"] .creo-timeline-marker {
+  background-color: var(--color-semantic-success);
+  color: var(--color-surface-bg-base);
+  border-color: var(--color-semantic-success);
+}
+.creo-timeline-item[data-variant="warning"] .creo-timeline-marker {
+  background-color: var(--color-semantic-warning);
+  color: var(--color-surface-bg-base);
+  border-color: var(--color-semantic-warning);
+}
+.creo-timeline-item[data-variant="error"] .creo-timeline-marker {
+  background-color: var(--color-semantic-error);
+  color: var(--color-surface-bg-base);
+  border-color: var(--color-semantic-error);
+}
+.creo-timeline-item[data-variant="info"] .creo-timeline-marker {
+  background-color: var(--color-semantic-info);
+  color: var(--color-surface-bg-base);
+  border-color: var(--color-semantic-info);
+}
+
+/* ---------- Content ---------- */
+
+.creo-timeline-content {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 4px;
+}
+
+.creo-timeline-title {
+  font-size: var(--typography-size-md);
+  font-weight: var(--typography-weight-medium);
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+
+.creo-timeline-meta {
+  font-size: var(--typography-body-caption);
+  color: var(--color-text-tertiary);
+  line-height: var(--typography-line-height-normal);
+}
+
+.creo-timeline-description {
+  margin: var(--spacing-xs) 0 0 0;
+  font-size: var(--typography-size-md);
+  color: var(--color-text-secondary);
+  line-height: var(--typography-line-height-normal);
+}
