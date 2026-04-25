@@ -135,7 +135,7 @@ public enum CreoUITokens {
     public static let shadowMd: String = "0 4px 6px -1px rgba(32, 36, 46, 0.08), 0 2px 4px -2px rgba(32, 36, 46, 0.06)" // Medium elevation — cards, dropdowns
     public static let shadowLg: String = "0 10px 15px -3px rgba(32, 36, 46, 0.10), 0 4px 6px -4px rgba(32, 36, 46, 0.08)" // Large elevation — popovers, overlays
     public static let shadowXl: String = "0 20px 25px -5px rgba(32, 36, 46, 0.12), 0 8px 10px -6px rgba(32, 36, 46, 0.08)" // Extra-large elevation — modals, focal surfaces
-    public static let typographyFamilySans: String = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif" // Default UI sans-serif family (multi-language: EN/JA/KO)
-    public static let typographyFamilyMono: String = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace" // Monospace family for code blocks, tokens, IDs
-    public static let typographyFamilyDisplay: String = "'Creo Sans', -apple-system, 'Noto Sans JP', sans-serif" // Display family — heroes, large marketing headlines
+    public static let typographyFamilySans: String = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', 'Yu Gothic UI', 'Meiryo UI', Roboto, 'Noto Sans JP', sans-serif" // Default UI sans-serif family (multi-language: EN/JA/KO, multi-platform: macOS/Win/Linux)
+    public static let typographyFamilyMono: String = "'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Cascadia Mono', 'Fira Code', 'Consolas', 'Yu Gothic UI', monospace" // Monospace family for code blocks, tokens, IDs (multi-platform)
+    public static let typographyFamilyDisplay: String = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', 'Yu Gothic UI', 'Noto Sans JP', sans-serif" // Display family — heroes, large marketing headlines (multi-platform)
 }

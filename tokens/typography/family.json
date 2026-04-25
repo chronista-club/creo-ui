@@ -2,19 +2,19 @@
   "typography": {
     "family": {
       "sans": {
-        "$value": "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif",
+        "$value": "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', 'Yu Gothic UI', 'Meiryo UI', Roboto, 'Noto Sans JP', sans-serif",
         "$type": "fontFamily",
-        "$description": "Default UI sans-serif family (multi-language: EN/JA/KO)"
+        "$description": "Default UI sans-serif family (multi-language: EN/JA/KO, multi-platform: macOS/Win/Linux)"
       },
       "mono": {
-        "$value": "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace",
+        "$value": "'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Cascadia Mono', 'Fira Code', 'Consolas', 'Yu Gothic UI', monospace",
         "$type": "fontFamily",
-        "$description": "Monospace family for code blocks, tokens, IDs"
+        "$description": "Monospace family for code blocks, tokens, IDs (multi-platform)"
       },
       "display": {
-        "$value": "'Creo Sans', -apple-system, 'Noto Sans JP', sans-serif",
+        "$value": "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', 'Yu Gothic UI', 'Noto Sans JP', sans-serif",
         "$type": "fontFamily",
-        "$description": "Display family — heroes, large marketing headlines"
+        "$description": "Display family — heroes, large marketing headlines (multi-platform)"
       }
     }
   }

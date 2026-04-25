@@ -227,12 +227,12 @@ pub const TYPOGRAPHY_DISPLAY_MD: f32 = 44_f32;
 pub const TYPOGRAPHY_DISPLAY_LG: f32 = 56_f32;
 /// Display xl — landing mega headline / promotional hero
 pub const TYPOGRAPHY_DISPLAY_XL: f32 = 72_f32;
-/// Default UI sans-serif family (multi-language: EN/JA/KO)
-pub const TYPOGRAPHY_FAMILY_SANS: &str = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans JP', sans-serif";
-/// Monospace family for code blocks, tokens, IDs
-pub const TYPOGRAPHY_FAMILY_MONO: &str = "'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace";
-/// Display family — heroes, large marketing headlines
-pub const TYPOGRAPHY_FAMILY_DISPLAY: &str = "'Creo Sans', -apple-system, 'Noto Sans JP', sans-serif";
+/// Default UI sans-serif family (multi-language: EN/JA/KO, multi-platform: macOS/Win/Linux)
+pub const TYPOGRAPHY_FAMILY_SANS: &str = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', 'Yu Gothic UI', 'Meiryo UI', Roboto, 'Noto Sans JP', sans-serif";
+/// Monospace family for code blocks, tokens, IDs (multi-platform)
+pub const TYPOGRAPHY_FAMILY_MONO: &str = "'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Cascadia Mono', 'Fira Code', 'Consolas', 'Yu Gothic UI', monospace";
+/// Display family — heroes, large marketing headlines (multi-platform)
+pub const TYPOGRAPHY_FAMILY_DISPLAY: &str = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', 'Yu Gothic UI', 'Noto Sans JP', sans-serif";
 /// Tight line-height — headings
 pub const TYPOGRAPHY_LINE_HEIGHT_TIGHT: f32 = 1.25_f32;
 /// Normal line-height — default body
