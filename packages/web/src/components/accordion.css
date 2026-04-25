@@ -1,0 +1,166 @@
+/**
+ * Creo UI — Accordion component (native <details>/<summary> based)
+ *
+ * native `<details>` + `<summary>` で expand/collapse / keyboard / ARIA を browser に任せる。
+ * consumer は HTML 構造を組むだけ。子要素 (`.creo-accordion-body` の中身) は自由。
+ *
+ * Spec: docs/components/accordion.md (TBD)
+ * Token: creo-ui-web/tokens.css (必須)
+ *
+ * Usage:
+ *   <div class="creo-accordion">
+ *     <details class="creo-accordion-item" open>
+ *       <summary class="creo-accordion-header">
+ *         <span class="creo-accordion-chevron" aria-hidden="true">▶</span>
+ *         <span class="creo-accordion-title">Item title</span>
+ *         <span class="creo-accordion-meta">optional meta</span>
+ *       </summary>
+ *       <div class="creo-accordion-body">
+ *         任意の子要素
+ *       </div>
+ *     </details>
+ *     <details class="creo-accordion-item">…</details>
+ *   </div>
+ *
+ * Variants (data-variant on .creo-accordion):
+ *   - default — header subtle、body は標準余白
+ *   - flush   — border / radius を弱め (sidebar 等の埋め込み向け)
+ *   - card    — 各 item を card 化 (background + radius)
+ *
+ * Sizes (data-size on .creo-accordion):
+ *   - sm / md (default) / lg
+ */
+
+.creo-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: inherit;
+  font-size: var(--typography-size-md);
+  color: var(--color-text-primary);
+}
+
+/* ---------- Item (native <details>) ---------- */
+
+.creo-accordion-item {
+  /* Native default の triangle marker を消して自前 chevron を出す */
+  list-style: none;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.creo-accordion-item > summary::-webkit-details-marker {
+  display: none;
+}
+.creo-accordion-item > summary::marker {
+  content: "";
+}
+
+/* card variant — 各 item を独立した card として表示 */
+.creo-accordion[data-variant="card"] .creo-accordion-item {
+  background-color: var(--color-surface-bg-subtle);
+  border: 1px solid var(--color-surface-border);
+}
+
+/* ---------- Header (native <summary>) ---------- */
+
+.creo-accordion-header {
+  display: flex;
+  align-items: center;
+  gap: var(--layout-gap-tight);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  user-select: none;
+  font-weight: var(--typography-weight-medium);
+  color: var(--color-text-primary);
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.creo-accordion-header:hover {
+  background-color: var(--color-surface-bg-emphasis);
+}
+.creo-accordion-header:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: -2px;
+}
+
+/* sm / lg size */
+.creo-accordion[data-size="sm"] .creo-accordion-header {
+  padding: 2px var(--spacing-xs);
+  font-size: var(--typography-size-sm);
+}
+.creo-accordion[data-size="lg"] .creo-accordion-header {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--typography-size-lg);
+}
+
+/* ---------- Chevron (open 状態で 90deg 回転) ---------- */
+
+.creo-accordion-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.75em;
+  font-size: 0.75em;
+  color: var(--color-text-tertiary);
+  transition: transform 120ms ease, color 120ms ease;
+  flex-shrink: 0;
+}
+.creo-accordion-item[open] > .creo-accordion-header > .creo-accordion-chevron {
+  transform: rotate(90deg);
+  color: var(--color-text-secondary);
+}
+
+/* ---------- Title / Meta ---------- */
+
+.creo-accordion-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.creo-accordion-meta {
+  font-size: var(--typography-size-sm);
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+/* ---------- Body ---------- */
+
+.creo-accordion-body {
+  padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs);
+  color: var(--color-text-secondary);
+}
+.creo-accordion[data-variant="card"] .creo-accordion-body {
+  padding: var(--spacing-xs) var(--spacing-md) var(--spacing-sm);
+  border-top: 1px solid var(--color-surface-border);
+}
+.creo-accordion[data-variant="flush"] .creo-accordion-body {
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-xs);
+}
+
+/* sm / lg size */
+.creo-accordion[data-size="sm"] .creo-accordion-body {
+  padding: 2px var(--spacing-xs) var(--spacing-xs);
+  font-size: var(--typography-size-sm);
+}
+.creo-accordion[data-size="lg"] .creo-accordion-body {
+  padding: var(--spacing-sm) var(--spacing-lg) var(--spacing-md);
+}
+
+/* ---------- Disabled ---------- */
+
+.creo-accordion-item[data-disabled] > .creo-accordion-header {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-accordion-chevron,
+  .creo-accordion-header {
+    transition: none;
+  }
+}
