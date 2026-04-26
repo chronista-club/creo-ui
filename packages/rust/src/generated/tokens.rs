@@ -243,6 +243,18 @@ pub const TYPOGRAPHY_FAMILY_MONO_DISPLAY: &str = "'ShareTechMono Nerd Font', 'Sh
 pub const TYPOGRAPHY_FAMILY_DISPLAY: &str = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', 'Yu Gothic UI', 'Noto Sans JP', sans-serif";
 /// Icon family — Nerd Fonts (~10k アイコン: devicons / octicons / font-awesome / material) + OS native emoji fallback。Nerd Font 未 install 環境では emoji / 普通文字に degrade
 pub const TYPOGRAPHY_FAMILY_ICON: &str = "'Symbols Nerd Font Mono', 'Symbols Nerd Font', 'JetBrainsMono Nerd Font', 'FiraCode Nerd Font', 'CaskaydiaCove Nerd Font', 'Iosevka Nerd Font', '0xProto Nerd Font', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif";
+/// App UI mode — chrome 全般 (sidebar / button / dialog / tab)。等幅 + Nerd Font icon、CJK は PlemolJP fallback で完全等幅統一。VP Phase A1 default
+pub const TYPOGRAPHY_FAMILY_APP: &str = "'JetBrainsMono Nerd Font Mono', 'JetBrainsMono Nerd Font', 'JetBrains Mono', 'PlemolJP', 'Noto Sans JP', monospace";
+/// Read mode — 読み専用表示 (memory view / chat history / canvas markdown render / log viewer)。PlemolJP の Plex Sans JP + JetBrains Mono Latin で CJK 完全等幅統一
+pub const TYPOGRAPHY_FAMILY_READ: &str = "'PlemolJP', 'Noto Sans JP', 'JetBrainsMono Nerd Font Mono', monospace";
+/// Editor mode (write、default) — textarea / Markdown editor / chat input。iA Writer Duo の Duospace で writer 体験、CJK は PlemolJP
+pub const TYPOGRAPHY_FAMILY_EDITOR: &str = "'iAWriterDuoS Nerd Font Mono', 'iAWriterDuoS Nerd Font', 'iA Writer Duo S', 'PlemolJP', 'Noto Sans JP', monospace";
+/// Editor mode option — 純粋 mono。iA Writer Mono、コード重視 user 向け
+pub const TYPOGRAPHY_FAMILY_EDITOR_MONO: &str = "'iAWriterMonoS', 'iA Writer Mono S', 'PlemolJP', 'Noto Sans JP', monospace";
+/// Editor mode option — semi-proportional。iA Writer Quattro、長文散文 user 向け
+pub const TYPOGRAPHY_FAMILY_EDITOR_QUATTRO: &str = "'iAWriterQuattroS', 'iA Writer Quattro S', 'PlemolJP', 'Noto Sans JP', sans-serif";
+/// Terminal mode — xterm.js (app と同じ stack だが意味的に分離、将来 terminal 専用調整に拡張可)
+pub const TYPOGRAPHY_FAMILY_TERMINAL: &str = "'JetBrainsMono Nerd Font Mono', 'JetBrainsMono Nerd Font', 'JetBrains Mono', 'PlemolJP', 'Noto Sans JP', monospace";
 /// Tight line-height — headings
 pub const TYPOGRAPHY_LINE_HEIGHT_TIGHT: f32 = 1.25_f32;
 /// Normal line-height — default body
