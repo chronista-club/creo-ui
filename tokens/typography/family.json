@@ -40,6 +40,36 @@
         "$value": "'Symbols Nerd Font Mono', 'Symbols Nerd Font', 'JetBrainsMono Nerd Font', 'FiraCode Nerd Font', 'CaskaydiaCove Nerd Font', 'Iosevka Nerd Font', '0xProto Nerd Font', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif",
         "$type": "fontFamily",
         "$description": "Icon family — Nerd Fonts (~10k アイコン: devicons / octicons / font-awesome / material) + OS native emoji fallback。Nerd Font 未 install 環境では emoji / 普通文字に degrade"
+      },
+      "app": {
+        "$value": "'JetBrainsMono Nerd Font Mono', 'JetBrainsMono Nerd Font', 'JetBrains Mono', 'PlemolJP', 'Noto Sans JP', monospace",
+        "$type": "fontFamily",
+        "$description": "App UI mode — chrome 全般 (sidebar / button / dialog / tab)。等幅 + Nerd Font icon、CJK は PlemolJP fallback で完全等幅統一。VP Phase A1 default"
+      },
+      "read": {
+        "$value": "'PlemolJP', 'Noto Sans JP', 'JetBrainsMono Nerd Font Mono', monospace",
+        "$type": "fontFamily",
+        "$description": "Read mode — 読み専用表示 (memory view / chat history / canvas markdown render / log viewer)。PlemolJP の Plex Sans JP + JetBrains Mono Latin で CJK 完全等幅統一"
+      },
+      "editor": {
+        "$value": "'iAWriterDuoS Nerd Font Mono', 'iAWriterDuoS Nerd Font', 'iA Writer Duo S', 'PlemolJP', 'Noto Sans JP', monospace",
+        "$type": "fontFamily",
+        "$description": "Editor mode (write、default) — textarea / Markdown editor / chat input。iA Writer Duo の Duospace で writer 体験、CJK は PlemolJP"
+      },
+      "editor-mono": {
+        "$value": "'iAWriterMonoS', 'iA Writer Mono S', 'PlemolJP', 'Noto Sans JP', monospace",
+        "$type": "fontFamily",
+        "$description": "Editor mode option — 純粋 mono。iA Writer Mono、コード重視 user 向け"
+      },
+      "editor-quattro": {
+        "$value": "'iAWriterQuattroS', 'iA Writer Quattro S', 'PlemolJP', 'Noto Sans JP', sans-serif",
+        "$type": "fontFamily",
+        "$description": "Editor mode option — semi-proportional。iA Writer Quattro、長文散文 user 向け"
+      },
+      "terminal": {
+        "$value": "'JetBrainsMono Nerd Font Mono', 'JetBrainsMono Nerd Font', 'JetBrains Mono', 'PlemolJP', 'Noto Sans JP', monospace",
+        "$type": "fontFamily",
+        "$description": "Terminal mode — xterm.js (app と同じ stack だが意味的に分離、将来 terminal 専用調整に拡張可)"
       }
     }
   }
