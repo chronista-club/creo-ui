@@ -1,0 +1,58 @@
+{
+  "name": "creo-ui-icons-web",
+  "version": "0.0.1",
+  "description": "Creo UI — Iconify-based icon adapter for SolidJS web apps. Universal semantic registry with curated 9-set Iconify lineup (mingcute/iconoir/ph/svg-spinners/codicon/simple-icons/flagpack/noto/bi).",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./registry/system": {
+      "types": "./dist/registry/system.d.ts",
+      "import": "./dist/registry/system.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "README.md"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chronista-club/creo-ui.git",
+    "directory": "packages/icons-web"
+  },
+  "bugs": {
+    "url": "https://github.com/chronista-club/creo-ui/issues"
+  },
+  "homepage": "https://github.com/chronista-club/creo-ui#readme",
+  "keywords": [
+    "design-system",
+    "icons",
+    "iconify",
+    "creo-ui",
+    "solid-js"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build",
+    "typecheck:build": "tsc -p tsconfig.build.json --noEmit",
+    "prepublishOnly": "bun run build"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.9.0",
+    "iconify-icon": "^3.0.0"
+  },
+  "devDependencies": {
+    "solid-js": "^1.9.0",
+    "iconify-icon": "^3.0.2",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^4.2.0",
+    "vite-plugin-solid": "^2.10.0"
+  },
+  "license": "Apache-2.0"
+}
