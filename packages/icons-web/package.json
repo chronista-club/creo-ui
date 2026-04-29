@@ -15,6 +15,34 @@
       "types": "./dist/registry/system.d.ts",
       "import": "./dist/registry/system.js"
     },
+    "./registry/status": {
+      "types": "./dist/registry/status.d.ts",
+      "import": "./dist/registry/status.js"
+    },
+    "./registry/editor": {
+      "types": "./dist/registry/editor.d.ts",
+      "import": "./dist/registry/editor.js"
+    },
+    "./registry/brand": {
+      "types": "./dist/registry/brand.d.ts",
+      "import": "./dist/registry/brand.js"
+    },
+    "./registry/motion": {
+      "types": "./dist/registry/motion.d.ts",
+      "import": "./dist/registry/motion.js"
+    },
+    "./registry/flag": {
+      "types": "./dist/registry/flag.d.ts",
+      "import": "./dist/registry/flag.js"
+    },
+    "./registry/emoji": {
+      "types": "./dist/registry/emoji.d.ts",
+      "import": "./dist/registry/emoji.js"
+    },
+    "./registry/filetype": {
+      "types": "./dist/registry/filetype.d.ts",
+      "import": "./dist/registry/filetype.js"
+    },
     "./package.json": "./package.json"
   },
   "files": ["dist", "README.md"],

@@ -19,6 +19,13 @@ export default defineConfig({
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
         'registry/system': resolve(__dirname, 'src/registry/system.ts'),
+        'registry/status': resolve(__dirname, 'src/registry/status.ts'),
+        'registry/editor': resolve(__dirname, 'src/registry/editor.ts'),
+        'registry/brand': resolve(__dirname, 'src/registry/brand.ts'),
+        'registry/motion': resolve(__dirname, 'src/registry/motion.ts'),
+        'registry/flag': resolve(__dirname, 'src/registry/flag.ts'),
+        'registry/emoji': resolve(__dirname, 'src/registry/emoji.ts'),
+        'registry/filetype': resolve(__dirname, 'src/registry/filetype.ts'),
       },
       formats: ['es'],
     },
