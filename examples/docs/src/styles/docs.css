@@ -449,6 +449,386 @@ a:hover {
 }
 
 /* ============================================================
+   Page header (shared across Foundations / Components)
+   ============================================================ */
+
+.docs-page-header {
+  margin-bottom: var(--spacing-xl);
+  border-bottom: 1px solid var(--color-surface-border);
+  padding-bottom: var(--spacing-lg);
+}
+
+.docs-page-eyebrow {
+  margin: 0;
+  font-size: var(--typography-size-xs);
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.docs-page-header h1 {
+  margin: var(--spacing-xs) 0 var(--spacing-sm) 0;
+  font-size: var(--typography-size-3xl);
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: -0.02em;
+}
+
+.docs-page-lead {
+  margin: 0;
+  font-size: var(--typography-size-lg);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  max-width: 60ch;
+}
+
+.docs-page-helper {
+  font-size: var(--typography-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+/* ============================================================
+   Foundations / Color
+   ============================================================ */
+
+.docs-color-group + .docs-color-group {
+  margin-top: var(--spacing-xl);
+}
+
+.docs-color-group-title {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--typography-size-xl);
+  font-weight: var(--typography-weight-bold);
+}
+
+.docs-color-group-desc {
+  margin: 0 0 var(--spacing-md) 0;
+  font-size: var(--typography-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.docs-color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-sm);
+}
+
+.docs-color-swatch {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+}
+
+.docs-color-swatch-chip {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  border: 1px solid color-mix(in oklab, var(--color-text-primary) 10%, transparent);
+}
+
+.docs-color-swatch-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.docs-color-swatch-name {
+  font-family: var(--typography-family-mono);
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-primary);
+  font-weight: var(--typography-weight-medium);
+  word-break: break-all;
+}
+
+.docs-color-swatch-var {
+  font-family: var(--typography-family-mono);
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  word-break: break-all;
+}
+
+.docs-color-swatch-hint {
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================
+   Foundations / Dimension scale (Spacing / Radius)
+   ============================================================ */
+
+.docs-dim-scale {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  background: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.docs-dim-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 80px auto;
+  align-items: center;
+  gap: var(--spacing-md);
+  font-size: var(--typography-size-sm);
+}
+
+.docs-dim-name {
+  font-family: var(--typography-family-mono);
+  color: var(--color-text-primary);
+}
+
+.docs-dim-visual-wrap {
+  height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.docs-dim-visual--spacing {
+  height: 8px;
+  background: var(--color-brand-primary);
+  border-radius: 4px;
+}
+
+.docs-dim-visual--radius {
+  width: 48px;
+  height: 48px;
+  background: var(--color-brand-primary);
+}
+
+.docs-dim-value {
+  font-family: var(--typography-family-mono);
+  color: var(--color-text-secondary);
+  font-size: var(--typography-size-xs);
+}
+
+.docs-dim-hint {
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+/* ============================================================
+   Foundations / Typography
+   ============================================================ */
+
+.docs-typo-table {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.docs-typo-row {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+}
+
+.docs-typo-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--typography-size-xs);
+  font-family: var(--typography-family-mono);
+}
+
+.docs-typo-meta span {
+  color: var(--color-text-secondary);
+  font-family: var(--typography-family-app);
+}
+
+.docs-typo-sample {
+  font-size: var(--typography-size-lg);
+  color: var(--color-text-primary);
+}
+
+.docs-typo-sizes,
+.docs-typo-weights,
+.docs-typo-semantics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  background: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.docs-typo-size-row,
+.docs-typo-weight-row,
+.docs-typo-semantic-row {
+  display: grid;
+  grid-template-columns: 200px 60px 1fr;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-xs) 0;
+}
+
+.docs-typo-size-name,
+.docs-typo-size-row > code,
+.docs-typo-weight-row > code,
+.docs-typo-semantic-row > code {
+  font-family: var(--typography-family-mono);
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-primary);
+}
+
+.docs-typo-size-value,
+.docs-typo-weight-value {
+  font-family: var(--typography-family-mono);
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.docs-typo-size-sample,
+.docs-typo-semantic-sample {
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
+   Foundations / Shadow
+   ============================================================ */
+
+.docs-shadow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) 0;
+}
+
+.docs-shadow-card {
+  padding: var(--spacing-md);
+  background: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.docs-shadow-name {
+  font-family: var(--typography-family-mono);
+  font-weight: var(--typography-weight-medium);
+}
+
+.docs-shadow-var {
+  font-family: var(--typography-family-mono);
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.docs-shadow-hint {
+  margin: 0;
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   Foundations / Theming
+   ============================================================ */
+
+.docs-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.docs-theme-card {
+  padding: var(--spacing-md);
+  background: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.docs-theme-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+}
+
+.docs-theme-card-head h3 {
+  margin: 0;
+  font-size: var(--typography-size-lg);
+  font-weight: var(--typography-weight-bold);
+}
+
+.docs-theme-default-badge {
+  font-size: 10px;
+  font-family: var(--typography-family-mono);
+  padding: 1px 6px;
+  background: color-mix(in oklab, var(--color-brand-primary) 25%, transparent);
+  color: var(--color-brand-primary);
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.docs-theme-note {
+  margin: 0;
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.docs-theme-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xs);
+}
+
+.docs-theme-preview {
+  background: var(--color-surface-bg-base);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.docs-theme-preview-bar {
+  display: flex;
+  gap: 4px;
+}
+
+.docs-theme-preview-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in oklab, var(--color-text-primary) 12%, transparent);
+}
+
+.docs-theme-preview-label {
+  font-family: var(--typography-family-mono);
+  font-size: 10px;
+  color: var(--color-text-primary);
+}
+
+.docs-theme-preview-mode {
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 
@@ -458,5 +838,17 @@ a:hover {
   }
   .docs-header-nav {
     display: none;
+  }
+  .docs-typo-row {
+    grid-template-columns: 1fr;
+  }
+  .docs-typo-size-row,
+  .docs-typo-weight-row,
+  .docs-typo-semantic-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xs);
+  }
+  .docs-dim-row {
+    grid-template-columns: 1fr;
   }
 }

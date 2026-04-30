@@ -5,18 +5,26 @@ import Layout from './layout/Layout'
 const Home = lazy(() => import('./pages/Home'))
 const Stub = lazy(() => import('./pages/Stub'))
 
+// Foundations
+const Color = lazy(() => import('./pages/Foundations/Color'))
+const Typography = lazy(() => import('./pages/Foundations/Typography'))
+const Spacing = lazy(() => import('./pages/Foundations/Spacing'))
+const Radius = lazy(() => import('./pages/Foundations/Radius'))
+const Shadow = lazy(() => import('./pages/Foundations/Shadow'))
+const Theming = lazy(() => import('./pages/Foundations/Theming'))
+
 export default function App() {
   return (
     <Router root={Layout}>
       <Route path="/" component={Home} />
       <Route path="/getting-started" component={Stub} />
       <Route path="/foundations" component={Stub} />
-      <Route path="/foundations/color" component={Stub} />
-      <Route path="/foundations/typography" component={Stub} />
-      <Route path="/foundations/spacing" component={Stub} />
-      <Route path="/foundations/radius" component={Stub} />
-      <Route path="/foundations/shadow" component={Stub} />
-      <Route path="/foundations/theming" component={Stub} />
+      <Route path="/foundations/color" component={Color} />
+      <Route path="/foundations/typography" component={Typography} />
+      <Route path="/foundations/spacing" component={Spacing} />
+      <Route path="/foundations/radius" component={Radius} />
+      <Route path="/foundations/shadow" component={Shadow} />
+      <Route path="/foundations/theming" component={Theming} />
       <Route path="/components" component={Stub} />
       <Route path="/components/button" component={Stub} />
       <Route path="/components/input" component={Stub} />
