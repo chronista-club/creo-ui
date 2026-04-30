@@ -6,6 +6,7 @@ const Home = lazy(() => import('./pages/Home'))
 const Stub = lazy(() => import('./pages/Stub'))
 
 // Foundations
+const Principles = lazy(() => import('./pages/Foundations/Principles'))
 const Color = lazy(() => import('./pages/Foundations/Color'))
 const Typography = lazy(() => import('./pages/Foundations/Typography'))
 const Spacing = lazy(() => import('./pages/Foundations/Spacing'))
@@ -18,7 +19,8 @@ export default function App() {
     <Router root={Layout}>
       <Route path="/" component={Home} />
       <Route path="/getting-started" component={Stub} />
-      <Route path="/foundations" component={Stub} />
+      <Route path="/foundations" component={Principles} />
+      <Route path="/foundations/principles" component={Principles} />
       <Route path="/foundations/color" component={Color} />
       <Route path="/foundations/typography" component={Typography} />
       <Route path="/foundations/spacing" component={Spacing} />

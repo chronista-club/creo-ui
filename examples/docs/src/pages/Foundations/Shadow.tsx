@@ -1,9 +1,11 @@
 import { For } from 'solid-js'
 
 const SHADOWS = [
-  { name: 'shadow.sm', cssVar: '--shadow-sm', hint: 'Subtle elevation (hover, dropdown 微発光)' },
+  { name: 'shadow.none', cssVar: '--shadow-none', hint: 'Explicit reset (no elevation)' },
+  { name: 'shadow.sm', cssVar: '--shadow-sm', hint: 'Subtle lift (hover, dropdown 微発光)' },
   { name: 'shadow.md', cssVar: '--shadow-md', hint: 'Card hover / popover / dropdown' },
-  { name: 'shadow.lg', cssVar: '--shadow-lg', hint: 'Dialog / sheet / drawer' },
+  { name: 'shadow.lg', cssVar: '--shadow-lg', hint: 'Sheet / drawer / overlay' },
+  { name: 'shadow.xl', cssVar: '--shadow-xl', hint: 'Modal / focal surface' },
 ] as const
 
 export default function Shadow() {
@@ -13,8 +15,8 @@ export default function Shadow() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Shadow</h1>
         <p class="docs-page-lead">
-          3 階層の elevation。 dark theme では shadow opacity を強めに、 light theme では
-          subtle に — token 値が theme 切替で自動で適切な vis に追従。
+          5 階層の elevation (none / sm / md / lg / xl)。 dark theme では opacity 強め、
+          light theme では subtle に — token 値が theme 切替で適切な vis に追従。
         </p>
       </header>
 
@@ -37,8 +39,8 @@ export default function Shadow() {
 .card-floating {
   box-shadow: var(--shadow-md);
 }
-.dialog {
-  box-shadow: var(--shadow-lg);
+.modal {
+  box-shadow: var(--shadow-xl);
 }`}</code>
         </pre>
       </section>

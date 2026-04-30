@@ -17,9 +17,10 @@ const NAV: readonly NavGroup[] = [
   {
     title: 'Foundations',
     items: [
+      { href: '/foundations/principles', label: 'Principles' },
       { href: '/foundations/color', label: 'Color' },
       { href: '/foundations/typography', label: 'Typography' },
-      { href: '/foundations/spacing', label: 'Spacing' },
+      { href: '/foundations/spacing', label: 'Spacing & Margin' },
       { href: '/foundations/radius', label: 'Radius' },
       { href: '/foundations/shadow', label: 'Shadow' },
       { href: '/foundations/theming', label: 'Theming' },
