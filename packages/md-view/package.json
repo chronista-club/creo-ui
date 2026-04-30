@@ -1,0 +1,57 @@
+{
+  "name": "creo-ui-md-view",
+  "version": "0.1.0",
+  "description": "Creo UI — Markdown renderer (SolidJS) consuming creo-views/md (WASM-backed mdast parser)",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "README.md"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chronista-club/creo-ui.git",
+    "directory": "packages/md-view"
+  },
+  "bugs": {
+    "url": "https://github.com/chronista-club/creo-ui/issues"
+  },
+  "homepage": "https://github.com/chronista-club/creo-ui#readme",
+  "keywords": [
+    "creo-ui",
+    "markdown",
+    "solid-js",
+    "mdast",
+    "renderer",
+    "wasm"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build",
+    "typecheck:build": "tsc -p tsconfig.build.json --noEmit",
+    "prepublishOnly": "bun run build"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.9.0"
+  },
+  "dependencies": {
+    "creo-views": "file:../../../creo-views"
+  },
+  "devDependencies": {
+    "solid-js": "^1.9.0",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^4.2.0",
+    "vite-plugin-solid": "^2.10.0"
+  },
+  "license": "Apache-2.0"
+}

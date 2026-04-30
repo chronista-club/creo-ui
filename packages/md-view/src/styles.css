@@ -1,0 +1,235 @@
+/*
+ * creo-ui-md-view — base styles using creo-ui design tokens.
+ *
+ * Consumer must import creo-ui-web/tokens.css (or token-shim.css) before
+ * this file so that the --color-*, --spacing-*, --typography-*, --radius-*
+ * custom properties are defined.
+ */
+
+.creo-md {
+  color: var(--color-text-primary);
+  font-family: var(--typography-family-app);
+  font-size: var(--typography-size-base);
+  line-height: var(--typography-line-height-normal);
+}
+
+.creo-md > * + * {
+  margin-top: var(--spacing-md);
+}
+
+/* Headings */
+.creo-md h1,
+.creo-md h2,
+.creo-md h3,
+.creo-md h4,
+.creo-md h5,
+.creo-md h6 {
+  color: var(--color-text-primary);
+  font-weight: var(--typography-weight-bold);
+  line-height: var(--typography-line-height-tight);
+  margin-top: var(--spacing-xl);
+  margin-bottom: var(--spacing-sm);
+}
+
+.creo-md h1 { font-size: var(--typography-size-3xl); }
+.creo-md h2 { font-size: var(--typography-size-2xl); }
+.creo-md h3 { font-size: var(--typography-size-xl); }
+.creo-md h4 { font-size: var(--typography-size-lg); }
+.creo-md h5 { font-size: var(--typography-size-base); }
+.creo-md h6 {
+  font-size: var(--typography-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.creo-md p {
+  margin: 0;
+}
+
+/* Inline */
+.creo-md a {
+  color: var(--color-brand-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.creo-md a:hover {
+  color: var(--color-brand-secondary);
+}
+
+.creo-md strong {
+  font-weight: var(--typography-weight-bold);
+}
+
+.creo-md em {
+  font-style: italic;
+}
+
+.creo-md del {
+  color: var(--color-text-secondary);
+}
+
+/* Code */
+.creo-md-inline-code {
+  font-family: var(--typography-family-mono);
+  font-size: 0.92em;
+  padding: 0.1em 0.35em;
+  background: var(--color-surface-bg-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+}
+
+.creo-md-code {
+  font-family: var(--typography-family-mono);
+  font-size: var(--typography-size-sm);
+  background: var(--color-surface-bg-subtle);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  overflow-x: auto;
+  line-height: var(--typography-line-height-normal);
+}
+
+.creo-md-code code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Blockquote */
+.creo-md blockquote {
+  margin: 0;
+  padding-left: var(--spacing-md);
+  border-left: 3px solid var(--color-surface-border);
+  color: var(--color-text-secondary);
+}
+
+/* Lists */
+.creo-md ul,
+.creo-md ol {
+  padding-left: var(--spacing-xl);
+  margin: 0;
+}
+
+.creo-md ul > li + li,
+.creo-md ol > li + li {
+  margin-top: var(--spacing-xs);
+}
+
+.creo-md-task {
+  list-style: none;
+  margin-left: calc(-1 * var(--spacing-md));
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+}
+
+.creo-md-task input {
+  margin-top: 0.2em;
+}
+
+.creo-md-task.checked {
+  color: var(--color-text-secondary);
+}
+
+/* Image */
+.creo-md img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
+/* Hr */
+.creo-md hr {
+  border: 0;
+  border-top: 1px solid var(--color-surface-border);
+  margin: var(--spacing-xl) 0;
+}
+
+/* Table */
+.creo-md-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: var(--typography-size-sm);
+}
+
+.creo-md-table th,
+.creo-md-table td {
+  border: 1px solid var(--color-surface-border);
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-align: left;
+}
+
+.creo-md-table th {
+  background: var(--color-surface-bg-subtle);
+  font-weight: var(--typography-weight-bold);
+}
+
+/* Admonition */
+.creo-md-admonition {
+  border-left: 3px solid var(--color-brand-primary);
+  background: var(--color-surface-bg-subtle);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+}
+
+.creo-md-admonition[data-kind="warning"] {
+  border-left-color: var(--color-semantic-warning);
+}
+.creo-md-admonition[data-kind="danger"] {
+  border-left-color: var(--color-semantic-error);
+}
+.creo-md-admonition[data-kind="tip"] {
+  border-left-color: var(--color-semantic-success);
+}
+.creo-md-admonition[data-kind="info"] {
+  border-left-color: var(--color-semantic-info);
+}
+
+.creo-md-admonition-title {
+  font-weight: var(--typography-weight-bold);
+  margin-bottom: var(--spacing-xs);
+}
+
+/* WikiLink */
+.creo-md-wikilink {
+  color: var(--color-brand-secondary);
+  text-decoration: none;
+  border-bottom: 1px dashed currentColor;
+}
+
+.creo-md-wikilink[data-link-type="creo"] {
+  color: var(--color-brand-primary);
+}
+
+/* Mermaid placeholder (Phase 0.1) */
+.creo-md-mermaid-placeholder {
+  border: 1px dashed var(--color-surface-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  background: var(--color-surface-bg-subtle);
+}
+
+.creo-md-mermaid-placeholder-label {
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xs);
+  font-style: italic;
+}
+
+.creo-md-mermaid-placeholder pre {
+  margin: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font-size: var(--typography-size-sm);
+}
+
+/* Error */
+.creo-md-error {
+  color: var(--color-semantic-error);
+  font-family: var(--typography-family-mono);
+  font-size: var(--typography-size-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-semantic-error);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-bg-subtle);
+}
