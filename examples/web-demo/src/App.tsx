@@ -12,6 +12,7 @@ import {
   string,
   useEditorMode,
 } from 'creo-ui-editor-host'
+import { CreoMarkdown } from 'creo-ui-md-view'
 import { Show, createEffect } from 'solid-js'
 
 export default function App() {
@@ -285,6 +286,8 @@ creoEditor.help()                     // 使い方一覧`}
           </div>
         </section>
 
+        <MarkdownDemo />
+
         <Show when={showFooter()}>
           <footer
             style={{
@@ -302,6 +305,110 @@ creoEditor.help()                     // 使い方一覧`}
         </Show>
       </main>
     </>
+  )
+}
+
+const SAMPLE_MD = `# Markdown showcase
+
+**creo-ui-md-view** が *creo-views/md* (WASM mdast parser) を消費して描画している demo。
+~~CDN の marked.js~~ ではなく、 自作 Rust crate の出力を SolidJS で render している。
+
+## 構造
+
+| Layer | 実装 | サイズ |
+|---|---|---|
+| parser | wooorm/markdown-rs (Rust) | 459 KB WASM |
+| AST | ts-rs auto-gen | 27 型 |
+| renderer | SolidJS (creo-ui-md-view) | 9.69 KB |
+
+## リスト
+
+- 通常 list item
+- **強調** + *イタリック* + \`inline code\` + [link](https://github.com/chronista-club/creo-views)
+  - ネストも OK
+
+1. 順序 list 1
+2. 順序 list 2
+
+## Task list (GFM)
+
+- [x] CommonMark + GFM
+- [x] Frontmatter / Admonition / WikiLink (拡張)
+- [ ] Mermaid SVG (Phase 0.2)
+
+## Quote
+
+> mdast = Markdown Abstract Syntax Tree。
+> Rust が SSOT、 TypeScript が型安全に描画する。
+
+## Code
+
+\`\`\`ts
+import { CreoMarkdown } from 'creo-ui-md-view'
+
+const App = () => <CreoMarkdown text="# hi" />
+\`\`\`
+
+## Mermaid (placeholder until 0.2)
+
+\`\`\`mermaid
+graph TD
+  A[parse] --> B[mdast]
+  B --> C[render]
+  C --> D[DOM]
+\`\`\`
+
+## Admonition
+
+:::tip
+Tip block — \`:::tip\` 拡張で paragraph と区別される。
+:::
+
+:::warning
+Warning block — token 経由で色が brand から semantic に切替わる。
+:::
+
+## Wiki link
+
+[[memory:1CYxbqacutvL4shGdsiA6u]] で creo-memories の memory を参照、 [[doc:editor-mode]] で内部 doc。
+
+---
+
+End.
+`
+
+function MarkdownDemo() {
+  return (
+    <section
+      style={{
+        'margin-top': 'var(--layout-gap-section)',
+        padding: 'var(--spacing-md)',
+        background: 'var(--color-surface-surface)',
+        border: '1px solid var(--color-surface-border)',
+        'border-radius': 'var(--radius-md)',
+      }}
+    >
+      <h2
+        style={{
+          margin: '0 0 var(--spacing-md) 0',
+          'font-size': 'var(--typography-title-section)',
+          'font-weight': 'var(--typography-weight-semibold)',
+        }}
+      >
+        Markdown showcase (creo-ui-md-view)
+      </h2>
+      <p
+        style={{
+          margin: '0 0 var(--spacing-md) 0',
+          color: 'var(--color-text-secondary)',
+          'font-size': 'var(--typography-body-helper)',
+        }}
+      >
+        creo-views/md (Rust + WASM) からの mdast を SolidJS で render。
+        token 切替に追従するか確認できる。
+      </p>
+      <CreoMarkdown text={SAMPLE_MD} />
+    </section>
   )
 }
 

@@ -2,7 +2,7 @@ import { render } from 'solid-js/web'
 import 'creo-ui-web/tokens.css'
 import 'creo-ui-web/components.css'
 import 'creo-ui-md-view/styles.css'
-import './style.css'
+import './styles/docs.css'
 import App from './App'
 
 const root = document.getElementById('root')
