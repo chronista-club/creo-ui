@@ -19,6 +19,14 @@ const EditorMode = lazy(() => import('./pages/Concepts/EditorMode'))
 const Layers = lazy(() => import('./pages/Concepts/Layers'))
 const MultiPlatform = lazy(() => import('./pages/Concepts/MultiPlatform'))
 
+// Components
+const ComponentsIndex = lazy(() => import('./pages/Components/index'))
+const Button = lazy(() => import('./pages/Components/Button'))
+const Input = lazy(() => import('./pages/Components/Input'))
+const Card = lazy(() => import('./pages/Components/Card'))
+const Avatar = lazy(() => import('./pages/Components/Avatar'))
+const Dialog = lazy(() => import('./pages/Components/Dialog'))
+
 export default function App() {
   return (
     <Router root={Layout}>
@@ -37,12 +45,12 @@ export default function App() {
       <Route path="/concepts/layers" component={Layers} />
       <Route path="/concepts/multi-platform" component={MultiPlatform} />
       <Route path="/editor-mode" component={EditorMode} />
-      <Route path="/components" component={Stub} />
-      <Route path="/components/button" component={Stub} />
-      <Route path="/components/input" component={Stub} />
-      <Route path="/components/card" component={Stub} />
-      <Route path="/components/avatar" component={Stub} />
-      <Route path="/components/dialog" component={Stub} />
+      <Route path="/components" component={ComponentsIndex} />
+      <Route path="/components/button" component={Button} />
+      <Route path="/components/input" component={Input} />
+      <Route path="/components/card" component={Card} />
+      <Route path="/components/avatar" component={Avatar} />
+      <Route path="/components/dialog" component={Dialog} />
       <Route path="/icons" component={Stub} />
       <Route path="/content" component={Stub} />
       <Route path="/playground" component={Stub} />

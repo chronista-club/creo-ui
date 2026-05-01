@@ -1315,6 +1315,242 @@ a:hover {
 }
 
 /* ============================================================
+   Components — gallery (index)
+   ============================================================ */
+
+.docs-components-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--spacing-sm);
+  margin: var(--spacing-md) 0;
+}
+
+.docs-component-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-md);
+  background: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-text-primary);
+  transition: border-color 160ms, transform 160ms;
+}
+
+.docs-component-card:hover {
+  text-decoration: none;
+  border-color: color-mix(in oklab, var(--color-brand-primary) 50%, var(--color-surface-border));
+  transform: translateY(-2px);
+}
+
+.docs-component-card--detail {
+  border-color: color-mix(in oklab, var(--color-brand-primary) 30%, var(--color-surface-border));
+}
+
+.docs-component-card-name {
+  font-size: var(--typography-size-base);
+  font-weight: var(--typography-weight-bold);
+}
+
+.docs-component-card-desc {
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.docs-component-card-cta {
+  margin-top: auto;
+  font-size: var(--typography-size-xs);
+  color: var(--color-brand-primary);
+  font-weight: var(--typography-weight-medium);
+}
+
+/* ============================================================
+   Components — preview area
+   ============================================================ */
+
+.docs-component-preview {
+  background: var(--color-surface-bg-subtle);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.docs-preview-row-label {
+  font-size: var(--typography-size-xs);
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  margin-top: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.docs-preview-row-label:first-child {
+  margin-top: 0;
+}
+
+.docs-preview-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.docs-preview-grid--cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.docs-preview-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.docs-preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.docs-preview-row--baseline {
+  align-items: flex-end;
+}
+
+/* ============================================================
+   Components — props table
+   ============================================================ */
+
+.docs-props-table {
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: var(--spacing-xs) 0;
+  font-size: var(--typography-size-xs);
+}
+
+.docs-props-row {
+  display: grid;
+  grid-template-columns: 1.4fr 2fr 0.8fr 2fr;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-top: 1px solid var(--color-surface-border);
+  align-items: baseline;
+}
+
+.docs-props-row:first-child {
+  border-top: 0;
+}
+
+.docs-props-row code {
+  font-family: var(--typography-family-mono);
+  color: var(--color-text-primary);
+}
+
+.docs-props-row span {
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.docs-props-head {
+  background: var(--color-surface-bg-subtle);
+  font-size: 10px;
+  font-weight: var(--typography-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-tertiary);
+}
+
+.docs-props-head > div {
+  font-family: var(--typography-family-app);
+}
+
+/* ============================================================
+   Components — slot/token table
+   ============================================================ */
+
+.docs-tokens-table {
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: var(--spacing-xs) 0;
+  font-size: var(--typography-size-xs);
+}
+
+.docs-tokens-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-top: 1px solid var(--color-surface-border);
+}
+
+.docs-tokens-row:first-child {
+  border-top: 0;
+}
+
+.docs-tokens-slot {
+  color: var(--color-text-secondary);
+}
+
+.docs-tokens-name {
+  font-family: var(--typography-family-mono);
+  color: var(--color-text-primary);
+  word-break: break-all;
+}
+
+/* ============================================================
+   Components — Do / Don't
+   ============================================================ */
+
+.docs-do-dont {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+}
+
+.docs-do,
+.docs-dont {
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-surface-border);
+}
+
+.docs-do {
+  background: color-mix(in oklab, var(--color-semantic-success) 6%, var(--color-surface-surface));
+  border-color: color-mix(in oklab, var(--color-semantic-success) 35%, var(--color-surface-border));
+}
+
+.docs-dont {
+  background: color-mix(in oklab, var(--color-semantic-error) 6%, var(--color-surface-surface));
+  border-color: color-mix(in oklab, var(--color-semantic-error) 35%, var(--color-surface-border));
+}
+
+.docs-do h3,
+.docs-dont h3 {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--typography-size-base);
+  font-weight: var(--typography-weight-bold);
+}
+
+.docs-do h3 {
+  color: var(--color-semantic-success);
+}
+
+.docs-dont h3 {
+  color: var(--color-semantic-error);
+}
+
+.docs-do .docs-bullet-list,
+.docs-dont .docs-bullet-list {
+  margin: 0;
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 
