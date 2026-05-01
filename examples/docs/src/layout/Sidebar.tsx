@@ -27,6 +27,14 @@ const NAV: readonly NavGroup[] = [
     ],
   },
   {
+    title: 'Concepts',
+    items: [
+      { href: '/concepts/editor-mode', label: 'Editor Mode' },
+      { href: '/concepts/layers', label: 'Layers' },
+      { href: '/concepts/multi-platform', label: 'Multi-platform' },
+    ],
+  },
+  {
     title: 'Components',
     items: [
       { href: '/components', label: 'All components' },
@@ -42,7 +50,6 @@ const NAV: readonly NavGroup[] = [
     items: [
       { href: '/icons', label: 'Icons' },
       { href: '/content', label: 'Content (Markdown)' },
-      { href: '/editor-mode', label: 'Editor Mode' },
     ],
   },
   {

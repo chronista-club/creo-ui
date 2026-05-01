@@ -14,6 +14,11 @@ const Radius = lazy(() => import('./pages/Foundations/Radius'))
 const Shadow = lazy(() => import('./pages/Foundations/Shadow'))
 const Theming = lazy(() => import('./pages/Foundations/Theming'))
 
+// Concepts
+const EditorMode = lazy(() => import('./pages/Concepts/EditorMode'))
+const Layers = lazy(() => import('./pages/Concepts/Layers'))
+const MultiPlatform = lazy(() => import('./pages/Concepts/MultiPlatform'))
+
 export default function App() {
   return (
     <Router root={Layout}>
@@ -27,6 +32,11 @@ export default function App() {
       <Route path="/foundations/radius" component={Radius} />
       <Route path="/foundations/shadow" component={Shadow} />
       <Route path="/foundations/theming" component={Theming} />
+      <Route path="/concepts" component={EditorMode} />
+      <Route path="/concepts/editor-mode" component={EditorMode} />
+      <Route path="/concepts/layers" component={Layers} />
+      <Route path="/concepts/multi-platform" component={MultiPlatform} />
+      <Route path="/editor-mode" component={EditorMode} />
       <Route path="/components" component={Stub} />
       <Route path="/components/button" component={Stub} />
       <Route path="/components/input" component={Stub} />
@@ -35,7 +45,6 @@ export default function App() {
       <Route path="/components/dialog" component={Stub} />
       <Route path="/icons" component={Stub} />
       <Route path="/content" component={Stub} />
-      <Route path="/editor-mode" component={Stub} />
       <Route path="/playground" component={Stub} />
       <Route path="*" component={Stub} />
     </Router>
