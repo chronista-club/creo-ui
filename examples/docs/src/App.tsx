@@ -15,6 +15,7 @@ const Shadow = lazy(() => import('./pages/Foundations/Shadow'))
 const Theming = lazy(() => import('./pages/Foundations/Theming'))
 
 // Concepts
+const FrameSystem = lazy(() => import('./pages/Concepts/FrameSystem'))
 const EditorMode = lazy(() => import('./pages/Concepts/EditorMode'))
 const Layers = lazy(() => import('./pages/Concepts/Layers'))
 const MultiPlatform = lazy(() => import('./pages/Concepts/MultiPlatform'))
@@ -40,7 +41,8 @@ export default function App() {
       <Route path="/foundations/radius" component={Radius} />
       <Route path="/foundations/shadow" component={Shadow} />
       <Route path="/foundations/theming" component={Theming} />
-      <Route path="/concepts" component={EditorMode} />
+      <Route path="/concepts" component={FrameSystem} />
+      <Route path="/concepts/frame-system" component={FrameSystem} />
       <Route path="/concepts/editor-mode" component={EditorMode} />
       <Route path="/concepts/layers" component={Layers} />
       <Route path="/concepts/multi-platform" component={MultiPlatform} />

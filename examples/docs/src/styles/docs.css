@@ -1551,6 +1551,150 @@ a:hover {
 }
 
 /* ============================================================
+   3D Frame system — light visual depth
+   (Track A — perspective root + card translateZ + sidebar depth)
+   ============================================================ */
+
+.docs-main {
+  perspective: 1400px;
+  perspective-origin: 50% 0;
+}
+
+.docs-article > section,
+.docs-feature-card,
+.docs-component-card,
+.docs-color-swatch,
+.docs-shadow-card,
+.docs-theme-card,
+.docs-principle,
+.docs-axis-card {
+  transform-style: preserve-3d;
+}
+
+/* Hero — subtle forward */
+.docs-hero {
+  transform: translateZ(8px);
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Feature cards — stronger lift on hover */
+.docs-feature-card {
+  transition: border-color 280ms, transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 280ms;
+}
+
+.docs-feature-card:hover {
+  transform: translateY(-4px) translateZ(14px);
+  box-shadow: 0 16px 32px -10px color-mix(in oklab, var(--color-text-primary) 22%, transparent),
+    0 4px 8px -4px color-mix(in oklab, var(--color-text-primary) 12%, transparent);
+}
+
+/* Component gallery cards */
+.docs-component-card {
+  transition: border-color 280ms, transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 280ms;
+}
+
+.docs-component-card:hover {
+  transform: translateY(-3px) translateZ(10px);
+  box-shadow: 0 12px 24px -8px color-mix(in oklab, var(--color-text-primary) 18%, transparent);
+}
+
+/* Color swatches subtle pop */
+.docs-color-swatch {
+  transition: transform 220ms ease-out;
+}
+
+.docs-color-swatch:hover {
+  transform: translateZ(6px);
+}
+
+/* Theme preview cards */
+.docs-theme-card {
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms;
+}
+
+.docs-theme-card:hover {
+  transform: translateY(-2px) translateZ(8px);
+  box-shadow: 0 10px 20px -6px color-mix(in oklab, var(--color-text-primary) 18%, transparent);
+}
+
+/* Sidebar — subtle z-depth (active forward, inactive back) */
+.docs-sidebar-link {
+  transition: color 160ms, background 160ms, transform 200ms ease-out;
+}
+
+.docs-sidebar-link:hover {
+  transform: translateZ(2px);
+}
+
+.docs-sidebar-link.is-active {
+  transform: translateZ(6px);
+}
+
+.docs-sidebar-tag {
+  transform: translateZ(2px);
+}
+
+/* Principle / Decision cards subtle depth */
+.docs-principle {
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.docs-principle:hover {
+  transform: translateZ(4px);
+}
+
+/* Region diagram subtle 3D feel */
+.docs-region-diagram {
+  transform: translateZ(2px);
+}
+
+/* Layer hierarchy stack — emphasize z-axis separation */
+.docs-layer-editor {
+  transform: translateZ(20px);
+  box-shadow: 0 12px 24px -8px color-mix(in oklab, var(--color-brand-primary) 30%, transparent);
+}
+
+.docs-layer-content {
+  transform: translateZ(0);
+}
+
+/* Pipeline diagram — engine slightly forward */
+.docs-pipeline-engine {
+  transform: translateZ(4px);
+}
+
+/* Reduced motion — flat fallback (a11y contract) */
+@media (prefers-reduced-motion: reduce) {
+  .docs-main {
+    perspective: none;
+  }
+  .docs-hero,
+  .docs-feature-card,
+  .docs-feature-card:hover,
+  .docs-component-card,
+  .docs-component-card:hover,
+  .docs-color-swatch,
+  .docs-color-swatch:hover,
+  .docs-theme-card,
+  .docs-theme-card:hover,
+  .docs-sidebar-link,
+  .docs-sidebar-link:hover,
+  .docs-sidebar-link.is-active,
+  .docs-sidebar-tag,
+  .docs-principle,
+  .docs-principle:hover,
+  .docs-region-diagram,
+  .docs-layer-editor,
+  .docs-layer-content,
+  .docs-pipeline-engine {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
 

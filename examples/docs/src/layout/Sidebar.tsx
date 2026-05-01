@@ -29,6 +29,7 @@ const NAV: readonly NavGroup[] = [
   {
     title: 'Concepts',
     items: [
+      { href: '/concepts/frame-system', label: 'Frame system', tag: 'spec' },
       { href: '/concepts/editor-mode', label: 'Editor Mode' },
       { href: '/concepts/layers', label: 'Layers' },
       { href: '/concepts/multi-platform', label: 'Multi-platform' },
