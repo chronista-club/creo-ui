@@ -1861,6 +1861,58 @@ kbd {
 }
 
 /* ============================================================
+   Lab / Real MediaPipe demo — opt-in webcam UI
+   ============================================================ */
+
+.docs-mediapipe-frame {
+  position: relative;
+  background: var(--color-surface-bg-subtle);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  min-height: 280px;
+}
+
+.docs-mediapipe-prompt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  align-items: flex-start;
+}
+
+.docs-mediapipe-prompt-title {
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--typography-size-lg);
+  font-weight: var(--typography-weight-bold);
+}
+
+.docs-mediapipe-error {
+  font-family: var(--typography-family-mono);
+  font-size: var(--typography-size-xs);
+  color: var(--color-semantic-error);
+  background: color-mix(in oklab, var(--color-semantic-error) 10%, transparent);
+  border: 1px solid var(--color-semantic-error);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  margin: var(--spacing-sm) 0 0 0;
+  max-width: 100%;
+  word-break: break-word;
+}
+
+/* Real demo の status bar に Stop button を inline で配置 */
+.docs-mediapipe-frame .docs-vision-status {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.docs-mediapipe-frame .docs-vision-status > span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ============================================================
    3D Frame system — light visual depth
    (Track A — perspective root + card translateZ + sidebar depth)
    ============================================================ */

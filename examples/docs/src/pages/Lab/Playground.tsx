@@ -11,9 +11,14 @@ import {
   string,
 } from 'creo-ui-editor-host'
 import { FrameProvider, FrameSlot, useFrame, type Frame } from 'creo-ui-frame'
-import { VisionProvider, useGesture, useHandPinch } from 'creo-ui-vision'
+import {
+  VisionProvider,
+  useGesture,
+  useHandPinch,
+  type VisionSource,
+} from 'creo-ui-vision'
 import { createMockSource } from 'creo-ui-vision/mock'
-import { For, Show, createSignal } from 'solid-js'
+import { For, Show, createEffect, createSignal } from 'solid-js'
 
 export default function Playground() {
   return (
@@ -132,11 +137,22 @@ function Demo() {
         <h2 class="docs-section-title">Gesture-driven Frame morph (Phase 4 mock)</h2>
         <p class="docs-page-helper">
           <code>creo-ui-vision</code> の <strong>mock source</strong> (wave pattern) → <code>useGesture('wave')</code> →
-          <code>setFrame(next)</code> の binding。 実 webcam は使わず synthetic 信号で実演 (P-4.5 で MediaPipe Tasks
-          実 inference に source 差替予定)。 <code>HandPinch</code> 位置も mock で円周運動。
+          <code>setFrame(next)</code> の binding。 実 webcam は使わず synthetic 信号で実演。
+          <code>HandPinch</code> 位置も mock で円周運動。
           → <A href="/concepts/editor-mode">Editor Mode</A> 経由で keyboard / mouse / gesture / MCP の 4 経路統合。
         </p>
         <VisionFrameDemo />
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">Real MediaPipe demo (Phase 4.5)</h2>
+        <p class="docs-page-helper">
+          実 webcam + <code>createMediaPipeSource()</code> での hand tracking。 <strong>opt-in</strong> —
+          enable button を押した時点で permission request + MediaPipe Tasks Web SDK (~3MB) を lazy load。
+          🤏 indicator が <strong>本物の手</strong> の pinch 位置に追従、 <strong>pinch する瞬間</strong>に
+          frame morph がトリガ (rising edge detection)。 raw frame は on-device に閉じる (V-4 不変条件)。
+        </p>
+        <RealMediaPipeDemo />
       </section>
     </>
   )
@@ -374,6 +390,129 @@ function VisionStatus() {
     <div class="docs-vision-status">
       <span class="docs-vision-status-dot" data-active="true" />
       Mock source (wave / orbit) — 4s 周期で frame 切替
+    </div>
+  )
+}
+
+// =============================================================================
+// Real MediaPipe demo (Phase 4.5 — opt-in webcam + actual hand tracking)
+// =============================================================================
+
+function RealMediaPipeDemo() {
+  const [enabled, setEnabled] = createSignal(false)
+  const [source, setSource] = createSignal<VisionSource | null>(null)
+  const [error, setError] = createSignal<string | null>(null)
+  const [loading, setLoading] = createSignal(false)
+
+  const enable = async (): Promise<void> => {
+    setLoading(true)
+    setError(null)
+    try {
+      // Lazy dynamic import — MediaPipe Tasks (~3MB) は ここで初めて load
+      const { createMediaPipeSource } = await import('creo-ui-vision/mediapipe')
+      const realSource = await createMediaPipeSource({
+        camera: 'user',
+        models: ['hand'],
+      })
+      setSource(realSource)
+      setEnabled(true)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err)
+      setError(message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const disable = (): void => {
+    source()?.stop()
+    setSource(null)
+    setEnabled(false)
+  }
+
+  return (
+    <div class="docs-mediapipe-frame">
+      <Show when={!enabled()}>
+        <div class="docs-mediapipe-prompt">
+          <h3 class="docs-mediapipe-prompt-title">Webcam を有効化</h3>
+          <ul class="docs-bullet-list">
+            <li>カメラへのアクセス許可を求めます (browser native dialog)</li>
+            <li>MediaPipe Tasks Web SDK (~3MB) を Google CDN から lazy load</li>
+            <li>HandLandmarker を初期化して inference loop 開始</li>
+            <li>Raw frame は on-device に閉じます (V-4 contract)</li>
+          </ul>
+          <button
+            type="button"
+            class="creo-btn"
+            data-variant="primary"
+            disabled={loading()}
+            onClick={() => void enable()}
+          >
+            {loading() ? 'Loading MediaPipe...' : 'Enable webcam'}
+          </button>
+          <Show when={error()}>
+            <p class="docs-mediapipe-error">
+              <strong>Error:</strong> {error()}
+            </p>
+          </Show>
+        </div>
+      </Show>
+      <Show when={enabled() && source()}>
+        <VisionProvider source={source()!} autoStart={true}>
+          <FrameProvider frames={[dashboardFrame, readingFrame]} initial="dashboard">
+            <PinchEdgeBridge />
+            <div class="docs-vision-frame-stage">
+              <FrameStage />
+              <PinchIndicator />
+              <RealVisionStatus onDisable={disable} />
+            </div>
+          </FrameProvider>
+        </VisionProvider>
+      </Show>
+    </div>
+  )
+}
+
+/**
+ * Pinch の inactive → active (rising edge) で frame morph をトリガ。
+ * 持続 pinch を 1 回の trigger に圧縮 (`distinctUntilChanged` 同等 idiom)。
+ */
+function PinchEdgeBridge() {
+  const pinch = useHandPinch()
+  const { setFrame, currentFrameId } = useFrame()
+  let prevActive = false
+
+  createEffect(() => {
+    const cur = pinch()?.active ?? false
+    if (cur && !prevActive) {
+      setFrame(currentFrameId() === 'dashboard' ? 'reading' : 'dashboard')
+    }
+    prevActive = cur
+  })
+
+  return null
+}
+
+function RealVisionStatus(props: { onDisable: () => void }) {
+  const pinch = useHandPinch()
+  return (
+    <div class="docs-vision-status">
+      <span class="docs-vision-status-dot" data-active="true" />
+      <span>
+        Real MediaPipe — pinch <strong>{pinch()?.active ? 'YES' : 'no'}</strong>
+        {pinch()
+          ? ` · x=${pinch()!.x.toFixed(2)} y=${pinch()!.y.toFixed(2)}`
+          : ' · waiting for hand'}
+      </span>
+      <button
+        type="button"
+        class="creo-btn"
+        data-variant="ghost"
+        data-size="sm"
+        onClick={props.onDisable}
+      >
+        Stop
+      </button>
     </div>
   )
 }
