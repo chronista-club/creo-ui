@@ -32,11 +32,15 @@ const Dialog = lazy(() => import('./pages/Components/Dialog'))
 const Icons = lazy(() => import('./pages/Resources/Icons'))
 const Content = lazy(() => import('./pages/Resources/Content'))
 
+// Lab + Overview
+const Playground = lazy(() => import('./pages/Lab/Playground'))
+const GettingStarted = lazy(() => import('./pages/GettingStarted'))
+
 export default function App() {
   return (
     <Router root={Layout}>
       <Route path="/" component={Home} />
-      <Route path="/getting-started" component={Stub} />
+      <Route path="/getting-started" component={GettingStarted} />
       <Route path="/foundations" component={Principles} />
       <Route path="/foundations/principles" component={Principles} />
       <Route path="/foundations/color" component={Color} />
@@ -59,7 +63,7 @@ export default function App() {
       <Route path="/components/dialog" component={Dialog} />
       <Route path="/icons" component={Icons} />
       <Route path="/content" component={Content} />
-      <Route path="/playground" component={Stub} />
+      <Route path="/playground" component={Playground} />
       <Route path="*" component={Stub} />
     </Router>
   )

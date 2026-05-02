@@ -1551,6 +1551,94 @@ a:hover {
 }
 
 /* ============================================================
+   Lab / Playground
+   ============================================================ */
+
+.docs-playground-frame {
+  position: relative;
+  background: var(--color-surface-bg-subtle);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  min-height: 320px;
+  overflow: hidden;
+}
+
+.docs-playground-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+}
+
+.docs-playground-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  transition: box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.docs-playground-card[data-elevation="flat"] {
+  box-shadow: none;
+  transform: none;
+}
+
+.docs-playground-card[data-elevation="raised"] {
+  box-shadow: var(--shadow-md);
+  transform: translateZ(8px);
+}
+
+.docs-playground-card[data-elevation="floating"] {
+  box-shadow: var(--shadow-xl);
+  transform: translateZ(20px) translateY(-2px);
+}
+
+.docs-playground-label {
+  font-family: var(--typography-family-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.docs-playground-title {
+  margin: 0;
+  font-size: var(--typography-size-xl);
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: -0.01em;
+}
+
+.docs-playground-body {
+  margin: 0;
+  font-size: var(--typography-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.docs-playground-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  font-family: var(--typography-family-mono);
+  font-size: 0.85em;
+  background: var(--color-surface-bg-subtle);
+  border: 1px solid var(--color-surface-border);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-xs);
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
    Resources / Icons gallery
    ============================================================ */
 
