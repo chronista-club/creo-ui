@@ -28,6 +28,10 @@ const Card = lazy(() => import('./pages/Components/Card'))
 const Avatar = lazy(() => import('./pages/Components/Avatar'))
 const Dialog = lazy(() => import('./pages/Components/Dialog'))
 
+// Resources
+const Icons = lazy(() => import('./pages/Resources/Icons'))
+const Content = lazy(() => import('./pages/Resources/Content'))
+
 export default function App() {
   return (
     <Router root={Layout}>
@@ -53,8 +57,8 @@ export default function App() {
       <Route path="/components/card" component={Card} />
       <Route path="/components/avatar" component={Avatar} />
       <Route path="/components/dialog" component={Dialog} />
-      <Route path="/icons" component={Stub} />
-      <Route path="/content" component={Stub} />
+      <Route path="/icons" component={Icons} />
+      <Route path="/content" component={Content} />
       <Route path="/playground" component={Stub} />
       <Route path="*" component={Stub} />
     </Router>
