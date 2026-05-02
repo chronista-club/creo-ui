@@ -145,12 +145,14 @@ function Demo() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Real MediaPipe demo (Phase 4.5)</h2>
+        <h2 class="docs-section-title">Real MediaPipe demo (Phase 4.5 + P-5 spatial morph)</h2>
         <p class="docs-page-helper">
           実 webcam + <code>createMediaPipeSource()</code> での hand tracking。 <strong>opt-in</strong> —
           enable button を押した時点で permission request + MediaPipe Tasks Web SDK (~3MB) を lazy load。
-          🤏 indicator が <strong>本物の手</strong> の pinch 位置に追従、 <strong>pinch する瞬間</strong>に
-          frame morph がトリガ (rising edge detection)。 raw frame は on-device に閉じる (V-4 不変条件)。
+          🤏 indicator が <strong>本物の手</strong> の pinch 位置に追従、 <strong>左で pinch</strong> →
+          dashboard、 <strong>右で pinch</strong> → reading frame に morph (空間意味付き trigger、 V-6 user-space coords)。
+          中央帯 (x=0.4〜0.6) は <strong>dead-band</strong> で意図しない切替を防止。
+          raw frame は on-device に閉じる (V-4 不変条件)、 jitter は One-Euro Filter で平滑化済 (default)。
         </p>
         <RealMediaPipeDemo />
       </section>
@@ -461,8 +463,9 @@ function RealMediaPipeDemo() {
       <Show when={enabled() && source()}>
         <VisionProvider source={source()!} autoStart={true}>
           <FrameProvider frames={[dashboardFrame, readingFrame]} initial="dashboard">
-            <PinchEdgeBridge />
+            <SpatialPinchBridge />
             <div class="docs-vision-frame-stage">
+              <SpatialPinchZones />
               <FrameStage />
               <PinchIndicator />
               <RealVisionStatus onDisable={disable} />
@@ -504,23 +507,62 @@ function formatVisionError(err: unknown): string {
 }
 
 /**
- * Pinch の inactive → active (rising edge) で frame morph をトリガ。
- * 持続 pinch を 1 回の trigger に圧縮 (`distinctUntilChanged` 同等 idiom)。
+ * P-5: Spatial pinch bridge — pinch 位置 (V-6 user-space x) に応じて Frame を選択。
+ *
+ * - x < 0.4: dashboard frame (左半分)
+ * - x > 0.6: reading frame (右半分)
+ * - 0.4 ≤ x ≤ 0.6: dead-band (中央帯) — 意図しない oscillation 防止
+ *
+ * Rising edge (inactive → active) でのみ trigger。 持続 pinch は 1 回として圧縮。
+ * 同 frame への再選択は no-op (FrameProvider 側で diff 検知)。
  */
-function PinchEdgeBridge() {
+function SpatialPinchBridge() {
   const pinch = useHandPinch()
-  const { setFrame, currentFrameId } = useFrame()
+  const { setFrame } = useFrame()
   let prevActive = false
 
   createEffect(() => {
     const cur = pinch()?.active ?? false
     if (cur && !prevActive) {
-      setFrame(currentFrameId() === 'dashboard' ? 'reading' : 'dashboard')
+      const x = pinch()!.x
+      if (x < 0.4) setFrame('dashboard')
+      else if (x > 0.6) setFrame('reading')
+      // dead-band: 何もしない
     }
     prevActive = cur
   })
 
   return null
+}
+
+/**
+ * Spatial zone の visual hint — pinch 位置が左 / 右 zone に入った時 highlight。
+ *
+ * 「どこで pinch すれば何が起きるか」 を空間的に可視化。 dead-band は何も表示しない
+ * ことで「意図不明 = 何もしない」 が直感的に分かる。
+ */
+function SpatialPinchZones() {
+  const pinch = useHandPinch()
+  const x = (): number | null => pinch()?.x ?? null
+  const inLeft = (): boolean => {
+    const v = x()
+    return v !== null && v < 0.4
+  }
+  const inRight = (): boolean => {
+    const v = x()
+    return v !== null && v > 0.6
+  }
+
+  return (
+    <>
+      <div class="docs-pinch-zone" data-side="left" data-active={inLeft()} aria-hidden="true">
+        <span class="docs-pinch-zone-label">→ dashboard</span>
+      </div>
+      <div class="docs-pinch-zone" data-side="right" data-active={inRight()} aria-hidden="true">
+        <span class="docs-pinch-zone-label">→ reading</span>
+      </div>
+    </>
+  )
 }
 
 function RealVisionStatus(props: { onDisable: () => void }) {
