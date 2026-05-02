@@ -3,7 +3,7 @@
 **Status**: Concept articulated (P-0 docs visual depth shipping、 P-1+ runtime 未着手)
 **Owners**: Creo UI (schema + protocol)、 consumer packages (runtime 実装)
 **Scope**: layout philosophy at the same level as Editor Mode protocol。 既存の Story / Scene / Field 統一メンタルモデル (creo-memories `mem_1CZCk1Zg8cQpiLvjqqDKNA`) の **Scene 層** を spatial に articulate する protocol
-**Related**: [editor-mode.md](./editor-mode.md), [theme-system.md](./theme-system.md), [stack-adr.md](./stack-adr.md), [vision-input.md](./vision-input.md)
+**Related**: [editor-mode.md](./editor-mode.md), [theme-system.md](./theme-system.md), [stack-adr.md](./stack-adr.md), [vision-input.md](./vision-input.md), [vision-cross-platform.md](./vision-cross-platform.md), [immersive-field.md](./immersive-field.md)
 
 ---
 

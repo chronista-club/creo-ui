@@ -4,7 +4,7 @@
 **Date**: 2026-05-03
 **Owners**: Creo UI (schema + Web source)、 consumer / future packages (native sources)
 **Scope**: Browser (Chrome) と Mac local app (VP 等) で同 vision input 体験を実現する戦略。 creo-ui-vision の API contract を保ちつつ、 platform 最適 inference engine を差替可能に
-**Related**: [vision-input.md](./vision-input.md), [editor-mode.md](./editor-mode.md), [frame-system.md](./frame-system.md), [stack-adr.md](./stack-adr.md)
+**Related**: [vision-input.md](./vision-input.md), [editor-mode.md](./editor-mode.md), [frame-system.md](./frame-system.md), [stack-adr.md](./stack-adr.md), [immersive-field.md](./immersive-field.md)
 
 ---
 
