@@ -14,6 +14,10 @@
  * の WASM 内に閉じ、 server 送信なし。 server endpoint への通信は一切発生しない。
  */
 
+import type {
+  FaceLandmarker as FaceLandmarkerType,
+  HandLandmarker as HandLandmarkerType,
+} from '@mediapipe/tasks-vision'
 import type { VisionListener, VisionSource, VisionUpdate } from './source'
 import type { Point3D } from './types'
 import { isPinchActive, pinchCenter } from './utils'
@@ -71,8 +75,8 @@ export async function createMediaPipeSource(
 
   const filesetResolver = await FilesetResolver.forVisionTasks(wasmBase)
 
-  let handLandmarker: InstanceType<typeof HandLandmarker> | null = null
-  let faceLandmarker: InstanceType<typeof FaceLandmarker> | null = null
+  let handLandmarker: HandLandmarkerType | null = null
+  let faceLandmarker: FaceLandmarkerType | null = null
 
   if (models.includes('hand')) {
     handLandmarker = await HandLandmarker.createFromOptions(filesetResolver, {
