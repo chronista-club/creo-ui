@@ -29,7 +29,7 @@ export interface MediaPipeSourceOptions {
   camera?: 'user' | 'environment'
   /** Models to load — default ['hand'] (face は重いので opt-in) */
   models?: readonly ('hand' | 'face')[]
-  /** WASM assets base URL — default Google CDN */
+  /** WASM assets base URL — default jsDelivr CDN (npm package mirror) */
   wasmBase?: string
   /** Hand model URL — default Google MediaPipe model */
   handModelPath?: string
@@ -39,7 +39,10 @@ export interface MediaPipeSourceOptions {
   delegate?: 'GPU' | 'CPU'
 }
 
-const DEFAULT_WASM_BASE = 'https://storage.googleapis.com/mediapipe-tasks/wasm'
+// jsDelivr serves @mediapipe/tasks-vision npm package's `wasm/` directory directly.
+// `storage.googleapis.com/mediapipe-tasks/wasm` was the old default but is now unreliable
+// (404 / 403 observed 2026-05). jsDelivr is the recommended CDN per MediaPipe docs.
+const DEFAULT_WASM_BASE = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10/wasm'
 const DEFAULT_HAND_MODEL =
   'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task'
 const DEFAULT_FACE_MODEL =

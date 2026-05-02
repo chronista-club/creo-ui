@@ -417,8 +417,9 @@ function RealMediaPipeDemo() {
       setSource(realSource)
       setEnabled(true)
     } catch (err) {
-      const message = err instanceof Error ? err.message : String(err)
-      setError(message)
+      // Emscripten 系 (MediaPipe) は WASM/script load 失敗で Event を reject に渡す。
+      // Error / Event / object / それ以外を順に unwrap して useful message を抽出。
+      setError(formatVisionError(err))
     } finally {
       setLoading(false)
     }
@@ -471,6 +472,35 @@ function RealMediaPipeDemo() {
       </Show>
     </div>
   )
+}
+
+/**
+ * Vision/MediaPipe error の unwrap helper。
+ *
+ * Emscripten 系 lib (MediaPipe / TF.js / ONNX) は WASM load 失敗時に Event を
+ * reject に渡す古典的 quirk があるため、 instanceof Error だけだと "[object Event]"
+ * という unhelpful 表示になる。 Event の場合は target.src / type を抽出。
+ */
+function formatVisionError(err: unknown): string {
+  if (err instanceof Error) return err.message
+  if (typeof Event !== 'undefined' && err instanceof Event) {
+    const target = (err as Event).target as HTMLElement | null
+    const targetTag = target?.tagName?.toLowerCase() ?? 'unknown'
+    const src =
+      (target as unknown as { src?: string })?.src ??
+      (target as unknown as { href?: string })?.href ??
+      null
+    if (src) return `Failed to load resource (${targetTag}): ${src}`
+    return `${(err as Event).type} event from <${targetTag}> (likely network / CDN / CORS failure)`
+  }
+  if (typeof err === 'object' && err !== null) {
+    try {
+      return JSON.stringify(err)
+    } catch {
+      return Object.prototype.toString.call(err)
+    }
+  }
+  return String(err)
 }
 
 /**
