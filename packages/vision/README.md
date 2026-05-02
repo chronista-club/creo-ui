@@ -3,10 +3,10 @@
 > Webcam motion capture for Creo UI — MediaPipe Tasks wrapper exposed as SolidJS signals。
 > docs/design/vision-input.md の reference 実装。
 
-## Status (2026-05-02)
+## Status (2026-05-03)
 
-**Phase 4 (skeleton + types + provider + hooks + mock source)** ship 中。
-実 MediaPipe Tasks Web SDK 統合は P-4.5 で実装予定。 現状は **mock source** で dev / Playground 動作確認可能。
+**Phase 4 (skeleton) + Phase 4.5 (MediaPipe 実 source)** ship 済。
+mock 動作確認 → 実 webcam 統合まで完成。
 
 | Surface | Status |
 |---|---|
@@ -15,7 +15,7 @@
 | Hooks (useHandPinch / useHeadPose / useFaceMesh / useFacePresence / useGesture) | ✅ |
 | Permission helper (getUserMedia wrapper) | ✅ |
 | Mock source (dev / test / CI) | ✅ |
-| MediaPipe Tasks 実 source (`createMediaPipeSource`) | ⚠ P-4.5 |
+| MediaPipe Tasks 実 source (`createMediaPipeSource`) | ✅ Phase 4.5 |
 
 ## なぜ source plug-in pattern?
 
@@ -74,22 +74,64 @@ function Demo() {
 }
 ```
 
-## Usage — MediaPipe source (P-4.5 予定、 production)
+## Usage — MediaPipe source (P-4.5 ship、 production)
+
+`@mediapipe/tasks-vision` は **optional peerDependency**。 createMediaPipeSource を
+使う場合のみ install 必要 (mock-only consumer は不要):
+
+```sh
+bun add @mediapipe/tasks-vision
+```
 
 ```tsx
-// 将来 API 想定 (まだ未実装)
+import { VisionProvider, useHandPinch, useHeadPose } from 'creo-ui-vision'
 import { createMediaPipeSource } from 'creo-ui-vision/mediapipe'
 
+// Async factory — FilesetResolver + Landmarker を init (Google CDN から WASM + model load)
 const source = await createMediaPipeSource({
   camera: 'user',
-  sampleRate: 30,
-  models: ['hand', 'face'],   // load を要求する task
+  models: ['hand', 'face'],   // 'hand' のみで軽量化も可
+  delegate: 'GPU',             // CPU fallback も対応
 })
 
-<VisionProvider source={source}>
-  <App />
-</VisionProvider>
+function App() {
+  return (
+    <VisionProvider source={source} autoStart={false}>
+      <Demo />
+    </VisionProvider>
+  )
+}
+
+function Demo() {
+  const { state, start, stop } = useVision()
+  const pinch = useHandPinch()
+  const head = useHeadPose()
+  return (
+    <>
+      <Show when={!state().enabled}>
+        <button onClick={() => void start()}>Enable webcam</button>
+      </Show>
+      <Show when={state().enabled}>
+        <button onClick={stop}>Stop</button>
+        <p>pinch: {pinch()?.active ? 'YES' : 'no'} ({pinch()?.x.toFixed(2)})</p>
+        <p>head pitch: {head()?.pitch.toFixed(1)}deg</p>
+      </Show>
+    </>
+  )
+}
 ```
+
+### Lazy load + bundle
+
+`createMediaPipeSource` は内部で `await import('@mediapipe/tasks-vision')` を使う dynamic import。
+consumer の bundler (vite/webpack) が **vendor chunk として分割** するので、 createMediaPipeSource
+が呼ばれない page では @mediapipe/tasks-vision のコードは読み込まれない (~3MB lazy)。
+
+### Privacy (V-4)
+
+Raw video frame は `<video>` element から HandLandmarker / FaceLandmarker の WASM 内に閉じ、
+**server 送信なし**。 すべて on-device 推論。 model file (~15MB hand model) は CDN から download
+されるが、 これは推論に必要な weights であって video frame は送られない。
 
 ## Editor Mode protocol との統合 (将来 P-5)
 

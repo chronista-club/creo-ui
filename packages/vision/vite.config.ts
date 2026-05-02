@@ -19,11 +19,18 @@ export default defineConfig({
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
         mock: resolve(__dirname, 'src/mock.ts'),
+        mediapipe: resolve(__dirname, 'src/mediapipe.ts'),
       },
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['solid-js', 'solid-js/web', 'solid-js/store', /^solid-js\/.+/],
+      external: [
+        'solid-js',
+        'solid-js/web',
+        'solid-js/store',
+        /^solid-js\/.+/,
+        '@mediapipe/tasks-vision',
+      ],
       output: {
         preserveModules: false,
         entryFileNames: '[name].js',
