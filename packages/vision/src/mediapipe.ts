@@ -12,6 +12,13 @@
  *
  * V-4 不変条件 (privacy): raw frame は VisualVideoElement → HandLandmarker / FaceLandmarker
  * の WASM 内に閉じ、 server 送信なし。 server endpoint への通信は一切発生しない。
+ *
+ * Coordinate space (V-6, 2026-05-03):
+ *   MediaPipe の生 landmark は camera image plane (selfie だと user の右手は x が小さい側に映る)。
+ *   Creo UI vision API は **user-space を canonical** とする — `camera: 'user'` の時 x を 1-x で
+ *   反転、 user の右手 → x 大、 左手 → x 小。 これにより VP の ARKit (worldspace、 user 視点と
+ *   一致) と semantic 互換になり、 consumer の UI 層は coord 変換不要で書ける。 raw camera POV が
+ *   必要な spatial reasoning consumer は `coordSpace: 'camera'` で opt-out 可。
  */
 
 import type {
@@ -37,6 +44,15 @@ export interface MediaPipeSourceOptions {
   faceModelPath?: string
   /** Inference delegate — 'GPU' (default) or 'CPU' */
   delegate?: 'GPU' | 'CPU'
+  /**
+   * Coordinate space for emitted landmarks (V-6).
+   * - `'user'`: x mirrored so user's right hand → high x。 Selfie UI / VP ARKit と semantic 一致。
+   * - `'camera'`: raw image plane (MediaPipe convention)。 3D reasoning / multi-view fusion 用。
+   *
+   * Default: `'user'` for `camera: 'user'`、 `'camera'` for `camera: 'environment'` (背面 camera は
+   * user 視点と camera POV がほぼ一致するため反転不要)。
+   */
+  coordSpace?: 'user' | 'camera'
 }
 
 // jsDelivr serves @mediapipe/tasks-vision npm package's `wasm/` directory directly.
@@ -70,6 +86,10 @@ export async function createMediaPipeSource(
   const models = options.models ?? ['hand']
   const wasmBase = options.wasmBase ?? DEFAULT_WASM_BASE
   const delegate = options.delegate ?? 'GPU'
+  const coordSpace = options.coordSpace ?? (camera === 'user' ? 'user' : 'camera')
+  const mirrorX = coordSpace === 'user'
+  const toUserSpace = (p: Point3D): Point3D =>
+    mirrorX ? { x: 1 - p.x, y: p.y, z: p.z } : p
 
   // Dynamic import — keeps mediapipe out of base bundle
   // eslint-disable-next-line import/no-unresolved
@@ -135,9 +155,10 @@ export async function createMediaPipeSource(
             landmarks[LANDMARK_INDEX_TIP] &&
             landmarks[LANDMARK_WRIST]
           ) {
-            const thumb = landmarks[LANDMARK_THUMB_TIP] as Point3D
-            const indexTip = landmarks[LANDMARK_INDEX_TIP] as Point3D
-            const wrist = landmarks[LANDMARK_WRIST] as Point3D
+            // Apply coordSpace transform — user-space mirror is the V-6 canonical.
+            const thumb = toUserSpace(landmarks[LANDMARK_THUMB_TIP] as Point3D)
+            const indexTip = toUserSpace(landmarks[LANDMARK_INDEX_TIP] as Point3D)
+            const wrist = toUserSpace(landmarks[LANDMARK_WRIST] as Point3D)
             const handedness = result.handedness?.[0]?.[0]
             const score = handedness?.score ?? 0.8
 
@@ -186,10 +207,18 @@ export async function createMediaPipeSource(
         if (result.faceLandmarks.length > 0) {
           const matrix = result.facialTransformationMatrixes?.[0]?.data
           if (matrix) {
-            const { pitch, yaw, roll } = matrixToEuler(matrix)
+            const euler = matrixToEuler(matrix)
+            // yaw / roll は左右に符号を持つので、 user-space に揃える時は反転 (V-6)。
+            // pitch は上下なので変えない。 4x4 matrix を直接 mirror すると pitch にも影響する
+            // 計算誤差が乗るので、 Tait-Bryan 角に分解した後に scalar 反転する shortcut。
             dispatch({
               type: 'head-pose',
-              data: { pitch, yaw, roll, confidence: 0.85 },
+              data: {
+                pitch: euler.pitch,
+                yaw: mirrorX ? -euler.yaw : euler.yaw,
+                roll: mirrorX ? -euler.roll : euler.roll,
+                confidence: 0.85,
+              },
             })
           }
           dispatch({

@@ -49,7 +49,7 @@ Apple Vision Pro / visionOS の design vocabulary を Web に降ろす形。
 | **Lean back** | overview | zoom out、 dashboard Frame |
 | **Face absent** | user 不在 | UI dim、 animation suspend、 webcam idle |
 
-## 4. 不変条件 (V-1 〜 V-5)
+## 4. 不変条件 (V-1 〜 V-6)
 
 | # | 項目 | 決定 |
 |---|---|---|
@@ -58,6 +58,23 @@ Apple Vision Pro / visionOS の design vocabulary を Web に降ろす形。
 | V-3 | Reduced motion | `prefers-reduced-motion: reduce` で head-pose parallax 無効 |
 | V-4 | On-device only | raw frame は on-device に留める (server 送信なし) — MediaPipe Tasks 採用の決定打 |
 | V-5 | Opt-in default | default OFF、 explicit enable button、 user 同意必須 |
+| V-6 | User-space coords canonical | API が emit する landmark の x は **user 視点で正規化**。 selfie (`camera: 'user'`) は MediaPipe の生 image-plane x を `1 - x` で反転、 user の右手 → x 大。 raw camera POV は `coordSpace: 'camera'` で opt-out 可。 VP の ARKit と semantic 互換 |
+
+### V-6 — なぜ user-space を canonical にするか (2026-05-03)
+
+MediaPipe の生 landmark は **camera image plane** 座標 — selfie だと「 user の右手は image の左 (x が 0 寄り)」 に映る。 これは physics として正しいが、 UI consumer が触ると違和感。 二択:
+
+1. **raw camera POV のまま渡す**: consumer 側で必要に応じ mirror。 「明示的」 だが consumer 全員に判断強制 → bug の温床
+2. **library boundary で user-space に正規化** (V-6 採用): UI 層は直感のまま、 spatial reasoning 用は `coordSpace: 'camera'` で opt-out
+
+決定打は **VP ARKit との semantic 互換**。 `HandTrackingProvider` は worldspace で hand position を返し、 device frame との関係から「 user の右手 → device-relative 右」 が natural。 MediaPipe を camera POV のまま expose すると、 consumer code が「 web の時だけ x を反転」 という platform-conditional 分岐を抱える。 library が boundary で吸収すれば、 consumer code は MediaPipe / ARKit / Apple Vision native を **同じ semantic で書ける** (CV-7 cross-platform 整合性)。
+
+**実装** (`packages/vision/src/mediapipe.ts`):
+- `coordSpace: 'user' | 'camera'`、 default は `camera` 引数から自動 (`'user'` → 'user'、 `'environment'` → 'camera')
+- hand landmarks は `toUserSpace(p)` で `x ↦ 1 - x`
+- head-pose の yaw / roll は scalar 反転 (matrix 直接 mirror は pitch に誤差を載せるので避ける)
+
+**観察起源** (2026-05-03 dogfood): Mac webcam で Real MediaPipe demo を試した user の即時の発見「画面左が実際の右側ですね」 — proprioception で emoji indicator は追従感成立していたが、 video preview を出した瞬間に破綻するし、 「 button を pinch で押す」 等の絶対座標 UI で破綻する。 library boundary で正規化が正解。
 
 ## 5. Editor Mode protocol との統合
 
