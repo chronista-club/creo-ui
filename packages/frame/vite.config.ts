@@ -18,6 +18,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: resolve(__dirname, 'src/index.ts'),
+        'frame/index': resolve(__dirname, 'src/frame/index.ts'),
         'motion/index': resolve(__dirname, 'src/motion/index.ts'),
       },
       formats: ['es'],

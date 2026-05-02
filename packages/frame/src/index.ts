@@ -1,9 +1,12 @@
 /**
  * creo-ui-frame — 3D Frame system runtime
  *
- * 現在 P-2 (motion engine) のみ ship。 FrameProvider / FrameSlot は P-3 で実装。
+ * P-2 (motion engine) + P-3 (Frame protocol) Ship 済。
  * 詳細は ../README.md と docs/design/frame-system.md。
  */
 
-// Re-export motion engine for convenience (`creo-ui-frame` direct import も可)
+// Frame protocol — primary API (FrameProvider / FrameSlot / setFrame / Frame schema)
+export * from './frame/index'
+
+// Motion engine — Frame protocol が内部で使う、 consumer も直接呼べる
 export * from './motion/index'

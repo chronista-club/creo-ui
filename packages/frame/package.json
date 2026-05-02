@@ -11,6 +11,10 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./frame": {
+      "types": "./dist/frame/index.d.ts",
+      "import": "./dist/frame/index.js"
+    },
     "./motion": {
       "types": "./dist/motion/index.d.ts",
       "import": "./dist/motion/index.js"

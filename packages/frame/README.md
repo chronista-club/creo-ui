@@ -5,12 +5,13 @@
 
 ## Status (2026-05-02)
 
-**Phase 2: motion engine** が ship 中。 FrameProvider / FrameSlot は P-3 で着手予定 (skeleton)。
+**Phase 2 (motion engine) + Phase 3 (Frame protocol) ship 済**。 P-4 で gesture (creo-ui-vision) 連結予定。
 
 | Surface | Status |
 |---|---|
 | `creo-ui-frame/motion` | ✅ FLIP / spring / token bridge / reduced-motion guard |
-| `creo-ui-frame` (Frame protocol) | ⚠ skeleton (P-3) |
+| `creo-ui-frame/frame` | ✅ FrameProvider / FrameSlot / useFrame / setFrame |
+| `creo-ui-frame` (root) | ✅ frame + motion 統合 export |
 
 ## Why self-built motion?
 
@@ -23,6 +24,63 @@ core 機能 (Frame morph engine) は creo-ui の哲学 (token SSOT / multi-platf
 ```sh
 bun add creo-ui-frame solid-js
 ```
+
+## Usage — Frame protocol (Phase 3)
+
+```tsx
+import { FrameProvider, FrameSlot, useFrame, type Frame } from 'creo-ui-frame'
+
+const dashboardFrame: Frame = {
+  id: 'dashboard',
+  slots: {
+    hero:    { x: 0,    y: 0,   z: 8 },
+    sidebar: { x: -240, y: 0,   z: 0 },
+    main:    { x: 240,  y: 0,   z: 0 },
+  },
+  perspective: 1400,
+}
+
+const readingFrame: Frame = {
+  id: 'reading',
+  slots: {
+    hero:    { x: 0,    y: -40, z: 16, scale: 1.2 },
+    sidebar: { x: -480, y: 0,   z: -20, opacity: 0.3 },
+    main:    { x: 0,    y: 0,   z: 0,  scale: 1.05 },
+  },
+  perspective: 'var(--frame-perspective-deep)',
+  transition: { duration: 480, easing: 'spring' },
+}
+
+function App() {
+  return (
+    <FrameProvider frames={[dashboardFrame, readingFrame]} initial="dashboard">
+      <FrameSlot name="hero">
+        <Hero />
+      </FrameSlot>
+      <FrameSlot name="sidebar">
+        <Nav />
+      </FrameSlot>
+      <FrameSlot name="main">
+        <Article />
+      </FrameSlot>
+      <FrameSwitcher />
+    </FrameProvider>
+  )
+}
+
+function FrameSwitcher() {
+  const { currentFrameId, setFrame } = useFrame()
+  return (
+    <button onClick={() => setFrame(currentFrameId() === 'dashboard' ? 'reading' : 'dashboard')}>
+      Switch
+    </button>
+  )
+}
+```
+
+`<FrameSlot>` は CSS transition で transform / opacity を morph。 reduce-motion 時は
+`transition: none` で snap。 同 DOM が保持されるので scroll position / focus / animation
+state は連続 (D-2 視点移動メタファ)。
 
 ## Usage — motion engine
 
