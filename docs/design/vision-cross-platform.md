@@ -73,7 +73,9 @@ public protocol VisionSource: Actor {
 |---|---|---|
 | **Browser (Chrome / Safari / Firefox)** | MediaPipe Tasks Web (WASM + WebGPU) | ✅ ship 済 (P-4.5) |
 | **WebView (wry / WKWebView / WebView2)** | 同上 (Web と同コード) | ✅ VP で動く (Phase A) |
-| **Mac/iOS native** | Apple Vision framework (`VNDetectHumanHandPoseRequest`) | 🔮 Phase B `creo-ui-vision-swift` |
+| **Safari for visionOS** | 同上 (WebView と同等) | ✅ Phase A で動く (Vision Pro 即時 path) |
+| **Mac native** | Apple Vision framework (`VNDetectHumanHandPoseRequest`) | 🔮 Phase B-mac `creo-ui-vision-swift` |
+| **visionOS native** | ARKit `HandTrackingProvider` (27 joint × 90Hz, spatial worldspace) | 🔮 Phase B-spatial `creo-ui-vision-swift` |
 | **Cross-platform Rust** | ONNX Runtime + wgpu (or Apple Vision via objc2) | 🔮 Phase C `creo-ui-vision-rs` |
 | **Mock (dev / test)** | Synthetic | ✅ ship 済 |
 
@@ -87,13 +89,15 @@ public protocol VisionSource: Actor {
 | CV-4 | Schema SSOT 形式 | TS が現在の SSOT、 将来 Rust に移行 (ts-rs auto-gen) — vp-mdast → creo-md と同 pattern |
 | CV-5 | Engine 選択原則 | Mac/iOS は Apple Vision 優先 (5ms/frame, OS 内 model)、 cross-platform は ONNX Runtime + wgpu |
 | CV-6 | **割り切り (pragmatism)** | **「そこそこのスペック」 (M1+ / mid-tier desktop) 想定**、 WebView ~200MB memory overhead は許容。 Phase A が **default primary path**、 Phase B/C は specific 性能要件出現時のみ |
+| CV-7 | **Vision Pro = first-class target** | visionOS は **正式 target**。 spatial UI は Frame system の literal 表現で、 F-3 (depth metaphor multi-platform) が物理的距離として実現。 Safari for visionOS (Phase A) + 将来 native visionOS app (Phase B-spatial) の 2 path |
 
 ### CV-6 詳細 — pragmatism と target spec
 
 **target environment**:
-- M1 Mac mini / Apple Silicon laptop / mid-tier desktop (16GB+ RAM)
-- chrome / safari / vp (wry WebView) で同等動作
-- mobile / iOS native / 低電力 device は **out of scope**
+- M1+ Mac (mini / laptop) / mid-tier desktop (16GB+ RAM)
+- **Apple Vision Pro** (visionOS) ← first-class target、 詳細 §9 で
+- Chrome / Safari / VP (wry WebView) で同等動作
+- mobile / iOS native phone / 低電力 device は **out of scope**
 
 **割り切り**:
 - WebView overhead (~150-200MB memory) は許容 — そこそこのスペックなら気にならない
@@ -251,10 +255,100 @@ creo-ui-vision-rs (Rust crate)
 
 | Phase | scope | 工数 |
 |---|---|---|
-| **A** | VP に Phase A 統合 (Info.plist + import 追加)、 docs/design に articulate (this) | 0.3 session |
-| **B** | `creo-ui-vision-swift` SPM package skeleton (AppleVisionSource API + stub) | 1 session |
+| **A** | docs/design に articulate (this) + VP / Vision Pro に Phase A 統合 (Info.plist + import 追加) | 0.3 session |
+| **B-mac** | `creo-ui-vision-swift` SPM package skeleton (AppleVisionSource for Mac native) | 1 session |
+| **B-spatial** | visionOS native app path — ARKit HandTrackingProvider + RealityKit Frame integration | 2-3 session |
 | **B+** | Swift implementation + VP の Rust↔Swift bridge | 2 session |
 | **C** | `creo-ui-vision-rs` (cross-platform Rust)、 WASM build | multi-session |
+
+## 9. Vision Pro target — spatial-first 設計
+
+**visionOS は first-class target** (CV-7)。 Frame system の F-3 (depth metaphor multi-platform) が
+**物理的距離として literal に表現** される唯一の environment。
+
+### 9.1 2 path
+
+#### Path A — Safari for visionOS (Phase A 同等、 即時)
+
+- visionOS には Safari (WKWebView) が乗る
+- `creo-ui-vision/mediapipe` がそのまま動く
+- WebXR / Metal-backed canvas 等の 3D も Safari 経由で利用可
+- Frame system の CSS 3D も透過的に動作 (perspective + transform)
+
+**今日でも動く** Vision Pro 体験。 Web app をそのまま spatial 環境で開ける。
+
+#### Path B-spatial — Native visionOS app (Phase B、 真の spatial UI)
+
+```swift
+// 将来 creo-ui-vision-swift の visionOS subset
+import ARKit
+import RealityKit
+
+@MainActor
+public class SpatialVisionSource: VisionSource {
+    private let session = ARKitSession()
+    private let handTracking = HandTrackingProvider()
+
+    public func start() async throws {
+        try await session.run([handTracking])
+        for await update in handTracking.anchorUpdates {
+            let hand = update.anchor
+            // hand.handSkeleton joints — 27 joint × 90 FPS、 worldspace meters
+            // → HandPinch (x/y/z は meters or normalized)
+        }
+    }
+}
+```
+
+優位:
+- **27 joint × 90 FPS** (MediaPipe の 21 × 30 比で 4 倍以上)
+- **Spatial worldspace 座標** (m 単位、 視点との相対距離が分かる)
+- **Eye+pinch canonical input** — visionOS の正規 gesture model
+- **RealityKit Entity** で Frame system の slot を **literal な 3D entity** として配置
+  - F-3 「depth metaphor」 が物理的距離として実装される
+  - perspective / scale / rotation は OS-level GPU で計算
+
+弱点:
+- Swift / SwiftUI / RealityKit / ARKit の **4 framework 混合学習コスト**
+- visionOS 限定 (Mac/iOS にこのまま転用不可、 共通コードは limited)
+
+### 9.2 Frame system との整合
+
+[frame-system.md](./frame-system.md) F-3 で「depth metaphor として platform 慣習で表現」 と articulate
+していたが、 visionOS では **metaphor ではなく literal**:
+
+| Platform | F-3 表現 |
+|---|---|
+| Web (CSS 3D) | `transform: translateZ(...)` の視覚的 depth (eye には平面、 視差で奥行き) |
+| TUI (ratatui) | dim/bright で奥行きを示唆 |
+| SwiftUI native | Liquid Glass + shadow |
+| **visionOS native** | **RealityKit Entity の物理的 z 座標** (head-relative meters) |
+
+Frame system の slot.z は CSS 上は px (一見 trick) だが、 visionOS では **そのまま meters に解釈**
+すれば物理的奥行きが得られる。 protocol は変えずに representation が richer に。
+
+### 9.3 Vision input 統合 — eye+pinch canonical
+
+visionOS の input model は **eye gaze + pinch**:
+- 見ているもの = focus / hover の対象
+- pinch = activate / select
+
+Creo UI の gesture 語彙 (vision-input.md) との整合:
+- `HandPinch` → そのまま (visionOS の pinch 検出は ARKit で正確)
+- `useHandPointing` → eye gaze で代替 (より自然)
+- `useGesture` の wave / nod は visionOS でも有効
+- 新たに **eye gaze accessor** が要る (`useEyeFocus()` 等、 P-4 拡張)
+
+### 9.4 Recommended path
+
+**Phase A (即時)**: Safari for visionOS で `creo-ui-vision/mediapipe` 動かす。 既 ship、 即体験可。
+Frame system の CSS 3D も Vision Pro の spatial 環境で楽しめる。
+
+**Phase B-spatial (将来)**: native visionOS app として `creo-ui-vision-swift` 内に SpatialVisionSource
+追加。 RealityKit binding で Frame system を literal 3D で表現。 Vision Pro 純粋体験。
+
+**判断軸**: Phase A で「動く」 を確認 → Vision Pro を本気の spatial UI plate として使う user 体験
+が必要になった時に Phase B-spatial 着手。 「spatial UI を見せたい」 が明確な動機なら直接 B-spatial。
 
 ## 8. やってはいけない
 
@@ -264,5 +358,7 @@ creo-ui-vision-rs (Rust crate)
 - ❌ Apple Vision の matrix output を `matrixToEuler` で再変換 (`face.pitch/yaw/roll` を直接使う)
 - ❌ Linux / Windows desktop を Phase C 前に supported と謳う
 - ❌ **「最速」 を理由に Phase B を選ぶ** (CV-6 違反、 target spec で WebView は十分)
-- ❌ mobile / iOS native / 低電力 device の対応を Phase A で約束する (out of scope)
+- ❌ mobile / iOS native phone / 低電力 device の対応を Phase A で約束する (out of scope)
 - ❌ memory footprint を 200MB 以下に抑える要求を初期から立てる (target spec で許容範囲)
+- ❌ **Vision Pro を「将来やる」 扱いにする** (CV-7、 first-class target — Phase A は Safari for visionOS で即対応)
+- ❌ visionOS native (Phase B-spatial) を MediaPipe Web と並列維持しない (engine layer の分裂、 各 best practice 採用)
