@@ -54,6 +54,11 @@ public extension Color {
 }
 
 public enum CreoUITokens {
+    public static let depthFlat: CGFloat = 0 // Flat — z=0、 base plane (no elevation)
+    public static let depthRaised: CGFloat = 4 // Raised — subtle hover lift / sidebar active item
+    public static let depthElevated: CGFloat = 8 // Elevated — card / hero default forward (5-step rule の中央)
+    public static let depthFloating: CGFloat = 16 // Floating — feature card hover / popover / dropdown
+    public static let depthModal: CGFloat = 32 // Modal — overlay / dialog / drawer の前面 (最深 elevation)
     public static let editorModePanelFieldGap: CGFloat = 8 // Field 同士の縦間隔
     public static let editorModePanelGroupGap: CGFloat = 16 // Field group 間の縦間隔
     public static let editorModeRegionPadding: CGFloat = 12 // Region 内側の padding
@@ -63,6 +68,9 @@ public enum CreoUITokens {
     public static let editorModeRegionRightWidth: CGFloat = 280 // RIGHT region の default 幅 (tool panel、左より広め)
     public static let editorModeSelectionOutlineWidth: CGFloat = 2 // Selection outline の太さ
     public static let editorModeSelectionOutlineOffset: CGFloat = 2 // 要素から outline までの offset (要素本体を遮らない)
+    public static let framePerspectiveDefault: CGFloat = 1400 // Default perspective — page-level spatial frame (subtle 3D)
+    public static let framePerspectiveShallow: CGFloat = 800 // Shallow — closer camera、 dramatic 3D (hero / playground)
+    public static let framePerspectiveDeep: CGFloat = 2400 // Deep — farther camera、 subtle 3D (long-form content / reading)
     public static let layoutGapTight: CGFloat = 4 // Tight gap — icon+label inline, chip group, closely-related siblings
     public static let layoutGapSibling: CGFloat = 18 // Default sibling gap — between stacked elements (list items, form fields)
     public static let layoutGapSection: CGFloat = 40 // Section-to-section gap — thematic block break (between content sections)
@@ -130,6 +138,16 @@ public enum CreoUITokens {
     public static let editorModeRegionBorder: String = "var(--color-surface-border)" // Region の輪郭色 (active theme に追従)
     public static let editorModeSelectionOutlineHover: String = "var(--color-brand-primary-subtle)" // Editor mode 中の hover outline (ghost highlight、Content を触らず上に描画)
     public static let editorModeSelectionOutlineActive: String = "var(--color-brand-primary)" // 選択中の要素 outline (active theme の brand primary)
+    public static let motionDurationInstant: String = "80ms" // Instant — micro feedback (button click flash 等)
+    public static let motionDurationFast: String = "160ms" // Fast — small UI transitions (tooltip / hover)
+    public static let motionDurationNormal: String = "220ms" // Normal — default transition (card lift / nav switch、 5-step 中央)
+    public static let motionDurationSlow: String = "320ms" // Slow — Frame morph / page transition (perceptible motion)
+    public static let motionDurationLazy: String = "480ms" // Lazy — large layout shift / hero reveal (deliberate)
+    public static let motionEasingLinear: String = "linear" // Linear — constant velocity (progress bars 等の cumulative motion)
+    public static let motionEasingIn: String = "cubic-bezier(0.4, 0, 1, 1)" // Ease-in — slow start, fast end (退場 animation)
+    public static let motionEasingOut: String = "cubic-bezier(0, 0, 0.2, 1)" // Ease-out — fast start, slow end (登場 animation、 Material 3 default)
+    public static let motionEasingInOut: String = "cubic-bezier(0.4, 0, 0.2, 1)" // Ease-in-out — smooth both ends (state change、 standard default)
+    public static let motionEasingSpring: String = "cubic-bezier(0.2, 0.8, 0.2, 1)" // Spring — Creo brand bouncy curve (3D Frame morph / lively interactions)
     public static let shadowNone: String = "none" // No shadow
     public static let shadowSm: String = "0 1px 2px 0 rgba(32, 36, 46, 0.06)" // Small elevation — quiet lift for subtle layers
     public static let shadowMd: String = "0 4px 6px -1px rgba(32, 36, 46, 0.08), 0 2px 4px -2px rgba(32, 36, 46, 0.06)" // Medium elevation — cards, dropdowns

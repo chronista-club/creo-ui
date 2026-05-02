@@ -105,6 +105,16 @@ pub const COLOR_SHADOW_BASE: Rgb = Rgb::new(0, 0, 0);
 pub const COLOR_SHADOW_STRONG: Rgb = Rgb::new(0, 0, 0);
 /// Hero gradient — marketing / splash surfaces
 pub const COLOR_GRADIENT_HERO: &str = "linear-gradient(135deg, oklch(0.2 0.04 160) 0%, oklch(0.18 0.03 175) 50%, oklch(0.22 0.05 165) 100%)";
+/// Flat — z=0、 base plane (no elevation)
+pub const DEPTH_FLAT: f32 = 0_f32;
+/// Raised — subtle hover lift / sidebar active item
+pub const DEPTH_RAISED: f32 = 4_f32;
+/// Elevated — card / hero default forward (5-step rule の中央)
+pub const DEPTH_ELEVATED: f32 = 8_f32;
+/// Floating — feature card hover / popover / dropdown
+pub const DEPTH_FLOATING: f32 = 16_f32;
+/// Modal — overlay / dialog / drawer の前面 (最深 elevation)
+pub const DEPTH_MODAL: f32 = 32_f32;
 /// TOP 領域 accent — global tools / 視線の起点 (active theme の brand secondary に追従)
 pub const EDITOR_MODE_AXIS_GLOBAL: &str = "var(--color-brand-secondary)";
 /// BOTTOM 領域 accent — ローカル utility (active theme の text tertiary)
@@ -149,6 +159,12 @@ pub const EDITOR_MODE_SELECTION_OUTLINE_ACTIVE: &str = "var(--color-brand-primar
 pub const EDITOR_MODE_SELECTION_OUTLINE_WIDTH: f32 = 2_f32;
 /// 要素から outline までの offset (要素本体を遮らない)
 pub const EDITOR_MODE_SELECTION_OUTLINE_OFFSET: f32 = 2_f32;
+/// Default perspective — page-level spatial frame (subtle 3D)
+pub const FRAME_PERSPECTIVE_DEFAULT: f32 = 1400_f32;
+/// Shallow — closer camera、 dramatic 3D (hero / playground)
+pub const FRAME_PERSPECTIVE_SHALLOW: f32 = 800_f32;
+/// Deep — farther camera、 subtle 3D (long-form content / reading)
+pub const FRAME_PERSPECTIVE_DEEP: f32 = 2400_f32;
 /// Tight gap — icon+label inline, chip group, closely-related siblings
 pub const LAYOUT_GAP_TIGHT: f32 = 4_f32;
 /// Default sibling gap — between stacked elements (list items, form fields)
@@ -173,6 +189,26 @@ pub const MARGIN_MD: f32 = 18_f32;
 pub const MARGIN_LG: f32 = 40_f32;
 /// Extra-large margin — major section or hero break (page-level breathing)
 pub const MARGIN_XL: f32 = 64_f32;
+/// Instant — micro feedback (button click flash 等)
+pub const MOTION_DURATION_INSTANT: &str = "80ms";
+/// Fast — small UI transitions (tooltip / hover)
+pub const MOTION_DURATION_FAST: &str = "160ms";
+/// Normal — default transition (card lift / nav switch、 5-step 中央)
+pub const MOTION_DURATION_NORMAL: &str = "220ms";
+/// Slow — Frame morph / page transition (perceptible motion)
+pub const MOTION_DURATION_SLOW: &str = "320ms";
+/// Lazy — large layout shift / hero reveal (deliberate)
+pub const MOTION_DURATION_LAZY: &str = "480ms";
+/// Linear — constant velocity (progress bars 等の cumulative motion)
+pub const MOTION_EASING_LINEAR: &str = "linear";
+/// Ease-in — slow start, fast end (退場 animation)
+pub const MOTION_EASING_IN: &str = "cubic-bezier(0.4, 0, 1, 1)";
+/// Ease-out — fast start, slow end (登場 animation、 Material 3 default)
+pub const MOTION_EASING_OUT: &str = "cubic-bezier(0, 0, 0.2, 1)";
+/// Ease-in-out — smooth both ends (state change、 standard default)
+pub const MOTION_EASING_IN_OUT: &str = "cubic-bezier(0.4, 0, 0.2, 1)";
+/// Spring — Creo brand bouncy curve (3D Frame morph / lively interactions)
+pub const MOTION_EASING_SPRING: &str = "cubic-bezier(0.2, 0.8, 0.2, 1)";
 /// No rounding — explicit reset (special, outside step rule)
 pub const RADIUS_NONE: f32 = 0_f32;
 /// Extra-small radius — minimal rounding (chips, tags)
