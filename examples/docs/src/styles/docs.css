@@ -351,7 +351,7 @@ a:hover {
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-lg);
-  transition: border-color 160ms, transform 160ms;
+  transition: border-color var(--motion-duration-fast), transform var(--motion-duration-fast);
 }
 
 .docs-feature-card:hover {
@@ -1335,7 +1335,7 @@ a:hover {
   border-radius: var(--radius-md);
   text-decoration: none;
   color: var(--color-text-primary);
-  transition: border-color 160ms, transform 160ms;
+  transition: border-color var(--motion-duration-fast), transform var(--motion-duration-fast);
 }
 
 .docs-component-card:hover {
@@ -1579,8 +1579,8 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  transition: box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: box-shadow var(--motion-duration-normal) var(--motion-easing-spring),
+    transform var(--motion-duration-normal) var(--motion-easing-spring);
 }
 
 .docs-playground-card[data-elevation="flat"] {
@@ -1590,7 +1590,7 @@ a:hover {
 
 .docs-playground-card[data-elevation="raised"] {
   box-shadow: var(--shadow-md);
-  transform: translateZ(8px);
+  transform: translateZ(var(--depth-elevated));
 }
 
 .docs-playground-card[data-elevation="floating"] {
@@ -1689,7 +1689,7 @@ kbd {
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-sm);
   text-align: center;
-  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 220ms;
+  transition: transform var(--motion-duration-normal) var(--motion-easing-spring), border-color var(--motion-duration-normal);
   color: var(--color-text-primary);
 }
 
@@ -1725,7 +1725,7 @@ kbd {
    ============================================================ */
 
 .docs-main {
-  perspective: 1400px;
+  perspective: var(--frame-perspective-default);
   perspective-origin: 50% 0;
 }
 
@@ -1742,13 +1742,13 @@ kbd {
 
 /* Hero — subtle forward */
 .docs-hero {
-  transform: translateZ(8px);
-  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform: translateZ(var(--depth-elevated));
+  transition: transform 280ms var(--motion-easing-spring);
 }
 
 /* Feature cards — stronger lift on hover */
 .docs-feature-card {
-  transition: border-color 280ms, transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+  transition: border-color 280ms, transform 280ms var(--motion-easing-spring),
     box-shadow 280ms;
 }
 
@@ -1760,7 +1760,7 @@ kbd {
 
 /* Component gallery cards */
 .docs-component-card {
-  transition: border-color 280ms, transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1),
+  transition: border-color 280ms, transform 280ms var(--motion-easing-spring),
     box-shadow 280ms;
 }
 
@@ -1771,7 +1771,7 @@ kbd {
 
 /* Color swatches subtle pop */
 .docs-color-swatch {
-  transition: transform 220ms ease-out;
+  transition: transform var(--motion-duration-normal) ease-out;
 }
 
 .docs-color-swatch:hover {
@@ -1780,17 +1780,17 @@ kbd {
 
 /* Theme preview cards */
 .docs-theme-card {
-  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms;
+  transition: transform 280ms var(--motion-easing-spring), box-shadow 280ms;
 }
 
 .docs-theme-card:hover {
-  transform: translateY(-2px) translateZ(8px);
+  transform: translateY(-2px) translateZ(var(--depth-elevated));
   box-shadow: 0 10px 20px -6px color-mix(in oklab, var(--color-text-primary) 18%, transparent);
 }
 
 /* Sidebar — subtle z-depth (active forward, inactive back) */
 .docs-sidebar-link {
-  transition: color 160ms, background 160ms, transform 200ms ease-out;
+  transition: color var(--motion-duration-fast), background var(--motion-duration-fast), transform 200ms ease-out;
 }
 
 .docs-sidebar-link:hover {
@@ -1807,11 +1807,11 @@ kbd {
 
 /* Principle / Decision cards subtle depth */
 .docs-principle {
-  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 280ms var(--motion-easing-spring);
 }
 
 .docs-principle:hover {
-  transform: translateZ(4px);
+  transform: translateZ(var(--depth-raised));
 }
 
 /* Region diagram subtle 3D feel */
@@ -1831,7 +1831,7 @@ kbd {
 
 /* Pipeline diagram — engine slightly forward */
 .docs-pipeline-engine {
-  transform: translateZ(4px);
+  transform: translateZ(var(--depth-raised));
 }
 
 /* Reduced motion — flat fallback (a11y contract) */

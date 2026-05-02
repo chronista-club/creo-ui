@@ -1,0 +1,21 @@
+{
+  "frame": {
+    "perspective": {
+      "default": {
+        "$value": "1400px",
+        "$type": "dimension",
+        "$description": "Default perspective — page-level spatial frame (subtle 3D)"
+      },
+      "shallow": {
+        "$value": "800px",
+        "$type": "dimension",
+        "$description": "Shallow — closer camera、 dramatic 3D (hero / playground)"
+      },
+      "deep": {
+        "$value": "2400px",
+        "$type": "dimension",
+        "$description": "Deep — farther camera、 subtle 3D (long-form content / reading)"
+      }
+    }
+  }
+}

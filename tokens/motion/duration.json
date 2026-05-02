@@ -1,0 +1,31 @@
+{
+  "motion": {
+    "duration": {
+      "instant": {
+        "$value": "80ms",
+        "$type": "duration",
+        "$description": "Instant — micro feedback (button click flash 等)"
+      },
+      "fast": {
+        "$value": "160ms",
+        "$type": "duration",
+        "$description": "Fast — small UI transitions (tooltip / hover)"
+      },
+      "normal": {
+        "$value": "220ms",
+        "$type": "duration",
+        "$description": "Normal — default transition (card lift / nav switch、 5-step 中央)"
+      },
+      "slow": {
+        "$value": "320ms",
+        "$type": "duration",
+        "$description": "Slow — Frame morph / page transition (perceptible motion)"
+      },
+      "lazy": {
+        "$value": "480ms",
+        "$type": "duration",
+        "$description": "Lazy — large layout shift / hero reveal (deliberate)"
+      }
+    }
+  }
+}

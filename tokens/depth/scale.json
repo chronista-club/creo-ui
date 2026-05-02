@@ -1,0 +1,29 @@
+{
+  "depth": {
+    "flat": {
+      "$value": "0px",
+      "$type": "dimension",
+      "$description": "Flat — z=0、 base plane (no elevation)"
+    },
+    "raised": {
+      "$value": "4px",
+      "$type": "dimension",
+      "$description": "Raised — subtle hover lift / sidebar active item"
+    },
+    "elevated": {
+      "$value": "8px",
+      "$type": "dimension",
+      "$description": "Elevated — card / hero default forward (5-step rule の中央)"
+    },
+    "floating": {
+      "$value": "16px",
+      "$type": "dimension",
+      "$description": "Floating — feature card hover / popover / dropdown"
+    },
+    "modal": {
+      "$value": "32px",
+      "$type": "dimension",
+      "$description": "Modal — overlay / dialog / drawer の前面 (最深 elevation)"
+    }
+  }
+}

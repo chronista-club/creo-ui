@@ -1,0 +1,31 @@
+{
+  "motion": {
+    "easing": {
+      "linear": {
+        "$value": "linear",
+        "$type": "string",
+        "$description": "Linear — constant velocity (progress bars 等の cumulative motion)"
+      },
+      "in": {
+        "$value": "cubic-bezier(0.4, 0, 1, 1)",
+        "$type": "string",
+        "$description": "Ease-in — slow start, fast end (退場 animation)"
+      },
+      "out": {
+        "$value": "cubic-bezier(0, 0, 0.2, 1)",
+        "$type": "string",
+        "$description": "Ease-out — fast start, slow end (登場 animation、 Material 3 default)"
+      },
+      "in-out": {
+        "$value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "$type": "string",
+        "$description": "Ease-in-out — smooth both ends (state change、 standard default)"
+      },
+      "spring": {
+        "$value": "cubic-bezier(0.2, 0.8, 0.2, 1)",
+        "$type": "string",
+        "$description": "Spring — Creo brand bouncy curve (3D Frame morph / lively interactions)"
+      }
+    }
+  }
+}
