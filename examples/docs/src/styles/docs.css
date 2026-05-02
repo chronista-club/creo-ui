@@ -1639,6 +1639,147 @@ kbd {
 }
 
 /* ============================================================
+   Lab / Frame demo (Playground)
+   ============================================================ */
+
+.docs-frame-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.docs-frame-current {
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-tertiary);
+  margin-inline-start: auto;
+}
+
+.docs-frame-current code {
+  font-family: var(--typography-family-mono);
+  color: var(--color-brand-primary);
+}
+
+.docs-frame-stage {
+  position: relative;
+  height: 320px;
+  background: var(--color-surface-bg-subtle);
+  border: 1px dashed var(--color-surface-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* Override slot wrapper to enable flex-center of slot content
+   inset: 0 + flex を活かして slot 内部 card は中央配置、 transform で位置 shift */
+.docs-frame-stage .creo-frame-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docs-frame-slot-card {
+  width: 180px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.docs-frame-slot-card[data-slot="hero"] {
+  border-color: color-mix(in oklab, var(--color-brand-primary) 35%, var(--color-surface-border));
+  background: color-mix(in oklab, var(--color-brand-primary) 8%, var(--color-surface-surface));
+}
+
+.docs-frame-slot-card[data-slot="sidebar"] {
+  border-color: color-mix(in oklab, var(--color-semantic-info) 35%, var(--color-surface-border));
+  background: color-mix(in oklab, var(--color-semantic-info) 8%, var(--color-surface-surface));
+}
+
+.docs-frame-slot-card[data-slot="main"] {
+  border-color: color-mix(in oklab, var(--color-text-secondary) 35%, var(--color-surface-border));
+}
+
+.docs-frame-slot-label {
+  font-family: var(--typography-family-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.docs-frame-slot-card p {
+  margin: 0;
+  font-size: var(--typography-size-sm);
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
+   Lab / Vision-Frame demo (gesture-driven morph)
+   ============================================================ */
+
+.docs-vision-frame-stage {
+  position: relative;
+}
+
+.docs-pinch-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 24px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: left 80ms linear, top 80ms linear, transform var(--motion-duration-fast) ease-out;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+  z-index: 10;
+}
+
+.docs-pinch-indicator[data-active="true"] {
+  transform: translate(-50%, -50%) scale(1.4);
+}
+
+.docs-vision-status {
+  margin-top: var(--spacing-sm);
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.docs-vision-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-semantic-success);
+  animation: docs-vision-pulse 2s ease-in-out infinite;
+}
+
+.docs-vision-status-dot[data-active="false"] {
+  background: var(--color-text-tertiary);
+  animation: none;
+}
+
+@keyframes docs-vision-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-vision-status-dot {
+    animation: none;
+  }
+  .docs-pinch-indicator {
+    transition: none;
+  }
+}
+
+/* ============================================================
    Resources / Icons gallery
    ============================================================ */
 

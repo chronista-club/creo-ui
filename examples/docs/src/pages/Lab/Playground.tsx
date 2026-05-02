@@ -10,7 +10,10 @@ import {
   signalTarget,
   string,
 } from 'creo-ui-editor-host'
-import { Show, createSignal } from 'solid-js'
+import { FrameProvider, FrameSlot, useFrame, type Frame } from 'creo-ui-frame'
+import { VisionProvider, useGesture, useHandPinch } from 'creo-ui-vision'
+import { createMockSource } from 'creo-ui-vision/mock'
+import { For, Show, createSignal } from 'solid-js'
 
 export default function Playground() {
   return (
@@ -114,6 +117,27 @@ function Demo() {
           <li><strong>Export to CSS patch</strong> — 変更分を CSS / JSON で書き出し</li>
         </ul>
       </section>
+
+      <section>
+        <h2 class="docs-section-title">Frame system demo (Phase 3)</h2>
+        <p class="docs-page-helper">
+          <code>creo-ui-frame</code> の <code>FrameProvider</code> + <code>FrameSlot</code> + <code>useFrame()</code> で
+          2 frame (dashboard / reading) を切替。 同 DOM 保持で transform / opacity が CSS transition で morph。
+          → <A href="/concepts/frame-system">Frame system 概念</A> も参照。
+        </p>
+        <FrameDemo />
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">Gesture-driven Frame morph (Phase 4 mock)</h2>
+        <p class="docs-page-helper">
+          <code>creo-ui-vision</code> の <strong>mock source</strong> (wave pattern) → <code>useGesture('wave')</code> →
+          <code>setFrame(next)</code> の binding。 実 webcam は使わず synthetic 信号で実演 (P-4.5 で MediaPipe Tasks
+          実 inference に source 差替予定)。 <code>HandPinch</code> 位置も mock で円周運動。
+          → <A href="/concepts/editor-mode">Editor Mode</A> 経由で keyboard / mouse / gesture / MCP の 4 経路統合。
+        </p>
+        <VisionFrameDemo />
+      </section>
     </>
   )
 }
@@ -204,6 +228,152 @@ function PlaygroundDemo() {
           <button class="creo-btn" data-variant="secondary">Secondary</button>
         </div>
       </article>
+    </div>
+  )
+}
+
+// =============================================================================
+// Frame system demo (Phase 3)
+// =============================================================================
+
+const dashboardFrame: Frame = {
+  id: 'dashboard',
+  slots: {
+    hero: { x: '0%', y: '-30%', z: 8 },
+    sidebar: { x: '-30%', y: '0%', z: 0 },
+    main: { x: '20%', y: '10%', z: 4 },
+  },
+  perspective: 1400,
+  transition: { duration: 480, easing: 'spring' },
+}
+
+const readingFrame: Frame = {
+  id: 'reading',
+  slots: {
+    hero: { x: '0%', y: '-40%', z: 16, scale: 1.2 },
+    sidebar: { x: '-65%', y: '0%', z: -20, opacity: 0.25 },
+    main: { x: '0%', y: '0%', z: 8, scale: 1.05 },
+  },
+  perspective: 'var(--frame-perspective-deep)',
+  transition: { duration: 480, easing: 'spring' },
+}
+
+function FrameDemo() {
+  return (
+    <FrameProvider frames={[dashboardFrame, readingFrame]} initial="dashboard">
+      <FrameStage />
+    </FrameProvider>
+  )
+}
+
+function FrameStage() {
+  const { setFrame, currentFrameId } = useFrame()
+
+  return (
+    <div>
+      <div class="docs-frame-controls">
+        <button
+          type="button"
+          class="creo-btn"
+          data-variant={currentFrameId() === 'dashboard' ? 'primary' : 'secondary'}
+          onClick={() => setFrame('dashboard')}
+        >
+          dashboard
+        </button>
+        <button
+          type="button"
+          class="creo-btn"
+          data-variant={currentFrameId() === 'reading' ? 'primary' : 'secondary'}
+          onClick={() => setFrame('reading')}
+        >
+          reading
+        </button>
+        <span class="docs-frame-current">
+          current: <code>{currentFrameId()}</code>
+        </span>
+      </div>
+      <div class="docs-frame-stage">
+        <FrameSlot name="hero">
+          <div class="docs-frame-slot-card" data-slot="hero">
+            <span class="docs-frame-slot-label">HERO</span>
+            <p>Title / page entrance</p>
+          </div>
+        </FrameSlot>
+        <FrameSlot name="sidebar">
+          <div class="docs-frame-slot-card" data-slot="sidebar">
+            <span class="docs-frame-slot-label">SIDEBAR</span>
+            <p>Nav / source</p>
+          </div>
+        </FrameSlot>
+        <FrameSlot name="main">
+          <div class="docs-frame-slot-card" data-slot="main">
+            <span class="docs-frame-slot-label">MAIN</span>
+            <p>Content / focus</p>
+          </div>
+        </FrameSlot>
+      </div>
+    </div>
+  )
+}
+
+// =============================================================================
+// Vision + Frame demo (Phase 4 mock — wave gesture が Frame morph をトリガ)
+// =============================================================================
+
+function VisionFrameDemo() {
+  // Wave pattern: 周期的に wave gesture を emit、 mock の orbital pinch も同時生成
+  const source = createMockSource({ pattern: 'wave', interval: 4000 })
+
+  return (
+    <VisionProvider source={source} autoStart={true}>
+      <FrameProvider frames={[dashboardFrame, readingFrame]} initial="dashboard">
+        <GestureBridge />
+        <div class="docs-vision-frame-stage">
+          <FrameStage />
+          <PinchIndicator />
+          <VisionStatus />
+        </div>
+      </FrameProvider>
+    </VisionProvider>
+  )
+}
+
+function GestureBridge() {
+  const { setFrame, currentFrameId } = useFrame()
+
+  useGesture((event) => {
+    if (event.type === 'wave') {
+      setFrame(currentFrameId() === 'dashboard' ? 'reading' : 'dashboard')
+    }
+  })
+
+  return null
+}
+
+function PinchIndicator() {
+  const pinch = useHandPinch()
+  return (
+    <Show when={pinch()}>
+      <div
+        class="docs-pinch-indicator"
+        data-active={pinch()!.active}
+        style={{
+          left: `${pinch()!.x * 100}%`,
+          top: `${pinch()!.y * 100}%`,
+        }}
+        aria-hidden="true"
+      >
+        {pinch()!.active ? '🤏' : '👋'}
+      </div>
+    </Show>
+  )
+}
+
+function VisionStatus() {
+  return (
+    <div class="docs-vision-status">
+      <span class="docs-vision-status-dot" data-active="true" />
+      Mock source (wave / orbit) — 4s 周期で frame 切替
     </div>
   )
 }

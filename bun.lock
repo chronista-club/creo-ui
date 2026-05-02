@@ -16,8 +16,10 @@
       "dependencies": {
         "@solidjs/router": "^0.15.0",
         "creo-ui-editor-host": "workspace:*",
+        "creo-ui-frame": "workspace:*",
         "creo-ui-icons-web": "workspace:*",
         "creo-ui-md-view": "workspace:*",
+        "creo-ui-vision": "workspace:*",
         "creo-ui-web": "workspace:*",
         "solid-js": "^1.9.0",
       },
