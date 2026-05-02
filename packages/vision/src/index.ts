@@ -57,3 +57,11 @@ export {
   clamp,
   toViewportPixel,
 } from './utils'
+
+// Smoothing (One-Euro filter for jitter reduction)
+export {
+  OneEuroFilter,
+  Point3DSmoother,
+  applyGain,
+  type SmoothingOptions,
+} from './smoothing'

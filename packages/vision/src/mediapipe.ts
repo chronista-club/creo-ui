@@ -30,6 +30,7 @@ import type { Point3D } from './types'
 import { isPinchActive, pinchCenter } from './utils'
 import { matrixToEuler, normalizeVector } from './mediapipe-utils'
 import { requestCameraStream, stopCameraStream } from './permission'
+import { type SmoothingOptions, applyGain, OneEuroFilter, Point3DSmoother } from './smoothing'
 
 export interface MediaPipeSourceOptions {
   /** Camera facing — default 'user' (front) */
@@ -53,6 +54,11 @@ export interface MediaPipeSourceOptions {
    * user 視点と camera POV がほぼ一致するため反転不要)。
    */
   coordSpace?: 'user' | 'camera'
+  /**
+   * 平滑化 (smoothing) 設定。 One-Euro Filter による hand-tracking jitter 除去。
+   * default: enabled、 minCutoff=1.0、 beta=0.0、 gain=1.0。
+   */
+  smoothing?: SmoothingOptions
 }
 
 // jsDelivr serves @mediapipe/tasks-vision npm package's `wasm/` directory directly.
@@ -90,6 +96,18 @@ export async function createMediaPipeSource(
   const mirrorX = coordSpace === 'user'
   const toUserSpace = (p: Point3D): Point3D =>
     mirrorX ? { x: 1 - p.x, y: p.y, z: p.z } : p
+
+  const smoothing = options.smoothing ?? {}
+  const smoothEnabled = smoothing.enabled ?? true
+  const minCutoff = smoothing.minCutoff ?? 1.0
+  const beta = smoothing.beta ?? 0.0
+  const gain = smoothing.gain ?? 1.0
+  const pinchSmoother = smoothEnabled ? new Point3DSmoother(minCutoff, beta) : null
+  const pointingOriginSmoother = smoothEnabled ? new Point3DSmoother(minCutoff, beta) : null
+  const pointingDirSmoother = smoothEnabled ? new Point3DSmoother(minCutoff, beta) : null
+  const yawSmoother = smoothEnabled ? new OneEuroFilter(minCutoff, beta) : null
+  const pitchSmoother = smoothEnabled ? new OneEuroFilter(minCutoff, beta) : null
+  const rollSmoother = smoothEnabled ? new OneEuroFilter(minCutoff, beta) : null
 
   // Dynamic import — keeps mediapipe out of base bundle
   // eslint-disable-next-line import/no-unresolved
@@ -163,14 +181,29 @@ export async function createMediaPipeSource(
             const score = handedness?.score ?? 0.8
 
             const active = isPinchActive(thumb, indexTip)
-            const center = pinchCenter(thumb, indexTip)
+            const rawCenter = pinchCenter(thumb, indexTip)
+            const rawDir = normalizeVector({
+              x: indexTip.x - wrist.x,
+              y: indexTip.y - wrist.y,
+              z: indexTip.z - wrist.z,
+            })
+
+            // 平滑化 (One-Euro filter) — jitter 除去 + adaptive cutoff で lag 抑制
+            const center = pinchSmoother ? pinchSmoother.filter(rawCenter, ts) : rawCenter
+            const origin = pointingOriginSmoother
+              ? pointingOriginSmoother.filter(wrist, ts)
+              : wrist
+            const direction = pointingDirSmoother
+              ? pointingDirSmoother.filter(rawDir, ts)
+              : rawDir
 
             dispatch({
               type: 'hand-pinch',
               data: {
                 active,
-                x: center.x,
-                y: center.y,
+                // gain: 中心 0.5 周りで range compress (腕を大きく振らずに済む)
+                x: applyGain(center.x, gain),
+                y: applyGain(center.y, gain),
                 z: center.z,
                 confidence: score,
               },
@@ -178,12 +211,8 @@ export async function createMediaPipeSource(
             dispatch({
               type: 'hand-pointing',
               data: {
-                origin: wrist,
-                direction: normalizeVector({
-                  x: indexTip.x - wrist.x,
-                  y: indexTip.y - wrist.y,
-                  z: indexTip.z - wrist.z,
-                }),
+                origin,
+                direction,
                 confidence: score,
               },
             })
@@ -211,12 +240,15 @@ export async function createMediaPipeSource(
             // yaw / roll は左右に符号を持つので、 user-space に揃える時は反転 (V-6)。
             // pitch は上下なので変えない。 4x4 matrix を直接 mirror すると pitch にも影響する
             // 計算誤差が乗るので、 Tait-Bryan 角に分解した後に scalar 反転する shortcut。
+            const rawPitch = euler.pitch
+            const rawYaw = mirrorX ? -euler.yaw : euler.yaw
+            const rawRoll = mirrorX ? -euler.roll : euler.roll
             dispatch({
               type: 'head-pose',
               data: {
-                pitch: euler.pitch,
-                yaw: mirrorX ? -euler.yaw : euler.yaw,
-                roll: mirrorX ? -euler.roll : euler.roll,
+                pitch: pitchSmoother ? pitchSmoother.filter(rawPitch, ts) : rawPitch,
+                yaw: yawSmoother ? yawSmoother.filter(rawYaw, ts) : rawYaw,
+                roll: rollSmoother ? rollSmoother.filter(rawRoll, ts) : rawRoll,
                 confidence: 0.85,
               },
             })
@@ -276,6 +308,14 @@ export async function createMediaPipeSource(
       faceLandmarker?.close?.()
       handLandmarker = null
       faceLandmarker = null
+
+      // Reset smoother state — 次回 start() で snap せず正常に立ち上がる
+      pinchSmoother?.reset()
+      pointingOriginSmoother?.reset()
+      pointingDirSmoother?.reset()
+      yawSmoother?.reset()
+      pitchSmoother?.reset()
+      rollSmoother?.reset()
 
       // Notify nulls — consumers can show "stopped" UI
       dispatch({ type: 'hand-pinch', data: null })
