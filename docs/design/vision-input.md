@@ -3,7 +3,7 @@
 **Status**: Vision (architecture proposed、 実装未着手)
 **Owners**: Creo UI (新 package `creo-ui-vision` の schema + Solid signal API)
 **Scope**: Webcam motion capture を Editor Mode protocol 経由で Frame system に統合する protocol
-**Related**: [frame-system.md](./frame-system.md), [editor-mode.md](./editor-mode.md), [stack-adr.md](./stack-adr.md)
+**Related**: [frame-system.md](./frame-system.md), [editor-mode.md](./editor-mode.md), [stack-adr.md](./stack-adr.md), [vision-cross-platform.md](./vision-cross-platform.md)
 
 ---
 
