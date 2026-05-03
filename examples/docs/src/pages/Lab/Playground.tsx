@@ -18,7 +18,7 @@ import {
   type VisionSource,
 } from 'creo-ui-vision'
 import { createMockSource } from 'creo-ui-vision/mock'
-import { For, Show, createEffect, createSignal } from 'solid-js'
+import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
 
 export default function Playground() {
   return (
@@ -142,6 +142,17 @@ function Demo() {
           → <A href="/concepts/editor-mode">Editor Mode</A> 経由で keyboard / mouse / gesture / MCP の 4 経路統合。
         </p>
         <VisionFrameDemo />
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">Camera probe (diagnostic)</h2>
+        <p class="docs-page-helper">
+          VP / browser が公開している camera の一覧、 取得 stream の解像度、 preview 映像、
+          MediaPipe asset の load 履歴を画面に直接表示。 visionOS Safari で 「 hand
+          検出されない」 等の partial-α 観察時に、 persona camera 経由か / 解像度が
+          model 想定と外れているか / model load が完了しているかを切り分ける。
+        </p>
+        <CameraProbe />
       </section>
 
       <section>
@@ -562,6 +573,201 @@ function SpatialPinchZones() {
         <span class="docs-pinch-zone-label">→ reading</span>
       </div>
     </>
+  )
+}
+
+// =============================================================================
+// Camera probe — VP / browser の camera 公開状況を画面で観察する diagnostic UI
+// =============================================================================
+
+interface VideoInputSummary {
+  deviceId: string
+  label: string
+}
+
+interface AssetLoadSummary {
+  name: string
+  transferSize: number
+  encodedBodySize: number
+  duration: number
+}
+
+function CameraProbe() {
+  const [devices, setDevices] = createSignal<VideoInputSummary[] | null>(null)
+  const [trackSettings, setTrackSettings] = createSignal<MediaTrackSettings | null>(null)
+  const [trackLabel, setTrackLabel] = createSignal<string | null>(null)
+  const [error, setError] = createSignal<string | null>(null)
+  const [previewStream, setPreviewStream] = createSignal<MediaStream | null>(null)
+  const [loading, setLoading] = createSignal(false)
+  const [assetLoads, setAssetLoads] = createSignal<AssetLoadSummary[] | null>(null)
+  let videoEl: HTMLVideoElement | undefined
+
+  const stopPreview = (): void => {
+    previewStream()
+      ?.getTracks()
+      .forEach((t) => t.stop())
+    setPreviewStream(null)
+    if (videoEl) videoEl.srcObject = null
+  }
+
+  const probe = async (): Promise<void> => {
+    setLoading(true)
+    setError(null)
+    stopPreview() // 既存の preview があれば閉じてから始める
+    try {
+      // 1) Acquire stream — this also unlocks device labels in enumerateDevices
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user' },
+      })
+      setPreviewStream(stream)
+      const track = stream.getVideoTracks()[0]
+      if (track) {
+        setTrackSettings(track.getSettings())
+        setTrackLabel(track.label || '(no label)')
+      }
+      // 2) Enumerate after permission so labels are populated
+      const all = await navigator.mediaDevices.enumerateDevices()
+      const videoInputs = all
+        .filter((d) => d.kind === 'videoinput')
+        .map((d) => ({
+          deviceId: d.deviceId.slice(0, 16),
+          label: d.label || '(no label)',
+        }))
+      setDevices(videoInputs)
+      // 3) Performance entries — MediaPipe assets が load されているか可視化
+      const entries = performance.getEntriesByType('resource') as PerformanceResourceTiming[]
+      const mp = entries
+        .filter((e) => /tasks-vision|mediapipe|landmarker|wasm|jsdelivr/i.test(e.name))
+        .map((e) => ({
+          name: e.name.length > 70 ? `…${e.name.slice(-70)}` : e.name,
+          transferSize: e.transferSize,
+          encodedBodySize: e.encodedBodySize,
+          duration: Math.round(e.duration),
+        }))
+      setAssetLoads(mp)
+      // 4) Attach stream to video for preview (next frame)
+      requestAnimationFrame(() => {
+        if (videoEl && stream) {
+          videoEl.srcObject = stream
+          videoEl.play().catch(() => {
+            /* ignore autoplay rejection */
+          })
+        }
+      })
+    } catch (err) {
+      setError(formatVisionError(err))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  onCleanup(stopPreview)
+
+  return (
+    <div class="docs-camera-probe">
+      <div class="docs-camera-probe-controls">
+        <button
+          type="button"
+          class="creo-btn"
+          data-variant="secondary"
+          disabled={loading()}
+          onClick={() => void probe()}
+        >
+          {loading() ? 'Probing...' : 'Probe cameras'}
+        </button>
+        <Show when={previewStream()}>
+          <button
+            type="button"
+            class="creo-btn"
+            data-variant="ghost"
+            data-size="sm"
+            onClick={stopPreview}
+          >
+            Stop preview
+          </button>
+        </Show>
+      </div>
+      <Show when={error()}>
+        <p class="docs-mediapipe-error">
+          <strong>Probe error:</strong> {error()}
+        </p>
+      </Show>
+      <video
+        ref={videoEl}
+        class="docs-camera-probe-video"
+        data-active={previewStream() !== null}
+        autoplay
+        muted
+        // @ts-expect-error — playsinline is iOS / visionOS Safari attribute
+        playsinline
+      />
+      <Show when={trackSettings()}>
+        <div class="docs-camera-probe-stats">
+          <h4>Active video track</h4>
+          <p class="docs-camera-probe-stat-line">
+            <strong>label:</strong> <code>{trackLabel()}</code>
+          </p>
+          <p class="docs-camera-probe-stat-line">
+            <strong>resolution:</strong>{' '}
+            <code>
+              {trackSettings()!.width ?? '?'}×{trackSettings()!.height ?? '?'}
+            </code>
+            {' · '}
+            <strong>frameRate:</strong>{' '}
+            <code>{trackSettings()!.frameRate?.toFixed(0) ?? '?'} fps</code>
+          </p>
+          <p class="docs-camera-probe-stat-line">
+            <strong>facingMode:</strong>{' '}
+            <code>{trackSettings()!.facingMode ?? '(none)'}</code>
+            {' · '}
+            <strong>aspectRatio:</strong>{' '}
+            <code>{trackSettings()!.aspectRatio?.toFixed(3) ?? '?'}</code>
+          </p>
+          <details class="docs-camera-probe-details">
+            <summary>raw settings</summary>
+            <pre class="docs-code">{JSON.stringify(trackSettings(), null, 2)}</pre>
+          </details>
+        </div>
+      </Show>
+      <Show when={devices()}>
+        <div class="docs-camera-probe-stats">
+          <h4>Available video inputs ({devices()!.length})</h4>
+          <ul class="docs-bullet-list">
+            <For each={devices()}>
+              {(d) => (
+                <li>
+                  <code>{d.label}</code> <small>({d.deviceId}…)</small>
+                </li>
+              )}
+            </For>
+          </ul>
+        </div>
+      </Show>
+      <Show when={assetLoads()}>
+        <div class="docs-camera-probe-stats">
+          <h4>MediaPipe asset loads ({assetLoads()!.length})</h4>
+          <Show when={assetLoads()!.length === 0}>
+            <p class="docs-page-helper">
+              MediaPipe asset 履歴なし。 Real MediaPipe demo を一度 Enable すると
+              fetched 履歴が見える。
+            </p>
+          </Show>
+          <ul class="docs-bullet-list">
+            <For each={assetLoads()}>
+              {(e) => (
+                <li>
+                  <code>{e.name}</code>
+                  <br />
+                  <small>
+                    transfer: {e.transferSize}B (decoded {e.encodedBodySize}B) · {e.duration}ms
+                  </small>
+                </li>
+              )}
+            </For>
+          </ul>
+        </div>
+      </Show>
+    </div>
   )
 }
 

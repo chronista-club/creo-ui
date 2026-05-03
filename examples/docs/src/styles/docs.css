@@ -1840,6 +1840,83 @@ kbd {
   }
 }
 
+/* Camera probe — diagnostic UI for VP / browser camera observation */
+.docs-camera-probe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--color-surface-base);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+}
+
+.docs-camera-probe-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.docs-camera-probe-video {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-surface-border);
+  object-fit: contain;
+  display: none;
+}
+
+.docs-camera-probe-video[data-active="true"] {
+  display: block;
+}
+
+.docs-camera-probe-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.docs-camera-probe-stats h4 {
+  margin: 0;
+  font-size: var(--typography-size-sm);
+  font-weight: var(--typography-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.docs-camera-probe-stat-line {
+  margin: 0;
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.docs-camera-probe-stat-line code {
+  background: var(--color-surface-sunken);
+  padding: 1px 5px;
+  border-radius: var(--radius-xs);
+  font-size: 0.95em;
+}
+
+.docs-camera-probe-details {
+  margin-top: var(--spacing-xs);
+  font-size: var(--typography-size-xs);
+}
+
+.docs-camera-probe-details summary {
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+.docs-camera-probe-details pre {
+  margin-top: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  font-size: var(--typography-size-2xs, 11px);
+  overflow-x: auto;
+}
+
 /* ============================================================
    Resources / Icons gallery
    ============================================================ */
