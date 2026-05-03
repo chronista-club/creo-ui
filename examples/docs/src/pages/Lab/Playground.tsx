@@ -416,6 +416,7 @@ function RealMediaPipeDemo() {
   const [source, setSource] = createSignal<VisionSource | null>(null)
   const [error, setError] = createSignal<string | null>(null)
   const [loading, setLoading] = createSignal(false)
+  const [delegate, setDelegate] = createSignal<'GPU' | 'CPU'>('GPU')
 
   const enable = async (): Promise<void> => {
     setLoading(true)
@@ -426,6 +427,7 @@ function RealMediaPipeDemo() {
       const realSource = await createMediaPipeSource({
         camera: 'user',
         models: ['hand'],
+        delegate: delegate(),
       })
       setSource(realSource)
       setEnabled(true)
@@ -451,10 +453,38 @@ function RealMediaPipeDemo() {
           <h3 class="docs-mediapipe-prompt-title">Webcam を有効化</h3>
           <ul class="docs-bullet-list">
             <li>カメラへのアクセス許可を求めます (browser native dialog)</li>
-            <li>MediaPipe Tasks Web SDK (~3MB) を Google CDN から lazy load</li>
+            <li>MediaPipe Tasks Web SDK (~3MB) を jsDelivr CDN から lazy load</li>
             <li>HandLandmarker を初期化して inference loop 開始</li>
             <li>Raw frame は on-device に閉じます (V-4 contract)</li>
           </ul>
+          <fieldset class="docs-mediapipe-delegate">
+            <legend>Inference delegate</legend>
+            <label>
+              <input
+                type="radio"
+                name="mediapipe-delegate"
+                value="GPU"
+                checked={delegate() === 'GPU'}
+                onChange={() => setDelegate('GPU')}
+              />
+              <span>
+                <strong>GPU</strong> (default、 WebGL 経由で高速)
+              </span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="mediapipe-delegate"
+                value="CPU"
+                checked={delegate() === 'CPU'}
+                onChange={() => setDelegate('CPU')}
+              />
+              <span>
+                <strong>CPU</strong> (visionOS Safari の WebGL 互換性が
+                怪しい時の fallback、 slower だが確実)
+              </span>
+            </label>
+          </fieldset>
           <button
             type="button"
             class="creo-btn"
@@ -462,7 +492,7 @@ function RealMediaPipeDemo() {
             disabled={loading()}
             onClick={() => void enable()}
           >
-            {loading() ? 'Loading MediaPipe...' : 'Enable webcam'}
+            {loading() ? 'Loading MediaPipe...' : `Enable webcam (${delegate()})`}
           </button>
           <Show when={error()}>
             <p class="docs-mediapipe-error">
@@ -610,22 +640,63 @@ function CameraProbe() {
     if (videoEl) videoEl.srcObject = null
   }
 
+  /**
+   * 段階的に制約を緩めて getUserMedia を試行。 visionOS Safari では facingMode 制約
+   * が厳しすぎて 2 度目以降に OverconstrainedError を出すケースを観察した (2026-05-03)。
+   * 第一試行 → 第二試行 (制約なし) → 第三試行 (deviceId 直指定の最初の input) と
+   * fallback。 全部失敗したら error として最後の message を返す。
+   */
   const probe = async (): Promise<void> => {
     setLoading(true)
     setError(null)
     stopPreview() // 既存の preview があれば閉じてから始める
+
+    const attempts: Array<{ name: string; constraints: MediaStreamConstraints }> = [
+      { name: 'facingMode user', constraints: { video: { facingMode: 'user' } } },
+      { name: 'video: true', constraints: { video: true } },
+    ]
+
+    let stream: MediaStream | null = null
+    const errors: string[] = []
+    for (const attempt of attempts) {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia(attempt.constraints)
+        if (stream) break
+      } catch (err) {
+        errors.push(`[${attempt.name}] ${formatVisionError(err)}`)
+      }
+    }
+
+    // 第三試行: enumerateDevices で見つかった最初の videoinput を deviceId で直指定
+    if (!stream) {
+      try {
+        const all = await navigator.mediaDevices.enumerateDevices()
+        const firstVideo = all.find((d) => d.kind === 'videoinput')
+        if (firstVideo?.deviceId) {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { deviceId: { exact: firstVideo.deviceId } },
+          })
+        } else {
+          errors.push('[deviceId] no videoinput found via enumerateDevices')
+        }
+      } catch (err) {
+        errors.push(`[deviceId exact] ${formatVisionError(err)}`)
+      }
+    }
+
+    if (!stream) {
+      setError(`All probe attempts failed:\n${errors.join('\n')}`)
+      setLoading(false)
+      return
+    }
+
     try {
-      // 1) Acquire stream — this also unlocks device labels in enumerateDevices
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user' },
-      })
       setPreviewStream(stream)
       const track = stream.getVideoTracks()[0]
       if (track) {
         setTrackSettings(track.getSettings())
         setTrackLabel(track.label || '(no label)')
       }
-      // 2) Enumerate after permission so labels are populated
       const all = await navigator.mediaDevices.enumerateDevices()
       const videoInputs = all
         .filter((d) => d.kind === 'videoinput')
@@ -634,7 +705,6 @@ function CameraProbe() {
           label: d.label || '(no label)',
         }))
       setDevices(videoInputs)
-      // 3) Performance entries — MediaPipe assets が load されているか可視化
       const entries = performance.getEntriesByType('resource') as PerformanceResourceTiming[]
       const mp = entries
         .filter((e) => /tasks-vision|mediapipe|landmarker|wasm|jsdelivr/i.test(e.name))
@@ -645,7 +715,6 @@ function CameraProbe() {
           duration: Math.round(e.duration),
         }))
       setAssetLoads(mp)
-      // 4) Attach stream to video for preview (next frame)
       requestAnimationFrame(() => {
         if (videoEl && stream) {
           videoEl.srcObject = stream
@@ -688,9 +757,11 @@ function CameraProbe() {
         </Show>
       </div>
       <Show when={error()}>
-        <p class="docs-mediapipe-error">
-          <strong>Probe error:</strong> {error()}
-        </p>
+        <pre class="docs-mediapipe-error">
+          <strong>Probe error:</strong>
+          {'\n'}
+          {error()}
+        </pre>
       </Show>
       <video
         ref={videoEl}
