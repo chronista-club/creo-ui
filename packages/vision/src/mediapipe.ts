@@ -12,6 +12,13 @@
  *
  * V-4 不変条件 (privacy): raw frame は VisualVideoElement → HandLandmarker / FaceLandmarker
  * の WASM 内に閉じ、 server 送信なし。 server endpoint への通信は一切発生しない。
+ *
+ * Coordinate space (V-6, 2026-05-03):
+ *   MediaPipe の生 landmark は camera image plane (selfie だと user の右手は x が小さい側に映る)。
+ *   Creo UI vision API は **user-space を canonical** とする — `camera: 'user'` の時 x を 1-x で
+ *   反転、 user の右手 → x 大、 左手 → x 小。 これにより VP の ARKit (worldspace、 user 視点と
+ *   一致) と semantic 互換になり、 consumer の UI 層は coord 変換不要で書ける。 raw camera POV が
+ *   必要な spatial reasoning consumer は `coordSpace: 'camera'` で opt-out 可。
  */
 
 import type {
@@ -23,13 +30,14 @@ import type { Point3D } from './types'
 import { isPinchActive, pinchCenter } from './utils'
 import { matrixToEuler, normalizeVector } from './mediapipe-utils'
 import { requestCameraStream, stopCameraStream } from './permission'
+import { type SmoothingOptions, applyGain, OneEuroFilter, Point3DSmoother } from './smoothing'
 
 export interface MediaPipeSourceOptions {
   /** Camera facing — default 'user' (front) */
   camera?: 'user' | 'environment'
   /** Models to load — default ['hand'] (face は重いので opt-in) */
   models?: readonly ('hand' | 'face')[]
-  /** WASM assets base URL — default Google CDN */
+  /** WASM assets base URL — default jsDelivr CDN (npm package mirror) */
   wasmBase?: string
   /** Hand model URL — default Google MediaPipe model */
   handModelPath?: string
@@ -37,9 +45,26 @@ export interface MediaPipeSourceOptions {
   faceModelPath?: string
   /** Inference delegate — 'GPU' (default) or 'CPU' */
   delegate?: 'GPU' | 'CPU'
+  /**
+   * Coordinate space for emitted landmarks (V-6).
+   * - `'user'`: x mirrored so user's right hand → high x。 Selfie UI / VP ARKit と semantic 一致。
+   * - `'camera'`: raw image plane (MediaPipe convention)。 3D reasoning / multi-view fusion 用。
+   *
+   * Default: `'user'` for `camera: 'user'`、 `'camera'` for `camera: 'environment'` (背面 camera は
+   * user 視点と camera POV がほぼ一致するため反転不要)。
+   */
+  coordSpace?: 'user' | 'camera'
+  /**
+   * 平滑化 (smoothing) 設定。 One-Euro Filter による hand-tracking jitter 除去。
+   * default: enabled、 minCutoff=1.0、 beta=0.0、 gain=1.0。
+   */
+  smoothing?: SmoothingOptions
 }
 
-const DEFAULT_WASM_BASE = 'https://storage.googleapis.com/mediapipe-tasks/wasm'
+// jsDelivr serves @mediapipe/tasks-vision npm package's `wasm/` directory directly.
+// `storage.googleapis.com/mediapipe-tasks/wasm` was the old default but is now unreliable
+// (404 / 403 observed 2026-05). jsDelivr is the recommended CDN per MediaPipe docs.
+const DEFAULT_WASM_BASE = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10/wasm'
 const DEFAULT_HAND_MODEL =
   'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task'
 const DEFAULT_FACE_MODEL =
@@ -67,6 +92,22 @@ export async function createMediaPipeSource(
   const models = options.models ?? ['hand']
   const wasmBase = options.wasmBase ?? DEFAULT_WASM_BASE
   const delegate = options.delegate ?? 'GPU'
+  const coordSpace = options.coordSpace ?? (camera === 'user' ? 'user' : 'camera')
+  const mirrorX = coordSpace === 'user'
+  const toUserSpace = (p: Point3D): Point3D =>
+    mirrorX ? { x: 1 - p.x, y: p.y, z: p.z } : p
+
+  const smoothing = options.smoothing ?? {}
+  const smoothEnabled = smoothing.enabled ?? true
+  const minCutoff = smoothing.minCutoff ?? 1.0
+  const beta = smoothing.beta ?? 0.0
+  const gain = smoothing.gain ?? 1.0
+  const pinchSmoother = smoothEnabled ? new Point3DSmoother(minCutoff, beta) : null
+  const pointingOriginSmoother = smoothEnabled ? new Point3DSmoother(minCutoff, beta) : null
+  const pointingDirSmoother = smoothEnabled ? new Point3DSmoother(minCutoff, beta) : null
+  const yawSmoother = smoothEnabled ? new OneEuroFilter(minCutoff, beta) : null
+  const pitchSmoother = smoothEnabled ? new OneEuroFilter(minCutoff, beta) : null
+  const rollSmoother = smoothEnabled ? new OneEuroFilter(minCutoff, beta) : null
 
   // Dynamic import — keeps mediapipe out of base bundle
   // eslint-disable-next-line import/no-unresolved
@@ -132,21 +173,37 @@ export async function createMediaPipeSource(
             landmarks[LANDMARK_INDEX_TIP] &&
             landmarks[LANDMARK_WRIST]
           ) {
-            const thumb = landmarks[LANDMARK_THUMB_TIP] as Point3D
-            const indexTip = landmarks[LANDMARK_INDEX_TIP] as Point3D
-            const wrist = landmarks[LANDMARK_WRIST] as Point3D
+            // Apply coordSpace transform — user-space mirror is the V-6 canonical.
+            const thumb = toUserSpace(landmarks[LANDMARK_THUMB_TIP] as Point3D)
+            const indexTip = toUserSpace(landmarks[LANDMARK_INDEX_TIP] as Point3D)
+            const wrist = toUserSpace(landmarks[LANDMARK_WRIST] as Point3D)
             const handedness = result.handedness?.[0]?.[0]
             const score = handedness?.score ?? 0.8
 
             const active = isPinchActive(thumb, indexTip)
-            const center = pinchCenter(thumb, indexTip)
+            const rawCenter = pinchCenter(thumb, indexTip)
+            const rawDir = normalizeVector({
+              x: indexTip.x - wrist.x,
+              y: indexTip.y - wrist.y,
+              z: indexTip.z - wrist.z,
+            })
+
+            // 平滑化 (One-Euro filter) — jitter 除去 + adaptive cutoff で lag 抑制
+            const center = pinchSmoother ? pinchSmoother.filter(rawCenter, ts) : rawCenter
+            const origin = pointingOriginSmoother
+              ? pointingOriginSmoother.filter(wrist, ts)
+              : wrist
+            const direction = pointingDirSmoother
+              ? pointingDirSmoother.filter(rawDir, ts)
+              : rawDir
 
             dispatch({
               type: 'hand-pinch',
               data: {
                 active,
-                x: center.x,
-                y: center.y,
+                // gain: 中心 0.5 周りで range compress (腕を大きく振らずに済む)
+                x: applyGain(center.x, gain),
+                y: applyGain(center.y, gain),
                 z: center.z,
                 confidence: score,
               },
@@ -154,12 +211,8 @@ export async function createMediaPipeSource(
             dispatch({
               type: 'hand-pointing',
               data: {
-                origin: wrist,
-                direction: normalizeVector({
-                  x: indexTip.x - wrist.x,
-                  y: indexTip.y - wrist.y,
-                  z: indexTip.z - wrist.z,
-                }),
+                origin,
+                direction,
                 confidence: score,
               },
             })
@@ -183,10 +236,21 @@ export async function createMediaPipeSource(
         if (result.faceLandmarks.length > 0) {
           const matrix = result.facialTransformationMatrixes?.[0]?.data
           if (matrix) {
-            const { pitch, yaw, roll } = matrixToEuler(matrix)
+            const euler = matrixToEuler(matrix)
+            // yaw / roll は左右に符号を持つので、 user-space に揃える時は反転 (V-6)。
+            // pitch は上下なので変えない。 4x4 matrix を直接 mirror すると pitch にも影響する
+            // 計算誤差が乗るので、 Tait-Bryan 角に分解した後に scalar 反転する shortcut。
+            const rawPitch = euler.pitch
+            const rawYaw = mirrorX ? -euler.yaw : euler.yaw
+            const rawRoll = mirrorX ? -euler.roll : euler.roll
             dispatch({
               type: 'head-pose',
-              data: { pitch, yaw, roll, confidence: 0.85 },
+              data: {
+                pitch: pitchSmoother ? pitchSmoother.filter(rawPitch, ts) : rawPitch,
+                yaw: yawSmoother ? yawSmoother.filter(rawYaw, ts) : rawYaw,
+                roll: rollSmoother ? rollSmoother.filter(rawRoll, ts) : rawRoll,
+                confidence: 0.85,
+              },
             })
           }
           dispatch({
@@ -244,6 +308,14 @@ export async function createMediaPipeSource(
       faceLandmarker?.close?.()
       handLandmarker = null
       faceLandmarker = null
+
+      // Reset smoother state — 次回 start() で snap せず正常に立ち上がる
+      pinchSmoother?.reset()
+      pointingOriginSmoother?.reset()
+      pointingDirSmoother?.reset()
+      yawSmoother?.reset()
+      pitchSmoother?.reset()
+      rollSmoother?.reset()
 
       // Notify nulls — consumers can show "stopped" UI
       dispatch({ type: 'hand-pinch', data: null })

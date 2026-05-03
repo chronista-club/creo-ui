@@ -1779,6 +1779,144 @@ kbd {
   }
 }
 
+/* P-5 spatial pinch zones — visual hint for left/right hemisphere pinch trigger */
+.docs-pinch-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.18;
+  transition: opacity var(--motion-duration-fast) ease-out,
+    background var(--motion-duration-fast) ease-out;
+  z-index: 1;
+  padding-bottom: var(--spacing-md);
+}
+
+.docs-pinch-zone[data-side="left"] {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    color-mix(in oklab, var(--color-brand-primary) 35%, transparent),
+    transparent
+  );
+  border-left: 2px dashed
+    color-mix(in oklab, var(--color-brand-primary) 40%, transparent);
+}
+
+.docs-pinch-zone[data-side="right"] {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    color-mix(in oklab, var(--color-semantic-info) 35%, transparent),
+    transparent
+  );
+  border-right: 2px dashed
+    color-mix(in oklab, var(--color-semantic-info) 40%, transparent);
+}
+
+.docs-pinch-zone[data-active="true"] {
+  opacity: 0.7;
+}
+
+.docs-pinch-zone-label {
+  font-size: var(--typography-size-xs);
+  font-weight: var(--typography-weight-semibold);
+  color: var(--color-text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: color-mix(in oklab, var(--color-surface-base) 80%, transparent);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-pinch-zone {
+    transition: none;
+  }
+}
+
+/* Camera probe — diagnostic UI for VP / browser camera observation */
+.docs-camera-probe {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--color-surface-base);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-md);
+}
+
+.docs-camera-probe-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.docs-camera-probe-video {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 16 / 9;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-surface-border);
+  object-fit: contain;
+  display: none;
+}
+
+.docs-camera-probe-video[data-active="true"] {
+  display: block;
+}
+
+.docs-camera-probe-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.docs-camera-probe-stats h4 {
+  margin: 0;
+  font-size: var(--typography-size-sm);
+  font-weight: var(--typography-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.docs-camera-probe-stat-line {
+  margin: 0;
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.docs-camera-probe-stat-line code {
+  background: var(--color-surface-sunken);
+  padding: 1px 5px;
+  border-radius: var(--radius-xs);
+  font-size: 0.95em;
+}
+
+.docs-camera-probe-details {
+  margin-top: var(--spacing-xs);
+  font-size: var(--typography-size-xs);
+}
+
+.docs-camera-probe-details summary {
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  font-style: italic;
+}
+
+.docs-camera-probe-details pre {
+  margin-top: var(--spacing-xs);
+  padding: var(--spacing-sm);
+  font-size: var(--typography-size-2xs, 11px);
+  overflow-x: auto;
+}
+
 /* ============================================================
    Resources / Icons gallery
    ============================================================ */
@@ -1897,6 +2035,37 @@ kbd {
   margin: var(--spacing-sm) 0 0 0;
   max-width: 100%;
   word-break: break-word;
+}
+
+.docs-mediapipe-delegate {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin: 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+}
+
+.docs-mediapipe-delegate legend {
+  padding: 0 var(--spacing-xs);
+  font-size: var(--typography-size-xs);
+  font-weight: var(--typography-weight-semibold);
+  color: var(--color-text-secondary);
+}
+
+.docs-mediapipe-delegate label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+  font-size: var(--typography-size-sm);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.docs-mediapipe-delegate input[type="radio"] {
+  margin-top: 0.2em;
 }
 
 /* Real demo の status bar に Stop button を inline で配置 */
