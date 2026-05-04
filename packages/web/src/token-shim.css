@@ -52,13 +52,21 @@
   /* ---------- Spacing flat alias (Tailwind/Bootstrap 風の数値名) ---------- */
 
   --space-1: var(--spacing-xs); /* 4px */
-  --space-2: var(--spacing-sm); /* 8px */
-  --space-3: var(--spacing-md); /* 18px */
-  --space-4: var(--spacing-lg); /* 24px */
+  --space-2: var(--spacing-s); /* 8px */
+  --space-3: var(--spacing-m); /* 18px */
+  --space-4: var(--spacing-l); /* 24px */
   --space-5: var(--spacing-xl); /* 32px */
 
+  /* ---------- 旧 spacing 名 alias (sm/md/lg → s/m/l rename 互換、 2026-05-04) ----------
+     creo-ui v0.x は xs/sm/md/lg/xl だったが、 5 tier の呼び方を xs/s/m/l/xl に
+     統一。 旧 product (creo-memories 等) は token-shim.css 経由で互換維持。 */
+
+  --spacing-sm: var(--spacing-s);
+  --spacing-md: var(--spacing-m);
+  --spacing-lg: var(--spacing-l);
+
   /* Bootstrap 5 互換 alias (0.25rem 刻み近似、px 化した shim) */
-  --bs-spacer: var(--spacing-md);
+  --bs-spacer: var(--spacing-m);
 
   /* ---------- Radius flat alias ---------- */
 

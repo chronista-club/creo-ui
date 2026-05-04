@@ -8,8 +8,8 @@
 .creo-alert {
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
+  gap: var(--spacing-s);
+  padding: var(--spacing-s) var(--spacing-m);
   border-radius: var(--radius-md);
   border: 1px solid transparent;
   color: var(--color-text-primary);

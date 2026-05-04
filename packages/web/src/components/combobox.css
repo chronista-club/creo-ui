@@ -14,7 +14,7 @@
   /* chevron icon を背景画像として描く (SVG inline、token 色追従) */
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1L6 6L11 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
   background-repeat: no-repeat;
-  background-position: right var(--spacing-sm) center;
+  background-position: right var(--spacing-s) center;
   background-size: 12px 8px;
 
   /* currentColor が使えないので、text-tertiary を指定 (hack: CSS mask 使うと完全追従できるが SVG で十分) */
@@ -25,7 +25,7 @@
 
 /* RTL 対応 (right に chevron だと LTR 前提、RTL では left に) */
 [dir="rtl"] .creo-combobox {
-  padding-right: var(--spacing-md);
+  padding-right: var(--spacing-m);
   padding-left: var(--spacing-xl);
-  background-position: left var(--spacing-sm) center;
+  background-position: left var(--spacing-s) center;
 }

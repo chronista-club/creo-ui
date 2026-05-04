@@ -30,7 +30,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
-  column-gap: var(--spacing-sm);
+  column-gap: var(--spacing-s);
   row-gap: 2px;
   align-items: center;
   flex: 1;
@@ -41,7 +41,7 @@
 /* vertical の場合、item は row-wise に積む */
 .creo-stepper[data-orientation="vertical"] .creo-stepper-item {
   flex: 0 1 auto;
-  padding-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-m);
 }
 
 /* connector: 次 item との繋ぎ線 */
@@ -54,7 +54,7 @@
 
 .creo-stepper[data-orientation="horizontal"] .creo-stepper-item:not(:last-child)::after,
 .creo-stepper:not([data-orientation]) .creo-stepper-item:not(:last-child)::after {
-  left: calc(32px + var(--spacing-sm));
+  left: calc(32px + var(--spacing-s));
   right: 0;
   top: 15px;
   height: 2px;

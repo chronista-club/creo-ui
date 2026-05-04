@@ -7,7 +7,7 @@
         "$description": "Tight gap — icon+label inline, chip group, closely-related siblings"
       },
       "sibling": {
-        "$value": "{spacing.md}",
+        "$value": "{spacing.m}",
         "$type": "dimension",
         "$description": "Default sibling gap — between stacked elements (list items, form fields)"
       },

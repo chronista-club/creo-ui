@@ -42,7 +42,7 @@
   display: flex;
   align-items: center;
   gap: var(--layout-gap-tight);
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-s);
   min-height: var(--layout-target-focus);
 
   font-family: inherit;
@@ -89,7 +89,7 @@
 /* ---------- Group label ---------- */
 
 .creo-menu-label {
-  padding: var(--spacing-xs) var(--spacing-sm) 2px;
+  padding: var(--spacing-xs) var(--spacing-s) 2px;
   font-size: var(--typography-body-caption);
   font-weight: var(--typography-weight-medium);
   color: var(--color-text-tertiary);
