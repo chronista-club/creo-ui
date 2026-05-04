@@ -165,6 +165,15 @@ function Demo() {
           中央帯 (x=0.4〜0.6) は <strong>dead-band</strong> で意図しない切替を防止。
           raw frame は on-device に閉じる (V-4 不変条件)、 jitter は One-Euro Filter で平滑化済 (default)。
         </p>
+        <p class="docs-page-helper">
+          <strong>Target environments (CV-8)</strong>: この demo は <strong>Mac / Windows / Linux の
+          desktop browser</strong> 向け。 hand tracking を mouse / keyboard と並ぶ <strong>UI input
+          modality の一つ</strong> として使う想定。 <strong>Vision Pro Safari では動きません</strong> —
+          OS が eye+pinch を pointer event として透過提供しているので、 VP page では <code>creo-ui-vision</code>
+          を import せず Frame system + 通常 <code>onClick</code> で同じ UX が成立する (
+          <a href="/concepts/frame-system">Frame system</a> 参照、 vision-cross-platform.md §10 Phase A
+          observation log)。
+        </p>
         <RealMediaPipeDemo />
       </section>
     </>

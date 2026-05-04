@@ -79,17 +79,18 @@ public protocol VisionSource: Actor {
 | **Cross-platform Rust** | ONNX Runtime + wgpu (or Apple Vision via objc2) | 🔮 Phase C `creo-ui-vision-rs` |
 | **Mock (dev / test)** | Synthetic | ✅ ship 済 |
 
-## 3. 設計決定 (CV-1 〜 CV-6)
+## 3. 設計決定 (CV-1 〜 CV-8)
 
 | # | 項目 | 決定 |
 |---|------|------|
 | CV-1 | Common layer の境界 | Schema + Protocol layer は platform 横断 SSOT、 Engine layer は platform-specific |
-| CV-2 | VP 即時 path | wry WebView 経由で `creo-ui-vision/mediapipe` をそのまま使う (新コード不要、 Phase A) |
+| CV-2 | **VP の Phase A は native input、 library 不要** | VP では visionOS が **eye+pinch を pointer event** として Safari に渡す → `creo-ui-vision` を import しない方が正解。 Frame system + 通常 onClick で全部動く。 webcam-based MediaPipe は VP Safari で動かない (Phase A observation 2026-05-03、 §10) |
 | CV-3 | Native engine 採用条件 | 性能 (5ms/frame 以下が必須) や memory footprint 制約で WebView では不足な時のみ Phase B |
 | CV-4 | Schema SSOT 形式 | TS が現在の SSOT、 将来 Rust に移行 (ts-rs auto-gen) — vp-mdast → creo-md と同 pattern |
 | CV-5 | Engine 選択原則 | Mac/iOS は Apple Vision 優先 (5ms/frame, OS 内 model)、 cross-platform は ONNX Runtime + wgpu |
 | CV-6 | **割り切り (pragmatism)** | **「そこそこのスペック」 (M1+ / mid-tier desktop) 想定**、 WebView ~200MB memory overhead は許容。 Phase A が **default primary path**、 Phase B/C は specific 性能要件出現時のみ |
-| CV-7 | **Vision Pro = first-class target** | visionOS は **正式 target**。 spatial UI は Frame system の literal 表現で、 F-3 (depth metaphor multi-platform) が物理的距離として実現。 Safari for visionOS (Phase A) + 将来 native visionOS app (Phase B-spatial) の 2 path |
+| CV-7 | **Vision Pro = first-class target** | visionOS は **正式 target**。 spatial UI は Frame system の literal 表現で、 F-3 (depth metaphor multi-platform) が物理的距離として実現。 達成手段は **OS-native input (eye+pinch → pointer event)** + Frame system の CSS 3D、 webcam-based hand tracking ではない |
+| CV-8 | **`creo-ui-vision` の scope = spatial-input-poor environments** | library が活躍する環境 = **native spatial input が無い** desktop / laptop browser (Mac Chrome / Edge / Firefox / desktop Safari)。 **VP / iOS / Android は scope 外** — それぞれ system が rich な native input (eye+pinch / touch) を pointer event として透過提供するので library を呼ぶ必要がない |
 
 ### CV-6 詳細 — pragmatism と target spec
 
@@ -121,20 +122,21 @@ public protocol VisionSource: Actor {
 「最大公約数」 として platform 横断にするのは **Schema + Protocol** まで。 Engine は platform 慣習に
 任せる。 これは creo-ui token system と同じ哲学 (token は SSOT、 各 platform は最適 render)。
 
-### CV-2 詳細 — VP 即時 path
+### CV-2 詳細 — VP の Phase A は library 不要
 
-VP は **wry WebView** = WKWebView on Mac。 中で動く JS / WASM は browser と同等:
-- `getUserMedia` 動作 (Info.plist の `NSCameraUsageDescription` 設定要)
-- `@mediapipe/tasks-vision` (WASM + WebGPU) 動作
-- Solid signals と Frame system も同様
+**当初の見立て (誤)**: VP は wry WebView (WKWebView) 経由で `creo-ui-vision/mediapipe` がそのまま動く。
 
-**今日の VP に統合手順** (VP repo 側で):
-1. VP の `Info.plist` (or `tauri.conf.json` 相当) に `NSCameraUsageDescription` 追加
-2. Sandbox 環境なら `com.apple.security.device.camera` entitlement 追加
-3. VP の web/ 内で `creo-ui-vision/mediapipe` import + `<VisionProvider>` 配置
-4. (任意) VP の Rust 側から `webview.evaluate_script` で gesture event を listen
+**観察結果 (2026-05-03、 §10 Phase A observation log)**: visionOS Safari (= WKWebView の派生) で MediaPipe Tasks Web は **inference layer が silent fail** する (camera / WASM / model load は全部 OK、 `detectForVideo()` が常に landmarks 0 を返す)。 GPU / CPU delegate どちらでも同症状。 既知の WebKit bug (iOS Safari + MediaPipe + WebGL2 framebuffer / context loss、 GitHub mediapipe issues #1427 #4499 #5122) の visionOS 継承と判断。
 
-完了。 native source は不要。
+**正しい解釈**: VP では **library が要らない**。 visionOS は eye gaze + pinch を **system level で pointer event 化** して Safari に渡すので:
+
+- `<button onclick={...}>` が eye+pinch で natively 動く
+- `onPointerDown` / `onMouseEnter` は eye gaze で natively 動く
+- Frame system の dashboard / reading button が eye+pinch click で morph 切替
+
+つまり VP page では `creo-ui-vision` を **import せず** 、 Frame system の CSS 3D + 普通の event handler だけで spatial UI が完成する。 これが一番 robust で、 OS の interaction model と整合し、 V-4 不変条件 (camera 取得不要) も自動で満たす。
+
+**VP 専用 spatial gesture** (両手操作、 worldspace hand pose 等) が後日必要になった場合は WebXR (`navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['hand-tracking'] })`) で ARKit の 25-joint data に直接 access できる (visionOS 2 で default 有効)。 WebXR は immersive session 内でのみ動くので 「通常 web page UI」 の文脈では不要、 真の immersive 3D experience を作る時だけ採用 (Phase B-spatial の web 版に相当)。
 
 ### CV-3 詳細 — Native engine 採用条件
 
@@ -159,7 +161,30 @@ WebView + MediaPipe は ~30 FPS で 30ms/frame くらい。 これで困る case
 | Mac M-series native | **Apple Vision** | 5ms/frame、 OS 内蔵 model、 GPU (Metal) auto |
 | iOS | **Apple Vision** | 同上 + battery 優位 |
 | Linux / Windows native | **ONNX Runtime + wgpu** | cross-platform GPU、 model 自由 |
-| Web / WebView | **MediaPipe Tasks Web** | 標準的、 既ship |
+| Web / WebView (desktop) | **MediaPipe Tasks Web** | 標準的、 既ship |
+| Web / WebView (visionOS Safari) | **— (library 不要、 native input 経由)** | system が eye+pinch を pointer event 化、 CV-2/CV-8 |
+
+### CV-8 詳細 — `creo-ui-vision` の scope は spatial-input-poor environments
+
+**library が活躍する target**:
+- ✅ **Mac Chrome / Edge / Firefox / desktop Safari** — webcam で hand tracking を **UI input modality の一つ** として使う (mouse / keyboard と並列、 V-1 fallback 必須)
+- ✅ **Windows / Linux desktop の Chromium 系** — 同上、 cross-platform で同 codebase
+- ✅ **Mac の native app に WebView 同梱** (例: Vantage Point の wry WebView) — desktop 同等
+
+**library が不要な target** (各 system が native spatial input を provide):
+- ❌ **Vision Pro Safari** (CV-7) — eye+pinch が pointer event として届く、 webcam も MediaPipe inference も visionOS Safari で silent fail (§10)
+- ❌ **iOS Safari / Android Chrome** — touch event が native の spatial input、 mobile webcam での hand tracking は ergonomics 上も不適 (片手で持ちながら片手で gesture は無理)
+- ❌ **iPadOS Safari** — Apple Pencil / touch / magic keyboard が native input、 webcam は不適
+
+**判断軸の articulate**:
+> 「 native input が rich でない browser 環境」 = creo-ui-vision の scope。 そこでは hand tracking が **one of UI inputs** として機能する (keyboard / mouse / gesture 並列)。 「 native input が rich」 な環境では、 system の input layer に依存し、 library を **import しない** ほうが正解。
+
+これは V-1 (keyboard fallback 必須) と組み合わさり、 input の階層化を成立させる:
+1. **Native input** (mouse / keyboard / touch / eye+pinch) — 常に primary
+2. **Vision input** (creo-ui-vision via webcam) — desktop browser でのみ optional fluent layer
+3. Both は keyboard で完全 fallback 可能 (V-1)
+
+User はどの環境でも 1 で十分 task 完遂できる、 2 が乗ると「より自然」 になる、 が design 契約。
 
 ## 4. Apple Vision framework の優位 (Phase B 検討時)
 
@@ -268,14 +293,20 @@ creo-ui-vision-rs (Rust crate)
 
 ### 9.1 2 path
 
-#### Path A — Safari for visionOS (Phase A 同等、 即時)
+#### Path A — Safari for visionOS (Phase A、 OS-native input、 library 不要)
 
-- visionOS には Safari (WKWebView) が乗る
-- `creo-ui-vision/mediapipe` がそのまま動く
-- WebXR / Metal-backed canvas 等の 3D も Safari 経由で利用可
-- Frame system の CSS 3D も透過的に動作 (perspective + transform)
+VP では visionOS が **eye gaze + pinch を OS-level で pointer event 化** して Safari に渡す。 つまり:
 
-**今日でも動く** Vision Pro 体験。 Web app をそのまま spatial 環境で開ける。
+- `<button onclick={...}>` は eye+pinch で natively click
+- `onPointerEnter` / `onPointerLeave` は eye gaze の hover transition で発火
+- Frame system の dashboard / reading button が **そのまま** spatial UI として機能
+- CSS 3D transform (`perspective` + `translateZ` + `rotateX/Y`) が VP で物理的奥行きを伴って render
+
+→ **`creo-ui-vision` を import せず**、 Frame system + 通常 event handler だけで完成する。 これが OS の interaction model (eye + intention) と整合する自然な path。
+
+**観察 (2026-05-03、 §10)**: webcam-based MediaPipe path は VP Safari で silent fail (camera / WASM / model load OK、 inference が常に landmarks 0)。 これは Safari for visionOS の structural limitation で workaround 困難、 そして OS が rich な native input を提供しているので **そもそも要らない**。
+
+**immersive 3D scene が要る場合のみ** WebXR (`navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['hand-tracking'] })`) を Phase B-spatial-web 路として併用可。 VP Safari は visionOS 2 で WebXR + hand-tracking を default 有効化、 ARKit の 25-joint world-space data を web に直接 expose する。 通常 page UI には不要、 真に immersive な 3D experience を作る時のオプション。
 
 #### Path B-spatial — Native visionOS app (Phase B、 真の spatial UI)
 
@@ -327,30 +358,89 @@ public class SpatialVisionSource: VisionSource {
 Frame system の slot.z は CSS 上は px (一見 trick) だが、 visionOS では **そのまま meters に解釈**
 すれば物理的奥行きが得られる。 protocol は変えずに representation が richer に。
 
-### 9.3 Vision input 統合 — eye+pinch canonical
+### 9.3 Vision input 統合 — eye+pinch は OS が提供
 
-visionOS の input model は **eye gaze + pinch**:
-- 見ているもの = focus / hover の対象
-- pinch = activate / select
+visionOS の input model は **eye gaze + pinch** で、 OS が pointer event として web 層へ透過提供する。 つまり web page 側は **何もしない** で eye+pinch が hover / click として動く。
 
 Creo UI の gesture 語彙 (vision-input.md) との整合:
-- `HandPinch` → そのまま (visionOS の pinch 検出は ARKit で正確)
-- `useHandPointing` → eye gaze で代替 (より自然)
-- `useGesture` の wave / nod は visionOS でも有効
-- 新たに **eye gaze accessor** が要る (`useEyeFocus()` 等、 P-4 拡張)
+- `<button onclick>` / `<a>` / `[role=button]` → eye+pinch で natively click
+- `onPointerEnter` / `:hover` → eye gaze の hover transition で発火
+- focus state → eye gaze で natural (browser が自動)
+- **`creo-ui-vision` の `useHandPinch` 等は VP で呼ばない** — pointer event を listen するだけ
+
+将来 Phase B-spatial (native visionOS app) では別途 `SpatialVisionSource` で 27-joint hand pose / eye gaze vector を直接 expose する (§9.1 Path B-spatial)。 web では出番無し。
 
 ### 9.4 Recommended path
 
-**Phase A (即時)**: Safari for visionOS で `creo-ui-vision/mediapipe` 動かす。 既 ship、 即体験可。
-Frame system の CSS 3D も Vision Pro の spatial 環境で楽しめる。
+**Phase A (即時、 default)**: VP で docs site / app をそのまま Safari で開く。 **`creo-ui-vision` import なし**。 Frame system の CSS 3D が VP で物理的奥行きを伴って render され、 button click は eye+pinch で natively trigger される。 user は何もインストールせず、 page 配信だけで spatial UI 体験開始。
 
-**Phase B-spatial (将来)**: native visionOS app として `creo-ui-vision-swift` 内に SpatialVisionSource
-追加。 RealityKit binding で Frame system を literal 3D で表現。 Vision Pro 純粋体験。
+**Phase B-spatial-web (optional)**: 真に immersive な 3D scene が要る時、 WebXR の `immersive-ar` session を起動して ARKit hand pose data を直接受ける。 通常 page UI では不要、 immersive content (例: 3D viewer、 game-like experience) に限定。
 
-**判断軸**: Phase A で「動く」 を確認 → Vision Pro を本気の spatial UI plate として使う user 体験
-が必要になった時に Phase B-spatial 着手。 「spatial UI を見せたい」 が明確な動機なら直接 B-spatial。
+**Phase B-spatial-native (将来)**: native visionOS app として `creo-ui-vision-swift` 内に SpatialVisionSource 追加。 RealityKit binding で Frame system を literal 3D entity で表現。 Vision Pro 純粋体験 (web 層を超えた spatial 体験)。
 
-## 8. やってはいけない
+**判断軸**:
+1. **通常 web 体験** が VP で美しく動けば良い → Phase A、 99% の use case はこれで終わる
+2. **immersive 3D scene** を web で配信したい → Phase B-spatial-web (WebXR 採用)
+3. **app store 配信、 web 層を超えた体験** → Phase B-spatial-native
+
+## 10. Phase A observation log (2026-05-03)
+
+VP 実機で Phase A path (= Safari for visionOS で `creo-ui-vision/mediapipe` を動かす) を試した dogfood 観察記録。 partial-α 結果から **CV-2 / CV-7 / CV-8 を articulate** に至った judgment material。
+
+### 10.1 観察した layer 別状態
+
+| layer | status | 詳細 |
+|---|---|---|
+| HTTPS dev server (Mac) → VP 接続 | ✅ OK | LAN IP `https://192.168.68.101:5173/`、 自己署名 cert を VP Safari が「詳細 → Visit Website」 で accept すれば通る |
+| `navigator.mediaDevices.getUserMedia` | ✅ OK | permission prompt 出る、 grant で stream 取得成功 |
+| `MediaStreamTrack.getSettings()` | ✅ OK | `640×480 @ 30fps`、 `facingMode: 'user'`、 `whiteBalanceMode: 'continuous'` (= 能動的に動作中)、 `aspectRatio: 1.333`。 つまり **OS は web に frames を渡している** |
+| `<video>.srcObject` 描画 | ⚠ 不明瞭 | 正常 preview 出ることもあれば 「camera blocked icon」 placeholder 出ることもある — autoplay policy の壁 (`requestAnimationFrame` 経由の `.play()` が user gesture 外と判定される疑い) |
+| MediaPipe Tasks Web SDK fetch (jsDelivr CDN) | ✅ OK | `mediapipe.js` (300B) / `vision_wasm_internal.js` / `.wasm` / `hand_landmarker.task` が Performance API entries に出現。 cross-origin の sizes は CORS Timing-Allow-Origin 不在で 0B 隠蔽 (失敗ではない) |
+| MediaPipe `FilesetResolver.forVisionTasks` | ✅ OK | error なく完了 |
+| `HandLandmarker.createFromOptions` | ✅ OK | error なく完了 |
+| `detectForVideo()` 呼出 | ✅ OK | exception throw なし、 inference loop は走り続ける |
+| `result.landmarks.length` | ❌ **常に 0** | 手を camera に映しても検出ゼロ、 GPU delegate / CPU delegate どちらでも同症状 |
+
+**結論**: camera / WASM / model / SDK init / inference loop の全てが「動いている」 が、 `result.landmarks` だけが空。 silent fail。
+
+### 10.2 既知の WebKit + MediaPipe issue との一致
+
+GitHub `google-ai-edge/mediapipe` で iOS Safari + WebGL2 系の bug が常連:
+
+- [#1427](https://github.com/google-ai-edge/mediapipe/issues/1427) — Mediapipe CodePens don't run on iOS Safari
+- [#4499](https://github.com/google-ai-edge/mediapipe/issues/4499) — Pose landmarker WKWebview: `Creating a context with WebGL 2 failed: emscripten_webgl_create_context() returned error 0`
+- [#5122](https://github.com/google-ai-edge/mediapipe/issues/5122) — WebGL context lost on iOS Safari background switch
+
+visionOS Safari は iOS WebKit base なので **同じ structural limitation を継承** していると判断。 isolated bug ではない。 加えて Safari 26 (iOS 26 / visionOS 2.x+) で WebGL → WebGPU pivot ([WebKit blog](https://webkit.org/blog/17640/webkit-features-for-safari-26-2/)) が進む方向性。 MediaPipe Tasks Web は WebGL 依存が深いので長期的にも Apple platform で苦しい path。
+
+### 10.3 「Apple quiet wisdom」 解釈
+
+Safari が web 層で MediaPipe を実用的に動かさないのは bug の側面もあるが、 同時に **意図的な resource 配置** とも読み解ける:
+
+- VP の前面 camera は OS-level で eye / hand / passthrough rendering に常時専有
+- ARKit `HandTrackingProvider` が **27 joint × 90Hz** worldspace で OS 側で常時 track
+- visionOS が eye+pinch を **pointer event として既に web に渡している**
+- → web layer で webcam から CV 推論する path は **二重実装** + OS の確実な答えと競合
+
+つまり 「webcam-based hand tracking on VP」 は path として要らない。 OS は既に最良の答えを持っており、 それを native input 経由で web に渡している。
+
+### 10.4 articulation の result
+
+この observation から以下の articulate に到達:
+
+- **CV-2 修正**: VP の Phase A は library 不要、 OS-native input + Frame system + 通常 onClick で完成
+- **CV-7 articulation 強化**: VP は first-class target、 達成手段は **OS-native input** であって webcam-based hand tracking ではない
+- **CV-8 新設**: `creo-ui-vision` の scope は **spatial-input-poor environments** (Mac / Windows desktop browser)。 VP / iOS / Android は scope 外
+- **Mac/Windows desktop での hand tracking は引き続き valid** (CV-8): MediaPipe path は desktop browser で動く、 UI input modality の一つとして library が機能する
+
+### 10.5 後日確認候補
+
+- VP Safari の `<video>` autoplay policy 詳細 (preview NG icon の正体特定)
+- Safari 26 + WebGPU 環境で MediaPipe Tasks の挙動 (将来的に動くようになる可能性)
+- WebXR `immersive-ar` + `hand-tracking` feature の VP での実装確認 (Phase B-spatial-web)
+- visionOS 純粋 native での `SpatialVisionSource` 仮実装 (Phase B-spatial-native)
+
+## 11. やってはいけない
 
 - ❌ 全 platform で同 inference engine を強要する (Web で MediaPipe、 Mac で Apple Vision で良い)
 - ❌ Schema を platform ごとに分裂させる (SSOT 維持)
@@ -360,5 +450,7 @@ Frame system の CSS 3D も Vision Pro の spatial 環境で楽しめる。
 - ❌ **「最速」 を理由に Phase B を選ぶ** (CV-6 違反、 target spec で WebView は十分)
 - ❌ mobile / iOS native phone / 低電力 device の対応を Phase A で約束する (out of scope)
 - ❌ memory footprint を 200MB 以下に抑える要求を初期から立てる (target spec で許容範囲)
-- ❌ **Vision Pro を「将来やる」 扱いにする** (CV-7、 first-class target — Phase A は Safari for visionOS で即対応)
+- ❌ **Vision Pro を「将来やる」 扱いにする** (CV-7、 first-class target — Phase A は Safari for visionOS で OS-native input 経由で**何もせず動く**)
 - ❌ visionOS native (Phase B-spatial) を MediaPipe Web と並列維持しない (engine layer の分裂、 各 best practice 採用)
+- ❌ **VP page で `creo-ui-vision` を import する** (CV-2 / CV-8、 silent fail + 不要、 native input が rich)
+- ❌ **Mac/Windows desktop browser で hand tracking を「不要」 扱いにする** (CV-8、 desktop は library の正規 target — webcam は UI input modality の一つ)
