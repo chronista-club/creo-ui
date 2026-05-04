@@ -9,7 +9,7 @@
 
 .creo-accordion {
   display: block;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-s);
 }
 
 /* bordered variant (default に見た目を与える) */
@@ -36,7 +36,7 @@
   gap: var(--layout-gap-tight);
   /* tight padding: dashboard 系で 5+ stack した時の縦窮屈さを抑える。
      min-height (target-tap=44px) は desktop では過剰なので削除、 content 高さに従う。 */
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-s);
   cursor: pointer;
   user-select: none;
   list-style: none; /* default chevron を消す */
@@ -96,14 +96,14 @@
 /* ---------- Content (expanded body) ---------- */
 
 .creo-accordion-content {
-  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-s) var(--spacing-m) var(--spacing-m);
   font-size: var(--typography-size-md);
   color: var(--color-text-primary);
   line-height: var(--typography-line-height-normal);
 }
 
 .creo-accordion-content > * + * {
-  margin-top: var(--spacing-sm);
+  margin-top: var(--spacing-s);
 }
 
 /* ---------- Reduced motion ---------- */

@@ -95,7 +95,7 @@
   min-width: var(--layout-target-tap);
   min-height: var(--layout-target-tap);
   font-size: var(--typography-size-lg);
-  padding: 0 var(--spacing-sm);
+  padding: 0 var(--spacing-s);
   border-radius: var(--radius-md);
 }
 

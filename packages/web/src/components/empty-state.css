@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: var(--spacing-sm);
+  gap: var(--spacing-s);
   padding: var(--spacing-xl);
   color: var(--color-text-primary);
 }
@@ -19,13 +19,13 @@
 /* ---------- Sizes ---------- */
 
 .creo-empty-state[data-size="sm"] {
-  padding: var(--spacing-md);
+  padding: var(--spacing-m);
   gap: var(--spacing-xs);
 }
 
 .creo-empty-state[data-size="lg"] {
   padding: calc(var(--spacing-xl) * 2) var(--spacing-xl);
-  gap: var(--spacing-md);
+  gap: var(--spacing-m);
 }
 
 /* ---------- Icon ---------- */
@@ -46,7 +46,7 @@
 
 .creo-empty-state[data-size="lg"] .creo-empty-state-icon {
   font-size: 96px;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-s);
 }
 
 /* ---------- Title ---------- */
@@ -90,5 +90,5 @@
   justify-content: center;
   gap: var(--layout-gap-tight);
   flex-wrap: wrap;
-  margin-top: var(--spacing-sm);
+  margin-top: var(--spacing-s);
 }

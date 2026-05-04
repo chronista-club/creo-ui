@@ -61,7 +61,7 @@
 /* ---------- Slots ---------- */
 
 .creo-popover-header {
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-s) var(--spacing-m);
   border-bottom: 1px solid var(--color-surface-border);
 }
 
@@ -74,13 +74,13 @@
 }
 
 .creo-popover-body {
-  padding: var(--spacing-md);
+  padding: var(--spacing-m);
   overflow-y: auto;
   flex: 1;
   min-height: 0;
 }
 .creo-popover-body > * + * {
-  margin-top: var(--spacing-sm);
+  margin-top: var(--spacing-s);
 }
 
 .creo-popover-footer {
@@ -88,7 +88,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: var(--layout-gap-tight);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-s) var(--spacing-m);
   border-top: 1px solid var(--color-surface-border);
 }
 

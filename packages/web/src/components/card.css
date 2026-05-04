@@ -17,7 +17,7 @@
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-md);
-  padding: var(--spacing-md);
+  padding: var(--spacing-m);
   color: var(--color-text-primary);
   transition: background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease, transform
     150ms ease;
@@ -48,14 +48,14 @@
 /* ---------- Padding sizes ---------- */
 
 .creo-card[data-padding="sm"] {
-  padding: var(--spacing-sm);
+  padding: var(--spacing-s);
 }
 .creo-card[data-padding="md"],
 .creo-card:not([data-padding]) {
-  padding: var(--spacing-md);
+  padding: var(--spacing-m);
 }
 .creo-card[data-padding="lg"] {
-  padding: var(--spacing-lg);
+  padding: var(--spacing-l);
 }
 
 /* ---------- Interactive state ---------- */

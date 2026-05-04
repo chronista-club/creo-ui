@@ -5,17 +5,17 @@
       "$type": "dimension",
       "$description": "Extra-small spacing — 4px (base unit)"
     },
-    "sm": {
+    "s": {
       "$value": "8px",
       "$type": "dimension",
       "$description": "Small spacing — 8px"
     },
-    "md": {
+    "m": {
       "$value": "18px",
       "$type": "dimension",
       "$description": "Medium spacing — 18px (default gap between UI elements)"
     },
-    "lg": {
+    "l": {
       "$value": "24px",
       "$type": "dimension",
       "$description": "Large spacing — 24px"

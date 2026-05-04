@@ -8,7 +8,7 @@
 .creo-timeline {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: var(--spacing-m);
   padding: 0;
   margin: 0;
   list-style: none;
@@ -20,7 +20,7 @@
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
-  column-gap: var(--spacing-sm);
+  column-gap: var(--spacing-s);
   padding: 0;
 }
 
@@ -30,7 +30,7 @@
   position: absolute;
   left: calc(32px / 2 - 1px);
   top: 32px;
-  bottom: calc(-1 * var(--spacing-md));
+  bottom: calc(-1 * var(--spacing-m));
   width: 2px;
   background-color: var(--color-surface-border);
 }

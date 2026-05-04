@@ -19,12 +19,11 @@
   display: flex;
   align-items: center;
   gap: var(--layout-gap-sibling);
-  /* padding は consumer 側から `:root { --creo-header-pad-{x,y}: ... }` で上書き可
-     (= dev editor で live tweak)。 default は spacing-sm (8px) / spacing-md (16px)。
-     padding-x は spacing-lg (24px) → md (16px) に絞り、 dense dashboard で
-     content area との visual ratio を引き締めた (2026-05-04)。 */
-  padding: var(--creo-header-pad-y, var(--spacing-sm))
-    var(--creo-header-pad-x, var(--spacing-md));
+  /* padding は spacing token (--spacing-s / --spacing-m) を直接参照。
+     consumer は CSS scope (例: `.creo-header { --spacing-m: 14px }`) で override 可、
+     これにより `.creo-header` 内の var(--spacing-m) は scope 値を pick up
+     (= Project の Size Stepper / HEADER namespace から CSS variable を inject する経路)。 */
+  padding: var(--spacing-s) var(--spacing-m);
   background-color: var(--color-surface-surface);
   color: var(--color-text-primary);
   border-bottom: 1px solid var(--color-surface-border);
@@ -34,7 +33,7 @@
 /* ---------- Variants ---------- */
 
 .creo-header[data-variant="marketing"] {
-  padding: var(--spacing-md) var(--spacing-xl);
+  padding: var(--spacing-m) var(--spacing-xl);
   min-height: 72px;
   background-color: var(--color-surface-bg-base);
 }
@@ -97,7 +96,7 @@
 .creo-header-nav {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: var(--spacing-m);
   flex: 1;
   min-width: 0;
   /* nav を logo の直後から流す (app)、marketing では中央寄せも consumer で可 */
@@ -107,7 +106,7 @@
   text-decoration: none;
   font-size: var(--typography-size-md);
   font-weight: var(--typography-weight-regular);
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-s);
   border-radius: var(--radius-xs);
   transition: color 120ms ease, background-color 120ms ease;
 }

@@ -31,7 +31,7 @@
   appearance: none;
   background: transparent;
   border: none;
-  padding: var(--spacing-xs) var(--spacing-md);
+  padding: var(--spacing-xs) var(--spacing-m);
   min-height: var(--layout-target-focus);
 
   display: inline-flex;
@@ -90,11 +90,11 @@
 
 .creo-segmented[data-size="sm"] .creo-segmented-option {
   min-height: 24px;
-  padding: 2px var(--spacing-sm);
+  padding: 2px var(--spacing-s);
   font-size: var(--typography-size-sm);
 }
 .creo-segmented[data-size="lg"] .creo-segmented-option {
   min-height: var(--layout-target-tap);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: var(--spacing-s) var(--spacing-l);
   font-size: var(--typography-size-lg);
 }
