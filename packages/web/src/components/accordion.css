@@ -34,8 +34,9 @@
   display: flex;
   align-items: center;
   gap: var(--layout-gap-tight);
-  padding: var(--spacing-sm) var(--spacing-md);
-  min-height: var(--layout-target-tap);
+  /* tight padding: dashboard 系で 5+ stack した時の縦窮屈さを抑える。
+     min-height (target-tap=44px) は desktop では過剰なので削除、 content 高さに従う。 */
+  padding: var(--spacing-xs) var(--spacing-sm);
   cursor: pointer;
   user-select: none;
   list-style: none; /* default chevron を消す */
@@ -60,16 +61,22 @@
   border-radius: var(--radius-sm);
 }
 
-/* Chevron (自前で挿入) */
+/* Chevron (自前で挿入)
+ *  - 細身の `›` (U+203A) でモダン、 ▸ より sharper な視覚
+ *  - order: 99 + margin-left: auto で flex 末尾 = card 右端に配置
+ *    (dashboard / Disclosure の慣習: 左 chevron は file tree、 右 chevron は state toggle)
+ *  - color tertiary で薄め、 size md で視認性 */
 .creo-accordion-summary::before {
-  content: "▸";
+  content: "›";
   display: inline-block;
   flex-shrink: 0;
-  color: var(--color-text-secondary);
+  order: 99;
+  margin-left: auto;
+  color: var(--color-text-tertiary);
   transform: rotate(0deg);
   transition: transform 180ms ease;
-  font-size: var(--typography-size-sm);
-  width: 1em;
+  font-size: var(--typography-size-md);
+  line-height: 1;
 }
 
 .creo-accordion[open] .creo-accordion-summary::before {
