@@ -125,17 +125,60 @@ const COMPONENTS: readonly ComponentEntry[] = [
     desc: 'Linear-gradient shimmer placeholder — text/circle/rect',
     detail: true,
   },
-
-  // Shipped, spec only (7)
-  { name: 'Form field', slug: 'form-field', desc: 'Label + input + helper-text composite' },
-  { name: 'Segmented', slug: 'segmented', desc: 'Mutually exclusive options bar' },
-  { name: 'Toast', slug: 'toast', desc: 'Transient region (6 placements × 5 variants)' },
-  { name: 'Accordion', slug: 'accordion', desc: 'Native <details> / <summary> based' },
-  { name: 'Popover', slug: 'popover', desc: 'Native popover (3 sizes × default/muted)' },
-  { name: 'Drawer', slug: 'drawer', desc: 'Native <dialog>.showModal() — 4 placements × 4 sizes' },
-  { name: 'Empty state', slug: 'empty-state', desc: 'Icon + title + description + actions' },
-  { name: 'Combobox', slug: 'combobox', desc: 'Native <input list> + <datalist>' },
-  { name: 'Header', slug: 'header', desc: '3-slot ViewBuilder (logo / nav / actions)' },
+  {
+    name: 'Form field',
+    slug: 'form-field',
+    desc: 'Label + input + helper-text composite (error state、 required indicator)',
+    detail: true,
+  },
+  {
+    name: 'Segmented',
+    slug: 'segmented',
+    desc: 'Mutually exclusive options bar (radio group の visual variant)',
+    detail: true,
+  },
+  {
+    name: 'Toast',
+    slug: 'toast',
+    desc: 'Transient region (6 placements × 5 variants)',
+    detail: true,
+  },
+  {
+    name: 'Accordion',
+    slug: 'accordion',
+    desc: 'Native <details> / <summary> based — bordered / subtle、 exclusive (name attr)',
+    detail: true,
+  },
+  {
+    name: 'Popover',
+    slug: 'popover',
+    desc: 'Native popover (3 sizes × default/muted) — non-modal interactive panel',
+    detail: true,
+  },
+  {
+    name: 'Drawer',
+    slug: 'drawer',
+    desc: 'Native <dialog>.showModal() — 4 placements × 4 sizes',
+    detail: true,
+  },
+  {
+    name: 'Empty state',
+    slug: 'empty-state',
+    desc: 'Icon + title + description + actions — first-time/no-result/error',
+    detail: true,
+  },
+  {
+    name: 'Combobox',
+    slug: 'combobox',
+    desc: 'Native <input list> + <datalist> — type-ahead suggestion',
+    detail: true,
+  },
+  {
+    name: 'Header',
+    slug: 'header',
+    desc: '3-slot ViewBuilder (logo / nav / actions) — default/marketing × sticky/elevation',
+    detail: true,
+  },
 ]
 
 export default function ComponentsIndex() {
@@ -156,8 +199,8 @@ export default function ComponentsIndex() {
       <section>
         <h2 class="docs-section-title">Detail pages</h2>
         <p class="docs-page-helper">
-          live preview + props table + token reference + a11y note を持つ完全版 page。 残りの 9
-          component は spec doc (GitHub) を参照。
+          live preview + props table + token reference + a11y note を持つ完全版 page。 packages/web
+          の **27 component CSS が全て docs 化** ✨
         </p>
         <div class="docs-components-grid">
           <For each={COMPONENTS.filter((c) => c.detail)}>
@@ -170,31 +213,6 @@ export default function ComponentsIndex() {
                 <div class="docs-component-card-desc">{c.desc}</div>
                 <div class="docs-component-card-cta">View →</div>
               </A>
-            )}
-          </For>
-        </div>
-      </section>
-
-      <section>
-        <h2 class="docs-section-title">Spec only (GitHub)</h2>
-        <p class="docs-page-helper">
-          docs page 化は段階的。 各 component の spec は{' '}
-          <code>docs/components/&lt;name&gt;.md</code> に 記述済 (Purpose / Anatomy / Props / Token
-          / A11y / Do-Don't / 使用例)。
-        </p>
-        <div class="docs-components-grid">
-          <For each={COMPONENTS.filter((c) => !c.detail)}>
-            {(c) => (
-              <a
-                class="docs-component-card"
-                href={`https://github.com/chronista-club/creo-ui/blob/main/docs/components/${c.slug}.md`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div class="docs-component-card-name">{c.name}</div>
-                <div class="docs-component-card-desc">{c.desc}</div>
-                <div class="docs-component-card-cta">Spec ↗</div>
-              </a>
             )}
           </For>
         </div>

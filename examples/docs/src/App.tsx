@@ -42,6 +42,15 @@ const Timeline = lazy(() => import('./pages/Components/Timeline'))
 const Stepper = lazy(() => import('./pages/Components/Stepper'))
 const Progress = lazy(() => import('./pages/Components/Progress'))
 const Skeleton = lazy(() => import('./pages/Components/Skeleton'))
+const FormField = lazy(() => import('./pages/Components/FormField'))
+const Segmented = lazy(() => import('./pages/Components/Segmented'))
+const Toast = lazy(() => import('./pages/Components/Toast'))
+const Accordion = lazy(() => import('./pages/Components/Accordion'))
+const Popover = lazy(() => import('./pages/Components/Popover'))
+const Drawer = lazy(() => import('./pages/Components/Drawer'))
+const EmptyState = lazy(() => import('./pages/Components/EmptyState'))
+const Combobox = lazy(() => import('./pages/Components/Combobox'))
+const Header = lazy(() => import('./pages/Components/Header'))
 
 // Resources
 const Icons = lazy(() => import('./pages/Resources/Icons'))
@@ -91,6 +100,15 @@ export default function App() {
       <Route path="/components/stepper" component={Stepper} />
       <Route path="/components/progress" component={Progress} />
       <Route path="/components/skeleton" component={Skeleton} />
+      <Route path="/components/form-field" component={FormField} />
+      <Route path="/components/segmented" component={Segmented} />
+      <Route path="/components/toast" component={Toast} />
+      <Route path="/components/accordion" component={Accordion} />
+      <Route path="/components/popover" component={Popover} />
+      <Route path="/components/drawer" component={Drawer} />
+      <Route path="/components/empty-state" component={EmptyState} />
+      <Route path="/components/combobox" component={Combobox} />
+      <Route path="/components/header" component={Header} />
       <Route path="/icons" component={Icons} />
       <Route path="/content" component={Content} />
       <Route path="/playground" component={Playground} />
