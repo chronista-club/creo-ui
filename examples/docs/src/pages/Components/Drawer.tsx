@@ -64,9 +64,18 @@ export default function Drawer() {
       </section>
 
       {/* Modal drawers (portal automatic) */}
-      <dialog class="creo-drawer" data-placement="right" data-size="md" ref={setRightDrawer}>
+      <dialog
+        class="creo-drawer"
+        data-placement="right"
+        data-size="md"
+        ref={setRightDrawer}
+        aria-labelledby="drawer-right-title"
+        aria-describedby="drawer-right-body"
+      >
         <header class="creo-drawer-header">
-          <h2 class="creo-drawer-title">Settings</h2>
+          <h2 class="creo-drawer-title" id="drawer-right-title">
+            Settings
+          </h2>
           <button
             type="button"
             class="creo-btn"
@@ -78,7 +87,7 @@ export default function Drawer() {
             ✕
           </button>
         </header>
-        <div class="creo-drawer-body">
+        <div class="creo-drawer-body" id="drawer-right-body">
           <p>Right drawer (default placement、 size md = 480px)。</p>
           <p>backdrop / Esc / focus trap は browser native。</p>
         </div>
@@ -102,9 +111,17 @@ export default function Drawer() {
         </footer>
       </dialog>
 
-      <dialog class="creo-drawer" data-placement="bottom" data-size="lg" ref={setBottomDrawer}>
+      <dialog
+        class="creo-drawer"
+        data-placement="bottom"
+        data-size="lg"
+        ref={setBottomDrawer}
+        aria-labelledby="drawer-bottom-title"
+      >
         <header class="creo-drawer-header">
-          <h2 class="creo-drawer-title">Mobile menu</h2>
+          <h2 class="creo-drawer-title" id="drawer-bottom-title">
+            Mobile menu
+          </h2>
           <button
             type="button"
             class="creo-btn"

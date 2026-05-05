@@ -127,7 +127,7 @@ bun run build        # 全 platform に反映
 3 ジョブが並走:
 
 - **build** (ubuntu): `bun install → typecheck → lint → build` (全 platform token 再生成)。Phase 0 時点では generated diff チェックはスキップ。
-- **rust** (ubuntu): `cargo build && cargo test` を `packages/rust` で。Rust 1.94 (ci.yml の toolchain も Cargo.toml も 1.94 で揃える)。
+- **rust** (ubuntu): `cargo build && cargo test` を `packages/rust` で。Rust 1.95 (ci.yml の toolchain も Cargo.toml も 1.95 で揃える、 mise の `[tools].rust` と SSOT)。
 - **swift** (macos-14): `swift build && swift test` を `packages/swift` で。
 
 `publish-web.yml` は `web-v*` tag push で npmjs.com へ `creo-ui-web` を publish (要 `NPM_TOKEN` secret)。root で `bun run build:web` を実行してから `packages/web/` で `npm publish` する 2 段構え（path が root 相対のため）。

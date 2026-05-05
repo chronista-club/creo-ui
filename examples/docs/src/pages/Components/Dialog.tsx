@@ -84,9 +84,17 @@ export default function Dialog() {
       </section>
 
       {/* Modals (rendered to portal automatically by browser) */}
-      <dialog class="creo-dialog" data-size="md" ref={setDefaultDlg}>
+      <dialog
+        class="creo-dialog"
+        data-size="md"
+        ref={setDefaultDlg}
+        aria-labelledby="dialog-default-title"
+        aria-describedby="dialog-default-body"
+      >
         <header class="creo-dialog-header">
-          <h2 class="creo-dialog-title">削除の確認</h2>
+          <h2 class="creo-dialog-title" id="dialog-default-title">
+            削除の確認
+          </h2>
           <button
             type="button"
             class="creo-btn"
@@ -98,7 +106,7 @@ export default function Dialog() {
             ✕
           </button>
         </header>
-        <div class="creo-dialog-body">
+        <div class="creo-dialog-body" id="dialog-default-body">
           <p>この項目を削除します。 この操作は取り消せません。</p>
         </div>
         <footer class="creo-dialog-footer">
