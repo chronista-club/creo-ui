@@ -95,24 +95,45 @@ const COMPONENTS: readonly ComponentEntry[] = [
     desc: 'sm/md/lg × default/compact, aria-current',
     detail: true,
   },
-
-  // Shipped, spec only (12)
-  { name: 'Form field', slug: 'form-field', desc: 'Label + input + helper-text composite' },
-  { name: 'Segmented', slug: 'segmented', desc: 'Mutually exclusive options bar' },
-  { name: 'Progress', slug: 'progress', desc: 'Determinate + indeterminate bar + spinner' },
-  { name: 'Toast', slug: 'toast', desc: 'Transient region (6 placements × 5 variants)' },
-  { name: 'Accordion', slug: 'accordion', desc: 'Native <details> / <summary> based' },
-  { name: 'Table', slug: 'table', desc: 'Sortable + aria-sort table' },
-  { name: 'Popover', slug: 'popover', desc: 'Native popover (3 sizes × default/muted)' },
-  { name: 'Drawer', slug: 'drawer', desc: 'Native <dialog>.showModal() — 4 placements × 4 sizes' },
-  { name: 'Skeleton', slug: 'skeleton', desc: 'Linear-gradient shimmer placeholder' },
-  { name: 'Empty state', slug: 'empty-state', desc: 'Icon + title + description + actions' },
+  {
+    name: 'Table',
+    slug: 'table',
+    desc: 'Sortable + aria-sort table — striped / sticky-head / sm/md/lg',
+    detail: true,
+  },
+  {
+    name: 'Timeline',
+    slug: 'timeline',
+    desc: 'Vertical activity feed — 5 marker variants (semantic)',
+    detail: true,
+  },
   {
     name: 'Stepper',
     slug: 'stepper',
-    desc: 'Horizontal/vertical with completed/current/pending/error',
+    desc: 'Horizontal/vertical wizard — 4 states (completed/current/pending/error)',
+    detail: true,
   },
-  { name: 'Timeline', slug: 'timeline', desc: 'Vertical activity feed (5 marker variants)' },
+  {
+    name: 'Progress',
+    slug: 'progress',
+    desc: 'Determinate + indeterminate bar + inline spinner',
+    detail: true,
+  },
+  {
+    name: 'Skeleton',
+    slug: 'skeleton',
+    desc: 'Linear-gradient shimmer placeholder — text/circle/rect',
+    detail: true,
+  },
+
+  // Shipped, spec only (7)
+  { name: 'Form field', slug: 'form-field', desc: 'Label + input + helper-text composite' },
+  { name: 'Segmented', slug: 'segmented', desc: 'Mutually exclusive options bar' },
+  { name: 'Toast', slug: 'toast', desc: 'Transient region (6 placements × 5 variants)' },
+  { name: 'Accordion', slug: 'accordion', desc: 'Native <details> / <summary> based' },
+  { name: 'Popover', slug: 'popover', desc: 'Native popover (3 sizes × default/muted)' },
+  { name: 'Drawer', slug: 'drawer', desc: 'Native <dialog>.showModal() — 4 placements × 4 sizes' },
+  { name: 'Empty state', slug: 'empty-state', desc: 'Icon + title + description + actions' },
   { name: 'Combobox', slug: 'combobox', desc: 'Native <input list> + <datalist>' },
   { name: 'Header', slug: 'header', desc: '3-slot ViewBuilder (logo / nav / actions)' },
 ]
@@ -135,7 +156,7 @@ export default function ComponentsIndex() {
       <section>
         <h2 class="docs-section-title">Detail pages</h2>
         <p class="docs-page-helper">
-          live preview + props table + token reference + a11y note を持つ完全版 page。 残りの 12
+          live preview + props table + token reference + a11y note を持つ完全版 page。 残りの 9
           component は spec doc (GitHub) を参照。
         </p>
         <div class="docs-components-grid">

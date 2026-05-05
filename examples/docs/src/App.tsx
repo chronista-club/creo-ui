@@ -37,6 +37,11 @@ const Tabs = lazy(() => import('./pages/Components/Tabs'))
 const Breadcrumbs = lazy(() => import('./pages/Components/Breadcrumbs'))
 const Menu = lazy(() => import('./pages/Components/Menu'))
 const Pagination = lazy(() => import('./pages/Components/Pagination'))
+const Table = lazy(() => import('./pages/Components/Table'))
+const Timeline = lazy(() => import('./pages/Components/Timeline'))
+const Stepper = lazy(() => import('./pages/Components/Stepper'))
+const Progress = lazy(() => import('./pages/Components/Progress'))
+const Skeleton = lazy(() => import('./pages/Components/Skeleton'))
 
 // Resources
 const Icons = lazy(() => import('./pages/Resources/Icons'))
@@ -81,6 +86,11 @@ export default function App() {
       <Route path="/components/breadcrumbs" component={Breadcrumbs} />
       <Route path="/components/menu" component={Menu} />
       <Route path="/components/pagination" component={Pagination} />
+      <Route path="/components/table" component={Table} />
+      <Route path="/components/timeline" component={Timeline} />
+      <Route path="/components/stepper" component={Stepper} />
+      <Route path="/components/progress" component={Progress} />
+      <Route path="/components/skeleton" component={Skeleton} />
       <Route path="/icons" component={Icons} />
       <Route path="/content" component={Content} />
       <Route path="/playground" component={Playground} />
