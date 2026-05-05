@@ -5,7 +5,7 @@
  */
 
 import { describe, expect, it } from 'bun:test'
-import { springEasing } from './spring'
+import { type SpringPreset, springEasing, springPreset } from './spring'
 
 describe('springEasing', () => {
   it('returns a linear() easing string', () => {
@@ -55,5 +55,57 @@ describe('springEasing', () => {
 function parseLinearEasing(easing: string): number[] {
   const match = easing.match(/^linear\((.*)\)$/)
   if (!match) throw new Error(`not a linear() easing: ${easing}`)
-  return match[1]?.split(',').map((s) => Number.parseFloat(s.trim()))
+  return match[1]?.split(',').map((s) => Number.parseFloat(s.trim())) ?? []
 }
+
+describe('springPreset', () => {
+  const expected: Record<SpringPreset, { stiffness: number; damping: number; mass: number }> = {
+    gentle: { stiffness: 120, damping: 14, mass: 1 },
+    wobbly: { stiffness: 180, damping: 12, mass: 1 },
+    stiff: { stiffness: 280, damping: 24, mass: 1 },
+    slow: { stiffness: 80, damping: 16, mass: 1 },
+    tight: { stiffness: 300, damping: 30, mass: 1 },
+  }
+
+  for (const name of Object.keys(expected) as SpringPreset[]) {
+    it(`returns expected params for "${name}"`, () => {
+      const params = springPreset(name)
+      expect(params.stiffness).toBe(expected[name].stiffness)
+      expect(params.damping).toBe(expected[name].damping)
+      expect(params.mass).toBe(expected[name].mass)
+    })
+  }
+})
+
+describe('springEasing — preset overload', () => {
+  for (const name of ['gentle', 'wobbly', 'stiff', 'slow', 'tight'] as SpringPreset[]) {
+    it(`returns a linear() easing for "${name}"`, () => {
+      const easing = springEasing(name)
+      expect(easing).toMatch(/^linear\(/)
+      expect(easing).toMatch(/\)$/)
+      const points = parseLinearEasing(easing)
+      expect(points[0]).toBeCloseTo(0, 3)
+      expect(points[points.length - 1]).toBe(1)
+    })
+  }
+
+  it('"gentle" produces overshoot (underdamped)', () => {
+    // gentle: ζ = 14 / (2 * sqrt(120 * 1)) ≈ 0.64 → underdamped、 overshoot あり
+    const points = parseLinearEasing(springEasing('gentle'))
+    const max = Math.max(...points.slice(0, -1))
+    expect(max).toBeGreaterThan(1)
+  })
+
+  it('"tight" produces minimal overshoot (high damping)', () => {
+    // tight: ζ = 30 / (2 * sqrt(300 * 1)) ≈ 0.866 → underdamped だが overshoot 小
+    const points = parseLinearEasing(springEasing('tight'))
+    const max = Math.max(...points)
+    expect(max).toBeLessThan(1.05)
+  })
+
+  it('preset overload matches manual SpringOptions', () => {
+    const fromPreset = springEasing('stiff')
+    const fromOptions = springEasing(springPreset('stiff'))
+    expect(fromPreset).toBe(fromOptions)
+  })
+})
