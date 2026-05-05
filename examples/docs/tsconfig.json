@@ -21,7 +21,8 @@
       "creo-ui-md-view": ["../../packages/md-view/src/index.ts"],
       "creo-ui-vision": ["../../packages/vision/src/index.ts"],
       "creo-ui-vision/mock": ["../../packages/vision/src/mock.ts"],
-      "creo-ui-vision/mediapipe": ["../../packages/vision/src/mediapipe.ts"]
+      "creo-ui-vision/mediapipe": ["../../packages/vision/src/mediapipe.ts"],
+      "creo-views/md": ["../../../creo-views/src/md/index.ts"]
     }
   },
   "include": ["src"]
