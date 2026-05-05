@@ -1,6 +1,6 @@
 # Frame system — Creo UI Spatial Layout Protocol
 
-**Status**: Concept articulated (P-0 docs visual depth shipping、 P-1+ runtime 未着手)
+**Status**: P-0〜P-5 shipped (2026-05-05 時点 — `creo-ui-frame` v0.1.0 / `creo-ui-vision` / docs Playground dogfood)、 P-6 (VP 統合) 残。 詳細は §9 Phase plan
 **Owners**: Creo UI (schema + protocol)、 consumer packages (runtime 実装)
 **Scope**: layout philosophy at the same level as Editor Mode protocol。 既存の Story / Scene / Field 統一メンタルモデル (creo-memories `mem_1CZCk1Zg8cQpiLvjqqDKNA`) の **Scene 層** を spatial に articulate する protocol
 **Related**: [editor-mode.md](./editor-mode.md), [theme-system.md](./theme-system.md), [stack-adr.md](./stack-adr.md), [vision-input.md](./vision-input.md), [vision-cross-platform.md](./vision-cross-platform.md), [immersive-field.md](./immersive-field.md)
@@ -161,15 +161,24 @@ Frame system では:
 
 ## 9. Phase plan
 
-| Phase | scope | 工数 |
+| Phase | scope | 工数 | Status |
+|---|---|---|---|
+| **P-0** | docs site visual depth (perspective + card translateZ + sidebar depth + reduced-motion guard) | 着手中 → 完了 | ✅ Ship |
+| **P-1** | `tokens/depth/` + `tokens/motion/` + `tokens/frame/` 追加 | 1h | ✅ Ship (`tokens/{depth,motion,frame}/*.json`) |
+| **P-2** | **自作 motion engine** (Web Animations API 直叩き、 FLIP + spring + easing token bridge) — Motion One が 2024 年 archive 化したため自作必須。 詳細は [stack-adr.md](./stack-adr.md) | 2-3h | ✅ Ship (`packages/frame/src/motion/`) |
+| **P-3** | 新 package `creo-ui-frame` (Solid + 自作 motion engine 同梱)、 `<FrameProvider>` `<FrameSlot>` `setFrame()` | 1 session | ✅ Ship (v0.1.0) |
+| **P-4** | 新 package `creo-ui-vision` (webcam motion との統合)。 詳細は [vision-input.md](./vision-input.md) | 1 session | ✅ Ship (mock source + MediaPipe lazy load + One-Euro Filter) |
+| **P-5** | docs site Playground で Frame morph + gesture demo (P-3, P-4 合成) | 0.5 session | ✅ Ship (`examples/docs/src/pages/Lab/Playground.tsx` — wave gesture / spatial pinch / `<model>` element / camera probe) |
+| **P-6** | VP 統合 (VP の pane を Frame protocol に refactor) | multi-session | ⏳ 別 repo (`vantage-point`) で着手予定 |
+
+### 後続改善 (P-3 v0.2.0 候補、 2026-05-05 articulate)
+
+| ID | scope | 状態 |
 |---|---|---|
-| **P-0** | docs site visual depth (perspective + card translateZ + sidebar depth + reduced-motion guard) | 着手中 |
-| **P-1** | `tokens/depth/` + `tokens/motion/` + `tokens/frame/` 追加 | 1h |
-| **P-2** | **自作 motion engine** (Web Animations API 直叩き、 FLIP + spring + easing token bridge) — Motion One が 2024 年 archive 化したため自作必須。 詳細は [stack-adr.md](./stack-adr.md) | 2-3h |
-| **P-3** | 新 package `creo-ui-frame` (Solid + 自作 motion engine 同梱)、 `<FrameProvider>` `<FrameSlot>` `setFrame()` | 1 session |
-| **P-4** | 新 package `creo-ui-vision` (webcam motion との統合)。 詳細は [vision-input.md](./vision-input.md) | 1 session |
-| **P-5** | docs site Playground で Frame morph + gesture demo (P-3, P-4 合成) | 0.5 session |
-| **P-6** | VP 統合 (VP の pane を Frame protocol に refactor) | multi-session |
+| **B-β** | `morphFrame()` coordinator API (複数 slot の atomic transition) — stack-adr §3.1 で約束済 | ⏳ 着手予定 |
+| **B-γ** | `<FrameSlot>` opt-in `useFlip` prop (CSS transition と並行する FLIP + spring path) | ⏳ |
+| **B-δ** | Spring preset name (`gentle` / `wobbly` / `stiff` / `slow` / `tight`) と DTCG token 連動 | ⏳ |
+| **B-ε** | test coverage 拡充 (flip / provider / slot の Medium test) | ⏳ |
 
 ## 10. やってはいけない
 
