@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-placement (on .creo-tooltip-content)',
@@ -143,6 +154,27 @@ export default function Tooltip() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          tooltip の placement (4 方向) / content を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.tooltip-editor',
+            }}
+          >
+            <TooltipEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<span class="creo-tooltip">
@@ -164,5 +196,49 @@ export default function Tooltip() {
         </pre>
       </section>
     </>
+  )
+}
+
+type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right'
+
+function TooltipEditorDemo() {
+  const [placement, setPlacement] = createSignal<TooltipPlacement>('top')
+  const [content, setContent] = createSignal('Save changes (Ctrl+S)')
+
+  bind({
+    id: 'tooltip.placement',
+    control: select({ options: ['top', 'bottom', 'left', 'right'] as const }),
+    target: signalTarget('tooltip.placement', placement, setPlacement),
+    initial: 'top',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'tooltip', label: 'Placement', order: 1 },
+  })
+  bind({
+    id: 'tooltip.content',
+    control: string({ variant: 'input' }),
+    target: signalTarget('tooltip.content', content, setContent),
+    initial: 'Save changes (Ctrl+S)',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Tooltip text', order: 1 },
+  })
+
+  return (
+    <div
+      class="docs-playground-stage"
+      style={{ 'min-height': '120px', 'align-items': 'center', 'justify-content': 'center' }}
+    >
+      <span class="creo-tooltip">
+        <button type="button" class="creo-btn" data-variant="secondary">
+          Hover / focus me
+        </button>
+        <span
+          class="creo-tooltip-content"
+          role="tooltip"
+          data-placement={placement() === 'top' ? undefined : placement()}
+        >
+          {content()}
+        </span>
+      </span>
+    </div>
   )
 }

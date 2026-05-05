@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'name',
@@ -127,6 +138,28 @@ export default function Radio() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          single radio の checked / disabled / label を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。 group 全体の dogfood
+          は scope 大のため single radio で示す。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.radio-editor',
+            }}
+          >
+            <RadioEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<fieldset>
@@ -150,5 +183,51 @@ export default function Radio() {
         </pre>
       </section>
     </>
+  )
+}
+
+function RadioEditorDemo() {
+  const [checked, setChecked] = createSignal(true)
+  const [disabled, setDisabled] = createSignal(false)
+  const [label, setLabel] = createSignal('Light')
+
+  bind({
+    id: 'radio.checked',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('radio.checked', checked, setChecked),
+    initial: true,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'radio', label: 'Checked', order: 1 },
+  })
+  bind({
+    id: 'radio.disabled',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('radio.disabled', disabled, setDisabled),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'radio', label: 'Disabled', order: 2 },
+  })
+  bind({
+    id: 'radio.label',
+    control: string({ variant: 'input' }),
+    target: signalTarget('radio.label', label, setLabel),
+    initial: 'Light',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Label', order: 1 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <label class="creo-radio">
+        <input
+          type="radio"
+          class="creo-radio-input"
+          name="radio-editor-demo"
+          checked={checked()}
+          disabled={disabled()}
+        />
+        <span>{label()}</span>
+      </label>
+    </div>
   )
 }

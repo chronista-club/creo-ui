@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'checked',
@@ -161,6 +172,27 @@ export default function Switch() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          switch の checked / disabled / label を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.switch-editor',
+            }}
+          >
+            <SwitchEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<label class="creo-switch">
@@ -173,5 +205,55 @@ export default function Switch() {
         </pre>
       </section>
     </>
+  )
+}
+
+function SwitchEditorDemo() {
+  const [checked, setChecked] = createSignal(false)
+  const [disabled, setDisabled] = createSignal(false)
+  const [label, setLabel] = createSignal('通知を受け取る')
+
+  bind({
+    id: 'switch.checked',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('switch.checked', checked, setChecked),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'switch', label: 'Checked', order: 1 },
+  })
+  bind({
+    id: 'switch.disabled',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('switch.disabled', disabled, setDisabled),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'switch', label: 'Disabled', order: 2 },
+  })
+  bind({
+    id: 'switch.label',
+    control: string({ variant: 'input' }),
+    target: signalTarget('switch.label', label, setLabel),
+    initial: '通知を受け取る',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Label', order: 1 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <label class="creo-switch">
+        <input
+          type="checkbox"
+          class="creo-switch-input"
+          role="switch"
+          checked={checked()}
+          disabled={disabled()}
+          aria-checked={checked() ? 'true' : 'false'}
+        />
+        <span class="creo-switch-track">
+          <span class="creo-switch-thumb" />
+        </span>
+        <span>{label()}</span>
+      </label>
+    </div>
   )
 }

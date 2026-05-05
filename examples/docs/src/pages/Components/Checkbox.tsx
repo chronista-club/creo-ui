@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'checked',
@@ -115,6 +126,27 @@ export default function Checkbox() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          checkbox の checked / disabled / label を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.checkbox-editor',
+            }}
+          >
+            <CheckboxEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- 基本 -->
@@ -137,5 +169,50 @@ export default function Checkbox() {
         </pre>
       </section>
     </>
+  )
+}
+
+function CheckboxEditorDemo() {
+  const [checked, setChecked] = createSignal(false)
+  const [disabled, setDisabled] = createSignal(false)
+  const [label, setLabel] = createSignal('規約に同意します')
+
+  bind({
+    id: 'checkbox.checked',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('checkbox.checked', checked, setChecked),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'checkbox', label: 'Checked', order: 1 },
+  })
+  bind({
+    id: 'checkbox.disabled',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('checkbox.disabled', disabled, setDisabled),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'checkbox', label: 'Disabled', order: 2 },
+  })
+  bind({
+    id: 'checkbox.label',
+    control: string({ variant: 'input' }),
+    target: signalTarget('checkbox.label', label, setLabel),
+    initial: '規約に同意します',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Label', order: 1 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <label class="creo-checkbox">
+        <input
+          type="checkbox"
+          class="creo-checkbox-input"
+          checked={checked()}
+          disabled={disabled()}
+        />
+        <span>{label()}</span>
+      </label>
+    </div>
   )
 }
