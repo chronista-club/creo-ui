@@ -10,8 +10,25 @@ jobs:
   build:
     name: Build & Lint (Web)
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: creo-ui
     steps:
-      - uses: actions/checkout@v4
+      # creo-ui は workspace 配下の `creo-ui/` に置く。 sibling として
+      # `creo-views/` も同階層に配置 — `packages/md-view/package.json` の
+      # `"creo-views": "file:../../../creo-views"` (md-view から 3 階層上 =
+      # workspace root) と整合する。 local dev (`~/repos/creo-ui` /
+      # `~/repos/creo-views`) と同 layout。
+      - name: Checkout creo-ui
+        uses: actions/checkout@v4
+        with:
+          path: creo-ui
+
+      - name: Checkout creo-views (sibling, required by packages/md-view)
+        uses: actions/checkout@v4
+        with:
+          repository: chronista-club/creo-views
+          path: creo-views
 
       - uses: oven-sh/setup-bun@v2
         with:
