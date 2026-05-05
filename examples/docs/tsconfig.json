@@ -24,7 +24,5 @@
     }
   },
   "include": ["src"],
-  "exclude": [
-    "src/pages/Resources/Content.tsx"
-  ]
+  "exclude": ["src/pages/Resources/Content.tsx"]
 }
