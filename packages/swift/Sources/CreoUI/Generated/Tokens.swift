@@ -91,9 +91,9 @@ public enum CreoUITokens {
     public static let radiusXl: CGFloat = 28 // Extra-large radius — hero surfaces
     public static let radiusFull: CGFloat = 9999 // Fully rounded — pill shapes and circles (special, outside step rule)
     public static let spacingXs: CGFloat = 4 // Extra-small spacing — 4px (base unit)
-    public static let spacingSm: CGFloat = 8 // Small spacing — 8px
-    public static let spacingMd: CGFloat = 18 // Medium spacing — 18px (default gap between UI elements)
-    public static let spacingLg: CGFloat = 24 // Large spacing — 24px
+    public static let spacingS: CGFloat = 8 // Small spacing — 8px
+    public static let spacingM: CGFloat = 18 // Medium spacing — 18px (default gap between UI elements)
+    public static let spacingL: CGFloat = 24 // Large spacing — 24px
     public static let spacingXl: CGFloat = 32 // Extra-large spacing — 32px
     public static let typographyBodyLead: CGFloat = 20 // Lead body — opening paragraph / intro (larger, invites reading)
     public static let typographyBodyDefault: CGFloat = 16 // Default body — regular paragraph text (最もよく使う)
