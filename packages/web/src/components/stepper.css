@@ -149,7 +149,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .creo-stepper-item,
-  .creo-stepper-bullet {
+  .creo-stepper-item::after,
+  .creo-stepper-marker {
     transition: none;
     transform: none;
   }

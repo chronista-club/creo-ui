@@ -141,7 +141,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .creo-table-row,
-  .creo-table-cell {
+  .creo-table-cell,
+  .creo-table-sortable::after {
     transition: none;
     transform: none;
   }

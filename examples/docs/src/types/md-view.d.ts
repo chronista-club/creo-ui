@@ -18,8 +18,12 @@ declare module 'creo-ui-md-view' {
   export const CreoMarkdown: (props: {
     text: string
     class?: string
+    /** Element shown while parsing (default: nothing). */
+    loading?: JSX.Element
+    /** Render override on parse error. Error is passed as a string. */
+    fallback?: (err: string) => JSX.Element
+    /** Lifecycle hook — receives the parsed AST. */
     onAst?: (ast: unknown) => void
-    fallback?: (err: unknown) => JSX.Element
   }) => JSX.Element
 }
 
