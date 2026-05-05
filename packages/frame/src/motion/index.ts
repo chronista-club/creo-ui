@@ -7,6 +7,7 @@
  */
 
 export { flip, measureRect, type FlipOptions } from './flip'
+export { morphFrame, measureSlots, type MorphFrameOptions } from './morph'
 export {
   ease,
   duration,
