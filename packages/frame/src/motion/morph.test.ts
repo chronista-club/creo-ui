@@ -1,14 +1,14 @@
 /**
- * morphFrame coordinator の sanity check (bun test)。
+ * morphFrame coordinator の sanity check (bun test + happy-dom)。
  *
- * Pure path のみ test (empty input / prev 不在 slot skip)。 DOM / animate 介在
- * の本格 test は B-ε で happy-dom 導入時に拡充予定。
+ * Pure path (empty input / prev 不在 slot skip) と DOM 介在 path
+ * (real document.createElement + animate spy) の両方を網羅。
  */
 
-import { describe, expect, it } from 'bun:test'
+import { afterEach, describe, expect, it } from 'bun:test'
 import { measureSlots, morphFrame } from './morph'
 
-/** getBoundingClientRect / animate を持つ最小 mock。 animate は呼ばれてはいけない */
+/** getBoundingClientRect / animate を持つ最小 mock (no-DOM tests 用) */
 function mockElement(rect: Partial<DOMRect> = {}): HTMLElement {
   const r: DOMRect = {
     x: 0,
@@ -28,6 +28,39 @@ function mockElement(rect: Partial<DOMRect> = {}): HTMLElement {
       throw new Error('animate should not be called in pure-path tests')
     },
   } as unknown as HTMLElement
+}
+
+/** real document.createElement + animate spy + 任意 rect override */
+function realElement(rect?: Partial<DOMRect>): {
+  el: HTMLElement
+  getCalls: () => number
+} {
+  const el = document.createElement('div')
+  document.body.appendChild(el)
+  if (rect) {
+    const r: DOMRect = {
+      x: 0,
+      y: 0,
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      width: 0,
+      height: 0,
+      toJSON: () => r,
+      ...rect,
+    } as DOMRect
+    Object.defineProperty(el, 'getBoundingClientRect', {
+      value: () => r,
+      configurable: true,
+    })
+  }
+  let calls = 0
+  el.animate = (() => {
+    calls += 1
+    return { finished: Promise.resolve() } as Animation
+  }) as HTMLElement['animate']
+  return { el, getCalls: () => calls }
 }
 
 describe('measureSlots', () => {
@@ -66,20 +99,16 @@ describe('morphFrame (pure paths)', () => {
   })
 
   it('skips slots without prev rect (no animate call)', async () => {
-    // mockElement.animate throws — ここで呼ばれたら test 失敗
     const elements = new Map<string, HTMLElement>([
       ['hero', mockElement()],
       ['sidebar', mockElement()],
     ])
-    const prevRects = new Map<string, DOMRect>() // 全 slot の prev rect 不在
+    const prevRects = new Map<string, DOMRect>()
     const result = await morphFrame(elements, prevRects)
     expect(result).toEqual([])
   })
 
   it('handles partial prev rect coverage (animate not called for missing keys)', async () => {
-    // 'sidebar' に prev rect 無し → そちらは skip。 'hero' は prev rect ありだが
-    // newRect も同 (mockElement の rect 同じ) なので flip() の no-op detection で
-    // animate も呼ばれず null 返却 — 結果 animations 配列は空
     const elements = new Map<string, HTMLElement>([
       ['hero', mockElement({ left: 0, top: 0, width: 100, height: 100 })],
       ['sidebar', mockElement()],
@@ -89,5 +118,67 @@ describe('morphFrame (pure paths)', () => {
     ])
     const result = await morphFrame(elements, prevRects)
     expect(result).toEqual([])
+  })
+})
+
+describe('morphFrame (DOM-based)', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('animates each slot when rect changes', async () => {
+    const a = realElement({ width: 100, height: 100 })
+    const b = realElement({ width: 100, height: 100 })
+    const elements = new Map<string, HTMLElement>([
+      ['hero', a.el],
+      ['main', b.el],
+    ])
+    const prevRects = new Map<string, DOMRect>([
+      ['hero', { left: 100, top: 0, width: 100, height: 100 } as DOMRect],
+      ['main', { left: 0, top: 200, width: 100, height: 100 } as DOMRect],
+    ])
+    const result = await morphFrame(elements, prevRects)
+    expect(result.length).toBe(2)
+    expect(a.getCalls()).toBe(1)
+    expect(b.getCalls()).toBe(1)
+  })
+
+  it('returns Animation array whose .finished all resolve', async () => {
+    const a = realElement({ width: 50, height: 50 })
+    const elements = new Map<string, HTMLElement>([['hero', a.el]])
+    const prevRects = new Map<string, DOMRect>([
+      ['hero', { left: 30, top: 0, width: 50, height: 50 } as DOMRect],
+    ])
+    const animations = await morphFrame(elements, prevRects)
+    expect(animations.length).toBe(1)
+    await expect(animations[0]!.finished).resolves.toBeUndefined()
+  })
+
+  it('skips slot with no rect change (no-op detection on flip)', async () => {
+    const a = realElement({ left: 0, top: 0, width: 100, height: 100 })
+    const elements = new Map<string, HTMLElement>([['hero', a.el]])
+    const prevRects = new Map<string, DOMRect>([
+      ['hero', { left: 0, top: 0, width: 100, height: 100 } as DOMRect],
+    ])
+    const result = await morphFrame(elements, prevRects)
+    expect(result.length).toBe(0)
+    expect(a.getCalls()).toBe(0)
+  })
+
+  it('partial: animates only slots with movement, skips no-op', async () => {
+    const moved = realElement({ width: 50, height: 50 })
+    const still = realElement({ left: 0, top: 0, width: 80, height: 80 })
+    const elements = new Map<string, HTMLElement>([
+      ['hero', moved.el],
+      ['sidebar', still.el],
+    ])
+    const prevRects = new Map<string, DOMRect>([
+      ['hero', { left: 200, top: 0, width: 50, height: 50 } as DOMRect],
+      ['sidebar', { left: 0, top: 0, width: 80, height: 80 } as DOMRect],
+    ])
+    const result = await morphFrame(elements, prevRects)
+    expect(result.length).toBe(1)
+    expect(moved.getCalls()).toBe(1)
+    expect(still.getCalls()).toBe(0)
   })
 })
