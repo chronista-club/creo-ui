@@ -119,9 +119,7 @@
 /* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .creo-input,
-  .creo-textarea,
-  .creo-input-wrapper {
+  .creo-input {
     transition: none;
     transform: none;
   }
