@@ -57,7 +57,6 @@ export default function Alert() {
             class="docs-preview-grid"
             style={{ 'grid-template-columns': '1fr', gap: 'var(--spacing-s)' }}
           >
-            {/* biome-ignore lint/a11y/useSemanticElements: <output> は form 計算結果用、 alert 通知の `role="status"` は意図的 (a11y/Alert pattern 標準) */}
             <div class="creo-alert" data-variant="info" role="status">
               <span class="creo-alert-icon" aria-hidden="true">
                 ℹ
@@ -66,7 +65,6 @@ export default function Alert() {
                 <strong>Info:</strong> Tokens v0.14.0 がリリースされました。
               </div>
             </div>
-            {/* biome-ignore lint/a11y/useSemanticElements: <output> は form 計算結果用、 alert 通知の `role="status"` は意図的 */}
             <div class="creo-alert" data-variant="success" role="status">
               <span class="creo-alert-icon" aria-hidden="true">
                 ✓

@@ -35,6 +35,23 @@ const ARTIFACTS = [
   { name: 'tokens-source.tar.gz', dir: '_source' },
 ]
 
+/**
+ * GitHub API / asset URL に共通 header を付与。 GITHUB_TOKEN があれば
+ * Authorization: Bearer 付き (rate limit 緩和 + private repo 対応)、
+ * 無ければ unauthenticated (public repo の standard rate limit 60/h)。
+ */
+function buildHeaders(extra = {}) {
+  const headers = {
+    'User-Agent': 'creo-ui-fetch-script',
+    ...extra,
+  }
+  const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN
+  if (token) {
+    headers.Authorization = `Bearer ${token}`
+  }
+  return headers
+}
+
 async function fetchRelease() {
   const url =
     REQUESTED_TAG === 'latest'
@@ -42,20 +59,21 @@ async function fetchRelease() {
       : `https://api.github.com/repos/${REPO}/releases/tags/${REQUESTED_TAG}`
   console.log(`[fetch-creo-ui-design] querying ${url}`)
   const res = await fetch(url, {
-    headers: {
-      Accept: 'application/vnd.github+json',
-      'User-Agent': 'creo-ui-fetch-script',
-    },
+    headers: buildHeaders({ Accept: 'application/vnd.github+json' }),
   })
   if (!res.ok) {
-    throw new Error(`GitHub API ${res.status}: ${await res.text()}`)
+    const hint =
+      res.status === 401 || res.status === 404
+        ? ' (private repo の可能性、 GITHUB_TOKEN を export して再試行)'
+        : ''
+    throw new Error(`GitHub API ${res.status}${hint}: ${await res.text()}`)
   }
   return res.json()
 }
 
 async function downloadArtifact(downloadUrl, destPath) {
   const res = await fetch(downloadUrl, {
-    headers: { 'User-Agent': 'creo-ui-fetch-script' },
+    headers: buildHeaders(),
     redirect: 'follow',
   })
   if (!res.ok) {

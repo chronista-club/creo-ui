@@ -1,0 +1,21 @@
+{
+  "layout": {
+    "grid": {
+      "col-min-sm": {
+        "$value": "160px",
+        "$type": "dimension",
+        "$description": "auto-fit grid 最小 column 幅 (sm cells) — image thumbnail / icon tile / chip group 等の 密 grid 向け。"
+      },
+      "col-min-md": {
+        "$value": "220px",
+        "$type": "dimension",
+        "$description": "auto-fit grid 最小 column 幅 (md cells) — card list / preview tile の標準サイズ、 readable summary を含む card に最適。"
+      },
+      "col-min-lg": {
+        "$value": "320px",
+        "$type": "dimension",
+        "$description": "auto-fit grid 最小 column 幅 (lg cells) — feature card / hero tile、 multi-line description + CTA を含む rich card。"
+      }
+    }
+  }
+}

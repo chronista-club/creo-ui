@@ -10,6 +10,7 @@ import SwiftUI
 import CoreGraphics
 
 public extension Color {
+    static let colorSurfaceScrim = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Modal / drawer / dialog backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。
     static let colorBrandPrimary = Color(red: 0.3804, green: 0.7725, blue: 0.5804) // Brand primary (base)
     static let colorBrandPrimaryHover = Color(red: 0.4078, green: 0.8431, blue: 0.6314) // Brand primary — hover
     static let colorBrandPrimaryActive = Color(red: 0.3490, green: 0.7020, blue: 0.5294) // Brand primary — active / pressed
@@ -71,10 +72,17 @@ public enum CreoUITokens {
     public static let framePerspectiveDefault: CGFloat = 1400 // Default perspective — page-level spatial frame (subtle 3D)
     public static let framePerspectiveShallow: CGFloat = 800 // Shallow — closer camera、 dramatic 3D (hero / playground)
     public static let framePerspectiveDeep: CGFloat = 2400 // Deep — farther camera、 subtle 3D (long-form content / reading)
+    public static let layoutContainerSm: CGFloat = 640 // Narrow column — short form / single-line input collection / compact reading. Aligns with iPhone 15 Pro Max landscape (932×430)、 dense modal.
+    public static let layoutContainerMd: CGFloat = 768 // Default reading-friendly — 60-80 char line for long-form text. iPad portrait の content viewport と整合。
+    public static let layoutContainerLg: CGFloat = 1024 // Dashboard / table-rich content — multi-column tables / data lists. iPad landscape / 13" laptop の effective viewport。
+    public static let layoutContainerXl: CGFloat = 1280 // Hero / multi-column layout — landing / marketing / wide app shell。 14" laptop 以上 desktop の comfortable upper bound。
     public static let layoutGapTight: CGFloat = 4 // Tight gap — icon+label inline, chip group, closely-related siblings
     public static let layoutGapSibling: CGFloat = 18 // Default sibling gap — between stacked elements (list items, form fields)
     public static let layoutGapSection: CGFloat = 40 // Section-to-section gap — thematic block break (between content sections)
     public static let layoutGapPage: CGFloat = 64 // Page-level break — hero / footer separation, landing page major divisions
+    public static let layoutGridColMinSm: CGFloat = 160 // auto-fit grid 最小 column 幅 (sm cells) — image thumbnail / icon tile / chip group 等の 密 grid 向け。
+    public static let layoutGridColMinMd: CGFloat = 220 // auto-fit grid 最小 column 幅 (md cells) — card list / preview tile の標準サイズ、 readable summary を含む card に最適。
+    public static let layoutGridColMinLg: CGFloat = 320 // auto-fit grid 最小 column 幅 (lg cells) — feature card / hero tile、 multi-line description + CTA を含む rich card。
     public static let layoutTargetTap: CGFloat = 44 // Minimum tap target — Apple HIG accessibility requirement (modals, buttons on touch devices)
     public static let layoutTargetFocus: CGFloat = 32 // Minimum focus target — pointer devices / desktop-first (smaller than tap but still comfortable)
     public static let layoutTargetHit: CGFloat = 24 // Minimum hit target — dense UI (toolbars, inline actions), still WCAG-reasonable with hover affordance
@@ -105,6 +113,9 @@ public enum CreoUITokens {
     public static let typographyDisplayMd: CGFloat = 44 // Display md — default hero / h2 (Creo aesthetic: 柔らかく強い存在感)
     public static let typographyDisplayLg: CGFloat = 56 // Display lg — page hero / h1
     public static let typographyDisplayXl: CGFloat = 72 // Display xl — landing mega headline / promotional hero
+    public static let typographyIconMd: CGFloat = 40 // Icon display — list item / inline 強調。 emoji や icon font の visual size、 typography size とは別 scale。
+    public static let typographyIconLg: CGFloat = 64 // Icon display — empty-state default / card header / feature illustration。
+    public static let typographyIconXl: CGFloat = 96 // Icon display — empty-state large variant / hero illustration / onboarding。 page-level の visual anchor。
     public static let typographySizeXs: CGFloat = 12 // Caption / meta text
     public static let typographySizeSm: CGFloat = 14 // Small body / helper text
     public static let typographySizeMd: CGFloat = 16 // Default body text

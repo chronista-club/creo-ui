@@ -1,0 +1,11 @@
+{
+  "color": {
+    "surface": {
+      "scrim": {
+        "$value": "oklch(0 0 0 / 0.4)",
+        "$type": "color",
+        "$description": "Modal / drawer / dialog backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。"
+      }
+    }
+  }
+}

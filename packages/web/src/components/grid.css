@@ -57,11 +57,11 @@
 /* ---------- Auto-fit (responsive、 min-column-width 基準) ---------- */
 
 .creo-grid[data-cols="auto-sm"] {
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-sm), 1fr));
 }
 .creo-grid[data-cols="auto-md"] {
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-md), 1fr));
 }
 .creo-grid[data-cols="auto-lg"] {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-lg), 1fr));
 }

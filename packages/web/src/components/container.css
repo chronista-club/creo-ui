@@ -14,27 +14,27 @@
   margin-right: auto;
   padding-left: var(--spacing-m);
   padding-right: var(--spacing-m);
-  /* default md max-width = reading-friendly 768px */
-  max-width: 768px;
+  /* default md max-width = reading-friendly */
+  max-width: var(--layout-container-md);
 }
 
-/* ---------- Size variants ---------- */
+/* ---------- Size variants (token-driven) ---------- */
 
 .creo-container[data-size="sm"] {
-  max-width: 640px;
+  max-width: var(--layout-container-sm);
 } /* 短文 / form column */
 .creo-container[data-size="md"] {
-  max-width: 768px;
+  max-width: var(--layout-container-md);
 } /* default、 reading-friendly */
 .creo-container[data-size="lg"] {
-  max-width: 1024px;
+  max-width: var(--layout-container-lg);
 } /* dashboard / table */
 .creo-container[data-size="xl"] {
-  max-width: 1280px;
+  max-width: var(--layout-container-xl);
 } /* hero / multi-column */
 .creo-container[data-size="full"] {
   max-width: 100%;
-} /* 全幅 (custom layout 内) */
+} /* 全幅、 token 化不要 (semantic value) */
 
 /* ---------- Padding override ---------- */
 
