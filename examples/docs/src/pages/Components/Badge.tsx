@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-variant',
@@ -142,6 +153,27 @@ export default function Badge() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          badge の variant (6 種) / text を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.badge-editor',
+            }}
+          >
+            <BadgeEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<span class="creo-badge">Neutral</span>
@@ -153,5 +185,39 @@ export default function Badge() {
         </pre>
       </section>
     </>
+  )
+}
+
+type BadgeVariant = 'neutral' | 'brand' | 'success' | 'warning' | 'error' | 'info'
+
+function BadgeEditorDemo() {
+  const [variant, setVariant] = createSignal<BadgeVariant>('brand')
+  const [text, setText] = createSignal('v0.14.0')
+
+  bind({
+    id: 'badge.variant',
+    control: select({
+      options: ['neutral', 'brand', 'success', 'warning', 'error', 'info'] as const,
+    }),
+    target: signalTarget('badge.variant', variant, setVariant),
+    initial: 'brand',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'badge', label: 'Variant', order: 1 },
+  })
+  bind({
+    id: 'badge.text',
+    control: string({ variant: 'input' }),
+    target: signalTarget('badge.text', text, setText),
+    initial: 'v0.14.0',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Text', order: 1 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <span class="creo-badge" data-variant={variant() === 'neutral' ? undefined : variant()}>
+        {text()}
+      </span>
+    </div>
   )
 }

@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-variant',
@@ -153,6 +164,28 @@ export default function Alert() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          alert の variant / strong / body を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。 role は variant に
+          応じて自動 (warning/error → "alert"、 info/success → "status")。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.alert-editor',
+            }}
+          >
+            <AlertEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Info -->
@@ -173,5 +206,62 @@ export default function Alert() {
         </pre>
       </section>
     </>
+  )
+}
+
+type AlertVariant = 'info' | 'success' | 'warning' | 'error'
+
+function AlertEditorDemo() {
+  const [variant, setVariant] = createSignal<AlertVariant>('info')
+  const [strongText, setStrongText] = createSignal('Tip:')
+  const [bodyText, setBodyText] = createSignal('Ctrl+S で保存できます。')
+
+  bind({
+    id: 'alert.variant',
+    control: select({ options: ['info', 'success', 'warning', 'error'] as const }),
+    target: signalTarget('alert.variant', variant, setVariant),
+    initial: 'info',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'alert', label: 'Variant', order: 1 },
+  })
+  bind({
+    id: 'alert.strong',
+    control: string({ variant: 'input' }),
+    target: signalTarget('alert.strong', strongText, setStrongText),
+    initial: 'Tip:',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Strong text', order: 1 },
+  })
+  bind({
+    id: 'alert.body',
+    control: string({ variant: 'textarea' }),
+    target: signalTarget('alert.body', bodyText, setBodyText),
+    initial: 'Ctrl+S で保存できます。',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Body text', order: 2 },
+  })
+
+  // role mapping: warning/error → alert (即時)、 info/success → status (polite)
+  const role = (): 'alert' | 'status' =>
+    variant() === 'warning' || variant() === 'error' ? 'alert' : 'status'
+  const icon = (): string => {
+    if (variant() === 'success') return '✓'
+    if (variant() === 'warning') return '⚠'
+    if (variant() === 'error') return '✕'
+    return 'ℹ'
+  }
+
+  return (
+    <div class="docs-playground-stage">
+      {/* biome-ignore lint/a11y/useSemanticElements: <output> は form 計算結果用、 alert 通知の `role="status"`/`"alert"` は意図的 */}
+      <div class="creo-alert" data-variant={variant()} role={role()}>
+        <span class="creo-alert-icon" aria-hidden="true">
+          {icon()}
+        </span>
+        <div class="creo-alert-content">
+          <strong>{strongText()}</strong> {bodyText()}
+        </div>
+      </div>
+    </div>
   )
 }
