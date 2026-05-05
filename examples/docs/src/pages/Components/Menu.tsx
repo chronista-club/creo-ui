@@ -49,11 +49,9 @@ export default function Menu() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Basic menu</div>
           <div class="docs-preview-grid">
-            {/* @ts-expect-error popovertarget is HTML attribute, not in TS lib yet */}
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="menu-basic">
               ⋯ Actions
             </button>
-            {/* @ts-expect-error popover is HTML attribute */}
             <div class="creo-menu" id="menu-basic" popover>
               <div class="creo-menu-label">Edit</div>
               <button type="button" class="creo-menu-item">

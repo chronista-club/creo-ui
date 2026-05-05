@@ -148,8 +148,6 @@ export default function Input() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.input-editor',
             }}
           >
@@ -205,44 +203,29 @@ function InputEditorDemo() {
   const [disabled, setDisabled] = createSignal(false)
 
   bind({
-    id: 'input.variant',
-    control: select({ options: ['bordered', 'filled'] as const }),
-    target: signalTarget('input.variant', variant, setVariant),
-    initial: 'bordered',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'input', label: 'Variant', order: 1 },
+    target: signalTarget('input.variant', variant, (v) => setVariant(v as InputVariant)),
+    control: select(['bordered', 'filled'] as const),
+    placement: { semantic: 'tool', group: 'input', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'input.size',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('input.size', size, setSize),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'input', label: 'Size', order: 2 },
+    target: signalTarget('input.size', size, (v) => setSize(v as InputSize)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'input', label: 'Size', order: 2 },
   })
   bind({
-    id: 'input.disabled',
-    control: boolean({ variant: 'switch' }),
     target: signalTarget('input.disabled', disabled, setDisabled),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'input', label: 'Disabled', order: 3 },
+    control: boolean({ variant: 'switch' }),
+    placement: { semantic: 'tool', group: 'input', label: 'Disabled', order: 3 },
   })
   bind({
-    id: 'input.placeholder',
-    control: string({ variant: 'input' }),
     target: signalTarget('input.placeholder', placeholder, setPlaceholder),
-    initial: 'you@example.com',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Placeholder', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Placeholder', order: 1 },
   })
   bind({
-    id: 'input.value',
-    control: string({ variant: 'input' }),
     target: signalTarget('input.value', value, setValue),
-    initial: '',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Value', order: 2 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Value', order: 2 },
   })
 
   return (

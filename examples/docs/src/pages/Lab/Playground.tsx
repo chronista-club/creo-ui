@@ -49,8 +49,6 @@ export default function Playground() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.playground',
             }}
           >
@@ -218,67 +216,46 @@ function Demo() {
   )
 }
 
+type PlaygroundElevation = 'flat' | 'raised' | 'floating'
+
 function PlaygroundDemo() {
   // Solid signals for ephemeral state (visible in render)
-  const [elevation, setElevation] = createSignal<'flat' | 'raised' | 'floating'>('raised')
+  const [elevation, setElevation] = createSignal<PlaygroundElevation>('raised')
   const [showLabel, setShowLabel] = createSignal(true)
   const [title, setTitle] = createSignal('Hello, Creo UI')
 
   // CSS variable bindings (live token effect)
   bind({
-    id: 'demo.cardRadius',
-    control: number({ variant: 'slider' }),
-    target: cssVarNumberTarget('--demo-card-radius', {
-      min: 0,
-      max: 32,
-      step: 1,
-      unit: 'px',
-    }),
-    initial: 12,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'card', label: 'Card radius', order: 1 },
+    target: cssVarNumberTarget('demo.cardRadius', '--demo-card-radius', 12, 'px'),
+    control: number({ min: 0, max: 32, step: 1, unit: 'px', variant: 'slider' }),
+    placement: { semantic: 'tool', group: 'card', label: 'Card radius', order: 1 },
   })
 
   bind({
-    id: 'demo.cardPadding',
-    control: number({ variant: 'slider' }),
-    target: cssVarNumberTarget('--demo-card-padding', {
-      min: 8,
-      max: 48,
-      step: 2,
-      unit: 'px',
-    }),
-    initial: 18,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'card', label: 'Card padding', order: 2 },
+    target: cssVarNumberTarget('demo.cardPadding', '--demo-card-padding', 18, 'px'),
+    control: number({ min: 8, max: 48, step: 2, unit: 'px', variant: 'slider' }),
+    placement: { semantic: 'tool', group: 'card', label: 'Card padding', order: 2 },
   })
 
   // Signal-backed bindings (component-local state)
   bind({
-    id: 'demo.elevation',
-    control: select({ options: ['flat', 'raised', 'floating'] as const }),
-    target: signalTarget('demo.elevation', elevation, setElevation),
-    initial: 'raised',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'card', label: 'Elevation', order: 3 },
+    target: signalTarget('demo.elevation', elevation, (v) =>
+      setElevation(v as PlaygroundElevation),
+    ),
+    control: select(['flat', 'raised', 'floating'] as const),
+    placement: { semantic: 'tool', group: 'card', label: 'Elevation', order: 3 },
   })
 
   bind({
-    id: 'demo.showLabel',
-    control: boolean({ variant: 'switch' }),
     target: signalTarget('demo.showLabel', showLabel, setShowLabel),
-    initial: true,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'card', label: 'Show label', order: 4 },
+    control: boolean({ variant: 'switch' }),
+    placement: { semantic: 'tool', group: 'card', label: 'Show label', order: 4 },
   })
 
   bind({
-    id: 'demo.title',
-    control: string({ variant: 'input' }),
     target: signalTarget('demo.title', title, setTitle),
-    initial: 'Hello, Creo UI',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Card title', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Card title', order: 1 },
   })
 
   return (
@@ -438,8 +415,8 @@ function PinchIndicator() {
         class="docs-pinch-indicator"
         data-active={pinch()?.active}
         style={{
-          left: `${pinch()?.x * 100}%`,
-          top: `${pinch()?.y * 100}%`,
+          left: `${(pinch()?.x ?? 0) * 100}%`,
+          top: `${(pinch()?.y ?? 0) * 100}%`,
         }}
         aria-hidden="true"
       >
@@ -617,9 +594,11 @@ function SpatialPinchBridge() {
     const cur = pinch()?.active ?? false
     if (cur && !prevActive) {
       const x = pinch()?.x
-      if (x < 0.4) setFrame('dashboard')
-      else if (x > 0.6) setFrame('reading')
-      // dead-band: 何もしない
+      if (x !== undefined) {
+        if (x < 0.4) setFrame('dashboard')
+        else if (x > 0.6) setFrame('reading')
+        // dead-band (0.4 ≤ x ≤ 0.6): 何もしない
+      }
     }
     prevActive = cur
   })
@@ -821,7 +800,6 @@ function CameraProbe() {
         data-active={previewStream() !== null}
         autoplay
         muted
-        // @ts-expect-error — playsinline is iOS / visionOS Safari attribute
         playsinline
       />
       <Show when={trackSettings()}>

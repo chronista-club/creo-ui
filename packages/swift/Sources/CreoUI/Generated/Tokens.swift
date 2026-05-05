@@ -10,7 +10,8 @@ import SwiftUI
 import CoreGraphics
 
 public extension Color {
-    static let colorSurfaceScrim = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Modal / drawer / dialog backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。
+    static let colorSurfaceScrim = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Drawer / side sheet backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。 中央 modal (dialog) はより重い注意を引くため `scrim-modal` (50%) を使う。
+    static let colorSurfaceScrimModal = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Dialog (中央 modal) backdrop scrim — 50% black overlay。 drawer (40%) より強く content を後退させ、 user の注意を modal に集中させる。 dark/light theme 共通。
     static let colorBrandPrimary = Color(red: 0.3804, green: 0.7725, blue: 0.5804) // Brand primary (base)
     static let colorBrandPrimaryHover = Color(red: 0.4078, green: 0.8431, blue: 0.6314) // Brand primary — hover
     static let colorBrandPrimaryActive = Color(red: 0.3490, green: 0.7020, blue: 0.5294) // Brand primary — active / pressed

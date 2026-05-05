@@ -172,8 +172,6 @@ export default function Alert() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.alert-editor',
             }}
           >
@@ -215,28 +213,19 @@ function AlertEditorDemo() {
   const [bodyText, setBodyText] = createSignal('Ctrl+S で保存できます。')
 
   bind({
-    id: 'alert.variant',
-    control: select({ options: ['info', 'success', 'warning', 'error'] as const }),
-    target: signalTarget('alert.variant', variant, setVariant),
-    initial: 'info',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'alert', label: 'Variant', order: 1 },
+    target: signalTarget('alert.variant', variant, (v) => setVariant(v as AlertVariant)),
+    control: select(['info', 'success', 'warning', 'error'] as const),
+    placement: { semantic: 'tool', group: 'alert', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'alert.strong',
-    control: string({ variant: 'input' }),
     target: signalTarget('alert.strong', strongText, setStrongText),
-    initial: 'Tip:',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Strong text', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Strong text', order: 1 },
   })
   bind({
-    id: 'alert.body',
-    control: string({ variant: 'textarea' }),
     target: signalTarget('alert.body', bodyText, setBodyText),
-    initial: 'Ctrl+S で保存できます。',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Body text', order: 2 },
+    control: string('textarea'),
+    placement: { semantic: 'tool', group: 'content', label: 'Body text', order: 2 },
   })
 
   // role mapping: warning/error → alert (即時)、 info/success → status (polite)

@@ -64,7 +64,7 @@ native `<dialog>` + `showModal()` を使う (focus trap / Esc 自動):
 
 | slot | token |
 |---|---|
-| backdrop | `rgba(0,0,0,0.4)` (`::backdrop`) |
+| backdrop | `color.surface.scrim` (40% black、`::backdrop`) |
 | bg | `color.surface.surface` |
 | border | `color.surface.border` 1px |
 | shadow | `shadow.xl` (強めの lift) |

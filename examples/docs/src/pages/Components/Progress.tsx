@@ -205,8 +205,6 @@ export default function Progress() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.progress-editor',
             }}
           >
@@ -258,36 +256,24 @@ function ProgressEditorDemo() {
   const [indeterminate, setIndeterminate] = createSignal(false)
 
   bind({
-    id: 'progress.variant',
-    control: select({ options: ['default', 'success', 'warning', 'error'] as const }),
-    target: signalTarget('progress.variant', variant, setVariant),
-    initial: 'default',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'progress', label: 'Variant', order: 1 },
+    target: signalTarget('progress.variant', variant, (v) => setVariant(v as ProgressVariant)),
+    control: select(['default', 'success', 'warning', 'error'] as const),
+    placement: { semantic: 'tool', group: 'progress', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'progress.size',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('progress.size', size, setSize),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'progress', label: 'Size', order: 2 },
+    target: signalTarget('progress.size', size, (v) => setSize(v as ProgressSize)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'progress', label: 'Size', order: 2 },
   })
   bind({
-    id: 'progress.value',
-    control: number({ variant: 'slider' }),
     target: signalTarget('progress.value', value, setValue),
-    initial: 60,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'progress', label: 'Value (%)', order: 3 },
+    control: number({ variant: 'slider' }),
+    placement: { semantic: 'tool', group: 'progress', label: 'Value (%)', order: 3 },
   })
   bind({
-    id: 'progress.indeterminate',
-    control: boolean({ variant: 'switch' }),
     target: signalTarget('progress.indeterminate', indeterminate, setIndeterminate),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'progress', label: 'Indeterminate', order: 4 },
+    control: boolean({ variant: 'switch' }),
+    placement: { semantic: 'tool', group: 'progress', label: 'Indeterminate', order: 4 },
   })
 
   return (

@@ -53,8 +53,11 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       )
     }
 
-    // F1: Console REPL (default: true in non-production)
-    const exposeConsole = props.config?.exposeConsole ?? true
+    // F1: Console REPL — CLAUDE.md EH-6: dev 自動 expose / production は config で opt-out。
+    // default は import.meta.env.DEV (Vite 環境で DEV 時 true、 production build 時 false)。
+    // production で意図的に expose したい場合は `config.exposeConsole: true` を明示。
+    const exposeConsole =
+      props.config?.exposeConsole ?? Boolean((import.meta as { env?: { DEV?: boolean } }).env?.DEV)
     if (exposeConsole) {
       const api = buildConsoleApi({
         host,

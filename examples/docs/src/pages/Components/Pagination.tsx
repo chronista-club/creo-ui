@@ -286,8 +286,6 @@ export default function Pagination() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.pagination-editor',
             }}
           >
@@ -342,28 +340,19 @@ function PaginationEditorDemo() {
   const totalPages = 7
 
   bind({
-    id: 'pagination.variant',
-    control: select({ options: ['default', 'compact'] as const }),
-    target: signalTarget('pagination.variant', variant, setVariant),
-    initial: 'default',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'pagination', label: 'Variant', order: 1 },
+    target: signalTarget('pagination.variant', variant, (v) => setVariant(v as PaginationVariant)),
+    control: select(['default', 'compact'] as const),
+    placement: { semantic: 'tool', group: 'pagination', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'pagination.size',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('pagination.size', size, setSize),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'pagination', label: 'Size', order: 2 },
+    target: signalTarget('pagination.size', size, (v) => setSize(v as PaginationSize)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'pagination', label: 'Size', order: 2 },
   })
   bind({
-    id: 'pagination.current',
-    control: number({ variant: 'slider' }),
     target: signalTarget('pagination.current', current, setCurrent),
-    initial: 3,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'pagination', label: 'Current page', order: 3 },
+    control: number({ variant: 'slider' }),
+    placement: { semantic: 'tool', group: 'pagination', label: 'Current page', order: 3 },
   })
 
   return (

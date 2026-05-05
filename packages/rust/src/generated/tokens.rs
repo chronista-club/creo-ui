@@ -21,8 +21,10 @@ impl Rgb {
     }
 }
 
-/// Modal / drawer / dialog backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。
+/// Drawer / side sheet backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。 中央 modal (dialog) はより重い注意を引くため `scrim-modal` (50%) を使う。
 pub const COLOR_SURFACE_SCRIM: Rgb = Rgb::new(0, 0, 0);
+/// Dialog (中央 modal) backdrop scrim — 50% black overlay。 drawer (40%) より強く content を後退させ、 user の注意を modal に集中させる。 dark/light theme 共通。
+pub const COLOR_SURFACE_SCRIM_MODAL: Rgb = Rgb::new(0, 0, 0);
 /// Brand primary (base)
 pub const COLOR_BRAND_PRIMARY: Rgb = Rgb::new(97, 197, 148);
 /// Brand primary — hover

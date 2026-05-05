@@ -163,8 +163,6 @@ export default function Tooltip() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.tooltip-editor',
             }}
           >
@@ -206,20 +204,16 @@ function TooltipEditorDemo() {
   const [content, setContent] = createSignal('Save changes (Ctrl+S)')
 
   bind({
-    id: 'tooltip.placement',
-    control: select({ options: ['top', 'bottom', 'left', 'right'] as const }),
-    target: signalTarget('tooltip.placement', placement, setPlacement),
-    initial: 'top',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'tooltip', label: 'Placement', order: 1 },
+    target: signalTarget('tooltip.placement', placement, (v) =>
+      setPlacement(v as TooltipPlacement),
+    ),
+    control: select(['top', 'bottom', 'left', 'right'] as const),
+    placement: { semantic: 'tool', group: 'tooltip', label: 'Placement', order: 1 },
   })
   bind({
-    id: 'tooltip.content',
-    control: string({ variant: 'input' }),
     target: signalTarget('tooltip.content', content, setContent),
-    initial: 'Save changes (Ctrl+S)',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Tooltip text', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Tooltip text', order: 1 },
   })
 
   return (

@@ -166,8 +166,6 @@ export default function Card() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.card-editor',
             }}
           >
@@ -212,9 +210,12 @@ export default function Card() {
   )
 }
 
+type CardVariant = 'default' | 'elevated' | 'outlined'
+type CardPadding = 'sm' | 'md' | 'lg'
+
 function CardEditorDemo() {
-  const [variant, setVariant] = createSignal<'default' | 'elevated' | 'outlined'>('default')
-  const [padding, setPadding] = createSignal<'sm' | 'md' | 'lg'>('md')
+  const [variant, setVariant] = createSignal<CardVariant>('default')
+  const [padding, setPadding] = createSignal<CardPadding>('md')
   const [interactive, setInteractive] = createSignal(false)
   const [title, setTitle] = createSignal('Card title')
   const [body, setBody] = createSignal(
@@ -222,44 +223,29 @@ function CardEditorDemo() {
   )
 
   bind({
-    id: 'card.variant',
-    control: select({ options: ['default', 'elevated', 'outlined'] as const }),
-    target: signalTarget('card.variant', variant, setVariant),
-    initial: 'default',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'card', label: 'Variant', order: 1 },
+    target: signalTarget('card.variant', variant, (v) => setVariant(v as CardVariant)),
+    control: select(['default', 'elevated', 'outlined'] as const),
+    placement: { semantic: 'tool', group: 'card', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'card.padding',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('card.padding', padding, setPadding),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'card', label: 'Padding', order: 2 },
+    target: signalTarget('card.padding', padding, (v) => setPadding(v as CardPadding)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'card', label: 'Padding', order: 2 },
   })
   bind({
-    id: 'card.interactive',
-    control: boolean({ variant: 'switch' }),
     target: signalTarget('card.interactive', interactive, setInteractive),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'card', label: 'Interactive (hover)', order: 3 },
+    control: boolean({ variant: 'switch' }),
+    placement: { semantic: 'tool', group: 'card', label: 'Interactive (hover)', order: 3 },
   })
   bind({
-    id: 'card.title',
-    control: string({ variant: 'input' }),
     target: signalTarget('card.title', title, setTitle),
-    initial: 'Card title',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Title', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Title', order: 1 },
   })
   bind({
-    id: 'card.body',
-    control: string({ variant: 'textarea' }),
     target: signalTarget('card.body', body, setBody),
-    initial: '説明文を ここに。 token-driven で radius / shadow / padding が一貫。',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Body', order: 2 },
+    control: string('textarea'),
+    placement: { semantic: 'tool', group: 'content', label: 'Body', order: 2 },
   })
 
   return (
