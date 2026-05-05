@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  number,
+  select,
+  signalTarget,
+} from 'creo-ui-editor-host'
+import { For, createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-variant',
@@ -267,6 +278,26 @@ export default function Pagination() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> で variant / size / current page を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.pagination-editor',
+            }}
+          >
+            <PaginationEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<nav class="creo-pagination" aria-label="pagination">
@@ -298,5 +329,92 @@ export default function Pagination() {
         </pre>
       </section>
     </>
+  )
+}
+
+type PaginationVariant = 'default' | 'compact'
+type PaginationSize = 'sm' | 'md' | 'lg'
+
+function PaginationEditorDemo() {
+  const [variant, setVariant] = createSignal<PaginationVariant>('default')
+  const [size, setSize] = createSignal<PaginationSize>('md')
+  const [current, setCurrent] = createSignal(3)
+  const totalPages = 7
+
+  bind({
+    id: 'pagination.variant',
+    control: select({ options: ['default', 'compact'] as const }),
+    target: signalTarget('pagination.variant', variant, setVariant),
+    initial: 'default',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'pagination', label: 'Variant', order: 1 },
+  })
+  bind({
+    id: 'pagination.size',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('pagination.size', size, setSize),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'pagination', label: 'Size', order: 2 },
+  })
+  bind({
+    id: 'pagination.current',
+    control: number({ variant: 'slider' }),
+    target: signalTarget('pagination.current', current, setCurrent),
+    initial: 3,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'pagination', label: 'Current page', order: 3 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <nav
+        class="creo-pagination"
+        data-variant={variant() === 'default' ? undefined : variant()}
+        data-size={size() === 'md' ? undefined : size()}
+        aria-label="pagination editor demo"
+      >
+        <ol class="creo-pagination-list">
+          <li>
+            <button
+              type="button"
+              class="creo-pagination-item"
+              data-action="prev"
+              aria-label="previous page"
+              disabled={current() <= 1}
+              onClick={() => setCurrent(Math.max(1, current() - 1))}
+            >
+              ‹
+            </button>
+          </li>
+          <For each={Array.from({ length: totalPages }, (_, i) => i + 1)}>
+            {(p) => (
+              <li>
+                <button
+                  type="button"
+                  class="creo-pagination-item"
+                  aria-current={current() === p ? 'page' : undefined}
+                  onClick={() => setCurrent(p)}
+                >
+                  {p}
+                </button>
+              </li>
+            )}
+          </For>
+          <li>
+            <button
+              type="button"
+              class="creo-pagination-item"
+              data-action="next"
+              aria-label="next page"
+              disabled={current() >= totalPages}
+              onClick={() => setCurrent(Math.min(totalPages, current() + 1))}
+            >
+              ›
+            </button>
+          </li>
+        </ol>
+      </nav>
+    </div>
   )
 }

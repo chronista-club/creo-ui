@@ -1,3 +1,7 @@
+import { A } from '@solidjs/router'
+import { EditorHostProvider, EditorLayer, bind, select, signalTarget } from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-size',
@@ -186,6 +190,26 @@ export default function Breadcrumbs() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> で size / separator を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.breadcrumbs-editor',
+            }}
+          >
+            <BreadcrumbsEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<nav class="creo-breadcrumbs" aria-label="breadcrumb">
@@ -207,5 +231,57 @@ export default function Breadcrumbs() {
         </pre>
       </section>
     </>
+  )
+}
+
+type BreadcrumbsSize = 'sm' | 'md' | 'lg'
+type BreadcrumbsSeparator = 'default' | 'slash' | 'dot'
+
+function BreadcrumbsEditorDemo() {
+  const [size, setSize] = createSignal<BreadcrumbsSize>('md')
+  const [separator, setSeparator] = createSignal<BreadcrumbsSeparator>('default')
+
+  bind({
+    id: 'breadcrumbs.size',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('breadcrumbs.size', size, setSize),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'breadcrumbs', label: 'Size', order: 1 },
+  })
+  bind({
+    id: 'breadcrumbs.separator',
+    control: select({ options: ['default', 'slash', 'dot'] as const }),
+    target: signalTarget('breadcrumbs.separator', separator, setSeparator),
+    initial: 'default',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'breadcrumbs', label: 'Separator', order: 2 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <nav
+        class="creo-breadcrumbs"
+        data-size={size() === 'md' ? undefined : size()}
+        data-separator={separator() === 'default' ? undefined : separator()}
+        aria-label="breadcrumb editor demo"
+      >
+        <ol class="creo-breadcrumbs-list">
+          <li class="creo-breadcrumbs-item">
+            <a class="creo-breadcrumbs-link" href="#home">
+              Home
+            </a>
+          </li>
+          <li class="creo-breadcrumbs-item">
+            <a class="creo-breadcrumbs-link" href="#components">
+              Components
+            </a>
+          </li>
+          <li class="creo-breadcrumbs-item" aria-current="page">
+            Breadcrumbs
+          </li>
+        </ol>
+      </nav>
+    </div>
   )
 }

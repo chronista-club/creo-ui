@@ -1,3 +1,7 @@
+import { A } from '@solidjs/router'
+import { EditorHostProvider, EditorLayer, bind, select, signalTarget } from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-orientation',
@@ -164,6 +168,26 @@ export default function Stepper() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> で orientation / current step を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.stepper-editor',
+            }}
+          >
+            <StepperEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<ol class="creo-stepper">
@@ -195,5 +219,82 @@ export default function Stepper() {
         </pre>
       </section>
     </>
+  )
+}
+
+type StepperOrientation = 'horizontal' | 'vertical'
+
+function StepperEditorDemo() {
+  const [orientation, setOrientation] = createSignal<StepperOrientation>('horizontal')
+  const [current, setCurrent] = createSignal<'1' | '2' | '3' | '4'>('2')
+
+  bind({
+    id: 'stepper.orientation',
+    control: select({ options: ['horizontal', 'vertical'] as const }),
+    target: signalTarget('stepper.orientation', orientation, setOrientation),
+    initial: 'horizontal',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'stepper', label: 'Orientation', order: 1 },
+  })
+  bind({
+    id: 'stepper.current',
+    control: select({ options: ['1', '2', '3', '4'] as const }),
+    target: signalTarget('stepper.current', current, setCurrent),
+    initial: '2',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'stepper', label: 'Current step', order: 2 },
+  })
+
+  const stateOf = (n: number): 'completed' | 'current' | 'pending' => {
+    const c = Number(current())
+    if (n < c) return 'completed'
+    if (n === c) return 'current'
+    return 'pending'
+  }
+  const markerOf = (n: number): string => {
+    if (stateOf(n) === 'completed') return '✓'
+    return String(n)
+  }
+
+  return (
+    <div class="docs-playground-stage">
+      <ol
+        class="creo-stepper"
+        data-orientation={orientation() === 'horizontal' ? undefined : orientation()}
+      >
+        <li class="creo-stepper-item" data-state={stateOf(1)}>
+          <span class="creo-stepper-marker" aria-hidden="true">
+            {markerOf(1)}
+          </span>
+          <div>
+            <div class="creo-stepper-label">Account</div>
+          </div>
+        </li>
+        <li class="creo-stepper-item" data-state={stateOf(2)}>
+          <span class="creo-stepper-marker" aria-hidden="true">
+            {markerOf(2)}
+          </span>
+          <div>
+            <div class="creo-stepper-label">Profile</div>
+          </div>
+        </li>
+        <li class="creo-stepper-item" data-state={stateOf(3)}>
+          <span class="creo-stepper-marker" aria-hidden="true">
+            {markerOf(3)}
+          </span>
+          <div>
+            <div class="creo-stepper-label">Payment</div>
+          </div>
+        </li>
+        <li class="creo-stepper-item" data-state={stateOf(4)}>
+          <span class="creo-stepper-marker" aria-hidden="true">
+            {markerOf(4)}
+          </span>
+          <div>
+            <div class="creo-stepper-label">Confirm</div>
+          </div>
+        </li>
+      </ol>
+    </div>
   )
 }

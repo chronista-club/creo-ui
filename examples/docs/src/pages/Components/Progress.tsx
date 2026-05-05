@@ -1,3 +1,15 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  number,
+  select,
+  signalTarget,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-size',
@@ -185,6 +197,26 @@ export default function Progress() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> で variant / size / value (slider) / indeterminate を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.progress-editor',
+            }}
+          >
+            <ProgressEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Determinate (60%) -->
@@ -213,5 +245,69 @@ export default function Progress() {
         </pre>
       </section>
     </>
+  )
+}
+
+type ProgressVariant = 'default' | 'success' | 'warning' | 'error'
+type ProgressSize = 'sm' | 'md' | 'lg'
+
+function ProgressEditorDemo() {
+  const [variant, setVariant] = createSignal<ProgressVariant>('default')
+  const [size, setSize] = createSignal<ProgressSize>('md')
+  const [value, setValue] = createSignal(60)
+  const [indeterminate, setIndeterminate] = createSignal(false)
+
+  bind({
+    id: 'progress.variant',
+    control: select({ options: ['default', 'success', 'warning', 'error'] as const }),
+    target: signalTarget('progress.variant', variant, setVariant),
+    initial: 'default',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'progress', label: 'Variant', order: 1 },
+  })
+  bind({
+    id: 'progress.size',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('progress.size', size, setSize),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'progress', label: 'Size', order: 2 },
+  })
+  bind({
+    id: 'progress.value',
+    control: number({ variant: 'slider' }),
+    target: signalTarget('progress.value', value, setValue),
+    initial: 60,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'progress', label: 'Value (%)', order: 3 },
+  })
+  bind({
+    id: 'progress.indeterminate',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('progress.indeterminate', indeterminate, setIndeterminate),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'progress', label: 'Indeterminate', order: 4 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <div
+        class="creo-progress"
+        data-variant={variant() === 'default' ? undefined : variant()}
+        data-size={size() === 'md' ? undefined : size()}
+        data-indeterminate={indeterminate() ? 'true' : undefined}
+        role="progressbar"
+        aria-label={indeterminate() ? 'Loading' : `${value()}%`}
+        aria-valuenow={indeterminate() ? undefined : value()}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
+        <div
+          class="creo-progress-fill"
+          style={indeterminate() ? undefined : { width: `${value()}%` }}
+        />
+      </div>
+    </div>
   )
 }

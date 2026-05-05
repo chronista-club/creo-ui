@@ -1,3 +1,7 @@
+import { A } from '@solidjs/router'
+import { EditorHostProvider, EditorLayer, bind, select, signalTarget } from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-variant',
@@ -214,6 +218,26 @@ export default function Tabs() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> で variant / size / selected tab を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.tabs-editor',
+            }}
+          >
+            <TabsEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<div class="creo-tabs">
@@ -241,5 +265,79 @@ export default function Tabs() {
         </pre>
       </section>
     </>
+  )
+}
+
+type TabsVariant = 'default' | 'pill'
+type TabsSize = 'sm' | 'md' | 'lg'
+
+function TabsEditorDemo() {
+  const [variant, setVariant] = createSignal<TabsVariant>('default')
+  const [size, setSize] = createSignal<TabsSize>('md')
+  const [selected, setSelected] = createSignal<'tab1' | 'tab2' | 'tab3'>('tab1')
+
+  bind({
+    id: 'tabs.variant',
+    control: select({ options: ['default', 'pill'] as const }),
+    target: signalTarget('tabs.variant', variant, setVariant),
+    initial: 'default',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'tabs', label: 'Variant', order: 1 },
+  })
+  bind({
+    id: 'tabs.size',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('tabs.size', size, setSize),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'tabs', label: 'Size', order: 2 },
+  })
+  bind({
+    id: 'tabs.selected',
+    control: select({ options: ['tab1', 'tab2', 'tab3'] as const }),
+    target: signalTarget('tabs.selected', selected, setSelected),
+    initial: 'tab1',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'tabs', label: 'Selected', order: 3 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <div
+        class="creo-tabs"
+        data-variant={variant() === 'default' ? undefined : variant()}
+        data-size={size() === 'md' ? undefined : size()}
+      >
+        <div class="creo-tabs-list" role="tablist">
+          <button
+            type="button"
+            class="creo-tabs-tab"
+            role="tab"
+            aria-selected={selected() === 'tab1' ? 'true' : 'false'}
+            onClick={() => setSelected('tab1')}
+          >
+            Overview
+          </button>
+          <button
+            type="button"
+            class="creo-tabs-tab"
+            role="tab"
+            aria-selected={selected() === 'tab2' ? 'true' : 'false'}
+            onClick={() => setSelected('tab2')}
+          >
+            Foundations
+          </button>
+          <button
+            type="button"
+            class="creo-tabs-tab"
+            role="tab"
+            aria-selected={selected() === 'tab3' ? 'true' : 'false'}
+            onClick={() => setSelected('tab3')}
+          >
+            Components
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }
