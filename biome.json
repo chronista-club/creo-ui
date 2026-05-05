@@ -59,6 +59,16 @@
           }
         }
       }
+    },
+    {
+      "include": ["**/Components/Toast.tsx"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useSemanticElements": "off"
+          }
+        }
+      }
     }
   ]
 }
