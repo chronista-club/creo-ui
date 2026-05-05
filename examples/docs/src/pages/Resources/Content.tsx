@@ -77,13 +77,17 @@ export default function Content() {
         <p class="docs-page-eyebrow">Resources</p>
         <h1>Content (Markdown)</h1>
         <p class="docs-page-lead">
-          <code>creo-ui-md-view</code> が <a
+          <code>creo-ui-md-view</code> が{' '}
+          <a
             href="https://github.com/chronista-club/creo-views"
             target="_blank"
             rel="noopener noreferrer"
-          ><code>creo-views/md</code></a> (WASM-backed mdast parser) を消費して描画する SolidJS
-          renderer。 <strong>Rust が AST の SSOT</strong>、 TypeScript が型安全に描画。 docs site
-          自身もこの component を dogfood 可能 (将来 docs/design/ MD を render に乗せる)。
+          >
+            <code>creo-views/md</code>
+          </a>{' '}
+          (WASM-backed mdast parser) を消費して描画する SolidJS renderer。{' '}
+          <strong>Rust が AST の SSOT</strong>、 TypeScript が型安全に描画。 docs site 自身もこの
+          component を dogfood 可能 (将来 docs/design/ MD を render に乗せる)。
         </p>
       </header>
 
@@ -112,9 +116,9 @@ DOM (token-aware)           creo-ui-web tokens.css に追従`}</code>
           <CreoMarkdown text={SAMPLE_MD} />
         </div>
         <p class="docs-page-helper">
-          theme switcher (Header 右上) で 8 theme 切替 → markdown も含めて全体が連動する。
-          Mermaid block は Phase 0.2 で SVG render 予定 (<A href="/concepts/frame-system">Frame system</A> の
-          spatial canvas 拡張で描画)。
+          theme switcher (Header 右上) で 8 theme 切替 → markdown も含めて全体が連動する。 Mermaid
+          block は Phase 0.2 で SVG render 予定 (<A href="/concepts/frame-system">Frame system</A>{' '}
+          の spatial canvas 拡張で描画)。
         </p>
       </section>
 
@@ -141,11 +145,15 @@ export const App = () => (
         <h2 class="docs-section-title">対応 node</h2>
         <p class="docs-page-helper">
           22 node type を網羅 — CommonMark + GFM + 3 拡張 (Frontmatter / Admonition / WikiLink)。
-          詳細は <a
+          詳細は{' '}
+          <a
             href="https://github.com/chronista-club/creo-ui/blob/main/packages/md-view/README.md"
             target="_blank"
             rel="noopener noreferrer"
-          >creo-ui-md-view/README.md</a> 参照。
+          >
+            creo-ui-md-view/README.md
+          </a>{' '}
+          参照。
         </p>
       </section>
     </>

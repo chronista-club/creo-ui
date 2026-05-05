@@ -81,7 +81,10 @@ export class Point3DSmoother {
     this.fz = new OneEuroFilter(minCutoff, beta)
   }
 
-  filter(p: { x: number; y: number; z: number }, timestamp: number): {
+  filter(
+    p: { x: number; y: number; z: number },
+    timestamp: number,
+  ): {
     x: number
     y: number
     z: number

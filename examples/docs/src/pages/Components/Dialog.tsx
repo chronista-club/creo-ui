@@ -1,8 +1,18 @@
-import { createSignal, type JSX } from 'solid-js'
+import { type JSX, createSignal } from 'solid-js'
 
 const PROPS = [
-  { attr: 'data-size', values: 'sm / md / lg', def: 'md', meaning: 'dialog max-width (320 / 480 / 720 px)' },
-  { attr: 'data-variant', values: 'default / destructive', def: 'default', meaning: 'destructive は title/actions に error 色 hint' },
+  {
+    attr: 'data-size',
+    values: 'sm / md / lg',
+    def: 'md',
+    meaning: 'dialog max-width (320 / 480 / 720 px)',
+  },
+  {
+    attr: 'data-variant',
+    values: 'default / destructive',
+    def: 'default',
+    meaning: 'destructive は title/actions に error 色 hint',
+  },
 ] as const
 
 const TOKENS = [
@@ -34,9 +44,9 @@ export default function Dialog() {
         <p class="docs-page-eyebrow">Components</p>
         <h1>Dialog</h1>
         <p class="docs-page-lead">
-          User の注意を一時的に hijack して重要な決定 (削除確認 / 重要な入力 / destructive action) を
-          取る overlay UI。 native <code>&lt;dialog&gt;</code> を採用し、 <code>showModal()</code> で focus
-          trap + backdrop + Esc close を browser に任せる。
+          User の注意を一時的に hijack して重要な決定 (削除確認 / 重要な入力 / destructive action)
+          を 取る overlay UI。 native <code>&lt;dialog&gt;</code> を採用し、{' '}
+          <code>showModal()</code> で focus trap + backdrop + Esc close を browser に任せる。
         </p>
       </header>
 
@@ -53,8 +63,8 @@ export default function Dialog() {
             </button>
           </div>
           <p class="docs-page-helper">
-            modal は body 中央に出現、 backdrop / Esc / focus trap は browser native。 開いたら Cancel か
-            primary action で close。
+            modal は body 中央に出現、 backdrop / Esc / focus trap は browser native。 開いたら
+            Cancel か primary action で close。
           </p>
         </div>
       </section>
@@ -162,12 +172,21 @@ export default function Dialog() {
         <h2 class="docs-section-title">Accessibility</h2>
         <ul class="docs-bullet-list">
           <li>
-            native <code>&lt;dialog&gt;</code> + <code>showModal()</code> で focus trap / Esc close /{' '}
-            <code>role="dialog"</code> + <code>aria-modal="true"</code> が <strong>browser 自動</strong>
+            native <code>&lt;dialog&gt;</code> + <code>showModal()</code> で focus trap / Esc close
+            / <code>role="dialog"</code> + <code>aria-modal="true"</code> が{' '}
+            <strong>browser 自動</strong>
           </li>
-          <li>title に <code>aria-labelledby</code>、 body 説明に <code>aria-describedby</code> を関連付け</li>
-          <li>close button は <code>aria-label="閉じる"</code> 必須 (icon button の場合)</li>
-          <li>destructive action は <code>autofocus</code> を <strong>cancel</strong> に置く (誤タップ防止)</li>
+          <li>
+            title に <code>aria-labelledby</code>、 body 説明に <code>aria-describedby</code>{' '}
+            を関連付け
+          </li>
+          <li>
+            close button は <code>aria-label="閉じる"</code> 必須 (icon button の場合)
+          </li>
+          <li>
+            destructive action は <code>autofocus</code> を <strong>cancel</strong> に置く
+            (誤タップ防止)
+          </li>
         </ul>
       </section>
 
@@ -216,11 +235,14 @@ export default function Dialog() {
 </script>`}</code>
         </pre>
         <p class="docs-page-helper">
-          詳細 spec: <a
+          詳細 spec:{' '}
+          <a
             href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/dialog.md"
             target="_blank"
             rel="noopener noreferrer"
-          >docs/components/dialog.md ↗</a>
+          >
+            docs/components/dialog.md ↗
+          </a>
         </p>
       </section>
     </>

@@ -1,7 +1,17 @@
 const PROPS = [
-  { attr: 'data-variant', values: 'default / elevated / outlined', def: 'default', meaning: '視覚的 lift / emphasis' },
+  {
+    attr: 'data-variant',
+    values: 'default / elevated / outlined',
+    def: 'default',
+    meaning: '視覚的 lift / emphasis',
+  },
   { attr: 'data-padding', values: 'sm / md / lg', def: 'md', meaning: '内側余白の scale' },
-  { attr: 'data-interactive', values: '"true"', def: '—', meaning: 'hover state を有効化 (button/link として使う場合)' },
+  {
+    attr: 'data-interactive',
+    values: '"true"',
+    def: '—',
+    meaning: 'hover state を有効化 (button/link として使う場合)',
+  },
 ] as const
 
 const TOKENS = [
@@ -21,8 +31,8 @@ export default function Card() {
         <p class="docs-page-eyebrow">Components</p>
         <h1>Card</h1>
         <p class="docs-page-lead">
-          関連したコンテンツを視覚的に束ねる container。 Creo aesthetic "柔らかく気持ちいい" を最も体現する
-          element — radius / shadow / padding で息遣いを表現する。
+          関連したコンテンツを視覚的に束ねる container。 Creo aesthetic "柔らかく気持ちいい"
+          を最も体現する element — radius / shadow / padding で息遣いを表現する。
         </p>
       </header>
 
@@ -32,28 +42,46 @@ export default function Card() {
           <div class="docs-preview-row-label">Variants</div>
           <div class="docs-preview-grid docs-preview-grid--cards">
             <article class="creo-card" data-variant="default">
-              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">Default</h4>
-              <p style="margin: 0; font-size: var(--typography-size-sm); color: var(--color-text-secondary);">surface bg + 1px border。 group content 用。</p>
+              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">
+                Default
+              </h4>
+              <p style="margin: 0; font-size: var(--typography-size-sm); color: var(--color-text-secondary);">
+                surface bg + 1px border。 group content 用。
+              </p>
             </article>
             <article class="creo-card" data-variant="elevated">
-              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">Elevated</h4>
-              <p style="margin: 0; font-size: var(--typography-size-sm); color: var(--color-text-secondary);">+ shadow.md で前面に浮く感。</p>
+              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">
+                Elevated
+              </h4>
+              <p style="margin: 0; font-size: var(--typography-size-sm); color: var(--color-text-secondary);">
+                + shadow.md で前面に浮く感。
+              </p>
             </article>
             <article class="creo-card" data-variant="outlined">
-              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">Outlined</h4>
-              <p style="margin: 0; font-size: var(--typography-size-sm); color: var(--color-text-secondary);">transparent bg + 1.5px border。 軽量 grouping。</p>
+              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">
+                Outlined
+              </h4>
+              <p style="margin: 0; font-size: var(--typography-size-sm); color: var(--color-text-secondary);">
+                transparent bg + 1.5px border。 軽量 grouping。
+              </p>
             </article>
           </div>
           <div class="docs-preview-row-label">Paddings</div>
           <div class="docs-preview-grid docs-preview-grid--cards">
             <article class="creo-card" data-padding="sm">
-              <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">data-padding="sm"</code>
+              <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">
+                data-padding="sm"
+              </code>
             </article>
             <article class="creo-card" data-padding="md">
-              <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">data-padding="md"</code>
+              <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">
+                data-padding="md"
+              </code>
             </article>
             <article class="creo-card" data-padding="lg">
-              <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">data-padding="lg"</code>
+              <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">
+                data-padding="lg"
+              </code>
             </article>
           </div>
         </div>
@@ -108,7 +136,9 @@ export default function Card() {
             <ul class="docs-bullet-list">
               <li>elevated を同面で複数並べない (奥行きが崩れる)</li>
               <li>card の中に card を深く入れ子にしない (concentric radius 破綻)</li>
-              <li>card 自体を <code>role="button"</code> にしない (内部 nested interactive を)</li>
+              <li>
+                card 自体を <code>role="button"</code> にしない (内部 nested interactive を)
+              </li>
             </ul>
           </div>
         </div>
@@ -135,11 +165,14 @@ export default function Card() {
 </article>`}</code>
         </pre>
         <p class="docs-page-helper">
-          詳細 spec: <a
+          詳細 spec:{' '}
+          <a
             href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/card.md"
             target="_blank"
             rel="noopener noreferrer"
-          >docs/components/card.md ↗</a>
+          >
+            docs/components/card.md ↗
+          </a>
         </p>
       </section>
     </>

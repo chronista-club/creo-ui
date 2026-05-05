@@ -1,5 +1,5 @@
-import { DimensionScale, type DimensionToken } from '../../ui/TokenList'
 import { A } from '@solidjs/router'
+import { DimensionScale, type DimensionToken } from '../../ui/TokenList'
 
 const SPACING: readonly DimensionToken[] = [
   { name: 'spacing.xs', cssVar: '--spacing-xs', value: '4px' },
@@ -45,9 +45,24 @@ const GAPS: readonly DimensionToken[] = [
 ]
 
 const TARGETS: readonly DimensionToken[] = [
-  { name: 'layout.target.tap', cssVar: '--layout-target-tap', value: '44px', hint: 'Apple HIG min tap (touch)' },
-  { name: 'layout.target.focus', cssVar: '--layout-target-focus', value: '32px', hint: 'Pointer-friendly' },
-  { name: 'layout.target.hit', cssVar: '--layout-target-hit', value: '24px', hint: 'Dense UI w/ hover affordance' },
+  {
+    name: 'layout.target.tap',
+    cssVar: '--layout-target-tap',
+    value: '44px',
+    hint: 'Apple HIG min tap (touch)',
+  },
+  {
+    name: 'layout.target.focus',
+    cssVar: '--layout-target-focus',
+    value: '32px',
+    hint: 'Pointer-friendly',
+  },
+  {
+    name: 'layout.target.hit',
+    cssVar: '--layout-target-hit',
+    value: '24px',
+    hint: 'Dense UI w/ hover affordance',
+  },
 ]
 
 export default function Spacing() {
@@ -58,8 +73,8 @@ export default function Spacing() {
         <h1>Spacing & Margin</h1>
         <p class="docs-page-lead">
           5-step size-feel rule に基づく 2 系統の dimension scale。
-          <strong>spacing.*</strong> = 要素「間」 (sibling)、 <strong>margin.*</strong> = block「外」 (section)。
-          同 md=18px で結節し、 lg/xl で発散。 詳細は{' '}
+          <strong>spacing.*</strong> = 要素「間」 (sibling)、 <strong>margin.*</strong> =
+          block「外」 (section)。 同 md=18px で結節し、 lg/xl で発散。 詳細は{' '}
           <A href="/foundations/principles">Principles</A> の原則 1-2 を参照。
         </p>
       </header>
@@ -67,8 +82,8 @@ export default function Spacing() {
       <section>
         <h2 class="docs-section-title">spacing.* — sibling 間</h2>
         <p class="docs-page-helper">
-          要素同士の <strong>密な</strong> gap。 form field の縦間隔、 list item 間、 icon と label の inline、
-          card 内側の padding 等。
+          要素同士の <strong>密な</strong> gap。 form field の縦間隔、 list item 間、 icon と label
+          の inline、 card 内側の padding 等。
         </p>
         <DimensionScale tokens={SPACING} type="spacing" />
       </section>
@@ -76,8 +91,8 @@ export default function Spacing() {
       <section>
         <h2 class="docs-section-title">margin.* — block 外</h2>
         <p class="docs-page-helper">
-          block 同士の <strong>呼吸する</strong> rhythm。 section 間、 hero / footer の major break。
-          spacing より大きくなる方向 (lg/xl) で発散して呼吸量を増やす。
+          block 同士の <strong>呼吸する</strong> rhythm。 section 間、 hero / footer の major
+          break。 spacing より大きくなる方向 (lg/xl) で発散して呼吸量を増やす。
         </p>
         <DimensionScale tokens={MARGIN} type="spacing" />
       </section>
@@ -85,8 +100,8 @@ export default function Spacing() {
       <section>
         <h2 class="docs-section-title">layout.gap.* — semantic alias</h2>
         <p class="docs-page-helper">
-          意図を表現する semantic alias。 base token (spacing / margin) を参照しているので、 base を変えれば全 alias が同期。
-          consumer は alias を使う、 maintainer は base を tune する。
+          意図を表現する semantic alias。 base token (spacing / margin) を参照しているので、 base
+          を変えれば全 alias が同期。 consumer は alias を使う、 maintainer は base を tune する。
         </p>
         <DimensionScale tokens={GAPS} type="spacing" />
       </section>

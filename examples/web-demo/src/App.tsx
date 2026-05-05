@@ -404,8 +404,8 @@ function MarkdownDemo() {
           'font-size': 'var(--typography-body-helper)',
         }}
       >
-        creo-views/md (Rust + WASM) からの mdast を SolidJS で render。
-        token 切替に追従するか確認できる。
+        creo-views/md (Rust + WASM) からの mdast を SolidJS で render。 token
+        切替に追従するか確認できる。
       </p>
       <CreoMarkdown text={SAMPLE_MD} />
     </section>

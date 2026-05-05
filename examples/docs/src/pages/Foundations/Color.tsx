@@ -32,8 +32,8 @@ export default function Color() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Color</h1>
         <p class="docs-page-lead">
-          Token は OKLCH で記述、 modern browser がそのまま解釈。 4 family × light/dark =
-          8 theme で同じ token 名のまま値が切替わる。 Header の theme switcher で確認できます。
+          Token は OKLCH で記述、 modern browser がそのまま解釈。 4 family × light/dark = 8 theme
+          で同じ token 名のまま値が切替わる。 Header の theme switcher で確認できます。
         </p>
       </header>
 

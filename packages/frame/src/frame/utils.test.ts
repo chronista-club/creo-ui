@@ -35,9 +35,7 @@ describe('formatLength', () => {
 describe('buildTransformString', () => {
   it('default placement is identity-like', () => {
     const s = buildTransformString(DEFAULT_PLACEMENT)
-    expect(s).toBe(
-      'translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1)',
-    )
+    expect(s).toBe('translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1)')
   })
 
   it('builds full transform with rotations + scale', () => {

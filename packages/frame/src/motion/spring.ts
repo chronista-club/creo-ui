@@ -62,12 +62,7 @@ export function springEasing(options: SpringOptions = {}): string {
  *   - underdamped (ζ < 1):  x(t) = 1 - e^(-ζω_n t) (cos(ω_d t) + (...)/ω_d sin(ω_d t))
  *   - critically/over (ζ ≥ 1):  x(t) = 1 - e^(-ω_n t) (1 + ω_n t)  (critical の近似形)
  */
-function positionFn(
-  k: number,
-  c: number,
-  m: number,
-  v0: number,
-): (t: number) => number {
+function positionFn(k: number, c: number, m: number, v0: number): (t: number) => number {
   const omegaN = Math.sqrt(k / m) // 自然角周波数
   const zeta = c / (2 * Math.sqrt(k * m)) // 減衰比
 
@@ -94,10 +89,7 @@ function positionFn(
  *
  * 上限 10 秒で打ち切り (それ以上は spring パラメータが極端、 lib 異常値返却で気付く)。
  */
-function findSettleTime(
-  position: (t: number) => number,
-  precision: number,
-): number {
+function findSettleTime(position: (t: number) => number, precision: number): number {
   const maxTime = 10
   const dt = 1 / 120 // 120 FPS sample
 

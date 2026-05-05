@@ -10,8 +10,8 @@
  *   creo-views/mermaid Phase 0.2 lands.
  */
 
-import { For, type JSX } from 'solid-js'
 import type { MdNode } from 'creo-views/md'
+import { For, type JSX } from 'solid-js'
 
 export function renderNode(node: MdNode): JSX.Element {
   switch (node.type) {
@@ -100,12 +100,7 @@ export function renderNode(node: MdNode): JSX.Element {
 
     case 'Image':
       return (
-        <img
-          src={node.url}
-          alt={node.alt ?? ''}
-          title={node.title ?? undefined}
-          loading="lazy"
-        />
+        <img src={node.url} alt={node.alt ?? ''} title={node.title ?? undefined} loading="lazy" />
       )
 
     case 'BlockQuote':
@@ -218,11 +213,7 @@ export function renderNode(node: MdNode): JSX.Element {
 
     case 'WikiLink':
       return (
-        <a
-          class="creo-md-wikilink"
-          data-link-type={node.link_type}
-          href={`#${node.target}`}
-        >
+        <a class="creo-md-wikilink" data-link-type={node.link_type} href={`#${node.target}`}>
           {node.label ?? node.target}
         </a>
       )

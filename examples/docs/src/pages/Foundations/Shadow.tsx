@@ -15,8 +15,8 @@ export default function Shadow() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Shadow</h1>
         <p class="docs-page-lead">
-          5 階層の elevation (none / sm / md / lg / xl)。 dark theme では opacity 強め、
-          light theme では subtle に — token 値が theme 切替で適切な vis に追従。
+          5 階層の elevation (none / sm / md / lg / xl)。 dark theme では opacity 強め、 light theme
+          では subtle に — token 値が theme 切替で適切な vis に追従。
         </p>
       </header>
 

@@ -1,10 +1,25 @@
 import { A } from '@solidjs/router'
 
 const PROPS = [
-  { attr: 'data-variant', values: 'primary / secondary / ghost', def: 'primary', meaning: '視覚的強度' },
+  {
+    attr: 'data-variant',
+    values: 'primary / secondary / ghost',
+    def: 'primary',
+    meaning: '視覚的強度',
+  },
   { attr: 'data-size', values: 'sm / md / lg', def: 'md', meaning: '5-step rule 中央の md が標準' },
-  { attr: 'disabled', values: '(boolean)', def: '—', meaning: 'native HTML、 pointer-events: none + opacity' },
-  { attr: 'aria-pressed', values: '"true" / "false"', def: '—', meaning: 'toggle button 用、 active state 視覚化' },
+  {
+    attr: 'disabled',
+    values: '(boolean)',
+    def: '—',
+    meaning: 'native HTML、 pointer-events: none + opacity',
+  },
+  {
+    attr: 'aria-pressed',
+    values: '"true" / "false"',
+    def: '—',
+    meaning: 'toggle button 用、 active state 視覚化',
+  },
 ] as const
 
 const TOKENS = [
@@ -26,9 +41,9 @@ export default function Button() {
         <p class="docs-page-eyebrow">Components</p>
         <h1>Button</h1>
         <p class="docs-page-lead">
-          User intent を起動する atomic action trigger。 typography と color token が最も目立つ形で出る
-          "digital handshake" 的 element。 native <code>&lt;button&gt;</code> を CSS class で装飾、 pointer
-          / keyboard / a11y は browser に任せる。
+          User intent を起動する atomic action trigger。 typography と color token
+          が最も目立つ形で出る "digital handshake" 的 element。 native <code>&lt;button&gt;</code>{' '}
+          を CSS class で装飾、 pointer / keyboard / a11y は browser に任せる。
         </p>
       </header>
 
@@ -37,21 +52,45 @@ export default function Button() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Variants × Sizes</div>
           <div class="docs-preview-grid">
-            <button class="creo-btn" data-variant="primary" data-size="sm">Primary sm</button>
-            <button class="creo-btn" data-variant="primary" data-size="md">Primary md</button>
-            <button class="creo-btn" data-variant="primary" data-size="lg">Primary lg</button>
-            <button class="creo-btn" data-variant="secondary" data-size="sm">Secondary sm</button>
-            <button class="creo-btn" data-variant="secondary" data-size="md">Secondary md</button>
-            <button class="creo-btn" data-variant="secondary" data-size="lg">Secondary lg</button>
-            <button class="creo-btn" data-variant="ghost" data-size="sm">Ghost sm</button>
-            <button class="creo-btn" data-variant="ghost" data-size="md">Ghost md</button>
-            <button class="creo-btn" data-variant="ghost" data-size="lg">Ghost lg</button>
+            <button class="creo-btn" data-variant="primary" data-size="sm">
+              Primary sm
+            </button>
+            <button class="creo-btn" data-variant="primary" data-size="md">
+              Primary md
+            </button>
+            <button class="creo-btn" data-variant="primary" data-size="lg">
+              Primary lg
+            </button>
+            <button class="creo-btn" data-variant="secondary" data-size="sm">
+              Secondary sm
+            </button>
+            <button class="creo-btn" data-variant="secondary" data-size="md">
+              Secondary md
+            </button>
+            <button class="creo-btn" data-variant="secondary" data-size="lg">
+              Secondary lg
+            </button>
+            <button class="creo-btn" data-variant="ghost" data-size="sm">
+              Ghost sm
+            </button>
+            <button class="creo-btn" data-variant="ghost" data-size="md">
+              Ghost md
+            </button>
+            <button class="creo-btn" data-variant="ghost" data-size="lg">
+              Ghost lg
+            </button>
           </div>
           <div class="docs-preview-row-label">States</div>
           <div class="docs-preview-grid">
-            <button class="creo-btn" data-variant="primary" disabled>Disabled</button>
-            <button class="creo-btn" data-variant="ghost" aria-pressed="true">Toggle ON</button>
-            <button class="creo-btn" data-variant="ghost" aria-pressed="false">Toggle OFF</button>
+            <button class="creo-btn" data-variant="primary" disabled>
+              Disabled
+            </button>
+            <button class="creo-btn" data-variant="ghost" aria-pressed="true">
+              Toggle ON
+            </button>
+            <button class="creo-btn" data-variant="ghost" aria-pressed="false">
+              Toggle OFF
+            </button>
           </div>
         </div>
       </section>
@@ -91,11 +130,20 @@ export default function Button() {
       <section>
         <h2 class="docs-section-title">Accessibility</h2>
         <ul class="docs-bullet-list">
-          <li>semantic: <code>&lt;button&gt;</code> element を使う (<code>&lt;a&gt;</code> で見た目だけ真似しない)</li>
+          <li>
+            semantic: <code>&lt;button&gt;</code> element を使う (<code>&lt;a&gt;</code>{' '}
+            で見た目だけ真似しない)
+          </li>
           <li>keyboard: Tab でフォーカス、 Enter / Space で activate (native 挙動)</li>
-          <li><code>:focus-visible</code> で focus ring を出す (pointer click では出さない)</li>
-          <li>disabled: <code>disabled</code> 属性 (aria-disabled より真の disabled を優先)</li>
-          <li>toggle: <code>aria-pressed="true" | "false"</code> を付与</li>
+          <li>
+            <code>:focus-visible</code> で focus ring を出す (pointer click では出さない)
+          </li>
+          <li>
+            disabled: <code>disabled</code> 属性 (aria-disabled より真の disabled を優先)
+          </li>
+          <li>
+            toggle: <code>aria-pressed="true" | "false"</code> を付与
+          </li>
           <li>min tap size: md / lg は自動的に 44pt 以上 (Apple HIG)</li>
         </ul>
       </section>
@@ -106,7 +154,9 @@ export default function Button() {
           <div class="docs-do">
             <h3>Do</h3>
             <ul class="docs-bullet-list">
-              <li>primary は page 内で <strong>最大 1 つ</strong> (明確な次アクション)</li>
+              <li>
+                primary は page 内で <strong>最大 1 つ</strong> (明確な次アクション)
+              </li>
               <li>secondary は代替アクション (キャンセル、 戻る)</li>
               <li>ghost は密度の高い UI (toolbar、 inline action)</li>
               <li>44pt tap target を守る</li>
@@ -117,7 +167,9 @@ export default function Button() {
             <ul class="docs-bullet-list">
               <li>primary を乱発しない (視覚的 hierarchy が崩れる)</li>
               <li>ghost を primary 的に使わない (起動の強度が弱い)</li>
-              <li>button を link 代わりに使わない (別 resource へなら <code>&lt;a&gt;</code>)</li>
+              <li>
+                button を link 代わりに使わない (別 resource へなら <code>&lt;a&gt;</code>)
+              </li>
               <li>hardcode の px / 色を書かない</li>
             </ul>
           </div>
@@ -142,11 +194,14 @@ export default function Button() {
 <button class="creo-btn" data-variant="primary" disabled>Saving…</button>`}</code>
         </pre>
         <p class="docs-page-helper">
-          詳細 spec: <a
+          詳細 spec:{' '}
+          <a
             href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/button.md"
             target="_blank"
             rel="noopener noreferrer"
-          >docs/components/button.md ↗</a>
+          >
+            docs/components/button.md ↗
+          </a>
         </p>
       </section>
     </>

@@ -60,6 +60,6 @@ export function durationFromCss(name: DurationName): number {
     .getPropertyValue(`--motion-duration-${name}`)
     .trim()
   if (!raw) return DURATION_VALUES[name]
-  const parsed = parseFloat(raw)
+  const parsed = Number.parseFloat(raw)
   return Number.isFinite(parsed) ? parsed : DURATION_VALUES[name]
 }

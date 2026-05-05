@@ -5,13 +5,7 @@
  * が同 contract を満たす。 <VisionProvider source={...}> で plug-in。
  */
 
-import type {
-  FaceMesh,
-  GestureEvent,
-  HandPinch,
-  HandPointing,
-  HeadPose,
-} from './types'
+import type { FaceMesh, GestureEvent, HandPinch, HandPointing, HeadPose } from './types'
 
 /**
  * Source からの event 種別。 連続値 (signal-like) と離散 event を分ける。

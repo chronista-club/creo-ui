@@ -37,13 +37,8 @@ export default function ThemeSwitcher() {
   return (
     <label class="docs-theme-switcher">
       <span class="visually-hidden">Theme</span>
-      <select
-        value={theme()}
-        onChange={(e) => setTheme(e.currentTarget.value as ThemeId)}
-      >
-        <For each={THEMES}>
-          {(t) => <option value={t.id}>{t.label}</option>}
-        </For>
+      <select value={theme()} onChange={(e) => setTheme(e.currentTarget.value as ThemeId)}>
+        <For each={THEMES}>{(t) => <option value={t.id}>{t.label}</option>}</For>
       </select>
     </label>
   )

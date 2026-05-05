@@ -13,10 +13,7 @@ export function distance3D(a: Point3D, b: Point3D): number {
 }
 
 /** 2 点間の 2D distance (z 無視) */
-export function distance2D(
-  a: { x: number; y: number },
-  b: { x: number; y: number },
-): number {
+export function distance2D(a: { x: number; y: number }, b: { x: number; y: number }): number {
   const dx = a.x - b.x
   const dy = a.y - b.y
   return Math.sqrt(dx * dx + dy * dy)
@@ -26,11 +23,7 @@ export function distance2D(
  * Pinch active 判定 — thumb tip と index tip の距離が threshold 未満なら active。
  * threshold は normalized viewport 座標 (0-1) なので、 0.04 ≒ 画面幅の 4%。
  */
-export function isPinchActive(
-  thumbTip: Point3D,
-  indexTip: Point3D,
-  threshold = 0.04,
-): boolean {
+export function isPinchActive(thumbTip: Point3D, indexTip: Point3D, threshold = 0.04): boolean {
   return distance3D(thumbTip, indexTip) < threshold
 }
 
@@ -62,9 +55,6 @@ export function clamp(value: number, min: number, max: number): number {
 }
 
 /** Normalized [0, 1] 座標を viewport pixel に変換 */
-export function toViewportPixel(
-  normalized: number,
-  viewportSize: number,
-): number {
+export function toViewportPixel(normalized: number, viewportSize: number): number {
   return clamp(normalized, 0, 1) * viewportSize
 }

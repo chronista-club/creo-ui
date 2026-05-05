@@ -10,13 +10,8 @@ import {
   signalTarget,
   string,
 } from 'creo-ui-editor-host'
-import { FrameProvider, FrameSlot, useFrame, type Frame } from 'creo-ui-frame'
-import {
-  VisionProvider,
-  useGesture,
-  useHandPinch,
-  type VisionSource,
-} from 'creo-ui-vision'
+import { type Frame, FrameProvider, FrameSlot, useFrame } from 'creo-ui-frame'
+import { VisionProvider, type VisionSource, useGesture, useHandPinch } from 'creo-ui-vision'
 import { createMockSource } from 'creo-ui-vision/mock'
 import { For, Show, createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 
@@ -28,19 +23,23 @@ export default function Playground() {
         <h1>Playground — Live design surface</h1>
         <p class="docs-page-lead">
           <code>creo-ui-editor-host</code> の reference runtime を動かす実演 area。 Editor Mode を
-          ON にして field を操作すると、 下の preview と <strong>token CSS variable</strong> がリアルタイム連動する。
-          DevTools Console から <code>window.creoEditor</code> 経由で field を増やすことも可能。
-          → <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。
+          ON にして field を操作すると、 下の preview と <strong>token CSS variable</strong>{' '}
+          がリアルタイム連動する。 DevTools Console から <code>window.creoEditor</code> 経由で field
+          を増やすことも可能。 → <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。
         </p>
       </header>
 
       <section>
         <h2 class="docs-section-title">操作方法</h2>
         <ul class="docs-bullet-list">
-          <li><kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle</li>
+          <li>
+            <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle
+          </li>
           <li>右下に出る floating button からも切替</li>
           <li>RIGHT panel の field を操作 → 下の preview が live 反映</li>
-          <li>DevTools Console: <code>creoEditor.help()</code> で REPL コマンド一覧</li>
+          <li>
+            DevTools Console: <code>creoEditor.help()</code> で REPL コマンド一覧
+          </li>
           <li>URL hash に share 形式で state encode、 別 tab で同 URL 開くと再現</li>
         </ul>
       </section>
@@ -60,8 +59,8 @@ export default function Playground() {
           </EditorHostProvider>
         </div>
         <p class="docs-page-helper">
-          Playground は scope 局所化されているため、 Editor Mode 効果はこの section 内のみ。
-          docs site の他 page には影響しない (provider context の境界)。
+          Playground は scope 局所化されているため、 Editor Mode 効果はこの section 内のみ。 docs
+          site の他 page には影響しない (provider context の境界)。
         </p>
       </section>
 
@@ -115,20 +114,32 @@ function Demo() {
       <section>
         <h2 class="docs-section-title">Live design surface 機能 (creo-ui-editor-host 0.4+)</h2>
         <ul class="docs-bullet-list">
-          <li><strong>Console REPL</strong> — <code>window.creoEditor</code> で REPL、 sugar (slider / picker / chooser / flip)、 inspection (fields / values / describe)、 mode 制御</li>
-          <li><strong>DOM auto-discover</strong> — 既知 prefix の CSS variable を scan して自動 bind</li>
-          <li><strong>URL share</strong> — current state を hash に encode、 別 tab で再現</li>
-          <li><strong>Cross-tab sync</strong> — BroadcastChannel で複数 tab の field 値を同期</li>
-          <li><strong>Export to CSS patch</strong> — 変更分を CSS / JSON で書き出し</li>
+          <li>
+            <strong>Console REPL</strong> — <code>window.creoEditor</code> で REPL、 sugar (slider /
+            picker / chooser / flip)、 inspection (fields / values / describe)、 mode 制御
+          </li>
+          <li>
+            <strong>DOM auto-discover</strong> — 既知 prefix の CSS variable を scan して自動 bind
+          </li>
+          <li>
+            <strong>URL share</strong> — current state を hash に encode、 別 tab で再現
+          </li>
+          <li>
+            <strong>Cross-tab sync</strong> — BroadcastChannel で複数 tab の field 値を同期
+          </li>
+          <li>
+            <strong>Export to CSS patch</strong> — 変更分を CSS / JSON で書き出し
+          </li>
         </ul>
       </section>
 
       <section>
         <h2 class="docs-section-title">Frame system demo (Phase 3)</h2>
         <p class="docs-page-helper">
-          <code>creo-ui-frame</code> の <code>FrameProvider</code> + <code>FrameSlot</code> + <code>useFrame()</code> で
-          2 frame (dashboard / reading) を切替。 同 DOM 保持で transform / opacity が CSS transition で morph。
-          → <A href="/concepts/frame-system">Frame system 概念</A> も参照。
+          <code>creo-ui-frame</code> の <code>FrameProvider</code> + <code>FrameSlot</code> +{' '}
+          <code>useFrame()</code> で 2 frame (dashboard / reading) を切替。 同 DOM 保持で transform
+          / opacity が CSS transition で morph。 →{' '}
+          <A href="/concepts/frame-system">Frame system 概念</A> も参照。
         </p>
         <FrameDemo />
       </section>
@@ -136,10 +147,12 @@ function Demo() {
       <section>
         <h2 class="docs-section-title">Gesture-driven Frame morph (Phase 4 mock)</h2>
         <p class="docs-page-helper">
-          <code>creo-ui-vision</code> の <strong>mock source</strong> (wave pattern) → <code>useGesture('wave')</code> →
-          <code>setFrame(next)</code> の binding。 実 webcam は使わず synthetic 信号で実演。
-          <code>HandPinch</code> 位置も mock で円周運動。
-          → <A href="/concepts/editor-mode">Editor Mode</A> 経由で keyboard / mouse / gesture / MCP の 4 経路統合。
+          <code>creo-ui-vision</code> の <strong>mock source</strong> (wave pattern) →{' '}
+          <code>useGesture('wave')</code> →<code>setFrame(next)</code> の binding。 実 webcam
+          は使わず synthetic 信号で実演。
+          <code>HandPinch</code> 位置も mock で円周運動。 →{' '}
+          <A href="/concepts/editor-mode">Editor Mode</A> 経由で keyboard / mouse / gesture / MCP の
+          4 経路統合。
         </p>
         <VisionFrameDemo />
       </section>
@@ -148,9 +161,9 @@ function Demo() {
         <h2 class="docs-section-title">Camera probe (diagnostic)</h2>
         <p class="docs-page-helper">
           VP / browser が公開している camera の一覧、 取得 stream の解像度、 preview 映像、
-          MediaPipe asset の load 履歴を画面に直接表示。 visionOS Safari で 「 hand
-          検出されない」 等の partial-α 観察時に、 persona camera 経由か / 解像度が
-          model 想定と外れているか / model load が完了しているかを切り分ける。
+          MediaPipe asset の load 履歴を画面に直接表示。 visionOS Safari で 「 hand 検出されない」
+          等の partial-α 観察時に、 persona camera 経由か / 解像度が model 想定と外れているか /
+          model load が完了しているかを切り分ける。
         </p>
         <CameraProbe />
       </section>
@@ -158,21 +171,23 @@ function Demo() {
       <section>
         <h2 class="docs-section-title">Real MediaPipe demo (Phase 4.5 + P-5 spatial morph)</h2>
         <p class="docs-page-helper">
-          実 webcam + <code>createMediaPipeSource()</code> での hand tracking。 <strong>opt-in</strong> —
-          enable button を押した時点で permission request + MediaPipe Tasks Web SDK (~3MB) を lazy load。
-          🤏 indicator が <strong>本物の手</strong> の pinch 位置に追従、 <strong>左で pinch</strong> →
-          dashboard、 <strong>右で pinch</strong> → reading frame に morph (空間意味付き trigger、 V-6 user-space coords)。
-          中央帯 (x=0.4〜0.6) は <strong>dead-band</strong> で意図しない切替を防止。
-          raw frame は on-device に閉じる (V-4 不変条件)、 jitter は One-Euro Filter で平滑化済 (default)。
+          実 webcam + <code>createMediaPipeSource()</code> での hand tracking。{' '}
+          <strong>opt-in</strong> — enable button を押した時点で permission request + MediaPipe
+          Tasks Web SDK (~3MB) を lazy load。 🤏 indicator が <strong>本物の手</strong> の pinch
+          位置に追従、 <strong>左で pinch</strong> → dashboard、 <strong>右で pinch</strong> →
+          reading frame に morph (空間意味付き trigger、 V-6 user-space coords)。 中央帯
+          (x=0.4〜0.6) は <strong>dead-band</strong> で意図しない切替を防止。 raw frame は on-device
+          に閉じる (V-4 不変条件)、 jitter は One-Euro Filter で平滑化済 (default)。
         </p>
         <p class="docs-page-helper">
-          <strong>Target environments (CV-8)</strong>: この demo は <strong>Mac / Windows / Linux の
-          desktop browser</strong> 向け。 hand tracking を mouse / keyboard と並ぶ <strong>UI input
-          modality の一つ</strong> として使う想定。 <strong>Vision Pro Safari では動きません</strong> —
-          OS が eye+pinch を pointer event として透過提供しているので、 VP page では <code>creo-ui-vision</code>
-          を import せず Frame system + 通常 <code>onClick</code> で同じ UX が成立する (
-          <a href="/concepts/frame-system">Frame system</a> 参照、 vision-cross-platform.md §10 Phase A
-          observation log)。
+          <strong>Target environments (CV-8)</strong>: この demo は{' '}
+          <strong>Mac / Windows / Linux の desktop browser</strong> 向け。 hand tracking を mouse /
+          keyboard と並ぶ <strong>UI input modality の一つ</strong> として使う想定。{' '}
+          <strong>Vision Pro Safari では動きません</strong> — OS が eye+pinch を pointer event
+          として透過提供しているので、 VP page では <code>creo-ui-vision</code>を import せず Frame
+          system + 通常 <code>onClick</code> で同じ UX が成立する (
+          <a href="/concepts/frame-system">Frame system</a> 参照、 vision-cross-platform.md §10
+          Phase A observation log)。
         </p>
         <RealMediaPipeDemo />
       </section>
@@ -182,12 +197,14 @@ function Demo() {
           Spatial 3D model in Frame slot (Phase B-spatial-web、 visionOS 26)
         </h2>
         <p class="docs-page-helper">
-          HTML <code>&lt;model&gt;</code> element (Apple WebKit、 visionOS 26 で実装) を
-          FrameSlot 内に配置。 <strong>visionOS Safari では物理 3D entity</strong> として
-          render され pinch-and-drag で rotate 可能、 <strong>他 browser では子の{' '}
-          <code>&lt;img&gt;</code> が graceful fallback</strong> として表示される。 同じ web markup
-          で 「VP では literal 3D、 desktop では平面 image」 を実現するのが Apple の progressive
-          enhancement 流儀。
+          HTML <code>&lt;model&gt;</code> element (Apple WebKit、 visionOS 26 で実装) を FrameSlot
+          内に配置。 <strong>visionOS Safari では物理 3D entity</strong> として render され
+          pinch-and-drag で rotate 可能、{' '}
+          <strong>
+            他 browser では子の <code>&lt;img&gt;</code> が graceful fallback
+          </strong>{' '}
+          として表示される。 同じ web markup で 「VP では literal 3D、 desktop では平面 image」
+          を実現するのが Apple の progressive enhancement 流儀。
         </p>
         <p class="docs-page-helper">
           Frame system <strong>F-3 (depth metaphor multi-platform)</strong> の web 実装例 — protocol
@@ -279,12 +296,16 @@ function PlaygroundDemo() {
         </Show>
         <h3 class="docs-playground-title">{title() || 'Untitled'}</h3>
         <p class="docs-playground-body">
-          このカードの radius / padding / elevation / title / label visibility を
-          Editor Mode で操作してみてください (<kbd>Ctrl+Shift+E</kbd>)。
+          このカードの radius / padding / elevation / title / label visibility を Editor Mode
+          で操作してみてください (<kbd>Ctrl+Shift+E</kbd>)。
         </p>
         <div class="docs-playground-actions">
-          <button class="creo-btn" data-variant="primary">Primary</button>
-          <button class="creo-btn" data-variant="secondary">Secondary</button>
+          <button class="creo-btn" data-variant="primary">
+            Primary
+          </button>
+          <button class="creo-btn" data-variant="secondary">
+            Secondary
+          </button>
         </div>
       </article>
     </div>
@@ -510,8 +531,8 @@ function RealMediaPipeDemo() {
                 onChange={() => setDelegate('CPU')}
               />
               <span>
-                <strong>CPU</strong> (visionOS Safari の WebGL 互換性が
-                怪しい時の fallback、 slower だが確実)
+                <strong>CPU</strong> (visionOS Safari の WebGL 互換性が 怪しい時の fallback、 slower
+                だが確実)
               </span>
             </label>
           </fieldset>
@@ -818,8 +839,7 @@ function CameraProbe() {
             <code>{trackSettings()!.frameRate?.toFixed(0) ?? '?'} fps</code>
           </p>
           <p class="docs-camera-probe-stat-line">
-            <strong>facingMode:</strong>{' '}
-            <code>{trackSettings()!.facingMode ?? '(none)'}</code>
+            <strong>facingMode:</strong> <code>{trackSettings()!.facingMode ?? '(none)'}</code>
             {' · '}
             <strong>aspectRatio:</strong>{' '}
             <code>{trackSettings()!.aspectRatio?.toFixed(3) ?? '?'}</code>
@@ -849,8 +869,8 @@ function CameraProbe() {
           <h4>MediaPipe asset loads ({assetLoads()!.length})</h4>
           <Show when={assetLoads()!.length === 0}>
             <p class="docs-page-helper">
-              MediaPipe asset 履歴なし。 Real MediaPipe demo を一度 Enable すると
-              fetched 履歴が見える。
+              MediaPipe asset 履歴なし。 Real MediaPipe demo を一度 Enable すると fetched
+              履歴が見える。
             </p>
           </Show>
           <ul class="docs-bullet-list">

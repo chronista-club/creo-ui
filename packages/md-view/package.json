@@ -24,14 +24,7 @@
     "url": "https://github.com/chronista-club/creo-ui/issues"
   },
   "homepage": "https://github.com/chronista-club/creo-ui#readme",
-  "keywords": [
-    "creo-ui",
-    "markdown",
-    "solid-js",
-    "mdast",
-    "renderer",
-    "wasm"
-  ],
+  "keywords": ["creo-ui", "markdown", "solid-js", "mdast", "renderer", "wasm"],
   "publishConfig": {
     "access": "public"
   },
