@@ -52,43 +52,43 @@ export default function Button() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Variants × Sizes</div>
           <div class="docs-preview-grid">
-            <button class="creo-btn" data-variant="primary" data-size="sm">
+            <button type="button" class="creo-btn" data-variant="primary" data-size="sm">
               Primary sm
             </button>
-            <button class="creo-btn" data-variant="primary" data-size="md">
+            <button type="button" class="creo-btn" data-variant="primary" data-size="md">
               Primary md
             </button>
-            <button class="creo-btn" data-variant="primary" data-size="lg">
+            <button type="button" class="creo-btn" data-variant="primary" data-size="lg">
               Primary lg
             </button>
-            <button class="creo-btn" data-variant="secondary" data-size="sm">
+            <button type="button" class="creo-btn" data-variant="secondary" data-size="sm">
               Secondary sm
             </button>
-            <button class="creo-btn" data-variant="secondary" data-size="md">
+            <button type="button" class="creo-btn" data-variant="secondary" data-size="md">
               Secondary md
             </button>
-            <button class="creo-btn" data-variant="secondary" data-size="lg">
+            <button type="button" class="creo-btn" data-variant="secondary" data-size="lg">
               Secondary lg
             </button>
-            <button class="creo-btn" data-variant="ghost" data-size="sm">
+            <button type="button" class="creo-btn" data-variant="ghost" data-size="sm">
               Ghost sm
             </button>
-            <button class="creo-btn" data-variant="ghost" data-size="md">
+            <button type="button" class="creo-btn" data-variant="ghost" data-size="md">
               Ghost md
             </button>
-            <button class="creo-btn" data-variant="ghost" data-size="lg">
+            <button type="button" class="creo-btn" data-variant="ghost" data-size="lg">
               Ghost lg
             </button>
           </div>
           <div class="docs-preview-row-label">States</div>
           <div class="docs-preview-grid">
-            <button class="creo-btn" data-variant="primary" disabled>
+            <button type="button" class="creo-btn" data-variant="primary" disabled>
               Disabled
             </button>
-            <button class="creo-btn" data-variant="ghost" aria-pressed="true">
+            <button type="button" class="creo-btn" data-variant="ghost" aria-pressed="true">
               Toggle ON
             </button>
-            <button class="creo-btn" data-variant="ghost" aria-pressed="false">
+            <button type="button" class="creo-btn" data-variant="ghost" aria-pressed="false">
               Toggle OFF
             </button>
           </div>
@@ -180,18 +180,18 @@ export default function Button() {
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Primary -->
-<button class="creo-btn" data-variant="primary">保存</button>
+<button type="button" class="creo-btn" data-variant="primary">保存</button>
 
 <!-- Secondary, small -->
-<button class="creo-btn" data-variant="secondary" data-size="sm">キャンセル</button>
+<button type="button" class="creo-btn" data-variant="secondary" data-size="sm">キャンセル</button>
 
 <!-- Ghost, large, toggle -->
-<button class="creo-btn" data-variant="ghost" data-size="lg" aria-pressed="true">
+<button type="button" class="creo-btn" data-variant="ghost" data-size="lg" aria-pressed="true">
   Editor Mode ON
 </button>
 
 <!-- Disabled -->
-<button class="creo-btn" data-variant="primary" disabled>Saving…</button>`}</code>
+<button type="button" class="creo-btn" data-variant="primary" disabled>Saving…</button>`}</code>
         </pre>
         <p class="docs-page-helper">
           詳細 spec:{' '}

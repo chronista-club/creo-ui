@@ -167,8 +167,7 @@ export async function createMediaPipeSource(
         if (result.landmarks.length > 0) {
           const landmarks = result.landmarks[0]
           if (
-            landmarks &&
-            landmarks[LANDMARK_THUMB_TIP] &&
+            landmarks?.[LANDMARK_THUMB_TIP] &&
             landmarks[LANDMARK_INDEX_TIP] &&
             landmarks[LANDMARK_WRIST]
           ) {

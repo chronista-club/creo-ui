@@ -45,7 +45,7 @@ export default function MultiPlatform() {
         <div class="docs-pipeline-diagram">
           <div class="docs-pipeline-step docs-pipeline-source">
             <div class="docs-pipeline-step-label">SSOT</div>
-            <div class="docs-pipeline-step-name">tokens/**/*.json</div>
+            <div class="docs-pipeline-step-name">{'tokens/**/*.json'}</div>
             <div class="docs-pipeline-step-meta">W3C DTCG 準拠 · 3 階層 dot-notation</div>
           </div>
           <div class="docs-pipeline-arrow" aria-hidden="true">
@@ -54,7 +54,7 @@ export default function MultiPlatform() {
           <div class="docs-pipeline-step docs-pipeline-engine">
             <div class="docs-pipeline-step-label">Engine</div>
             <div class="docs-pipeline-step-name">Style Dictionary v4 + custom format</div>
-            <div class="docs-pipeline-step-meta">transforms/config.{`{web,swift,rust}`}.js</div>
+            <div class="docs-pipeline-step-meta">transforms/config.{'{web,swift,rust}'}.js</div>
           </div>
           <div class="docs-pipeline-arrow" aria-hidden="true">
             ↓

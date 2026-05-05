@@ -109,7 +109,7 @@ export default function Principles() {
         </p>
         <h3>How it shows up</h3>
         <p>
-          <code>tokens/**/*.json</code> (DTCG 準拠) が <strong>SSOT</strong>。
+          <code>{'tokens/**/*.json'}</code> (DTCG 準拠) が <strong>SSOT</strong>。
           <code>style-dictionary v4</code> + custom format が:
         </p>
         <ul>

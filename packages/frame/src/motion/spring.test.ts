@@ -55,5 +55,5 @@ describe('springEasing', () => {
 function parseLinearEasing(easing: string): number[] {
   const match = easing.match(/^linear\((.*)\)$/)
   if (!match) throw new Error(`not a linear() easing: ${easing}`)
-  return match[1]!.split(',').map((s) => Number.parseFloat(s.trim()))
+  return match[1]?.split(',').map((s) => Number.parseFloat(s.trim()))
 }

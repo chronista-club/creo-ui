@@ -80,19 +80,19 @@ export default function Avatar() {
               <span class="creo-avatar-initials" aria-label="Online">
                 O
               </span>
-              <span class="creo-avatar-status" data-status="online" aria-hidden="true"></span>
+              <span class="creo-avatar-status" data-status="online" aria-hidden="true" />
             </span>
             <span class="creo-avatar" data-size="lg">
               <span class="creo-avatar-initials" aria-label="Busy">
                 B
               </span>
-              <span class="creo-avatar-status" data-status="busy" aria-hidden="true"></span>
+              <span class="creo-avatar-status" data-status="busy" aria-hidden="true" />
             </span>
             <span class="creo-avatar" data-size="lg">
               <span class="creo-avatar-initials" aria-label="Offline">
                 F
               </span>
-              <span class="creo-avatar-status" data-status="offline" aria-hidden="true"></span>
+              <span class="creo-avatar-status" data-status="offline" aria-hidden="true" />
             </span>
           </div>
         </div>

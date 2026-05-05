@@ -55,10 +55,15 @@ export default function Dialog() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Open as modal</div>
           <div class="docs-preview-grid">
-            <button class="creo-btn" data-variant="primary" onClick={openDefault}>
+            <button type="button" class="creo-btn" data-variant="primary" onClick={openDefault}>
               Open default
             </button>
-            <button class="creo-btn" data-variant="secondary" onClick={openDestructive}>
+            <button
+              type="button"
+              class="creo-btn"
+              data-variant="secondary"
+              onClick={openDestructive}
+            >
               Open destructive
             </button>
           </div>
@@ -219,14 +224,14 @@ export default function Dialog() {
           <code>{`<dialog class="creo-dialog" data-size="md" id="confirm-dlg">
   <header class="creo-dialog-header">
     <h2 class="creo-dialog-title">削除の確認</h2>
-    <button class="creo-btn" data-variant="ghost" data-size="sm" aria-label="閉じる">✕</button>
+    <button type="button" class="creo-btn" data-variant="ghost" data-size="sm" aria-label="閉じる">✕</button>
   </header>
   <div class="creo-dialog-body">
     <p>この項目を削除します。 取り消せません。</p>
   </div>
   <footer class="creo-dialog-footer">
-    <button class="creo-btn" data-variant="secondary" autofocus>キャンセル</button>
-    <button class="creo-btn" data-variant="primary">削除</button>
+    <button type="button" class="creo-btn" data-variant="secondary" autofocus>キャンセル</button>
+    <button type="button" class="creo-btn" data-variant="primary">削除</button>
   </footer>
 </dialog>
 

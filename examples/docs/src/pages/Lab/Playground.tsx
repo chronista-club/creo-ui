@@ -300,10 +300,10 @@ function PlaygroundDemo() {
           で操作してみてください (<kbd>Ctrl+Shift+E</kbd>)。
         </p>
         <div class="docs-playground-actions">
-          <button class="creo-btn" data-variant="primary">
+          <button type="button" class="creo-btn" data-variant="primary">
             Primary
           </button>
-          <button class="creo-btn" data-variant="secondary">
+          <button type="button" class="creo-btn" data-variant="secondary">
             Secondary
           </button>
         </div>
@@ -436,14 +436,14 @@ function PinchIndicator() {
     <Show when={pinch()}>
       <div
         class="docs-pinch-indicator"
-        data-active={pinch()!.active}
+        data-active={pinch()?.active}
         style={{
-          left: `${pinch()!.x * 100}%`,
-          top: `${pinch()!.y * 100}%`,
+          left: `${pinch()?.x * 100}%`,
+          top: `${pinch()?.y * 100}%`,
         }}
         aria-hidden="true"
       >
-        {pinch()!.active ? '🤏' : '👋'}
+        {pinch()?.active ? '🤏' : '👋'}
       </div>
     </Show>
   )
@@ -553,7 +553,7 @@ function RealMediaPipeDemo() {
         </div>
       </Show>
       <Show when={enabled() && source()}>
-        <VisionProvider source={source()!} autoStart={true}>
+        <VisionProvider source={source() as VisionSource} autoStart={true}>
           <FrameProvider frames={[dashboardFrame, readingFrame]} initial="dashboard">
             <SpatialPinchBridge />
             <div class="docs-vision-frame-stage">
@@ -616,7 +616,7 @@ function SpatialPinchBridge() {
   createEffect(() => {
     const cur = pinch()?.active ?? false
     if (cur && !prevActive) {
-      const x = pinch()!.x
+      const x = pinch()?.x
       if (x < 0.4) setFrame('dashboard')
       else if (x > 0.6) setFrame('reading')
       // dead-band: 何もしない
@@ -684,9 +684,10 @@ function CameraProbe() {
   let videoEl: HTMLVideoElement | undefined
 
   const stopPreview = (): void => {
-    previewStream()
-      ?.getTracks()
-      .forEach((t) => t.stop())
+    const tracks = previewStream()?.getTracks()
+    if (tracks) {
+      for (const t of tracks) t.stop()
+    }
     setPreviewStream(null)
     if (videoEl) videoEl.srcObject = null
   }
@@ -832,17 +833,17 @@ function CameraProbe() {
           <p class="docs-camera-probe-stat-line">
             <strong>resolution:</strong>{' '}
             <code>
-              {trackSettings()!.width ?? '?'}×{trackSettings()!.height ?? '?'}
+              {trackSettings()?.width ?? '?'}×{trackSettings()?.height ?? '?'}
             </code>
             {' · '}
             <strong>frameRate:</strong>{' '}
-            <code>{trackSettings()!.frameRate?.toFixed(0) ?? '?'} fps</code>
+            <code>{trackSettings()?.frameRate?.toFixed(0) ?? '?'} fps</code>
           </p>
           <p class="docs-camera-probe-stat-line">
-            <strong>facingMode:</strong> <code>{trackSettings()!.facingMode ?? '(none)'}</code>
+            <strong>facingMode:</strong> <code>{trackSettings()?.facingMode ?? '(none)'}</code>
             {' · '}
             <strong>aspectRatio:</strong>{' '}
-            <code>{trackSettings()!.aspectRatio?.toFixed(3) ?? '?'}</code>
+            <code>{trackSettings()?.aspectRatio?.toFixed(3) ?? '?'}</code>
           </p>
           <details class="docs-camera-probe-details">
             <summary>raw settings</summary>
@@ -852,7 +853,7 @@ function CameraProbe() {
       </Show>
       <Show when={devices()}>
         <div class="docs-camera-probe-stats">
-          <h4>Available video inputs ({devices()!.length})</h4>
+          <h4>Available video inputs ({devices()?.length})</h4>
           <ul class="docs-bullet-list">
             <For each={devices()}>
               {(d) => (
@@ -866,8 +867,8 @@ function CameraProbe() {
       </Show>
       <Show when={assetLoads()}>
         <div class="docs-camera-probe-stats">
-          <h4>MediaPipe asset loads ({assetLoads()!.length})</h4>
-          <Show when={assetLoads()!.length === 0}>
+          <h4>MediaPipe asset loads ({assetLoads()?.length})</h4>
+          <Show when={assetLoads()?.length === 0}>
             <p class="docs-page-helper">
               MediaPipe asset 履歴なし。 Real MediaPipe demo を一度 Enable すると fetched
               履歴が見える。
@@ -900,7 +901,7 @@ function RealVisionStatus(props: { onDisable: () => void }) {
       <span>
         Real MediaPipe — pinch <strong>{pinch()?.active ? 'YES' : 'no'}</strong>
         {pinch()
-          ? ` · x=${pinch()!.x.toFixed(2)} y=${pinch()!.y.toFixed(2)}`
+          ? ` · x=${pinch()?.x.toFixed(2)} y=${pinch()?.y.toFixed(2)}`
           : ' · waiting for hand'}
       </span>
       <button

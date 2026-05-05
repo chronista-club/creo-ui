@@ -49,5 +49,5 @@ export async function requestCameraStream(
  * 「camera ON indicator」 が消えるための contract。
  */
 export function stopCameraStream(stream: MediaStream): void {
-  stream.getTracks().forEach((t) => t.stop())
+  for (const t of stream.getTracks()) t.stop()
 }
