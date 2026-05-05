@@ -71,20 +71,41 @@ const COMPONENTS: readonly ComponentEntry[] = [
     desc: 'Inline persistent status — 4 semantic variants',
     detail: true,
   },
+  {
+    name: 'Tabs',
+    slug: 'tabs',
+    desc: 'Tab navigation with aria-selected — default/pill × 3 sizes',
+    detail: true,
+  },
+  {
+    name: 'Breadcrumbs',
+    slug: 'breadcrumbs',
+    desc: '<nav> + <ol> with chevron/slash/dot separators',
+    detail: true,
+  },
+  {
+    name: 'Menu',
+    slug: 'menu',
+    desc: 'Native popover API based dropdown',
+    detail: true,
+  },
+  {
+    name: 'Pagination',
+    slug: 'pagination',
+    desc: 'sm/md/lg × default/compact, aria-current',
+    detail: true,
+  },
 
-  // Shipped, spec only (16)
+  // Shipped, spec only (12)
   { name: 'Form field', slug: 'form-field', desc: 'Label + input + helper-text composite' },
   { name: 'Segmented', slug: 'segmented', desc: 'Mutually exclusive options bar' },
   { name: 'Progress', slug: 'progress', desc: 'Determinate + indeterminate bar + spinner' },
   { name: 'Toast', slug: 'toast', desc: 'Transient region (6 placements × 5 variants)' },
-  { name: 'Menu', slug: 'menu', desc: 'Native popover API based dropdown' },
   { name: 'Accordion', slug: 'accordion', desc: 'Native <details> / <summary> based' },
   { name: 'Table', slug: 'table', desc: 'Sortable + aria-sort table' },
   { name: 'Popover', slug: 'popover', desc: 'Native popover (3 sizes × default/muted)' },
   { name: 'Drawer', slug: 'drawer', desc: 'Native <dialog>.showModal() — 4 placements × 4 sizes' },
   { name: 'Skeleton', slug: 'skeleton', desc: 'Linear-gradient shimmer placeholder' },
-  { name: 'Breadcrumbs', slug: 'breadcrumbs', desc: '<nav> + <ol> with separator variants' },
-  { name: 'Pagination', slug: 'pagination', desc: 'sm/md/lg × default/compact, aria-current' },
   { name: 'Empty state', slug: 'empty-state', desc: 'Icon + title + description + actions' },
   {
     name: 'Stepper',
@@ -94,7 +115,6 @@ const COMPONENTS: readonly ComponentEntry[] = [
   { name: 'Timeline', slug: 'timeline', desc: 'Vertical activity feed (5 marker variants)' },
   { name: 'Combobox', slug: 'combobox', desc: 'Native <input list> + <datalist>' },
   { name: 'Header', slug: 'header', desc: '3-slot ViewBuilder (logo / nav / actions)' },
-  { name: 'Tabs', slug: 'tabs', desc: 'Tab navigation with aria-selected' },
 ]
 
 export default function ComponentsIndex() {
@@ -115,7 +135,7 @@ export default function ComponentsIndex() {
       <section>
         <h2 class="docs-section-title">Detail pages</h2>
         <p class="docs-page-helper">
-          live preview + props table + token reference + a11y note を持つ完全版 page。 残りの 16
+          live preview + props table + token reference + a11y note を持つ完全版 page。 残りの 12
           component は spec doc (GitHub) を参照。
         </p>
         <div class="docs-components-grid">
