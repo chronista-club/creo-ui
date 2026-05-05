@@ -97,3 +97,12 @@
   letter-spacing: 0.04em;
   user-select: none;
 }
+
+/* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-menu-item {
+    transition: none;
+    transform: none;
+  }
+}

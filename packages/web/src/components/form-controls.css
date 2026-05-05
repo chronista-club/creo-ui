@@ -114,3 +114,13 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-switch-track,
+  .creo-switch-thumb {
+    transition: none;
+    transform: none;
+  }
+}

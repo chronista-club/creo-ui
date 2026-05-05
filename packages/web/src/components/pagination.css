@@ -117,3 +117,12 @@
 .creo-pagination-item[data-action="next"] {
   color: var(--color-text-primary);
 }
+
+/* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-pagination-item {
+    transition: none;
+    transform: none;
+  }
+}

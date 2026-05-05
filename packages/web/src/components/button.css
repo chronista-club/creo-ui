@@ -147,3 +147,12 @@
   outline: 2px solid var(--color-brand-primary);
   outline-offset: 2px;
 }
+
+/* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-btn {
+    transition: none;
+    transform: none;
+  }
+}

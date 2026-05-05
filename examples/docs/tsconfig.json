@@ -23,6 +23,5 @@
       "creo-ui-vision/mediapipe": ["../../packages/vision/src/mediapipe.ts"]
     }
   },
-  "include": ["src"],
-  "exclude": ["src/pages/Resources/Content.tsx"]
+  "include": ["src"]
 }

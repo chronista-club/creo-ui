@@ -115,3 +115,14 @@
 .creo-helper-text--error {
   color: var(--color-semantic-error);
 }
+
+/* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-input,
+  .creo-textarea,
+  .creo-input-wrapper {
+    transition: none;
+    transform: none;
+  }
+}

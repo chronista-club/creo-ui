@@ -98,3 +98,12 @@
   padding: var(--spacing-s) var(--spacing-l);
   font-size: var(--typography-size-lg);
 }
+
+/* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-segmented-option {
+    transition: none;
+    transform: none;
+  }
+}
