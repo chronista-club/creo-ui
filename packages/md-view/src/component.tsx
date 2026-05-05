@@ -5,8 +5,8 @@
  * On parse error, shows fallback (default: inline error message).
  */
 
-import { Show, createResource, type Component, type JSX } from 'solid-js'
-import { parse, type MdNode } from 'creo-views/md'
+import { type MdNode, parse } from 'creo-views/md'
+import { type Component, type JSX, Show, createResource } from 'solid-js'
 import { renderNode } from './render'
 
 export interface CreoMarkdownProps {

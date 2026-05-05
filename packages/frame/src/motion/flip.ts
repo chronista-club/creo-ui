@@ -8,8 +8,8 @@
  * layout が瞬間移動したように見えるのを smooth な transform animation に変換。
  */
 
-import { ease, type EasingName } from './tokens'
 import { respectsReducedMotion } from './reduced-motion'
+import { type EasingName, ease } from './tokens'
 
 export interface FlipOptions {
   /** Animation duration (ms)。 default 220 (= duration.normal) */
@@ -27,13 +27,7 @@ export interface FlipOptions {
   fill?: FillMode
 }
 
-const KNOWN_EASING_NAMES: ReadonlySet<string> = new Set([
-  'linear',
-  'in',
-  'out',
-  'in-out',
-  'spring',
-])
+const KNOWN_EASING_NAMES: ReadonlySet<string> = new Set(['linear', 'in', 'out', 'in-out', 'spring'])
 
 function resolveEasing(value: string | EasingName | undefined): string {
   if (!value) return ease('spring')

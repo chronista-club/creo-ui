@@ -31,11 +31,21 @@
   margin-bottom: var(--spacing-sm);
 }
 
-.creo-md h1 { font-size: var(--typography-size-3xl); }
-.creo-md h2 { font-size: var(--typography-size-2xl); }
-.creo-md h3 { font-size: var(--typography-size-xl); }
-.creo-md h4 { font-size: var(--typography-size-lg); }
-.creo-md h5 { font-size: var(--typography-size-base); }
+.creo-md h1 {
+  font-size: var(--typography-size-3xl);
+}
+.creo-md h2 {
+  font-size: var(--typography-size-2xl);
+}
+.creo-md h3 {
+  font-size: var(--typography-size-xl);
+}
+.creo-md h4 {
+  font-size: var(--typography-size-lg);
+}
+.creo-md h5 {
+  font-size: var(--typography-size-base);
+}
 .creo-md h6 {
   font-size: var(--typography-size-sm);
   color: var(--color-text-secondary);

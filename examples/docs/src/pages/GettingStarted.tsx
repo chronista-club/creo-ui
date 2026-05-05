@@ -8,8 +8,8 @@ export default function GettingStarted() {
         <h1>Getting started</h1>
         <p class="docs-page-lead">
           Creo UI は <strong>Web · Apple · Rust</strong> の 3 platform を 1 つの DTCG token から
-          生成する design system。 このページでは Web (CSS + SolidJS) を例に install →
-          first example まで案内。
+          生成する design system。 このページでは Web (CSS + SolidJS) を例に install → first example
+          まで案内。
         </p>
       </header>
 
@@ -29,11 +29,15 @@ bun add creo-ui-md-view
 bun add creo-ui-icons-web`}</code>
         </pre>
         <p class="docs-page-helper">
-          npm / yarn / pnpm でも同様。 すべての package は <a
+          npm / yarn / pnpm でも同様。 すべての package は{' '}
+          <a
             href="https://www.npmjs.com/package/creo-ui-web"
             target="_blank"
             rel="noopener noreferrer"
-          >npmjs.com</a> 公開中 (Apache-2.0)。
+          >
+            npmjs.com
+          </a>{' '}
+          公開中 (Apache-2.0)。
         </p>
       </section>
 
@@ -48,9 +52,9 @@ import 'creo-ui-web/components.css'    // 27 component の CSS class (.creo-btn,
 import 'creo-ui-md-view/styles.css'`}</code>
         </pre>
         <p class="docs-page-helper">
-          tokens.css は <code>:root</code> に CSS custom property を定義。
-          components.css は class + data-attribute base (<A href="/foundations/principles">原則 6</A>)
-          の framework-agnostic 形式。
+          tokens.css は <code>:root</code> に CSS custom property を定義。 components.css は class +
+          data-attribute base (<A href="/foundations/principles">原則 6</A>) の framework-agnostic
+          形式。
         </p>
       </section>
 
@@ -92,8 +96,8 @@ import 'creo-ui-md-view/styles.css'`}</code>
 </script>`}</code>
         </pre>
         <p class="docs-page-helper">
-          → <A href="/foundations/theming">Theming</A> で 8 theme の brand 色 / fleetstage 互換 alias
-          (<code>.dark</code> / <code>[data-theme="dark"]</code>) を確認。
+          → <A href="/foundations/theming">Theming</A> で 8 theme の brand 色 / fleetstage 互換
+          alias (<code>.dark</code> / <code>[data-theme="dark"]</code>) を確認。
         </p>
       </section>
 
@@ -126,15 +130,14 @@ bind({
 // Ctrl+Shift+E で Editor Mode toggle、 RIGHT panel で field 操作`}</code>
         </pre>
         <p class="docs-page-helper">
-          → <A href="/playground">Playground</A> で動作実演、 <A href="/concepts/editor-mode">Editor Mode protocol</A> で D-1 〜 D-12 articulate。
+          → <A href="/playground">Playground</A> で動作実演、{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> で D-1 〜 D-12 articulate。
         </p>
       </section>
 
       <section>
         <h2 class="docs-section-title">Multi-platform (Apple / Rust)</h2>
-        <p class="docs-page-helper">
-          同 token を Swift / Rust から消費するには:
-        </p>
+        <p class="docs-page-helper">同 token を Swift / Rust から消費するには:</p>
         <pre class="docs-code">
           <code>{`# Apple (Swift Package Manager)
 dependencies: [
@@ -158,18 +161,27 @@ let primary = tokens::COLOR_BRAND_PRIMARY;  // Rgb { r, g, b }
 let md = tokens::SPACING_MD;                 // f32 px`}</code>
         </pre>
         <p class="docs-page-helper">
-          → <A href="/concepts/multi-platform">Multi-platform pipeline</A> で命名規約 + custom format
-          の理由。
+          → <A href="/concepts/multi-platform">Multi-platform pipeline</A> で命名規約 + custom
+          format の理由。
         </p>
       </section>
 
       <section>
         <h2 class="docs-section-title">次に読むもの</h2>
         <ul class="docs-bullet-list">
-          <li><A href="/foundations/principles">Principles</A> — token 設計を貫く 6 原則</li>
-          <li><A href="/concepts/frame-system">Frame system</A> — 3D Spatial UI の design DNA (近日着手)</li>
-          <li><A href="/components">Components</A> — 27 component (live preview + Token reference)</li>
-          <li><A href="/playground">Playground</A> — Editor Mode の live demo</li>
+          <li>
+            <A href="/foundations/principles">Principles</A> — token 設計を貫く 6 原則
+          </li>
+          <li>
+            <A href="/concepts/frame-system">Frame system</A> — 3D Spatial UI の design DNA
+            (近日着手)
+          </li>
+          <li>
+            <A href="/components">Components</A> — 27 component (live preview + Token reference)
+          </li>
+          <li>
+            <A href="/playground">Playground</A> — Editor Mode の live demo
+          </li>
         </ul>
       </section>
     </>

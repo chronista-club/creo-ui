@@ -236,11 +236,11 @@ pub const SHADOW_XL: &str = "0 20px 25px -5px rgba(32, 36, 46, 0.12), 0 8px 10px
 /// Extra-small spacing — 4px (base unit)
 pub const SPACING_XS: f32 = 4_f32;
 /// Small spacing — 8px
-pub const SPACING_SM: f32 = 8_f32;
+pub const SPACING_S: f32 = 8_f32;
 /// Medium spacing — 18px (default gap between UI elements)
-pub const SPACING_MD: f32 = 18_f32;
+pub const SPACING_M: f32 = 18_f32;
 /// Large spacing — 24px
-pub const SPACING_LG: f32 = 24_f32;
+pub const SPACING_L: f32 = 24_f32;
 /// Extra-large spacing — 32px
 pub const SPACING_XL: f32 = 32_f32;
 /// Lead body — opening paragraph / intro (larger, invites reading)

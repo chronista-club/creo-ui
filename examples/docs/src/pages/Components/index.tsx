@@ -11,10 +11,30 @@ interface ComponentEntry {
 const COMPONENTS: readonly ComponentEntry[] = [
   // Detail pages (5)
   { name: 'Button', slug: 'button', desc: 'Action trigger — 3 variants × 3 sizes', detail: true },
-  { name: 'Input', slug: 'input', desc: 'Text field — bordered / filled × 3 sizes × error', detail: true },
-  { name: 'Card', slug: 'card', desc: 'Concept boundary — default / elevated / outlined', detail: true },
-  { name: 'Avatar', slug: 'avatar', desc: 'Visual identity — image / initials × 4 sizes × shape', detail: true },
-  { name: 'Dialog', slug: 'dialog', desc: 'Native <dialog> modal — focus trap + backdrop', detail: true },
+  {
+    name: 'Input',
+    slug: 'input',
+    desc: 'Text field — bordered / filled × 3 sizes × error',
+    detail: true,
+  },
+  {
+    name: 'Card',
+    slug: 'card',
+    desc: 'Concept boundary — default / elevated / outlined',
+    detail: true,
+  },
+  {
+    name: 'Avatar',
+    slug: 'avatar',
+    desc: 'Visual identity — image / initials × 4 sizes × shape',
+    detail: true,
+  },
+  {
+    name: 'Dialog',
+    slug: 'dialog',
+    desc: 'Native <dialog> modal — focus trap + backdrop',
+    detail: true,
+  },
 
   // Shipped, spec only (22)
   { name: 'Badge', slug: 'badge', desc: 'Counter / status indicator' },
@@ -34,7 +54,11 @@ const COMPONENTS: readonly ComponentEntry[] = [
   { name: 'Pagination', slug: 'pagination', desc: 'sm/md/lg × default/compact, aria-current' },
   { name: 'Alert', slug: 'alert', desc: 'role=status/alert with banner variant' },
   { name: 'Empty state', slug: 'empty-state', desc: 'Icon + title + description + actions' },
-  { name: 'Stepper', slug: 'stepper', desc: 'Horizontal/vertical with completed/current/pending/error' },
+  {
+    name: 'Stepper',
+    slug: 'stepper',
+    desc: 'Horizontal/vertical with completed/current/pending/error',
+  },
   { name: 'Timeline', slug: 'timeline', desc: 'Vertical activity feed (5 marker variants)' },
   { name: 'Combobox', slug: 'combobox', desc: 'Native <input list> + <datalist>' },
   { name: 'Header', slug: 'header', desc: '3-slot ViewBuilder (logo / nav / actions)' },
@@ -49,9 +73,10 @@ export default function ComponentsIndex() {
         <h1>All components</h1>
         <p class="docs-page-lead">
           creo-ui-web v0.14.0 で shipped した 27 component。 全て CSS class +
-          <code> data-* attribute</code> で variant / size / state を表現する <strong>framework-agnostic</strong>{' '}
-          設計 — React / Vue / Solid / 生 HTML どれでも同じ class を import すれば動く。 このサイト自身も
-          consumer (creo-ui-web を import して docs render に使用)。
+          <code> data-* attribute</code> で variant / size / state を表現する{' '}
+          <strong>framework-agnostic</strong> 設計 — React / Vue / Solid / 生 HTML どれでも同じ
+          class を import すれば動く。 このサイト自身も consumer (creo-ui-web を import して docs
+          render に使用)。
         </p>
       </header>
 
@@ -64,7 +89,10 @@ export default function ComponentsIndex() {
         <div class="docs-components-grid">
           <For each={COMPONENTS.filter((c) => c.detail)}>
             {(c) => (
-              <A class="docs-component-card docs-component-card--detail" href={`/components/${c.slug}`}>
+              <A
+                class="docs-component-card docs-component-card--detail"
+                href={`/components/${c.slug}`}
+              >
                 <div class="docs-component-card-name">{c.name}</div>
                 <div class="docs-component-card-desc">{c.desc}</div>
                 <div class="docs-component-card-cta">View →</div>
@@ -77,8 +105,9 @@ export default function ComponentsIndex() {
       <section>
         <h2 class="docs-section-title">Spec only (GitHub)</h2>
         <p class="docs-page-helper">
-          docs page 化は段階的。 各 component の spec は <code>docs/components/&lt;name&gt;.md</code> に
-          記述済 (Purpose / Anatomy / Props / Token / A11y / Do-Don't / 使用例)。
+          docs page 化は段階的。 各 component の spec は{' '}
+          <code>docs/components/&lt;name&gt;.md</code> に 記述済 (Purpose / Anatomy / Props / Token
+          / A11y / Do-Don't / 使用例)。
         </p>
         <div class="docs-components-grid">
           <For each={COMPONENTS.filter((c) => !c.detail)}>
@@ -102,8 +131,9 @@ export default function ComponentsIndex() {
         <h2 class="docs-section-title">設計規約</h2>
         <ul class="docs-bullet-list">
           <li>
-            <strong>CSS class + data attribute</strong> — <code>.creo-btn[data-variant="primary"]</code> 形式。
-            React / Vue / Solid props (<code>variant="primary"</code>) → DOM 上は同じ <code>data-variant</code>
+            <strong>CSS class + data attribute</strong> —{' '}
+            <code>.creo-btn[data-variant="primary"]</code> 形式。 React / Vue / Solid props (
+            <code>variant="primary"</code>) → DOM 上は同じ <code>data-variant</code>
           </li>
           <li>
             <strong>Token SSOT 経由のみ</strong> — component CSS で hardcode 禁止、 必ず{' '}

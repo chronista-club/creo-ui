@@ -54,9 +54,9 @@ public struct CreoCard<Content: View>: View {
 
     private var paddingValue: CGFloat {
         switch padding {
-        case .sm: return CreoUITokens.spacingSm
-        case .md: return CreoUITokens.spacingMd
-        case .lg: return CreoUITokens.spacingLg
+        case .sm: return CreoUITokens.spacingS
+        case .md: return CreoUITokens.spacingM
+        case .lg: return CreoUITokens.spacingL
         }
     }
 

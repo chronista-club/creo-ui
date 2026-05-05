@@ -37,12 +37,7 @@ describe('normalizeVector', () => {
 describe('matrixToEuler', () => {
   it('identity matrix → zero rotation', () => {
     // Column-major identity 4x4
-    const id = new Float32Array([
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1,
-    ])
+    const id = new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
     const { pitch, yaw, roll } = matrixToEuler(id)
     expect(pitch).toBeCloseTo(0)
     expect(yaw).toBeCloseTo(0)
@@ -55,12 +50,7 @@ describe('matrixToEuler', () => {
     //   col1 = [0, 1,  0, 0]^T  (M[0][1]=0, M[1][1]=1, M[2][1]=0)
     //   col2 = [1, 0,  0, 0]^T  (M[0][2]=1, M[1][2]=0, M[2][2]=0)
     //   col3 = [0, 0,  0, 1]^T
-    const m = new Float32Array([
-      0, 0, -1, 0,
-      0, 1, 0, 0,
-      1, 0, 0, 0,
-      0, 0, 0, 1,
-    ])
+    const m = new Float32Array([0, 0, -1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1])
     const { pitch, yaw, roll } = matrixToEuler(m)
     expect(pitch).toBeCloseTo(0)
     expect(yaw).toBeCloseTo(90)

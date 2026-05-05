@@ -85,17 +85,17 @@ public struct CreoTextField: View {
 
     private var paddingHorizontal: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.spacingSm
-        case .md: return CreoUITokens.spacingMd
-        case .lg: return CreoUITokens.spacingLg
+        case .sm: return CreoUITokens.spacingS
+        case .md: return CreoUITokens.spacingM
+        case .lg: return CreoUITokens.spacingL
         }
     }
 
     private var paddingVertical: CGFloat {
         switch size {
         case .sm: return CreoUITokens.spacingXs
-        case .md: return CreoUITokens.spacingSm
-        case .lg: return CreoUITokens.spacingMd
+        case .md: return CreoUITokens.spacingS
+        case .lg: return CreoUITokens.spacingM
         }
     }
 

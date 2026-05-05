@@ -1,5 +1,10 @@
 const PROPS = [
-  { attr: 'data-size', values: 'sm / md / lg / xl', def: 'md', meaning: 'diameter (24 / 32 / 44 / 64 px)' },
+  {
+    attr: 'data-size',
+    values: 'sm / md / lg / xl',
+    def: 'md',
+    meaning: 'diameter (24 / 32 / 44 / 64 px)',
+  },
   { attr: 'data-shape', values: 'circle / square', def: 'circle', meaning: '形' },
 ] as const
 
@@ -19,8 +24,9 @@ export default function Avatar() {
         <p class="docs-page-eyebrow">Components</p>
         <h1>Avatar</h1>
         <p class="docs-page-lead">
-          User / account / project 等の visual identity を <strong>小さな円形 (または rounded square)</strong> に
-          凝縮する token。 list / header / comment thread で頻出。 image or initials fallback。
+          User / account / project 等の visual identity を{' '}
+          <strong>小さな円形 (または rounded square)</strong> に 凝縮する token。 list / header /
+          comment thread で頻出。 image or initials fallback。
         </p>
       </header>
 
@@ -30,43 +36,63 @@ export default function Avatar() {
           <div class="docs-preview-row-label">Sizes (initials fallback)</div>
           <div class="docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-size="sm">
-              <span class="creo-avatar-initials" aria-label="Mako">M</span>
+              <span class="creo-avatar-initials" aria-label="Mako">
+                M
+              </span>
             </span>
             <span class="creo-avatar" data-size="md">
-              <span class="creo-avatar-initials" aria-label="Claude">C</span>
+              <span class="creo-avatar-initials" aria-label="Claude">
+                C
+              </span>
             </span>
             <span class="creo-avatar" data-size="lg">
-              <span class="creo-avatar-initials" aria-label="Akira">A</span>
+              <span class="creo-avatar-initials" aria-label="Akira">
+                A
+              </span>
             </span>
             <span class="creo-avatar" data-size="xl">
-              <span class="creo-avatar-initials" aria-label="Yui">Y</span>
+              <span class="creo-avatar-initials" aria-label="Yui">
+                Y
+              </span>
             </span>
           </div>
           <div class="docs-preview-row-label">Shape × Size</div>
           <div class="docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-shape="circle" data-size="lg">
-              <span class="creo-avatar-initials" aria-label="Circle">●</span>
+              <span class="creo-avatar-initials" aria-label="Circle">
+                ●
+              </span>
             </span>
             <span class="creo-avatar" data-shape="square" data-size="lg">
-              <span class="creo-avatar-initials" aria-label="Square">■</span>
+              <span class="creo-avatar-initials" aria-label="Square">
+                ■
+              </span>
             </span>
             <span class="creo-avatar" data-shape="square" data-size="xl">
-              <span class="creo-avatar-initials" aria-label="Square XL">■</span>
+              <span class="creo-avatar-initials" aria-label="Square XL">
+                ■
+              </span>
             </span>
           </div>
           <div class="docs-preview-row-label">With status dot</div>
           <div class="docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-size="lg">
-              <span class="creo-avatar-initials" aria-label="Online">O</span>
-              <span class="creo-avatar-status" data-status="online" aria-hidden="true"></span>
+              <span class="creo-avatar-initials" aria-label="Online">
+                O
+              </span>
+              <span class="creo-avatar-status" data-status="online" aria-hidden="true" />
             </span>
             <span class="creo-avatar" data-size="lg">
-              <span class="creo-avatar-initials" aria-label="Busy">B</span>
-              <span class="creo-avatar-status" data-status="busy" aria-hidden="true"></span>
+              <span class="creo-avatar-initials" aria-label="Busy">
+                B
+              </span>
+              <span class="creo-avatar-status" data-status="busy" aria-hidden="true" />
             </span>
             <span class="creo-avatar" data-size="lg">
-              <span class="creo-avatar-initials" aria-label="Offline">F</span>
-              <span class="creo-avatar-status" data-status="offline" aria-hidden="true"></span>
+              <span class="creo-avatar-initials" aria-label="Offline">
+                F
+              </span>
+              <span class="creo-avatar-status" data-status="offline" aria-hidden="true" />
             </span>
           </div>
         </div>
@@ -107,9 +133,15 @@ export default function Avatar() {
       <section>
         <h2 class="docs-section-title">Accessibility</h2>
         <ul class="docs-bullet-list">
-          <li><code>&lt;img&gt;</code> には必ず <code>alt</code> 属性</li>
-          <li>initials fallback は <code>aria-label</code> で name を明示 (M だけでは読み取れない)</li>
-          <li>status dot は装飾なので <code>aria-hidden="true"</code>、 状態は別途 text で伝える</li>
+          <li>
+            <code>&lt;img&gt;</code> には必ず <code>alt</code> 属性
+          </li>
+          <li>
+            initials fallback は <code>aria-label</code> で name を明示 (M だけでは読み取れない)
+          </li>
+          <li>
+            status dot は装飾なので <code>aria-hidden="true"</code>、 状態は別途 text で伝える
+          </li>
         </ul>
       </section>
 
@@ -133,11 +165,14 @@ export default function Avatar() {
 </span>`}</code>
         </pre>
         <p class="docs-page-helper">
-          詳細 spec: <a
+          詳細 spec:{' '}
+          <a
             href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/avatar.md"
             target="_blank"
             rel="noopener noreferrer"
-          >docs/components/avatar.md ↗</a>
+          >
+            docs/components/avatar.md ↗
+          </a>
         </p>
       </section>
     </>

@@ -9,7 +9,7 @@
 //       var body: some View {
 //           Text("Creo")
 //               .foregroundColor(.colorBrandPrimary)
-//               .padding(CreoUITokens.spacingMd)
+//               .padding(CreoUITokens.spacingM)
 //       }
 //   }
 //

@@ -58,7 +58,11 @@ const WEIGHTS = [
 
 const SEMANTICS = [
   { name: 'typography.title.page', cssVar: '--typography-title-page', label: 'Title (page)' },
-  { name: 'typography.title.section', cssVar: '--typography-title-section', label: 'Title (section)' },
+  {
+    name: 'typography.title.section',
+    cssVar: '--typography-title-section',
+    label: 'Title (section)',
+  },
   { name: 'typography.title.card', cssVar: '--typography-title-card', label: 'Title (card)' },
   { name: 'typography.body.lead', cssVar: '--typography-body-lead', label: 'Body (lead)' },
   { name: 'typography.body.helper', cssVar: '--typography-body-helper', label: 'Body (helper)' },
@@ -71,8 +75,8 @@ export default function Typography() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Typography</h1>
         <p class="docs-page-lead">
-          Mode-based family (app / read / editor / terminal / mono / icon) + 7 step size scale +
-          4 weight + 5 semantic role。 Nerd Font 5 種を embedded、 OS が glyph fallback。
+          Mode-based family (app / read / editor / terminal / mono / icon) + 7 step size scale + 4
+          weight + 5 semantic role。 Nerd Font 5 種を embedded、 OS が glyph fallback。
         </p>
       </header>
 
@@ -86,10 +90,7 @@ export default function Typography() {
                   <code>{f.name}</code>
                   <span>{f.label}</span>
                 </div>
-                <div
-                  class="docs-typo-sample"
-                  style={{ 'font-family': `var(${f.cssVar})` }}
-                >
+                <div class="docs-typo-sample" style={{ 'font-family': `var(${f.cssVar})` }}>
                   {f.sample}
                 </div>
               </article>
@@ -123,9 +124,7 @@ export default function Typography() {
               <div class="docs-typo-weight-row">
                 <code>{w.name}</code>
                 <span class="docs-typo-weight-value">{w.value}</span>
-                <span style={{ 'font-weight': `var(${w.cssVar})` }}>
-                  The quick brown fox jumps
-                </span>
+                <span style={{ 'font-weight': `var(${w.cssVar})` }}>The quick brown fox jumps</span>
               </div>
             )}
           </For>

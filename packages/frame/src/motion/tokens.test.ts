@@ -5,12 +5,7 @@
  */
 
 import { describe, expect, it } from 'bun:test'
-import {
-  duration,
-  durationFromCss,
-  ease,
-  easeFromCss,
-} from './tokens'
+import { duration, durationFromCss, ease, easeFromCss } from './tokens'
 
 describe('ease (static)', () => {
   it('returns spring cubic-bezier', () => {

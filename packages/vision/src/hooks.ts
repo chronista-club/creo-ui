@@ -6,6 +6,7 @@
  */
 
 import { onCleanup } from 'solid-js'
+import type { Accessor } from 'solid-js'
 import { useVision } from './provider'
 import type {
   FaceMesh,
@@ -15,7 +16,6 @@ import type {
   HeadPose,
   VisionState,
 } from './types'
-import type { Accessor } from 'solid-js'
 
 /** Vision system 全体 state */
 export function useVisionState(): Accessor<VisionState> {

@@ -5,15 +5,15 @@
  */
 
 import {
+  type Accessor,
+  type JSX,
   createContext,
   createMemo,
   createSignal,
   useContext,
-  type Accessor,
-  type JSX,
 } from 'solid-js'
-import { formatPerspective } from './utils'
 import type { Frame } from './types'
+import { formatPerspective } from './utils'
 
 export interface FrameContextValue {
   /** 現在 active な Frame (signal accessor) */

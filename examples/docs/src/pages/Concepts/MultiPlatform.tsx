@@ -34,8 +34,8 @@ export default function MultiPlatform() {
         <p class="docs-page-eyebrow">Concepts</p>
         <h1>Multi-platform pipeline</h1>
         <p class="docs-page-lead">
-          DTCG JSON (SSOT) → <strong>Style Dictionary v4</strong> → Web (CSS + JS) / Apple (SwiftUI) /
-          Rust (struct + interop) の 3 platform へ生成。 命名規約は platform 慣習に追従しつつ、
+          DTCG JSON (SSOT) → <strong>Style Dictionary v4</strong> → Web (CSS + JS) / Apple (SwiftUI)
+          / Rust (struct + interop) の 3 platform へ生成。 命名規約は platform 慣習に追従しつつ、
           意味は統一。
         </p>
       </header>
@@ -45,16 +45,20 @@ export default function MultiPlatform() {
         <div class="docs-pipeline-diagram">
           <div class="docs-pipeline-step docs-pipeline-source">
             <div class="docs-pipeline-step-label">SSOT</div>
-            <div class="docs-pipeline-step-name">tokens/**/*.json</div>
+            <div class="docs-pipeline-step-name">{'tokens/**/*.json'}</div>
             <div class="docs-pipeline-step-meta">W3C DTCG 準拠 · 3 階層 dot-notation</div>
           </div>
-          <div class="docs-pipeline-arrow" aria-hidden="true">↓</div>
+          <div class="docs-pipeline-arrow" aria-hidden="true">
+            ↓
+          </div>
           <div class="docs-pipeline-step docs-pipeline-engine">
             <div class="docs-pipeline-step-label">Engine</div>
             <div class="docs-pipeline-step-name">Style Dictionary v4 + custom format</div>
-            <div class="docs-pipeline-step-meta">transforms/config.{`{web,swift,rust}`}.js</div>
+            <div class="docs-pipeline-step-meta">transforms/config.{'{web,swift,rust}'}.js</div>
           </div>
-          <div class="docs-pipeline-arrow" aria-hidden="true">↓</div>
+          <div class="docs-pipeline-arrow" aria-hidden="true">
+            ↓
+          </div>
           <div class="docs-pipeline-outputs">
             <div class="docs-pipeline-step docs-pipeline-out">
               <div class="docs-pipeline-step-label">Web</div>
@@ -78,7 +82,8 @@ export default function MultiPlatform() {
       <section>
         <h2 class="docs-section-title">命名規約</h2>
         <p class="docs-page-helper">
-          同一 token が platform ごとに慣習に従った識別子で expose される。 同じ意味 / 同じ値、 違う書式。
+          同一 token が platform ごとに慣習に従った識別子で expose される。 同じ意味 / 同じ値、
+          違う書式。
         </p>
         <div class="docs-naming-table">
           <div class="docs-naming-row docs-naming-head">
@@ -103,7 +108,8 @@ export default function MultiPlatform() {
 
         <h3 class="docs-platform-title">Web — creo-ui-web</h3>
         <p class="docs-page-helper">
-          CSS custom property + ESM module。 OKLCH 値は literal で emit、 modern browser がそのまま解釈。
+          CSS custom property + ESM module。 OKLCH 値は literal で emit、 modern browser
+          がそのまま解釈。
         </p>
         <pre class="docs-code">
           <code>{`/* dist/tokens.css */
@@ -122,8 +128,8 @@ export const spacingMd = 18
 
         <h3 class="docs-platform-title">Apple — CreoUI (Swift)</h3>
         <p class="docs-page-helper">
-          SwiftUI <code>Color</code> + <code>CGFloat</code>。 iOS 17+ / macOS 14+ / watchOS 10+ / tvOS 17+ 対応。
-          OKLCH は build 時に hex に変換 (Mint Dark のみ、 他 theme は将来対応)。
+          SwiftUI <code>Color</code> + <code>CGFloat</code>。 iOS 17+ / macOS 14+ / watchOS 10+ /
+          tvOS 17+ 対応。 OKLCH は build 時に hex に変換 (Mint Dark のみ、 他 theme は将来対応)。
         </p>
         <pre class="docs-code">
           <code>{`// Sources/CreoUI/Generated/Tokens.swift
@@ -139,7 +145,8 @@ public enum CreoUITokens {
 
         <h3 class="docs-platform-title">Rust — creo-ui</h3>
         <p class="docs-page-helper">
-          struct + const。 ratatui / egui / iced / dioxus interop は opt-in feature flag。 zero-dep base crate。
+          struct + const。 ratatui / egui / iced / dioxus interop は opt-in feature flag。 zero-dep
+          base crate。
         </p>
         <pre class="docs-code">
           <code>{`// src/generated/tokens.rs (include! 経由で lib.rs から取り込み)
@@ -164,21 +171,24 @@ let style = ratatui::style::Style::default()
         </p>
         <ul class="docs-bullet-list">
           <li>
-            <strong>Apple 標準 transform は UIKit 指向</strong> — SwiftUI の <code>Color</code> ではなく <code>UIColor</code>{' '}
-            を出力。 cross-platform (macOS / iOS) に使えない
+            <strong>Apple 標準 transform は UIKit 指向</strong> — SwiftUI の <code>Color</code>{' '}
+            ではなく <code>UIColor</code> を出力。 cross-platform (macOS / iOS) に使えない
           </li>
           <li>
-            <strong>Rust 標準 transform は存在しない</strong> — Style Dictionary v4 に Rust output は無い。
-            自分で書くしか
+            <strong>Rust 標準 transform は存在しない</strong> — Style Dictionary v4 に Rust output
+            は無い。 自分で書くしか
           </li>
           <li>
             <strong>命名規約の細かい制御</strong> — Apple は camelCase、 Rust は SCREAMING_SNAKE、
             sanitize (先頭数字回避) も独自
           </li>
           <li>
-            <strong>Rust の <code>include!</code> 互換</strong> — generated file は <code>lib.rs</code> の{' '}
-            <code>pub mod tokens</code> 内に <code>include!</code> される。 inner attribute / inner doc を出すと
-            parse error になるので、 manually 抑制
+            <strong>
+              Rust の <code>include!</code> 互換
+            </strong>{' '}
+            — generated file は <code>lib.rs</code> の <code>pub mod tokens</code> 内に{' '}
+            <code>include!</code> される。 inner attribute / inner doc を出すと parse error
+            になるので、 manually 抑制
           </li>
         </ul>
       </section>
@@ -192,10 +202,11 @@ bun run build:swift   # Swift のみ
 bun run build:rust    # Rust のみ`}</code>
         </pre>
         <p class="docs-page-helper">
-          Web の <code>dist/</code> は gitignore (npm publish workflow で生成)、 Swift / Rust の generated
-          ファイルは <strong>commit 対象</strong>。 これは consumer (cargo build / swift build) が docs
-          generate を実行できない前提で、 git に乗せておく方が build が安定するため。
-          <code>tokens/**</code> を変更した PR は Swift / Rust generated の diff も一緒に commit する。
+          Web の <code>dist/</code> は gitignore (npm publish workflow で生成)、 Swift / Rust の
+          generated ファイルは <strong>commit 対象</strong>。 これは consumer (cargo build / swift
+          build) が docs generate を実行できない前提で、 git に乗せておく方が build が安定するため。
+          <code>tokens/**</code> を変更した PR は Swift / Rust generated の diff も一緒に commit
+          する。
         </p>
       </section>
 
@@ -203,11 +214,12 @@ bun run build:rust    # Rust のみ`}</code>
         <h2 class="docs-section-title">関連</h2>
         <ul class="docs-bullet-list">
           <li>
-            <A href="/foundations/principles">Principles</A> 原則 5 (Multi-platform parity) で哲学を articulate
+            <A href="/foundations/principles">Principles</A> 原則 5 (Multi-platform parity) で哲学を
+            articulate
           </li>
           <li>
-            <A href="/foundations/color">Color</A> / <A href="/foundations/typography">Typography</A> 等で実
-            token を見る
+            <A href="/foundations/color">Color</A> /{' '}
+            <A href="/foundations/typography">Typography</A> 等で実 token を見る
           </li>
         </ul>
       </section>

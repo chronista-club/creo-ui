@@ -25,9 +25,7 @@ export function respectsReducedMotion(): boolean {
  *
  * Returns: cleanup function (call to unsubscribe)
  */
-export function watchReducedMotion(
-  callback: (reduced: boolean) => void,
-): () => void {
+export function watchReducedMotion(callback: (reduced: boolean) => void): () => void {
   if (typeof window === 'undefined') return () => {}
   const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
   const handler = (e: MediaQueryListEvent): void => {

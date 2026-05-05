@@ -6,13 +6,13 @@
  */
 
 import {
+  type Accessor,
+  type JSX,
   createContext,
   createSignal,
   onCleanup,
   onMount,
   useContext,
-  type Accessor,
-  type JSX,
 } from 'solid-js'
 import type { VisionSource } from './source'
 import type {

@@ -3,43 +3,37 @@ import { A } from '@solidjs/router'
 const FEATURES = [
   {
     title: 'Token SSOT',
-    body:
-      'W3C DTCG JSON が唯一の真実。 Style Dictionary v4 が Web (CSS + JS) / Apple (SwiftUI) / Rust (ratatui / egui / iced / dioxus) の 3 platform へ生成。',
+    body: 'W3C DTCG JSON が唯一の真実。 Style Dictionary v4 が Web (CSS + JS) / Apple (SwiftUI) / Rust (ratatui / egui / iced / dioxus) の 3 platform へ生成。',
     href: '/foundations/color',
     cta: 'Foundations →',
   },
   {
     title: '8 Themes (4 family × light/dark)',
-    body:
-      'Creo (mint) · 空 (Sora) · Contrast / Paradox · Old School。 OKLCH 値で記述、 modern browser がそのまま解釈。',
+    body: 'Creo (mint) · 空 (Sora) · Contrast / Paradox · Old School。 OKLCH 値で記述、 modern browser がそのまま解釈。',
     href: '/foundations/theming',
     cta: 'Theming →',
   },
   {
     title: 'Editor Mode protocol',
-    body:
-      '4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility)。 Content 非侵襲、 AI agent access、 universal mode。',
+    body: '4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility)。 Content 非侵襲、 AI agent access、 universal mode。',
     href: '/editor-mode',
     cta: 'Editor Mode →',
   },
   {
     title: 'Live Design Surface',
-    body:
-      'Console REPL · DOM auto-discover · URL share · Cross-tab sync · Export to CSS patch。 Designer + AI が rebuild 無しで token を編集。',
+    body: 'Console REPL · DOM auto-discover · URL share · Cross-tab sync · Export to CSS patch。 Designer + AI が rebuild 無しで token を編集。',
     href: '/playground',
     cta: 'Playground →',
   },
   {
     title: 'Content viewers (creo-views)',
-    body:
-      'Markdown (mdast) / Mermaid / 将来 image / pdf / kdl / json。 Rust = AST SSOT、 TypeScript = 型安全 renderer。',
+    body: 'Markdown (mdast) / Mermaid / 将来 image / pdf / kdl / json。 Rust = AST SSOT、 TypeScript = 型安全 renderer。',
     href: '/content',
     cta: 'Content →',
   },
   {
     title: 'Multi-platform parity',
-    body:
-      '同じ token が Web の CSS variable、 SwiftUI の Color、 Rust の Rgb 構造体として自動生成。 命名規約は platform 慣習に追従。',
+    body: '同じ token が Web の CSS variable、 SwiftUI の Color、 Rust の Rgb 構造体として自動生成。 命名規約は platform 慣習に追従。',
     href: '/getting-started',
     cta: 'Getting started →',
   },
@@ -94,8 +88,8 @@ bun add creo-ui-md-view        # Markdown renderer
 bun add creo-ui-editor-host    # Editor Mode runtime`}</code>
         </pre>
         <p class="docs-quick-install-note">
-          Token CSS は <code>creo-ui-web/tokens.css</code> + <code>creo-ui-web/components.css</code>。 詳しくは{' '}
-          <A href="/getting-started">Getting started</A>。
+          Token CSS は <code>creo-ui-web/tokens.css</code> + <code>creo-ui-web/components.css</code>
+          。 詳しくは <A href="/getting-started">Getting started</A>。
         </p>
       </section>
     </>

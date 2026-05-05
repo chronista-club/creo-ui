@@ -1,17 +1,17 @@
 import { A } from '@solidjs/router'
-import { For } from 'solid-js'
 import {
-  CreoIcon,
-  SYSTEM,
-  STATUS,
-  EDITOR,
   BRAND,
-  MOTION,
-  FLAG,
+  CreoIcon,
+  EDITOR,
   EMOJI,
   FILETYPE,
+  FLAG,
   type IconName,
+  MOTION,
+  STATUS,
+  SYSTEM,
 } from 'creo-ui-icons-web'
+import { For } from 'solid-js'
 
 interface CategorySpec {
   name: string
@@ -78,10 +78,10 @@ export default function Icons() {
         <p class="docs-page-eyebrow">Resources</p>
         <h1>Icons</h1>
         <p class="docs-page-lead">
-          Iconify-based icon adapter (<code>creo-ui-icons-web</code>)。 8 つの semantic
-          category に整理された universal registry。{' '}
-          <code>{'<CreoIcon name="..." size={24} />'}</code> で render、 色は{' '}
-          <code>currentColor</code> 経由で <A href="/foundations/color">creo-ui token</A> に追従。
+          Iconify-based icon adapter (<code>creo-ui-icons-web</code>)。 8 つの semantic category
+          に整理された universal registry。 <code>{'<CreoIcon name="..." size={24} />'}</code> で
+          render、 色は <code>currentColor</code> 経由で{' '}
+          <A href="/foundations/color">creo-ui token</A> に追従。
         </p>
       </header>
 
@@ -92,9 +92,7 @@ export default function Icons() {
               <h3>{cat.name}</h3>
               <span class="docs-icons-source">{cat.source}</span>
             </header>
-            {cat.description && (
-              <p class="docs-icons-category-desc">{cat.description}</p>
-            )}
+            {cat.description && <p class="docs-icons-category-desc">{cat.description}</p>}
             <div class="docs-icons-grid">
               <For each={Object.entries(cat.registry)}>
                 {([key, iconName]) => (
@@ -142,8 +140,8 @@ export default function Icons() {
             customElements + currentColor で <code>1em</code> default サイズ
           </li>
           <li>
-            Registry は <code>const</code> map で <strong>tree-shake 効く</strong> — 使った key
-            だけ bundle に乗る (registry import は metadata のみ、 svg は CDN)
+            Registry は <code>const</code> map で <strong>tree-shake 効く</strong> — 使った key だけ
+            bundle に乗る (registry import は metadata のみ、 svg は CDN)
           </li>
           <li>
             8 category は <strong>semantic 分類</strong> (icon set 横断) — 「success」 が mingcute

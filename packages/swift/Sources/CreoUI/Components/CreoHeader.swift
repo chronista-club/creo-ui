@@ -56,7 +56,7 @@ public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
             }
 
             // nav (flex 1 相当、SwiftUI では spacer で対応可能、consumer の実装に委ねる)
-            HStack(spacing: CreoUITokens.spacingMd) {
+            HStack(spacing: CreoUITokens.spacingM) {
                 nav
             }
 
@@ -87,11 +87,11 @@ public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
     // MARK: - Style resolvers
 
     private var horizontalPadding: CGFloat {
-        variant == .marketing ? CreoUITokens.spacingXl : CreoUITokens.spacingLg
+        variant == .marketing ? CreoUITokens.spacingXl : CreoUITokens.spacingL
     }
 
     private var verticalPadding: CGFloat {
-        variant == .marketing ? CreoUITokens.spacingMd : CreoUITokens.spacingSm
+        variant == .marketing ? CreoUITokens.spacingM : CreoUITokens.spacingS
     }
 
     private var minHeight: CGFloat {

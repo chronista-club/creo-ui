@@ -1,11 +1,31 @@
 import { A } from '@solidjs/router'
 
 const PROPS = [
-  { attr: 'type', values: 'text / email / password / number / search / url / tel', def: 'text', meaning: 'native HTML input type' },
-  { attr: 'data-variant', values: 'bordered / filled', def: 'bordered', meaning: '視覚的 emphasis' },
+  {
+    attr: 'type',
+    values: 'text / email / password / number / search / url / tel',
+    def: 'text',
+    meaning: 'native HTML input type',
+  },
+  {
+    attr: 'data-variant',
+    values: 'bordered / filled',
+    def: 'bordered',
+    meaning: '視覚的 emphasis',
+  },
   { attr: 'data-size', values: 'sm / md / lg', def: 'md', meaning: '5-step rule 中央' },
-  { attr: 'data-state', values: 'default / error', def: 'default', meaning: 'validation state (aria-invalid と連動)' },
-  { attr: 'disabled / readonly / required', values: '(boolean)', def: '—', meaning: 'native HTML 属性' },
+  {
+    attr: 'data-state',
+    values: 'default / error',
+    def: 'default',
+    meaning: 'validation state (aria-invalid と連動)',
+  },
+  {
+    attr: 'disabled / readonly / required',
+    values: '(boolean)',
+    def: '—',
+    meaning: 'native HTML 属性',
+  },
 ] as const
 
 const TOKENS = [
@@ -28,8 +48,8 @@ export default function Input() {
         <p class="docs-page-eyebrow">Components</p>
         <h1>Input</h1>
         <p class="docs-page-lead">
-          single-line text field (native <code>&lt;input&gt;</code>)。 form の主役。 Creo aesthetic では
-          "輪郭の柔らかさ + focus 時のはっきりした意思" を両立。
+          single-line text field (native <code>&lt;input&gt;</code>)。 form の主役。 Creo aesthetic
+          では "輪郭の柔らかさ + focus 時のはっきりした意思" を両立。
         </p>
       </header>
 
@@ -93,10 +113,17 @@ export default function Input() {
       <section>
         <h2 class="docs-section-title">Accessibility</h2>
         <ul class="docs-bullet-list">
-          <li>必ず <code>&lt;label for="id"&gt;</code> を関連付ける (implicit / explicit どちらでも)</li>
-          <li>error state は <code>aria-invalid="true"</code> + <code>aria-describedby</code> でメッセージを関連付け</li>
+          <li>
+            必ず <code>&lt;label for="id"&gt;</code> を関連付ける (implicit / explicit どちらでも)
+          </li>
+          <li>
+            error state は <code>aria-invalid="true"</code> + <code>aria-describedby</code>{' '}
+            でメッセージを関連付け
+          </li>
           <li>placeholder を label 代わりに使わない (focus 時に消えて context が失われる)</li>
-          <li>autocomplete 属性を適切に (<code>email</code> / <code>current-password</code> 等)</li>
+          <li>
+            autocomplete 属性を適切に (<code>email</code> / <code>current-password</code> 等)
+          </li>
           <li>error は色だけで示さない (色覚多様性配慮、 aria-invalid + icon 併用)</li>
         </ul>
       </section>
@@ -122,11 +149,14 @@ export default function Input() {
 <p id="pw-err" class="creo-helper-text creo-helper-text--error">パスワードが短すぎます</p>`}</code>
         </pre>
         <p class="docs-page-helper">
-          詳細 spec: <a
+          詳細 spec:{' '}
+          <a
             href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/input.md"
             target="_blank"
             rel="noopener noreferrer"
-          >docs/components/input.md ↗</a>
+          >
+            docs/components/input.md ↗
+          </a>
         </p>
       </section>
     </>

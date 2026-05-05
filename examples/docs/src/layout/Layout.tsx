@@ -1,7 +1,7 @@
 import type { JSX } from 'solid-js'
+import Footer from './Footer'
 import Header from './Header'
 import Sidebar from './Sidebar'
-import Footer from './Footer'
 
 export default function Layout(props: { children?: JSX.Element }) {
   return (

@@ -55,13 +55,7 @@
     "url": "https://github.com/chronista-club/creo-ui/issues"
   },
   "homepage": "https://github.com/chronista-club/creo-ui#readme",
-  "keywords": [
-    "design-system",
-    "icons",
-    "iconify",
-    "creo-ui",
-    "solid-js"
-  ],
+  "keywords": ["design-system", "icons", "iconify", "creo-ui", "solid-js"],
   "publishConfig": {
     "access": "public"
   },

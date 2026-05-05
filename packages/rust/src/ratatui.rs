@@ -56,19 +56,19 @@ pub mod pad {
     #[inline]
     #[must_use]
     pub const fn sm() -> u16 {
-        cells(crate::tokens::SPACING_SM)
+        cells(crate::tokens::SPACING_S)
     }
     /// `spacing-md` (18px) → ~2 cell
     #[inline]
     #[must_use]
     pub const fn md() -> u16 {
-        cells(crate::tokens::SPACING_MD)
+        cells(crate::tokens::SPACING_M)
     }
     /// `spacing-lg` (24px) → ~3 cell
     #[inline]
     #[must_use]
     pub const fn lg() -> u16 {
-        cells(crate::tokens::SPACING_LG)
+        cells(crate::tokens::SPACING_L)
     }
     /// `spacing-xl` (32px) → ~4 cell
     #[inline]

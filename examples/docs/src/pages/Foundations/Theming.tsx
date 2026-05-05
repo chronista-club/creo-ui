@@ -35,9 +35,9 @@ export default function Theming() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Theming</h1>
         <p class="docs-page-lead">
-          4 family × light/dark = <strong>8 theme</strong> を同梱。 切替は <code>data-theme</code> 属性、
-          values は OKLCH で記述、 modern browser がそのまま解釈。 Swift / Rust ビルド時に hex / Rgb
-          に変換 (Mint Dark のみ)。
+          4 family × light/dark = <strong>8 theme</strong> を同梱。 切替は <code>data-theme</code>{' '}
+          属性、 values は OKLCH で記述、 modern browser がそのまま解釈。 Swift / Rust ビルド時に
+          hex / Rgb に変換 (Mint Dark のみ)。
         </p>
       </header>
 
@@ -78,7 +78,8 @@ body {
         </pre>
         <p class="docs-page-helper">
           Header 右上の theme switcher は <code>localStorage</code> に永続化、 全 page 共通。
-          fleetstage 互換 alias として <code>.dark</code> / <code>[data-theme="dark"]</code> = mint-dark、
+          fleetstage 互換 alias として <code>.dark</code> / <code>[data-theme="dark"]</code> =
+          mint-dark、
           <code>[data-theme="light"]</code> = mint-light も解釈。
         </p>
       </section>
@@ -91,10 +92,22 @@ function ThemePreview(props: { themeId: string; label: string }) {
     <div class="docs-theme-preview" data-theme={props.themeId}>
       <div class="docs-theme-preview-bar">
         <span class="docs-theme-preview-dot" style={{ background: 'var(--color-brand-primary)' }} />
-        <span class="docs-theme-preview-dot" style={{ background: 'var(--color-brand-secondary)' }} />
-        <span class="docs-theme-preview-dot" style={{ background: 'var(--color-semantic-success)' }} />
-        <span class="docs-theme-preview-dot" style={{ background: 'var(--color-semantic-warning)' }} />
-        <span class="docs-theme-preview-dot" style={{ background: 'var(--color-semantic-error)' }} />
+        <span
+          class="docs-theme-preview-dot"
+          style={{ background: 'var(--color-brand-secondary)' }}
+        />
+        <span
+          class="docs-theme-preview-dot"
+          style={{ background: 'var(--color-semantic-success)' }}
+        />
+        <span
+          class="docs-theme-preview-dot"
+          style={{ background: 'var(--color-semantic-warning)' }}
+        />
+        <span
+          class="docs-theme-preview-dot"
+          style={{ background: 'var(--color-semantic-error)' }}
+        />
       </div>
       <code class="docs-theme-preview-label">{props.themeId}</code>
       <span class="docs-theme-preview-mode">{props.label}</span>

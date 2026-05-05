@@ -17,7 +17,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   background: var(--color-surface-bg-base);
@@ -295,12 +296,19 @@ a:hover {
 }
 
 .docs-hero::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: -10% -20%;
-  background:
-    radial-gradient(50% 60% at 20% 0%, color-mix(in oklab, var(--color-brand-primary) 12%, transparent), transparent 70%),
-    radial-gradient(40% 50% at 80% 30%, color-mix(in oklab, var(--color-brand-secondary) 10%, transparent), transparent 70%);
+  background: radial-gradient(
+      50% 60% at 20% 0%,
+      color-mix(in oklab, var(--color-brand-primary) 12%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 50% at 80% 30%,
+      color-mix(in oklab, var(--color-brand-secondary) 10%, transparent),
+      transparent 70%
+    );
   pointer-events: none;
   z-index: -1;
 }
@@ -1579,8 +1587,8 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
-  transition: box-shadow var(--motion-duration-normal) var(--motion-easing-spring),
-    transform var(--motion-duration-normal) var(--motion-easing-spring);
+  transition: box-shadow var(--motion-duration-normal) var(--motion-easing-spring), transform
+    var(--motion-duration-normal) var(--motion-easing-spring);
 }
 
 .docs-playground-card[data-elevation="flat"] {
@@ -1766,8 +1774,13 @@ kbd {
 }
 
 @keyframes docs-vision-pulse {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1790,8 +1803,8 @@ kbd {
   justify-content: center;
   pointer-events: none;
   opacity: 0.18;
-  transition: opacity var(--motion-duration-fast) ease-out,
-    background var(--motion-duration-fast) ease-out;
+  transition: opacity var(--motion-duration-fast) ease-out, background var(--motion-duration-fast)
+    ease-out;
   z-index: 1;
   padding-bottom: var(--spacing-md);
 }
@@ -1803,8 +1816,7 @@ kbd {
     color-mix(in oklab, var(--color-brand-primary) 35%, transparent),
     transparent
   );
-  border-left: 2px dashed
-    color-mix(in oklab, var(--color-brand-primary) 40%, transparent);
+  border-left: 2px dashed color-mix(in oklab, var(--color-brand-primary) 40%, transparent);
 }
 
 .docs-pinch-zone[data-side="right"] {
@@ -1814,8 +1826,7 @@ kbd {
     color-mix(in oklab, var(--color-semantic-info) 35%, transparent),
     transparent
   );
-  border-right: 2px dashed
-    color-mix(in oklab, var(--color-semantic-info) 40%, transparent);
+  border-right: 2px dashed color-mix(in oklab, var(--color-semantic-info) 40%, transparent);
 }
 
 .docs-pinch-zone[data-active="true"] {
@@ -1998,7 +2009,8 @@ kbd {
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-sm);
   text-align: center;
-  transition: transform var(--motion-duration-normal) var(--motion-easing-spring), border-color var(--motion-duration-normal);
+  transition: transform var(--motion-duration-normal) var(--motion-easing-spring), border-color
+    var(--motion-duration-normal);
   color: var(--color-text-primary);
 }
 
@@ -2140,20 +2152,18 @@ kbd {
 
 /* Feature cards — stronger lift on hover */
 .docs-feature-card {
-  transition: border-color 280ms, transform 280ms var(--motion-easing-spring),
-    box-shadow 280ms;
+  transition: border-color 280ms, transform 280ms var(--motion-easing-spring), box-shadow 280ms;
 }
 
 .docs-feature-card:hover {
   transform: translateY(-4px) translateZ(14px);
-  box-shadow: 0 16px 32px -10px color-mix(in oklab, var(--color-text-primary) 22%, transparent),
-    0 4px 8px -4px color-mix(in oklab, var(--color-text-primary) 12%, transparent);
+  box-shadow: 0 16px 32px -10px color-mix(in oklab, var(--color-text-primary) 22%, transparent), 0
+    4px 8px -4px color-mix(in oklab, var(--color-text-primary) 12%, transparent);
 }
 
 /* Component gallery cards */
 .docs-component-card {
-  transition: border-color 280ms, transform 280ms var(--motion-easing-spring),
-    box-shadow 280ms;
+  transition: border-color 280ms, transform 280ms var(--motion-easing-spring), box-shadow 280ms;
 }
 
 .docs-component-card:hover {
@@ -2182,7 +2192,8 @@ kbd {
 
 /* Sidebar — subtle z-depth (active forward, inactive back) */
 .docs-sidebar-link {
-  transition: color var(--motion-duration-fast), background var(--motion-duration-fast), transform 200ms ease-out;
+  transition: color var(--motion-duration-fast), background var(--motion-duration-fast), transform
+    200ms ease-out;
 }
 
 .docs-sidebar-link:hover {

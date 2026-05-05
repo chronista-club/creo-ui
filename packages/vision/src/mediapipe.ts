@@ -25,12 +25,12 @@ import type {
   FaceLandmarker as FaceLandmarkerType,
   HandLandmarker as HandLandmarkerType,
 } from '@mediapipe/tasks-vision'
+import { matrixToEuler, normalizeVector } from './mediapipe-utils'
+import { requestCameraStream, stopCameraStream } from './permission'
+import { OneEuroFilter, Point3DSmoother, type SmoothingOptions, applyGain } from './smoothing'
 import type { VisionListener, VisionSource, VisionUpdate } from './source'
 import type { Point3D } from './types'
 import { isPinchActive, pinchCenter } from './utils'
-import { matrixToEuler, normalizeVector } from './mediapipe-utils'
-import { requestCameraStream, stopCameraStream } from './permission'
-import { type SmoothingOptions, applyGain, OneEuroFilter, Point3DSmoother } from './smoothing'
 
 export interface MediaPipeSourceOptions {
   /** Camera facing — default 'user' (front) */
@@ -94,8 +94,7 @@ export async function createMediaPipeSource(
   const delegate = options.delegate ?? 'GPU'
   const coordSpace = options.coordSpace ?? (camera === 'user' ? 'user' : 'camera')
   const mirrorX = coordSpace === 'user'
-  const toUserSpace = (p: Point3D): Point3D =>
-    mirrorX ? { x: 1 - p.x, y: p.y, z: p.z } : p
+  const toUserSpace = (p: Point3D): Point3D => (mirrorX ? { x: 1 - p.x, y: p.y, z: p.z } : p)
 
   const smoothing = options.smoothing ?? {}
   const smoothEnabled = smoothing.enabled ?? true
@@ -168,8 +167,7 @@ export async function createMediaPipeSource(
         if (result.landmarks.length > 0) {
           const landmarks = result.landmarks[0]
           if (
-            landmarks &&
-            landmarks[LANDMARK_THUMB_TIP] &&
+            landmarks?.[LANDMARK_THUMB_TIP] &&
             landmarks[LANDMARK_INDEX_TIP] &&
             landmarks[LANDMARK_WRIST]
           ) {
@@ -190,12 +188,8 @@ export async function createMediaPipeSource(
 
             // 平滑化 (One-Euro filter) — jitter 除去 + adaptive cutoff で lag 抑制
             const center = pinchSmoother ? pinchSmoother.filter(rawCenter, ts) : rawCenter
-            const origin = pointingOriginSmoother
-              ? pointingOriginSmoother.filter(wrist, ts)
-              : wrist
-            const direction = pointingDirSmoother
-              ? pointingDirSmoother.filter(rawDir, ts)
-              : rawDir
+            const origin = pointingOriginSmoother ? pointingOriginSmoother.filter(wrist, ts) : wrist
+            const direction = pointingDirSmoother ? pointingDirSmoother.filter(rawDir, ts) : rawDir
 
             dispatch({
               type: 'hand-pinch',
