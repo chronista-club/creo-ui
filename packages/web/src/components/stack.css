@@ -1,0 +1,76 @@
+/**
+ * Creo UI — Stack (vertical / horizontal flex layout primitive)
+ *
+ * 子要素を一方向に並べる最小 layout primitive。 default vertical (flex-direction column)、
+ * `data-direction="horizontal"` で row。 gap / align / justify は token-driven。
+ *
+ * Spec: docs/components/stack.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-m);
+}
+
+.creo-stack[data-direction="horizontal"] {
+  flex-direction: row;
+}
+
+/* ---------- Gap (token-driven、 5-step rule) ---------- */
+
+.creo-stack[data-gap="xs"] {
+  gap: var(--spacing-xs);
+}
+.creo-stack[data-gap="s"] {
+  gap: var(--spacing-s);
+}
+.creo-stack[data-gap="m"] {
+  gap: var(--spacing-m);
+}
+.creo-stack[data-gap="l"] {
+  gap: var(--spacing-l);
+}
+.creo-stack[data-gap="xl"] {
+  gap: var(--spacing-xl);
+}
+
+/* ---------- Align (cross-axis) ---------- */
+
+.creo-stack[data-align="start"] {
+  align-items: flex-start;
+}
+.creo-stack[data-align="center"] {
+  align-items: center;
+}
+.creo-stack[data-align="end"] {
+  align-items: flex-end;
+}
+.creo-stack[data-align="stretch"] {
+  align-items: stretch;
+}
+
+/* ---------- Justify (main-axis) ---------- */
+
+.creo-stack[data-justify="start"] {
+  justify-content: flex-start;
+}
+.creo-stack[data-justify="center"] {
+  justify-content: center;
+}
+.creo-stack[data-justify="end"] {
+  justify-content: flex-end;
+}
+.creo-stack[data-justify="between"] {
+  justify-content: space-between;
+}
+.creo-stack[data-justify="around"] {
+  justify-content: space-around;
+}
+
+/* ---------- Wrap (overflow handling) ---------- */
+
+.creo-stack[data-wrap="true"] {
+  flex-wrap: wrap;
+}

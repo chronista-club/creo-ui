@@ -1,0 +1,86 @@
+/**
+ * Creo UI — Divider (visual / semantic separator)
+ *
+ * 区切り線 — section 間の視覚的境界。 native <hr> + class で a11y 自動。
+ * orientation (horizontal / vertical)、 thickness (thin / thick)、 spacing 5-step。
+ *
+ * Spec: docs/components/divider.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-divider {
+  border: 0;
+  background-color: var(--color-surface-border);
+  flex-shrink: 0;
+}
+
+/* ---------- Orientation: horizontal (default) ---------- */
+
+.creo-divider:not([data-orientation]),
+.creo-divider[data-orientation="horizontal"] {
+  width: 100%;
+  height: 1px;
+  margin: var(--spacing-m) 0;
+}
+
+.creo-divider[data-orientation="horizontal"][data-thickness="thick"] {
+  height: 2px;
+}
+
+/* ---------- Orientation: vertical ---------- */
+
+.creo-divider[data-orientation="vertical"] {
+  width: 1px;
+  height: auto;
+  align-self: stretch;
+  margin: 0 var(--spacing-m);
+}
+
+.creo-divider[data-orientation="vertical"][data-thickness="thick"] {
+  width: 2px;
+}
+
+/* ---------- Spacing override (5-step rule) ---------- */
+
+.creo-divider[data-spacing="xs"][data-orientation="horizontal"],
+.creo-divider[data-spacing="xs"]:not([data-orientation]) {
+  margin: var(--spacing-xs) 0;
+}
+.creo-divider[data-spacing="s"][data-orientation="horizontal"],
+.creo-divider[data-spacing="s"]:not([data-orientation]) {
+  margin: var(--spacing-s) 0;
+}
+.creo-divider[data-spacing="m"][data-orientation="horizontal"],
+.creo-divider[data-spacing="m"]:not([data-orientation]) {
+  margin: var(--spacing-m) 0;
+}
+.creo-divider[data-spacing="l"][data-orientation="horizontal"],
+.creo-divider[data-spacing="l"]:not([data-orientation]) {
+  margin: var(--spacing-l) 0;
+}
+.creo-divider[data-spacing="xl"][data-orientation="horizontal"],
+.creo-divider[data-spacing="xl"]:not([data-orientation]) {
+  margin: var(--spacing-xl) 0;
+}
+
+.creo-divider[data-spacing="xs"][data-orientation="vertical"] {
+  margin: 0 var(--spacing-xs);
+}
+.creo-divider[data-spacing="s"][data-orientation="vertical"] {
+  margin: 0 var(--spacing-s);
+}
+.creo-divider[data-spacing="m"][data-orientation="vertical"] {
+  margin: 0 var(--spacing-m);
+}
+.creo-divider[data-spacing="l"][data-orientation="vertical"] {
+  margin: 0 var(--spacing-l);
+}
+.creo-divider[data-spacing="xl"][data-orientation="vertical"] {
+  margin: 0 var(--spacing-xl);
+}
+
+/* ---------- Variant: subtle (low-emphasis) ---------- */
+
+.creo-divider[data-variant="subtle"] {
+  background-color: var(--color-surface-bg-subtle);
+}

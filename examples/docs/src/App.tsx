@@ -51,6 +51,10 @@ const Drawer = lazy(() => import('./pages/Components/Drawer'))
 const EmptyState = lazy(() => import('./pages/Components/EmptyState'))
 const Combobox = lazy(() => import('./pages/Components/Combobox'))
 const Header = lazy(() => import('./pages/Components/Header'))
+const Stack = lazy(() => import('./pages/Components/Stack'))
+const Grid = lazy(() => import('./pages/Components/Grid'))
+const Container = lazy(() => import('./pages/Components/Container'))
+const Divider = lazy(() => import('./pages/Components/Divider'))
 
 // Resources
 const Icons = lazy(() => import('./pages/Resources/Icons'))
@@ -109,6 +113,10 @@ export default function App() {
       <Route path="/components/empty-state" component={EmptyState} />
       <Route path="/components/combobox" component={Combobox} />
       <Route path="/components/header" component={Header} />
+      <Route path="/components/stack" component={Stack} />
+      <Route path="/components/grid" component={Grid} />
+      <Route path="/components/container" component={Container} />
+      <Route path="/components/divider" component={Divider} />
       <Route path="/icons" component={Icons} />
       <Route path="/content" component={Content} />
       <Route path="/playground" component={Playground} />
