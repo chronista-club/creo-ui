@@ -48,6 +48,17 @@
           }
         }
       }
+    },
+    {
+      "include": ["**/Components/Progress.tsx"],
+      "linter": {
+        "rules": {
+          "a11y": {
+            "useFocusableInteractive": "off",
+            "useAriaPropsForRole": "off"
+          }
+        }
+      }
     }
   ]
 }

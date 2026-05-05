@@ -253,7 +253,6 @@ function AlertEditorDemo() {
 
   return (
     <div class="docs-playground-stage">
-      {/* biome-ignore lint/a11y/useSemanticElements: <output> は form 計算結果用、 alert 通知の `role="status"`/`"alert"` は意図的 */}
       <div class="creo-alert" data-variant={variant()} role={role()}>
         <span class="creo-alert-icon" aria-hidden="true">
           {icon()}
