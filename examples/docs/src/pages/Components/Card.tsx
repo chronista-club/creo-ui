@@ -1,3 +1,15 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-variant',
@@ -145,6 +157,27 @@ export default function Card() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          card の variant / padding / interactive / title / body を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.card-editor',
+            }}
+          >
+            <CardEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Default -->
@@ -176,5 +209,86 @@ export default function Card() {
         </p>
       </section>
     </>
+  )
+}
+
+function CardEditorDemo() {
+  const [variant, setVariant] = createSignal<'default' | 'elevated' | 'outlined'>('default')
+  const [padding, setPadding] = createSignal<'sm' | 'md' | 'lg'>('md')
+  const [interactive, setInteractive] = createSignal(false)
+  const [title, setTitle] = createSignal('Card title')
+  const [body, setBody] = createSignal(
+    '説明文を ここに。 token-driven で radius / shadow / padding が一貫。',
+  )
+
+  bind({
+    id: 'card.variant',
+    control: select({ options: ['default', 'elevated', 'outlined'] as const }),
+    target: signalTarget('card.variant', variant, setVariant),
+    initial: 'default',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'card', label: 'Variant', order: 1 },
+  })
+  bind({
+    id: 'card.padding',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('card.padding', padding, setPadding),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'card', label: 'Padding', order: 2 },
+  })
+  bind({
+    id: 'card.interactive',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('card.interactive', interactive, setInteractive),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'card', label: 'Interactive (hover)', order: 3 },
+  })
+  bind({
+    id: 'card.title',
+    control: string({ variant: 'input' }),
+    target: signalTarget('card.title', title, setTitle),
+    initial: 'Card title',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Title', order: 1 },
+  })
+  bind({
+    id: 'card.body',
+    control: string({ variant: 'textarea' }),
+    target: signalTarget('card.body', body, setBody),
+    initial: '説明文を ここに。 token-driven で radius / shadow / padding が一貫。',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Body', order: 2 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <article
+        class="creo-card"
+        data-variant={variant()}
+        data-padding={padding()}
+        data-interactive={interactive() ? 'true' : undefined}
+      >
+        <h3
+          style={{
+            margin: '0 0 8px 0',
+            'font-size': 'var(--typography-size-base)',
+            'font-weight': 'var(--typography-weight-bold)',
+          }}
+        >
+          {title()}
+        </h3>
+        <p
+          style={{
+            margin: 0,
+            'font-size': 'var(--typography-size-sm)',
+            color: 'var(--color-text-secondary)',
+          }}
+        >
+          {body()}
+        </p>
+      </article>
+    </div>
   )
 }
