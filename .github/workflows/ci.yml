@@ -54,18 +54,30 @@ jobs:
             packages/swift/Sources/CreoUI/Generated/ \
             packages/rust/src/generated/
 
+      - name: Debug workspace links (examples/docs)
+        # Round 3 fix の debug step。 bun 1.3.x の `--frozen-lockfile` mode が
+        # workspace member 内 node_modules への symlink 作成を skip する場合があり、
+        # `Cannot find module 'creo-ui-editor-host'` で typecheck が cascade fail
+        # する。 link 不在なら明示的に作って recovery を試みる。
+        run: |
+          echo "=== bun version ==="
+          bun --version
+          echo "=== root node_modules creo-ui-* ==="
+          ls -la node_modules | grep creo-ui || echo "(no creo-ui-* in root)"
+          echo "=== examples/docs/node_modules creo-ui-* ==="
+          ls -la examples/docs/node_modules 2>/dev/null | grep creo-ui || echo "(no creo-ui-* in examples/docs/node_modules)"
+          echo "=== fallback: rm + non-frozen install for examples/docs link ==="
+          rm -rf examples/docs/node_modules
+          bun install
+          echo "=== after fallback ==="
+          ls -la examples/docs/node_modules | grep creo-ui || echo "(STILL no creo-ui-*)"
+
       - name: Typecheck examples/docs
         # root tsconfig.json は examples/ を include しないため、
         # examples/docs の dogfood code は別途 typecheck する。
         # editor-host API drift / dogfood callsite の signature mismatch を検出。
-        #
-        # bun workspace の root install は workspace member の node_modules に
-        # symlink を作る設計だが、 CI 環境で frozen-lockfile + 並列 fetch のため
-        # member 内 link 作成が稀に遅延する。 明示的に再 install して link を確実に。
         working-directory: creo-ui/examples/docs
-        run: |
-          bun install --frozen-lockfile
-          bun x tsc --noEmit
+        run: bun x tsc --noEmit
 
   rust:
     name: Rust build
