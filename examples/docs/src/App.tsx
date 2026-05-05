@@ -33,6 +33,10 @@ const Switch = lazy(() => import('./pages/Components/Switch'))
 const Badge = lazy(() => import('./pages/Components/Badge'))
 const Tooltip = lazy(() => import('./pages/Components/Tooltip'))
 const Alert = lazy(() => import('./pages/Components/Alert'))
+const Tabs = lazy(() => import('./pages/Components/Tabs'))
+const Breadcrumbs = lazy(() => import('./pages/Components/Breadcrumbs'))
+const Menu = lazy(() => import('./pages/Components/Menu'))
+const Pagination = lazy(() => import('./pages/Components/Pagination'))
 
 // Resources
 const Icons = lazy(() => import('./pages/Resources/Icons'))
@@ -73,6 +77,10 @@ export default function App() {
       <Route path="/components/badge" component={Badge} />
       <Route path="/components/tooltip" component={Tooltip} />
       <Route path="/components/alert" component={Alert} />
+      <Route path="/components/tabs" component={Tabs} />
+      <Route path="/components/breadcrumbs" component={Breadcrumbs} />
+      <Route path="/components/menu" component={Menu} />
+      <Route path="/components/pagination" component={Pagination} />
       <Route path="/icons" component={Icons} />
       <Route path="/content" component={Content} />
       <Route path="/playground" component={Playground} />

@@ -50,6 +50,10 @@ const NAV: readonly NavGroup[] = [
       { href: '/components/dialog', label: 'Dialog' },
       { href: '/components/tooltip', label: 'Tooltip' },
       { href: '/components/alert', label: 'Alert' },
+      { href: '/components/tabs', label: 'Tabs' },
+      { href: '/components/breadcrumbs', label: 'Breadcrumbs' },
+      { href: '/components/menu', label: 'Menu' },
+      { href: '/components/pagination', label: 'Pagination' },
     ],
   },
   {
