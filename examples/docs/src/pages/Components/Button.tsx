@@ -1,4 +1,14 @@
 import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
 
 const PROPS = [
   {
@@ -177,6 +187,28 @@ export default function Button() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle。 right panel から
+          button の variant / size / disabled / label を即時編集できる。 token-driven の component
+          が runtime で操作可能になる感触 (<A href="/concepts/editor-mode">Editor Mode protocol</A>{' '}
+          dogfood) を試せる scope は この section 内のみ。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.button-editor',
+            }}
+          >
+            <ButtonEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Primary -->
@@ -205,5 +237,59 @@ export default function Button() {
         </p>
       </section>
     </>
+  )
+}
+
+function ButtonEditorDemo() {
+  const [variant, setVariant] = createSignal<'primary' | 'secondary' | 'ghost'>('primary')
+  const [size, setSize] = createSignal<'sm' | 'md' | 'lg'>('md')
+  const [disabled, setDisabled] = createSignal(false)
+  const [label, setLabel] = createSignal('Click me')
+
+  bind({
+    id: 'btn.variant',
+    control: select({ options: ['primary', 'secondary', 'ghost'] as const }),
+    target: signalTarget('btn.variant', variant, setVariant),
+    initial: 'primary',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'button', label: 'Variant', order: 1 },
+  })
+  bind({
+    id: 'btn.size',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('btn.size', size, setSize),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'button', label: 'Size', order: 2 },
+  })
+  bind({
+    id: 'btn.disabled',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('btn.disabled', disabled, setDisabled),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'button', label: 'Disabled', order: 3 },
+  })
+  bind({
+    id: 'btn.label',
+    control: string({ variant: 'input' }),
+    target: signalTarget('btn.label', label, setLabel),
+    initial: 'Click me',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Button label', order: 1 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <button
+        type="button"
+        class="creo-btn"
+        data-variant={variant()}
+        data-size={size()}
+        disabled={disabled()}
+      >
+        {label()}
+      </button>
+    </div>
   )
 }
