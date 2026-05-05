@@ -91,22 +91,22 @@ respectsReducedMotion()                               // a11y check
 | **Webcam frame の server 送信** | privacy 重視、 on-device (MediaPipe Tasks) 完結 |
 | **Token hardcode** (depth / motion 含む) | 原則 6 (Token SSOT 強制) 違反 |
 
-## 6. New packages (計画)
+## 6. New packages (現状 + 計画)
 
-| Package | Scope | 工数目安 |
+| Package | Scope | 工数目安 | Status (2026-05-05) |
+|---|---|---|---|
+| `creo-ui-frame` | Frame system runtime (Solid + 自作 motion engine 同梱) | 1 session | ✅ Ship v0.1.0 (`packages/frame/`) |
+| `creo-ui-vision` | webcam motion (MediaPipe wrapper、 Solid signals) | 1 session | ✅ Ship (mock source + MediaPipe lazy load + One-Euro Filter、 `creo-ui-vision/mediapipe` subpath) |
+| (future) `creo-ui-spatial` | WebGL spatial canvas (Three.js + solid-three) | multi-session | ⏳ Future (Phase B-spatial で着手検討、 現状は `<model>` element で代替可) |
+| (future) `creo-ui-motion` | 自作 motion engine の独立 publish (`creo-ui-frame` から抽出) | 0.5 session | ⏳ Future (現状は `creo-ui-frame/motion` subpath として export、 抽出 trigger は外部 consumer 要望待ち) |
+
+## 7. New token directories (現状 + 計画)
+
+| Directory | Tokens | Status (2026-05-05) |
 |---|---|---|
-| `creo-ui-frame` | Frame system runtime (Solid + 自作 motion engine 同梱) | 1 session |
-| `creo-ui-vision` | webcam motion (MediaPipe wrapper、 Solid signals) | 1 session |
-| (future) `creo-ui-spatial` | WebGL spatial canvas (Three.js + solid-three) | multi-session |
-| (future) `creo-ui-motion` | 自作 motion engine の独立 publish (`creo-ui-frame` から抽出) | 0.5 session |
-
-## 7. New token directories (計画)
-
-| Directory | Tokens |
-|---|---|
-| `tokens/depth/` | fg / mid / bg (3 step abstract) |
-| `tokens/motion/` | easing curves / durations / spring presets |
-| `tokens/frame/` | Frame 定義 (slots × perspective、 dashboard / reading / editor 等の preset) |
+| `tokens/depth/` | scale (3+ step abstract) | ✅ Ship (`scale.json`) |
+| `tokens/motion/` | easing curves / durations / spring presets | 🟡 Partial — `duration.json` + `easing.json` ship、 **spring preset は B-δ で追加予定** |
+| `tokens/frame/` | Frame 定義 (slots × perspective、 dashboard / reading / editor 等の preset) | 🟡 Partial — `perspective.json` ship、 **Frame preset (slots × perspective bundled) は consumer 側で定義中、 token 化は後続検討** |
 
 ## 8. Tensions / Risks
 

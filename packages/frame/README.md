@@ -3,15 +3,17 @@
 > 3D Frame system runtime for Creo UI — Spatial Layout protocol + self-built motion engine。
 > docs/design/frame-system.md の **P-3 reference 実装**。
 
-## Status (2026-05-02)
+## Status (2026-05-05)
 
-**Phase 2 (motion engine) + Phase 3 (Frame protocol) ship 済**。 P-4 で gesture (creo-ui-vision) 連結予定。
+**P-2 (motion engine) + P-3 (Frame protocol) + P-4 (vision 連結) + P-5 (docs Playground dogfood) ship 済**。 P-6 (VP 統合) のみ remaining。
 
 | Surface | Status |
 |---|---|
-| `creo-ui-frame/motion` | ✅ FLIP / spring / token bridge / reduced-motion guard |
+| `creo-ui-frame/motion` | ✅ FLIP / spring (Hooke's law + WAAPI `linear()`) / token bridge / reduced-motion guard |
 | `creo-ui-frame/frame` | ✅ FrameProvider / FrameSlot / useFrame / setFrame |
 | `creo-ui-frame` (root) | ✅ frame + motion 統合 export |
+| `creo-ui-vision` 連結 | ✅ docs Playground で gesture (`useGesture('wave')` → `setFrame`) + spatial pinch bridge dogfood |
+| `morphFrame()` coordinator | ✅ Ship (`motion/morph.ts` — 複数 slot の atomic transition、 `flip()` 再利用、 reduced-motion guard 自動承継) |
 
 ## Why self-built motion?
 
@@ -148,22 +150,27 @@ consumer は guard を毎回書かなくて良い。
 
 `creo-ui-web/tokens.css` の motion / depth / frame token と直結:
 
-| API | Token (CSS variable) |
-|---|---|
-| `ease(name)` | `--motion-easing-{linear,in,out,in-out,spring}` |
-| `duration(name)` | `--motion-duration-{instant,fast,normal,slow,lazy}` |
-| (future P-3) `Frame.perspective` | `--frame-perspective-{default,shallow,deep}` |
-| (future P-3) `slot.z` | `--depth-{flat,raised,elevated,floating,modal}` |
+| API | Token (CSS variable) | Status |
+|---|---|---|
+| `ease(name)` | `--motion-easing-{linear,in,out,in-out,spring}` | ✅ |
+| `duration(name)` | `--motion-duration-{instant,fast,normal,slow,lazy}` | ✅ |
+| `Frame.perspective` (string で `var(...)` 渡し可) | `--frame-perspective-{default,shallow,deep}` | ✅ (`utils.ts#formatPerspective`) |
+| `SlotPlacement.z` (string で `var(...)` 渡し可) | `--depth-{flat,raised,elevated,floating,modal}` | ✅ (`utils.ts#formatLength`) |
+| Spring preset (`gentle` / `wobbly` 等の name 取得) | `--motion-spring-{preset}` | ⏳ B-δ で追加予定 |
 
 ## Roadmap
 
 | Phase | scope | Status |
 |---|---|---|
-| **P-2** | motion engine (this) — FLIP + spring + token bridge + reduced-motion | ✅ Ship |
-| **P-3** | `<FrameProvider>` + `<FrameSlot>` + `setFrame()` API | 🟡 skeleton |
-| **P-4** | `creo-ui-vision` 統合 (gesture → Frame morph) | ⏳ |
-| **P-5** | docs Playground demo (Frame morph + gesture) | ⏳ |
-| **P-6** | VP 統合 | ⏳ |
+| **P-2** | motion engine (this) — FLIP + spring + token bridge + reduced-motion | ✅ Ship (v0.1.0) |
+| **P-3** | `<FrameProvider>` + `<FrameSlot>` + `setFrame()` API | ✅ Ship (v0.1.0) |
+| **P-4** | `creo-ui-vision` 統合 (gesture → Frame morph) | ✅ Ship (mock + MediaPipe lazy load) |
+| **P-5** | docs Playground demo (Frame morph + gesture + spatial pinch) | ✅ Ship (`examples/docs/src/pages/Lab/Playground.tsx`) |
+| **P-6** | VP 統合 (VP の pane を Frame protocol に refactor) | ⏳ multi-session |
+| **B-β** | `morphFrame()` coordinator (複数 slot の atomic transition) | ✅ Ship (本 PR、 `motion/morph.ts`) |
+| **B-γ** | `<FrameSlot>` opt-in `useFlip` path (FLIP + spring 統合) | ⏳ 着手予定 |
+| **B-δ** | Spring preset name (`gentle` / `wobbly` / `stiff` 等) | ⏳ 着手予定 |
+| **B-ε** | test coverage 拡充 (flip / provider / slot Medium test) | ⏳ 着手予定 |
 
 ## License
 
