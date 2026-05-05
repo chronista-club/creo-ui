@@ -13,7 +13,7 @@
 | `creo-ui-frame/frame` | ✅ FrameProvider / FrameSlot / useFrame / setFrame |
 | `creo-ui-frame` (root) | ✅ frame + motion 統合 export |
 | `creo-ui-vision` 連結 | ✅ docs Playground で gesture (`useGesture('wave')` → `setFrame`) + spatial pinch bridge dogfood |
-| `morphFrame()` coordinator | ⏳ B-β で追加予定 (現在は `<FrameSlot>` の CSS transition で十分動作) |
+| `morphFrame()` coordinator | ✅ Ship (`motion/morph.ts` — 複数 slot の atomic transition、 `flip()` 再利用、 reduced-motion guard 自動承継) |
 
 ## Why self-built motion?
 
@@ -167,7 +167,7 @@ consumer は guard を毎回書かなくて良い。
 | **P-4** | `creo-ui-vision` 統合 (gesture → Frame morph) | ✅ Ship (mock + MediaPipe lazy load) |
 | **P-5** | docs Playground demo (Frame morph + gesture + spatial pinch) | ✅ Ship (`examples/docs/src/pages/Lab/Playground.tsx`) |
 | **P-6** | VP 統合 (VP の pane を Frame protocol に refactor) | ⏳ multi-session |
-| **B-β** | `morphFrame()` coordinator (複数 slot の atomic transition) | ⏳ 着手予定 |
+| **B-β** | `morphFrame()` coordinator (複数 slot の atomic transition) | ✅ Ship (本 PR、 `motion/morph.ts`) |
 | **B-γ** | `<FrameSlot>` opt-in `useFlip` path (FLIP + spring 統合) | ⏳ 着手予定 |
 | **B-δ** | Spring preset name (`gentle` / `wobbly` / `stiff` 等) | ⏳ 着手予定 |
 | **B-ε** | test coverage 拡充 (flip / provider / slot Medium test) | ⏳ 着手予定 |
