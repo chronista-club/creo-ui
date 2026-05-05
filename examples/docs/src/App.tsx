@@ -27,6 +27,12 @@ const Input = lazy(() => import('./pages/Components/Input'))
 const Card = lazy(() => import('./pages/Components/Card'))
 const Avatar = lazy(() => import('./pages/Components/Avatar'))
 const Dialog = lazy(() => import('./pages/Components/Dialog'))
+const Checkbox = lazy(() => import('./pages/Components/Checkbox'))
+const Radio = lazy(() => import('./pages/Components/Radio'))
+const Switch = lazy(() => import('./pages/Components/Switch'))
+const Badge = lazy(() => import('./pages/Components/Badge'))
+const Tooltip = lazy(() => import('./pages/Components/Tooltip'))
+const Alert = lazy(() => import('./pages/Components/Alert'))
 
 // Resources
 const Icons = lazy(() => import('./pages/Resources/Icons'))
@@ -61,6 +67,12 @@ export default function App() {
       <Route path="/components/card" component={Card} />
       <Route path="/components/avatar" component={Avatar} />
       <Route path="/components/dialog" component={Dialog} />
+      <Route path="/components/checkbox" component={Checkbox} />
+      <Route path="/components/radio" component={Radio} />
+      <Route path="/components/switch" component={Switch} />
+      <Route path="/components/badge" component={Badge} />
+      <Route path="/components/tooltip" component={Tooltip} />
+      <Route path="/components/alert" component={Alert} />
       <Route path="/icons" component={Icons} />
       <Route path="/content" component={Content} />
       <Route path="/playground" component={Playground} />

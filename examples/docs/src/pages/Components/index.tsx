@@ -9,12 +9,30 @@ interface ComponentEntry {
 }
 
 const COMPONENTS: readonly ComponentEntry[] = [
-  // Detail pages (5)
+  // Detail pages (11)
   { name: 'Button', slug: 'button', desc: 'Action trigger — 3 variants × 3 sizes', detail: true },
   {
     name: 'Input',
     slug: 'input',
     desc: 'Text field — bordered / filled × 3 sizes × error',
+    detail: true,
+  },
+  {
+    name: 'Checkbox',
+    slug: 'checkbox',
+    desc: 'Multi-select binary — accent-color brand tint',
+    detail: true,
+  },
+  {
+    name: 'Radio',
+    slug: 'radio',
+    desc: 'Exclusive selection in named group',
+    detail: true,
+  },
+  {
+    name: 'Switch',
+    slug: 'switch',
+    desc: 'Immediate toggle (settings / feature flag)',
     detail: true,
   },
   {
@@ -30,18 +48,33 @@ const COMPONENTS: readonly ComponentEntry[] = [
     detail: true,
   },
   {
+    name: 'Badge',
+    slug: 'badge',
+    desc: 'Pill-shaped status / count / tag — 6 variants',
+    detail: true,
+  },
+  {
     name: 'Dialog',
     slug: 'dialog',
     desc: 'Native <dialog> modal — focus trap + backdrop',
     detail: true,
   },
+  {
+    name: 'Tooltip',
+    slug: 'tooltip',
+    desc: 'CSS-only hover/focus hint — 4 placements',
+    detail: true,
+  },
+  {
+    name: 'Alert',
+    slug: 'alert',
+    desc: 'Inline persistent status — 4 semantic variants',
+    detail: true,
+  },
 
-  // Shipped, spec only (22)
-  { name: 'Badge', slug: 'badge', desc: 'Counter / status indicator' },
-  { name: 'Form controls', slug: 'form-controls', desc: 'Checkbox / radio / switch primitives' },
+  // Shipped, spec only (16)
   { name: 'Form field', slug: 'form-field', desc: 'Label + input + helper-text composite' },
   { name: 'Segmented', slug: 'segmented', desc: 'Mutually exclusive options bar' },
-  { name: 'Tooltip', slug: 'tooltip', desc: 'CSS-only hover/focus-within hint' },
   { name: 'Progress', slug: 'progress', desc: 'Determinate + indeterminate bar + spinner' },
   { name: 'Toast', slug: 'toast', desc: 'Transient region (6 placements × 5 variants)' },
   { name: 'Menu', slug: 'menu', desc: 'Native popover API based dropdown' },
@@ -52,7 +85,6 @@ const COMPONENTS: readonly ComponentEntry[] = [
   { name: 'Skeleton', slug: 'skeleton', desc: 'Linear-gradient shimmer placeholder' },
   { name: 'Breadcrumbs', slug: 'breadcrumbs', desc: '<nav> + <ol> with separator variants' },
   { name: 'Pagination', slug: 'pagination', desc: 'sm/md/lg × default/compact, aria-current' },
-  { name: 'Alert', slug: 'alert', desc: 'role=status/alert with banner variant' },
   { name: 'Empty state', slug: 'empty-state', desc: 'Icon + title + description + actions' },
   {
     name: 'Stepper',
@@ -83,7 +115,7 @@ export default function ComponentsIndex() {
       <section>
         <h2 class="docs-section-title">Detail pages</h2>
         <p class="docs-page-helper">
-          live preview + props table + token reference + a11y note を持つ完全版 page。 残りの 22
+          live preview + props table + token reference + a11y note を持つ完全版 page。 残りの 16
           component は spec doc (GitHub) を参照。
         </p>
         <div class="docs-components-grid">
