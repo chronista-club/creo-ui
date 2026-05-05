@@ -58,8 +58,14 @@ jobs:
         # root tsconfig.json は examples/ を include しないため、
         # examples/docs の dogfood code は別途 typecheck する。
         # editor-host API drift / dogfood callsite の signature mismatch を検出。
+        #
+        # bun workspace の root install は workspace member の node_modules に
+        # symlink を作る設計だが、 CI 環境で frozen-lockfile + 並列 fetch のため
+        # member 内 link 作成が稀に遅延する。 明示的に再 install して link を確実に。
         working-directory: creo-ui/examples/docs
-        run: bun x tsc --noEmit
+        run: |
+          bun install --frozen-lockfile
+          bun x tsc --noEmit
 
   rust:
     name: Rust build
