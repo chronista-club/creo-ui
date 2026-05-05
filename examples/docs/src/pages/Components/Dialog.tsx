@@ -1,3 +1,12 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
 import { type JSX, createSignal } from 'solid-js'
 
 const PROPS = [
@@ -219,6 +228,29 @@ export default function Dialog() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          dialog の size / variant / title / body を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。 inline 表示 (
+          <code>&lt;dialog open&gt;</code>) で modal を出さずに見せる、 真の modal は上の Live
+          preview section の Open ボタンで試せる。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.dialog-editor',
+            }}
+          >
+            <DialogEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<dialog class="creo-dialog" data-size="md" id="confirm-dlg">
@@ -251,5 +283,76 @@ export default function Dialog() {
         </p>
       </section>
     </>
+  )
+}
+
+type DialogSize = 'sm' | 'md' | 'lg'
+type DialogVariant = 'default' | 'destructive'
+
+function DialogEditorDemo() {
+  const [size, setSize] = createSignal<DialogSize>('md')
+  const [variant, setVariant] = createSignal<DialogVariant>('default')
+  const [title, setTitle] = createSignal('削除の確認')
+  const [body, setBody] = createSignal('この項目を削除します。 この操作は取り消せません。')
+
+  bind({
+    id: 'dialog.size',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('dialog.size', size, setSize),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'dialog', label: 'Size', order: 1 },
+  })
+  bind({
+    id: 'dialog.variant',
+    control: select({ options: ['default', 'destructive'] as const }),
+    target: signalTarget('dialog.variant', variant, setVariant),
+    initial: 'default',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'dialog', label: 'Variant', order: 2 },
+  })
+  bind({
+    id: 'dialog.title',
+    control: string({ variant: 'input' }),
+    target: signalTarget('dialog.title', title, setTitle),
+    initial: '削除の確認',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Title', order: 1 },
+  })
+  bind({
+    id: 'dialog.body',
+    control: string({ variant: 'textarea' }),
+    target: signalTarget('dialog.body', body, setBody),
+    initial: 'この項目を削除します。 この操作は取り消せません。',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Body', order: 2 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      {/* inline 表示 (open attribute) — modal でなく直接 view */}
+      <dialog
+        class="creo-dialog"
+        data-size={size()}
+        data-variant={variant() === 'default' ? undefined : variant()}
+        open
+        style={{ position: 'static', margin: 0 }}
+      >
+        <header class="creo-dialog-header">
+          <h2 class="creo-dialog-title">{title()}</h2>
+        </header>
+        <div class="creo-dialog-body">
+          <p>{body()}</p>
+        </div>
+        <footer class="creo-dialog-footer">
+          <button type="button" class="creo-btn" data-variant="secondary">
+            キャンセル
+          </button>
+          <button type="button" class="creo-btn" data-variant="primary">
+            {variant() === 'destructive' ? '永久削除' : 'OK'}
+          </button>
+        </footer>
+      </dialog>
+    </div>
   )
 }

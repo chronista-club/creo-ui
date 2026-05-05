@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-size',
@@ -146,6 +157,27 @@ export default function Avatar() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          avatar の size / shape / initials を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.avatar-editor',
+            }}
+          >
+            <AvatarEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Image -->
@@ -176,5 +208,52 @@ export default function Avatar() {
         </p>
       </section>
     </>
+  )
+}
+
+type AvatarSize = 'sm' | 'md' | 'lg' | 'xl'
+type AvatarShape = 'circle' | 'square'
+
+function AvatarEditorDemo() {
+  const [size, setSize] = createSignal<AvatarSize>('lg')
+  const [shape, setShape] = createSignal<AvatarShape>('circle')
+  const [initials, setInitials] = createSignal('CU')
+
+  bind({
+    id: 'avatar.size',
+    control: select({ options: ['sm', 'md', 'lg', 'xl'] as const }),
+    target: signalTarget('avatar.size', size, setSize),
+    initial: 'lg',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'avatar', label: 'Size', order: 1 },
+  })
+  bind({
+    id: 'avatar.shape',
+    control: select({ options: ['circle', 'square'] as const }),
+    target: signalTarget('avatar.shape', shape, setShape),
+    initial: 'circle',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'avatar', label: 'Shape', order: 2 },
+  })
+  bind({
+    id: 'avatar.initials',
+    control: string({ variant: 'input' }),
+    target: signalTarget('avatar.initials', initials, setInitials),
+    initial: 'CU',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Initials', order: 1 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <span
+        class="creo-avatar"
+        data-size={size()}
+        data-shape={shape() === 'circle' ? undefined : shape()}
+        aria-label={`Avatar with initials ${initials()}`}
+      >
+        <span class="creo-avatar-initials">{initials()}</span>
+      </span>
+    </div>
   )
 }
