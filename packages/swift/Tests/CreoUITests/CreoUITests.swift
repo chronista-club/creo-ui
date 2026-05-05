@@ -9,12 +9,12 @@ final class CreoUITests: XCTestCase {
 
     func testSpacingMdIs18() {
         // 5-step size-feel rule (2026-04-22)
-        XCTAssertEqual(CreoUITokens.spacingMd, 18.0, accuracy: 0.001)
+        XCTAssertEqual(CreoUITokens.spacingM, 18.0, accuracy: 0.001)
     }
 
     func testMarginMdMatchesSpacingMd() {
         // Creo UI 規約: 同じ "medium" は spacing.md と margin.md を揃える
-        XCTAssertEqual(CreoUITokens.marginMd, CreoUITokens.spacingMd, accuracy: 0.001)
+        XCTAssertEqual(CreoUITokens.marginMd, CreoUITokens.spacingM, accuracy: 0.001)
     }
 
     func testLayoutTargetTapIs44pt() {
