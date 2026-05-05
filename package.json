@@ -15,7 +15,9 @@
     "format": "biome check . --write",
     "dev": "cd examples/web-demo && bun install --silent && bun run dev",
     "gen:themes": "bun scripts/generate-themes.mjs",
-    "test:colors": "bun test transforms/color-utils.test.js"
+    "test:colors": "bun test transforms/color-utils.test.js",
+    "fetch:design": "bun scripts/fetch-creo-ui-design.mjs",
+    "diff:design": "bun scripts/diff-creo-ui-design.mjs"
   },
   "devDependencies": {
     "style-dictionary": "^4.0.0",

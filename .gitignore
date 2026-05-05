@@ -1,5 +1,8 @@
 node_modules/
 dist/
+
+# Phase 2a PoC — creo-ui-design release artifacts (download 先、 commit しない)
+dist-creo-ui-design/
 .DS_Store
 *.log
 .env
