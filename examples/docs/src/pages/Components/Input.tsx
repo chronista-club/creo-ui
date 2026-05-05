@@ -1,4 +1,14 @@
 import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
 
 const PROPS = [
   {
@@ -129,6 +139,27 @@ export default function Input() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
+          input の variant / size / placeholder / value / disabled を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.input-editor',
+            }}
+          >
+            <InputEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Basic bordered -->
@@ -160,5 +191,72 @@ export default function Input() {
         </p>
       </section>
     </>
+  )
+}
+
+type InputVariant = 'bordered' | 'filled'
+type InputSize = 'sm' | 'md' | 'lg'
+
+function InputEditorDemo() {
+  const [variant, setVariant] = createSignal<InputVariant>('bordered')
+  const [size, setSize] = createSignal<InputSize>('md')
+  const [placeholder, setPlaceholder] = createSignal('you@example.com')
+  const [value, setValue] = createSignal('')
+  const [disabled, setDisabled] = createSignal(false)
+
+  bind({
+    id: 'input.variant',
+    control: select({ options: ['bordered', 'filled'] as const }),
+    target: signalTarget('input.variant', variant, setVariant),
+    initial: 'bordered',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'input', label: 'Variant', order: 1 },
+  })
+  bind({
+    id: 'input.size',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('input.size', size, setSize),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'input', label: 'Size', order: 2 },
+  })
+  bind({
+    id: 'input.disabled',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('input.disabled', disabled, setDisabled),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'input', label: 'Disabled', order: 3 },
+  })
+  bind({
+    id: 'input.placeholder',
+    control: string({ variant: 'input' }),
+    target: signalTarget('input.placeholder', placeholder, setPlaceholder),
+    initial: 'you@example.com',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Placeholder', order: 1 },
+  })
+  bind({
+    id: 'input.value',
+    control: string({ variant: 'input' }),
+    target: signalTarget('input.value', value, setValue),
+    initial: '',
+    semantic: 'content',
+    placement: { region: 'right', group: 'content', label: 'Value', order: 2 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <input
+        class="creo-input"
+        type="text"
+        data-variant={variant() === 'bordered' ? undefined : variant()}
+        data-size={size()}
+        placeholder={placeholder()}
+        value={value()}
+        disabled={disabled()}
+        onInput={(e) => setValue(e.currentTarget.value)}
+      />
+    </div>
   )
 }
