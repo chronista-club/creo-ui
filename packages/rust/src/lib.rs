@@ -8,7 +8,7 @@
 //! use creo_ui::tokens;
 //!
 //! let brand = tokens::COLOR_BRAND_PRIMARY; // Rgb (mint-dark default)
-//! let md = tokens::SPACING_MD;             // 18.0_f32 (px, 5-step rule)
+//! let md = tokens::SPACING_M;             // 18.0_f32 (px, 5-step rule)
 //! ```
 //!
 //! Phase 2 以降で ratatui / egui 等のヘルパー trait を追加する予定。
@@ -53,13 +53,13 @@ mod tests {
     #[test]
     fn spacing_md_is_18px() {
         // 5-step size-feel rule (2026-04-22): md is the middle of xs/sm/md/lg/xl
-        assert_eq!(tokens::SPACING_MD, 18.0_f32);
+        assert_eq!(tokens::SPACING_M, 18.0_f32);
     }
 
     #[test]
     fn margin_md_matches_spacing_md() {
         // Creo UI 規約: 同じ "medium" は spacing.md と margin.md を揃える
-        assert_eq!(tokens::MARGIN_MD, tokens::SPACING_MD);
+        assert_eq!(tokens::MARGIN_MD, tokens::SPACING_M);
     }
 
     #[test]

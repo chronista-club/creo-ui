@@ -40,7 +40,7 @@ public struct CreoToast: View {
     }
 
     public var body: some View {
-        HStack(alignment: .top, spacing: CreoUITokens.spacingSm) {
+        HStack(alignment: .top, spacing: CreoUITokens.spacingS) {
             if let symbol = iconSymbol {
                 Image(systemName: symbol)
                     .foregroundColor(iconColor)
@@ -71,8 +71,8 @@ public struct CreoToast: View {
                 .accessibilityLabel("閉じる")
             }
         }
-        .padding(.horizontal, CreoUITokens.spacingMd)
-        .padding(.vertical, CreoUITokens.spacingSm)
+        .padding(.horizontal, CreoUITokens.spacingM)
+        .padding(.vertical, CreoUITokens.spacingS)
         .background(Color.colorSurfaceSurface)
         .overlay(
             RoundedRectangle(cornerRadius: CreoUITokens.radiusMd)
