@@ -24,13 +24,57 @@ export interface SpringOptions {
 }
 
 /**
+ * Spring preset name — 慣習的 5 種類 (Framer Motion / spring-easing lib base)。
+ *
+ * - **gentle**: soft、 minimal overshoot — UI hover / tooltip 等の控えめ動き
+ * - **wobbly**: bouncy、 noticeable overshoot — 注意喚起 / playful UI
+ * - **stiff**: quick snap、 minimal overshoot — modal / sheet 開閉
+ * - **slow**: long settle — 大きな page transition / hero 演出
+ * - **tight**: fast settle、 minimal overshoot — chip / pill toggle 等
+ */
+export type SpringPreset = 'gentle' | 'wobbly' | 'stiff' | 'slow' | 'tight'
+
+type SpringPresetParams = Required<Pick<SpringOptions, 'stiffness' | 'damping' | 'mass'>>
+
+/**
+ * 5 preset の物理パラメータ table。 Framer Motion / spring-easing lib の慣習
+ * を base に Creo UI 用に微調整。 中期 (B-δ-2) で `tokens/motion/spring/*.json`
+ * (DTCG) に extract、 multi-platform parity を取る予定。
+ */
+const SPRING_PRESETS: Readonly<Record<SpringPreset, SpringPresetParams>> = {
+  gentle: { stiffness: 120, damping: 14, mass: 1 },
+  wobbly: { stiffness: 180, damping: 12, mass: 1 },
+  stiff: { stiffness: 280, damping: 24, mass: 1 },
+  slow: { stiffness: 80, damping: 16, mass: 1 },
+  tight: { stiffness: 300, damping: 30, mass: 1 },
+}
+
+/** Preset name から物理パラメータを取得 (consumer が override base にしたい時用) */
+export function springPreset(name: SpringPreset): Readonly<SpringOptions> {
+  return SPRING_PRESETS[name]
+}
+
+/**
  * Spring を Web Animations API の `linear(...)` easing 文字列に変換。
  *
  * @example
- * const easing = springEasing({ stiffness: 280, damping: 20 })
+ * // Preset name で簡潔に
+ * const easing = springEasing('gentle')
  * el.animate([...], { duration: 400, easing })
+ *
+ * @example
+ * // 物理パラメータ直接指定
+ * const easing = springEasing({ stiffness: 280, damping: 20 })
+ *
+ * @example
+ * // Preset を base に override
+ * const easing = springEasing({ ...springPreset('wobbly'), samples: 100 })
  */
-export function springEasing(options: SpringOptions = {}): string {
+export function springEasing(preset: SpringPreset): string
+export function springEasing(options?: SpringOptions): string
+export function springEasing(arg?: SpringPreset | SpringOptions): string {
+  const options: SpringOptions = typeof arg === 'string' ? SPRING_PRESETS[arg] : (arg ?? {})
+
   const k = options.stiffness ?? 280
   const c = options.damping ?? 20
   const m = options.mass ?? 1
