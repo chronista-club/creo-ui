@@ -1,0 +1,67 @@
+/**
+ * Creo UI — Grid (CSS Grid layout primitive)
+ *
+ * 2D layout primitive。 column 数を `data-cols` で指定 (1/2/3/4/6/12)、 gap は spacing token、
+ * responsive breakpoint は consumer 側で別途 (token として将来追加検討)。
+ *
+ * Spec: docs/components/grid.md
+ * Token: creo-ui-web/tokens.css (必須)
+ */
+
+.creo-grid {
+  display: grid;
+  gap: var(--spacing-m);
+  /* default 12 column (web standard) */
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/* ---------- Column count ---------- */
+
+.creo-grid[data-cols="1"] {
+  grid-template-columns: 1fr;
+}
+.creo-grid[data-cols="2"] {
+  grid-template-columns: repeat(2, 1fr);
+}
+.creo-grid[data-cols="3"] {
+  grid-template-columns: repeat(3, 1fr);
+}
+.creo-grid[data-cols="4"] {
+  grid-template-columns: repeat(4, 1fr);
+}
+.creo-grid[data-cols="6"] {
+  grid-template-columns: repeat(6, 1fr);
+}
+.creo-grid[data-cols="12"] {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/* ---------- Gap (token-driven、 5-step rule) ---------- */
+
+.creo-grid[data-gap="xs"] {
+  gap: var(--spacing-xs);
+}
+.creo-grid[data-gap="s"] {
+  gap: var(--spacing-s);
+}
+.creo-grid[data-gap="m"] {
+  gap: var(--spacing-m);
+}
+.creo-grid[data-gap="l"] {
+  gap: var(--spacing-l);
+}
+.creo-grid[data-gap="xl"] {
+  gap: var(--spacing-xl);
+}
+
+/* ---------- Auto-fit (responsive、 min-column-width 基準) ---------- */
+
+.creo-grid[data-cols="auto-sm"] {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+.creo-grid[data-cols="auto-md"] {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.creo-grid[data-cols="auto-lg"] {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}

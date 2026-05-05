@@ -179,6 +179,31 @@ const COMPONENTS: readonly ComponentEntry[] = [
     desc: '3-slot ViewBuilder (logo / nav / actions) — default/marketing × sticky/elevation',
     detail: true,
   },
+  // Layout primitives (4 件、 NEW CSS in PR #22)
+  {
+    name: 'Stack',
+    slug: 'stack',
+    desc: '1-axis flex layout primitive — vertical/horizontal × gap/align/justify/wrap',
+    detail: true,
+  },
+  {
+    name: 'Grid',
+    slug: 'grid',
+    desc: 'CSS Grid layout primitive — 1/2/3/4/6/12 cols + auto-fit responsive',
+    detail: true,
+  },
+  {
+    name: 'Container',
+    slug: 'container',
+    desc: 'max-width + horizontal centering — 5 sizes (sm/md/lg/xl/full)',
+    detail: true,
+  },
+  {
+    name: 'Divider',
+    slug: 'divider',
+    desc: 'Visual / semantic separator — horizontal/vertical × thin/thick × subtle',
+    detail: true,
+  },
 ]
 
 export default function ComponentsIndex() {
