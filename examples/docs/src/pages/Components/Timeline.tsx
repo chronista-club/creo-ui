@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  string,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-size',
@@ -156,6 +167,26 @@ export default function Timeline() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> で size / item variant / item title を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.timeline-editor',
+            }}
+          >
+            <TimelineEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<ol class="creo-timeline">
@@ -183,5 +214,66 @@ export default function Timeline() {
         </pre>
       </section>
     </>
+  )
+}
+
+type TimelineSize = 'sm' | 'md' | 'lg'
+type TimelineItemVariant = 'default' | 'success' | 'warning' | 'error' | 'info'
+
+function TimelineEditorDemo() {
+  const [size, setSize] = createSignal<TimelineSize>('md')
+  const [itemVariant, setItemVariant] = createSignal<TimelineItemVariant>('success')
+  const [itemTitle, setItemTitle] = createSignal('PR merged')
+
+  bind({
+    id: 'timeline.size',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('timeline.size', size, setSize),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'timeline', label: 'Size', order: 1 },
+  })
+  bind({
+    id: 'timeline.itemVariant',
+    control: select({
+      options: ['default', 'success', 'warning', 'error', 'info'] as const,
+    }),
+    target: signalTarget('timeline.itemVariant', itemVariant, setItemVariant),
+    initial: 'success',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'item', label: 'Item variant', order: 1 },
+  })
+  bind({
+    id: 'timeline.itemTitle',
+    control: string({ variant: 'input' }),
+    target: signalTarget('timeline.itemTitle', itemTitle, setItemTitle),
+    initial: 'PR merged',
+    semantic: 'content',
+    placement: { region: 'right', group: 'item', label: 'Item title', order: 2 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <ol class="creo-timeline" data-size={size() === 'md' ? undefined : size()}>
+        <li
+          class="creo-timeline-item"
+          data-variant={itemVariant() === 'default' ? undefined : itemVariant()}
+        >
+          <div class="creo-timeline-marker" aria-hidden="true" />
+          <div class="creo-timeline-content">
+            <div class="creo-timeline-title">{itemTitle()}</div>
+            <div class="creo-timeline-description">この item の variant + title を編集中</div>
+            <div class="creo-timeline-meta">just now</div>
+          </div>
+        </li>
+        <li class="creo-timeline-item">
+          <div class="creo-timeline-marker" aria-hidden="true" />
+          <div class="creo-timeline-content">
+            <div class="creo-timeline-title">Repository created</div>
+            <div class="creo-timeline-meta">2026-04</div>
+          </div>
+        </li>
+      </ol>
+    </div>
   )
 }

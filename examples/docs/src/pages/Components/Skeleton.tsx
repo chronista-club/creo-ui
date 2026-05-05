@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  number,
+  select,
+  signalTarget,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-shape',
@@ -153,6 +164,26 @@ export default function Skeleton() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> で shape / width / height を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.skeleton-editor',
+            }}
+          >
+            <SkeletonEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Text lines -->
@@ -175,5 +206,49 @@ export default function Skeleton() {
         </pre>
       </section>
     </>
+  )
+}
+
+type SkeletonShape = 'text' | 'circle' | 'rect'
+
+function SkeletonEditorDemo() {
+  const [shape, setShape] = createSignal<SkeletonShape>('rect')
+  const [width, setWidth] = createSignal(280)
+  const [height, setHeight] = createSignal(80)
+
+  bind({
+    id: 'skeleton.shape',
+    control: select({ options: ['text', 'circle', 'rect'] as const }),
+    target: signalTarget('skeleton.shape', shape, setShape),
+    initial: 'rect',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'skeleton', label: 'Shape', order: 1 },
+  })
+  bind({
+    id: 'skeleton.width',
+    control: number({ variant: 'slider' }),
+    target: signalTarget('skeleton.width', width, setWidth),
+    initial: 280,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'skeleton', label: 'Width (px)', order: 2 },
+  })
+  bind({
+    id: 'skeleton.height',
+    control: number({ variant: 'slider' }),
+    target: signalTarget('skeleton.height', height, setHeight),
+    initial: 80,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'skeleton', label: 'Height (px)', order: 3 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <span
+        class="creo-skeleton"
+        data-shape={shape() === 'rect' ? undefined : shape()}
+        style={{ width: `${width()}px`, height: `${height()}px` }}
+        aria-hidden="true"
+      />
+    </div>
   )
 }

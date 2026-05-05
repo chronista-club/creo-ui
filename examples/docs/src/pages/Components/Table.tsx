@@ -1,3 +1,14 @@
+import { A } from '@solidjs/router'
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+} from 'creo-ui-editor-host'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-size',
@@ -195,6 +206,26 @@ export default function Table() {
       </section>
 
       <section>
+        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> で variant / size / sticky-head を即時編集 (
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
+        </p>
+        <div class="docs-playground-frame">
+          <EditorHostProvider
+            config={{
+              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
+              exposeConsole: true,
+              localStorageNamespace: 'creo-ui-docs.table-editor',
+            }}
+          >
+            <TableEditorDemo />
+            <EditorLayer />
+          </EditorHostProvider>
+        </div>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<table class="creo-table">
@@ -223,5 +254,87 @@ export default function Table() {
         </pre>
       </section>
     </>
+  )
+}
+
+type TableVariant = 'default' | 'striped'
+type TableSize = 'sm' | 'md' | 'lg'
+
+function TableEditorDemo() {
+  const [variant, setVariant] = createSignal<TableVariant>('default')
+  const [size, setSize] = createSignal<TableSize>('md')
+  const [stickyHead, setStickyHead] = createSignal(false)
+
+  bind({
+    id: 'table.variant',
+    control: select({ options: ['default', 'striped'] as const }),
+    target: signalTarget('table.variant', variant, setVariant),
+    initial: 'default',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'table', label: 'Variant', order: 1 },
+  })
+  bind({
+    id: 'table.size',
+    control: select({ options: ['sm', 'md', 'lg'] as const }),
+    target: signalTarget('table.size', size, setSize),
+    initial: 'md',
+    semantic: 'tool',
+    placement: { region: 'right', group: 'table', label: 'Size', order: 2 },
+  })
+  bind({
+    id: 'table.sticky',
+    control: boolean({ variant: 'switch' }),
+    target: signalTarget('table.sticky', stickyHead, setStickyHead),
+    initial: false,
+    semantic: 'tool',
+    placement: { region: 'right', group: 'table', label: 'Sticky head', order: 3 },
+  })
+
+  return (
+    <div class="docs-playground-stage">
+      <table
+        class="creo-table"
+        data-variant={variant() === 'default' ? undefined : variant()}
+        data-size={size() === 'md' ? undefined : size()}
+        data-sticky-head={stickyHead() ? 'true' : undefined}
+      >
+        <thead class="creo-table-head">
+          <tr class="creo-table-row">
+            <th class="creo-table-cell" scope="col">
+              Component
+            </th>
+            <th class="creo-table-cell" scope="col">
+              Status
+            </th>
+            <th class="creo-table-cell" scope="col" data-align="end">
+              Bindings
+            </th>
+          </tr>
+        </thead>
+        <tbody class="creo-table-body">
+          <tr class="creo-table-row">
+            <td class="creo-table-cell">Button</td>
+            <td class="creo-table-cell">Detail + dogfood</td>
+            <td class="creo-table-cell" data-align="end">
+              4
+            </td>
+          </tr>
+          <tr class="creo-table-row">
+            <td class="creo-table-cell">Card</td>
+            <td class="creo-table-cell">Detail + dogfood</td>
+            <td class="creo-table-cell" data-align="end">
+              5
+            </td>
+          </tr>
+          <tr class="creo-table-row">
+            <td class="creo-table-cell">Dialog</td>
+            <td class="creo-table-cell">Detail + dogfood</td>
+            <td class="creo-table-cell" data-align="end">
+              4
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   )
 }
