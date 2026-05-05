@@ -1,0 +1,16 @@
+# Bun configuration for creo-ui-frame package
+# https://bun.sh/docs/runtime/bunfig
+
+[test]
+# Register happy-dom globals (window / document / Element / HTMLElement /
+# getComputedStyle / matchMedia / Element.animate ...) before each test。
+# DOM 必要な test (flip / morph DOM path) を 1 setup で統一カバー、 既存
+# no-DOM test (spring / tokens fallback / utils 純関数) も共存可能 (happy-dom
+# 環境でも document.documentElement の CSS var 未定義 → 既存 fallback path
+# test がそのまま pass)。
+#
+# 注意: SolidJS component test (provider / slot) は **scope outside**。
+# bun の JSX transform が default React のため、 Solid jsx-runtime を呼ばず
+# `ReferenceError: React is not defined` で fail する。 別 task で Solid
+# testing infrastructure (vitest 導入 or bun-plugin-solid 等) と一緒に取り組む。
+preload = ["./test-setup.ts"]
