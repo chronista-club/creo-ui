@@ -162,8 +162,6 @@ export default function Badge() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.badge-editor',
             }}
           >
@@ -195,22 +193,14 @@ function BadgeEditorDemo() {
   const [text, setText] = createSignal('v0.14.0')
 
   bind({
-    id: 'badge.variant',
-    control: select({
-      options: ['neutral', 'brand', 'success', 'warning', 'error', 'info'] as const,
-    }),
-    target: signalTarget('badge.variant', variant, setVariant),
-    initial: 'brand',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'badge', label: 'Variant', order: 1 },
+    target: signalTarget('badge.variant', variant, (v) => setVariant(v as BadgeVariant)),
+    control: select(['neutral', 'brand', 'success', 'warning', 'error', 'info'] as const),
+    placement: { semantic: 'tool', group: 'badge', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'badge.text',
-    control: string({ variant: 'input' }),
     target: signalTarget('badge.text', text, setText),
-    initial: 'v0.14.0',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Text', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Text', order: 1 },
   })
 
   return (

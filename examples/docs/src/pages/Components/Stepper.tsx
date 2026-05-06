@@ -176,8 +176,6 @@ export default function Stepper() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.stepper-editor',
             }}
           >
@@ -223,26 +221,23 @@ export default function Stepper() {
 }
 
 type StepperOrientation = 'horizontal' | 'vertical'
+type StepperCurrent = '1' | '2' | '3' | '4'
 
 function StepperEditorDemo() {
   const [orientation, setOrientation] = createSignal<StepperOrientation>('horizontal')
-  const [current, setCurrent] = createSignal<'1' | '2' | '3' | '4'>('2')
+  const [current, setCurrent] = createSignal<StepperCurrent>('2')
 
   bind({
-    id: 'stepper.orientation',
-    control: select({ options: ['horizontal', 'vertical'] as const }),
-    target: signalTarget('stepper.orientation', orientation, setOrientation),
-    initial: 'horizontal',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'stepper', label: 'Orientation', order: 1 },
+    target: signalTarget('stepper.orientation', orientation, (v) =>
+      setOrientation(v as StepperOrientation),
+    ),
+    control: select(['horizontal', 'vertical'] as const),
+    placement: { semantic: 'tool', group: 'stepper', label: 'Orientation', order: 1 },
   })
   bind({
-    id: 'stepper.current',
-    control: select({ options: ['1', '2', '3', '4'] as const }),
-    target: signalTarget('stepper.current', current, setCurrent),
-    initial: '2',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'stepper', label: 'Current step', order: 2 },
+    target: signalTarget('stepper.current', current, (v) => setCurrent(v as StepperCurrent)),
+    control: select(['1', '2', '3', '4'] as const),
+    placement: { semantic: 'tool', group: 'stepper', label: 'Current step', order: 2 },
   })
 
   const stateOf = (n: number): 'completed' | 'current' | 'pending' => {

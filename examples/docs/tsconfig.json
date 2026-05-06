@@ -11,7 +11,17 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "solid-js",
+    "baseUrl": ".",
+    "paths": {
+      "creo-ui-editor-host": ["../../packages/editor-host/src/index.ts"],
+      "creo-ui-frame": ["../../packages/frame/src/index.ts"],
+      "creo-ui-icons-web": ["../../packages/icons-web/src/index.ts"],
+      "creo-ui-icons-web/registry/*": ["../../packages/icons-web/src/registry/*.ts"],
+      "creo-ui-vision": ["../../packages/vision/src/index.ts"],
+      "creo-ui-vision/mock": ["../../packages/vision/src/mock.ts"],
+      "creo-ui-vision/mediapipe": ["../../packages/vision/src/mediapipe.ts"]
+    }
   },
   "include": ["src"]
 }

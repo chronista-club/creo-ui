@@ -172,8 +172,6 @@ export default function Skeleton() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.skeleton-editor',
             }}
           >
@@ -217,28 +215,19 @@ function SkeletonEditorDemo() {
   const [height, setHeight] = createSignal(80)
 
   bind({
-    id: 'skeleton.shape',
-    control: select({ options: ['text', 'circle', 'rect'] as const }),
-    target: signalTarget('skeleton.shape', shape, setShape),
-    initial: 'rect',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'skeleton', label: 'Shape', order: 1 },
+    target: signalTarget('skeleton.shape', shape, (v) => setShape(v as SkeletonShape)),
+    control: select(['text', 'circle', 'rect'] as const),
+    placement: { semantic: 'tool', group: 'skeleton', label: 'Shape', order: 1 },
   })
   bind({
-    id: 'skeleton.width',
-    control: number({ variant: 'slider' }),
     target: signalTarget('skeleton.width', width, setWidth),
-    initial: 280,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'skeleton', label: 'Width (px)', order: 2 },
+    control: number({ variant: 'slider' }),
+    placement: { semantic: 'tool', group: 'skeleton', label: 'Width (px)', order: 2 },
   })
   bind({
-    id: 'skeleton.height',
-    control: number({ variant: 'slider' }),
     target: signalTarget('skeleton.height', height, setHeight),
-    initial: 80,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'skeleton', label: 'Height (px)', order: 3 },
+    control: number({ variant: 'slider' }),
+    placement: { semantic: 'tool', group: 'skeleton', label: 'Height (px)', order: 3 },
   })
 
   return (

@@ -21,6 +21,10 @@ impl Rgb {
     }
 }
 
+/// Drawer / side sheet backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。 中央 modal (dialog) はより重い注意を引くため `scrim-modal` (50%) を使う。
+pub const COLOR_SURFACE_SCRIM: Rgb = Rgb::new(0, 0, 0);
+/// Dialog (中央 modal) backdrop scrim — 50% black overlay。 drawer (40%) より強く content を後退させ、 user の注意を modal に集中させる。 dark/light theme 共通。
+pub const COLOR_SURFACE_SCRIM_MODAL: Rgb = Rgb::new(0, 0, 0);
 /// Brand primary (base)
 pub const COLOR_BRAND_PRIMARY: Rgb = Rgb::new(97, 197, 148);
 /// Brand primary — hover
@@ -165,6 +169,14 @@ pub const FRAME_PERSPECTIVE_DEFAULT: f32 = 1400_f32;
 pub const FRAME_PERSPECTIVE_SHALLOW: f32 = 800_f32;
 /// Deep — farther camera、 subtle 3D (long-form content / reading)
 pub const FRAME_PERSPECTIVE_DEEP: f32 = 2400_f32;
+/// Narrow column — short form / single-line input collection / compact reading. Aligns with iPhone 15 Pro Max landscape (932×430)、 dense modal.
+pub const LAYOUT_CONTAINER_SM: f32 = 640_f32;
+/// Default reading-friendly — 60-80 char line for long-form text. iPad portrait の content viewport と整合。
+pub const LAYOUT_CONTAINER_MD: f32 = 768_f32;
+/// Dashboard / table-rich content — multi-column tables / data lists. iPad landscape / 13" laptop の effective viewport。
+pub const LAYOUT_CONTAINER_LG: f32 = 1024_f32;
+/// Hero / multi-column layout — landing / marketing / wide app shell。 14" laptop 以上 desktop の comfortable upper bound。
+pub const LAYOUT_CONTAINER_XL: f32 = 1280_f32;
 /// Tight gap — icon+label inline, chip group, closely-related siblings
 pub const LAYOUT_GAP_TIGHT: f32 = 4_f32;
 /// Default sibling gap — between stacked elements (list items, form fields)
@@ -173,6 +185,12 @@ pub const LAYOUT_GAP_SIBLING: f32 = 18_f32;
 pub const LAYOUT_GAP_SECTION: f32 = 40_f32;
 /// Page-level break — hero / footer separation, landing page major divisions
 pub const LAYOUT_GAP_PAGE: f32 = 64_f32;
+/// auto-fit grid 最小 column 幅 (sm cells) — image thumbnail / icon tile / chip group 等の 密 grid 向け。
+pub const LAYOUT_GRID_COL_MIN_SM: f32 = 160_f32;
+/// auto-fit grid 最小 column 幅 (md cells) — card list / preview tile の標準サイズ、 readable summary を含む card に最適。
+pub const LAYOUT_GRID_COL_MIN_MD: f32 = 220_f32;
+/// auto-fit grid 最小 column 幅 (lg cells) — feature card / hero tile、 multi-line description + CTA を含む rich card。
+pub const LAYOUT_GRID_COL_MIN_LG: f32 = 320_f32;
 /// Minimum tap target — Apple HIG accessibility requirement (modals, buttons on touch devices)
 pub const LAYOUT_TARGET_TAP: f32 = 44_f32;
 /// Minimum focus target — pointer devices / desktop-first (smaller than tap but still comfortable)
@@ -291,6 +309,12 @@ pub const TYPOGRAPHY_FAMILY_EDITOR_MONO: &str = "'iAWriterMonoS', 'iA Writer Mon
 pub const TYPOGRAPHY_FAMILY_EDITOR_QUATTRO: &str = "'iAWriterQuattroS', 'iA Writer Quattro S', 'PlemolJP', 'Noto Sans JP', sans-serif";
 /// Terminal mode — xterm.js (app と同じ stack だが意味的に分離、将来 terminal 専用調整に拡張可)
 pub const TYPOGRAPHY_FAMILY_TERMINAL: &str = "'JetBrainsMono Nerd Font Mono', 'JetBrainsMono Nerd Font', 'JetBrains Mono', 'PlemolJP', 'Noto Sans JP', monospace";
+/// Icon display — list item / inline 強調。 emoji や icon font の visual size、 typography size とは別 scale。
+pub const TYPOGRAPHY_ICON_MD: f32 = 40_f32;
+/// Icon display — empty-state default / card header / feature illustration。
+pub const TYPOGRAPHY_ICON_LG: f32 = 64_f32;
+/// Icon display — empty-state large variant / hero illustration / onboarding。 page-level の visual anchor。
+pub const TYPOGRAPHY_ICON_XL: f32 = 96_f32;
 /// Tight line-height — headings
 pub const TYPOGRAPHY_LINE_HEIGHT_TIGHT: f32 = 1.25_f32;
 /// Normal line-height — default body

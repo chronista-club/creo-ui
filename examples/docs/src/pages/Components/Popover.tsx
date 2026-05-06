@@ -49,11 +49,9 @@ export default function Popover() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Basic popover</div>
           <div class="docs-preview-grid">
-            {/* @ts-expect-error popovertarget is HTML attribute */}
             <button type="button" class="creo-btn" data-variant="primary" popovertarget="pop-basic">
               Open popover
             </button>
-            {/* @ts-expect-error popover is HTML attribute */}
             <div class="creo-popover" id="pop-basic" popover>
               <div class="creo-popover-header">
                 <h3 class="creo-popover-title">Notification</h3>
@@ -74,21 +72,17 @@ export default function Popover() {
 
           <div class="docs-preview-row-label">Sizes (sm / md / lg)</div>
           <div class="docs-preview-grid">
-            {/* @ts-expect-error popovertarget */}
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-sm">
               sm
             </button>
-            {/* @ts-expect-error popover */}
             <div class="creo-popover" id="pop-sm" popover data-size="sm">
               <div class="creo-popover-body">
                 <p>Compact tip 表示。</p>
               </div>
             </div>
-            {/* @ts-expect-error popovertarget */}
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-lg">
               lg
             </button>
-            {/* @ts-expect-error popover */}
             <div class="creo-popover" id="pop-lg" popover data-size="lg">
               <div class="creo-popover-header">
                 <h3 class="creo-popover-title">Large popover</h3>

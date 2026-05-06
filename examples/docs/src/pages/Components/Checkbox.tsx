@@ -135,8 +135,6 @@ export default function Checkbox() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.checkbox-editor',
             }}
           >
@@ -178,28 +176,19 @@ function CheckboxEditorDemo() {
   const [label, setLabel] = createSignal('規約に同意します')
 
   bind({
-    id: 'checkbox.checked',
-    control: boolean({ variant: 'switch' }),
     target: signalTarget('checkbox.checked', checked, setChecked),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'checkbox', label: 'Checked', order: 1 },
-  })
-  bind({
-    id: 'checkbox.disabled',
     control: boolean({ variant: 'switch' }),
-    target: signalTarget('checkbox.disabled', disabled, setDisabled),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'checkbox', label: 'Disabled', order: 2 },
+    placement: { semantic: 'tool', group: 'checkbox', label: 'Checked', order: 1 },
   })
   bind({
-    id: 'checkbox.label',
-    control: string({ variant: 'input' }),
+    target: signalTarget('checkbox.disabled', disabled, setDisabled),
+    control: boolean({ variant: 'switch' }),
+    placement: { semantic: 'tool', group: 'checkbox', label: 'Disabled', order: 2 },
+  })
+  bind({
     target: signalTarget('checkbox.label', label, setLabel),
-    initial: '規約に同意します',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Label', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Label', order: 1 },
   })
 
   return (

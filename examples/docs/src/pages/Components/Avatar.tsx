@@ -166,8 +166,6 @@ export default function Avatar() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.avatar-editor',
             }}
           >
@@ -220,28 +218,19 @@ function AvatarEditorDemo() {
   const [initials, setInitials] = createSignal('CU')
 
   bind({
-    id: 'avatar.size',
-    control: select({ options: ['sm', 'md', 'lg', 'xl'] as const }),
-    target: signalTarget('avatar.size', size, setSize),
-    initial: 'lg',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'avatar', label: 'Size', order: 1 },
+    target: signalTarget('avatar.size', size, (v) => setSize(v as AvatarSize)),
+    control: select(['sm', 'md', 'lg', 'xl'] as const),
+    placement: { semantic: 'tool', group: 'avatar', label: 'Size', order: 1 },
   })
   bind({
-    id: 'avatar.shape',
-    control: select({ options: ['circle', 'square'] as const }),
-    target: signalTarget('avatar.shape', shape, setShape),
-    initial: 'circle',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'avatar', label: 'Shape', order: 2 },
+    target: signalTarget('avatar.shape', shape, (v) => setShape(v as AvatarShape)),
+    control: select(['circle', 'square'] as const),
+    placement: { semantic: 'tool', group: 'avatar', label: 'Shape', order: 2 },
   })
   bind({
-    id: 'avatar.initials',
-    control: string({ variant: 'input' }),
     target: signalTarget('avatar.initials', initials, setInitials),
-    initial: 'CU',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Initials', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Initials', order: 1 },
   })
 
   return (

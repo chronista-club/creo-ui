@@ -61,7 +61,7 @@
       }
     },
     {
-      "include": ["**/Components/Toast.tsx"],
+      "include": ["**/Components/Toast.tsx", "**/Components/Alert.tsx"],
       "linter": {
         "rules": {
           "a11y": {

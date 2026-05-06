@@ -226,8 +226,6 @@ export default function Tabs() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.tabs-editor',
             }}
           >
@@ -270,35 +268,27 @@ export default function Tabs() {
 
 type TabsVariant = 'default' | 'pill'
 type TabsSize = 'sm' | 'md' | 'lg'
+type TabsSelected = 'tab1' | 'tab2' | 'tab3'
 
 function TabsEditorDemo() {
   const [variant, setVariant] = createSignal<TabsVariant>('default')
   const [size, setSize] = createSignal<TabsSize>('md')
-  const [selected, setSelected] = createSignal<'tab1' | 'tab2' | 'tab3'>('tab1')
+  const [selected, setSelected] = createSignal<TabsSelected>('tab1')
 
   bind({
-    id: 'tabs.variant',
-    control: select({ options: ['default', 'pill'] as const }),
-    target: signalTarget('tabs.variant', variant, setVariant),
-    initial: 'default',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'tabs', label: 'Variant', order: 1 },
+    target: signalTarget('tabs.variant', variant, (v) => setVariant(v as TabsVariant)),
+    control: select(['default', 'pill'] as const),
+    placement: { semantic: 'tool', group: 'tabs', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'tabs.size',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('tabs.size', size, setSize),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'tabs', label: 'Size', order: 2 },
+    target: signalTarget('tabs.size', size, (v) => setSize(v as TabsSize)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'tabs', label: 'Size', order: 2 },
   })
   bind({
-    id: 'tabs.selected',
-    control: select({ options: ['tab1', 'tab2', 'tab3'] as const }),
-    target: signalTarget('tabs.selected', selected, setSelected),
-    initial: 'tab1',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'tabs', label: 'Selected', order: 3 },
+    target: signalTarget('tabs.selected', selected, (v) => setSelected(v as TabsSelected)),
+    control: select(['tab1', 'tab2', 'tab3'] as const),
+    placement: { semantic: 'tool', group: 'tabs', label: 'Selected', order: 3 },
   })
 
   return (

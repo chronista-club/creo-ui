@@ -54,6 +54,18 @@ jobs:
             packages/swift/Sources/CreoUI/Generated/ \
             packages/rust/src/generated/
 
+      - name: Typecheck examples/docs
+        # root tsconfig.json は examples/ を include しないため、
+        # examples/docs の dogfood code は別途 typecheck する。
+        # editor-host API drift / dogfood callsite の signature mismatch を検出。
+        #
+        # workspace package の `package.json` exports は publish 用 `./dist/...`
+        # を指すが、 CI / dev 環境で dist/ は build しないと無い (gitignore)。
+        # examples/docs/tsconfig.json に `paths` で workspace member を src/ に
+        # 直接 map することで、 dist build 無しで typecheck 可能にしている。
+        working-directory: creo-ui/examples/docs
+        run: bun x tsc --noEmit
+
   rust:
     name: Rust build
     runs-on: ubuntu-latest

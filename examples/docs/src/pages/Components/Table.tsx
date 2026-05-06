@@ -214,8 +214,6 @@ export default function Table() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.table-editor',
             }}
           >
@@ -266,28 +264,19 @@ function TableEditorDemo() {
   const [stickyHead, setStickyHead] = createSignal(false)
 
   bind({
-    id: 'table.variant',
-    control: select({ options: ['default', 'striped'] as const }),
-    target: signalTarget('table.variant', variant, setVariant),
-    initial: 'default',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'table', label: 'Variant', order: 1 },
+    target: signalTarget('table.variant', variant, (v) => setVariant(v as TableVariant)),
+    control: select(['default', 'striped'] as const),
+    placement: { semantic: 'tool', group: 'table', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'table.size',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('table.size', size, setSize),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'table', label: 'Size', order: 2 },
+    target: signalTarget('table.size', size, (v) => setSize(v as TableSize)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'table', label: 'Size', order: 2 },
   })
   bind({
-    id: 'table.sticky',
-    control: boolean({ variant: 'switch' }),
     target: signalTarget('table.sticky', stickyHead, setStickyHead),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'table', label: 'Sticky head', order: 3 },
+    control: boolean({ variant: 'switch' }),
+    placement: { semantic: 'tool', group: 'table', label: 'Sticky head', order: 3 },
   })
 
   return (

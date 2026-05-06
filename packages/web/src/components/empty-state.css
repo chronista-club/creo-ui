@@ -31,7 +31,7 @@
 /* ---------- Icon ---------- */
 
 .creo-empty-state-icon {
-  font-size: 64px;
+  font-size: var(--typography-icon-lg);
   line-height: 1;
   color: var(--color-text-tertiary);
   opacity: 0.6;
@@ -40,12 +40,12 @@
 }
 
 .creo-empty-state[data-size="sm"] .creo-empty-state-icon {
-  font-size: 40px;
+  font-size: var(--typography-icon-md);
   margin-bottom: 0;
 }
 
 .creo-empty-state[data-size="lg"] .creo-empty-state-icon {
-  font-size: 96px;
+  font-size: var(--typography-icon-xl);
   margin-bottom: var(--spacing-s);
 }
 

@@ -181,8 +181,6 @@ export default function Switch() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.switch-editor',
             }}
           >
@@ -214,28 +212,19 @@ function SwitchEditorDemo() {
   const [label, setLabel] = createSignal('通知を受け取る')
 
   bind({
-    id: 'switch.checked',
-    control: boolean({ variant: 'switch' }),
     target: signalTarget('switch.checked', checked, setChecked),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'switch', label: 'Checked', order: 1 },
-  })
-  bind({
-    id: 'switch.disabled',
     control: boolean({ variant: 'switch' }),
-    target: signalTarget('switch.disabled', disabled, setDisabled),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'switch', label: 'Disabled', order: 2 },
+    placement: { semantic: 'tool', group: 'switch', label: 'Checked', order: 1 },
   })
   bind({
-    id: 'switch.label',
-    control: string({ variant: 'input' }),
+    target: signalTarget('switch.disabled', disabled, setDisabled),
+    control: boolean({ variant: 'switch' }),
+    placement: { semantic: 'tool', group: 'switch', label: 'Disabled', order: 2 },
+  })
+  bind({
     target: signalTarget('switch.label', label, setLabel),
-    initial: '通知を受け取る',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Label', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Label', order: 1 },
   })
 
   return (

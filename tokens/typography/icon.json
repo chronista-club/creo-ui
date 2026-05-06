@@ -1,0 +1,21 @@
+{
+  "typography": {
+    "icon": {
+      "md": {
+        "$value": "40px",
+        "$type": "dimension",
+        "$description": "Icon display — list item / inline 強調。 emoji や icon font の visual size、 typography size とは別 scale。"
+      },
+      "lg": {
+        "$value": "64px",
+        "$type": "dimension",
+        "$description": "Icon display — empty-state default / card header / feature illustration。"
+      },
+      "xl": {
+        "$value": "96px",
+        "$type": "dimension",
+        "$description": "Icon display — empty-state large variant / hero illustration / onboarding。 page-level の visual anchor。"
+      }
+    }
+  }
+}

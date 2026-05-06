@@ -182,3 +182,91 @@ describe('morphFrame (DOM-based)', () => {
     expect(still.getCalls()).toBe(0)
   })
 })
+
+describe('morphFrame — cancel / rejection graceful skip', () => {
+  /** finished が reject (cancel 相当) する mock animation を返す element */
+  function elementWithCancelledAnimate(rect: Partial<DOMRect>): HTMLElement {
+    const el = document.createElement('div')
+    document.body.appendChild(el)
+    const r: DOMRect = {
+      x: 0,
+      y: 0,
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      width: 0,
+      height: 0,
+      toJSON: () => r,
+      ...rect,
+    } as DOMRect
+    Object.defineProperty(el, 'getBoundingClientRect', {
+      value: () => r,
+      configurable: true,
+    })
+    el.animate = (() => {
+      // 仕様: animation.cancel() で finished は AbortError で reject。
+      // mock では DOMException 相当を Promise.reject で再現。
+      const finished = Promise.reject(new DOMException('Animation cancelled', 'AbortError'))
+      // unhandled rejection を出さないため事前 catch (test スイッチで surface しない)
+      finished.catch(() => {})
+      return { finished } as Animation
+    }) as HTMLElement['animate']
+    return el
+  }
+
+  /** 正常完走する mock (finished が即 resolve) */
+  function elementWithFulfilledAnimate(rect: Partial<DOMRect>): HTMLElement {
+    const el = document.createElement('div')
+    document.body.appendChild(el)
+    const r: DOMRect = {
+      x: 0,
+      y: 0,
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      width: 0,
+      height: 0,
+      toJSON: () => r,
+      ...rect,
+    } as DOMRect
+    Object.defineProperty(el, 'getBoundingClientRect', {
+      value: () => r,
+      configurable: true,
+    })
+    el.animate = (() => ({ finished: Promise.resolve() }) as Animation) as HTMLElement['animate']
+    return el
+  }
+
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('does NOT throw when an animation rejects (cancelled)', async () => {
+    const cancelled = elementWithCancelledAnimate({ width: 50, height: 50 })
+    const elements = new Map<string, HTMLElement>([['cancelled', cancelled]])
+    const prevRects = new Map<string, DOMRect>([
+      ['cancelled', { left: 200, top: 0, width: 50, height: 50 } as DOMRect],
+    ])
+    // 期待: throw せずに resolve、 結果は cancel された animation を除いた空配列
+    const result = await morphFrame(elements, prevRects)
+    expect(result).toEqual([])
+  })
+
+  it('mixed cancel + fulfilled: returns only the fulfilled animations', async () => {
+    const cancelled = elementWithCancelledAnimate({ width: 50, height: 50 })
+    const fulfilled = elementWithFulfilledAnimate({ width: 50, height: 50 })
+    const elements = new Map<string, HTMLElement>([
+      ['cancelled', cancelled],
+      ['fulfilled', fulfilled],
+    ])
+    const prevRects = new Map<string, DOMRect>([
+      ['cancelled', { left: 200, top: 0, width: 50, height: 50 } as DOMRect],
+      ['fulfilled', { left: 100, top: 0, width: 50, height: 50 } as DOMRect],
+    ])
+    const result = await morphFrame(elements, prevRects)
+    // 1 件 (fulfilled のみ) が返る
+    expect(result.length).toBe(1)
+  })
+})

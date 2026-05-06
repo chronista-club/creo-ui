@@ -198,8 +198,6 @@ export default function Breadcrumbs() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.breadcrumbs-editor',
             }}
           >
@@ -242,20 +240,16 @@ function BreadcrumbsEditorDemo() {
   const [separator, setSeparator] = createSignal<BreadcrumbsSeparator>('default')
 
   bind({
-    id: 'breadcrumbs.size',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('breadcrumbs.size', size, setSize),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'breadcrumbs', label: 'Size', order: 1 },
+    target: signalTarget('breadcrumbs.size', size, (v) => setSize(v as BreadcrumbsSize)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'breadcrumbs', label: 'Size', order: 1 },
   })
   bind({
-    id: 'breadcrumbs.separator',
-    control: select({ options: ['default', 'slash', 'dot'] as const }),
-    target: signalTarget('breadcrumbs.separator', separator, setSeparator),
-    initial: 'default',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'breadcrumbs', label: 'Separator', order: 2 },
+    target: signalTarget('breadcrumbs.separator', separator, (v) =>
+      setSeparator(v as BreadcrumbsSeparator),
+    ),
+    control: select(['default', 'slash', 'dot'] as const),
+    placement: { semantic: 'tool', group: 'breadcrumbs', label: 'Separator', order: 2 },
   })
 
   return (

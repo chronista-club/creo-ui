@@ -43,13 +43,26 @@ export function measureSlots(
  * @param elementsByName layout 変化「後」 の DOM ref map (slot 名 → element)
  * @param prevRects      layout 変化「前」 に measureSlots() で取得した rect map
  * @param options        共通 FLIP options (duration / easing / delay / fill)
- * @returns              実際に動いた slot の Animation 配列に解決する Promise
+ * @returns              **完走した** Animation 配列に解決する Promise (cancel された slot は除外)
  *
  * 挙動:
  * - **reduced-motion 時**: 内部 `flip()` が null を返し、 結果は空配列で即解決
  * - **prev rect 不在の slot**: skip (新しく追加された slot 等の case)
  * - **動きなしの slot** (rect 同一): skip (`flip()` の no-op detection に委譲)
- * - **完了待ち**: 全 Animation の `.finished` を `Promise.all` で await
+ * - **完了待ち**: 全 Animation の `.finished` を `Promise.allSettled` で観測、
+ *   **fulfilled (完走) のみ** を結果配列に含める
+ *
+ * ## Cancel / unmount 時の挙動 (重要)
+ *
+ * `Animation.finished` は仕様上、 `animation.cancel()` 呼出 や element unmount で
+ * `DOMException: AbortError` で reject する。 `Promise.all` を使うと 1 個の cancel で
+ * 全体 throw するが、 本実装は `Promise.allSettled` で **各 animation を independent
+ * に観測**、 cancel された animation は graceful に skip し、 完走した animation のみ
+ * 返す。 これにより:
+ *
+ * - B-γ (FrameSlot opt-in useFlip) で 連続 setFrame() による in-flight 上書き OK
+ * - Provider unmount 中の race condition でも silent throw しない
+ * - caller は try/catch なしで `await morphFrame(...)` できる
  */
 export function morphFrame(
   elementsByName: ReadonlyMap<string, HTMLElement>,
@@ -67,5 +80,7 @@ export function morphFrame(
 
   if (animations.length === 0) return Promise.resolve([])
 
-  return Promise.all(animations.map((a) => a.finished)).then(() => animations)
+  return Promise.allSettled(animations.map((a) => a.finished)).then((results) =>
+    animations.filter((_, i) => results[i]?.status === 'fulfilled'),
+  )
 }

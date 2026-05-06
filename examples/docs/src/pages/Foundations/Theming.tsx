@@ -49,7 +49,9 @@ export default function Theming() {
               <article class="docs-theme-card">
                 <header class="docs-theme-card-head">
                   <h3>{f.family}</h3>
-                  {f.isDefault && <span class="docs-theme-default-badge">default</span>}
+                  {'isDefault' in f && f.isDefault && (
+                    <span class="docs-theme-default-badge">default</span>
+                  )}
                 </header>
                 <p class="docs-theme-note">{f.note}</p>
                 <div class="docs-theme-pair">

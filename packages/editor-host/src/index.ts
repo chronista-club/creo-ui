@@ -49,6 +49,13 @@ export type {
   EditorPersistence,
   EditorMode,
   SelectionInfo,
+  EditorHostConfig,
+  EditorShortcut,
+  EditorHost,
+  EditorHostMcpApi,
+  EditorField,
+  EditorFieldType,
+  EditorFieldConstraints,
 } from './types'
 
 // ---------- UI components ----------

@@ -1,8 +1,8 @@
 # Editor Mode — Creo UI Universal Editor Protocol
 
-**Status**: Draft (Phase 1 設計 memo、実装は Phase 2 以降)
-**Owners**: Creo UI (schema) + Consumer packages (runtime 実装)
-**Scope**: Creo UI を「視覚的定数の SSOT」から「視覚的定数 + Editor protocol の SSOT」に拡張する設計決定
+**Status**: Phase 2a **Shipped** (`packages/editor-host/` で SolidJS runtime + 4 region layout を実装済、 19 unit tests pass、 docs site で dogfood 中)
+**Owners**: Creo UI (schema + Web reference runtime) + Consumer packages (Swift / Rust runtime は未着手)
+**Scope**: Creo UI を「視覚的定数の SSOT」から「視覚的定数 + Editor protocol の SSOT」に拡張する設計決定。 Web は `packages/editor-host/` で reference 実装、 Swift / Rust は consumer 側 (Phase 2 後段で別 package 化検討)
 
 ---
 
@@ -415,12 +415,12 @@ Claude: (tokens リポジトリに PR を作成)
 
 | Phase | 内容 | Status |
 |-------|------|--------|
-| **Phase 1** | 設計 memo (本 doc) + `tokens/editor-mode/*.json` + TS 型 d.ts (optional) | **完了 (本 commit)** |
-| **Phase 2a** | `@creo/ui` (SolidJS) 側に `EditorHost` runtime 実装 + 4 region layout | 未着手 |
-| **Phase 2b** | MCP server 実装 (editor_mode_* tools)、Claude Code 連携 | 未着手 |
-| **Phase 2c** | DevEditor adapter → 段階的移行 | 未着手 |
-| **Phase 3a** | Theme 切替 (light / dark / high-contrast) を Editor Mode で prototyping | 未着手 |
-| **Phase 3b** | `CreoUI` (Swift) 側に `EditorHost` 実装 | 未着手 |
+| **Phase 1** | 設計 memo (本 doc) + `tokens/editor-mode/*.json` + TS 型 d.ts (optional) | ✅ 完了 |
+| **Phase 2a** | `creo-ui-editor-host` (SolidJS) で `EditorHost` runtime 実装 + 4 region layout | ✅ **Shipped** (`packages/editor-host/`、 19 tests pass、 docs site で dogfood) |
+| **Phase 2b** | MCP server 実装 (editor_mode_* tools)、Claude Code 連携 | 縮小 — `claude-in-chrome` + `window.creoEditor` console REPL で代替可能 (EH-5)、 専用 server 実装は不要 |
+| **Phase 2c** | DevEditor adapter → 段階的移行 | 未着手 (creo-memories lead 判断、 EH-4) |
+| **Phase 3a** | Theme 切替 (light / dark / high-contrast) を Editor Mode で prototyping | 部分着手 (`ThemeEditor` / 8 theme 切替 UI 同梱) |
+| **Phase 3b** | `CreoUI` (Swift) 側に `EditorHost` 実装 | 未着手 (consumer 側 or 将来別 package で) |
 | **Phase 4** | `creo-ui` (Rust / ratatui) 側に最小 Editor Mode (TUI 向け) | 未着手 (要否検討) |
 
 ---

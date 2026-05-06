@@ -84,9 +84,17 @@ export default function Dialog() {
       </section>
 
       {/* Modals (rendered to portal automatically by browser) */}
-      <dialog class="creo-dialog" data-size="md" ref={setDefaultDlg}>
+      <dialog
+        class="creo-dialog"
+        data-size="md"
+        ref={setDefaultDlg}
+        aria-labelledby="dialog-default-title"
+        aria-describedby="dialog-default-body"
+      >
         <header class="creo-dialog-header">
-          <h2 class="creo-dialog-title">削除の確認</h2>
+          <h2 class="creo-dialog-title" id="dialog-default-title">
+            削除の確認
+          </h2>
           <button
             type="button"
             class="creo-btn"
@@ -98,7 +106,7 @@ export default function Dialog() {
             ✕
           </button>
         </header>
-        <div class="creo-dialog-body">
+        <div class="creo-dialog-body" id="dialog-default-body">
           <p>この項目を削除します。 この操作は取り消せません。</p>
         </div>
         <footer class="creo-dialog-footer">
@@ -239,8 +247,6 @@ export default function Dialog() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.dialog-editor',
             }}
           >
@@ -296,36 +302,24 @@ function DialogEditorDemo() {
   const [body, setBody] = createSignal('この項目を削除します。 この操作は取り消せません。')
 
   bind({
-    id: 'dialog.size',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('dialog.size', size, setSize),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'dialog', label: 'Size', order: 1 },
+    target: signalTarget('dialog.size', size, (v) => setSize(v as DialogSize)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'dialog', label: 'Size', order: 1 },
   })
   bind({
-    id: 'dialog.variant',
-    control: select({ options: ['default', 'destructive'] as const }),
-    target: signalTarget('dialog.variant', variant, setVariant),
-    initial: 'default',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'dialog', label: 'Variant', order: 2 },
+    target: signalTarget('dialog.variant', variant, (v) => setVariant(v as DialogVariant)),
+    control: select(['default', 'destructive'] as const),
+    placement: { semantic: 'tool', group: 'dialog', label: 'Variant', order: 2 },
   })
   bind({
-    id: 'dialog.title',
-    control: string({ variant: 'input' }),
     target: signalTarget('dialog.title', title, setTitle),
-    initial: '削除の確認',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Title', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Title', order: 1 },
   })
   bind({
-    id: 'dialog.body',
-    control: string({ variant: 'textarea' }),
     target: signalTarget('dialog.body', body, setBody),
-    initial: 'この項目を削除します。 この操作は取り消せません。',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Body', order: 2 },
+    control: string('textarea'),
+    placement: { semantic: 'tool', group: 'content', label: 'Body', order: 2 },
   })
 
   return (

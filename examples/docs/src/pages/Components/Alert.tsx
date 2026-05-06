@@ -57,7 +57,6 @@ export default function Alert() {
             class="docs-preview-grid"
             style={{ 'grid-template-columns': '1fr', gap: 'var(--spacing-s)' }}
           >
-            {/* biome-ignore lint/a11y/useSemanticElements: <output> は form 計算結果用、 alert 通知の `role="status"` は意図的 (a11y/Alert pattern 標準) */}
             <div class="creo-alert" data-variant="info" role="status">
               <span class="creo-alert-icon" aria-hidden="true">
                 ℹ
@@ -66,7 +65,6 @@ export default function Alert() {
                 <strong>Info:</strong> Tokens v0.14.0 がリリースされました。
               </div>
             </div>
-            {/* biome-ignore lint/a11y/useSemanticElements: <output> は form 計算結果用、 alert 通知の `role="status"` は意図的 */}
             <div class="creo-alert" data-variant="success" role="status">
               <span class="creo-alert-icon" aria-hidden="true">
                 ✓
@@ -174,8 +172,6 @@ export default function Alert() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.alert-editor',
             }}
           >
@@ -217,28 +213,19 @@ function AlertEditorDemo() {
   const [bodyText, setBodyText] = createSignal('Ctrl+S で保存できます。')
 
   bind({
-    id: 'alert.variant',
-    control: select({ options: ['info', 'success', 'warning', 'error'] as const }),
-    target: signalTarget('alert.variant', variant, setVariant),
-    initial: 'info',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'alert', label: 'Variant', order: 1 },
+    target: signalTarget('alert.variant', variant, (v) => setVariant(v as AlertVariant)),
+    control: select(['info', 'success', 'warning', 'error'] as const),
+    placement: { semantic: 'tool', group: 'alert', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'alert.strong',
-    control: string({ variant: 'input' }),
     target: signalTarget('alert.strong', strongText, setStrongText),
-    initial: 'Tip:',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Strong text', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Strong text', order: 1 },
   })
   bind({
-    id: 'alert.body',
-    control: string({ variant: 'textarea' }),
     target: signalTarget('alert.body', bodyText, setBodyText),
-    initial: 'Ctrl+S で保存できます。',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Body text', order: 2 },
+    control: string('textarea'),
+    placement: { semantic: 'tool', group: 'content', label: 'Body text', order: 2 },
   })
 
   // role mapping: warning/error → alert (即時)、 info/success → status (polite)

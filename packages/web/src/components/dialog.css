@@ -34,7 +34,7 @@
 }
 
 .creo-dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--color-surface-scrim-modal);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
@@ -119,5 +119,14 @@
   to {
     opacity: 0;
     transform: translateY(4px) scale(0.98);
+  }
+}
+
+/* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-dialog,
+  .creo-dialog.is-closing {
+    animation: none;
   }
 }

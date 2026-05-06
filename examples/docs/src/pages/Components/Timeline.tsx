@@ -175,8 +175,6 @@ export default function Timeline() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.timeline-editor',
             }}
           >
@@ -226,30 +224,21 @@ function TimelineEditorDemo() {
   const [itemTitle, setItemTitle] = createSignal('PR merged')
 
   bind({
-    id: 'timeline.size',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('timeline.size', size, setSize),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'timeline', label: 'Size', order: 1 },
+    target: signalTarget('timeline.size', size, (v) => setSize(v as TimelineSize)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'timeline', label: 'Size', order: 1 },
   })
   bind({
-    id: 'timeline.itemVariant',
-    control: select({
-      options: ['default', 'success', 'warning', 'error', 'info'] as const,
-    }),
-    target: signalTarget('timeline.itemVariant', itemVariant, setItemVariant),
-    initial: 'success',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'item', label: 'Item variant', order: 1 },
+    target: signalTarget('timeline.itemVariant', itemVariant, (v) =>
+      setItemVariant(v as TimelineItemVariant),
+    ),
+    control: select(['default', 'success', 'warning', 'error', 'info'] as const),
+    placement: { semantic: 'tool', group: 'item', label: 'Item variant', order: 1 },
   })
   bind({
-    id: 'timeline.itemTitle',
-    control: string({ variant: 'input' }),
     target: signalTarget('timeline.itemTitle', itemTitle, setItemTitle),
-    initial: 'PR merged',
-    semantic: 'content',
-    placement: { region: 'right', group: 'item', label: 'Item title', order: 2 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'item', label: 'Item title', order: 2 },
   })
 
   return (

@@ -98,7 +98,9 @@ export interface EditorHostConfig {
 
   /**
    * window に console REPL API (creoEditor) を expose する。
-   * default: true (production opt-out は false を明示)。
+   * default: `import.meta.env.DEV` (Vite 環境で dev 時 true、 production build 時 false)。
+   * EH-6 (CLAUDE.md): production で expose したい場合は明示的に `true` を、
+   * dev でも expose したくない場合は `false` を渡す。
    */
   exposeConsole?: boolean
 

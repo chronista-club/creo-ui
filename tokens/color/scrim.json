@@ -1,0 +1,16 @@
+{
+  "color": {
+    "surface": {
+      "scrim": {
+        "$value": "oklch(0 0 0 / 0.4)",
+        "$type": "color",
+        "$description": "Drawer / side sheet backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。 中央 modal (dialog) はより重い注意を引くため `scrim-modal` (50%) を使う。"
+      },
+      "scrim-modal": {
+        "$value": "oklch(0 0 0 / 0.5)",
+        "$type": "color",
+        "$description": "Dialog (中央 modal) backdrop scrim — 50% black overlay。 drawer (40%) より強く content を後退させ、 user の注意を modal に集中させる。 dark/light theme 共通。"
+      }
+    }
+  }
+}

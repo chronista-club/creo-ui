@@ -197,8 +197,6 @@ export default function Button() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.button-editor',
             }}
           >
@@ -240,43 +238,34 @@ export default function Button() {
   )
 }
 
+type ButtonVariant = 'primary' | 'secondary' | 'ghost'
+type ButtonSize = 'sm' | 'md' | 'lg'
+
 function ButtonEditorDemo() {
-  const [variant, setVariant] = createSignal<'primary' | 'secondary' | 'ghost'>('primary')
-  const [size, setSize] = createSignal<'sm' | 'md' | 'lg'>('md')
+  const [variant, setVariant] = createSignal<ButtonVariant>('primary')
+  const [size, setSize] = createSignal<ButtonSize>('md')
   const [disabled, setDisabled] = createSignal(false)
   const [label, setLabel] = createSignal('Click me')
 
   bind({
-    id: 'btn.variant',
-    control: select({ options: ['primary', 'secondary', 'ghost'] as const }),
-    target: signalTarget('btn.variant', variant, setVariant),
-    initial: 'primary',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'button', label: 'Variant', order: 1 },
+    target: signalTarget('btn.variant', variant, (v) => setVariant(v as ButtonVariant)),
+    control: select(['primary', 'secondary', 'ghost'] as const),
+    placement: { semantic: 'tool', group: 'button', label: 'Variant', order: 1 },
   })
   bind({
-    id: 'btn.size',
-    control: select({ options: ['sm', 'md', 'lg'] as const }),
-    target: signalTarget('btn.size', size, setSize),
-    initial: 'md',
-    semantic: 'tool',
-    placement: { region: 'right', group: 'button', label: 'Size', order: 2 },
+    target: signalTarget('btn.size', size, (v) => setSize(v as ButtonSize)),
+    control: select(['sm', 'md', 'lg'] as const),
+    placement: { semantic: 'tool', group: 'button', label: 'Size', order: 2 },
   })
   bind({
-    id: 'btn.disabled',
-    control: boolean({ variant: 'switch' }),
     target: signalTarget('btn.disabled', disabled, setDisabled),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'button', label: 'Disabled', order: 3 },
+    control: boolean({ variant: 'switch' }),
+    placement: { semantic: 'tool', group: 'button', label: 'Disabled', order: 3 },
   })
   bind({
-    id: 'btn.label',
-    control: string({ variant: 'input' }),
     target: signalTarget('btn.label', label, setLabel),
-    initial: 'Click me',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Button label', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Button label', order: 1 },
   })
 
   return (

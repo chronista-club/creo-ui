@@ -148,8 +148,6 @@ export default function Radio() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              shortcut: ['ctrl+shift+e', 'meta+shift+e'],
-              exposeConsole: true,
               localStorageNamespace: 'creo-ui-docs.radio-editor',
             }}
           >
@@ -192,28 +190,19 @@ function RadioEditorDemo() {
   const [label, setLabel] = createSignal('Light')
 
   bind({
-    id: 'radio.checked',
-    control: boolean({ variant: 'switch' }),
     target: signalTarget('radio.checked', checked, setChecked),
-    initial: true,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'radio', label: 'Checked', order: 1 },
-  })
-  bind({
-    id: 'radio.disabled',
     control: boolean({ variant: 'switch' }),
-    target: signalTarget('radio.disabled', disabled, setDisabled),
-    initial: false,
-    semantic: 'tool',
-    placement: { region: 'right', group: 'radio', label: 'Disabled', order: 2 },
+    placement: { semantic: 'tool', group: 'radio', label: 'Checked', order: 1 },
   })
   bind({
-    id: 'radio.label',
-    control: string({ variant: 'input' }),
+    target: signalTarget('radio.disabled', disabled, setDisabled),
+    control: boolean({ variant: 'switch' }),
+    placement: { semantic: 'tool', group: 'radio', label: 'Disabled', order: 2 },
+  })
+  bind({
     target: signalTarget('radio.label', label, setLabel),
-    initial: 'Light',
-    semantic: 'content',
-    placement: { region: 'right', group: 'content', label: 'Label', order: 1 },
+    control: string('input'),
+    placement: { semantic: 'tool', group: 'content', label: 'Label', order: 1 },
   })
 
   return (

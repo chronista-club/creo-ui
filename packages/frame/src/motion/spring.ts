@@ -105,6 +105,15 @@ export function springEasing(arg?: SpringPreset | SpringOptions): string {
  * 解析解:
  *   - underdamped (ζ < 1):  x(t) = 1 - e^(-ζω_n t) (cos(ω_d t) + (...)/ω_d sin(ω_d t))
  *   - critically/over (ζ ≥ 1):  x(t) = 1 - e^(-ω_n t) (1 + ω_n t)  (critical の近似形)
+ *
+ * ## 近似誤差 (overdamped 限定)
+ *
+ * critically-damped (ζ = 1) は exact、 overdamped (ζ > 1) は **critical 近似形** を
+ * 流用しているため誤差あり (例: ζ = 1.5、 t = 1s で約 2.5%)。 現在の 5 preset は
+ * underdamped (ζ ≈ 0.45-0.89) のみで影響なし。 consumer が custom overdamped params
+ * を渡す場合のみ露出するが、 settle time / 終端 1 への収束は保証されている。
+ *
+ * 真の overdamped 解析解 (双曲関数 sinh/cosh ベース) への変更は B-δ-2 で検討予定。
  */
 function positionFn(k: number, c: number, m: number, v0: number): (t: number) => number {
   const omegaN = Math.sqrt(k / m) // 自然角周波数
