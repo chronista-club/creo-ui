@@ -6,12 +6,17 @@
 
 ## ステータス
 
-**Phase 1 (Token MVP) — 進行中**
+**Phase 2a (Editor Mode runtime) Shipped + design system stabilized**
 
-- 2026-04-21: Web パッケージを npmjs.com へ初回 publish ([`creo-ui-web@0.0.1`](https://www.npmjs.com/package/creo-ui-web))
-- Phase 0 (Repo Scaffold + CI skeleton) 完了
+- 2026-05-06: **v0.15.0 (web) / v0.5.0 (editor-host) / v0.1.1 (frame) / v0.4.0 (rust/swift) ship**。 7 round / 25 件 review fix で a11y reduced-motion 14 全 component 完全対応 + 5 新 token (scrim split / layout container / layout grid / typography icon)。
+- 2026-04-26: Mode-based typography family token 6 種追加 ([`v0.14.0`](./CHANGELOG.md#v0140-2026-04-26--mode-based-typography-family))。
+- 2026-04-21: Web パッケージを npmjs.com へ初回 publish ([`creo-ui-web@0.0.1`](https://www.npmjs.com/package/creo-ui-web))。
 
 Linear Epic: [CREO-84 Creo UI Design System](https://linear.app/chronista/issue/CREO-84) — Phase ごとの子 Issue が紐付く。
+
+### 次フェーズ (consumer-driven feedback loop)
+
+design system は内部 dogfood + multi-round review で stabilize 完了。 **次は外部 consumer (creo-memories / fleetstage / vantage-point 等) で creo-ui を実導入し、 使用 feedback を本 repo に loop back する** improvement cycle に切替。 Ecosystem split (Phase 2b/c/d、 Rust/Swift repo 切り出し) は **TS 安定化優先で後回し** (consumer feedback で TS 側が更に進化する見込みのため)。
 
 ## 対応 Platform
 
@@ -152,9 +157,9 @@ token 値は **OKLCH** で保持 (`oklch(l c h / a)`)、modern browser が直接
 |---|---|---|
 | **Phase 1** | `creo-ui-design` 独立 repo + build pipeline + GitHub Releases artifact 配布 | ✅ verified ([v0.0.1](https://github.com/chronista-club/creo-ui-design/releases/tag/v0.0.1)) |
 | **Phase 2a** | `creo-ui` で `creo-ui-design` release を consume する PoC + drift 検証 | ✅ verified (本 PR) |
-| Phase 2b | `creo-ui-rs` 切り出し (`packages/rust` を git filter-repo) | Planned |
-| Phase 2c | `creo-ui-swift` 切り出し (`packages/swift` を git filter-repo) | Planned |
-| Phase 2d | `creo-ui` を TS-only に slim down (Swift/Rust + tokens/ + transforms 削除) | Planned (2b/2c 完了後) |
+| Phase 2b | `creo-ui-rs` 切り出し (`packages/rust` を git filter-repo) | **Deferred** (TS 安定化優先、 consumer feedback loop 後) |
+| Phase 2c | `creo-ui-swift` 切り出し (`packages/swift` を git filter-repo) | **Deferred** (同上) |
+| Phase 2d | `creo-ui` を TS-only に slim down (Swift/Rust + tokens/ + transforms 削除) | **Deferred** (2b/2c 完了後) |
 
 ### Phase 2a script — creo-ui-design release artifact の consume
 

@@ -1,6 +1,6 @@
 {
   "name": "creo-ui-frame",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Creo UI — 3D Frame system runtime (Spatial Layout protocol + self-built motion engine)。 Frame morph / FLIP / spring / reduced-motion guard を提供。 docs/design/frame-system.md の P-3 reference 実装。",
   "type": "module",
   "main": "./dist/index.js",

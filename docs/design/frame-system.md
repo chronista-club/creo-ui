@@ -171,14 +171,19 @@ Frame system では:
 | **P-5** | docs site Playground で Frame morph + gesture demo (P-3, P-4 合成) | 0.5 session | ✅ Ship (`examples/docs/src/pages/Lab/Playground.tsx` — wave gesture / spatial pinch / `<model>` element / camera probe) |
 | **P-6** | VP 統合 (VP の pane を Frame protocol に refactor) | multi-session | ⏳ 別 repo (`vantage-point`) で着手予定 |
 
-### 後続改善 (P-3 v0.2.0 候補、 2026-05-05 articulate)
+### 後続改善 (B 系列、 2026-05-05 articulate / 2026-05-06 partial ship as v0.1.1)
 
 | ID | scope | 状態 |
 |---|---|---|
-| **B-β** | `morphFrame()` coordinator API (複数 slot の atomic transition) — stack-adr §3.1 で約束済 | ⏳ 着手予定 |
-| **B-γ** | `<FrameSlot>` opt-in `useFlip` prop (CSS transition と並行する FLIP + spring path) | ⏳ |
-| **B-δ** | Spring preset name (`gentle` / `wobbly` / `stiff` / `slow` / `tight`) と DTCG token 連動 | ⏳ |
-| **B-ε** | test coverage 拡充 (flip / provider / slot の Medium test) | ⏳ |
+| **B-α** | Living Documentation を shipped 状態に揃える | ✅ Shipped (本 doc + frame_v0_1_0_shipped.md memory) |
+| **B-β** | `morphFrame()` coordinator API (複数 slot の atomic transition) — stack-adr §3.1 で約束済 | ✅ Shipped (`packages/frame/src/motion/morph.ts`) |
+| **B-γ** | `<FrameSlot>` opt-in `useFlip` prop (CSS transition と並行する FLIP + spring path) | ⏳ Pending (B-β 経由で部分達成、 opt-in 設計再考要) |
+| **B-δ** | Spring preset name (`gentle` / `wobbly` / `stiff` / `slow` / `tight`) と DTCG token 連動 | ✅ Shipped (`packages/frame/src/motion/spring.ts`) |
+| **B-ε** | test coverage 拡充 (flip / provider / slot の Medium test) | ✅ Shipped (56 tests pass、 cancel scenario 含む) |
+
+### morph cancel handling contract (v0.1.1 から)
+
+`morphFrame()` は内部で `Promise.allSettled` を使用し、 cancel された animation (例: B-γ で in-flight setFrame 上書き、 Provider unmount 中の race condition) を **graceful skip** する設計。 caller は try/catch なしで `await morphFrame(...)` 可能、 戻り値の `Animation[]` は **完走した animation のみ** を含む。 仕様詳細は `morph.ts` JSDoc 参照。
 
 ## 10. やってはいけない
 
