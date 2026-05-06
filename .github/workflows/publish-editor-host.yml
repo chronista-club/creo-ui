@@ -15,8 +15,23 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: creo-ui
     steps:
-      - uses: actions/checkout@v4
+      # creo-ui を nested path に checkout、 creo-views を sibling として
+      # 並行 checkout (packages/md-view の `file:../../../creo-views` 解決のため)。
+      # ci.yml と同 layout。
+      - name: Checkout creo-ui
+        uses: actions/checkout@v4
+        with:
+          path: creo-ui
+
+      - name: Checkout creo-views (sibling, required by packages/md-view)
+        uses: actions/checkout@v4
+        with:
+          repository: chronista-club/creo-views
+          path: creo-views
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -40,7 +55,7 @@ jobs:
         run: bun test packages/editor-host/src/
 
       - name: Build editor-host (vite lib)
-        working-directory: packages/editor-host
+        working-directory: creo-ui/packages/editor-host
         # vite + vite-plugin-solid で JSX を事前 compile、vite-plugin-dts で .d.ts 生成。
         # 出力は packages/editor-host/dist/ (gitignore) に入る。
         run: bun run build
@@ -51,7 +66,7 @@ jobs:
           test -s packages/editor-host/dist/index.d.ts
 
       - name: Publish to npm
-        working-directory: packages/editor-host
+        working-directory: creo-ui/packages/editor-host
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
