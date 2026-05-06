@@ -1,12 +1,22 @@
 {
   "typography": {
     "icon": {
-      "md": {
+      "xs": {
+        "$value": "16px",
+        "$type": "dimension",
+        "$description": "Tiny inline icon — text-flow に並ぶ 1em 相当の補助 mark / favicon / dense list の leading icon。"
+      },
+      "s": {
+        "$value": "24px",
+        "$type": "dimension",
+        "$description": "Small icon — button / input / chip の leading mark、 toolbar action。 base 16px text と並ぶ comfortable 比率。"
+      },
+      "m": {
         "$value": "40px",
         "$type": "dimension",
         "$description": "Icon display — list item / inline 強調。 emoji や icon font の visual size、 typography size とは別 scale。"
       },
-      "lg": {
+      "l": {
         "$value": "64px",
         "$type": "dimension",
         "$description": "Icon display — empty-state default / card header / feature illustration。"

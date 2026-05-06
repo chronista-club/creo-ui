@@ -54,14 +54,20 @@
   gap: var(--spacing-xl);
 }
 
-/* ---------- Auto-fit (responsive、 min-column-width 基準) ---------- */
+/* ---------- Auto-fit (responsive、 min-column-width 基準、 5 tier xs/s/m/l/xl) ---------- */
 
-.creo-grid[data-cols="auto-sm"] {
-  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-sm), 1fr));
+.creo-grid[data-cols="auto-xs"] {
+  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-xs), 1fr));
 }
-.creo-grid[data-cols="auto-md"] {
-  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-md), 1fr));
+.creo-grid[data-cols="auto-s"] {
+  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-s), 1fr));
 }
-.creo-grid[data-cols="auto-lg"] {
-  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-lg), 1fr));
+.creo-grid[data-cols="auto-m"] {
+  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-m), 1fr));
+}
+.creo-grid[data-cols="auto-l"] {
+  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-l), 1fr));
+}
+.creo-grid[data-cols="auto-xl"] {
+  grid-template-columns: repeat(auto-fit, minmax(var(--layout-grid-col-min-xl), 1fr));
 }

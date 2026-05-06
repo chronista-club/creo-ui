@@ -1,20 +1,30 @@
 {
   "layout": {
     "grid": {
-      "col-min-sm": {
+      "col-min-xs": {
+        "$value": "120px",
+        "$type": "dimension",
+        "$description": "auto-fit grid 最小 column 幅 (xs cells) — chip / avatar grid / icon-only tile。 dense 並びで多数表示が前提の最小単位。"
+      },
+      "col-min-s": {
         "$value": "160px",
         "$type": "dimension",
-        "$description": "auto-fit grid 最小 column 幅 (sm cells) — image thumbnail / icon tile / chip group 等の 密 grid 向け。"
+        "$description": "auto-fit grid 最小 column 幅 (s cells) — image thumbnail / icon tile / chip group 等の 密 grid 向け。"
       },
-      "col-min-md": {
+      "col-min-m": {
         "$value": "220px",
         "$type": "dimension",
-        "$description": "auto-fit grid 最小 column 幅 (md cells) — card list / preview tile の標準サイズ、 readable summary を含む card に最適。"
+        "$description": "auto-fit grid 最小 column 幅 (m cells) — card list / preview tile の標準サイズ、 readable summary を含む card に最適。"
       },
-      "col-min-lg": {
+      "col-min-l": {
+        "$value": "280px",
+        "$type": "dimension",
+        "$description": "auto-fit grid 最小 column 幅 (l cells) — content card with headline + 1-2 line description + meta、 article preview。"
+      },
+      "col-min-xl": {
         "$value": "320px",
         "$type": "dimension",
-        "$description": "auto-fit grid 最小 column 幅 (lg cells) — feature card / hero tile、 multi-line description + CTA を含む rich card。"
+        "$description": "auto-fit grid 最小 column 幅 (xl cells) — feature card / hero tile、 multi-line description + CTA を含む rich card。"
       }
     }
   }

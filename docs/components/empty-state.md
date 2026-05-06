@@ -22,7 +22,7 @@
 ## Structure
 
 ```html
-<div class="creo-empty-state" data-size="md">
+<div class="creo-empty-state" data-size="m">
   <div class="creo-empty-state-icon" aria-hidden="true">📂</div>
   <h3 class="creo-empty-state-title">プロジェクトがありません</h3>
   <p class="creo-empty-state-description">
@@ -35,7 +35,7 @@
 </div>
 
 <!-- Search no-results (small) -->
-<div class="creo-empty-state" data-size="sm">
+<div class="creo-empty-state" data-size="s">
   <div class="creo-empty-state-icon" aria-hidden="true">🔍</div>
   <h3 class="creo-empty-state-title">ヒットなし</h3>
   <p class="creo-empty-state-description">
@@ -48,18 +48,18 @@
 
 | attr | 値 | default | 意味 |
 |---|---|---|---|
-| `data-size` | `sm` / `md` / `lg` | `md` | overall size / padding |
+| `data-size` | `s` / `m` / `l` | `m` | overall size / padding (5 tier convention with spacing) |
 
 ## Token reference
 
 | slot | token |
 |---|---|
-| wrapper padding (md) | `spacing.xl` |
-| wrapper padding (sm) | `spacing.md` |
-| wrapper padding (lg) | `spacing.xl` × 2 vertical |
-| icon size (md) | 64px |
-| icon size (sm) | 40px |
-| icon size (lg) | 96px |
+| wrapper padding (m) | `spacing.xl` |
+| wrapper padding (s) | `spacing.m` |
+| wrapper padding (l) | `spacing.xl` × 2 vertical |
+| icon size (m / default) | `typography.icon.l` = 64px |
+| icon size (s) | `typography.icon.m` = 40px |
+| icon size (l) | `typography.icon.xl` = 96px |
 | icon color | `color.text.tertiary` |
 | title | `typography.title.subsection` (24px、lg は title.section 32) |
 | description | `typography.size.md` + `color.text.secondary` |

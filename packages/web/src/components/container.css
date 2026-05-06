@@ -2,7 +2,8 @@
  * Creo UI — Container (max-width constraint + horizontal centering)
  *
  * page-level content の max-width / centering / side padding を 1 attribute で。
- * 5 size + full、 default md (768px)。 reading-friendly な breakpoint を意識。
+ * 5 size + full、 default m (768px)。 reading-friendly な breakpoint を意識。
+ * 命名は spacing convention (xs/s/m/l/xl、 5 tier 統一) に揃える。
  *
  * Spec: docs/components/container.md
  * Token: creo-ui-web/tokens.css (必須)
@@ -14,20 +15,23 @@
   margin-right: auto;
   padding-left: var(--spacing-m);
   padding-right: var(--spacing-m);
-  /* default md max-width = reading-friendly */
-  max-width: var(--layout-container-md);
+  /* default m max-width = reading-friendly */
+  max-width: var(--layout-container-m);
 }
 
-/* ---------- Size variants (token-driven) ---------- */
+/* ---------- Size variants (token-driven、 5 tier xs/s/m/l/xl + full) ---------- */
 
-.creo-container[data-size="sm"] {
-  max-width: var(--layout-container-sm);
+.creo-container[data-size="xs"] {
+  max-width: var(--layout-container-xs);
+} /* extra-narrow、 minimal modal / single CTA */
+.creo-container[data-size="s"] {
+  max-width: var(--layout-container-s);
 } /* 短文 / form column */
-.creo-container[data-size="md"] {
-  max-width: var(--layout-container-md);
+.creo-container[data-size="m"] {
+  max-width: var(--layout-container-m);
 } /* default、 reading-friendly */
-.creo-container[data-size="lg"] {
-  max-width: var(--layout-container-lg);
+.creo-container[data-size="l"] {
+  max-width: var(--layout-container-l);
 } /* dashboard / table */
 .creo-container[data-size="xl"] {
   max-width: var(--layout-container-xl);

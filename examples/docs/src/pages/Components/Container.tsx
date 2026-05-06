@@ -1,9 +1,10 @@
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm (640) / md (768) / lg (1024) / xl (1280) / full',
-    def: 'md',
-    meaning: 'max-width、 default md は reading-friendly、 full は max-width: 100%',
+    values: 'xs (480) / s (640) / m (768) / l (1024) / xl (1280) / full',
+    def: 'm',
+    meaning:
+      'max-width、 default m は reading-friendly、 full は max-width: 100% (5 tier convention with spacing)',
   },
   {
     attr: 'data-padding',
@@ -14,7 +15,7 @@ const PROPS = [
 ] as const
 
 const TOKENS = [
-  { slot: 'max-width (sm/md/lg/xl)', token: '640 / 768 / 1024 / 1280 px' },
+  { slot: 'max-width (xs/s/m/l/xl)', token: '480 / 640 / 768 / 1024 / 1280 px' },
   { slot: 'padding (default)', token: 'spacing.m × spacing.m' },
   { slot: 'margin', token: 'auto auto (horizontal centering)' },
 ] as const
@@ -45,18 +46,22 @@ export default function Container() {
         <h1>Container</h1>
         <p class="docs-page-lead">
           page-level content の max-width 制限 + horizontal centering + side padding。 5 size
-          (sm/md/lg/xl/full)、 default md (768px = reading-friendly)。 nested 可能 (small content を
-          md container 内で sm container に絞る等)。
+          (xs/s/m/l/xl) + full、 default m (768px = reading-friendly)、 命名は spacing convention
+          に揃え 5 tier 統一。 nested 可能 (small content を m container 内で s container
+          に絞る等)。
         </p>
       </header>
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
         <div class="docs-component-preview">
-          <div class="docs-preview-row-label">5 sizes (visual outline で max-width を示す)</div>
-          {sample('sm — 640px (form / narrow read)', 'sm')}
-          {sample('md — 768px (default、 reading-friendly)', 'md')}
-          {sample('lg — 1024px (dashboard / table)', 'lg')}
+          <div class="docs-preview-row-label">
+            5 sizes + full (visual outline で max-width を示す)
+          </div>
+          {sample('xs — 480px (extra-narrow / minimal modal)', 'xs')}
+          {sample('s — 640px (form / narrow read)', 's')}
+          {sample('m — 768px (default、 reading-friendly)', 'm')}
+          {sample('l — 1024px (dashboard / table)', 'l')}
           {sample('xl — 1280px (hero / multi-column)', 'xl')}
           {sample('full — 100% (custom layout 内)', 'full')}
         </div>
@@ -98,10 +103,11 @@ export default function Container() {
         <h2 class="docs-section-title">使い分けと層構造</h2>
         <ul class="docs-bullet-list">
           <li>
-            page level — outer Container (xl) で全幅制限、 内部で細い Container (md / sm) を nest
+            page level — outer Container (xl) で全幅制限、 内部で細い Container (m / s) を nest
           </li>
-          <li>article (long-read) — md container (768px、 行長 60-80 char)</li>
-          <li>form (narrow) — sm container (640px、 input が長すぎず短すぎず)</li>
+          <li>article (long-read) — m container (768px、 行長 60-80 char)</li>
+          <li>form (narrow) — s container (640px、 input が長すぎず短すぎず)</li>
+          <li>xs (modal body / single-line CTA) は narrow Dialog 内側で更に絞る用途</li>
           <li>full — Container を弾いて全幅にしたい hero / image grid 等</li>
         </ul>
       </section>
@@ -116,7 +122,7 @@ export default function Container() {
 </main>
 
 <!-- Narrow form -->
-<form class="creo-container" data-size="sm">
+<form class="creo-container" data-size="s">
   ...
 </form>
 
@@ -128,7 +134,7 @@ export default function Container() {
 <!-- Nested (outer wide + inner narrow) -->
 <div class="creo-container" data-size="xl">
   <header>...</header>
-  <article class="creo-container" data-size="md">
+  <article class="creo-container" data-size="m">
     long-read article
   </article>
 </div>`}</code>

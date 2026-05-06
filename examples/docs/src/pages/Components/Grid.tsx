@@ -1,22 +1,23 @@
 const PROPS = [
   {
     attr: 'data-cols',
-    values: '1 / 2 / 3 / 4 / 6 / 12 / auto-sm / auto-md / auto-lg',
+    values: '1 / 2 / 3 / 4 / 6 / 12 / auto-xs / auto-s / auto-m / auto-l / auto-xl',
     def: '12',
-    meaning: 'column 数。 auto-* は responsive (min-column-width 基準で auto-fit)',
+    meaning:
+      'column 数。 auto-* は responsive (min-column-width 基準で auto-fit、 5 tier xs/s/m/l/xl)',
   },
   {
     attr: 'data-gap',
     values: 'xs / s / m / l / xl',
     def: 'm',
-    meaning: '5-step rule、 cell 間 gap',
+    meaning: '5-step rule、 cell 間 gap (spacing token と同 tier)',
   },
 ] as const
 
 const TOKENS = [
   { slot: 'gap (xs/s/m/l/xl)', token: 'spacing.{xs/s/m/l/xl}' },
   { slot: 'display', token: 'grid' },
-  { slot: 'auto-sm/md/lg minmax', token: '160px / 220px / 320px' },
+  { slot: 'auto-xs/s/m/l/xl minmax', token: '120 / 160 / 220 / 280 / 320 px' },
 ] as const
 
 export default function Grid() {
@@ -37,8 +38,9 @@ export default function Grid() {
         <h1>Grid</h1>
         <p class="docs-page-lead">
           2D layout primitive (CSS Grid)。 column 数を <code>data-cols</code> で指定
-          (1/2/3/4/6/12)、 または <code>auto-sm/md/lg</code> で responsive auto-fit。 gap は 5-step
-          token。 dashboard / image gallery / card list 等に汎用。
+          (1/2/3/4/6/12)、 または <code>auto-xs/s/m/l/xl</code> で responsive auto-fit (5 tier、
+          spacing convention 整合)。 gap は 5-step token。 dashboard / image gallery / card list
+          等。
         </p>
       </header>
 
@@ -64,7 +66,7 @@ export default function Grid() {
           </div>
 
           <div class="docs-preview-row-label">Auto-fit (min 220px、 responsive)</div>
-          <div class="creo-grid" data-cols="auto-md">
+          <div class="creo-grid" data-cols="auto-m">
             {Cell('auto 1')}
             {Cell('auto 2')}
             {Cell('auto 3')}
@@ -135,7 +137,8 @@ export default function Grid() {
             <strong>Stack</strong> — 1D (縦 or 横)、 flex base、 list / toolbar
           </li>
           <li>
-            <code>data-cols="auto-*"</code> は responsive (container 幅に応じて column 数自動)
+            <code>data-cols="auto-*"</code> は responsive (container 幅に応じて column 数自動、 5
+            tier)
           </li>
         </ul>
       </section>
@@ -150,7 +153,7 @@ export default function Grid() {
 </div>
 
 <!-- Auto-fit (responsive) -->
-<div class="creo-grid" data-cols="auto-md">
+<div class="creo-grid" data-cols="auto-m">
   <article class="creo-card">a</article>
   <article class="creo-card">b</article>
   <article class="creo-card">c</article>

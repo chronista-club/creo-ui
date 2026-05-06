@@ -1,17 +1,22 @@
 {
   "layout": {
     "container": {
-      "sm": {
+      "xs": {
+        "$value": "480px",
+        "$type": "dimension",
+        "$description": "Extra-narrow column — single-line CTA / standalone form / compact dialog body。 mobile portrait の effective text width に近い、 minimal modal stage。"
+      },
+      "s": {
         "$value": "640px",
         "$type": "dimension",
-        "$description": "Narrow column — short form / single-line input collection / compact reading. Aligns with iPhone 15 Pro Max landscape (932×430)、 dense modal."
+        "$description": "Narrow column — short form / single-line input collection / compact reading. iPhone 15 Pro Max landscape (932×430) や dense modal と整合。"
       },
-      "md": {
+      "m": {
         "$value": "768px",
         "$type": "dimension",
         "$description": "Default reading-friendly — 60-80 char line for long-form text. iPad portrait の content viewport と整合。"
       },
-      "lg": {
+      "l": {
         "$value": "1024px",
         "$type": "dimension",
         "$description": "Dashboard / table-rich content — multi-column tables / data lists. iPad landscape / 13\" laptop の effective viewport。"

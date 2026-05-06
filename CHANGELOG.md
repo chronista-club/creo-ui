@@ -3,6 +3,69 @@
 本ファイルは Creo UI の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## v0.16.0 (2026-05-06) — 5 tier sizing convention 統一 (web、 BREAKING)
+
+### BREAKING (web 0.16.0)
+
+v0.15.0 で追加した container / grid / icon token + data-size attribute が **Tailwind 流 sm/md/lg/xl の 4 段階** で書かれていたが、 commit `98a5804` (`refactor(spacing): rename sm/md/lg → s/m/l (5 tier 統一)`) で確立された **既存 spacing convention `xs/s/m/l/xl` (5 段階)** に違反していた (PR #24 Round 1 の認識ミス)。
+
+v0.16.0 で **token name + dogfood の data-size attribute 両層** を 5 tier convention に揃える:
+
+#### Token rename + 値拡張
+
+| token | v0.15.0 | v0.16.0 |
+|---|---|---|
+| `--layout-container-*` | `sm/md/lg/xl` (4 値) | `xs/s/m/l/xl` (5 値、 xs=480 追加) |
+| `--layout-grid-col-min-*` | `sm/md/lg` (3 値) | `xs/s/m/l/xl` (5 値、 xs=120 + l=280 + xl=320 追加) |
+| `--typography-icon-*` | `md/lg/xl` (3 値) | `xs/s/m/l/xl` (5 値、 xs=16 + s=24 追加) |
+
+#### Migration (consumer side)
+
+```css
+/* before (v0.15.0) — DO NOT USE, removed */
+max-width: var(--layout-container-md);
+font-size: var(--typography-icon-lg);
+
+/* after (v0.16.0) */
+max-width: var(--layout-container-m);
+font-size: var(--typography-icon-l);
+```
+
+```html
+<!-- before -->
+<div class="creo-container" data-size="md">
+<div class="creo-grid" data-cols="auto-md">
+<div class="creo-empty-state" data-size="lg">
+
+<!-- after -->
+<div class="creo-container" data-size="m">
+<div class="creo-grid" data-cols="auto-m">
+<div class="creo-empty-state" data-size="l">
+```
+
+実 consumer は v0.15.0 install しないまま v0.16.0 直行を推奨 (v0.15.0 は publish 直後 30 分で本問題発覚、 実 production consumer ゼロ)。
+
+### Notes (web 0.16.0)
+- `data-padding="s"` / `"l"` は元から convention 準拠で touch なし。 `data-padding="m"` は default 値で attribute 不要。
+- empty-state の `data-size` attribute も `s/m/l` (3 段階) に rename。 button / input 等他 component の `data-size` (sm/md/lg) は **別 axis** で本 release 範囲外 (将来別 PR で 5 tier 統一する場合は consumer-breaking change として明示)。
+- Swift / Rust generated にも 5 tier rename + 値拡張が伝播。
+
+---
+
+## v0.5.0 (2026-05-06) — New tokens additive (rust + swift)
+
+5 新 token (web v0.16.0 の 5 tier rename と sync):
+- `COLOR_SURFACE_SCRIM` / `COLOR_SURFACE_SCRIM_MODAL`
+- `LAYOUT_CONTAINER_{XS,S,M,L,XL}` (5 tier、 v0.4.0 の sm/md/lg/xl 4 tier から rename + xs 追加)
+- `LAYOUT_GRID_COL_MIN_{XS,S,M,L,XL}` (5 tier、 v0.4.0 の 3 tier から拡張)
+- `TYPOGRAPHY_ICON_{XS,S,M,L,XL}` (5 tier、 v0.4.0 の 3 tier から拡張)
+
+const 名 BREAKING (Rust / Swift consumer の `LAYOUT_CONTAINER_SM` 等は無くなる、 `_S` に rename 必要)。 v0.4.0 は publish 直後 (30 分以内) で実 consumer ゼロ、 v0.5.0 直行推奨。
+
+OKLCH alpha (0.4 / 0.5) は依然 opaque RGB に変換 (Phase 3 で alpha 対応検討)。
+
+---
+
 ## v0.15.0 (2026-05-06) — A11y reduced-motion full coverage + 5 new tokens (web)
 
 ### Added (web 0.15.0)

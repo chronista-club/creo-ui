@@ -1,14 +1,14 @@
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
-    meaning: 'icon + text scale (compact list = sm、 main page = md、 hero = lg)',
+    values: 's / m / l',
+    def: 'm',
+    meaning: 'icon + text scale (compact list = s、 main page = m、 hero = l、 5 tier convention)',
   },
 ] as const
 
 const TOKENS = [
-  { slot: 'icon size (sm/md/lg)', token: '32 / 48 / 64 px' },
+  { slot: 'icon size (s/m/l)', token: 'typography.icon.{m/l/xl} = 40 / 64 / 96 px' },
   { slot: 'icon color', token: 'color.text.tertiary' },
   { slot: 'title', token: 'color.text.primary、 weight.semibold' },
   { slot: 'description', token: 'color.text.secondary' },
@@ -53,7 +53,7 @@ export default function EmptyState() {
           </div>
 
           <div class="docs-preview-row-label">Search no results</div>
-          <div class="creo-empty-state" data-size="sm">
+          <div class="creo-empty-state" data-size="s">
             <div class="creo-empty-state-icon" aria-hidden="true">
               🔍
             </div>
@@ -69,7 +69,7 @@ export default function EmptyState() {
           </div>
 
           <div class="docs-preview-row-label">Hero / page-level</div>
-          <div class="creo-empty-state" data-size="lg">
+          <div class="creo-empty-state" data-size="l">
             <div class="creo-empty-state-icon" aria-hidden="true">
               ✨
             </div>
@@ -170,8 +170,8 @@ export default function EmptyState() {
   </div>
 </div>
 
-<!-- Compact (sm) for inline empty -->
-<div class="creo-empty-state" data-size="sm">
+<!-- Compact (s) for inline empty -->
+<div class="creo-empty-state" data-size="s">
   ...
 </div>`}</code>
         </pre>
