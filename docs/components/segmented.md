@@ -57,7 +57,7 @@ Tabs に似てるが意味が違う — Segmented control は **setting / filter
 | wrapper border | `color.surface.border` 1px |
 | wrapper padding | `spacing.xs` |
 | wrapper border-radius | `radius.md` |
-| option padding | `spacing.xs` × `spacing.md` |
+| option padding | `spacing.xs` × `spacing.m` |
 | option border-radius | `radius.sm` |
 | option font-size (md) | `typography.size.md` |
 | option text (default) | `color.text.secondary` |

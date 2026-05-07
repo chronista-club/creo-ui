@@ -48,7 +48,7 @@ Native `<input>` の属性がそのまま使える:
 | slot | token |
 |---|---|
 | chevron icon | `▾` (CSS content)、`color.text.tertiary` |
-| chevron position | right: `spacing.sm`、vertical center |
+| chevron position | right: `spacing.s`、vertical center |
 | padding-right (for chevron room) | `spacing.xl` |
 
 ## Accessibility

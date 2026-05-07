@@ -23,7 +23,7 @@ const TOKENS = [
   { slot: 'background', token: 'color.surface.surface + shadow.lg' },
   { slot: 'border', token: 'color.surface.border 1px' },
   { slot: 'border-radius', token: 'radius.md' },
-  { slot: 'item padding', token: 'spacing.xs × spacing.sm' },
+  { slot: 'item padding', token: 'spacing.xs × spacing.s' },
   { slot: 'item hover bg', token: 'color.surface.bg-subtle' },
   { slot: 'item destructive', token: 'color.semantic.error' },
   { slot: 'separator', token: 'color.surface.border 1px' },

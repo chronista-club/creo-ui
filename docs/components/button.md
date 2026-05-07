@@ -37,8 +37,8 @@ user intent を起動するための atomic action trigger。typography と colo
 | label color | `color.text.primary` (inverse on primary: `color.surface.bg-base`) |
 | font-size | `typography.size.md` (sm variant は `size.sm`、lg は `size.lg`) |
 | font-weight | `typography.weight.medium` |
-| padding horizontal | `spacing.md` (sm: `spacing.sm`、lg: `spacing.lg`) |
-| padding vertical | `spacing.xs` (sm) / `spacing.sm` (md) / `spacing.md` (lg) |
+| padding horizontal | `spacing.m` (sm: `spacing.s`、lg: `spacing.l`) |
+| padding vertical | `spacing.xs` (sm) / `spacing.s` (md) / `spacing.m` (lg) |
 | gap (icon + label) | `layout.gap.tight` |
 | border-radius | `radius.sm` |
 | min-height | `layout.target.tap` (md/lg) / `layout.target.focus` (sm) |

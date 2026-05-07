@@ -7,7 +7,7 @@
  * dev 専用 (filesystem write が必要)。production build では中立 (apply フック無し)。
  *
  * MVP scope:
- *   - 対応 token key: `tokens.spacing.md`, `tokens.margin.{key}`, `tokens.radius.{key}`
+ *   - 対応 token key: `tokens.spacing.m`, `tokens.margin.{key}`, `tokens.radius.{key}`
  *     - 単一 file 構造 (`tokens/<cat>/scale.json`) の category に限定
  *   - 値は number (px 単位) を受けて `"{n}px"` として書き戻す
  *   - 書き戻し後、Vite は file watcher で `tokens.css` を rebuild (style-dictionary CLI 要走らせ直し)
@@ -27,7 +27,7 @@ interface CommitPayload {
 }
 
 /**
- * token id ("tokens.spacing.md") → 書き戻し先 file 情報。
+ * token id ("tokens.spacing.m") → 書き戻し先 file 情報。
  * 未対応 id は null を返す。
  */
 function resolveTokenTarget(

@@ -379,7 +379,7 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
         '────────────────────────────────────────────────',
         '',
         '[Sugar]',
-        "  creoEditor.slider('--spacing-md', 16, { min: 0, max: 48 })",
+        "  creoEditor.slider('--spacing-m', 16, { min: 0, max: 48 })",
         "  creoEditor.picker('--color-brand-primary', '#73e7aa')",
         "  creoEditor.flip('app.show-footer', true)",
         "  creoEditor.chooser('theme.mode', 'mint-dark', ['mint-dark', 'sora-dark', ...])",

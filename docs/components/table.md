@@ -85,7 +85,7 @@ rows × columns の **dense data listing**。Creo の aesthetic に合わせ、z
 | head text | `color.text.secondary` |
 | head font-weight | `weight.medium` |
 | head letter-spacing | `0.02em` |
-| cell padding (md) | `spacing.sm` × `spacing.md` |
+| cell padding (md) | `spacing.s` × `spacing.m` |
 | row hover bg | `color.surface.bg-subtle` |
 | row selected bg | `color.brand.primary-subtle` |
 | divider | `color.surface.border-subtle` 1px |

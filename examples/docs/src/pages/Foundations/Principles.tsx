@@ -46,10 +46,10 @@ export default function Principles() {
         </p>
         <h3>How it shows up</h3>
         <p>
-          <code>spacing.lg = 24px</code> / <code>margin.lg = 40px</code> (1.67 倍)。
+          <code>spacing.l = 24px</code> / <code>margin.lg = 40px</code> (1.67 倍)。
           <code>spacing.xl = 32px</code> / <code>margin.xl = 64px</code> (2 倍)。 大きくなるほど
-          margin は呼吸量を増やす。 form field の縦間隔は <code>spacing.sm</code>、 hero と footer
-          の間は <code>margin.xl</code>。
+          margin は呼吸量を増やす。 form field の縦間隔は <code>spacing.s</code>、 hero と footer
+          の間は <code>margin.xl</code>。 (margin は歴史的に sm/md/lg、 後で 5 tier 統一予定)
         </p>
       </Principle>
 
@@ -68,7 +68,7 @@ export default function Principles() {
         <h3>How it shows up</h3>
         <p>
           <code>layout.gap.tight = {'{spacing.xs}'}</code>、{' '}
-          <code>layout.gap.sibling = {'{spacing.md}'}</code>、
+          <code>layout.gap.sibling = {'{spacing.m}'}</code>、
           <code>layout.gap.section = {'{margin.lg}'}</code>、{' '}
           <code>layout.gap.page = {'{margin.xl}'}</code>。 consumer は alias を使う、 maintainer は
           base を tune。
@@ -163,7 +163,7 @@ export default function Principles() {
           token を増やしたい / 削りたいと思ったら、 上記 6 原則と照らし合わせる。 「2xl spacing
           欲しい」 → 原則 1 に照らして 5 step 違反、 不採用。 「margin と spacing 統合できる?」 →
           原則 2 で双 scale が機能設計、 統合すると意図表現が落ちるため不可。 「component で 直接
-          16px 書きたい」 → 原則 6 で禁止、 spacing.sm を経由。
+          16px 書きたい」 → 原則 6 で禁止、 spacing.s を経由。
         </p>
         <p>
           原則は時間で風化する — 半年後も同じ判断ができるよう、 docs に articulate して残す。 これが

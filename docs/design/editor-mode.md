@@ -126,7 +126,7 @@ export type EditorPersistence =
 
 /** Field 定義 */
 export interface EditorField<T = unknown> {
-  /** unique id、例: "tokens.spacing.md", "memory.priority" */
+  /** unique id、例: "tokens.spacing.m", "memory.priority" */
   id: string
   /** UI 表示名 */
   label: string
@@ -397,10 +397,10 @@ editor_mode_subscribe(field_id)                  → polling 用 handle
 ```
 User: "一覧の情報密度が詰まりすぎ、緩めて"
 Claude: editor_mode_enter("creo-web")
-        editor_mode_get_value("tokens.spacing.md")      → 16px
-        editor_mode_set_value("tokens.spacing.md", 20)  → 全画面 re-render
+        editor_mode_get_value("tokens.spacing.m")      → 16px
+        editor_mode_set_value("tokens.spacing.m", 20)  → 全画面 re-render
 User (視覚確認): "もう少し締めて"
-Claude: editor_mode_set_value("tokens.spacing.md", 18)
+Claude: editor_mode_set_value("tokens.spacing.m", 18)
 User: "これで"
 Claude: "tokens/spacing/scale.json に 18px で commit する PR を作成しますか?"
 User: "yes"

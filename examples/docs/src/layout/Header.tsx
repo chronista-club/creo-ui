@@ -9,7 +9,7 @@ export default function Header() {
           ◎
         </span>
         <span class="docs-brand-text">Creo UI</span>
-        <span class="docs-brand-version">v0.14.0</span>
+        <span class="docs-brand-version">v0.16.0</span>
       </A>
       <nav class="docs-header-nav" aria-label="primary">
         <A href="/getting-started" activeClass="is-active">

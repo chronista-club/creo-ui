@@ -9,7 +9,7 @@ const { inferType, cssVarToId, heuristicRange } = __test__
 describe('cssVarToId', () => {
   test('strips -- and converts hyphen to dot', () => {
     expect(cssVarToId('--color-brand-primary')).toBe('color.brand.primary')
-    expect(cssVarToId('--spacing-md')).toBe('spacing.md')
+    expect(cssVarToId('--spacing-m')).toBe('spacing.m')
   })
 })
 
@@ -27,7 +27,7 @@ describe('inferType', () => {
     expect(r.kind).toBe('color')
   })
   test('number with px', () => {
-    const r = inferType('--spacing-md', '16px')
+    const r = inferType('--spacing-m', '16px')
     expect(r.kind).toBe('number')
     expect(r.numericValue).toBe(16)
     expect(r.unit).toBe('px')

@@ -8,9 +8,9 @@ const NAMING = [
     rust: 'COLOR_BRAND_PRIMARY',
   },
   {
-    token: 'spacing.md',
-    web: '--spacing-md',
-    apple: 'spacingMd',
+    token: 'spacing.m',
+    web: '--spacing-m',
+    apple: 'spacingM',
     rust: 'SPACING_MD',
   },
   {
@@ -115,15 +115,15 @@ export default function MultiPlatform() {
           <code>{`/* dist/tokens.css */
 :root {
   --color-brand-primary: oklch(73% 0.15 160);
-  --spacing-md: 18px;
+  --spacing-m: 18px;
 }
 
 /* dist/tokens.js */
 export const colorBrandPrimary = 'oklch(73% 0.15 160)'
-export const spacingMd = 18
+export const spacingM = 18
 
 /* dist/components.css — 全 token 経由で書かれた component 集 */
-.creo-btn { padding: var(--spacing-md); ... }`}</code>
+.creo-btn { padding: var(--spacing-m); ... }`}</code>
         </pre>
 
         <h3 class="docs-platform-title">Apple — CreoUI (Swift)</h3>
@@ -138,7 +138,7 @@ public extension Color {
 }
 
 public enum CreoUITokens {
-    public static let spacingMd: CGFloat = 18.0
+    public static let spacingM: CGFloat = 18.0
     public static let radiusMd: CGFloat = 15.0
 }`}</code>
         </pre>

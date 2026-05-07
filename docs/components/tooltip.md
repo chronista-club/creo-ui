@@ -45,7 +45,7 @@ focus-within または hover で `.creo-tooltip-content` が可視になる。
 | bg (inverse) | `color.text.primary` |
 | text (default) | `color.text.primary` |
 | text (inverse) | `color.surface.bg-base` |
-| padding | `spacing.xs` × `spacing.sm` |
+| padding | `spacing.xs` × `spacing.s` |
 | font-size | `typography.body.caption` (12px) |
 | border-radius | `radius.xs` |
 | shadow | `shadow.md` |

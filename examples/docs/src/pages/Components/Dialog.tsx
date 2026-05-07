@@ -31,7 +31,7 @@ const TOKENS = [
   { slot: 'border-radius', token: 'radius.lg (22px)' },
   { slot: 'shadow', token: 'shadow.lg' },
   { slot: 'max-width', token: '320 / 480 / 720 px (sm/md/lg)' },
-  { slot: 'padding', token: 'spacing.md (body) / spacing.sm spacing.md (header/footer)' },
+  { slot: 'padding', token: 'spacing.m (body) / spacing.s spacing.m (header/footer)' },
   { slot: 'gap (footer actions)', token: 'layout.gap.tight' },
   { slot: 'title color (destructive)', token: 'color.semantic.error' },
 ] as const

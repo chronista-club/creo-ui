@@ -46,7 +46,7 @@ const TOKENS = [
   { slot: 'border (error)', token: 'color.semantic.error 1.5px' },
   { slot: 'text', token: 'color.text.primary' },
   { slot: 'placeholder', token: 'color.text.tertiary' },
-  { slot: 'padding', token: 'spacing.sm × spacing.md' },
+  { slot: 'padding', token: 'spacing.s × spacing.m' },
   { slot: 'border-radius', token: 'radius.{xs/sm/md}' },
   { slot: 'min-height', token: 'layout.target.{focus/tap}' },
 ] as const

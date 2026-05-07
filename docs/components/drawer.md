@@ -70,7 +70,7 @@ native `<dialog>` + `showModal()` を使う (focus trap / Esc 自動):
 | shadow | `shadow.xl` (強めの lift) |
 | width (sm/md/lg/xl) | 280 / 400 / 560 / 800 px (horizontal) |
 | height (sm/md/lg/xl) | 40% / 50% / 65% / 80% viewport (vertical) |
-| header/footer padding | `spacing.sm` × `spacing.md` |
+| header/footer padding | `spacing.s` × `spacing.m` |
 | border separator | `color.surface.border` 1px |
 | transition | 240ms cubic-bezier(0.16, 1, 0.3, 1) |
 

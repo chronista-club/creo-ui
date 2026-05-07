@@ -50,13 +50,13 @@
 |---|---|
 | wrapper bg (bordered) | `color.surface.surface` |
 | wrapper border | `color.surface.border` 1px |
-| wrapper padding | `spacing.sm` × `spacing.md` |
+| wrapper padding | `spacing.s` × `spacing.m` |
 | border-radius | `radius.sm` |
 | summary min-height | `layout.target.tap` |
 | title font-size | `typography.size.md` |
 | title weight | `typography.weight.medium` |
 | chevron | `▸` rotate 90° when open |
-| content padding-top | `spacing.sm` |
+| content padding-top | `spacing.s` |
 | transition | 180ms ease |
 
 ## Accessibility

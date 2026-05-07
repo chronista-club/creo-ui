@@ -54,9 +54,9 @@ page の最上部で "どこにいるか / 誰の製品か / 何ができるか"
 | background (marketing) | `color.surface.bg-base` (透明感あり) |
 | border-bottom (elevation sm) | 1px `color.surface.border` |
 | shadow (elevation md) | `shadow.sm` |
-| padding vertical (app) | `spacing.sm` |
-| padding vertical (marketing) | `spacing.md` |
-| padding horizontal | `spacing.lg` |
+| padding vertical (app) | `spacing.s` |
+| padding vertical (marketing) | `spacing.m` |
+| padding horizontal | `spacing.l` |
 | gap (slot 間) | `layout.gap.sibling` |
 | nav link font-size | `typography.size.md` |
 | nav link color (default) | `color.text.secondary` |

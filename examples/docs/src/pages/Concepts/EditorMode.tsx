@@ -192,9 +192,9 @@ export default function EditorMode() {
           <code>{`import { EditorHostProvider, EditorLayer, bind, number, cssVarNumberTarget } from 'creo-ui-editor-host'
 
 bind({
-  id: 'tokens.spacing.md',
+  id: 'tokens.spacing.m',
   control: number({ variant: 'slider' }),
-  target: cssVarNumberTarget('--spacing-md', { min: 0, max: 48, unit: 'px' }),
+  target: cssVarNumberTarget('--spacing-m', { min: 0, max: 48, unit: 'px' }),
   initial: 18,
   semantic: 'tool',
 })

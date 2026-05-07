@@ -32,7 +32,7 @@ export interface EditorFieldConstraints {
 
 // biome-ignore lint/suspicious/noExplicitAny: default any で異なる T を同配列に入れる variance 緩和 — consumer は明示型で安全
 export interface EditorField<T = any> {
-  /** unique id、例: "tokens.spacing.md" */
+  /** unique id、例: "tokens.spacing.m" */
   id: string
   /** UI 表示名 */
   label: string
@@ -46,7 +46,7 @@ export interface EditorField<T = any> {
   persistence?: EditorPersistence
   /** 同 region 内での並び順 hint (省略時は宣言順) */
   order?: number
-  /** CSS 変数を書き換える場合、変数名 (例: "--spacing-md") */
+  /** CSS 変数を書き換える場合、変数名 (例: "--spacing-m") */
   cssVar?: string
   /** cssVar 以外の副作用を宣言的に扱う (document attribute / signal / API call 等) */
   apply?: (value: T) => void

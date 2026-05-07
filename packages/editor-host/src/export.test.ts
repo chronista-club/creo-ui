@@ -15,7 +15,7 @@ function makeHost(fields: EditorField[]): ReturnType<typeof createEditorHost> {
 describe('yamlKey', () => {
   test('simple identifier is unquoted', () => {
     expect(__test__.yamlKey('foo')).toBe('foo')
-    expect(__test__.yamlKey('tokens.spacing.md')).toBe('tokens.spacing.md')
+    expect(__test__.yamlKey('tokens.spacing.m')).toBe('tokens.spacing.m')
   })
   test('special chars are quoted', () => {
     expect(__test__.yamlKey('has space')).toMatch(/^".*"$/)

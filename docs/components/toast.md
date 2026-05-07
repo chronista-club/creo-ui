@@ -77,10 +77,10 @@
 | slot | token |
 |---|---|
 | region gap | `layout.gap.tight` |
-| region padding | `spacing.md` |
+| region padding | `spacing.m` |
 | toast bg (default) | `color.surface.surface` |
 | toast border | 1px (default) / 1.5px (variant) |
-| toast padding | `spacing.sm` × `spacing.md` |
+| toast padding | `spacing.s` × `spacing.m` |
 | border-radius | `radius.md` |
 | shadow | `shadow.md` |
 | icon size | `typography.title.card` (20px) |

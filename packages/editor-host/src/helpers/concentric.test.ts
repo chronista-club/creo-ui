@@ -6,8 +6,8 @@ import { concentric, concentricTokens } from './concentric'
 
 describe('concentric', () => {
   test('wraps parent and padding in calc() with minus', () => {
-    expect(concentric('var(--radius-md)', 'var(--spacing-md)')).toBe(
-      'calc(var(--radius-md) - var(--spacing-md))',
+    expect(concentric('var(--radius-md)', 'var(--spacing-m)')).toBe(
+      'calc(var(--radius-md) - var(--spacing-m))',
     )
   })
   test('works with rem literals', () => {
@@ -25,7 +25,7 @@ describe('concentric', () => {
 
 describe('concentricTokens', () => {
   test('uses default prefixes (radius + spacing)', () => {
-    expect(concentricTokens('lg', 'sm')).toBe('calc(var(--radius-lg) - var(--spacing-sm))')
+    expect(concentricTokens('lg', 's')).toBe('calc(var(--radius-lg) - var(--spacing-s))')
   })
   test('accepts custom prefixes', () => {
     expect(

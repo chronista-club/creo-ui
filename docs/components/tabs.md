@@ -83,7 +83,7 @@ active 判定は **`aria-selected="true"` が単一 SSOT** (JS で付け替え�
 | tab text (hover) | `color.text.primary` |
 | tab text (active) | `color.brand.primary` (underline) / `color.surface.bg-base` (pill) |
 | tab background (pill active) | `color.brand.primary` |
-| tab padding | `spacing.sm` × `spacing.md` |
+| tab padding | `spacing.s` × `spacing.m` |
 | tab gap | `spacing.xs` (pill のみ) |
 | active underline color | `color.brand.primary` |
 | underline thickness | 2px |

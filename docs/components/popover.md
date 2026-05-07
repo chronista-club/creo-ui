@@ -64,7 +64,7 @@ Menu よりリッチ (input / button 複数可)、Dialog より軽い (backdrop 
 | border | `color.surface.border` 1px |
 | border-radius | `radius.md` |
 | shadow | `shadow.lg` |
-| padding (md) | `spacing.md` |
+| padding (md) | `spacing.m` |
 | width (sm/md/lg) | 240 / 320 / 480 px |
 | header border-bottom | `color.surface.border` 1px |
 | footer border-top | `color.surface.border` 1px |

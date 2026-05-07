@@ -10,7 +10,7 @@ user から最小単位の文字列 / 数値を受け取る atomic input。form 
 
 ```
 ┌─────────────────────────────┐
-│  value text                 │  ← padding: spacing.sm (vertical) × spacing.md (horizontal)
+│  value text                 │  ← padding: spacing.s (vertical) × spacing.m (horizontal)
 └─────────────────────────────┘
   ↑
   min-height: layout-target-focus (32px、pointer device) or layout-target-tap (44px、touch)
@@ -43,7 +43,7 @@ user から最小単位の文字列 / 数値を受け取る atomic input。form 
 | font-size (md) | `typography.size.md` |
 | font-size (sm) | `typography.size.sm` |
 | font-size (lg) | `typography.size.lg` |
-| padding (md) | `spacing.sm` × `spacing.md` |
+| padding (md) | `spacing.s` × `spacing.m` |
 | border-radius | `radius.sm` (md), `radius.xs` (sm), `radius.md` (lg) |
 | min-height | `layout.target.focus` (sm) / `layout.target.tap` (md/lg) |
 | transition | 120ms ease (border-color, background-color, box-shadow) |

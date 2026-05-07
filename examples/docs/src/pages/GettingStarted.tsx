@@ -69,7 +69,7 @@ import 'creo-ui-md-view/styles.css'`}</code>
   <label for="email">Email</label>
   <input id="email" class="creo-input" type="email" placeholder="you@example.com" />
 
-  <div style="display: flex; gap: var(--layout-gap-tight); margin-top: var(--spacing-md);">
+  <div style="display: flex; gap: var(--layout-gap-tight); margin-top: var(--spacing-m);">
     <button class="creo-btn" data-variant="primary">Sign up</button>
     <button class="creo-btn" data-variant="secondary">Cancel</button>
   </div>
@@ -114,9 +114,9 @@ import 'creo-ui-md-view/styles.css'`}</code>
 
 // Field 宣言
 bind({
-  id: 'tokens.spacing.md',
+  id: 'tokens.spacing.m',
   control: number({ variant: 'slider' }),
-  target: cssVarNumberTarget('--spacing-md', { min: 0, max: 48, unit: 'px' }),
+  target: cssVarNumberTarget('--spacing-m', { min: 0, max: 48, unit: 'px' }),
   initial: 18,
   semantic: 'tool',
 })
@@ -147,7 +147,7 @@ dependencies: [
 // SwiftUI
 import CreoUI
 Text("Hi").foregroundColor(.colorBrandPrimary)
-  .padding(CreoUITokens.spacingMd)
+  .padding(CreoUITokens.spacingM)
 
 # Rust (Cargo)
 [dependencies]

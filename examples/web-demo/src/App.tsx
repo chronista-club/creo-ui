@@ -44,9 +44,9 @@ function Demo() {
   // (LEFT region の ThemeEditor panel は EditorLayer が内包して描画、App 側の追加不要)
 
   const spacingMd = bind({
-    target: cssVarNumberTarget('tokens.spacing.md', '--spacing-md', 16, 'px'),
+    target: cssVarNumberTarget('tokens.spacing.m', '--spacing-m', 16, 'px'),
     control: number({ min: 0, max: 48, step: 1, unit: 'px', variant: 'slider' }),
-    placement: { label: 'spacing.md', semantic: 'tool', group: 'Token', order: 0 },
+    placement: { label: 'spacing.m', semantic: 'tool', group: 'Token', order: 0 },
   })
   const radiusMd = bind({
     target: cssVarNumberTarget('tokens.radius.md', '--radius-md', 8, 'px'),
@@ -82,7 +82,7 @@ function Demo() {
           ref={title.selectable()}
           style={{
             'font-size': 'var(--typography-title-page)',
-            margin: '0 0 var(--spacing-md) 0',
+            margin: '0 0 var(--spacing-m) 0',
             color: 'var(--color-brand-primary)',
           }}
         >
@@ -109,7 +109,7 @@ function Demo() {
         >
           <Card
             title="カード 1 — 間隔"
-            description="spacing.md を動かすと padding が即反応。layout は押し退けられない (D-6 非侵襲)。"
+            description="spacing.m を動かすと padding が即反応。layout は押し退けられない (D-6 非侵襲)。"
             bindId={spacingMd.id}
           />
           <Card
@@ -126,7 +126,7 @@ function Demo() {
 
         <aside
           style={{
-            padding: 'var(--spacing-md)',
+            padding: 'var(--spacing-m)',
             background: 'var(--color-surface-bg-subtle)',
             border: '1px solid var(--color-surface-border)',
             'border-radius': 'var(--radius-md)',
@@ -136,7 +136,7 @@ function Demo() {
         >
           <h3
             style={{
-              margin: '0 0 var(--spacing-sm) 0',
+              margin: '0 0 var(--spacing-s) 0',
               'font-size': 'var(--typography-title-card)',
               'font-weight': 'var(--typography-weight-semibold)',
             }}
@@ -149,7 +149,7 @@ function Demo() {
           <pre
             style={{
               margin: '0',
-              padding: 'var(--spacing-sm)',
+              padding: 'var(--spacing-s)',
               background: 'var(--color-surface-surface)',
               'border-radius': 'var(--radius-sm)',
               overflow: 'auto',
@@ -158,7 +158,7 @@ function Demo() {
             }}
           >
             {`// DevTools Console で実行:
-creoEditor.slider('--spacing-lg', 24, { min: 0, max: 64, unit: 'px' })
+creoEditor.slider('--spacing-l', 24, { min: 0, max: 64, unit: 'px' })
 creoEditor.picker('--color-brand-primary', '#73e7aa')
 creoEditor.autoDiscover()            // 既知 CSS 変数を一括 bind
 creoEditor.export({ format: 'css-patch' })  // 変更分を CSS として取り出す
@@ -170,7 +170,7 @@ creoEditor.help()                     // 使い方一覧`}
         <section
           style={{
             'margin-top': 'var(--layout-gap-section)',
-            padding: 'var(--spacing-md)',
+            padding: 'var(--spacing-m)',
             background: 'var(--color-surface-surface)',
             border: '1px solid var(--color-surface-border)',
             'border-radius': 'var(--radius-md)',
@@ -178,7 +178,7 @@ creoEditor.help()                     // 使い方一覧`}
         >
           <h2
             style={{
-              margin: '0 0 var(--spacing-md) 0',
+              margin: '0 0 var(--spacing-m) 0',
               'font-size': 'var(--typography-title-section)',
               'font-weight': 'var(--typography-weight-semibold)',
             }}
@@ -187,7 +187,7 @@ creoEditor.help()                     // 使い方一覧`}
           </h2>
           <p
             style={{
-              margin: '0 0 var(--spacing-md) 0',
+              margin: '0 0 var(--spacing-m) 0',
               color: 'var(--color-text-secondary)',
               'font-size': 'var(--typography-body-helper)',
             }}
@@ -231,7 +231,7 @@ creoEditor.help()                     // 使い方一覧`}
         <section
           style={{
             'margin-top': 'var(--layout-gap-sibling)',
-            padding: 'var(--spacing-md)',
+            padding: 'var(--spacing-m)',
             background: 'var(--color-surface-surface)',
             border: '1px solid var(--color-surface-border)',
             'border-radius': 'var(--radius-md)',
@@ -239,7 +239,7 @@ creoEditor.help()                     // 使い方一覧`}
         >
           <h2
             style={{
-              margin: '0 0 var(--spacing-md) 0',
+              margin: '0 0 var(--spacing-m) 0',
               'font-size': 'var(--typography-title-section)',
               'font-weight': 'var(--typography-weight-semibold)',
             }}
@@ -249,7 +249,7 @@ creoEditor.help()                     // 使い方一覧`}
           <div
             style={{
               display: 'grid',
-              gap: 'var(--spacing-sm)',
+              gap: 'var(--spacing-s)',
               'max-width': '420px',
             }}
           >
@@ -382,7 +382,7 @@ function MarkdownDemo() {
     <section
       style={{
         'margin-top': 'var(--layout-gap-section)',
-        padding: 'var(--spacing-md)',
+        padding: 'var(--spacing-m)',
         background: 'var(--color-surface-surface)',
         border: '1px solid var(--color-surface-border)',
         'border-radius': 'var(--radius-md)',
@@ -390,7 +390,7 @@ function MarkdownDemo() {
     >
       <h2
         style={{
-          margin: '0 0 var(--spacing-md) 0',
+          margin: '0 0 var(--spacing-m) 0',
           'font-size': 'var(--typography-title-section)',
           'font-weight': 'var(--typography-weight-semibold)',
         }}
@@ -399,7 +399,7 @@ function MarkdownDemo() {
       </h2>
       <p
         style={{
-          margin: '0 0 var(--spacing-md) 0',
+          margin: '0 0 var(--spacing-m) 0',
           color: 'var(--color-text-secondary)',
           'font-size': 'var(--typography-body-helper)',
         }}
@@ -423,7 +423,7 @@ function Card(props: {
     <article class="creo-card" data-editor-fields={fieldsAttr()}>
       <h2
         style={{
-          margin: '0 0 var(--spacing-sm) 0',
+          margin: '0 0 var(--spacing-s) 0',
           'font-size': 'var(--typography-title-card)',
           'font-weight': 'var(--typography-weight-semibold)',
         }}

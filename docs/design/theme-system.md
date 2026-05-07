@@ -106,7 +106,7 @@ flowchart TB
 /* 1) :root default = common + mint-dark */
 :root {
   --editor-mode-axis-future: var(--color-brand-primary);
-  --spacing-md: 16px;
+  --spacing-m: 16px;
   /* ... common tokens ... */
 
   --color-brand-primary: oklch(0.75 0.12 160);

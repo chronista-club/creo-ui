@@ -10,7 +10,7 @@
 
 ```
 ┌───────────────────────┐
-│                       │  ← padding: spacing.md (default)
+│                       │  ← padding: spacing.m (default)
 │  [title]              │
 │  [description / slot] │
 │                       │
@@ -36,9 +36,9 @@
 | background (default) | `color.surface.surface` |
 | background (elevated) | `color.surface.surface` + `shadow.md` |
 | background (outlined) | `transparent` + `color.surface.border` 1.5px |
-| padding (sm) | `spacing.sm` |
-| padding (md) | `spacing.md` |
-| padding (lg) | `spacing.lg` |
+| padding (sm) | `spacing.s` |
+| padding (md) | `spacing.m` |
+| padding (lg) | `spacing.l` |
 | border-radius | `radius.md` |
 | border (default) | `color.surface.border` 1px |
 | gap (title + body) | `layout.gap.tight` |
@@ -94,7 +94,7 @@ Card click で RIGHT region に `data-variant` chooser / `data-padding` chooser 
 
 - `color.surface.*`
 - `shadow.md`
-- `spacing.sm/md/lg` + `layout.gap.tight`
+- `spacing.s/md/lg` + `layout.gap.tight`
 - `radius.md`
 
 ## 関連
