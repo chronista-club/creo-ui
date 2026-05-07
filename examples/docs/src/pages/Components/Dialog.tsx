@@ -292,18 +292,18 @@ export default function Dialog() {
   )
 }
 
-type DialogSize = 'sm' | 'md' | 'lg'
+type DialogSize = 's' | 'm' | 'l'
 type DialogVariant = 'default' | 'destructive'
 
 function DialogEditorDemo() {
-  const [size, setSize] = createSignal<DialogSize>('md')
+  const [size, setSize] = createSignal<DialogSize>('m')
   const [variant, setVariant] = createSignal<DialogVariant>('default')
   const [title, setTitle] = createSignal('削除の確認')
   const [body, setBody] = createSignal('この項目を削除します。 この操作は取り消せません。')
 
   bind({
     target: signalTarget('dialog.size', size, (v) => setSize(v as DialogSize)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'dialog', label: 'Size', order: 1 },
   })
   bind({

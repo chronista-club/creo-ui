@@ -331,11 +331,11 @@ export default function Pagination() {
 }
 
 type PaginationVariant = 'default' | 'compact'
-type PaginationSize = 'sm' | 'md' | 'lg'
+type PaginationSize = 's' | 'm' | 'l'
 
 function PaginationEditorDemo() {
   const [variant, setVariant] = createSignal<PaginationVariant>('default')
-  const [size, setSize] = createSignal<PaginationSize>('md')
+  const [size, setSize] = createSignal<PaginationSize>('m')
   const [current, setCurrent] = createSignal(3)
   const totalPages = 7
 
@@ -346,7 +346,7 @@ function PaginationEditorDemo() {
   })
   bind({
     target: signalTarget('pagination.size', size, (v) => setSize(v as PaginationSize)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'pagination', label: 'Size', order: 2 },
   })
   bind({
@@ -360,7 +360,7 @@ function PaginationEditorDemo() {
       <nav
         class="creo-pagination"
         data-variant={variant() === 'default' ? undefined : variant()}
-        data-size={size() === 'md' ? undefined : size()}
+        data-size={size() === 'm' ? undefined : size()}
         aria-label="pagination editor demo"
       >
         <ol class="creo-pagination-list">

@@ -193,11 +193,11 @@ export default function Input() {
 }
 
 type InputVariant = 'bordered' | 'filled'
-type InputSize = 'sm' | 'md' | 'lg'
+type InputSize = 's' | 'm' | 'l'
 
 function InputEditorDemo() {
   const [variant, setVariant] = createSignal<InputVariant>('bordered')
-  const [size, setSize] = createSignal<InputSize>('md')
+  const [size, setSize] = createSignal<InputSize>('m')
   const [placeholder, setPlaceholder] = createSignal('you@example.com')
   const [value, setValue] = createSignal('')
   const [disabled, setDisabled] = createSignal(false)
@@ -209,7 +209,7 @@ function InputEditorDemo() {
   })
   bind({
     target: signalTarget('input.size', size, (v) => setSize(v as InputSize)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'input', label: 'Size', order: 2 },
   })
   bind({

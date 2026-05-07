@@ -267,12 +267,12 @@ export default function Tabs() {
 }
 
 type TabsVariant = 'default' | 'pill'
-type TabsSize = 'sm' | 'md' | 'lg'
+type TabsSize = 's' | 'm' | 'l'
 type TabsSelected = 'tab1' | 'tab2' | 'tab3'
 
 function TabsEditorDemo() {
   const [variant, setVariant] = createSignal<TabsVariant>('default')
-  const [size, setSize] = createSignal<TabsSize>('md')
+  const [size, setSize] = createSignal<TabsSize>('m')
   const [selected, setSelected] = createSignal<TabsSelected>('tab1')
 
   bind({
@@ -282,7 +282,7 @@ function TabsEditorDemo() {
   })
   bind({
     target: signalTarget('tabs.size', size, (v) => setSize(v as TabsSize)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'tabs', label: 'Size', order: 2 },
   })
   bind({
@@ -296,7 +296,7 @@ function TabsEditorDemo() {
       <div
         class="creo-tabs"
         data-variant={variant() === 'default' ? undefined : variant()}
-        data-size={size() === 'md' ? undefined : size()}
+        data-size={size() === 'm' ? undefined : size()}
       >
         <div class="creo-tabs-list" role="tablist">
           <button

@@ -247,11 +247,11 @@ export default function Progress() {
 }
 
 type ProgressVariant = 'default' | 'success' | 'warning' | 'error'
-type ProgressSize = 'sm' | 'md' | 'lg'
+type ProgressSize = 's' | 'm' | 'l'
 
 function ProgressEditorDemo() {
   const [variant, setVariant] = createSignal<ProgressVariant>('default')
-  const [size, setSize] = createSignal<ProgressSize>('md')
+  const [size, setSize] = createSignal<ProgressSize>('m')
   const [value, setValue] = createSignal(60)
   const [indeterminate, setIndeterminate] = createSignal(false)
 
@@ -262,7 +262,7 @@ function ProgressEditorDemo() {
   })
   bind({
     target: signalTarget('progress.size', size, (v) => setSize(v as ProgressSize)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'progress', label: 'Size', order: 2 },
   })
   bind({
@@ -281,7 +281,7 @@ function ProgressEditorDemo() {
       <div
         class="creo-progress"
         data-variant={variant() === 'default' ? undefined : variant()}
-        data-size={size() === 'md' ? undefined : size()}
+        data-size={size() === 'm' ? undefined : size()}
         data-indeterminate={indeterminate() ? 'true' : undefined}
         role="progressbar"
         aria-label={indeterminate() ? 'Loading' : `${value()}%`}

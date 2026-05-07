@@ -211,11 +211,11 @@ export default function Card() {
 }
 
 type CardVariant = 'default' | 'elevated' | 'outlined'
-type CardPadding = 'sm' | 'md' | 'lg'
+type CardPadding = 's' | 'm' | 'l'
 
 function CardEditorDemo() {
   const [variant, setVariant] = createSignal<CardVariant>('default')
-  const [padding, setPadding] = createSignal<CardPadding>('md')
+  const [padding, setPadding] = createSignal<CardPadding>('m')
   const [interactive, setInteractive] = createSignal(false)
   const [title, setTitle] = createSignal('Card title')
   const [body, setBody] = createSignal(
@@ -229,7 +229,7 @@ function CardEditorDemo() {
   })
   bind({
     target: signalTarget('card.padding', padding, (v) => setPadding(v as CardPadding)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'card', label: 'Padding', order: 2 },
   })
   bind({

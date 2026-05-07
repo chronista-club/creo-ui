@@ -256,11 +256,11 @@ export default function Table() {
 }
 
 type TableVariant = 'default' | 'striped'
-type TableSize = 'sm' | 'md' | 'lg'
+type TableSize = 's' | 'm' | 'l'
 
 function TableEditorDemo() {
   const [variant, setVariant] = createSignal<TableVariant>('default')
-  const [size, setSize] = createSignal<TableSize>('md')
+  const [size, setSize] = createSignal<TableSize>('m')
   const [stickyHead, setStickyHead] = createSignal(false)
 
   bind({
@@ -270,7 +270,7 @@ function TableEditorDemo() {
   })
   bind({
     target: signalTarget('table.size', size, (v) => setSize(v as TableSize)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'table', label: 'Size', order: 2 },
   })
   bind({
@@ -284,7 +284,7 @@ function TableEditorDemo() {
       <table
         class="creo-table"
         data-variant={variant() === 'default' ? undefined : variant()}
-        data-size={size() === 'md' ? undefined : size()}
+        data-size={size() === 'm' ? undefined : size()}
         data-sticky-head={stickyHead() ? 'true' : undefined}
       >
         <thead class="creo-table-head">

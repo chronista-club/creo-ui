@@ -215,17 +215,17 @@ export default function Timeline() {
   )
 }
 
-type TimelineSize = 'sm' | 'md' | 'lg'
+type TimelineSize = 's' | 'm' | 'l'
 type TimelineItemVariant = 'default' | 'success' | 'warning' | 'error' | 'info'
 
 function TimelineEditorDemo() {
-  const [size, setSize] = createSignal<TimelineSize>('md')
+  const [size, setSize] = createSignal<TimelineSize>('m')
   const [itemVariant, setItemVariant] = createSignal<TimelineItemVariant>('success')
   const [itemTitle, setItemTitle] = createSignal('PR merged')
 
   bind({
     target: signalTarget('timeline.size', size, (v) => setSize(v as TimelineSize)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'timeline', label: 'Size', order: 1 },
   })
   bind({
@@ -243,7 +243,7 @@ function TimelineEditorDemo() {
 
   return (
     <div class="docs-playground-stage">
-      <ol class="creo-timeline" data-size={size() === 'md' ? undefined : size()}>
+      <ol class="creo-timeline" data-size={size() === 'm' ? undefined : size()}>
         <li
           class="creo-timeline-item"
           data-variant={itemVariant() === 'default' ? undefined : itemVariant()}

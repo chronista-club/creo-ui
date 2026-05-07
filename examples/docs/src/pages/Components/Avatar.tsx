@@ -209,17 +209,17 @@ export default function Avatar() {
   )
 }
 
-type AvatarSize = 'sm' | 'md' | 'lg' | 'xl'
+type AvatarSize = 's' | 'm' | 'l' | 'xl'
 type AvatarShape = 'circle' | 'square'
 
 function AvatarEditorDemo() {
-  const [size, setSize] = createSignal<AvatarSize>('lg')
+  const [size, setSize] = createSignal<AvatarSize>('l')
   const [shape, setShape] = createSignal<AvatarShape>('circle')
   const [initials, setInitials] = createSignal('CU')
 
   bind({
     target: signalTarget('avatar.size', size, (v) => setSize(v as AvatarSize)),
-    control: select(['sm', 'md', 'lg', 'xl'] as const),
+    control: select(['s', 'm', 'l', 'xl'] as const),
     placement: { semantic: 'tool', group: 'avatar', label: 'Size', order: 1 },
   })
   bind({

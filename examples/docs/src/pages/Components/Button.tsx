@@ -68,31 +68,31 @@ export default function Button() {
           <div class="docs-preview-row-label">Variants × Sizes</div>
           <div class="docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" data-size="s">
-              Primary sm
+              Primary s
             </button>
             <button type="button" class="creo-btn" data-variant="primary" data-size="m">
-              Primary md
+              Primary m
             </button>
             <button type="button" class="creo-btn" data-variant="primary" data-size="l">
-              Primary lg
+              Primary l
             </button>
             <button type="button" class="creo-btn" data-variant="secondary" data-size="s">
-              Secondary sm
+              Secondary s
             </button>
             <button type="button" class="creo-btn" data-variant="secondary" data-size="m">
-              Secondary md
+              Secondary m
             </button>
             <button type="button" class="creo-btn" data-variant="secondary" data-size="l">
-              Secondary lg
+              Secondary l
             </button>
             <button type="button" class="creo-btn" data-variant="ghost" data-size="s">
-              Ghost sm
+              Ghost s
             </button>
             <button type="button" class="creo-btn" data-variant="ghost" data-size="m">
-              Ghost md
+              Ghost m
             </button>
             <button type="button" class="creo-btn" data-variant="ghost" data-size="l">
-              Ghost lg
+              Ghost l
             </button>
           </div>
           <div class="docs-preview-row-label">States</div>
@@ -244,11 +244,11 @@ export default function Button() {
 }
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost'
-type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonSize = 's' | 'm' | 'l'
 
 function ButtonEditorDemo() {
   const [variant, setVariant] = createSignal<ButtonVariant>('primary')
-  const [size, setSize] = createSignal<ButtonSize>('md')
+  const [size, setSize] = createSignal<ButtonSize>('m')
   const [disabled, setDisabled] = createSignal(false)
   const [label, setLabel] = createSignal('Click me')
 
@@ -259,7 +259,7 @@ function ButtonEditorDemo() {
   })
   bind({
     target: signalTarget('btn.size', size, (v) => setSize(v as ButtonSize)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'button', label: 'Size', order: 2 },
   })
   bind({

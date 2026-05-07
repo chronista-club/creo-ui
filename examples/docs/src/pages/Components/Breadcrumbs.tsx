@@ -232,16 +232,16 @@ export default function Breadcrumbs() {
   )
 }
 
-type BreadcrumbsSize = 'sm' | 'md' | 'lg'
+type BreadcrumbsSize = 's' | 'm' | 'l'
 type BreadcrumbsSeparator = 'default' | 'slash' | 'dot'
 
 function BreadcrumbsEditorDemo() {
-  const [size, setSize] = createSignal<BreadcrumbsSize>('md')
+  const [size, setSize] = createSignal<BreadcrumbsSize>('m')
   const [separator, setSeparator] = createSignal<BreadcrumbsSeparator>('default')
 
   bind({
     target: signalTarget('breadcrumbs.size', size, (v) => setSize(v as BreadcrumbsSize)),
-    control: select(['sm', 'md', 'lg'] as const),
+    control: select(['s', 'm', 'l'] as const),
     placement: { semantic: 'tool', group: 'breadcrumbs', label: 'Size', order: 1 },
   })
   bind({
@@ -256,7 +256,7 @@ function BreadcrumbsEditorDemo() {
     <div class="docs-playground-stage">
       <nav
         class="creo-breadcrumbs"
-        data-size={size() === 'md' ? undefined : size()}
+        data-size={size() === 'm' ? undefined : size()}
         data-separator={separator() === 'default' ? undefined : separator()}
         aria-label="breadcrumb editor demo"
       >
