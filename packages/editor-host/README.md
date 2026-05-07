@@ -12,6 +12,37 @@ Creo UI — Editor Mode reference runtime for SolidJS。**Live design surface** 
 
 [docs/design/editor-mode.md](https://github.com/chronista-club/creo-ui/blob/main/docs/design/editor-mode.md) (D-1〜D-12) の protocol を実装。
 
+## v0.5.0 changes (2026-05-06)
+
+### Public type re-exports — consumer が host / config を annotate 可能に
+
+```ts
+import type {
+  EditorHostConfig,    // <EditorHostProvider config={...}> の型
+  EditorShortcut,      // config.shortcut の型 ({ ctrl?, shift?, alt?, meta?, key })
+  EditorHost,          // useEditorHost() 戻り値
+  EditorHostMcpApi,    // host.mcp の AI agent 向け subset
+  EditorField,         // field 宣言用
+  EditorFieldType,
+  EditorFieldConstraints,
+} from 'creo-ui-editor-host'
+```
+
+### `exposeConsole` の default が DEV-gated に変更 (consumer-actionable)
+
+> **Behavior change**: production build で `window.creoEditor` を **expose しない** が default に。 dev (Vite) では従来通り expose。
+
+```diff
+# v0.4.x — production でも expose されていた
+- <EditorHostProvider />
++ # v0.5.0 — default は import.meta.env.DEV に追従
++ <EditorHostProvider />                                       // dev only
++ <EditorHostProvider config={{ exposeConsole: true }} />      // production でも明示 expose
++ <EditorHostProvider config={{ exposeConsole: false }} />     // dev でも expose しない (CI 等)
+```
+
+CLAUDE.md EH-6 規定 (`Console REPL を production で無条件に expose しない`) への準拠です。 Vite consumer は `vite/client` を tsconfig に含めると `import.meta.env.DEV` の completion が効きます。
+
 ## インストール
 
 ```bash
@@ -51,7 +82,7 @@ export default function App() {
 function Main() {
   // (1) CSS 変数を slider で編集 (Target: cssVarNumber × Control: number slider)
   const spacing = bind({
-    target: cssVarNumberTarget('tokens.spacing.md', '--spacing-md', 16, 'px'),
+    target: cssVarNumberTarget('tokens.spacing.m', '--spacing-m', 16, 'px'),
     control: number({ min: 0, max: 48, step: 1, unit: 'px', variant: 'slider' }),
     placement: { label: 'spacing.md', semantic: 'tool', order: 0 },
   })
@@ -97,7 +128,7 @@ function Main() {
 
 ```js
 // DevTools Console で:
-creoEditor.slider('--spacing-md', 16, { min: 0, max: 48, unit: 'px' })
+creoEditor.slider('--spacing-m', 16, { min: 0, max: 48, unit: 'px' })
 creoEditor.picker('--color-brand-primary', '#73e7aa')
 creoEditor.flip('app.show-footer', true)
 creoEditor.chooser('theme.mode', 'mint-dark', ['mint-dark', 'sora-dark', ...])
@@ -107,7 +138,7 @@ creoEditor.describe('foo.bar') // 特定 field の meta + current value
 
 // Safe experiment:
 const snap = creoEditor.snapshot()
-creoEditor.setValue('tokens.spacing.md', 48)   // 試す
+creoEditor.setValue('tokens.spacing.m', 48)   // 試す
 creoEditor.restore(snap)                        // 戻す
 
 creoEditor.mode.enable() / disable() / toggle() / is()
@@ -175,8 +206,8 @@ creoEditor.share()   // 現 URL (更新済) を return
 ```js
 // Claude が claude-in-chrome MCP の javascript_tool 経由で:
 creoEditor.fields()                          // 現 editor state を inspect
-creoEditor.slider('--spacing-md', 12, {...}) // 提案値で slider 追加
-creoEditor.setValue('tokens.spacing.md', 20) // 直接 値変更
+creoEditor.slider('--spacing-m', 12, {...}) // 提案値で slider 追加
+creoEditor.setValue('tokens.spacing.m', 20) // 直接 値変更
 creoEditor.snapshot()                         // 実験前に保存
 creoEditor.restore(snap)                      // 気に入らなければ戻す
 creoEditor.export({ format: 'css-patch' })   // 最終 diff を取得
@@ -232,7 +263,7 @@ Editor Layer は Content layer の座標・可視性を奪わない:
 
 ```tsx
 const host = useEditorHost()
-host.mcp.setValue('tokens.spacing.md', 24)  // 外部から書換、chain が走る
+host.mcp.setValue('tokens.spacing.m', 24)  // 外部から書換、chain が走る
 ```
 
 ## API Reference
