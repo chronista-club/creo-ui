@@ -81,7 +81,7 @@ export default function Combobox() {
               class="creo-input"
               id="cmd"
               data-variant="filled"
-              data-size="sm"
+              data-size="s"
               type="text"
               list="cmd-list"
               placeholder=":save / :run / :build…"

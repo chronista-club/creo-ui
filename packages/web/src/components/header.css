@@ -61,12 +61,12 @@
   border-bottom: none;
   box-shadow: none;
 }
-.creo-header[data-elevation="sm"],
+.creo-header[data-elevation="s"],
 .creo-header:not([data-elevation]) {
   border-bottom: 1px solid var(--color-surface-border);
   box-shadow: none;
 }
-.creo-header[data-elevation="md"] {
+.creo-header[data-elevation="m"] {
   border-bottom: none;
   box-shadow: var(--shadow-s);
 }

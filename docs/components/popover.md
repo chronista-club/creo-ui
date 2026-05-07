@@ -32,8 +32,8 @@ Menu よりリッチ (input / button 複数可)、Dialog より軽い (backdrop 
     <p>Lane: creo-ui/main</p>
   </div>
   <footer class="creo-popover-footer">
-    <button class="creo-btn" data-variant="secondary" data-size="sm">DM</button>
-    <button class="creo-btn" data-variant="primary" data-size="sm">Follow</button>
+    <button class="creo-btn" data-variant="secondary" data-size="s">DM</button>
+    <button class="creo-btn" data-variant="primary" data-size="s">Follow</button>
   </footer>
 </div>
 ```
@@ -52,7 +52,7 @@ Menu よりリッチ (input / button 複数可)、Dialog より軽い (backdrop 
 
 | attr | 値 | default | 意味 |
 |---|---|---|---|
-| `data-size` | `sm` / `md` / `lg` | `md` | max-width |
+| `data-size` | `s` / `m` / `l` | `m` | max-width |
 | `data-variant` | `default` / `muted` | `default` | background tone |
 
 ## Token reference
@@ -65,7 +65,7 @@ Menu よりリッチ (input / button 複数可)、Dialog より軽い (backdrop 
 | border-radius | `radius.m` |
 | shadow | `shadow.l` |
 | padding (md) | `spacing.m` |
-| width (sm/md/lg) | 240 / 320 / 480 px |
+| width (s/m/l) | 240 / 320 / 480 px |
 | header border-bottom | `color.surface.border` 1px |
 | footer border-top | `color.surface.border` 1px |
 | footer gap | `layout.gap.tight` |

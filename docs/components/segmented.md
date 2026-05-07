@@ -46,7 +46,7 @@ Tabs に似てるが意味が違う — Segmented control は **setting / filter
 
 | attr on `.creo-segmented` | 値 | default | 意味 |
 |---|---|---|---|
-| `data-size` | `sm` / `md` / `lg` | `md` | height |
+| `data-size` | `s` / `m` / `l` | `m` | height |
 | `data-width` | `fit` / `full` | `fit` | 幅モード |
 
 ## Token reference

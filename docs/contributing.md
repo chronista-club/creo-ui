@@ -55,7 +55,7 @@ xs  /  s  /  m  /  l  /  xl
 |---|---|
 | **Bug** (`var(--...)` が解決しない / build が壊れる / type が不足) | Linear Creo Memories team / `ui-design-system:bug` label。 再現コード or v0.16/0.17 比較を含めて |
 | **API friction** (こう書きたいのに書けない、 token が足りない) | Linear `ui-design-system:friction` label。 use case / 期待 API / 現状の workaround を記載 |
-| **Migration question** (v0.14→v0.17 で何かハマる) | Linear `ui-design-system:migration` label、 もしくは [`docs/migration/v0.14-to-v0.17.md`](./migration/v0.14-to-v0.17.md) に PR で patch |
+| **Migration question** (v0.14→v0.18 で何かハマる) | Linear `ui-design-system:migration` label、 もしくは [`docs/migration/v0.14-to-v0.18.md`](./migration/v0.14-to-v0.18.md) に PR で patch |
 | **Design opinion** (5 tier より N tier、 命名 alternative 等) | Linear `ui-design-system:design-debate` label。 trade-off を articulate、 council / second opinion ベースで議論 |
 
 > **GitHub Issues は無効化されています**。 PR / discussions は GitHub で OK、 issue tracking は Linear に集約。

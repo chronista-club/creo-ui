@@ -45,7 +45,7 @@
 
 | attr on `.creo-pagination` | 値 | default | 意味 |
 |---|---|---|---|
-| `data-size` | `sm` / `md` / `lg` | `md` | button size |
+| `data-size` | `s` / `m` / `l` | `m` | button size |
 | `data-variant` | `default` / `compact` | `default` | compact は page 番号間の gap が詰め |
 
 ## Token reference

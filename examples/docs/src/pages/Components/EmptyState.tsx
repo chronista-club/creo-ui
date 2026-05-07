@@ -62,7 +62,7 @@ export default function EmptyState() {
               別の keyword で再検索するか、 filter を緩めてください。
             </p>
             <div class="creo-empty-state-actions">
-              <button type="button" class="creo-btn" data-variant="secondary" data-size="sm">
+              <button type="button" class="creo-btn" data-variant="secondary" data-size="s">
                 Clear filters
               </button>
             </div>

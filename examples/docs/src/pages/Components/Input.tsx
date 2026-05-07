@@ -23,7 +23,7 @@ const PROPS = [
     def: 'bordered',
     meaning: '視覚的 emphasis',
   },
-  { attr: 'data-size', values: 'sm / md / lg', def: 'md', meaning: '5-step rule 中央' },
+  { attr: 'data-size', values: 's / m / l', def: 'm', meaning: '5 tier convention 中央' },
   {
     attr: 'data-state',
     values: 'default / error',
@@ -47,7 +47,7 @@ const TOKENS = [
   { slot: 'text', token: 'color.text.primary' },
   { slot: 'placeholder', token: 'color.text.tertiary' },
   { slot: 'padding', token: 'spacing.s × spacing.m' },
-  { slot: 'border-radius', token: 'radius.{xs/sm/md}' },
+  { slot: 'border-radius', token: 'radius.{xs/s/m}' },
   { slot: 'min-height', token: 'layout.target.{focus/tap}' },
 ] as const
 
@@ -68,9 +68,9 @@ export default function Input() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Variants × Sizes</div>
           <div class="docs-preview-stack">
-            <input class="creo-input" type="text" placeholder="Bordered sm" data-size="sm" />
+            <input class="creo-input" type="text" placeholder="Bordered sm" data-size="s" />
             <input class="creo-input" type="text" placeholder="Bordered md (default)" />
-            <input class="creo-input" type="text" placeholder="Bordered lg" data-size="lg" />
+            <input class="creo-input" type="text" placeholder="Bordered lg" data-size="l" />
             <input class="creo-input" type="text" placeholder="Filled md" data-variant="filled" />
           </div>
           <div class="docs-preview-row-label">States</div>
@@ -165,7 +165,7 @@ export default function Input() {
 <input id="email" class="creo-input" type="email" placeholder="you@example.com">
 
 <!-- Filled, large -->
-<input class="creo-input" type="text" data-variant="filled" data-size="lg">
+<input class="creo-input" type="text" data-variant="filled" data-size="l">
 
 <!-- Error state -->
 <input

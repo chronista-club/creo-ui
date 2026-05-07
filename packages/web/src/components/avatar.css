@@ -25,16 +25,16 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-avatar[data-size="sm"] {
+.creo-avatar[data-size="s"] {
   width: 24px;
   height: 24px;
 }
-.creo-avatar[data-size="md"],
+.creo-avatar[data-size="m"],
 .creo-avatar:not([data-size]) {
   width: 32px;
   height: 32px;
 }
-.creo-avatar[data-size="lg"] {
+.creo-avatar[data-size="l"] {
   width: var(--layout-target-tap);
   height: var(--layout-target-tap);
 }
@@ -68,10 +68,10 @@
   letter-spacing: 0.02em;
 }
 
-.creo-avatar[data-size="sm"] .creo-avatar-initials {
+.creo-avatar[data-size="s"] .creo-avatar-initials {
   font-size: var(--typography-size-xs);
 }
-.creo-avatar[data-size="lg"] .creo-avatar-initials {
+.creo-avatar[data-size="l"] .creo-avatar-initials {
   font-size: var(--typography-size-m);
 }
 .creo-avatar[data-size="xl"] .creo-avatar-initials {

@@ -24,7 +24,7 @@ user から最小単位の文字列 / 数値を受け取る atomic input。form 
 |---|---|---|---|
 | `type` | `text` / `email` / `password` / `number` / `search` / `url` / `tel` | `text` | native HTML input type |
 | `data-variant` | `bordered` / `filled` | `bordered` | 視覚的 emphasis |
-| `data-size` | `sm` / `md` / `lg` | `md` | 5-step rule 中央 |
+| `data-size` | `s` / `m` / `l` | `m` | 5 tier convention 中央 |
 | `data-state` | `default` / `error` | `default` | validation state 明示 (aria-invalid と連動) |
 | `disabled` / `readonly` / `required` | (boolean) | — | 通常 HTML 属性 |
 | `placeholder` | string | — | 通常 HTML 属性 |
@@ -79,7 +79,7 @@ user から最小単位の文字列 / 数値を受け取る atomic input。form 
 <input id="email" class="creo-input" type="email" placeholder="you@example.com">
 
 <!-- Filled, large -->
-<input class="creo-input" type="text" data-variant="filled" data-size="lg">
+<input class="creo-input" type="text" data-variant="filled" data-size="l">
 
 <!-- Error state -->
 <input
@@ -104,7 +104,7 @@ Input click で `data-variant` / `data-size` / `data-state` chooser が登場。
 - `color.surface.*` / `color.text.*` / `color.brand.primary` / `color.semantic.error`
 - `typography.size.*`
 - `spacing.*` / `layout.target.*`
-- `radius.xs/sm/md`
+- `radius.xs/s/m`
 
 ## 関連
 

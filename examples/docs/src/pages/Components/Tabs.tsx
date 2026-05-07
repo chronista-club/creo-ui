@@ -11,9 +11,9 @@ const PROPS = [
   },
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
-    meaning: '5-step rule、 dense UI なら sm、 hero なら lg',
+    values: 's / m / l',
+    def: 'm',
+    meaning: '5 tier convention、 dense UI なら sm、 hero なら lg',
   },
   {
     attr: 'role="tablist" / "tab" / "tabpanel"',
@@ -35,7 +35,7 @@ const TOKENS = [
   { slot: 'underline (active)', token: 'color.brand.primary' },
   { slot: 'pill bg (active)', token: 'color.brand.primary-subtle' },
   { slot: 'gap (tabs)', token: 'layout.gap.tight' },
-  { slot: 'padding', token: 'spacing.{xs/sm/md} × spacing.{sm/md/lg}' },
+  { slot: 'padding', token: 'spacing.{xs/s/m} × spacing.{s/m/l}' },
   { slot: 'transition', token: 'motion.duration.fast' },
 ] as const
 
@@ -133,7 +133,7 @@ export default function Tabs() {
           </div>
 
           <div class="docs-preview-row-label">Sizes</div>
-          <div class="creo-tabs" data-size="sm">
+          <div class="creo-tabs" data-size="s">
             <div class="creo-tabs-list" role="tablist">
               <button type="button" class="creo-tabs-tab" role="tab" aria-selected="true" id="sm-1">
                 sm
@@ -149,7 +149,7 @@ export default function Tabs() {
               </button>
             </div>
           </div>
-          <div class="creo-tabs" data-size="lg">
+          <div class="creo-tabs" data-size="l">
             <div class="creo-tabs-list" role="tablist">
               <button type="button" class="creo-tabs-tab" role="tab" aria-selected="true" id="lg-1">
                 lg
@@ -255,7 +255,7 @@ export default function Tabs() {
 </div>
 
 <!-- Pill variant -->
-<div class="creo-tabs" data-variant="pill" data-size="sm">
+<div class="creo-tabs" data-variant="pill" data-size="s">
   <div class="creo-tabs-list" role="tablist">
     ...
   </div>

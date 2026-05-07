@@ -17,7 +17,7 @@ content が loading 中に **空白 / Spinner より構造が想像できる** p
 | attr | 値 | default | 意味 |
 |---|---|---|---|
 | `data-shape` | `text` / `rect` / `circle` | `rect` | 形 |
-| `data-size` | `sm` / `md` / `lg` | `md` | 高さ / 太さ (text / circle) |
+| `data-size` | `s` / `m` / `l` | `m` | 高さ / 太さ (text / circle) |
 
 ## Structure
 
@@ -31,7 +31,7 @@ content が loading 中に **空白 / Spinner より構造が想像できる** p
 
 <!-- Avatar + text (card style) -->
 <div style="display:flex; gap: var(--spacing-s); align-items: center">
-  <span class="creo-skeleton" data-shape="circle" data-size="lg"></span>
+  <span class="creo-skeleton" data-shape="circle" data-size="l"></span>
   <div style="flex:1">
     <span class="creo-skeleton" data-shape="text" style="width: 50%"></span>
     <span class="creo-skeleton" data-shape="text" style="width: 80%"></span>
@@ -50,8 +50,8 @@ content が loading 中に **空白 / Spinner より構造が想像できる** p
 | bg (shimmer) | `color.surface.bg-emphasis` |
 | border-radius (rect) | `radius.s` |
 | border-radius (text) | `radius.xs` |
-| text height (sm/md/lg) | 12px / 16px / 20px |
-| circle diameter (sm/md/lg) | 24px / 40px / 64px |
+| text height (s/m/l) | 12px / 16px / 20px |
+| circle diameter (s/m/l) | 24px / 40px / 64px |
 | shimmer duration | 1.4s linear infinite |
 
 ## Accessibility

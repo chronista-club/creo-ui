@@ -53,18 +53,18 @@
 
 /* ---------- Sizes (text / circle only) ---------- */
 
-.creo-skeleton[data-shape="text"][data-size="sm"] {
+.creo-skeleton[data-shape="text"][data-size="s"] {
   height: 12px;
 }
-.creo-skeleton[data-shape="text"][data-size="lg"] {
+.creo-skeleton[data-shape="text"][data-size="l"] {
   height: 20px;
 }
 
-.creo-skeleton[data-shape="circle"][data-size="sm"] {
+.creo-skeleton[data-shape="circle"][data-size="s"] {
   width: 24px;
   height: 24px;
 }
-.creo-skeleton[data-shape="circle"][data-size="lg"] {
+.creo-skeleton[data-shape="circle"][data-size="l"] {
   width: 64px;
   height: 64px;
 }

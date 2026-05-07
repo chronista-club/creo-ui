@@ -13,8 +13,8 @@ import { createSignal } from 'solid-js'
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
+    values: 's / m / l',
+    def: 'm',
     meaning: 'bar 高さ scale (4 / 6 / 10 px 等)',
   },
   {
@@ -41,7 +41,7 @@ const TOKENS = [
   { slot: 'track bg', token: 'color.surface.bg-subtle' },
   { slot: 'fill (default)', token: 'color.brand.primary' },
   { slot: 'fill (semantic)', token: 'color.semantic.{success/warning/error}' },
-  { slot: 'height (sm/md/lg)', token: '4 / 6 / 10 px' },
+  { slot: 'height (s/m/l)', token: '4 / 6 / 10 px' },
   { slot: 'border-radius', token: 'radius.full (pill)' },
   { slot: 'transition', token: 'motion.duration.normal' },
   { slot: 'spinner color', token: 'color.brand.primary (current variant)' },
@@ -67,7 +67,7 @@ export default function Progress() {
           <div class="docs-preview-row-label">Determinate (sizes)</div>
           <div
             class="creo-progress"
-            data-size="sm"
+            data-size="s"
             role="progressbar"
             aria-valuenow={30}
             aria-valuemin={0}
@@ -86,7 +86,7 @@ export default function Progress() {
           </div>
           <div
             class="creo-progress"
-            data-size="lg"
+            data-size="l"
             role="progressbar"
             aria-valuenow={85}
             aria-valuemin={0}
@@ -236,7 +236,7 @@ export default function Progress() {
 <span class="creo-spinner" role="progressbar" aria-label="Loading"></span>
 
 <!-- Semantic variant + size -->
-<div class="creo-progress" data-variant="success" data-size="lg"
+<div class="creo-progress" data-variant="success" data-size="l"
      role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
   <div class="creo-progress-fill" style="width: 100%"></div>
 </div>`}</code>

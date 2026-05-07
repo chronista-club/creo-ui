@@ -12,8 +12,8 @@ import { createSignal } from 'solid-js'
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
+    values: 's / m / l',
+    def: 'm',
     meaning: 'marker + connector + spacing scale',
   },
   {
@@ -95,8 +95,8 @@ export default function Timeline() {
             </li>
           </ol>
 
-          <div class="docs-preview-row-label">Compact (data-size="sm")</div>
-          <ol class="creo-timeline" data-size="sm">
+          <div class="docs-preview-row-label">Compact (data-size="s")</div>
+          <ol class="creo-timeline" data-size="s">
             <li class="creo-timeline-item" data-variant="success">
               <div class="creo-timeline-marker" aria-hidden="true" />
               <div class="creo-timeline-content">
@@ -206,7 +206,7 @@ export default function Timeline() {
 </ol>
 
 <!-- Compact -->
-<ol class="creo-timeline" data-size="sm">
+<ol class="creo-timeline" data-size="s">
   ...
 </ol>`}</code>
         </pre>

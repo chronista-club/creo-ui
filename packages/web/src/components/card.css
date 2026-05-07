@@ -1,14 +1,14 @@
 /**
  * Creo UI — Card component
  *
- * `.creo-card` base + data-variant (default / elevated / outlined) + data-padding (sm/md/lg)。
+ * `.creo-card` base + data-variant (default / elevated / outlined) + data-padding (s/m/lg)。
  *
  * Spec: docs/components/card.md
  * Token: creo-ui-web/tokens.css (必須)
  *
  * Usage:
  *   <article class="creo-card">...</article>
- *   <article class="creo-card" data-variant="elevated" data-padding="lg">...</article>
+ *   <article class="creo-card" data-variant="elevated" data-padding="l">...</article>
  *   <article class="creo-card" data-variant="outlined" data-interactive="true">...</article>
  */
 
@@ -47,14 +47,14 @@
 
 /* ---------- Padding sizes ---------- */
 
-.creo-card[data-padding="sm"] {
+.creo-card[data-padding="s"] {
   padding: var(--spacing-s);
 }
-.creo-card[data-padding="md"],
+.creo-card[data-padding="m"],
 .creo-card:not([data-padding]) {
   padding: var(--spacing-m);
 }
-.creo-card[data-padding="lg"] {
+.creo-card[data-padding="l"] {
   padding: var(--spacing-l);
 }
 

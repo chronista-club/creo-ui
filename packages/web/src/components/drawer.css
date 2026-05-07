@@ -85,12 +85,12 @@
 
 /* ---------- Sizes (horizontal = width / vertical = height) ---------- */
 
-.creo-drawer[data-placement="right"][data-size="sm"],
-.creo-drawer[data-placement="left"][data-size="sm"] {
+.creo-drawer[data-placement="right"][data-size="s"],
+.creo-drawer[data-placement="left"][data-size="s"] {
   width: min(90vw, 280px);
 }
-.creo-drawer[data-placement="right"][data-size="lg"],
-.creo-drawer[data-placement="left"][data-size="lg"] {
+.creo-drawer[data-placement="right"][data-size="l"],
+.creo-drawer[data-placement="left"][data-size="l"] {
   width: min(92vw, 560px);
 }
 .creo-drawer[data-placement="right"][data-size="xl"],
@@ -98,12 +98,12 @@
   width: min(94vw, 800px);
 }
 
-.creo-drawer[data-placement="top"][data-size="sm"],
-.creo-drawer[data-placement="bottom"][data-size="sm"] {
+.creo-drawer[data-placement="top"][data-size="s"],
+.creo-drawer[data-placement="bottom"][data-size="s"] {
   height: 40vh;
 }
-.creo-drawer[data-placement="top"][data-size="lg"],
-.creo-drawer[data-placement="bottom"][data-size="lg"] {
+.creo-drawer[data-placement="top"][data-size="l"],
+.creo-drawer[data-placement="bottom"][data-size="l"] {
   height: 65vh;
 }
 .creo-drawer[data-placement="top"][data-size="xl"],

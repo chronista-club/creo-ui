@@ -63,11 +63,11 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-table[data-size="sm"] .creo-table-cell {
+.creo-table[data-size="s"] .creo-table-cell {
   padding: var(--spacing-xs) var(--spacing-s);
   font-size: var(--typography-size-s);
 }
-.creo-table[data-size="lg"] .creo-table-cell {
+.creo-table[data-size="l"] .creo-table-cell {
   padding: var(--spacing-m) var(--spacing-l);
   font-size: var(--typography-size-l);
 }

@@ -19,7 +19,7 @@ const PROPS = [
   {
     attr: 'data-size (with text shape)',
     values: 'sm / lg',
-    def: 'md',
+    def: 'm',
     meaning: 'text の高さ scale (sm = 12px、 md = 16px、 lg = 20px 等)',
   },
 ] as const
@@ -53,9 +53,9 @@ export default function Skeleton() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Shapes</div>
           <div class="docs-preview-stack" style={{ width: '320px', gap: 'var(--spacing-s)' }}>
-            <span class="creo-skeleton" data-shape="text" data-size="lg" />
+            <span class="creo-skeleton" data-shape="text" data-size="l" />
             <span class="creo-skeleton" data-shape="text" />
-            <span class="creo-skeleton" data-shape="text" data-size="sm" />
+            <span class="creo-skeleton" data-shape="text" data-size="s" />
             <div style={{ display: 'flex', gap: 'var(--spacing-s)', 'align-items': 'center' }}>
               <span
                 class="creo-skeleton"
@@ -64,7 +64,7 @@ export default function Skeleton() {
               />
               <div style={{ flex: 1 }}>
                 <span class="creo-skeleton" data-shape="text" />
-                <span class="creo-skeleton" data-shape="text" data-size="sm" />
+                <span class="creo-skeleton" data-shape="text" data-size="s" />
               </div>
             </div>
             <span
@@ -89,10 +89,10 @@ export default function Skeleton() {
               data-shape="rect"
               style={{ width: '100%', height: '160px' }}
             />
-            <span class="creo-skeleton" data-shape="text" data-size="lg" />
+            <span class="creo-skeleton" data-shape="text" data-size="l" />
             <span class="creo-skeleton" data-shape="text" />
             <span class="creo-skeleton" data-shape="text" />
-            <span class="creo-skeleton" data-shape="text" data-size="sm" style={{ width: '40%' }} />
+            <span class="creo-skeleton" data-shape="text" data-size="s" style={{ width: '40%' }} />
           </article>
         </div>
       </section>
@@ -186,7 +186,7 @@ export default function Skeleton() {
         <pre class="docs-code">
           <code>{`<!-- Text lines -->
 <span class="creo-skeleton" data-shape="text"></span>
-<span class="creo-skeleton" data-shape="text" data-size="sm"></span>
+<span class="creo-skeleton" data-shape="text" data-size="s"></span>
 
 <!-- Circle (avatar) -->
 <span class="creo-skeleton" data-shape="circle" style="width: 44px; height: 44px"></span>
@@ -197,7 +197,7 @@ export default function Skeleton() {
 <!-- Card placeholder (composite) -->
 <article class="creo-card" aria-busy="true">
   <span class="creo-skeleton" data-shape="rect" style="height: 160px"></span>
-  <span class="creo-skeleton" data-shape="text" data-size="lg"></span>
+  <span class="creo-skeleton" data-shape="text" data-size="l"></span>
   <span class="creo-skeleton" data-shape="text"></span>
   <span class="creo-skeleton" data-shape="text" style="width: 40%"></span>
 </article>`}</code>

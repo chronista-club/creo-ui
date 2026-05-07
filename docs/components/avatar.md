@@ -19,7 +19,7 @@ user / account / project 等の visual identity を **小さな円形 (または
 
 | attr on `.creo-avatar` | 値 | default | 意味 |
 |---|---|---|---|
-| `data-size` | `sm` / `md` / `lg` / `xl` | `md` | diameter |
+| `data-size` | `s` / `m` / `l` / `xl` | `m` | diameter |
 | `data-shape` | `circle` / `square` | `circle` | 形 |
 
 ## Token reference
@@ -51,7 +51,7 @@ user / account / project 等の visual identity を **小さな円形 (または
 </span>
 
 <!-- With status dot (online) -->
-<span class="creo-avatar" data-size="lg">
+<span class="creo-avatar" data-size="l">
   <img class="creo-avatar-image" src="..." alt="User">
   <span class="creo-avatar-status" data-status="online" aria-hidden="true"></span>
 </span>

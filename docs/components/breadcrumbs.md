@@ -43,7 +43,7 @@ semantic HTML + ARIA 標準:
 
 | attr on `.creo-breadcrumbs` | 値 | default | 意味 |
 |---|---|---|---|
-| `data-size` | `sm` / `md` | `md` | text size |
+| `data-size` | `s` / `m` | `m` | text size |
 | `data-separator` | `chevron` / `slash` / `dot` | `chevron` | 区切り symbol |
 
 ## Token reference

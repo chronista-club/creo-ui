@@ -3,7 +3,45 @@
 本ファイルは Creo UI の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
-## v0.17.0 (2026-05-06) — 5 tier convention 完全統一 (web、 BREAKING、 final)
+## v0.18.0 (2026-05-07) — Component attribute も 5 tier 完全統一 (web、 BREAKING、 attribute layer final)
+
+v0.17.0 で **token layer** の 5 tier convention 完全統一を達成、 v0.18.0 で **component attribute layer** も同 convention に揃え、 ecosystem 全層 (token + CSS var + JS const + Swift identifier + Rust const + HTML attribute) で convention drift が完全解消した状態に到達。
+
+### BREAKING (web 0.18.0)
+
+17 component の HTML attribute を sm/md/lg → s/m/l に rename:
+
+| component | attribute | v0.17.0 → | v0.18.0 |
+|---|---|---|---|
+| Button / Input / Dialog / Popover / Tabs / Table / Pagination / Skeleton / Progress / Spinner | `data-size` | `sm/md/lg` | `s/m/l` |
+| Drawer / Avatar | `data-size` | `sm/md/lg/xl` | `s/m/l/xl` |
+| Badge / Breadcrumbs / Stepper / Timeline | `data-size` | `sm/md` | `s/m` |
+| Card | `data-padding` | `sm/md/lg` | `s/m/l` |
+| Header | `data-elevation` | `sm/md` | `s/m` (`none` 据置) |
+
+`data-variant` / `data-placement` / `data-shape` / `data-cols` / `data-state` 等 5 tier 命名以外の attribute は touch なし。
+
+### Migration
+
+```diff
+- <button class="creo-btn" data-size="md">              → <button class="creo-btn" data-size="m">
+- <article class="creo-card" data-padding="lg">         → <article class="creo-card" data-padding="l">
+- <header class="creo-header" data-elevation="sm">      → <header class="creo-header" data-elevation="s">
+```
+
+bulk sd pattern + 完全 table は [`docs/migration/v0.14-to-v0.18.md`](docs/migration/v0.14-to-v0.18.md) 参照。
+
+### token-shim.css extend (legacy CSS variable alias 完備)
+
+v0.18 で `packages/web/dist/token-shim.css` の legacy alias を extend、 v0.16-v0.17 で rename した token (margin / radius / shadow / typography.size / typography.display) も `--margin-md` → `--margin-m` 等の CSS variable alias を網羅。 consumer は `import 'creo-ui-web/token-shim.css'` で **CSS variable 層は段階移行** 可能。 ただし **HTML attribute は shim で吸収不可**、 markup 書換が必要。
+
+### Stability commitment
+
+v0.18 が **5 tier convention 完全統一 (token + attribute) の最終 release**。 「sm/md/lg」 由来の breaking rename は **これ以上発生しない予定**。 以降の breaking change は新 capability 追加時のみ。
+
+---
+
+## v0.17.0 (2026-05-06) — 5 tier convention 完全統一 (web、 BREAKING、 token layer final)
 
 v0.16.0 で部分統一 (spacing / container / grid / icon を `xs/s/m/l/xl`)、 残 token (margin / radius / shadow / typography.size / typography.display) は `xs/sm/md/lg/xl` で violation 残存していたのを v0.17.0 で **完全統一**。 これで Creo UI の全 dimension scale token が `xs/s/m/l/xl` (5 tier) で揃う。
 

@@ -1,9 +1,9 @@
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
-    meaning: 'option padding scale、 5-step rule',
+    values: 's / m / l',
+    def: 'm',
+    meaning: 'option padding scale、 5 tier convention',
   },
   {
     attr: 'data-width',
@@ -67,7 +67,7 @@ export default function Segmented() {
           </div>
 
           <div class="docs-preview-row-label">Sizes</div>
-          <div class="creo-segmented" data-size="sm" role="radiogroup" aria-label="size sm">
+          <div class="creo-segmented" data-size="s" role="radiogroup" aria-label="size sm">
             <label class="creo-segmented-option">
               <input type="radio" name="seg-2" value="a" checked />
               <span>sm</span>
@@ -77,7 +77,7 @@ export default function Segmented() {
               <span>Compact</span>
             </label>
           </div>
-          <div class="creo-segmented" data-size="lg" role="radiogroup" aria-label="size lg">
+          <div class="creo-segmented" data-size="l" role="radiogroup" aria-label="size lg">
             <label class="creo-segmented-option">
               <input type="radio" name="seg-3" value="a" checked />
               <span>lg</span>

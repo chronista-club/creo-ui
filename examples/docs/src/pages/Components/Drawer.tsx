@@ -9,8 +9,8 @@ const PROPS = [
   },
   {
     attr: 'data-size',
-    values: 'sm / md / lg / xl',
-    def: 'md',
+    values: 's / m / l / xl',
+    def: 'm',
     meaning: 'drawer 寸法 (320 / 480 / 640 / 800 px)',
   },
 ] as const
@@ -67,7 +67,7 @@ export default function Drawer() {
       <dialog
         class="creo-drawer"
         data-placement="right"
-        data-size="md"
+        data-size="m"
         ref={setRightDrawer}
         aria-labelledby="drawer-right-title"
         aria-describedby="drawer-right-body"
@@ -80,7 +80,7 @@ export default function Drawer() {
             type="button"
             class="creo-btn"
             data-variant="ghost"
-            data-size="sm"
+            data-size="s"
             aria-label="閉じる"
             onClick={() => rightDrawer()?.close()}
           >
@@ -114,7 +114,7 @@ export default function Drawer() {
       <dialog
         class="creo-drawer"
         data-placement="bottom"
-        data-size="lg"
+        data-size="l"
         ref={setBottomDrawer}
         aria-labelledby="drawer-bottom-title"
       >
@@ -126,7 +126,7 @@ export default function Drawer() {
             type="button"
             class="creo-btn"
             data-variant="ghost"
-            data-size="sm"
+            data-size="s"
             aria-label="閉じる"
             onClick={() => bottomDrawer()?.close()}
           >
@@ -211,7 +211,7 @@ export default function Drawer() {
   Open
 </button>
 
-<dialog class="creo-drawer" data-placement="right" data-size="md" id="rightDrawer">
+<dialog class="creo-drawer" data-placement="right" data-size="m" id="rightDrawer">
   <header class="creo-drawer-header">
     <h2 class="creo-drawer-title">Settings</h2>
     <button type="button" class="creo-btn" data-variant="ghost"
@@ -228,7 +228,7 @@ export default function Drawer() {
 </dialog>
 
 <!-- Bottom drawer (mobile-friendly) -->
-<dialog class="creo-drawer" data-placement="bottom" data-size="lg">
+<dialog class="creo-drawer" data-placement="bottom" data-size="l">
   ...
 </dialog>`}</code>
         </pre>

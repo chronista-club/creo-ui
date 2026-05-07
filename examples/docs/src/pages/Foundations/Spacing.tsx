@@ -72,7 +72,7 @@ export default function Spacing() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Spacing & Margin</h1>
         <p class="docs-page-lead">
-          5-step size-feel rule に基づく 2 系統の dimension scale。
+          5-step size-feel convention に基づく 2 系統の dimension scale。
           <strong>spacing.*</strong> = 要素「間」 (sibling)、 <strong>margin.*</strong> =
           block「外」 (section)。 同 md=18px で結節し、 lg/xl で発散。 詳細は{' '}
           <A href="/foundations/principles">Principles</A> の原則 1-2 を参照。

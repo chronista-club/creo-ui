@@ -9,7 +9,7 @@ const PROPS = [
     attr: 'data-gap',
     values: 'xs / s / m / l / xl',
     def: 'm',
-    meaning: '5-step rule、 子要素間の gap (token)',
+    meaning: '5 tier convention、 子要素間の gap (token)',
   },
   {
     attr: 'data-align',
@@ -82,7 +82,7 @@ export default function Stack() {
             style={{ 'min-width': '480px' }}
           >
             <strong>Title</strong>
-            <button type="button" class="creo-btn" data-variant="ghost" data-size="sm">
+            <button type="button" class="creo-btn" data-variant="ghost" data-size="s">
               Action
             </button>
           </div>

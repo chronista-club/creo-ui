@@ -41,14 +41,14 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-popover[data-size="sm"] {
+.creo-popover[data-size="s"] {
   width: min(90vw, 240px);
 }
-.creo-popover[data-size="md"],
+.creo-popover[data-size="m"],
 .creo-popover:not([data-size]) {
   width: min(90vw, 320px);
 }
-.creo-popover[data-size="lg"] {
+.creo-popover[data-size="l"] {
   width: min(92vw, 480px);
 }
 

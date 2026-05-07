@@ -17,7 +17,12 @@ const PROPS = [
     def: 'primary',
     meaning: '視覚的強度',
   },
-  { attr: 'data-size', values: 'sm / md / lg', def: 'md', meaning: '5-step rule 中央の md が標準' },
+  {
+    attr: 'data-size',
+    values: 's / m / l',
+    def: 'm',
+    meaning: '5 tier convention 中央の md が標準',
+  },
   {
     attr: 'disabled',
     values: '(boolean)',
@@ -37,8 +42,8 @@ const TOKENS = [
   { slot: 'background (secondary)', token: 'color.surface.surface + color.surface.border' },
   { slot: 'background (ghost)', token: 'transparent + hover color.surface.bg-subtle' },
   { slot: 'label color', token: 'color.text.primary (inverse on primary: color.surface.bg-base)' },
-  { slot: 'font-size', token: 'typography.size.{sm/md/lg}' },
-  { slot: 'padding', token: 'spacing.{xs/sm/md} × spacing.{sm/md/lg}' },
+  { slot: 'font-size', token: 'typography.size.{s/m/l}' },
+  { slot: 'padding', token: 'spacing.{xs/s/m} × spacing.{s/m/l}' },
   { slot: 'gap (icon + label)', token: 'layout.gap.tight' },
   { slot: 'border-radius', token: 'radius.s' },
   { slot: 'min-height', token: 'layout.target.tap (md/lg) / focus (sm)' },
@@ -62,31 +67,31 @@ export default function Button() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Variants × Sizes</div>
           <div class="docs-preview-grid">
-            <button type="button" class="creo-btn" data-variant="primary" data-size="sm">
+            <button type="button" class="creo-btn" data-variant="primary" data-size="s">
               Primary sm
             </button>
-            <button type="button" class="creo-btn" data-variant="primary" data-size="md">
+            <button type="button" class="creo-btn" data-variant="primary" data-size="m">
               Primary md
             </button>
-            <button type="button" class="creo-btn" data-variant="primary" data-size="lg">
+            <button type="button" class="creo-btn" data-variant="primary" data-size="l">
               Primary lg
             </button>
-            <button type="button" class="creo-btn" data-variant="secondary" data-size="sm">
+            <button type="button" class="creo-btn" data-variant="secondary" data-size="s">
               Secondary sm
             </button>
-            <button type="button" class="creo-btn" data-variant="secondary" data-size="md">
+            <button type="button" class="creo-btn" data-variant="secondary" data-size="m">
               Secondary md
             </button>
-            <button type="button" class="creo-btn" data-variant="secondary" data-size="lg">
+            <button type="button" class="creo-btn" data-variant="secondary" data-size="l">
               Secondary lg
             </button>
-            <button type="button" class="creo-btn" data-variant="ghost" data-size="sm">
+            <button type="button" class="creo-btn" data-variant="ghost" data-size="s">
               Ghost sm
             </button>
-            <button type="button" class="creo-btn" data-variant="ghost" data-size="md">
+            <button type="button" class="creo-btn" data-variant="ghost" data-size="m">
               Ghost md
             </button>
-            <button type="button" class="creo-btn" data-variant="ghost" data-size="lg">
+            <button type="button" class="creo-btn" data-variant="ghost" data-size="l">
               Ghost lg
             </button>
           </div>
@@ -213,10 +218,10 @@ export default function Button() {
 <button type="button" class="creo-btn" data-variant="primary">保存</button>
 
 <!-- Secondary, small -->
-<button type="button" class="creo-btn" data-variant="secondary" data-size="sm">キャンセル</button>
+<button type="button" class="creo-btn" data-variant="secondary" data-size="s">キャンセル</button>
 
 <!-- Ghost, large, toggle -->
-<button type="button" class="creo-btn" data-variant="ghost" data-size="lg" aria-pressed="true">
+<button type="button" class="creo-btn" data-variant="ghost" data-size="l" aria-pressed="true">
   Editor Mode ON
 </button>
 

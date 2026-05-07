@@ -19,7 +19,7 @@ rows × columns の **dense data listing**。Creo の aesthetic に合わせ、z
 ## Structure
 
 ```html
-<table class="creo-table" data-size="md" data-variant="default">
+<table class="creo-table" data-size="m" data-variant="default">
   <thead class="creo-table-head">
     <tr class="creo-table-row">
       <th class="creo-table-cell creo-table-sortable" scope="col" aria-sort="ascending">
@@ -35,10 +35,10 @@ rows × columns の **dense data listing**。Creo の aesthetic に合わせ、z
       <td class="creo-table-cell">Memory A</td>
       <td class="creo-table-cell">2026-04-22</td>
       <td class="creo-table-cell">
-        <span class="creo-badge" data-variant="brand" data-size="sm">design</span>
+        <span class="creo-badge" data-variant="brand" data-size="s">design</span>
       </td>
       <td class="creo-table-cell">
-        <button class="creo-btn" data-variant="ghost" data-size="sm">⋯</button>
+        <button class="creo-btn" data-variant="ghost" data-size="s">⋯</button>
       </td>
     </tr>
     <tr class="creo-table-row">
@@ -46,7 +46,7 @@ rows × columns の **dense data listing**。Creo の aesthetic に合わせ、z
       <td class="creo-table-cell">2026-04-21</td>
       <td class="creo-table-cell">—</td>
       <td class="creo-table-cell">
-        <button class="creo-btn" data-variant="ghost" data-size="sm">⋯</button>
+        <button class="creo-btn" data-variant="ghost" data-size="s">⋯</button>
       </td>
     </tr>
   </tbody>
@@ -57,7 +57,7 @@ rows × columns の **dense data listing**。Creo の aesthetic に合わせ、z
 
 | attr on `.creo-table` | 値 | default | 意味 |
 |---|---|---|---|
-| `data-size` | `sm` / `md` / `lg` | `md` | row の padding / font-size |
+| `data-size` | `s` / `m` / `l` | `m` | row の padding / font-size |
 | `data-variant` | `default` / `striped` / `bordered` | `default` | zebra / outline 有無 |
 | `data-sticky-head` | `true` | — | thead を sticky (scrollable container 前提) |
 

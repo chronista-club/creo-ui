@@ -1,8 +1,8 @@
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
+    values: 's / m / l',
+    def: 'm',
     meaning: 'popover max-width (240 / 320 / 480 px)',
   },
   {
@@ -26,7 +26,7 @@ const TOKENS = [
   { slot: 'header padding', token: 'spacing.s × spacing.m' },
   { slot: 'body padding', token: 'spacing.m × spacing.m' },
   { slot: 'footer padding', token: 'spacing.s × spacing.m' },
-  { slot: 'max-width (sm/md/lg)', token: '240 / 320 / 480 px' },
+  { slot: 'max-width (s/m/l)', token: '240 / 320 / 480 px' },
 ] as const
 
 export default function Popover() {
@@ -60,10 +60,10 @@ export default function Popover() {
                 <p>新しい version (v0.14.0) があります。 Update しますか？</p>
               </div>
               <div class="creo-popover-footer">
-                <button type="button" class="creo-btn" data-variant="secondary" data-size="sm">
+                <button type="button" class="creo-btn" data-variant="secondary" data-size="s">
                   Later
                 </button>
-                <button type="button" class="creo-btn" data-variant="primary" data-size="sm">
+                <button type="button" class="creo-btn" data-variant="primary" data-size="s">
                   Update
                 </button>
               </div>
@@ -75,7 +75,7 @@ export default function Popover() {
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-sm">
               sm
             </button>
-            <div class="creo-popover" id="pop-sm" popover data-size="sm">
+            <div class="creo-popover" id="pop-sm" popover data-size="s">
               <div class="creo-popover-body">
                 <p>Compact tip 表示。</p>
               </div>
@@ -83,7 +83,7 @@ export default function Popover() {
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-lg">
               lg
             </button>
-            <div class="creo-popover" id="pop-lg" popover data-size="lg">
+            <div class="creo-popover" id="pop-lg" popover data-size="l">
               <div class="creo-popover-header">
                 <h3 class="creo-popover-title">Large popover</h3>
               </div>
@@ -176,17 +176,17 @@ export default function Popover() {
     <p>Content here.</p>
   </div>
   <div class="creo-popover-footer">
-    <button type="button" class="creo-btn" data-variant="secondary" data-size="sm">
+    <button type="button" class="creo-btn" data-variant="secondary" data-size="s">
       Cancel
     </button>
-    <button type="button" class="creo-btn" data-variant="primary" data-size="sm">
+    <button type="button" class="creo-btn" data-variant="primary" data-size="s">
       Confirm
     </button>
   </div>
 </div>
 
 <!-- Compact -->
-<div class="creo-popover" id="tip" popover data-size="sm">
+<div class="creo-popover" id="tip" popover data-size="s">
   ...
 </div>`}</code>
         </pre>

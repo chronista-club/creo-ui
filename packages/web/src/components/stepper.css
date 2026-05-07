@@ -95,7 +95,7 @@
 }
 
 /* Size variants */
-.creo-stepper[data-size="sm"] .creo-stepper-marker {
+.creo-stepper[data-size="s"] .creo-stepper-marker {
   width: 24px;
   height: 24px;
   font-size: var(--typography-size-xs);

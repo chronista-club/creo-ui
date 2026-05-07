@@ -12,8 +12,8 @@ import { createSignal } from 'solid-js'
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm / md / lg / xl',
-    def: 'md',
+    values: 's / m / l / xl',
+    def: 'm',
     meaning: 'diameter (24 / 32 / 44 / 64 px)',
   },
   { attr: 'data-shape', values: 'circle / square', def: 'circle', meaning: '形' },
@@ -46,17 +46,17 @@ export default function Avatar() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Sizes (initials fallback)</div>
           <div class="docs-preview-row docs-preview-row--baseline">
-            <span class="creo-avatar" data-size="sm">
+            <span class="creo-avatar" data-size="s">
               <span class="creo-avatar-initials" aria-label="Mako">
                 M
               </span>
             </span>
-            <span class="creo-avatar" data-size="md">
+            <span class="creo-avatar" data-size="m">
               <span class="creo-avatar-initials" aria-label="Claude">
                 C
               </span>
             </span>
-            <span class="creo-avatar" data-size="lg">
+            <span class="creo-avatar" data-size="l">
               <span class="creo-avatar-initials" aria-label="Akira">
                 A
               </span>
@@ -69,12 +69,12 @@ export default function Avatar() {
           </div>
           <div class="docs-preview-row-label">Shape × Size</div>
           <div class="docs-preview-row docs-preview-row--baseline">
-            <span class="creo-avatar" data-shape="circle" data-size="lg">
+            <span class="creo-avatar" data-shape="circle" data-size="l">
               <span class="creo-avatar-initials" aria-label="Circle">
                 ●
               </span>
             </span>
-            <span class="creo-avatar" data-shape="square" data-size="lg">
+            <span class="creo-avatar" data-shape="square" data-size="l">
               <span class="creo-avatar-initials" aria-label="Square">
                 ■
               </span>
@@ -87,19 +87,19 @@ export default function Avatar() {
           </div>
           <div class="docs-preview-row-label">With status dot</div>
           <div class="docs-preview-row docs-preview-row--baseline">
-            <span class="creo-avatar" data-size="lg">
+            <span class="creo-avatar" data-size="l">
               <span class="creo-avatar-initials" aria-label="Online">
                 O
               </span>
               <span class="creo-avatar-status" data-status="online" aria-hidden="true" />
             </span>
-            <span class="creo-avatar" data-size="lg">
+            <span class="creo-avatar" data-size="l">
               <span class="creo-avatar-initials" aria-label="Busy">
                 B
               </span>
               <span class="creo-avatar-status" data-status="busy" aria-hidden="true" />
             </span>
-            <span class="creo-avatar" data-size="lg">
+            <span class="creo-avatar" data-size="l">
               <span class="creo-avatar-initials" aria-label="Offline">
                 F
               </span>
@@ -189,7 +189,7 @@ export default function Avatar() {
 </span>
 
 <!-- With status dot (online) -->
-<span class="creo-avatar" data-size="lg">
+<span class="creo-avatar" data-size="l">
   <img class="creo-avatar-image" src="..." alt="User">
   <span class="creo-avatar-status" data-status="online" aria-hidden="true"></span>
 </span>`}</code>

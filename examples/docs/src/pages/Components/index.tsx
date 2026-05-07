@@ -92,13 +92,13 @@ const COMPONENTS: readonly ComponentEntry[] = [
   {
     name: 'Pagination',
     slug: 'pagination',
-    desc: 'sm/md/lg × default/compact, aria-current',
+    desc: 's/m/l × default/compact, aria-current',
     detail: true,
   },
   {
     name: 'Table',
     slug: 'table',
-    desc: 'Sortable + aria-sort table — striped / sticky-head / sm/md/lg',
+    desc: 'Sortable + aria-sort table — striped / sticky-head / s/m/l',
     detail: true,
   },
   {
@@ -195,7 +195,7 @@ const COMPONENTS: readonly ComponentEntry[] = [
   {
     name: 'Container',
     slug: 'container',
-    desc: 'max-width + horizontal centering — 5 sizes (sm/md/lg/xl/full)',
+    desc: 'max-width + horizontal centering — 5 sizes (s/m/l/xl/full)',
     detail: true,
   },
   {
@@ -257,7 +257,7 @@ export default function ComponentsIndex() {
             <A href="/foundations/principles">原則 6</A> 参照
           </li>
           <li>
-            <strong>5-step size-feel rule</strong> — sm / md / lg は xs-xl の 3 段抜粋。
+            <strong>5-step size-feel convention</strong> — sm / md / lg は xs-xl の 3 段抜粋。
             <A href="/foundations/principles">原則 1</A> 参照
           </li>
           <li>

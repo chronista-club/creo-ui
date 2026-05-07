@@ -12,8 +12,8 @@ import { type JSX, createSignal } from 'solid-js'
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
+    values: 's / m / l',
+    def: 'm',
     meaning: 'dialog max-width (320 / 480 / 720 px)',
   },
   {
@@ -30,7 +30,7 @@ const TOKENS = [
   { slot: 'border', token: 'color.surface.border 1px' },
   { slot: 'border-radius', token: 'radius.l (22px)' },
   { slot: 'shadow', token: 'shadow.l' },
-  { slot: 'max-width', token: '320 / 480 / 720 px (sm/md/lg)' },
+  { slot: 'max-width', token: '320 / 480 / 720 px (s/m/l)' },
   { slot: 'padding', token: 'spacing.m (body) / spacing.s spacing.m (header/footer)' },
   { slot: 'gap (footer actions)', token: 'layout.gap.tight' },
   { slot: 'title color (destructive)', token: 'color.semantic.error' },
@@ -86,7 +86,7 @@ export default function Dialog() {
       {/* Modals (rendered to portal automatically by browser) */}
       <dialog
         class="creo-dialog"
-        data-size="md"
+        data-size="m"
         ref={setDefaultDlg}
         aria-labelledby="dialog-default-title"
         aria-describedby="dialog-default-body"
@@ -99,7 +99,7 @@ export default function Dialog() {
             type="button"
             class="creo-btn"
             data-variant="ghost"
-            data-size="sm"
+            data-size="s"
             aria-label="閉じる"
             onClick={() => defaultDlg()?.close()}
           >
@@ -259,10 +259,10 @@ export default function Dialog() {
       <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
-          <code>{`<dialog class="creo-dialog" data-size="md" id="confirm-dlg">
+          <code>{`<dialog class="creo-dialog" data-size="m" id="confirm-dlg">
   <header class="creo-dialog-header">
     <h2 class="creo-dialog-title">削除の確認</h2>
-    <button type="button" class="creo-btn" data-variant="ghost" data-size="sm" aria-label="閉じる">✕</button>
+    <button type="button" class="creo-btn" data-variant="ghost" data-size="s" aria-label="閉じる">✕</button>
   </header>
   <div class="creo-dialog-body">
     <p>この項目を削除します。 取り消せません。</p>

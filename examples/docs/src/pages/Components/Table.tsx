@@ -12,9 +12,9 @@ import { createSignal } from 'solid-js'
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
-    meaning: 'cell padding を 5-step rule で scale',
+    values: 's / m / l',
+    def: 'm',
+    meaning: 'cell padding を 5 tier convention で scale',
   },
   {
     attr: 'data-variant',
@@ -46,8 +46,8 @@ const TOKENS = [
   { slot: 'header bg', token: 'color.surface.bg-subtle' },
   { slot: 'border', token: 'color.surface.border 1px' },
   { slot: 'striped row bg', token: 'color.surface.bg-subtle (50% opacity)' },
-  { slot: 'cell padding (sm/md/lg)', token: 'spacing.{xs/sm/md} × spacing.{sm/md}' },
-  { slot: 'font-size', token: 'typography.size.{sm/md/lg}' },
+  { slot: 'cell padding (s/m/l)', token: 'spacing.{xs/s/m} × spacing.{s/m}' },
+  { slot: 'font-size', token: 'typography.size.{s/m/l}' },
   { slot: 'header text', token: 'color.text.secondary、 typography.weight.semibold' },
 ] as const
 
@@ -246,7 +246,7 @@ export default function Table() {
 </table>
 
 <!-- Striped + sticky head + sm size -->
-<table class="creo-table" data-variant="striped" data-sticky-head="true" data-size="sm">
+<table class="creo-table" data-variant="striped" data-sticky-head="true" data-size="s">
   ...
 </table>`}</code>
         </pre>

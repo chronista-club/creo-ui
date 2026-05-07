@@ -34,7 +34,7 @@ page の最上部で "どこにいるか / 誰の製品か / 何ができるか"
 |---|---|---|---|
 | `data-variant` | `app` / `marketing` | `app` | 密度 / tone |
 | `data-sticky` | `"true"` | — | `position: sticky; top: 0` + backdrop |
-| `data-elevation` | `none` / `sm` / `md` | `sm` | bottom border / shadow |
+| `data-elevation` | `none` / `s` / `m` | `s` | bottom border / shadow |
 
 ## Slots (class names)
 
@@ -101,7 +101,7 @@ page の最上部で "どこにいるか / 誰の製品か / 何ができるか"
     <a href="/settings">Settings</a>
   </nav>
   <div class="creo-header-actions">
-    <button class="creo-btn" data-variant="ghost" data-size="sm">Sign out</button>
+    <button class="creo-btn" data-variant="ghost" data-size="s">Sign out</button>
   </div>
 </header>
 

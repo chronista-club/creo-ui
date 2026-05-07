@@ -19,7 +19,7 @@ CSS だけで hover / focus 起動、JS 無しで動作 (アクセシブルな w
 
 ```html
 <span class="creo-tooltip">
-  <button class="creo-btn" data-variant="ghost" data-size="sm" aria-describedby="tt-save">
+  <button class="creo-btn" data-variant="ghost" data-size="s" aria-describedby="tt-save">
     💾
   </button>
   <span class="creo-tooltip-content" role="tooltip" id="tt-save">

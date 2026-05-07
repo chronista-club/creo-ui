@@ -40,7 +40,7 @@
 
 | attr | 値 | default |
 |---|---|---|
-| `data-size` | `sm` / `md` / `lg` | `md` |
+| `data-size` | `s` / `m` / `l` | `m` |
 | `data-variant` | `brand` / `success` / `warning` / `error` | `brand` |
 | `data-indeterminate` | `true` | — |
 
@@ -67,15 +67,15 @@
 </span>
 
 <!-- sizes -->
-<span class="creo-spinner" data-size="sm"></span>
-<span class="creo-spinner" data-size="lg"></span>
+<span class="creo-spinner" data-size="s"></span>
+<span class="creo-spinner" data-size="l"></span>
 ```
 
 ### Props
 
 | attr | 値 | default |
 |---|---|---|
-| `data-size` | `sm` / `md` / `lg` | `md` |
+| `data-size` | `s` / `m` / `l` | `m` |
 | `data-variant` | `brand` / `neutral` | `brand` |
 
 ### Token reference
@@ -88,7 +88,7 @@
 | track color | `color.surface.bg-subtle` |
 | arc color (brand) | `color.brand.primary` |
 | arc color (neutral) | `color.text.secondary` |
-| thickness | 2px (sm/md) / 3px (lg) |
+| thickness | 2px (s/m) / 3px (lg) |
 | rotation | 900ms linear infinite |
 
 ## Accessibility

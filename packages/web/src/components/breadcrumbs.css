@@ -11,7 +11,7 @@
   color: var(--color-text-secondary);
 }
 
-.creo-breadcrumbs[data-size="sm"] {
+.creo-breadcrumbs[data-size="s"] {
   font-size: var(--typography-size-xs);
 }
 

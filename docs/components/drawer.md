@@ -26,14 +26,14 @@ Dialog は 中央 modal で強制的に focus を奪うが、Drawer は **画面
 native `<dialog>` + `showModal()` を使う (focus trap / Esc 自動):
 
 ```html
-<dialog class="creo-drawer" data-placement="right" data-size="md" id="detail-drawer">
+<dialog class="creo-drawer" data-placement="right" data-size="m" id="detail-drawer">
   <header class="creo-drawer-header">
     <h2 class="creo-drawer-title">詳細</h2>
     <button
       type="button"
       class="creo-btn"
       data-variant="ghost"
-      data-size="sm"
+      data-size="s"
       aria-label="閉じる"
       onclick="document.getElementById('detail-drawer').close()"
     >✕</button>
@@ -58,7 +58,7 @@ native `<dialog>` + `showModal()` を使う (focus trap / Esc 自動):
 | attr | 値 | default | 意味 |
 |---|---|---|---|
 | `data-placement` | `right` / `left` / `top` / `bottom` | `right` | slide in 方向 |
-| `data-size` | `sm` / `md` / `lg` / `xl` | `md` | drawer の幅 (horizontal) / 高さ (vertical) |
+| `data-size` | `s` / `m` / `l` / `xl` | `m` | drawer の幅 (horizontal) / 高さ (vertical) |
 
 ## Token reference
 
@@ -68,8 +68,8 @@ native `<dialog>` + `showModal()` を使う (focus trap / Esc 自動):
 | bg | `color.surface.surface` |
 | border | `color.surface.border` 1px |
 | shadow | `shadow.xl` (強めの lift) |
-| width (sm/md/lg/xl) | 280 / 400 / 560 / 800 px (horizontal) |
-| height (sm/md/lg/xl) | 40% / 50% / 65% / 80% viewport (vertical) |
+| width (s/m/l/xl) | 280 / 400 / 560 / 800 px (horizontal) |
+| height (s/m/l/xl) | 40% / 50% / 65% / 80% viewport (vertical) |
 | header/footer padding | `spacing.s` × `spacing.m` |
 | border separator | `color.surface.border` 1px |
 | transition | 240ms cubic-bezier(0.16, 1, 0.3, 1) |

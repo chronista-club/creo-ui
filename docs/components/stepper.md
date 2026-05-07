@@ -42,7 +42,7 @@
 | attr on `.creo-stepper` | 値 | default | 意味 |
 |---|---|---|---|
 | `data-orientation` | `horizontal` / `vertical` | `horizontal` | 配置軸 |
-| `data-size` | `sm` / `md` | `md` | marker サイズ |
+| `data-size` | `s` / `m` | `m` | marker サイズ |
 
 | attr on `.creo-stepper-item` | 値 | 意味 |
 |---|---|---|

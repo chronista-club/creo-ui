@@ -57,13 +57,42 @@
   --space-4: var(--spacing-l); /* 24px */
   --space-5: var(--spacing-xl); /* 32px */
 
-  /* ---------- 旧 spacing 名 alias (sm/md/lg → s/m/l rename 互換、 2026-05-04) ----------
-     creo-ui v0.x は xs/sm/md/lg/xl だったが、 5 tier の呼び方を xs/s/m/l/xl に
-     統一。 旧 product (creo-memories 等) は token-shim.css 経由で互換維持。 */
+  /* ---------- 5 tier rename legacy alias (sm/md/lg → s/m/l 互換、 v0.16-v0.17 で完了) ----------
+     creo-ui v0.0-v0.16 は xs/sm/md/lg/xl 命名 (Tailwind 流) だったが、 v0.17 で全
+     dimension scale token が xs/s/m/l/xl の 5 tier convention に完全統一。 旧 consumer
+     (creo-memories 等) は token-shim.css 経由で互換維持。 v0.18 で component attribute
+     (data-size="md" 等) も rename されたが、 attribute は HTML markup 側で書換が必要 (CSS
+     alias で吸収不可)。 */
 
+  /* spacing (v0.16 で先行 rename) */
   --spacing-sm: var(--spacing-s);
   --spacing-md: var(--spacing-m);
   --spacing-lg: var(--spacing-l);
+
+  /* margin (v0.17 で rename) */
+  --margin-sm: var(--margin-s);
+  --margin-md: var(--margin-m);
+  --margin-lg: var(--margin-l);
+
+  /* radius (v0.17 で rename) */
+  --radius-sm: var(--radius-s);
+  --radius-md: var(--radius-m);
+  --radius-lg: var(--radius-l);
+
+  /* shadow (v0.17 で rename) */
+  --shadow-sm: var(--shadow-s);
+  --shadow-md: var(--shadow-m);
+  --shadow-lg: var(--shadow-l);
+
+  /* typography.size (v0.17 で rename) */
+  --typography-size-sm: var(--typography-size-s);
+  --typography-size-md: var(--typography-size-m);
+  --typography-size-lg: var(--typography-size-l);
+
+  /* typography.display (v0.17 で rename) */
+  --typography-display-sm: var(--typography-display-s);
+  --typography-display-md: var(--typography-display-m);
+  --typography-display-lg: var(--typography-display-l);
 
   /* Bootstrap 5 互換 alias (0.25rem 刻み近似、px 化した shim) */
   --bs-spacer: var(--spacing-m);

@@ -96,12 +96,12 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-tabs[data-size="sm"] .creo-tabs-tab {
+.creo-tabs[data-size="s"] .creo-tabs-tab {
   min-height: var(--layout-target-focus);
   padding: var(--spacing-xs) var(--spacing-s);
   font-size: var(--typography-size-s);
 }
-.creo-tabs[data-size="lg"] .creo-tabs-tab {
+.creo-tabs[data-size="l"] .creo-tabs-tab {
   min-height: calc(var(--layout-target-tap) * 1.15);
   padding: var(--spacing-m) var(--spacing-l);
   font-size: var(--typography-size-l);

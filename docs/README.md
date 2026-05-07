@@ -17,7 +17,7 @@ Creo UI Design System の architecture / migration / component spec のソース
 
 ### 🚀 Consumer entry points
 
-- [**Migration v0.14 → v0.17**](./migration/v0.14-to-v0.17.md) — 既存 consumer (creo-memories / vantage-point / fleetstage 等) の upgrade guide。 全 token rename diff + sed pattern + JS / Swift / Rust の同期 path
+- [**Migration v0.14 → v0.18**](./migration/v0.14-to-v0.18.md) — 既存 consumer (creo-memories / vantage-point / fleetstage 等) の upgrade guide。 全 token rename diff + sed pattern + JS / Swift / Rust の同期 path
 - [Migration from-legacy-css](./migration/from-legacy-css.md) — 旧 hand-rolled CSS から creo-ui-web への移行 (legacy consumer 用)
 - [`tokens-spec.md`](./tokens-spec.md) — DTCG token 命名規則と JSON 構造の SSOT
 

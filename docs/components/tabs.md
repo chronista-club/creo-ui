@@ -70,7 +70,7 @@ ARIA pattern に準拠。`tablist` / `tab` / `tabpanel` の 3 role:
 | attr on `.creo-tabs` | 値 | default | 意味 |
 |---|---|---|---|
 | `data-variant` | `underline` / `pill` | `underline` | active 表現のスタイル |
-| `data-size` | `sm` / `md` / `lg` | `md` | tab button のサイズ |
+| `data-size` | `s` / `m` / `l` | `m` | tab button のサイズ |
 
 active 判定は **`aria-selected="true"` が単一 SSOT** (JS で付け替える、CSS は a11y attribute を selector として読む)。
 

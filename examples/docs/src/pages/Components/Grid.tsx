@@ -10,7 +10,7 @@ const PROPS = [
     attr: 'data-gap',
     values: 'xs / s / m / l / xl',
     def: 'm',
-    meaning: '5-step rule、 cell 間 gap (spacing token と同 tier)',
+    meaning: '5 tier convention、 cell 間 gap (spacing token と同 tier)',
   },
 ] as const
 
@@ -24,7 +24,7 @@ export default function Grid() {
   const Cell = (text: string) => (
     <div
       class="creo-card"
-      data-padding="sm"
+      data-padding="s"
       style={{ 'text-align': 'center', 'font-family': 'var(--typography-family-mono)' }}
     >
       {text}
@@ -76,19 +76,19 @@ export default function Grid() {
 
           <div class="docs-preview-row-label">12 column (default、 reading 例)</div>
           <div class="creo-grid">
-            <div class="creo-card" data-padding="sm" style={{ 'grid-column': 'span 4' }}>
+            <div class="creo-card" data-padding="s" style={{ 'grid-column': 'span 4' }}>
               span 4
             </div>
-            <div class="creo-card" data-padding="sm" style={{ 'grid-column': 'span 8' }}>
+            <div class="creo-card" data-padding="s" style={{ 'grid-column': 'span 8' }}>
               span 8
             </div>
-            <div class="creo-card" data-padding="sm" style={{ 'grid-column': 'span 6' }}>
+            <div class="creo-card" data-padding="s" style={{ 'grid-column': 'span 6' }}>
               span 6
             </div>
-            <div class="creo-card" data-padding="sm" style={{ 'grid-column': 'span 6' }}>
+            <div class="creo-card" data-padding="s" style={{ 'grid-column': 'span 6' }}>
               span 6
             </div>
-            <div class="creo-card" data-padding="sm" style={{ 'grid-column': 'span 12' }}>
+            <div class="creo-card" data-padding="s" style={{ 'grid-column': 'span 12' }}>
               span 12 (full)
             </div>
           </div>

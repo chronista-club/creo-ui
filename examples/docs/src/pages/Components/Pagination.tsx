@@ -18,9 +18,9 @@ const PROPS = [
   },
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
-    meaning: '5-step rule、 table footer なら sm、 mobile-first なら lg (tap target)',
+    values: 's / m / l',
+    def: 'm',
+    meaning: '5 tier convention、 table footer なら sm、 mobile-first なら lg (tap target)',
   },
   {
     attr: 'data-action (on .creo-pagination-item)',
@@ -48,7 +48,7 @@ const TOKENS = [
   { slot: 'item bg (current)', token: 'color.brand.primary-subtle' },
   { slot: 'item color (default)', token: 'color.text.secondary' },
   { slot: 'item color (current)', token: 'color.brand.primary' },
-  { slot: 'item size (sm/md/lg)', token: '32 / 40 / 44 px (lg = tap target)' },
+  { slot: 'item size (s/m/l)', token: '32 / 40 / 44 px (lg = tap target)' },
   { slot: 'gap', token: 'layout.gap.tight' },
   { slot: 'border-radius', token: 'radius.s' },
 ] as const
@@ -183,7 +183,7 @@ export default function Pagination() {
           </nav>
 
           <div class="docs-preview-row-label">Sizes</div>
-          <nav class="creo-pagination" data-size="sm" aria-label="pagination sm">
+          <nav class="creo-pagination" data-size="s" aria-label="pagination sm">
             <ol class="creo-pagination-list">
               <li>
                 <button type="button" class="creo-pagination-item" aria-current="page">
@@ -202,7 +202,7 @@ export default function Pagination() {
               </li>
             </ol>
           </nav>
-          <nav class="creo-pagination" data-size="lg" aria-label="pagination lg">
+          <nav class="creo-pagination" data-size="l" aria-label="pagination lg">
             <ol class="creo-pagination-list">
               <li>
                 <button type="button" class="creo-pagination-item" aria-current="page">

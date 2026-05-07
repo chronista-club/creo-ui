@@ -23,7 +23,7 @@ user intent を起動するための atomic action trigger。typography と colo
 | attr | 値 | default | 意味 |
 |---|---|---|---|
 | `data-variant` | `primary` / `secondary` / `ghost` | `primary` | 視覚的強度 |
-| `data-size` | `sm` / `md` / `lg` | `md` | 5-step rule 中央の md が標準 |
+| `data-size` | `s` / `m` / `l` | `m` | 5 tier convention 中央の md が標準 |
 | `disabled` | (boolean) | — | 通常の HTML 属性、pointer-events: none + opacity |
 | `aria-pressed` | `"true"` / `"false"` | — | toggle-button 用、視覚的に active state |
 
@@ -75,10 +75,10 @@ user intent を起動するための atomic action trigger。typography と colo
 <button class="creo-btn" data-variant="primary">保存</button>
 
 <!-- Secondary, small -->
-<button class="creo-btn" data-variant="secondary" data-size="sm">キャンセル</button>
+<button class="creo-btn" data-variant="secondary" data-size="s">キャンセル</button>
 
 <!-- Ghost, large, toggle -->
-<button class="creo-btn" data-variant="ghost" data-size="lg" aria-pressed="true">
+<button class="creo-btn" data-variant="ghost" data-size="l" aria-pressed="true">
   Editor Mode ON
 </button>
 
@@ -91,7 +91,7 @@ user intent を起動するための atomic action trigger。typography と colo
 Editor Mode ON で Button を click すると RIGHT region に以下 field が登場 (web-demo 実装例):
 
 - `data-variant` chooser (`primary` / `secondary` / `ghost`)
-- `data-size` chooser (`sm` / `md` / `lg`)
+- `data-size` chooser (`s` / `m` / `l`)
 - `aria-pressed` flip (toggle)
 
 concentric helper で inner icon の radius を button radius に合わせる recipe も提供予定。

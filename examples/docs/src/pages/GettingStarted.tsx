@@ -62,7 +62,7 @@ import 'creo-ui-md-view/styles.css'`}</code>
         <h2 class="docs-section-title">First example — Button + Input + Card</h2>
         <pre class="docs-code">
           <code>{`<!-- React / Vue / Solid / 生 HTML どれでも同じ -->
-<article class="creo-card" data-variant="elevated" data-padding="lg">
+<article class="creo-card" data-variant="elevated" data-padding="l">
   <h2>Sign up</h2>
   <p>creo-ui-web を試してみる</p>
 

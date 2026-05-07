@@ -88,12 +88,12 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-segmented[data-size="sm"] .creo-segmented-option {
+.creo-segmented[data-size="s"] .creo-segmented-option {
   min-height: 24px;
   padding: 2px var(--spacing-s);
   font-size: var(--typography-size-s);
 }
-.creo-segmented[data-size="lg"] .creo-segmented-option {
+.creo-segmented[data-size="l"] .creo-segmented-option {
   min-height: var(--layout-target-tap);
   padding: var(--spacing-s) var(--spacing-l);
   font-size: var(--typography-size-l);

@@ -5,9 +5,9 @@ import { createSignal } from 'solid-js'
 const PROPS = [
   {
     attr: 'data-size',
-    values: 'sm / md / lg',
-    def: 'md',
-    meaning: '5-step rule、 dense header なら sm、 hero page なら lg',
+    values: 's / m / l',
+    def: 'm',
+    meaning: '5 tier convention、 dense header なら sm、 hero page なら lg',
   },
   {
     attr: 'data-separator',
@@ -34,7 +34,7 @@ const TOKENS = [
   { slot: 'text (current page)', token: 'color.text.primary' },
   { slot: 'separator color', token: 'color.text.tertiary' },
   { slot: 'gap (item + separator)', token: 'layout.gap.tight' },
-  { slot: 'font-size', token: 'typography.size.{sm/md/lg}' },
+  { slot: 'font-size', token: 'typography.size.{s/m/l}' },
 ] as const
 
 export default function Breadcrumbs() {
@@ -111,7 +111,7 @@ export default function Breadcrumbs() {
           </nav>
 
           <div class="docs-preview-row-label">Sizes</div>
-          <nav class="creo-breadcrumbs" data-size="sm" aria-label="breadcrumb sm">
+          <nav class="creo-breadcrumbs" data-size="s" aria-label="breadcrumb sm">
             <ol class="creo-breadcrumbs-list">
               <li class="creo-breadcrumbs-item">
                 <a class="creo-breadcrumbs-link" href="#h">
@@ -123,7 +123,7 @@ export default function Breadcrumbs() {
               </li>
             </ol>
           </nav>
-          <nav class="creo-breadcrumbs" data-size="lg" aria-label="breadcrumb lg">
+          <nav class="creo-breadcrumbs" data-size="l" aria-label="breadcrumb lg">
             <ol class="creo-breadcrumbs-list">
               <li class="creo-breadcrumbs-item">
                 <a class="creo-breadcrumbs-link" href="#h">

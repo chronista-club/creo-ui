@@ -26,7 +26,7 @@
 | attr | 値 | default | 意味 |
 |---|---|---|---|
 | `data-variant` | `default` / `elevated` / `outlined` | `default` | 視覚的 lift / emphasis |
-| `data-padding` | `sm` / `md` / `lg` | `md` | 内側余白の scale |
+| `data-padding` | `s` / `m` / `l` | `m` | 内側余白の scale |
 | `data-interactive` | `"true"` | — | hover state を有効化 (button/link として使う場合) |
 
 ## Token reference (DTCG)
@@ -75,7 +75,7 @@
 </article>
 
 <!-- Elevated, lg padding (hero) -->
-<article class="creo-card" data-variant="elevated" data-padding="lg">
+<article class="creo-card" data-variant="elevated" data-padding="l">
   <h2>Feature</h2>
   <p>...</p>
 </article>

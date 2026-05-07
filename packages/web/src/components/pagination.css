@@ -83,7 +83,7 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-pagination[data-size="sm"] .creo-pagination-item {
+.creo-pagination[data-size="s"] .creo-pagination-item {
   min-width: 24px;
   min-height: 24px;
   font-size: var(--typography-size-s);
@@ -91,7 +91,7 @@
   border-radius: var(--radius-xs);
 }
 
-.creo-pagination[data-size="lg"] .creo-pagination-item {
+.creo-pagination[data-size="l"] .creo-pagination-item {
   min-width: var(--layout-target-tap);
   min-height: var(--layout-target-tap);
   font-size: var(--typography-size-l);

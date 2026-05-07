@@ -1,14 +1,14 @@
 /**
  * Creo UI — Input component
  *
- * `.creo-input` base + data-variant (bordered / filled) + data-size (sm/md/lg) + data-state (default/error)。
+ * `.creo-input` base + data-variant (bordered / filled) + data-size (s/m/lg) + data-state (default/error)。
  *
  * Spec: docs/components/input.md
  * Token: creo-ui-web/tokens.css (必須)
  *
  * Usage:
  *   <input class="creo-input" type="text">
- *   <input class="creo-input" type="email" data-variant="filled" data-size="lg">
+ *   <input class="creo-input" type="email" data-variant="filled" data-size="l">
  *   <input class="creo-input" data-state="error" aria-invalid="true">
  */
 
@@ -51,20 +51,20 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-input[data-size="sm"] {
+.creo-input[data-size="s"] {
   min-height: var(--layout-target-focus);
   padding: var(--spacing-xs) var(--spacing-s);
   font-size: var(--typography-size-s);
   border-radius: var(--radius-xs);
 }
-.creo-input[data-size="md"],
+.creo-input[data-size="m"],
 .creo-input:not([data-size]) {
   min-height: var(--layout-target-tap);
   padding: var(--spacing-s) var(--spacing-m);
   font-size: var(--typography-size-m);
   border-radius: var(--radius-s);
 }
-.creo-input[data-size="lg"] {
+.creo-input[data-size="l"] {
   min-height: calc(var(--layout-target-tap) * 1.15);
   padding: var(--spacing-m) var(--spacing-l);
   font-size: var(--typography-size-l);

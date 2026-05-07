@@ -9,7 +9,7 @@
  *
  * Usage:
  *   <button class="creo-btn" data-variant="primary">Label</button>
- *   <button class="creo-btn" data-variant="secondary" data-size="sm">Small</button>
+ *   <button class="creo-btn" data-variant="secondary" data-size="s">Small</button>
  *   <button class="creo-btn" data-variant="ghost" aria-pressed="true">Toggle</button>
  */
 
@@ -94,22 +94,22 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-btn[data-size="sm"] {
+.creo-btn[data-size="s"] {
   min-height: var(--layout-target-focus);
   padding: var(--spacing-xs) var(--spacing-s);
   font-size: var(--typography-size-s);
   border-radius: var(--radius-xs);
 }
 
-/* data-size="md" は base と同じ、明示しなくても OK だが editor-mode 親和で一応ルール定義 */
-.creo-btn[data-size="md"] {
+/* data-size="m" は base と同じ、明示しなくても OK だが editor-mode 親和で一応ルール定義 */
+.creo-btn[data-size="m"] {
   min-height: var(--layout-target-tap);
   padding: var(--spacing-s) var(--spacing-m);
   font-size: var(--typography-size-m);
   border-radius: var(--radius-s);
 }
 
-.creo-btn[data-size="lg"] {
+.creo-btn[data-size="l"] {
   min-height: calc(var(--layout-target-tap) * 1.15);
   padding: var(--spacing-m) var(--spacing-l);
   font-size: var(--typography-size-l);

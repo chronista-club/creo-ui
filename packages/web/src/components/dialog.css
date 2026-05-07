@@ -52,14 +52,14 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-dialog[data-size="sm"] {
+.creo-dialog[data-size="s"] {
   width: min(90vw, 320px);
 }
-.creo-dialog[data-size="md"],
+.creo-dialog[data-size="m"],
 .creo-dialog:not([data-size]) {
   width: min(90vw, 480px);
 }
-.creo-dialog[data-size="lg"] {
+.creo-dialog[data-size="l"] {
   width: min(92vw, 720px);
 }
 

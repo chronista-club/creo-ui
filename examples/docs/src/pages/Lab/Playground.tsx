@@ -780,7 +780,7 @@ function CameraProbe() {
             type="button"
             class="creo-btn"
             data-variant="ghost"
-            data-size="sm"
+            data-size="s"
             onClick={stopPreview}
           >
             Stop preview
@@ -886,7 +886,7 @@ function RealVisionStatus(props: { onDisable: () => void }) {
         type="button"
         class="creo-btn"
         data-variant="ghost"
-        data-size="sm"
+        data-size="s"
         onClick={props.onDisable}
       >
         Stop

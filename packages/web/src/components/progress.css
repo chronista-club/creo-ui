@@ -27,10 +27,10 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-progress[data-size="sm"] {
+.creo-progress[data-size="s"] {
   height: 4px;
 }
-.creo-progress[data-size="lg"] {
+.creo-progress[data-size="l"] {
   height: 12px;
 }
 
@@ -85,12 +85,12 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-spinner[data-size="sm"] {
+.creo-spinner[data-size="s"] {
   width: 16px;
   height: 16px;
   border-width: 2px;
 }
-.creo-spinner[data-size="lg"] {
+.creo-spinner[data-size="l"] {
   width: 40px;
   height: 40px;
   border-width: 3px;

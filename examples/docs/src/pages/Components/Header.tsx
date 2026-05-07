@@ -55,10 +55,10 @@ export default function Header() {
               <a href="#blog">Blog</a>
             </nav>
             <div class="creo-header-actions">
-              <button type="button" class="creo-btn" data-variant="ghost" data-size="sm">
+              <button type="button" class="creo-btn" data-variant="ghost" data-size="s">
                 Sign in
               </button>
-              <button type="button" class="creo-btn" data-variant="primary" data-size="sm">
+              <button type="button" class="creo-btn" data-variant="primary" data-size="s">
                 Sign up
               </button>
             </div>
@@ -90,7 +90,7 @@ export default function Header() {
               <a href="#a">Item</a>
             </nav>
             <div class="creo-header-actions">
-              <button type="button" class="creo-btn" data-variant="primary" data-size="sm">
+              <button type="button" class="creo-btn" data-variant="primary" data-size="s">
                 Action
               </button>
             </div>

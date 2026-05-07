@@ -213,10 +213,10 @@ creoEditor.help()                     // 使い方一覧`}
             <button type="button" class="creo-btn" data-variant="ghost">
               Ghost
             </button>
-            <button type="button" class="creo-btn" data-variant="primary" data-size="sm">
+            <button type="button" class="creo-btn" data-variant="primary" data-size="s">
               Small
             </button>
-            <button type="button" class="creo-btn" data-variant="primary" data-size="lg">
+            <button type="button" class="creo-btn" data-variant="primary" data-size="l">
               Large
             </button>
             <button type="button" class="creo-btn" data-variant="ghost" aria-pressed="true">
@@ -276,13 +276,7 @@ creoEditor.help()                     // 使い方一覧`}
             <label for="demo-name" style={{ 'font-size': 'var(--typography-body-helper)' }}>
               Name (sm)
             </label>
-            <input
-              id="demo-name"
-              class="creo-input"
-              type="text"
-              data-size="sm"
-              placeholder="Mako"
-            />
+            <input id="demo-name" class="creo-input" type="text" data-size="s" placeholder="Mako" />
           </div>
         </section>
 

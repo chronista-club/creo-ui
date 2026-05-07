@@ -35,7 +35,7 @@
   background-color: var(--color-surface-border);
 }
 
-.creo-timeline[data-size="sm"] .creo-timeline-item:not(:last-child)::before {
+.creo-timeline[data-size="s"] .creo-timeline-item:not(:last-child)::before {
   left: calc(24px / 2 - 1px);
   top: 24px;
 }
@@ -62,7 +62,7 @@
   z-index: 1;
 }
 
-.creo-timeline[data-size="sm"] .creo-timeline-marker {
+.creo-timeline[data-size="s"] .creo-timeline-marker {
   width: 24px;
   height: 24px;
   font-size: var(--typography-size-xs);

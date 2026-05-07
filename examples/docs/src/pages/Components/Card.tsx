@@ -17,7 +17,7 @@ const PROPS = [
     def: 'default',
     meaning: '視覚的 lift / emphasis',
   },
-  { attr: 'data-padding', values: 'sm / md / lg', def: 'md', meaning: '内側余白の scale' },
+  { attr: 'data-padding', values: 's / m / l', def: 'm', meaning: '内側余白の scale' },
   {
     attr: 'data-interactive',
     values: '"true"',
@@ -30,7 +30,7 @@ const TOKENS = [
   { slot: 'background (default)', token: 'color.surface.surface' },
   { slot: 'background (elevated)', token: 'color.surface.surface + shadow.m' },
   { slot: 'background (outlined)', token: 'transparent + color.surface.border 1.5px' },
-  { slot: 'padding', token: 'spacing.{sm/md/lg}' },
+  { slot: 'padding', token: 'spacing.{s/m/l}' },
   { slot: 'border-radius', token: 'radius.m' },
   { slot: 'border (default)', token: 'color.surface.border 1px' },
   { slot: 'gap (title + body)', token: 'layout.gap.tight' },
@@ -80,19 +80,19 @@ export default function Card() {
           </div>
           <div class="docs-preview-row-label">Paddings</div>
           <div class="docs-preview-grid docs-preview-grid--cards">
-            <article class="creo-card" data-padding="sm">
+            <article class="creo-card" data-padding="s">
               <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">
-                data-padding="sm"
+                data-padding="s"
               </code>
             </article>
-            <article class="creo-card" data-padding="md">
+            <article class="creo-card" data-padding="m">
               <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">
-                data-padding="md"
+                data-padding="m"
               </code>
             </article>
-            <article class="creo-card" data-padding="lg">
+            <article class="creo-card" data-padding="l">
               <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">
-                data-padding="lg"
+                data-padding="l"
               </code>
             </article>
           </div>
@@ -185,7 +185,7 @@ export default function Card() {
 </article>
 
 <!-- Elevated, lg padding (hero) -->
-<article class="creo-card" data-variant="elevated" data-padding="lg">
+<article class="creo-card" data-variant="elevated" data-padding="l">
   <h2>Feature</h2>
   <p>...</p>
 </article>

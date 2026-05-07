@@ -47,7 +47,7 @@
 
 /* ---------- Sizes ---------- */
 
-.creo-badge[data-size="sm"] {
+.creo-badge[data-size="s"] {
   font-size: var(--typography-size-xs);
   padding: 1px var(--spacing-xs);
 }
