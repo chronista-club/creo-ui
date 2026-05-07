@@ -14,9 +14,16 @@
 
 Linear Epic: [CREO-84 Creo UI Design System](https://linear.app/chronista/issue/CREO-84) — Phase ごとの子 Issue が紐付く。
 
-### 次フェーズ (consumer-driven feedback loop)
+### 次フェーズ — 2 axis hybrid governance
 
-design system は内部 dogfood + multi-round review で stabilize 完了。 **次は外部 consumer (creo-memories / fleetstage / vantage-point 等) で creo-ui を実導入し、 使用 feedback を本 repo に loop back する** improvement cycle に切替。 Ecosystem split (Phase 2b/c/d、 Rust/Swift repo 切り出し) は **TS 安定化優先で後回し** (consumer feedback で TS 側が更に進化する見込みのため)。
+design system は内部 dogfood + multi-round review で stabilize 完了。 以降は **2 axis hybrid** で進化:
+
+- **Concept / Architecture / Foundation 駆動 (creo-ui 側 proactive)**: Frame system protocol / Editor Mode 4 region / 8 theme palette / 5 tier convention / OKLCH adoption / DTCG SSOT 設計 等、 consumer が「現状の語彙で要求を articulate できない」 領域は **creo-ui 側で先に articulate** する責務。
+- **Surface / API ergonomics / friction 駆動 (consumer feedback driven)**: 外部 consumer (creo-memories / fleetstage / vantage-point 等) で実導入する中で出てくる API friction / 新 token need / migration ハマり / a11y bug 等は consumer 観察から逆算。 報告 channel は [`docs/contributing.md`](./docs/contributing.md) 参照。
+
+「concept か surface か」 は PR ごとに case-by-case 判断、 固定 rule よりも柔軟性優先。
+
+Ecosystem split (Phase 2b/c/d、 Rust/Swift repo 切り出し) は **TS 安定化優先で後回し** (Phase 2 Deferred)。
 
 ## 対応 Platform
 

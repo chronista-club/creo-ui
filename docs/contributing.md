@@ -1,6 +1,11 @@
 # Contributing to Creo UI
 
-Creo UI は consumer-driven feedback loop で improve します。 token 追加 / component spec 修正 / bug report は歓迎、 ただし以下の原則と flow を守ってください。
+Creo UI は **2 axis hybrid governance** で進化します:
+
+- **Concept / Architecture / Foundation** (Frame system / Editor Mode protocol / Theme palette / 5 tier convention / Token SSOT 設計 等) は **creo-ui 側 proactive** に drive — consumer が「現状の語彙で要求を articulate できない」 領域は本 repo で先に concept を起こす責務。
+- **Surface friction / API ergonomics / new component need / edge case** は **consumer feedback driven** — 外部 consumer (creo-memories / fleetstage / vantage-point 等) の実使用から friction を逆算。
+
+「concept 駆動 or surface 駆動」 は PR ごとに articulate、 固定 rule よりも case-by-case 判断を優先。 token 追加 / component spec 修正 / bug report どれも歓迎、 ただし以下の原則と flow を守ってください。
 
 ## 設計原則 — 5 tier convention strict (v0.17+)
 
