@@ -14,8 +14,8 @@ export default function Principles() {
 
       <Principle
         number="01"
-        title="5-step size-feel rule"
-        rule="Dimension scale は xs / sm / md / lg / xl の 5 step を基本骨格とする。 中央 (md) が default、 上下 2 段ずつ。"
+        title="5 tier size-feel convention"
+        rule="Dimension scale は xs / s / m / l / xl の 5 tier を基本骨格とする。 中央 (m) が default、 上下 2 段ずつ。"
       >
         <h3>Why</h3>
         <p>
@@ -88,7 +88,7 @@ export default function Principles() {
         </p>
         <h3>How it shows up</h3>
         <p>
-          radius は 7 step (none / xs / sm / md / lg / xl / full)。 中の 5 step が size-feel rule
+          radius は 7 step (none / xs / s / m / l / xl / full)。 中の 5 tier が size-feel convention
           に従い、 none / full は special (explicit reset / pill shape)。{' '}
           <code>creo-ui-editor-host</code> の<code>concentric()</code> helper が「親 radius と
           padding から子 radius を導出」 を機械的に提供。

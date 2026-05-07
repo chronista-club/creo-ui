@@ -23,7 +23,7 @@ export default function Radius() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Radius</h1>
         <p class="docs-page-lead">
-          7 step (xs / sm / md / lg / xl の <strong>5 step rule</strong> + <code>none</code> /{' '}
+          7 step (xs / s / m / l / xl の <strong>5 tier convention</strong> + <code>none</code> /{' '}
           <code>full</code> の 2 special)。 親子の radius は <strong>concentric corner</strong> (子
           = 親 - 親 padding) で揃える慣習 — Apple HIG 由来。 詳細は{' '}
           <A href="/foundations/principles">Principles</A> 原則 4。
