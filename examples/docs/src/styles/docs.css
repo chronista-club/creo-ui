@@ -93,7 +93,7 @@ a:hover {
   color: var(--color-text-primary);
   text-decoration: none;
   font-weight: var(--typography-weight-bold);
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
   letter-spacing: -0.01em;
 }
 
@@ -113,7 +113,7 @@ a:hover {
   font-family: var(--typography-family-mono);
   padding: 2px 6px;
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 }
 
 .docs-header-nav {
@@ -124,10 +124,10 @@ a:hover {
 
 .docs-header-nav a {
   color: var(--color-text-secondary);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-medium);
   padding: 6px 10px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   transition: color 120ms, background 120ms;
 }
 
@@ -150,10 +150,10 @@ a:hover {
 
 .docs-header-link {
   color: var(--color-text-secondary);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-medium);
   padding: 6px 10px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   transition: color 120ms;
 }
 
@@ -164,11 +164,11 @@ a:hover {
 
 .docs-theme-switcher select {
   font-family: inherit;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   padding: 6px 10px;
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   color: var(--color-text-primary);
   cursor: pointer;
 }
@@ -215,9 +215,9 @@ a:hover {
   justify-content: space-between;
   padding: 6px var(--spacing-s);
   margin: 1px 0;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   transition: color 120ms, background 120ms;
 }
 
@@ -276,10 +276,10 @@ a:hover {
 
 .docs-code {
   font-family: var(--typography-family-mono);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   padding: var(--spacing-m);
   overflow-x: auto;
   margin: 0;
@@ -332,7 +332,7 @@ a:hover {
 
 .docs-hero-lead {
   margin: 0 0 var(--spacing-l) 0;
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
   line-height: 1.55;
   color: var(--color-text-secondary);
   max-width: 60ch;
@@ -358,7 +358,7 @@ a:hover {
   padding: var(--spacing-m);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-l);
   transition: border-color var(--motion-duration-fast), transform var(--motion-duration-fast);
 }
 
@@ -375,18 +375,18 @@ a:hover {
 
 .docs-feature-card p {
   margin: 0 0 var(--spacing-s) 0;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
   line-height: 1.55;
 }
 
 .docs-feature-cta {
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-medium);
 }
 
 .docs-quick-install-note {
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
 }
 
@@ -420,11 +420,11 @@ a:hover {
 
 .docs-stub-path {
   font-family: var(--typography-family-mono);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-tertiary);
   background: var(--color-surface-bg-subtle);
   padding: 2px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 }
 
 /* ============================================================
@@ -484,14 +484,14 @@ a:hover {
 
 .docs-page-lead {
   margin: 0;
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
   color: var(--color-text-secondary);
   line-height: 1.55;
   max-width: 60ch;
 }
 
 .docs-page-helper {
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
   line-height: 1.55;
 }
@@ -512,7 +512,7 @@ a:hover {
 
 .docs-color-group-desc {
   margin: 0 0 var(--spacing-m) 0;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
   line-height: 1.55;
 }
@@ -530,13 +530,13 @@ a:hover {
   padding: var(--spacing-s);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
 }
 
 .docs-color-swatch-chip {
   width: 44px;
   height: 44px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   flex-shrink: 0;
   border: 1px solid color-mix(in oklab, var(--color-text-primary) 10%, transparent);
 }
@@ -578,7 +578,7 @@ a:hover {
   gap: var(--spacing-s);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   padding: var(--spacing-m);
 }
 
@@ -587,7 +587,7 @@ a:hover {
   grid-template-columns: 140px 1fr 80px auto;
   align-items: center;
   gap: var(--spacing-m);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
 }
 
 .docs-dim-name {
@@ -642,7 +642,7 @@ a:hover {
   padding: var(--spacing-s) var(--spacing-m);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
 }
 
 .docs-typo-meta {
@@ -659,7 +659,7 @@ a:hover {
 }
 
 .docs-typo-sample {
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
   color: var(--color-text-primary);
 }
 
@@ -671,7 +671,7 @@ a:hover {
   gap: var(--spacing-xs);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   padding: var(--spacing-m);
 }
 
@@ -721,7 +721,7 @@ a:hover {
   padding: var(--spacing-m);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
@@ -759,7 +759,7 @@ a:hover {
   padding: var(--spacing-m);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-s);
@@ -773,7 +773,7 @@ a:hover {
 
 .docs-theme-card-head h3 {
   margin: 0;
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
   font-weight: var(--typography-weight-bold);
 }
 
@@ -804,7 +804,7 @@ a:hover {
 .docs-theme-preview {
   background: var(--color-surface-bg-base);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   padding: var(--spacing-s);
   display: flex;
   flex-direction: column;
@@ -843,7 +843,7 @@ a:hover {
 .docs-principle {
   padding: var(--spacing-l) var(--spacing-m);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   background: var(--color-surface-surface);
 }
 
@@ -880,7 +880,7 @@ a:hover {
   padding: var(--spacing-s) var(--spacing-m);
   border-inline-start: 3px solid var(--color-brand-primary);
   background: color-mix(in oklab, var(--color-brand-primary) 6%, transparent);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-radius: 0 var(--radius-s) var(--radius-s) 0;
   font-size: var(--typography-size-base);
   line-height: 1.5;
   color: var(--color-text-primary);
@@ -898,7 +898,7 @@ a:hover {
 
 .docs-principle-body p {
   margin: 0 0 var(--spacing-s) 0;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
@@ -906,7 +906,7 @@ a:hover {
 .docs-principle-body ul {
   margin: var(--spacing-xs) 0 var(--spacing-s) 0;
   padding-inline-start: var(--spacing-l);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
@@ -931,7 +931,7 @@ a:hover {
 }
 
 .docs-principles-footnote p {
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   line-height: 1.6;
   color: var(--color-text-secondary);
   margin: 0 0 var(--spacing-s) 0;
@@ -944,7 +944,7 @@ a:hover {
 .docs-bullet-list {
   margin: var(--spacing-xs) 0 var(--spacing-m) 0;
   padding-inline-start: var(--spacing-l);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
@@ -970,9 +970,9 @@ a:hover {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   overflow: hidden;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
 }
 
 .docs-decision-row {
@@ -1027,7 +1027,7 @@ a:hover {
 .docs-layer-card {
   position: relative;
   padding: var(--spacing-m);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   border: 1px solid var(--color-surface-border);
 }
 
@@ -1049,7 +1049,7 @@ a:hover {
 }
 
 .docs-layer-name {
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
   font-weight: var(--typography-weight-bold);
   margin: var(--spacing-xs) 0;
 }
@@ -1066,7 +1066,7 @@ a:hover {
 
 .docs-region-diagram {
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   overflow: hidden;
   background: var(--color-surface-surface);
   font-size: var(--typography-size-xs);
@@ -1149,7 +1149,7 @@ a:hover {
   padding: var(--spacing-m);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
 }
 
 .docs-axis-card h3 {
@@ -1160,7 +1160,7 @@ a:hover {
 
 .docs-axis-card p {
   margin: 0;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   line-height: 1.6;
   color: var(--color-text-secondary);
 }
@@ -1171,7 +1171,7 @@ a:hover {
 
 .docs-token-table {
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   overflow: hidden;
   margin: var(--spacing-xs) 0 var(--spacing-m) 0;
 }
@@ -1222,7 +1222,7 @@ a:hover {
   padding: var(--spacing-s) var(--spacing-m);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   text-align: center;
 }
 
@@ -1258,7 +1258,7 @@ a:hover {
 
 .docs-pipeline-arrow {
   color: var(--color-text-tertiary);
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
 }
 
 .docs-pipeline-outputs {
@@ -1278,7 +1278,7 @@ a:hover {
 
 .docs-naming-table {
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   overflow: hidden;
   margin: var(--spacing-m) 0;
 }
@@ -1340,7 +1340,7 @@ a:hover {
   padding: var(--spacing-m);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   text-decoration: none;
   color: var(--color-text-primary);
   transition: border-color var(--motion-duration-fast), transform var(--motion-duration-fast);
@@ -1381,7 +1381,7 @@ a:hover {
 .docs-component-preview {
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   padding: var(--spacing-m);
 }
 
@@ -1434,7 +1434,7 @@ a:hover {
 
 .docs-props-table {
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   overflow: hidden;
   margin: var(--spacing-xs) 0;
   font-size: var(--typography-size-xs);
@@ -1482,7 +1482,7 @@ a:hover {
 
 .docs-tokens-table {
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   overflow: hidden;
   margin: var(--spacing-xs) 0;
   font-size: var(--typography-size-xs);
@@ -1524,7 +1524,7 @@ a:hover {
 .docs-do,
 .docs-dont {
   padding: var(--spacing-m);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   border: 1px solid var(--color-surface-border);
 }
 
@@ -1566,7 +1566,7 @@ a:hover {
   position: relative;
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   padding: var(--spacing-l);
   min-height: 320px;
   overflow: hidden;
@@ -1597,7 +1597,7 @@ a:hover {
 }
 
 .docs-playground-card[data-elevation="raised"] {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-m);
   transform: translateZ(var(--depth-elevated));
 }
 
@@ -1623,7 +1623,7 @@ a:hover {
 
 .docs-playground-body {
   margin: 0;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
   line-height: 1.55;
 }
@@ -1674,7 +1674,7 @@ kbd {
   height: 320px;
   background: var(--color-surface-bg-subtle);
   border: 1px dashed var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   overflow: hidden;
 }
 
@@ -1691,8 +1691,8 @@ kbd {
   padding: var(--spacing-s) var(--spacing-m);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-s);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1723,7 +1723,7 @@ kbd {
 
 .docs-frame-slot-card p {
   margin: 0;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-primary);
 }
 
@@ -1841,7 +1841,7 @@ kbd {
   text-transform: uppercase;
   background: color-mix(in oklab, var(--color-surface-base) 80%, transparent);
   padding: 2px 8px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   backdrop-filter: blur(4px);
 }
 
@@ -1859,7 +1859,7 @@ kbd {
   padding: var(--spacing-m);
   background: var(--color-surface-base);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
 }
 
 .docs-camera-probe-controls {
@@ -1873,7 +1873,7 @@ kbd {
   max-width: 480px;
   aspect-ratio: 16 / 9;
   background: var(--color-surface-sunken);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   border: 1px solid var(--color-surface-border);
   object-fit: contain;
   display: none;
@@ -1891,7 +1891,7 @@ kbd {
 
 .docs-camera-probe-stats h4 {
   margin: 0;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-semibold);
   color: var(--color-text-primary);
 }
@@ -1945,7 +1945,7 @@ kbd {
   width: 100%;
   height: 160px;
   background: color-mix(in oklab, var(--color-surface-sunken) 60%, transparent);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   /* visionOS Safari 26+ で <model> として render、 他 browser では fallback <img> が表示 */
 }
 
@@ -1955,7 +1955,7 @@ kbd {
   height: 100%;
   object-fit: contain;
   background: var(--color-surface-sunken);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 }
 
 /* ============================================================
@@ -1988,7 +1988,7 @@ kbd {
 
 .docs-icons-category-desc {
   margin: 0 0 var(--spacing-s) 0;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
   line-height: 1.55;
 }
@@ -2007,7 +2007,7 @@ kbd {
   padding: var(--spacing-s) var(--spacing-xs);
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   text-align: center;
   transition: transform var(--motion-duration-normal) var(--motion-easing-spring), border-color
     var(--motion-duration-normal);
@@ -2048,7 +2048,7 @@ kbd {
   position: relative;
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   padding: var(--spacing-l);
   min-height: 280px;
 }
@@ -2062,7 +2062,7 @@ kbd {
 
 .docs-mediapipe-prompt-title {
   margin: 0 0 var(--spacing-xs) 0;
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
   font-weight: var(--typography-weight-bold);
 }
 
@@ -2073,7 +2073,7 @@ kbd {
   background: color-mix(in oklab, var(--color-semantic-error) 10%, transparent);
   border: 1px solid var(--color-semantic-error);
   padding: var(--spacing-xs) var(--spacing-s);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   margin: var(--spacing-s) 0 0 0;
   max-width: 100%;
   word-break: break-word;
@@ -2086,7 +2086,7 @@ kbd {
   margin: 0;
   padding: var(--spacing-s) var(--spacing-m);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   background: var(--color-surface-sunken);
 }
 
@@ -2101,7 +2101,7 @@ kbd {
   display: flex;
   align-items: flex-start;
   gap: var(--spacing-xs);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   cursor: pointer;
   line-height: 1.5;
 }

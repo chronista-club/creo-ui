@@ -31,7 +31,7 @@ export default function Container() {
         display: 'flex',
         'align-items': 'center',
         'justify-content': 'center',
-        'border-radius': 'var(--radius-md)',
+        'border-radius': 'var(--radius-m)',
         margin: 'var(--spacing-s) auto',
       }}
     >

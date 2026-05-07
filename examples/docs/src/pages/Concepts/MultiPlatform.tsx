@@ -14,15 +14,15 @@ const NAMING = [
     rust: 'SPACING_MD',
   },
   {
-    token: 'typography.size.lg',
-    web: '--typography-size-lg',
-    apple: 'typographySizeLg',
+    token: 'typography.size.l',
+    web: '--typography-size-l',
+    apple: 'typographySizeL',
     rust: 'TYPOGRAPHY_SIZE_LG',
   },
   {
-    token: 'radius.md',
-    web: '--radius-md',
-    apple: 'radiusMd',
+    token: 'radius.m',
+    web: '--radius-m',
+    apple: 'radiusM',
     rust: 'RADIUS_MD',
   },
 ] as const
@@ -139,7 +139,7 @@ public extension Color {
 
 public enum CreoUITokens {
     public static let spacingM: CGFloat = 18.0
-    public static let radiusMd: CGFloat = 15.0
+    public static let radiusM: CGFloat = 15.0
 }`}</code>
         </pre>
 

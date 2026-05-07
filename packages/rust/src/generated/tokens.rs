@@ -206,11 +206,11 @@ pub const LAYOUT_TARGET_HIT: f32 = 24_f32;
 /// Extra-small margin — tight stack (paragraph spacing, inline gap)
 pub const MARGIN_XS: f32 = 8_f32;
 /// Small margin — standard vertical rhythm between elements
-pub const MARGIN_SM: f32 = 16_f32;
-/// Medium margin — component block separation (default、spacing.md と揃える)
-pub const MARGIN_MD: f32 = 18_f32;
+pub const MARGIN_S: f32 = 16_f32;
+/// Medium margin — component block separation (default、 spacing.m と揃える)
+pub const MARGIN_M: f32 = 18_f32;
 /// Large margin — section divider (between thematic blocks)
-pub const MARGIN_LG: f32 = 40_f32;
+pub const MARGIN_L: f32 = 40_f32;
 /// Extra-large margin — major section or hero break (page-level breathing)
 pub const MARGIN_XL: f32 = 64_f32;
 /// Instant — micro feedback (button click flash 等)
@@ -233,28 +233,28 @@ pub const MOTION_EASING_OUT: &str = "cubic-bezier(0, 0, 0.2, 1)";
 pub const MOTION_EASING_IN_OUT: &str = "cubic-bezier(0.4, 0, 0.2, 1)";
 /// Spring — Creo brand bouncy curve (3D Frame morph / lively interactions)
 pub const MOTION_EASING_SPRING: &str = "cubic-bezier(0.2, 0.8, 0.2, 1)";
-/// No rounding — explicit reset (special, outside step rule)
+/// No rounding — explicit reset (special, outside 5 tier rule)
 pub const RADIUS_NONE: f32 = 0_f32;
 /// Extra-small radius — minimal rounding (chips, tags)
 pub const RADIUS_XS: f32 = 4_f32;
 /// Small radius — subtle rounding (buttons, inputs)
-pub const RADIUS_SM: f32 = 8_f32;
+pub const RADIUS_S: f32 = 8_f32;
 /// Medium radius — cards, popovers (soft friendly feel)
-pub const RADIUS_MD: f32 = 15_f32;
+pub const RADIUS_M: f32 = 15_f32;
 /// Large radius — modals, larger surfaces
-pub const RADIUS_LG: f32 = 22_f32;
+pub const RADIUS_L: f32 = 22_f32;
 /// Extra-large radius — hero surfaces
 pub const RADIUS_XL: f32 = 28_f32;
-/// Fully rounded — pill shapes and circles (special, outside step rule)
+/// Fully rounded — pill shapes and circles (special, outside 5 tier rule)
 pub const RADIUS_FULL: f32 = 9999_f32;
 /// No shadow
 pub const SHADOW_NONE: &str = "none";
 /// Small elevation — quiet lift for subtle layers
-pub const SHADOW_SM: &str = "0 1px 2px 0 rgba(32, 36, 46, 0.06)";
+pub const SHADOW_S: &str = "0 1px 2px 0 rgba(32, 36, 46, 0.06)";
 /// Medium elevation — cards, dropdowns
-pub const SHADOW_MD: &str = "0 4px 6px -1px rgba(32, 36, 46, 0.08), 0 2px 4px -2px rgba(32, 36, 46, 0.06)";
+pub const SHADOW_M: &str = "0 4px 6px -1px rgba(32, 36, 46, 0.08), 0 2px 4px -2px rgba(32, 36, 46, 0.06)";
 /// Large elevation — popovers, overlays
-pub const SHADOW_LG: &str = "0 10px 15px -3px rgba(32, 36, 46, 0.10), 0 4px 6px -4px rgba(32, 36, 46, 0.08)";
+pub const SHADOW_L: &str = "0 10px 15px -3px rgba(32, 36, 46, 0.10), 0 4px 6px -4px rgba(32, 36, 46, 0.08)";
 /// Extra-large elevation — modals, focal surfaces
 pub const SHADOW_XL: &str = "0 20px 25px -5px rgba(32, 36, 46, 0.12), 0 8px 10px -6px rgba(32, 36, 46, 0.08)";
 /// Extra-small spacing — 4px (base unit)
@@ -279,12 +279,12 @@ pub const TYPOGRAPHY_BODY_HELPER: f32 = 14_f32;
 pub const TYPOGRAPHY_BODY_CAPTION: f32 = 12_f32;
 /// Display xs — smallest heading (h4 / section title / card title)
 pub const TYPOGRAPHY_DISPLAY_XS: f32 = 24_f32;
-/// Display sm — standard heading (h3 / article title / section headline)
-pub const TYPOGRAPHY_DISPLAY_SM: f32 = 32_f32;
-/// Display md — default hero / h2 (Creo aesthetic: 柔らかく強い存在感)
-pub const TYPOGRAPHY_DISPLAY_MD: f32 = 44_f32;
-/// Display lg — page hero / h1
-pub const TYPOGRAPHY_DISPLAY_LG: f32 = 56_f32;
+/// Display s — standard heading (h3 / article title / section headline)
+pub const TYPOGRAPHY_DISPLAY_S: f32 = 32_f32;
+/// Display m — default hero / h2 (Creo aesthetic: 柔らかく強い存在感)
+pub const TYPOGRAPHY_DISPLAY_M: f32 = 44_f32;
+/// Display l — page hero / h1
+pub const TYPOGRAPHY_DISPLAY_L: f32 = 56_f32;
 /// Display xl — landing mega headline / promotional hero
 pub const TYPOGRAPHY_DISPLAY_XL: f32 = 72_f32;
 /// Default UI sans-serif family (multi-language: EN/JA/KO, multi-platform: macOS/Win/Linux)
@@ -334,11 +334,11 @@ pub const TYPOGRAPHY_LINE_HEIGHT_RELAXED: f32 = 1.75_f32;
 /// Caption / meta text
 pub const TYPOGRAPHY_SIZE_XS: f32 = 12_f32;
 /// Small body / helper text
-pub const TYPOGRAPHY_SIZE_SM: f32 = 14_f32;
+pub const TYPOGRAPHY_SIZE_S: f32 = 14_f32;
 /// Default body text
-pub const TYPOGRAPHY_SIZE_MD: f32 = 16_f32;
+pub const TYPOGRAPHY_SIZE_M: f32 = 16_f32;
 /// Large body / subheading
-pub const TYPOGRAPHY_SIZE_LG: f32 = 18_f32;
+pub const TYPOGRAPHY_SIZE_L: f32 = 18_f32;
 /// Largest body / small heading (h4)
 pub const TYPOGRAPHY_SIZE_XL: f32 = 20_f32;
 /// Hero title — landing page mega headline (promotional / marketing)

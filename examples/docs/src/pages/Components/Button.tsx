@@ -40,7 +40,7 @@ const TOKENS = [
   { slot: 'font-size', token: 'typography.size.{sm/md/lg}' },
   { slot: 'padding', token: 'spacing.{xs/sm/md} × spacing.{sm/md/lg}' },
   { slot: 'gap (icon + label)', token: 'layout.gap.tight' },
-  { slot: 'border-radius', token: 'radius.sm' },
+  { slot: 'border-radius', token: 'radius.s' },
   { slot: 'min-height', token: 'layout.target.tap (md/lg) / focus (sm)' },
 ] as const
 

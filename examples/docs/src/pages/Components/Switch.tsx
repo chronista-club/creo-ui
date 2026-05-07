@@ -33,7 +33,7 @@ const PROPS = [
 const TOKENS = [
   { slot: 'track (off)', token: 'color.surface.bg-subtle + border' },
   { slot: 'track (on)', token: 'color.brand.primary' },
-  { slot: 'thumb', token: 'color.surface.bg-base + shadow.sm' },
+  { slot: 'thumb', token: 'color.surface.bg-base + shadow.s' },
   { slot: 'transition', token: 'motion.duration.fast (160ms)' },
   { slot: 'gap (track + label)', token: 'layout.gap.tight' },
   { slot: 'focus ring', token: 'color.brand.primary (2px outline)' },

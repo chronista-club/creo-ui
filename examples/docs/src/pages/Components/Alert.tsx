@@ -31,8 +31,8 @@ const TOKENS = [
   { slot: 'text color', token: 'color.text.primary' },
   { slot: 'padding', token: 'spacing.s × spacing.m' },
   { slot: 'gap (icon + content)', token: 'spacing.s' },
-  { slot: 'border-radius', token: 'radius.md' },
-  { slot: 'font-size', token: 'typography.size.md' },
+  { slot: 'border-radius', token: 'radius.m' },
+  { slot: 'font-size', token: 'typography.size.m' },
 ] as const
 
 export default function Alert() {

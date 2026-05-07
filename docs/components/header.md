@@ -53,12 +53,12 @@ page の最上部で "どこにいるか / 誰の製品か / 何ができるか"
 | background (app) | `color.surface.surface` |
 | background (marketing) | `color.surface.bg-base` (透明感あり) |
 | border-bottom (elevation sm) | 1px `color.surface.border` |
-| shadow (elevation md) | `shadow.sm` |
+| shadow (elevation md) | `shadow.s` |
 | padding vertical (app) | `spacing.s` |
 | padding vertical (marketing) | `spacing.m` |
 | padding horizontal | `spacing.l` |
 | gap (slot 間) | `layout.gap.sibling` |
-| nav link font-size | `typography.size.md` |
+| nav link font-size | `typography.size.m` |
 | nav link color (default) | `color.text.secondary` |
 | nav link color (hover/active) | `color.text.primary` |
 | transition | 120ms ease (background-color, box-shadow) |
@@ -127,8 +127,8 @@ Header click で `data-variant` / `data-sticky` / `data-elevation` chooser。slo
 
 - `color.surface.*` / `color.text.*`
 - `spacing.*` / `layout.gap.*`
-- `typography.size.md`
-- `shadow.sm`
+- `typography.size.m`
+- `shadow.s`
 - Button component (actions slot で使用)
 
 ## 関連

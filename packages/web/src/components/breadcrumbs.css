@@ -7,7 +7,7 @@
 
 .creo-breadcrumbs {
   display: block;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
 }
 

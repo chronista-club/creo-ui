@@ -86,7 +86,7 @@
   background-color: var(--color-surface-bg-subtle);
   color: var(--color-text-tertiary);
   border: 2px solid var(--color-surface-border);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-semibold);
   line-height: 1;
   user-select: none;
@@ -127,7 +127,7 @@
 .creo-stepper-label {
   grid-row: 1;
   grid-column: 2;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-medium);
   color: var(--color-text-primary);
   line-height: 1.3;

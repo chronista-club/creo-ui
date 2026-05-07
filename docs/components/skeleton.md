@@ -48,7 +48,7 @@ content が loading 中に **空白 / Spinner より構造が想像できる** p
 |---|---|
 | bg (base) | `color.surface.bg-subtle` |
 | bg (shimmer) | `color.surface.bg-emphasis` |
-| border-radius (rect) | `radius.sm` |
+| border-radius (rect) | `radius.s` |
 | border-radius (text) | `radius.xs` |
 | text height (sm/md/lg) | 12px / 16px / 20px |
 | circle diameter (sm/md/lg) | 24px / 40px / 64px |

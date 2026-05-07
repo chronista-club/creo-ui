@@ -8,14 +8,14 @@
  * @example
  * ```tsx
  * <article style={{
- *   'border-radius': 'var(--radius-md)',    // 15px
+ *   'border-radius': 'var(--radius-m)',    // 15px
  *   padding: 'var(--spacing-m)',            // 18px
  * }}>
  *   <button style={{
- *     'border-radius': concentric('var(--radius-md)', 'var(--spacing-m)')
- *     // → 'calc(var(--radius-md) - var(--spacing-m))'
+ *     'border-radius': concentric('var(--radius-m)', 'var(--spacing-m)')
+ *     // → 'calc(var(--radius-m) - var(--spacing-m))'
  *     // 実効値: 15px - 18px ... この場合は 0 以下になるので負数防止は consumer 判断、
- *     // 親 radius > padding になるよう設計するのが正しい (例: radius.lg=22, spacing.s=8 → 14px)
+ *     // 親 radius > padding になるよう設計するのが正しい (例: radius.l=22, spacing.s=8 → 14px)
  *   }}>Click</button>
  * </article>
  * ```
@@ -29,12 +29,12 @@ export function concentric(parentRadius: string, padding: string): string {
 
 /**
  * 親の radius と padding が token 系の場合のショートカット。
- * `concentric('var(--radius-lg)', 'var(--spacing-s)')` と等価な呼び出しを
+ * `concentric('var(--radius-l)', 'var(--spacing-s)')` と等価な呼び出しを
  * token key 指定で書ける。
  *
  * @example
  * concentricTokens('lg', 'sm', { radiusPrefix: '--radius-', paddingPrefix: '--spacing-' })
- * // → 'calc(var(--radius-lg) - var(--spacing-s))'
+ * // → 'calc(var(--radius-l) - var(--spacing-s))'
  */
 export function concentricTokens(
   radiusKey: string,

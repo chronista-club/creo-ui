@@ -70,21 +70,21 @@
 
   /* ---------- Radius flat alias ---------- */
 
-  --border-radius: var(--radius-md);
-  --border-radius-sm: var(--radius-sm);
-  --border-radius-lg: var(--radius-lg);
+  --border-radius: var(--radius-m);
+  --border-radius-sm: var(--radius-s);
+  --border-radius-lg: var(--radius-l);
   --border-radius-xl: var(--radius-xl);
   --border-radius-pill: var(--radius-full);
   --border-radius-circle: var(--radius-full);
 
   /* Tabler 流: --tblr-border-radius */
-  --tblr-border-radius: var(--radius-md);
+  --tblr-border-radius: var(--radius-m);
 
   /* ---------- Typography flat alias ---------- */
 
-  --font-size-base: var(--typography-size-md);
-  --font-size-sm: var(--typography-size-sm);
-  --font-size-lg: var(--typography-size-lg);
+  --font-size-base: var(--typography-size-m);
+  --font-size-sm: var(--typography-size-s);
+  --font-size-lg: var(--typography-size-l);
   --font-size-xs: var(--typography-size-xs);
 
   --font-family-base: var(--typography-family-sans);
@@ -97,8 +97,8 @@
 
   /* ---------- Shadow ---------- */
 
-  --shadow: var(--shadow-md);
-  --box-shadow: var(--shadow-md);
-  --box-shadow-sm: var(--shadow-sm);
-  --box-shadow-lg: var(--shadow-lg);
+  --shadow: var(--shadow-m);
+  --box-shadow: var(--shadow-m);
+  --box-shadow-sm: var(--shadow-s);
+  --box-shadow-lg: var(--shadow-l);
 }

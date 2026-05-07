@@ -4,9 +4,9 @@ import { DimensionScale, type DimensionToken } from '../../ui/TokenList'
 const RADII: readonly DimensionToken[] = [
   { name: 'radius.none', cssVar: '--radius-none', value: '0px', hint: 'Explicit reset (special)' },
   { name: 'radius.xs', cssVar: '--radius-xs', value: '4px', hint: 'Chip / Tag' },
-  { name: 'radius.sm', cssVar: '--radius-sm', value: '8px', hint: 'Button / Input' },
-  { name: 'radius.md', cssVar: '--radius-md', value: '15px', hint: 'Card / Popover (default)' },
-  { name: 'radius.lg', cssVar: '--radius-lg', value: '22px', hint: 'Modal / Drawer' },
+  { name: 'radius.s', cssVar: '--radius-s', value: '8px', hint: 'Button / Input' },
+  { name: 'radius.m', cssVar: '--radius-m', value: '15px', hint: 'Card / Popover (default)' },
+  { name: 'radius.l', cssVar: '--radius-l', value: '22px', hint: 'Modal / Drawer' },
   { name: 'radius.xl', cssVar: '--radius-xl', value: '28px', hint: 'Hero surface' },
   {
     name: 'radius.full',
@@ -36,7 +36,7 @@ export default function Radius() {
         <h2 class="docs-section-title">使い方</h2>
         <pre class="docs-code">
           <code>{`/* CSS */
-.card { border-radius: var(--radius-md); }     /* 15px */
+.card { border-radius: var(--radius-m); }     /* 15px */
 .avatar { border-radius: var(--radius-full); } /* pill */
 
 /* concentric helper (creo-ui-editor-host) */

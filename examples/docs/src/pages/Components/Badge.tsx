@@ -27,7 +27,7 @@ const TOKENS = [
   },
   { slot: 'text color', token: 'color.text.secondary / brand / semantic.*' },
   { slot: 'padding', token: '2px × spacing.xs' },
-  { slot: 'font-size', token: 'typography.size.sm' },
+  { slot: 'font-size', token: 'typography.size.s' },
   { slot: 'font-weight', token: 'typography.weight.medium' },
   { slot: 'border-radius', token: 'radius.full (pill)' },
 ] as const

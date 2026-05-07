@@ -32,8 +32,8 @@ user / account / project 等の visual identity を **小さな円形 (または
 | diameter (xl) | `64px` |
 | bg (initials fallback) | `color.brand.primary-subtle` |
 | color (initials) | `color.text.primary` |
-| font-size (initials md) | `typography.size.sm` |
-| border (square variant) | `radius.sm` |
+| font-size (initials md) | `typography.size.s` |
+| border (square variant) | `radius.s` |
 | status dot size | `25% of diameter` |
 | status dot border | `color.surface.surface` 2px (背景との区切り) |
 

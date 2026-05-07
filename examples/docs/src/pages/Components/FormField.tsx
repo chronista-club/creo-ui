@@ -21,7 +21,7 @@ const PROPS = [
 
 const TOKENS = [
   { slot: 'label color', token: 'color.text.primary' },
-  { slot: 'label font', token: 'typography.size.sm + weight.medium' },
+  { slot: 'label font', token: 'typography.size.s + weight.medium' },
   { slot: 'helper-text color', token: 'color.text.secondary' },
   { slot: 'helper-text--error', token: 'color.semantic.error' },
   { slot: 'gap (label/input/helper)', token: 'spacing.xs' },

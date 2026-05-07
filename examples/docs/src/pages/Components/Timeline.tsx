@@ -31,7 +31,7 @@ const TOKENS = [
   { slot: 'item gap (vertical)', token: 'spacing.m' },
   { slot: 'title', token: 'color.text.primary、 typography.weight.semibold' },
   { slot: 'description', token: 'color.text.secondary' },
-  { slot: 'meta (timestamp)', token: 'color.text.tertiary、 typography.size.sm' },
+  { slot: 'meta (timestamp)', token: 'color.text.tertiary、 typography.size.s' },
 ] as const
 
 export default function Timeline() {

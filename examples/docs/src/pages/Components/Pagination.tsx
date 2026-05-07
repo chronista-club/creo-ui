@@ -50,7 +50,7 @@ const TOKENS = [
   { slot: 'item color (current)', token: 'color.brand.primary' },
   { slot: 'item size (sm/md/lg)', token: '32 / 40 / 44 px (lg = tap target)' },
   { slot: 'gap', token: 'layout.gap.tight' },
-  { slot: 'border-radius', token: 'radius.sm' },
+  { slot: 'border-radius', token: 'radius.s' },
 ] as const
 
 export default function Pagination() {

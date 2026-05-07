@@ -62,7 +62,7 @@
 | icon size (l) | `typography.icon.xl` = 96px |
 | icon color | `color.text.tertiary` |
 | title | `typography.title.subsection` (24px、lg は title.section 32) |
-| description | `typography.size.md` + `color.text.secondary` |
+| description | `typography.size.m` + `color.text.secondary` |
 | actions gap | `layout.gap.tight` |
 | text-align | center |
 | max-width (description) | 440px |

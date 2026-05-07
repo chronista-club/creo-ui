@@ -10,10 +10,10 @@
   align-items: flex-start;
   gap: var(--spacing-s);
   padding: var(--spacing-s) var(--spacing-m);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   border: 1px solid transparent;
   color: var(--color-text-primary);
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
 }
 
 /* ---------- Variants (default style = 15% tint bg) ---------- */
@@ -84,7 +84,7 @@
 }
 
 .creo-alert-content > strong {
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-semibold);
 }
 
@@ -101,7 +101,7 @@
   border: none;
   padding: 2px var(--spacing-xs);
   color: var(--color-text-tertiary);
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   cursor: pointer;
   border-radius: var(--radius-xs);
 }

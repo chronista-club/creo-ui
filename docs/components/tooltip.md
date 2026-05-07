@@ -48,7 +48,7 @@ focus-within または hover で `.creo-tooltip-content` が可視になる。
 | padding | `spacing.xs` × `spacing.s` |
 | font-size | `typography.body.caption` (12px) |
 | border-radius | `radius.xs` |
-| shadow | `shadow.md` |
+| shadow | `shadow.m` |
 | offset (from target) | `spacing.xs` |
 | transition | 120ms ease (opacity + transform) |
 | arrow size | `6px` (optional、:before で実装) |

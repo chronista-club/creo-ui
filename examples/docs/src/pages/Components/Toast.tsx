@@ -21,10 +21,10 @@ const PROPS = [
 ] as const
 
 const TOKENS = [
-  { slot: 'background', token: 'color.surface.surface + shadow.lg' },
+  { slot: 'background', token: 'color.surface.surface + shadow.l' },
   { slot: 'border', token: 'color.surface.border 1px' },
   { slot: 'icon (semantic)', token: 'color.semantic.{info/success/warning/error}' },
-  { slot: 'border-radius', token: 'radius.md' },
+  { slot: 'border-radius', token: 'radius.m' },
   { slot: 'padding', token: 'spacing.s × spacing.m' },
   { slot: 'gap (icon + content)', token: 'spacing.s' },
   { slot: 'region offset', token: 'spacing.l (画面端からの距離)' },

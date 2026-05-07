@@ -51,9 +51,9 @@
 | wrapper bg (bordered) | `color.surface.surface` |
 | wrapper border | `color.surface.border` 1px |
 | wrapper padding | `spacing.s` × `spacing.m` |
-| border-radius | `radius.sm` |
+| border-radius | `radius.s` |
 | summary min-height | `layout.target.tap` |
-| title font-size | `typography.size.md` |
+| title font-size | `typography.size.m` |
 | title weight | `typography.weight.medium` |
 | chevron | `▸` rotate 90° when open |
 | content padding-top | `spacing.s` |

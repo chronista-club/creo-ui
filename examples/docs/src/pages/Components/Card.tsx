@@ -28,10 +28,10 @@ const PROPS = [
 
 const TOKENS = [
   { slot: 'background (default)', token: 'color.surface.surface' },
-  { slot: 'background (elevated)', token: 'color.surface.surface + shadow.md' },
+  { slot: 'background (elevated)', token: 'color.surface.surface + shadow.m' },
   { slot: 'background (outlined)', token: 'transparent + color.surface.border 1.5px' },
   { slot: 'padding', token: 'spacing.{sm/md/lg}' },
-  { slot: 'border-radius', token: 'radius.md' },
+  { slot: 'border-radius', token: 'radius.m' },
   { slot: 'border (default)', token: 'color.surface.border 1px' },
   { slot: 'gap (title + body)', token: 'layout.gap.tight' },
 ] as const
@@ -57,7 +57,7 @@ export default function Card() {
               <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">
                 Default
               </h4>
-              <p style="margin: 0; font-size: var(--typography-size-sm); color: var(--color-text-secondary);">
+              <p style="margin: 0; font-size: var(--typography-size-s); color: var(--color-text-secondary);">
                 surface bg + 1px border。 group content 用。
               </p>
             </article>
@@ -65,15 +65,15 @@ export default function Card() {
               <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">
                 Elevated
               </h4>
-              <p style="margin: 0; font-size: var(--typography-size-sm); color: var(--color-text-secondary);">
-                + shadow.md で前面に浮く感。
+              <p style="margin: 0; font-size: var(--typography-size-s); color: var(--color-text-secondary);">
+                + shadow.m で前面に浮く感。
               </p>
             </article>
             <article class="creo-card" data-variant="outlined">
               <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">
                 Outlined
               </h4>
-              <p style="margin: 0; font-size: var(--typography-size-sm); color: var(--color-text-secondary);">
+              <p style="margin: 0; font-size: var(--typography-size-s); color: var(--color-text-secondary);">
                 transparent bg + 1.5px border。 軽量 grouping。
               </p>
             </article>
@@ -268,7 +268,7 @@ function CardEditorDemo() {
         <p
           style={{
             margin: 0,
-            'font-size': 'var(--typography-size-sm)',
+            'font-size': 'var(--typography-size-s)',
             color: 'var(--color-text-secondary)',
           }}
         >

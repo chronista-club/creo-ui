@@ -16,7 +16,7 @@
   display: block;
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   padding: var(--spacing-m);
   color: var(--color-text-primary);
   transition: background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease, transform
@@ -29,13 +29,13 @@
 .creo-card:not([data-variant]) {
   background-color: var(--color-surface-surface);
   border-color: var(--color-surface-border);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-s);
 }
 
 .creo-card[data-variant="elevated"] {
   background-color: var(--color-surface-surface);
   border-color: transparent;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-m);
 }
 
 .creo-card[data-variant="outlined"] {
@@ -68,7 +68,7 @@
   transform: translateY(-1px);
 }
 .creo-card[data-interactive="true"][data-variant="elevated"]:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-l);
 }
 .creo-card[data-interactive="true"]:active {
   transform: translateY(0);

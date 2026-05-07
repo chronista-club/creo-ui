@@ -26,7 +26,7 @@
   border-bottom: none;
   padding: var(--spacing-xs);
   background-color: var(--color-surface-bg-subtle);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
   gap: var(--spacing-xs);
 }
 
@@ -40,7 +40,7 @@
   min-height: var(--layout-target-tap);
 
   font-family: inherit;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-medium);
   color: var(--color-text-secondary);
   text-decoration: none;
@@ -87,7 +87,7 @@
 
 /* pill variant: background を埋めて active を示す */
 .creo-tabs[data-variant="pill"] .creo-tabs-tab {
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 }
 .creo-tabs[data-variant="pill"] .creo-tabs-tab[aria-selected="true"] {
   background-color: var(--color-brand-primary);
@@ -99,12 +99,12 @@
 .creo-tabs[data-size="sm"] .creo-tabs-tab {
   min-height: var(--layout-target-focus);
   padding: var(--spacing-xs) var(--spacing-s);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
 }
 .creo-tabs[data-size="lg"] .creo-tabs-tab {
   min-height: calc(var(--layout-target-tap) * 1.15);
   padding: var(--spacing-m) var(--spacing-l);
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
 }
 
 /* ---------- Panel ---------- */

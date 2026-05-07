@@ -6,20 +6,20 @@
         "$type": "dimension",
         "$description": "Display xs — smallest heading (h4 / section title / card title)"
       },
-      "sm": {
+      "s": {
         "$value": "32px",
         "$type": "dimension",
-        "$description": "Display sm — standard heading (h3 / article title / section headline)"
+        "$description": "Display s — standard heading (h3 / article title / section headline)"
       },
-      "md": {
+      "m": {
         "$value": "44px",
         "$type": "dimension",
-        "$description": "Display md — default hero / h2 (Creo aesthetic: 柔らかく強い存在感)"
+        "$description": "Display m — default hero / h2 (Creo aesthetic: 柔らかく強い存在感)"
       },
-      "lg": {
+      "l": {
         "$value": "56px",
         "$type": "dimension",
-        "$description": "Display lg — page hero / h1"
+        "$description": "Display l — page hero / h1"
       },
       "xl": {
         "$value": "72px",

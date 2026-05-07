@@ -56,15 +56,15 @@ Tabs に似てるが意味が違う — Segmented control は **setting / filter
 | wrapper bg | `color.surface.bg-subtle` |
 | wrapper border | `color.surface.border` 1px |
 | wrapper padding | `spacing.xs` |
-| wrapper border-radius | `radius.md` |
+| wrapper border-radius | `radius.m` |
 | option padding | `spacing.xs` × `spacing.m` |
-| option border-radius | `radius.sm` |
-| option font-size (md) | `typography.size.md` |
+| option border-radius | `radius.s` |
+| option font-size (md) | `typography.size.m` |
 | option text (default) | `color.text.secondary` |
 | option text (hover) | `color.text.primary` |
 | option text (active/pressed) | `color.brand.primary` |
 | option bg (active) | `color.surface.surface` |
-| active shadow | `shadow.sm` (subtle lift) |
+| active shadow | `shadow.s` (subtle lift) |
 | transition | 150ms ease |
 
 ## Accessibility

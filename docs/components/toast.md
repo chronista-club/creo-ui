@@ -81,10 +81,10 @@
 | toast bg (default) | `color.surface.surface` |
 | toast border | 1px (default) / 1.5px (variant) |
 | toast padding | `spacing.s` × `spacing.m` |
-| border-radius | `radius.md` |
-| shadow | `shadow.md` |
+| border-radius | `radius.m` |
+| shadow | `shadow.m` |
 | icon size | `typography.title.card` (20px) |
-| title | `typography.size.md` + `weight.semibold` |
+| title | `typography.size.m` + `weight.semibold` |
 | description | `typography.body.helper` (14px) |
 | entrance | translate + fade 180ms |
 

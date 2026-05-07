@@ -46,7 +46,7 @@
 /* ---------- Shapes ---------- */
 
 .creo-avatar[data-shape="square"] {
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 }
 
 /* ---------- Image ---------- */
@@ -62,7 +62,7 @@
 
 .creo-avatar-initials {
   font-family: inherit;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.02em;
@@ -72,10 +72,10 @@
   font-size: var(--typography-size-xs);
 }
 .creo-avatar[data-size="lg"] .creo-avatar-initials {
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
 }
 .creo-avatar[data-size="xl"] .creo-avatar-initials {
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
 }
 
 /* ---------- Status dot ---------- */

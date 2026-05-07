@@ -15,7 +15,7 @@
   );
   background-size: 200% 100%;
   animation: creoSkeletonShimmer 1.4s linear infinite;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   width: 100%;
   height: 16px;
   vertical-align: middle;
@@ -48,7 +48,7 @@
 
 .creo-skeleton[data-shape="rect"],
 .creo-skeleton:not([data-shape]) {
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 }
 
 /* ---------- Sizes (text / circle only) ---------- */

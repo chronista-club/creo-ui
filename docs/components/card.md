@@ -34,12 +34,12 @@
 | slot | token |
 |---|---|
 | background (default) | `color.surface.surface` |
-| background (elevated) | `color.surface.surface` + `shadow.md` |
+| background (elevated) | `color.surface.surface` + `shadow.m` |
 | background (outlined) | `transparent` + `color.surface.border` 1.5px |
 | padding (sm) | `spacing.s` |
 | padding (md) | `spacing.m` |
 | padding (lg) | `spacing.l` |
-| border-radius | `radius.md` |
+| border-radius | `radius.m` |
 | border (default) | `color.surface.border` 1px |
 | gap (title + body) | `layout.gap.tight` |
 | transition | 150ms ease (background, shadow, transform) |
@@ -93,9 +93,9 @@ Card click で RIGHT region に `data-variant` chooser / `data-padding` chooser 
 ## 依存 token
 
 - `color.surface.*`
-- `shadow.md`
+- `shadow.m`
 - `spacing.s/md/lg` + `layout.gap.tight`
-- `radius.md`
+- `radius.m`
 
 ## 関連
 

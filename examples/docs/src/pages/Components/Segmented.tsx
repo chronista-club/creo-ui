@@ -21,11 +21,11 @@ const PROPS = [
 
 const TOKENS = [
   { slot: 'track bg', token: 'color.surface.bg-subtle' },
-  { slot: 'option (selected) bg', token: 'color.surface.surface + shadow.sm' },
+  { slot: 'option (selected) bg', token: 'color.surface.surface + shadow.s' },
   { slot: 'option text (selected)', token: 'color.text.primary' },
   { slot: 'option text (unselected)', token: 'color.text.secondary' },
-  { slot: 'border-radius (track)', token: 'radius.md' },
-  { slot: 'border-radius (option)', token: 'radius.sm' },
+  { slot: 'border-radius (track)', token: 'radius.m' },
+  { slot: 'border-radius (option)', token: 'radius.s' },
   { slot: 'transition', token: 'motion.duration.fast' },
 ] as const
 

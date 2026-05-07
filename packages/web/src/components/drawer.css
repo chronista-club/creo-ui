@@ -11,14 +11,14 @@
   border: 1px solid var(--color-surface-border);
   background-color: var(--color-surface-surface);
   color: var(--color-text-primary);
-  box-shadow: var(--shadow-xl, var(--shadow-lg));
+  box-shadow: var(--shadow-xl, var(--shadow-l));
   overflow: hidden;
 
   display: flex;
   flex-direction: column;
 
   font-family: inherit;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   line-height: var(--typography-line-height-normal);
 
   animation: creoDrawerInRight 240ms cubic-bezier(0.16, 1, 0.3, 1);

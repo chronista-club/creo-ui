@@ -14,7 +14,7 @@
   padding: var(--spacing-xs);
   background-color: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
 }
 
 .creo-segmented[data-width="full"] {
@@ -40,12 +40,12 @@
   gap: var(--layout-gap-tight);
 
   font-family: inherit;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-medium);
   color: var(--color-text-secondary);
 
   cursor: pointer;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
   user-select: none;
 }
@@ -70,7 +70,7 @@
 .creo-segmented-option:has(> input[type="radio"]:checked) {
   background-color: var(--color-surface-surface);
   color: var(--color-brand-primary);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-s);
 }
 
 /* ---------- Radio inside (hide native input) ---------- */
@@ -91,12 +91,12 @@
 .creo-segmented[data-size="sm"] .creo-segmented-option {
   min-height: 24px;
   padding: 2px var(--spacing-s);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
 }
 .creo-segmented[data-size="lg"] .creo-segmented-option {
   min-height: var(--layout-target-tap);
   padding: var(--spacing-s) var(--spacing-l);
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
 }
 
 /* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */

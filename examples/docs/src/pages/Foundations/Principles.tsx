@@ -46,10 +46,10 @@ export default function Principles() {
         </p>
         <h3>How it shows up</h3>
         <p>
-          <code>spacing.l = 24px</code> / <code>margin.lg = 40px</code> (1.67 倍)。
+          <code>spacing.l = 24px</code> / <code>margin.l = 40px</code> (1.67 倍)。
           <code>spacing.xl = 32px</code> / <code>margin.xl = 64px</code> (2 倍)。 大きくなるほど
           margin は呼吸量を増やす。 form field の縦間隔は <code>spacing.s</code>、 hero と footer
-          の間は <code>margin.xl</code>。 (margin は歴史的に sm/md/lg、 後で 5 tier 統一予定)
+          の間は <code>margin.xl</code>。
         </p>
       </Principle>
 
@@ -69,7 +69,7 @@ export default function Principles() {
         <p>
           <code>layout.gap.tight = {'{spacing.xs}'}</code>、{' '}
           <code>layout.gap.sibling = {'{spacing.m}'}</code>、
-          <code>layout.gap.section = {'{margin.lg}'}</code>、{' '}
+          <code>layout.gap.section = {'{margin.l}'}</code>、{' '}
           <code>layout.gap.page = {'{margin.xl}'}</code>。 consumer は alias を使う、 maintainer は
           base を tune。
         </p>

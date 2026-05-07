@@ -20,9 +20,9 @@ const PROPS = [
 ] as const
 
 const TOKENS = [
-  { slot: 'background', token: 'color.surface.surface + shadow.lg' },
+  { slot: 'background', token: 'color.surface.surface + shadow.l' },
   { slot: 'border', token: 'color.surface.border 1px' },
-  { slot: 'border-radius', token: 'radius.md' },
+  { slot: 'border-radius', token: 'radius.m' },
   { slot: 'item padding', token: 'spacing.xs × spacing.s' },
   { slot: 'item hover bg', token: 'color.surface.bg-subtle' },
   { slot: 'item destructive', token: 'color.semantic.error' },

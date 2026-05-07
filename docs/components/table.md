@@ -79,7 +79,7 @@ rows × columns の **dense data listing**。Creo の aesthetic に合わせ、z
 | slot | token |
 |---|---|
 | border-collapse | separate (radius で丸めるため) |
-| table border-radius | `radius.md` |
+| table border-radius | `radius.m` |
 | table border | `color.surface.border` 1px |
 | head bg | `color.surface.bg-subtle` |
 | head text | `color.text.secondary` |

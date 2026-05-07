@@ -55,8 +55,8 @@
   padding: var(--spacing-s) var(--spacing-m);
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-m);
   color: var(--color-text-primary);
   animation: creoToastIn 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -124,7 +124,7 @@
 }
 
 .creo-toast-content > strong {
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-semibold);
 }
 
@@ -141,7 +141,7 @@
   border: none;
   padding: 2px var(--spacing-xs);
   color: var(--color-text-tertiary);
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   cursor: pointer;
   border-radius: var(--radius-xs);
 }

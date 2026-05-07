@@ -54,7 +54,7 @@
   background-color: var(--color-surface-bg-subtle);
   color: var(--color-text-primary);
   border: 2px solid var(--color-surface-border);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-semibold);
   line-height: 1;
   user-select: none;
@@ -104,7 +104,7 @@
 }
 
 .creo-timeline-title {
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-medium);
   color: var(--color-text-primary);
   line-height: 1.4;
@@ -118,7 +118,7 @@
 
 .creo-timeline-description {
   margin: var(--spacing-xs) 0 0 0;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   color: var(--color-text-secondary);
   line-height: var(--typography-line-height-normal);
 }

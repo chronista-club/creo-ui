@@ -71,14 +71,14 @@
 
 .creo-empty-state-description {
   margin: 0;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   color: var(--color-text-secondary);
   line-height: var(--typography-line-height-relaxed);
   max-width: 440px;
 }
 
 .creo-empty-state[data-size="s"] .creo-empty-state-description {
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   max-width: 320px;
 }
 

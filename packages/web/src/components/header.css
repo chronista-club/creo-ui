@@ -68,7 +68,7 @@
 }
 .creo-header[data-elevation="md"] {
   border-bottom: none;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-s);
 }
 
 /* ---------- Slots ---------- */
@@ -104,7 +104,7 @@
 .creo-header-nav a {
   color: var(--color-text-secondary);
   text-decoration: none;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-regular);
   padding: var(--spacing-xs) var(--spacing-s);
   border-radius: var(--radius-xs);

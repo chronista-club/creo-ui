@@ -17,7 +17,7 @@
 .creo-accordion:not([data-variant]) {
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
   padding: 0;
   overflow: hidden;
 }
@@ -25,7 +25,7 @@
 .creo-accordion[data-variant="subtle"] {
   background-color: var(--color-surface-bg-subtle);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 }
 
 /* ---------- Summary (clickable header) ---------- */
@@ -58,7 +58,7 @@
 .creo-accordion-summary:focus-visible {
   outline: 2px solid var(--color-brand-primary);
   outline-offset: -2px;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 }
 
 /* Chevron (自前で挿入)
@@ -75,7 +75,7 @@
   color: var(--color-text-tertiary);
   transform: rotate(0deg);
   transition: transform 180ms ease;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   line-height: 1;
 }
 
@@ -87,7 +87,7 @@
 
 .creo-accordion-title {
   flex: 1;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-medium);
   color: var(--color-text-primary);
   min-width: 0;
@@ -97,7 +97,7 @@
 
 .creo-accordion-content {
   padding: var(--spacing-s) var(--spacing-m) var(--spacing-m);
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   color: var(--color-text-primary);
   line-height: var(--typography-line-height-normal);
 }

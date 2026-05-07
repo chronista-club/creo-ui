@@ -35,12 +35,12 @@ user intent を起動するための atomic action trigger。typography と colo
 | background (secondary) | `color.surface.surface` + `color.surface.border` 1px |
 | background (ghost) | `transparent` + hover `color.surface.surface-muted` |
 | label color | `color.text.primary` (inverse on primary: `color.surface.bg-base`) |
-| font-size | `typography.size.md` (sm variant は `size.sm`、lg は `size.lg`) |
+| font-size | `typography.size.m` (sm variant は `size.sm`、lg は `size.lg`) |
 | font-weight | `typography.weight.medium` |
 | padding horizontal | `spacing.m` (sm: `spacing.s`、lg: `spacing.l`) |
 | padding vertical | `spacing.xs` (sm) / `spacing.s` (md) / `spacing.m` (lg) |
 | gap (icon + label) | `layout.gap.tight` |
-| border-radius | `radius.sm` |
+| border-radius | `radius.s` |
 | min-height | `layout.target.tap` (md/lg) / `layout.target.focus` (sm) |
 | focus ring | `color.brand.primary`, outline 2px, offset 2px |
 | transition | 120ms ease (background, transform) |

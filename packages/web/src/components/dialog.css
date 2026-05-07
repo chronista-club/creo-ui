@@ -16,8 +16,8 @@
   /* Shape */
   background-color: var(--color-surface-surface);
   color: var(--color-text-primary);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-l);
 
   /* Width */
   width: min(90vw, 480px);
@@ -26,7 +26,7 @@
 
   /* Typography */
   font-family: inherit;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   line-height: var(--typography-line-height-normal);
 
   /* Entrance (開いた時の軽い lift) */

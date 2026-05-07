@@ -13,7 +13,7 @@ const PROPS = [
   },
   {
     attr: 'data-elevation',
-    values: 'none / default (shadow.sm)',
+    values: 'none / default (shadow.s)',
     def: 'default',
     meaning: 'header 下端の shadow / border、 page との視覚分離',
   },
@@ -22,7 +22,7 @@ const PROPS = [
 const TOKENS = [
   { slot: 'background', token: 'color.surface.surface' },
   { slot: 'border-bottom (default)', token: 'color.surface.border 1px' },
-  { slot: 'shadow (default elevation)', token: 'shadow.sm' },
+  { slot: 'shadow (default elevation)', token: 'shadow.s' },
   { slot: 'logo size', token: '24px (default) / 32px (marketing)' },
   { slot: 'padding (default)', token: 'spacing.s × spacing.m' },
   { slot: 'padding (marketing)', token: 'spacing.m × spacing.l' },

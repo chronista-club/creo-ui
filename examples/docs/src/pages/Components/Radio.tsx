@@ -40,7 +40,7 @@ const TOKENS = [
   { slot: 'accent (selected color)', token: 'color.brand.primary' },
   { slot: 'label color', token: 'color.text.primary' },
   { slot: 'gap (input + label)', token: 'layout.gap.tight' },
-  { slot: 'font-size', token: 'typography.size.md' },
+  { slot: 'font-size', token: 'typography.size.m' },
   { slot: 'focus ring', token: 'color.brand.primary (2px outline + 2px offset)' },
 ] as const
 

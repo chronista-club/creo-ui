@@ -41,9 +41,9 @@ const FAMILIES = [
 
 const SIZES = [
   { name: 'typography.size.xs', cssVar: '--typography-size-xs', value: '12px' },
-  { name: 'typography.size.sm', cssVar: '--typography-size-sm', value: '14px' },
+  { name: 'typography.size.s', cssVar: '--typography-size-s', value: '14px' },
   { name: 'typography.size.base', cssVar: '--typography-size-base', value: '16px' },
-  { name: 'typography.size.lg', cssVar: '--typography-size-lg', value: '18px' },
+  { name: 'typography.size.l', cssVar: '--typography-size-l', value: '18px' },
   { name: 'typography.size.xl', cssVar: '--typography-size-xl', value: '20px' },
   { name: 'typography.size.2xl', cssVar: '--typography-size-2xl', value: '24px' },
   { name: 'typography.size.3xl', cssVar: '--typography-size-3xl', value: '32px' },

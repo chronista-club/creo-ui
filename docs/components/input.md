@@ -40,11 +40,11 @@ user から最小単位の文字列 / 数値を受け取る atomic input。form 
 | border (error) | `color.semantic.error` 1.5px |
 | text | `color.text.primary` |
 | placeholder | `color.text.tertiary` |
-| font-size (md) | `typography.size.md` |
-| font-size (sm) | `typography.size.sm` |
-| font-size (lg) | `typography.size.lg` |
+| font-size (md) | `typography.size.m` |
+| font-size (sm) | `typography.size.s` |
+| font-size (lg) | `typography.size.l` |
 | padding (md) | `spacing.s` × `spacing.m` |
-| border-radius | `radius.sm` (md), `radius.xs` (sm), `radius.md` (lg) |
+| border-radius | `radius.s` (md), `radius.xs` (sm), `radius.m` (lg) |
 | min-height | `layout.target.focus` (sm) / `layout.target.tap` (md/lg) |
 | transition | 120ms ease (border-color, background-color, box-shadow) |
 

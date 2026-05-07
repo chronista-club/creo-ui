@@ -6,17 +6,17 @@
         "$type": "dimension",
         "$description": "Caption / meta text"
       },
-      "sm": {
+      "s": {
         "$value": "14px",
         "$type": "dimension",
         "$description": "Small body / helper text"
       },
-      "md": {
+      "m": {
         "$value": "16px",
         "$type": "dimension",
         "$description": "Default body text"
       },
-      "lg": {
+      "l": {
         "$value": "18px",
         "$type": "dimension",
         "$description": "Large body / subheading"

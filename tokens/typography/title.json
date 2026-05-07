@@ -7,12 +7,12 @@
         "$description": "Hero title — landing page mega headline (promotional / marketing)"
       },
       "page": {
-        "$value": "{typography.display.md}",
+        "$value": "{typography.display.m}",
         "$type": "dimension",
         "$description": "Page title — h1 (article title, app screen heading)"
       },
       "section": {
-        "$value": "{typography.display.sm}",
+        "$value": "{typography.display.s}",
         "$type": "dimension",
         "$description": "Section title — h2 (thematic block within a page)"
       },

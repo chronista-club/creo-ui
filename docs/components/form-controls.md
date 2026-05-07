@@ -52,7 +52,7 @@ form 内の boolean / 選択肢入力。native `<input>` + `accent-color` で最
 |---|---|
 | accent-color (checkbox/radio) | `color.brand.primary` |
 | gap (wrapper) | `layout.gap.tight` |
-| font-size (label) | `typography.size.md` |
+| font-size (label) | `typography.size.m` |
 | switch track (off) | `color.surface.bg-subtle` |
 | switch track (on) | `color.brand.primary` |
 | switch thumb | `color.surface.surface` |

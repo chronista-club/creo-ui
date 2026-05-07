@@ -23,7 +23,7 @@ const TOKENS = [
   { slot: 'text color', token: 'color.text.primary' },
   { slot: 'padding', token: 'spacing.xs × spacing.s' },
   { slot: 'border-radius', token: 'radius.xs' },
-  { slot: 'shadow', token: 'shadow.md' },
+  { slot: 'shadow', token: 'shadow.m' },
   { slot: 'font-size', token: 'typography.body.caption' },
   { slot: 'transition', token: '120ms ease (opacity + transform)' },
   { slot: 'max-width', token: '280px (line wrap 防止 + 適切な breakpoint)' },

@@ -23,7 +23,7 @@
   background-color: var(--color-surface-bg-emphasis);
   color: var(--color-text-primary);
   border-radius: var(--radius-xs);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-m);
 
   font-size: var(--typography-body-caption);
   font-weight: var(--typography-weight-regular);

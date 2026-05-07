@@ -12,7 +12,7 @@
         "$description": "Default sibling gap — between stacked elements (list items, form fields)"
       },
       "section": {
-        "$value": "{margin.lg}",
+        "$value": "{margin.l}",
         "$type": "dimension",
         "$description": "Section-to-section gap — thematic block break (between content sections)"
       },

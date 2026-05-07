@@ -50,7 +50,7 @@ semantic HTML + ARIA 標準:
 
 | slot | token |
 |---|---|
-| wrapper font-size (md) | `typography.size.sm` |
+| wrapper font-size (md) | `typography.size.s` |
 | wrapper font-size (sm) | `typography.size.xs` |
 | link (default) | `color.text.secondary` |
 | link (hover) | `color.text.primary` |

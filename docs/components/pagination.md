@@ -60,9 +60,9 @@
 | item min-size (md) | `layout.target.focus` (32pt) |
 | item min-size (sm) | 24px |
 | item min-size (lg) | `layout.target.tap` (44pt) |
-| border-radius | `radius.sm` |
+| border-radius | `radius.s` |
 | gap | `spacing.xs` (default) / 0 (compact) |
-| font-size (md) | `typography.size.md` |
+| font-size (md) | `typography.size.m` |
 
 ## Accessibility
 

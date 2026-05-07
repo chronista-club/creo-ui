@@ -48,10 +48,10 @@ function Demo() {
     control: number({ min: 0, max: 48, step: 1, unit: 'px', variant: 'slider' }),
     placement: { label: 'spacing.m', semantic: 'tool', group: 'Token', order: 0 },
   })
-  const radiusMd = bind({
-    target: cssVarNumberTarget('tokens.radius.md', '--radius-md', 8, 'px'),
+  const radiusM = bind({
+    target: cssVarNumberTarget('tokens.radius.m', '--radius-m', 8, 'px'),
     control: number({ min: 0, max: 24, step: 1, unit: 'px', variant: 'slider' }),
-    placement: { label: 'radius.md', semantic: 'tool', group: 'Token', order: 1 },
+    placement: { label: 'radius.m', semantic: 'tool', group: 'Token', order: 1 },
   })
 
   // ---------- Tool fields: app state (signal 無しで ephemeral + Accessor) ----------
@@ -114,8 +114,8 @@ function Demo() {
           />
           <Card
             title="カード 2 — 角丸"
-            description="radius.md を動かすと角の丸みだけが変わる。"
-            bindId={radiusMd.id}
+            description="radius.m を動かすと角の丸みだけが変わる。"
+            bindId={radiusM.id}
           />
           <Card
             title="カード 3 — アプリ状態"
@@ -129,7 +129,7 @@ function Demo() {
             padding: 'var(--spacing-m)',
             background: 'var(--color-surface-bg-subtle)',
             border: '1px solid var(--color-surface-border)',
-            'border-radius': 'var(--radius-md)',
+            'border-radius': 'var(--radius-m)',
             'font-size': 'var(--typography-body-helper)',
             'line-height': 'var(--typography-line-height-normal)',
           }}
@@ -151,7 +151,7 @@ function Demo() {
               margin: '0',
               padding: 'var(--spacing-s)',
               background: 'var(--color-surface-surface)',
-              'border-radius': 'var(--radius-sm)',
+              'border-radius': 'var(--radius-s)',
               overflow: 'auto',
               'font-family': 'var(--typography-family-mono)',
               'font-size': 'var(--typography-size-xs)',
@@ -173,7 +173,7 @@ creoEditor.help()                     // 使い方一覧`}
             padding: 'var(--spacing-m)',
             background: 'var(--color-surface-surface)',
             border: '1px solid var(--color-surface-border)',
-            'border-radius': 'var(--radius-md)',
+            'border-radius': 'var(--radius-m)',
           }}
         >
           <h2
@@ -234,7 +234,7 @@ creoEditor.help()                     // 使い方一覧`}
             padding: 'var(--spacing-m)',
             background: 'var(--color-surface-surface)',
             border: '1px solid var(--color-surface-border)',
-            'border-radius': 'var(--radius-md)',
+            'border-radius': 'var(--radius-m)',
           }}
         >
           <h2
@@ -292,7 +292,7 @@ creoEditor.help()                     // 使い方一覧`}
           <footer
             style={{
               'margin-top': 'var(--margin-xl)',
-              'font-size': 'var(--typography-size-sm)',
+              'font-size': 'var(--typography-size-s)',
               color: 'var(--color-text-tertiary)',
             }}
           >
@@ -385,7 +385,7 @@ function MarkdownDemo() {
         padding: 'var(--spacing-m)',
         background: 'var(--color-surface-surface)',
         border: '1px solid var(--color-surface-border)',
-        'border-radius': 'var(--radius-md)',
+        'border-radius': 'var(--radius-m)',
       }}
     >
       <h2

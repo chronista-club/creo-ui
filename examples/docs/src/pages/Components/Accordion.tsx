@@ -21,7 +21,7 @@ const PROPS = [
 
 const TOKENS = [
   { slot: 'border (bordered)', token: 'color.surface.border 1px' },
-  { slot: 'border-radius', token: 'radius.md' },
+  { slot: 'border-radius', token: 'radius.m' },
   { slot: 'summary padding', token: 'spacing.s × spacing.m' },
   { slot: 'content padding', token: 'spacing.m × spacing.m' },
   { slot: 'chevron', token: '→ rotate 90deg on [open]、 transition motion.duration.fast' },

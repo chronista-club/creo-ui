@@ -24,7 +24,7 @@
 
   /* Typography */
   font-family: inherit;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-medium);
   line-height: 1;
   text-decoration: none;
@@ -32,7 +32,7 @@
 
   /* Shape */
   border: 1px solid transparent;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 
   /* Default interaction */
   cursor: pointer;
@@ -97,7 +97,7 @@
 .creo-btn[data-size="sm"] {
   min-height: var(--layout-target-focus);
   padding: var(--spacing-xs) var(--spacing-s);
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   border-radius: var(--radius-xs);
 }
 
@@ -105,15 +105,15 @@
 .creo-btn[data-size="md"] {
   min-height: var(--layout-target-tap);
   padding: var(--spacing-s) var(--spacing-m);
-  font-size: var(--typography-size-md);
-  border-radius: var(--radius-sm);
+  font-size: var(--typography-size-m);
+  border-radius: var(--radius-s);
 }
 
 .creo-btn[data-size="lg"] {
   min-height: calc(var(--layout-target-tap) * 1.15);
   padding: var(--spacing-m) var(--spacing-l);
-  font-size: var(--typography-size-lg);
-  border-radius: var(--radius-md);
+  font-size: var(--typography-size-l);
+  border-radius: var(--radius-m);
 }
 
 /* ---------- State: disabled ---------- */

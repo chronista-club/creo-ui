@@ -11,14 +11,9 @@ const SPACING: readonly DimensionToken[] = [
 
 const MARGIN: readonly DimensionToken[] = [
   { name: 'margin.xs', cssVar: '--margin-xs', value: '8px' },
-  { name: 'margin.sm', cssVar: '--margin-sm', value: '16px' },
-  {
-    name: 'margin.md',
-    cssVar: '--margin-md',
-    value: '18px',
-    hint: 'spacing.m と揃える (margin は historical に sm/md/lg のまま、 後で 5 tier 統一予定)',
-  },
-  { name: 'margin.lg', cssVar: '--margin-lg', value: '40px' },
+  { name: 'margin.s', cssVar: '--margin-s', value: '16px' },
+  { name: 'margin.m', cssVar: '--margin-m', value: '18px', hint: 'spacing.m と揃える' },
+  { name: 'margin.l', cssVar: '--margin-l', value: '40px' },
   { name: 'margin.xl', cssVar: '--margin-xl', value: '64px' },
 ]
 
@@ -39,7 +34,7 @@ const GAPS: readonly DimensionToken[] = [
     name: 'layout.gap.section',
     cssVar: '--layout-gap-section',
     value: '40px',
-    hint: '→ {margin.lg} (section to section)',
+    hint: '→ {margin.l} (section to section)',
   },
   {
     name: 'layout.gap.page',
@@ -128,12 +123,12 @@ export default function Spacing() {
   gap: var(--layout-gap-sibling);      /* alias 推奨 */
 }
 section + section {
-  margin-top: var(--layout-gap-section); /* → margin.lg */
+  margin-top: var(--layout-gap-section); /* → margin.l */
 }
 
 /* Swift */
 .padding(CreoUITokens.spacingM)       // Component 内側
-.padding(.top, CreoUITokens.marginLg)  // Section 間
+.padding(.top, CreoUITokens.marginL)  // Section 間
 
 /* Rust (token const) */
 creo_ui::SPACING_M  // → 18.0 (f32 px、 ratatui consumer は cell 換算で適用)`}</code>

@@ -54,7 +54,7 @@
 | slot (status) | marker bg | marker text | connector |
 |---|---|---|---|
 | completed | `color.brand.primary` | `color.surface.bg-base` | `color.brand.primary` |
-| current | `color.brand.primary` | `color.surface.bg-base` + `shadow.sm` | `color.surface.border` |
+| current | `color.brand.primary` | `color.surface.bg-base` + `shadow.s` | `color.surface.border` |
 | pending | `color.surface.bg-subtle` | `color.text.tertiary` | `color.surface.border` |
 | error | `color.semantic.error` | `color.surface.bg-base` | `color.surface.border` |
 
@@ -63,7 +63,7 @@
 | marker size (md) | 32px (layout.target.focus) |
 | marker size (sm) | 24px |
 | marker border-radius | `radius.full` |
-| label font (md) | `typography.size.md` + `weight.medium` |
+| label font (md) | `typography.size.m` + `weight.medium` |
 | description | `typography.body.helper` + `text.secondary` |
 | connector height (horizontal) | 2px |
 | connector width (vertical) | 2px |

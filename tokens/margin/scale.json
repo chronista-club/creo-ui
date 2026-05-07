@@ -5,17 +5,17 @@
       "$type": "dimension",
       "$description": "Extra-small margin — tight stack (paragraph spacing, inline gap)"
     },
-    "sm": {
+    "s": {
       "$value": "16px",
       "$type": "dimension",
       "$description": "Small margin — standard vertical rhythm between elements"
     },
-    "md": {
+    "m": {
       "$value": "18px",
       "$type": "dimension",
-      "$description": "Medium margin — component block separation (default、spacing.md と揃える)"
+      "$description": "Medium margin — component block separation (default、 spacing.m と揃える)"
     },
-    "lg": {
+    "l": {
       "$value": "40px",
       "$type": "dimension",
       "$description": "Large margin — section divider (between thematic blocks)"

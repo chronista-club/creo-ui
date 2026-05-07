@@ -24,7 +24,7 @@ const TOKENS = [
   { slot: 'bg (initials fallback)', token: 'color.brand.primary-subtle' },
   { slot: 'color (initials)', token: 'color.text.primary' },
   { slot: 'font-size (initials)', token: 'typography.size.{xs/sm/base/md} (size に応じて)' },
-  { slot: 'border (square)', token: 'radius.sm' },
+  { slot: 'border (square)', token: 'radius.s' },
   { slot: 'status dot', token: '25% of diameter, color.surface.surface 2px border' },
 ] as const
 

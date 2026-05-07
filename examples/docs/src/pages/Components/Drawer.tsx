@@ -19,7 +19,7 @@ const TOKENS = [
   { slot: 'backdrop', token: 'rgba(0,0,0,0.5) (::backdrop)' },
   { slot: 'background', token: 'color.surface.surface' },
   { slot: 'border', token: 'color.surface.border 1px (反対側)' },
-  { slot: 'shadow', token: 'shadow.lg' },
+  { slot: 'shadow', token: 'shadow.l' },
   { slot: 'header padding', token: 'spacing.s × spacing.m' },
   { slot: 'body padding', token: 'spacing.m' },
   { slot: 'animation', token: 'transform translate ± duration.normal' },

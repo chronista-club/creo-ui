@@ -3,7 +3,91 @@
 本ファイルは Creo UI の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
-## v0.16.0 (2026-05-06) — 5 tier sizing convention 統一 (web、 BREAKING)
+## v0.17.0 (2026-05-06) — 5 tier convention 完全統一 (web、 BREAKING、 final)
+
+v0.16.0 で部分統一 (spacing / container / grid / icon を `xs/s/m/l/xl`)、 残 token (margin / radius / shadow / typography.size / typography.display) は `xs/sm/md/lg/xl` で violation 残存していたのを v0.17.0 で **完全統一**。 これで Creo UI の全 dimension scale token が `xs/s/m/l/xl` (5 tier) で揃う。
+
+### BREAKING (web 0.17.0)
+
+| token | v0.16.0 → | v0.17.0 |
+|---|---|---|
+| `--margin-{sm,md,lg}` | (4 tier 違反) | `--margin-{s,m,l}` |
+| `--radius-{sm,md,lg}` (+ `none/full`) | (4 tier 違反) | `--radius-{s,m,l}` (+ `none/full`) |
+| `--shadow-{sm,md,lg}` (+ `none`) | (4 tier 違反) | `--shadow-{s,m,l}` (+ `none`) |
+| `--typography-size-{sm,md,lg}` | (4 tier 違反) | `--typography-size-{s,m,l}` |
+| `--typography-display-{sm,md,lg}` | (4 tier 違反) | `--typography-display-{s,m,l}` |
+
+### Migration
+
+```css
+/* before (v0.16.0) — DO NOT USE, removed */
+margin: var(--margin-md);
+border-radius: var(--radius-lg);
+box-shadow: var(--shadow-sm);
+font-size: var(--typography-size-md);
+
+/* after (v0.17.0) */
+margin: var(--margin-m);
+border-radius: var(--radius-l);
+box-shadow: var(--shadow-s);
+font-size: var(--typography-size-m);
+```
+
+JS:
+
+```ts
+// before (v0.16.0) — removed
+import { MarginMd, RadiusLg, ShadowSm, TypographySizeMd } from 'creo-ui-web/tokens.js'
+
+// after (v0.17.0)
+import { MarginM, RadiusL, ShadowS, TypographySizeM } from 'creo-ui-web/tokens.js'
+```
+
+### Notes (web 0.17.0)
+- 値 (= dimension の物理値) は据置、 名前のみ変更。
+- `none` / `full` (radius / shadow) と `xs` / `xl` 4 corner は touch なし、 v0.16.0 と意味的に一致。
+- ecosystem 全層 (token JSON + CSS components + dogfood docs site + Swift / Rust generated + creo-ui-editor-host jsdoc/test) を 1 commit で sync 完了。 Container 等 Round 1 で先行 rename 済の token は touch なし。
+
+### 後始末
+- `examples/docs/src/pages/Foundations/{Spacing,Principles}.tsx` で v0.16 暫定の「margin は historical に sm/md/lg のまま、 後で 5 tier 統一予定」 注記を **削除** (= 統一完了で historical state 解消)。
+
+---
+
+## v0.6.0 (2026-05-06) — 5 tier 完全統一 (rust + swift、 BREAKING)
+
+web v0.17.0 と sync。 Rust const + Swift identifier 両方が rename:
+
+```rust
+// before — removed
+creo_ui::MARGIN_MD
+creo_ui::RADIUS_LG
+creo_ui::SHADOW_SM
+creo_ui::TYPOGRAPHY_SIZE_MD
+
+// after
+creo_ui::MARGIN_M
+creo_ui::RADIUS_L
+creo_ui::SHADOW_S
+creo_ui::TYPOGRAPHY_SIZE_M
+```
+
+```swift
+// before — removed
+CreoUITokens.marginMd
+CreoUITokens.radiusLg
+Color.shadowSm
+
+// after
+CreoUITokens.marginM
+CreoUITokens.radiusL
+Color.shadowS
+```
+
+v0.5.0 (rust) は publish 直後本 session で本問題発覚、 production consumer ゼロ。 v0.6.0 が crates.io / SwiftPM の最初の 5 tier 完全統一 release。
+
+---
+
+## v0.16.0 (2026-05-06) — 5 tier sizing convention 統一 (web、 BREAKING、 partial)
 
 ### BREAKING (web 0.16.0)
 

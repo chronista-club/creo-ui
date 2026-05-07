@@ -41,14 +41,14 @@
   min-width: var(--layout-target-focus);
   min-height: var(--layout-target-focus);
   padding: 0 var(--spacing-xs);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-s);
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
   font-family: inherit;
-  font-size: var(--typography-size-md);
+  font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-medium);
   color: var(--color-text-secondary);
   cursor: pointer;
@@ -86,7 +86,7 @@
 .creo-pagination[data-size="sm"] .creo-pagination-item {
   min-width: 24px;
   min-height: 24px;
-  font-size: var(--typography-size-sm);
+  font-size: var(--typography-size-s);
   padding: 0 6px;
   border-radius: var(--radius-xs);
 }
@@ -94,9 +94,9 @@
 .creo-pagination[data-size="lg"] .creo-pagination-item {
   min-width: var(--layout-target-tap);
   min-height: var(--layout-target-tap);
-  font-size: var(--typography-size-lg);
+  font-size: var(--typography-size-l);
   padding: 0 var(--spacing-s);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-m);
 }
 
 /* ---------- Ellipsis ---------- */

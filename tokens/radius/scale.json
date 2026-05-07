@@ -3,24 +3,24 @@
     "none": {
       "$value": "0px",
       "$type": "dimension",
-      "$description": "No rounding — explicit reset (special, outside step rule)"
+      "$description": "No rounding — explicit reset (special, outside 5 tier rule)"
     },
     "xs": {
       "$value": "4px",
       "$type": "dimension",
       "$description": "Extra-small radius — minimal rounding (chips, tags)"
     },
-    "sm": {
+    "s": {
       "$value": "8px",
       "$type": "dimension",
       "$description": "Small radius — subtle rounding (buttons, inputs)"
     },
-    "md": {
+    "m": {
       "$value": "15px",
       "$type": "dimension",
       "$description": "Medium radius — cards, popovers (soft friendly feel)"
     },
-    "lg": {
+    "l": {
       "$value": "22px",
       "$type": "dimension",
       "$description": "Large radius — modals, larger surfaces"
@@ -33,7 +33,7 @@
     "full": {
       "$value": "9999px",
       "$type": "dimension",
-      "$description": "Fully rounded — pill shapes and circles (special, outside step rule)"
+      "$description": "Fully rounded — pill shapes and circles (special, outside 5 tier rule)"
     }
   }
 }

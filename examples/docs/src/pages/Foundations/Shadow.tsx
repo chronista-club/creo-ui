@@ -2,9 +2,9 @@ import { For } from 'solid-js'
 
 const SHADOWS = [
   { name: 'shadow.none', cssVar: '--shadow-none', hint: 'Explicit reset (no elevation)' },
-  { name: 'shadow.sm', cssVar: '--shadow-sm', hint: 'Subtle lift (hover, dropdown 微発光)' },
-  { name: 'shadow.md', cssVar: '--shadow-md', hint: 'Card hover / popover / dropdown' },
-  { name: 'shadow.lg', cssVar: '--shadow-lg', hint: 'Sheet / drawer / overlay' },
+  { name: 'shadow.s', cssVar: '--shadow-s', hint: 'Subtle lift (hover, dropdown 微発光)' },
+  { name: 'shadow.m', cssVar: '--shadow-m', hint: 'Card hover / popover / dropdown' },
+  { name: 'shadow.l', cssVar: '--shadow-l', hint: 'Sheet / drawer / overlay' },
   { name: 'shadow.xl', cssVar: '--shadow-xl', hint: 'Modal / focal surface' },
 ] as const
 
@@ -37,7 +37,7 @@ export default function Shadow() {
         <pre class="docs-code">
           <code>{`/* CSS */
 .card-floating {
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-m);
 }
 .modal {
   box-shadow: var(--shadow-xl);
