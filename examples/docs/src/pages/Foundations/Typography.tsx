@@ -1,5 +1,13 @@
 import { For } from 'solid-js'
 
+type ScaleEntry = {
+  readonly name: string
+  readonly cssVar: string
+  readonly value: string
+  readonly use: string
+  readonly def?: boolean
+}
+
 const MODE_FAMILIES = [
   {
     name: 'typography.family.app',
@@ -86,7 +94,7 @@ const VARIANT_FAMILIES = [
   },
 ] as const
 
-const SIZES = [
+const SIZES: readonly ScaleEntry[] = [
   {
     name: 'typography.size.xs',
     cssVar: '--typography-size-xs',
@@ -120,7 +128,7 @@ const SIZES = [
   },
 ] as const
 
-const DISPLAYS = [
+const DISPLAYS: readonly ScaleEntry[] = [
   {
     name: 'typography.display.xs',
     cssVar: '--typography-display-xs',
