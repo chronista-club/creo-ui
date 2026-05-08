@@ -59,7 +59,7 @@ mod tests {
     #[test]
     fn margin_md_matches_spacing_md() {
         // Creo UI 規約: 同じ "medium" は spacing.md と margin.md を揃える
-        assert_eq!(tokens::MARGIN_MD, tokens::SPACING_M);
+        assert_eq!(tokens::MARGIN_M, tokens::SPACING_M);
     }
 
     #[test]

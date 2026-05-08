@@ -43,10 +43,10 @@ public struct CreoCard<Content: View>: View {
             .padding(paddingValue)
             .background(backgroundColor)
             .overlay(
-                RoundedRectangle(cornerRadius: CreoUITokens.radiusMd)
+                RoundedRectangle(cornerRadius: CreoUITokens.radiusM)
                     .stroke(borderColor, lineWidth: borderWidth)
             )
-            .clipShape(RoundedRectangle(cornerRadius: CreoUITokens.radiusMd))
+            .clipShape(RoundedRectangle(cornerRadius: CreoUITokens.radiusM))
             .shadow(color: shadowColor, radius: shadowRadius, x: 0, y: shadowY)
     }
 

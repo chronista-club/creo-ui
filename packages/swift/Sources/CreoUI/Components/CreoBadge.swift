@@ -62,7 +62,7 @@ public struct CreoBadge: View {
     // MARK: - Style resolvers
 
     private var fontSize: CGFloat {
-        size == .sm ? CreoUITokens.typographySizeXs : CreoUITokens.typographySizeSm
+        size == .sm ? CreoUITokens.typographySizeXs : CreoUITokens.typographySizeS
     }
 
     private var verticalPadding: CGFloat {

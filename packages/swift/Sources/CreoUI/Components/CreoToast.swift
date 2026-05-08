@@ -49,7 +49,7 @@ public struct CreoToast: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.system(size: CreoUITokens.typographySizeMd, weight: .semibold))
+                    .font(.system(size: CreoUITokens.typographySizeM, weight: .semibold))
                     .foregroundColor(Color.colorTextPrimary)
 
                 if let description {
@@ -65,7 +65,7 @@ public struct CreoToast: View {
                 Button(action: onClose) {
                     Image(systemName: "xmark")
                         .foregroundColor(Color.colorTextTertiary)
-                        .font(.system(size: CreoUITokens.typographySizeSm))
+                        .font(.system(size: CreoUITokens.typographySizeS))
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("閉じる")
@@ -75,10 +75,10 @@ public struct CreoToast: View {
         .padding(.vertical, CreoUITokens.spacingS)
         .background(Color.colorSurfaceSurface)
         .overlay(
-            RoundedRectangle(cornerRadius: CreoUITokens.radiusMd)
+            RoundedRectangle(cornerRadius: CreoUITokens.radiusM)
                 .stroke(borderColor, lineWidth: borderWidth)
         )
-        .clipShape(RoundedRectangle(cornerRadius: CreoUITokens.radiusMd))
+        .clipShape(RoundedRectangle(cornerRadius: CreoUITokens.radiusM))
         .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
     }
 

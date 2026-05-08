@@ -66,9 +66,9 @@ public struct CreoButton<Label: View>: View {
 
     private var fontSize: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.typographySizeSm
-        case .md: return CreoUITokens.typographySizeMd
-        case .lg: return CreoUITokens.typographySizeLg
+        case .sm: return CreoUITokens.typographySizeS
+        case .md: return CreoUITokens.typographySizeM
+        case .lg: return CreoUITokens.typographySizeL
         }
     }
 
@@ -99,8 +99,8 @@ public struct CreoButton<Label: View>: View {
     private var cornerRadius: CGFloat {
         switch size {
         case .sm: return CreoUITokens.radiusXs
-        case .md: return CreoUITokens.radiusSm
-        case .lg: return CreoUITokens.radiusMd
+        case .md: return CreoUITokens.radiusS
+        case .lg: return CreoUITokens.radiusM
         }
     }
 

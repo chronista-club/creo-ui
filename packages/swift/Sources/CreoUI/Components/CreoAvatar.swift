@@ -87,7 +87,7 @@ public struct CreoAvatar: View {
     private var clipShape: AnyShape {
         switch shape {
         case .circle: return AnyShape(Circle())
-        case .square: return AnyShape(RoundedRectangle(cornerRadius: CreoUITokens.radiusSm))
+        case .square: return AnyShape(RoundedRectangle(cornerRadius: CreoUITokens.radiusS))
         }
     }
 
@@ -105,9 +105,9 @@ public struct CreoAvatar: View {
     private var initialsFontSize: CGFloat {
         switch size {
         case .sm: return CreoUITokens.typographySizeXs
-        case .md: return CreoUITokens.typographySizeSm
-        case .lg: return CreoUITokens.typographySizeMd
-        case .xl: return CreoUITokens.typographySizeLg
+        case .md: return CreoUITokens.typographySizeS
+        case .lg: return CreoUITokens.typographySizeM
+        case .xl: return CreoUITokens.typographySizeL
         }
     }
 
