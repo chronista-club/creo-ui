@@ -42,6 +42,72 @@ xs  /  s  /  m  /  l  /  xl
 8. Breaking change (既存 token の rename / 削除) は **必ず** [`CHANGELOG.md`](../CHANGELOG.md) に migration 記載 + [`docs/migration/v0.X-to-v0.Y.md`](./migration/) を新設、 consumer 視点で migration steps を articulate する。
 9. dogfood (`examples/docs/`) との drift が出た場合は同 PR で sync (5 tier 表記 / version literal / sample code 全部)。
 
+## Token rename sweep checklist (大規模 rename 時の必須確認)
+
+token name 変更 (例: v0.17 で `sm/md/lg` → `s/m/l`) は **ecosystem 全層に波及** する。 以下の checklist で全 layer を漏らさず sweep する。 generated 出力だけ再生成して 「OK」 と思うと **CI fail を 26 時間放置する事故** が起きる (実例は本 section 末尾参照)。
+
+### Layer A: SSOT (source of truth)
+
+- [ ] `tokens/**/*.json` を編集 (token name + value + $description)
+- [ ] tokens 内 cross-reference (`{margin.lg}` 等) も同 rename
+
+### Layer B: Generated outputs (build で再生成、 commit 必要)
+
+- [ ] `bun run build` 実行
+- [ ] `packages/swift/Sources/CreoUI/Generated/Tokens.swift` 更新確認
+- [ ] `packages/rust/src/generated/tokens.rs` 更新確認
+- (Web の `packages/web/dist/` は gitignore、 publish workflow で再生成)
+
+### Layer C: Generated を参照する non-generated code (sweep 必須、 漏れやすい)
+
+「generated を import / use する code」 は build で更新されない、 **手動 sweep 必須**:
+
+- [ ] `packages/web/src/components/*.css` — `var(--*)` 参照
+- [ ] `packages/swift/Sources/CreoUI/Components/*.swift` — `CreoUITokens.*` 参照 (**production code**)
+- [ ] `packages/swift/Tests/**/*.swift` — `CreoUITokens.*` 参照 (**test code**)
+- [ ] `packages/rust/src/lib.rs` 等 non-generated rust — `tokens::*` 参照 (test assert を含む)
+- [ ] `packages/editor-host/src/*` — jsdoc + test 内 literal
+- [ ] `packages/frame/src/*` — 同上
+
+### Layer D: Documentation (Living docs sync、 原則 07)
+
+- [ ] `packages/{web,swift,rust,editor-host,frame,...}/README.md` — npm / SPM / crates.io 表示の consumer 入口
+- [ ] `docs/components/*.md` — component spec
+- [ ] `docs/design/*.md` — ADR
+- [ ] `docs/migration/*.md` — migration guide
+- [ ] `docs/contributing.md` — 自身も sweep 対象 (例 / sample が古い token を参照する)
+
+### Layer E: Dogfood
+
+- [ ] `examples/docs/src/**/*.tsx` — token reference + visible labels (button text 等の sample)
+- [ ] `examples/web-demo/src/**/*.tsx` — walking skeleton
+
+### Verify (local)
+
+- [ ] `bun run typecheck` pass
+- [ ] `bun run lint` / `bun run format` clean
+- [ ] `cd examples/docs && bun x tsc --noEmit` 0 errors
+- [ ] `bun test packages/editor-host/src` pass
+- [ ] `cd packages/frame && bun run test` pass
+- [ ] `cd packages/rust && cargo build` pass (mise rustc 1.95 必須、 local env が古いと skip しがち)
+- [ ] `cd packages/swift && swift build && swift test` pass (macOS のみ、 Linux 環境では skip)
+
+### Verify (CI、 必須)
+
+- [ ] `gh run list --workflow ci.yml --limit 1` で CI 3 job 全 green 確認
+- [ ] **Swift build / Rust build は local で skip しがち** — CI fail を能動的に watch すること
+
+### Why this checklist exists (実例)
+
+v0.17 5 tier rename (commit `942d5eb`、 2026-05-06) で **Layer C (Swift Components / Rust lib.rs / Swift Tests) と Layer D (Swift / Rust README) の sweep が漏れ**、 CI fail を **26 時間 / 9 commit 連続放置** する事故が発生。
+
+漏れ原因:
+- Sweep mental model: 「generated は build で再生成、 generated 以外は touch しない」
+- 落とし穴: **「generated を参照する non-generated code」** が sweep 範囲に入らなかった (Swift Components の production code、 Rust lib.rs の test assert)
+- Local rustc 1.94 vs Cargo.toml 1.95 mismatch で local cargo build skip → CI verify に依存していたが CI fail 通知を能動 watch していなかった
+
+修復: 4 commit (`8ac9376` / `ebfda42` / `3ca61eb` 等) で全 layer sweep + green 化。 本 checklist はこの経験から articulate。
+
 ## Living doc 原則
 
 `tokens/`、 `packages/`、 `docs/` の **3 SSOT** は同期義務:
