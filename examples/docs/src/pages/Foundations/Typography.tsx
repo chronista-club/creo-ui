@@ -321,6 +321,149 @@ export default function Typography() {
       </header>
 
       <section>
+        <h2 class="docs-section-title">Mode operational definition — 4 axis で articulate</h2>
+        <p class="docs-page-helper">
+          Mode は <strong>場所 (Context)</strong> × <strong>内容 (Content)</strong> ×{' '}
+          <strong>活動 (Activity)</strong> × <strong>期間 (Duration)</strong> の 4 axis で
+          operational に articulate。 motivation 1 行 (「dev tool 感」 「writer 思想」) ではなく
+          <strong>観察可能 / 計測可能</strong> な特性で mode を定義することで、 font 選定が{' '}
+          <strong>objective rubric</strong> に基づく path に shift する。 mode 境界は 動詞 + 目的
+          (Scan & navigate / Read & retrieve / Write & think / Monitor & execute) で clearly
+          differentiated。
+        </p>
+        <div class="docs-typo-operational">
+          <table>
+            <thead>
+              <tr>
+                <th>Mode</th>
+                <th>場所 (Context)</th>
+                <th>内容 (Content)</th>
+                <th>活動 (Activity)</th>
+                <th>期間 (Duration)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>
+                  <code>app</code>
+                </th>
+                <td>UI chrome (sidebar / header / dialog / button / tab / menu / toast)</td>
+                <td>短い label / nav item / button text / form input / status。 単行〜数行</td>
+                <td>
+                  <strong>Scan &amp; navigate</strong> — UI element を識別して操作 (reading ではなく
+                  識別 + 動作)
+                </td>
+                <td>1 scan 1-5 sec、 repeat 高頻度。 疲労不問、 識別性最優先</td>
+              </tr>
+              <tr>
+                <th>
+                  <code>read</code>
+                </th>
+                <td>memory view / chat history / canvas markdown / log viewer / 文書 page</td>
+                <td>long-form prose、 markdown rendered、 CJK + ASCII 混在、 段落構造あり</td>
+                <td>
+                  <strong>Read &amp; retrieve</strong> — 内容理解 / 過去 memory 取り戻し /
+                  思考しながら読む
+                </td>
+                <td>
+                  連続 5-30 min、 場合により 1 hour+。 <strong>low fatigue tolerance</strong>{' '}
+                  (疲労許容ゼロ)
+                </td>
+              </tr>
+              <tr>
+                <th>
+                  <code>editor</code>
+                </th>
+                <td>textarea / Markdown editor / chat input / multi-line text input</td>
+                <td>書きかけの prose (markdown + code fragments)、 CJK + ASCII</td>
+                <td>
+                  <strong>Write &amp; think</strong> — 文章組み立て / 言葉選び / code を書く / 編集
+                </td>
+                <td>1 sec 〜 1 hour、 burst も continuous も。 思考リズム同期が要</td>
+              </tr>
+              <tr>
+                <th>
+                  <code>terminal</code>
+                </th>
+                <td>xterm.js / dev console / log streaming surface</td>
+                <td>
+                  command output / ANSI escape / fixed-grid table / stack trace / logs (意味的に
+                  <strong>debug payload</strong>)
+                </td>
+                <td>
+                  <strong>Monitor &amp; execute</strong> — output 観察 / command 打つ / debug (誤読
+                  = debug failure、 stake 高)
+                </td>
+                <td>burst (sec) or continuous monitoring (min/hour)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">派生 font 要件 — operational から rubric へ</h2>
+        <p class="docs-page-helper">
+          各 mode の 4 axis から自然に派生する font 要件。 「この font は適切か?」 の判断を rubric
+          ベースで answer 可能にする (主観的 「好み」 から framework decision へ shift)。
+        </p>
+        <dl class="docs-typo-requirements">
+          <dt>
+            <code>app</code>
+          </dt>
+          <dd>
+            等幅 (UI rhythm 確保) + 識別性 (i / l / 1 / 0 区別) + Nerd Font icon co-exist + dev tool
+            aesthetic
+          </dd>
+          <dt>
+            <code>read</code>
+          </dt>
+          <dd>和文 + ASCII 等幅統一 + 30 min readable + 低疲労 + line-height 1.5+ で快適</dd>
+          <dt>
+            <code>editor</code>
+          </dt>
+          <dd>
+            writer 体験 deepening + 思考リズム同期 + char distinction + author preference 切替 (Duo
+            / Mono / Quattro)
+          </dd>
+          <dt>
+            <code>terminal</code>
+          </dt>
+          <dd>
+            完全等幅 (column alignment 必須) + ANSI color reproduction integrity + char distinction
+            debug-critical + grid stable
+          </dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">editor と terminal の overlap について</h2>
+        <p class="docs-page-helper">
+          editor と terminal は{' '}
+          <strong>font stack の構造 (mono + Nerd Font + CJK fallback) が近い</strong> が、{' '}
+          <strong>cognitive activity と stake が完全に異なる</strong> ため独立 mode として保ちます:
+        </p>
+        <ul class="docs-bullet-list">
+          <li>
+            <strong>editor</strong> = write (slow, creative, 思考リズム同期、 author 視点)
+          </li>
+          <li>
+            <strong>terminal</strong> = monitor (fast, reactive, ANSI / fixed-grid integrity 必須、
+            consumer 視点)
+          </li>
+        </ul>
+        <p>
+          Mode が orthogonal に articulate される時は font stack が overlap しても{' '}
+          <strong>mode の identity は保つ</strong> が原則 (「font stack ベース」 ではなく
+          「人の状態ベース」 で mode を分ける)。 console / terminal の特殊性は{' '}
+          <strong>
+            ANSI escape integrity / fixed-grid column alignment / debug-critical char distinction
+          </strong>{' '}
+          という他 mode に存在しない要件群で articulate されます。
+        </p>
+      </section>
+
+      <section>
         <h2 class="docs-section-title">(1) Mode-based family — 場面の identity (3 mode)</h2>
         <p class="docs-page-helper">
           「
@@ -580,37 +723,6 @@ export default function Typography() {
             )}
           </For>
         </div>
-      </section>
-
-      <section>
-        <h2 class="docs-section-title">Why mode-based?</h2>
-        <p>
-          Creo ecosystem は <strong>「書く / 読む / UI / Terminal」 の 4 場面</strong> が混在する
-          environment (Vantage Point dev env / Creo Memories memory page / chat / editor)。
-          場面ごとに「最適な font 体験」 が違う:
-        </p>
-        <ul>
-          <li>
-            <strong>App UI</strong>: dev tool 感 (JetBrainsMono Nerd Font + PlemolJP)、 sidebar /
-            button / dialog で「IDE / terminal で work する場」 のメタファー
-          </li>
-          <li>
-            <strong>Read</strong>: 和文重視 (PlemolJP 主軸)、 memory view / chat history / canvas
-            markdown で長く読む快感
-          </li>
-          <li>
-            <strong>Editor</strong>: writer 思想 (iA Writer Duo)、 textarea / Markdown editor で
-            「書く快感」
-          </li>
-          <li>
-            <strong>Terminal</strong>: app と同 stack だが意味的に分離 (場面の identity を 明示する)
-          </li>
-        </ul>
-        <p>
-          font swap で UX を場面に sync させる、 Apple の Dynamic Type や macOS の font-rendering
-          より深い <strong>場面 = font stack</strong> mapping を articulate。 詳細は
-          memory「Mode-based typography family の motivation」 (creo-memories)。
-        </p>
       </section>
     </>
   )
