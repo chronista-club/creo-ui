@@ -53,13 +53,13 @@ struct HeroView: View {
     var body: some View {
         Text("Creo")
             .foregroundColor(.colorBrandPrimary)      // SwiftUI Color extension
-            .padding(CreoUITokens.spacingMd)          // CGFloat
+            .padding(CreoUITokens.spacingM)          // CGFloat
             .font(.system(
-                size: CreoUITokens.typographySizeLg,  // CGFloat
+                size: CreoUITokens.typographySizeL,  // CGFloat
                 weight: .semibold
             ))
             .background(Color.colorSurfaceSubtle)
-            .cornerRadius(CreoUITokens.radiusMd)
+            .cornerRadius(CreoUITokens.radiusM)
     }
 }
 ```
@@ -72,8 +72,8 @@ struct HeroView: View {
 | `spacing.*` | `CreoUITokens.spacingXs` ... `spacingXl` (5 step) | `CGFloat` |
 | `margin.*` | `CreoUITokens.marginXs` ... `marginXl` (5 step) | `CGFloat` |
 | `radius.*` | `CreoUITokens.radiusNone`, `radiusXs` ... `radiusFull` (5 step + special) | `CGFloat` |
-| `typography.size.*` | `CreoUITokens.typographySizeMd` 等 (body, 5 step) | `CGFloat` |
-| `typography.display.*` | `CreoUITokens.typographyDisplayMd` 等 (heading, 5 step) | `CGFloat` |
+| `typography.size.*` | `CreoUITokens.typographySizeM` 等 (body, 5 step) | `CGFloat` |
+| `typography.display.*` | `CreoUITokens.typographyDisplayM` 等 (heading, 5 step) | `CGFloat` |
 | `layout.gap.*` | `CreoUITokens.layoutGapSibling` 等 (semantic between-ness) | `CGFloat` |
 | `layout.target.*` | `CreoUITokens.layoutTargetTap` (=44) / `Focus` / `Hit` (Apple HIG accessibility) | `CGFloat` |
 | `typography.title.*` | `CreoUITokens.typographyTitlePage` 等 (role-based headings) | `CGFloat` |

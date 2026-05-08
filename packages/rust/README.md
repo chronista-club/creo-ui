@@ -29,7 +29,7 @@ fn main() {
     println!("brand primary = rgb({}, {}, {})", brand.r, brand.g, brand.b);
 
     // Dimension は f32 (px 単位)
-    let md = tokens::SPACING_MD;
+    let md = tokens::SPACING_M;
     assert_eq!(md, 16.0_f32);
 
     // Typography の family 等は &'static str
@@ -102,17 +102,17 @@ let info: egui::Color32 = tokens::COLOR_SEMANTIC_INFO.into();
 | Category | 命名 | 型 |
 |----------|------|----|
 | `color.*` | `COLOR_BRAND_PRIMARY`, `COLOR_SEMANTIC_ERROR` 等 | `Rgb { r, g, b }` (u8) |
-| `spacing.*` | `SPACING_XS`, `SPACING_MD` 等 (5 step) | `f32` (px) |
-| `margin.*` | `MARGIN_XS`, `MARGIN_MD` 等 (5 step) | `f32` (px) |
+| `spacing.*` | `SPACING_XS`, `SPACING_M` 等 (5 step) | `f32` (px) |
+| `margin.*` | `MARGIN_XS`, `MARGIN_M` 等 (5 step) | `f32` (px) |
 | `radius.*` | `RADIUS_NONE`, `RADIUS_XS` ... `RADIUS_FULL` (5 step + special) | `f32` |
-| `typography.size.*` | `TYPOGRAPHY_SIZE_MD` 等 (body text, 5 step) | `f32` (px) |
-| `typography.display.*` | `TYPOGRAPHY_DISPLAY_MD` 等 (heading, 5 step) | `f32` (px) |
+| `typography.size.*` | `TYPOGRAPHY_SIZE_M` 等 (body text, 5 step) | `f32` (px) |
+| `typography.display.*` | `TYPOGRAPHY_DISPLAY_M` 等 (heading, 5 step) | `f32` (px) |
 | `layout.gap.*` | `LAYOUT_GAP_SIBLING` 等 (semantic between-ness) | `f32` (px) |
 | `layout.target.*` | `LAYOUT_TARGET_TAP` (=44) / `FOCUS` / `HIT` (Apple HIG accessibility) | `f32` (px) |
 | `typography.title.*` | `TYPOGRAPHY_TITLE_PAGE` 等 (role-based headings, hero/page/section/subsection/card) | `f32` (px) |
 | `typography.body.*` | `TYPOGRAPHY_BODY_DEFAULT` 等 (role-based body, lead/default/emphasis/helper/caption) | `f32` (px) |
 | `typography.weight.*` | `TYPOGRAPHY_WEIGHT_REGULAR` 等 | `f32` |
-| `typography.family.*` / `shadow.*` | `TYPOGRAPHY_FAMILY_SANS`, `SHADOW_MD` 等 | `&'static str` |
+| `typography.family.*` / `shadow.*` | `TYPOGRAPHY_FAMILY_SANS`, `SHADOW_M` 等 | `&'static str` |
 
 全定数は [packages/rust/src/generated/tokens.rs](./src/generated/tokens.rs) で確認できる (Style Dictionary が `bun run build:rust` で自動生成)。
 
