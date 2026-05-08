@@ -14,7 +14,7 @@ final class CreoUITests: XCTestCase {
 
     func testMarginMdMatchesSpacingMd() {
         // Creo UI 規約: 同じ "medium" は spacing.md と margin.md を揃える
-        XCTAssertEqual(CreoUITokens.marginMd, CreoUITokens.spacingM, accuracy: 0.001)
+        XCTAssertEqual(CreoUITokens.marginM, CreoUITokens.spacingM, accuracy: 0.001)
     }
 
     func testLayoutTargetTapIs44pt() {
