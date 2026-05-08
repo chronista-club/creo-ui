@@ -8,7 +8,16 @@ type ScaleEntry = {
   readonly def?: boolean
 }
 
-const MODE_FAMILIES = [
+// ============================================================
+// Family — 4 group structure (P-3 articulate、 v0.18 cleanup 後)
+// ============================================================
+// (1) MODES        — 場面の identity (3)、 単一 stack mode
+// (2) EDITOR_VARIANTS — editor mode の writer preference 3 派
+// (3) MONO_VARIANTS — mono の visual 派 (4)
+// (4) UTILITY_FAMILIES — 用途固定 stack (4)
+// 合計 14 token、 token 名 / 値は不変。 grouping は articulate のみ。
+
+const MODES = [
   {
     name: 'typography.family.app',
     cssVar: '--typography-family-app',
@@ -26,71 +35,104 @@ const MODE_FAMILIES = [
     sample: '読み物・記事・ドキュメント — Aa Bb 123 漢字仮名',
   },
   {
+    name: 'typography.family.terminal',
+    cssVar: '--typography-family-terminal',
+    label: 'Terminal',
+    motivation:
+      'xterm.js 用 — app と同 stack だが意味的に分離 (terminal context の identity 表現)、 token 分離は intent expression のため',
+    sample: '$ command --flag arg | grep pattern',
+  },
+] as const
+
+const EDITOR_VARIANTS = [
+  {
     name: 'typography.family.editor',
     cssVar: '--typography-family-editor',
-    label: 'Editor (writer)',
-    motivation: 'textarea / Markdown editor / chat input — iA Writer Duo の Duospace、 writer 思想',
-    sample: 'editor input / markdown / chat — 書く時の感覚',
+    label: 'Editor (Duo、 default)',
+    motivation:
+      'iA Writer Duo の Duospace — proportional + monospace のハイブリッド、 writer 思想の主軸',
+    sample: 'editor input / markdown / chat — 書く時の感覚 (Duo)',
   },
   {
     name: 'typography.family.editor-mono',
     cssVar: '--typography-family-editor-mono',
     label: 'Editor (純 mono)',
-    motivation: 'iA Writer Mono — 純粋 mono 派、 等幅厳守の文章',
-    sample: 'monospace strict — Aa Bb 123',
+    motivation: 'iA Writer Mono — 純粋 mono 派、 等幅厳守 (code-aware writing)',
+    sample: 'monospace strict — Aa Bb 123 (Mono)',
   },
   {
     name: 'typography.family.editor-quattro',
     cssVar: '--typography-family-editor-quattro',
     label: 'Editor (semi-prop)',
-    motivation: 'iA Writer Quattro — semi-proportional、 長文散文向け',
-    sample: 'long-form prose — letter spacing balanced',
-  },
-  {
-    name: 'typography.family.terminal',
-    cssVar: '--typography-family-terminal',
-    label: 'Terminal',
-    motivation: 'xterm.js 用 — app と同 stack だが意味的に分離 (場面の identity)',
-    sample: '$ command --flag arg | grep pattern',
+    motivation: 'iA Writer Quattro — semi-proportional、 長文散文 / blog post 向け',
+    sample: 'long-form prose — letter spacing balanced (Quattro)',
   },
 ] as const
 
-const VARIANT_FAMILIES = [
-  { name: 'typography.family.icon', cssVar: '--typography-family-icon', sample: '     ' },
-  {
-    name: 'typography.family.display',
-    cssVar: '--typography-family-display',
-    sample: 'Hero Headline',
-  },
-  {
-    name: 'typography.family.sans',
-    cssVar: '--typography-family-sans',
-    sample: 'Sans default — legacy',
-  },
-  {
-    name: 'typography.family.mono',
-    cssVar: '--typography-family-mono',
-    sample: 'mono = JetBrains',
-  },
+const MONO_VARIANTS = [
   {
     name: 'typography.family.mono-legible',
     cssVar: '--typography-family-mono-legible',
+    label: 'Legible (a11y)',
+    motivation:
+      'high-legibility — Atkinson Hyperlegible Mono (Braille Institute)、 低視力 / 小サイズ / long session 最優先',
     sample: 'a11y mono — Atkinson Hyperlegible',
   },
   {
     name: 'typography.family.mono-retro',
     cssVar: '--typography-family-mono-retro',
-    sample: 'retro mono — Departure / Gohu',
+    label: 'Retro (pixel)',
+    motivation:
+      'bitmap / pixel aesthetic — Departure / GohuFont / 3270 / Terminus、 lo-fi な display',
+    sample: 'retro mono — Departure / Gohu / 3270',
   },
   {
     name: 'typography.family.mono-corporate',
     cssVar: '--typography-family-mono-corporate',
+    label: 'Corporate',
+    motivation:
+      'corporate / professional tone — IBM Plex Mono 主軸 (Plex Sans/Serif と family 統一可)',
     sample: 'corporate mono — IBM Plex',
   },
   {
     name: 'typography.family.mono-display',
     cssVar: '--typography-family-mono-display',
+    label: 'Display (hero)',
+    motivation:
+      'display / heading / cyberpunk — Share Tech Mono / Victor Mono、 banner / hero accent',
     sample: 'display mono — Share Tech / Victor',
+  },
+] as const
+
+const UTILITY_FAMILIES = [
+  {
+    name: 'typography.family.sans',
+    cssVar: '--typography-family-sans',
+    label: 'Sans (legacy default)',
+    motivation: 'back-compat default sans-serif、 multi-language EN/JA/KO + multi-platform',
+    sample: 'Sans default — legacy',
+  },
+  {
+    name: 'typography.family.mono',
+    cssVar: '--typography-family-mono',
+    label: 'Mono (legacy default)',
+    motivation:
+      'back-compat default monospace、 JetBrainsMono Nerd Font 主軸、 mono- variants の base',
+    sample: 'mono default = JetBrainsMono',
+  },
+  {
+    name: 'typography.family.display',
+    cssVar: '--typography-family-display',
+    label: 'Display (hero font)',
+    motivation: 'hero headline 用 — Creo Sans + system display fallback (sans 系の variant)',
+    sample: 'Hero Headline — display',
+  },
+  {
+    name: 'typography.family.icon',
+    cssVar: '--typography-family-icon',
+    label: 'Icon (Nerd Font glyph)',
+    motivation: 'icon glyph — Symbols Nerd Font (~10k icons) + OS native emoji fallback',
+    sample: '     ',
   },
 ] as const
 
@@ -269,26 +311,29 @@ export default function Typography() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Typography</h1>
         <p class="docs-page-lead">
-          <strong>3 軸構造</strong>: <strong>Mode-based family</strong> (場面の identity = app /
-          read / editor / terminal で font stack を切替)、 <strong>5 tier dimension scale</strong>{' '}
-          (size / display / icon を xs / s / m / l / xl)、 <strong>Role-based semantic</strong>{' '}
-          (title / body の意味的 alias)。 Nerd Font 5 種を base stack、 OS が glyph fallback。
+          <strong>3 軸構造</strong>: <strong>Mode-based family</strong> (場面の identity)、{' '}
+          <strong>5 tier dimension scale</strong> (size / display / icon を xs / s / m / l / xl)、{' '}
+          <strong>Role-based semantic</strong> (title / body の意味的 alias)。 Family 軸はさらに{' '}
+          <strong>4 group</strong> に articulate: <em>Mode (3)</em> + <em>Editor variants (3)</em> +{' '}
+          <em>Mono variants (4)</em> + <em>Utility (4)</em> = 14 token。 Nerd Font 5 種を base
+          stack、 OS が glyph fallback。
         </p>
       </header>
 
       <section>
-        <h2 class="docs-section-title">Mode-based family — 場面の identity (v0.14+ 確立)</h2>
+        <h2 class="docs-section-title">(1) Mode-based family — 場面の identity (3 mode)</h2>
         <p class="docs-page-helper">
           「
           <strong>
             書く時は writer 思想 (iA Writer)、 読む時は和文重視 (PlemolJP)、 UI は dev tool 感
             (JetBrainsMono)
           </strong>
-          」 を font swap で UX に乗せる。 6 mode それぞれが 固有の font stack を持ち、
-          場面に応じて切替。
+          」 を font swap で UX に乗せる。 単一 stack の 3 mode (App / Read / Terminal) は固有の
+          font stack を持ち、 場面に応じて切替。 「書く」 場面は editor mode で 3 派 (Duo / Mono /
+          Quattro) を持つため別 group (下記 (2)) で articulate。
         </p>
         <div class="docs-typo-table">
-          <For each={MODE_FAMILIES}>
+          <For each={MODES}>
             {(f) => (
               <article class="docs-typo-row">
                 <div class="docs-typo-meta">
@@ -306,17 +351,71 @@ export default function Typography() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Variant family — 補助 stack</h2>
+        <h2 class="docs-section-title">(2) Editor mode — writer preference 3 派</h2>
         <p class="docs-page-helper">
-          特定用途 (icon glyph / hero display / a11y / retro / corporate / cyberpunk) 向けの
-          variant。 mode-based の 6 mode で表現できないアクセント色として併存。
+          editor mode は「<strong>writer 思想</strong>」 = textarea / Markdown editor / chat input
+          で「書く快感」 を提供。 writer の preference に応じて 3 派から choose:{' '}
+          <strong>Duo</strong> (Duospace、 default) / <strong>Mono</strong> (純等幅) /{' '}
+          <strong>Quattro</strong> (semi-proportional)。 同じ「書く場面」 だが文字感を切替できる。
         </p>
         <div class="docs-typo-table">
-          <For each={VARIANT_FAMILIES}>
+          <For each={EDITOR_VARIANTS}>
             {(f) => (
               <article class="docs-typo-row">
                 <div class="docs-typo-meta">
                   <code>{f.name}</code>
+                  <span>{f.label}</span>
+                  <small>{f.motivation}</small>
+                </div>
+                <div class="docs-typo-sample" style={{ 'font-family': `var(${f.cssVar})` }}>
+                  {f.sample}
+                </div>
+              </article>
+            )}
+          </For>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">(3) Mono variants — 見た目切替の 4 派</h2>
+        <p class="docs-page-helper">
+          mono (= 等幅) の <strong>visual 派</strong>。 用途 / 雰囲気 / a11y 要件に応じて switch。
+          orthogonal axis で、 mode (場面) とは独立に選択する design。 typography token は consumer
+          が <strong>意図 = font stack</strong> mapping を articulate するための語彙。
+        </p>
+        <div class="docs-typo-table">
+          <For each={MONO_VARIANTS}>
+            {(f) => (
+              <article class="docs-typo-row">
+                <div class="docs-typo-meta">
+                  <code>{f.name}</code>
+                  <span>{f.label}</span>
+                  <small>{f.motivation}</small>
+                </div>
+                <div class="docs-typo-sample" style={{ 'font-family': `var(${f.cssVar})` }}>
+                  {f.sample}
+                </div>
+              </article>
+            )}
+          </For>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">(4) Utility families — 用途固定の 4 種</h2>
+        <p class="docs-page-helper">
+          特定用途に縛られた stack。 <code>sans</code> / <code>mono</code> は legacy default
+          (back-compat)、 <code>display</code> は hero / headline、 <code>icon</code> は Nerd Font
+          glyph。 mode 軸 / variant 軸とは別の <strong>用途固定</strong> 専用 token。
+        </p>
+        <div class="docs-typo-table">
+          <For each={UTILITY_FAMILIES}>
+            {(f) => (
+              <article class="docs-typo-row">
+                <div class="docs-typo-meta">
+                  <code>{f.name}</code>
+                  <span>{f.label}</span>
+                  <small>{f.motivation}</small>
                 </div>
                 <div class="docs-typo-sample" style={{ 'font-family': `var(${f.cssVar})` }}>
                   {f.sample}
