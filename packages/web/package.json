@@ -1,8 +1,11 @@
 {
   "name": "creo-ui-web",
-  "version": "0.18.0",
-  "description": "Creo UI — Web package (CSS custom properties + JS tokens)",
+  "version": "0.19.0",
+  "description": "Creo UI — Web package (design tokens + components.css + Solid shell primitives)",
   "type": "module",
+  "main": "./dist/shells/index.js",
+  "module": "./dist/shells/index.js",
+  "types": "./dist/shells/index.d.ts",
   "exports": {
     "./tokens.css": "./dist/tokens.css",
     "./components.css": "./dist/components.css",
@@ -10,7 +13,13 @@
     "./tokens.js": {
       "types": "./dist/tokens.d.ts",
       "import": "./dist/tokens.js"
-    }
+    },
+    "./shells": {
+      "types": "./dist/shells/index.d.ts",
+      "import": "./dist/shells/index.js"
+    },
+    "./shells/index.css": "./dist/shells/index.css",
+    "./package.json": "./package.json"
   },
   "files": ["dist", "README.md"],
   "repository": {
@@ -22,12 +31,31 @@
     "url": "https://github.com/chronista-club/creo-ui/issues"
   },
   "homepage": "https://github.com/chronista-club/creo-ui#readme",
-  "keywords": ["design-system", "css-custom-properties", "design-tokens", "creo-ui"],
+  "keywords": [
+    "design-system",
+    "css-custom-properties",
+    "design-tokens",
+    "solid-js",
+    "layout-primitives",
+    "creo-ui"
+  ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
-    "build": "style-dictionary build --config ../../transforms/config.web.js"
+    "build": "bun run --cwd ../.. build:web",
+    "build:js": "vite build",
+    "typecheck:build": "tsc -p tsconfig.build.json --noEmit"
+  },
+  "peerDependencies": {
+    "solid-js": "^1.9.0"
+  },
+  "devDependencies": {
+    "solid-js": "^1.9.0",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0",
+    "vite-plugin-dts": "^4.2.0",
+    "vite-plugin-solid": "^2.10.0"
   },
   "license": "Apache-2.0"
 }
