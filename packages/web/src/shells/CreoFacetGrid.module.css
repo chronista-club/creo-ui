@@ -1,0 +1,26 @@
+/**
+ * CreoFacetGrid — 2-col page grid (intrinsic main + extrinsic sidebar)
+ *
+ * Layered Surface design v5.1 で確立した primitive。 Phase 1 (CREO-160) の
+ * `.memoryPage` から抽出、 920px breakpoint で 1-col に collapse。
+ *
+ * Vision: mem_1Cak5rxTFWvLNxjSRiQ1Ak
+ */
+
+.creoFacetGrid {
+  max-width: var(--creo-facet-grid-max-width, 1100px);
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-l);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--creo-facet-grid-sidebar-width, 320px);
+  gap: var(--spacing-xl);
+  align-items: start;
+}
+
+@media (max-width: 920px) {
+  .creoFacetGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-l);
+    padding: var(--spacing-m);
+  }
+}
