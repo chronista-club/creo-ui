@@ -1,0 +1,53 @@
+/**
+ * CreoPageShell — full-canvas page wrapper
+ *
+ * Layered Surface design v5.1 で確立した page primitive。 Phase 1 (CREO-160) の
+ * `MemoryPageShell` の layout 部分 (= flex container + max-width inner + entrance
+ * animation) から抽出。
+ *
+ * 責務:
+ *   - `<main>` semantic + flex layout で Rail/Nav 隣接 column と協調
+ *   - inner container で max-width 1100px + horizontal centering + padding
+ *   - entrance animation (opacity + translateY) で route 遷移を視覚化
+ *
+ * 責務外 (consumer 側):
+ *   - auth state / loading state / WebSocket 等 domain logic
+ *   - Rail / Nav 等 sibling components の配置
+ *   - 子要素の internal layout (= <CreoFacetGrid> 等で組み立て)
+ *
+ * Vision: mem_1Cak5rxTFWvLNxjSRiQ1Ak
+ */
+
+.creoPageShell {
+  flex: 1 1 0%;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.creoPageShellInner {
+  max-width: var(--creo-page-shell-max-width, 1100px);
+  margin-left: auto;
+  margin-right: auto;
+  padding: var(--spacing-l);
+}
+
+.creoPageShellEntrance {
+  animation: creoPageShellEnter 0.3s ease-out both;
+}
+
+@keyframes creoPageShellEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .creoPageShellEntrance {
+    animation: none;
+  }
+}

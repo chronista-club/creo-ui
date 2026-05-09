@@ -9,10 +9,10 @@
  * Pivot: mem_1CamfZKHbiSdMrzo4pn32T (architectural pivot 2026-05-07)
  *
  * 後続 PR で追加予定 (CREO-84 Phase B):
- *  - PR-2: <CreoPageShell>   (max-width container + entrance animation)
- *  - PR-3: <CreoFacet>       (intrinsic / extrinsic prop で main/sidebar 子配置)
- *  - PR-4: <CreoOrientation> (Rail+Nav grammar)
- *  - PR-4: <CreoPaneShell>   (list + opt Sub pane)
+ *  - PR-3: creo-web migration (consumer 側で <CreoFacetGrid> + <CreoPageShell> 適用)
+ *  - PR-4: <CreoFacet>       (intrinsic / extrinsic prop で main/sidebar 子配置)
+ *  - PR-5: <CreoOrientation> (Rail+Nav grammar) + <CreoPaneShell> (list + opt Sub pane)
  */
 
 export { CreoFacetGrid } from './CreoFacetGrid'
+export { CreoPageShell } from './CreoPageShell'
