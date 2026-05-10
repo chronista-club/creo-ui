@@ -24,7 +24,7 @@ body {
   background: var(--color-surface-bg-base);
   color: var(--color-text-primary);
   font-family: var(--typography-family-app);
-  font-size: var(--typography-size-base);
+  font-size: var(--typography-body-default);
   line-height: var(--typography-line-height-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -260,7 +260,7 @@ a:hover {
   width: 100%;
   max-width: var(--docs-content-max-width);
   margin: 0 auto;
-  padding: var(--spacing-2xl) var(--docs-content-padding-x);
+  padding: var(--margin-xl) var(--docs-content-padding-x);
 }
 
 .docs-article > * + * {
@@ -269,9 +269,10 @@ a:hover {
 
 .docs-section-title {
   margin: 0 0 var(--spacing-m) 0;
-  font-size: var(--typography-size-2xl);
+  font-size: var(--typography-title-section);
   font-weight: var(--typography-weight-bold);
-  letter-spacing: -0.01em;
+  line-height: var(--typography-line-height-tight);
+  letter-spacing: -0.015em;
 }
 
 .docs-code {
@@ -292,7 +293,7 @@ a:hover {
 
 .docs-hero {
   position: relative;
-  padding: var(--spacing-2xl) 0;
+  padding: var(--margin-xl) 0;
 }
 
 .docs-hero::before {
@@ -369,8 +370,9 @@ a:hover {
 
 .docs-feature-card h3 {
   margin: 0 0 var(--spacing-xs) 0;
-  font-size: var(--typography-size-base);
+  font-size: var(--typography-title-card);
   font-weight: var(--typography-weight-bold);
+  line-height: var(--typography-line-height-tight);
 }
 
 .docs-feature-card p {
@@ -408,8 +410,9 @@ a:hover {
 }
 
 .docs-stub h1 {
-  font-size: var(--typography-size-3xl);
+  font-size: var(--typography-title-page);
   margin: 0 0 var(--spacing-m) 0;
+  line-height: var(--typography-line-height-tight);
   letter-spacing: -0.02em;
 }
 
@@ -477,16 +480,17 @@ a:hover {
 
 .docs-page-header h1 {
   margin: var(--spacing-xs) 0 var(--spacing-s) 0;
-  font-size: var(--typography-size-3xl);
+  font-size: var(--typography-title-page);
   font-weight: var(--typography-weight-bold);
+  line-height: var(--typography-line-height-tight);
   letter-spacing: -0.02em;
 }
 
 .docs-page-lead {
   margin: 0;
-  font-size: var(--typography-size-l);
-  color: var(--color-text-secondary);
-  line-height: 1.55;
+  font-size: var(--typography-body-lead);
+  color: var(--color-text-primary);
+  line-height: var(--typography-line-height-normal);
   max-width: 60ch;
 }
 
@@ -841,31 +845,32 @@ a:hover {
    ============================================================ */
 
 .docs-principle {
-  padding: var(--spacing-l) var(--spacing-m);
+  padding: var(--spacing-xl) var(--spacing-l);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
   background: var(--color-surface-surface);
 }
 
 .docs-principle + .docs-principle {
-  margin-top: var(--spacing-l);
+  margin-top: var(--layout-gap-section);
 }
 
 .docs-principle-head {
   display: flex;
   align-items: baseline;
-  gap: var(--spacing-m);
-  margin-bottom: var(--spacing-s);
+  gap: var(--layout-gap-sibling);
+  margin-bottom: var(--spacing-m);
 }
 
 .docs-principle-number {
   font-family: var(--typography-family-mono);
-  font-size: var(--typography-size-2xl);
+  font-size: var(--typography-display-s);
   font-weight: var(--typography-weight-bold);
   color: var(--color-brand-primary);
   letter-spacing: -0.02em;
   line-height: 1;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .docs-principle-title {
@@ -876,19 +881,19 @@ a:hover {
 }
 
 .docs-principle-rule {
-  margin: 0 0 var(--spacing-m) 0;
-  padding: var(--spacing-s) var(--spacing-m);
+  margin: 0 0 var(--spacing-l) 0;
+  padding: var(--spacing-m) var(--spacing-l);
   border-inline-start: 3px solid var(--color-brand-primary);
   background: color-mix(in oklab, var(--color-brand-primary) 6%, transparent);
   border-radius: 0 var(--radius-s) var(--radius-s) 0;
-  font-size: var(--typography-size-base);
-  line-height: 1.5;
+  font-size: var(--typography-body-emphasis);
+  line-height: var(--typography-line-height-normal);
   color: var(--color-text-primary);
   font-weight: var(--typography-weight-medium);
 }
 
 .docs-principle-body h3 {
-  margin: var(--spacing-m) 0 var(--spacing-xs) 0;
+  margin: var(--spacing-l) 0 var(--spacing-xs) 0;
   font-size: var(--typography-size-xs);
   font-weight: var(--typography-weight-bold);
   letter-spacing: 0.08em;
@@ -897,22 +902,22 @@ a:hover {
 }
 
 .docs-principle-body p {
-  margin: 0 0 var(--spacing-s) 0;
-  font-size: var(--typography-size-s);
-  line-height: 1.6;
-  color: var(--color-text-secondary);
+  margin: 0 0 var(--layout-gap-sibling) 0;
+  font-size: var(--typography-body-default);
+  line-height: var(--typography-line-height-relaxed);
+  color: var(--color-text-primary);
 }
 
 .docs-principle-body ul {
-  margin: var(--spacing-xs) 0 var(--spacing-s) 0;
+  margin: var(--layout-gap-tight) 0 var(--layout-gap-sibling) 0;
   padding-inline-start: var(--spacing-l);
-  font-size: var(--typography-size-s);
-  line-height: 1.6;
-  color: var(--color-text-secondary);
+  font-size: var(--typography-body-default);
+  line-height: var(--typography-line-height-relaxed);
+  color: var(--color-text-primary);
 }
 
 .docs-principle-body ul li + li {
-  margin-top: var(--spacing-xs);
+  margin-top: var(--layout-gap-tight);
 }
 
 .docs-principle-body code {
@@ -925,15 +930,15 @@ a:hover {
 }
 
 .docs-principles-footnote {
-  padding: var(--spacing-m);
+  padding: var(--spacing-l) 0 0 0;
   border-top: 1px solid var(--color-surface-border);
-  margin-top: var(--spacing-xl);
+  margin-top: var(--layout-gap-section);
 }
 
 .docs-principles-footnote p {
-  font-size: var(--typography-size-s);
-  line-height: 1.6;
-  color: var(--color-text-secondary);
+  font-size: var(--typography-body-default);
+  line-height: var(--typography-line-height-relaxed);
+  color: var(--color-text-primary);
   margin: 0 0 var(--spacing-s) 0;
 }
 
@@ -1154,8 +1159,9 @@ a:hover {
 
 .docs-axis-card h3 {
   margin: 0 0 var(--spacing-xs) 0;
-  font-size: var(--typography-size-base);
+  font-size: var(--typography-title-card);
   font-weight: var(--typography-weight-bold);
+  line-height: var(--typography-line-height-tight);
 }
 
 .docs-axis-card p {
@@ -1235,7 +1241,7 @@ a:hover {
 }
 
 .docs-pipeline-step-name {
-  font-size: var(--typography-size-base);
+  font-size: var(--typography-body-default);
   font-weight: var(--typography-weight-bold);
   margin: 2px 0;
   font-family: var(--typography-family-mono);
@@ -1317,8 +1323,9 @@ a:hover {
 }
 
 .docs-platform-title {
-  font-size: var(--typography-size-base);
+  font-size: var(--typography-title-card);
   font-weight: var(--typography-weight-bold);
+  line-height: var(--typography-line-height-tight);
   margin: var(--spacing-m) 0 var(--spacing-xs) 0;
 }
 
@@ -1357,8 +1364,9 @@ a:hover {
 }
 
 .docs-component-card-name {
-  font-size: var(--typography-size-base);
+  font-size: var(--typography-title-card);
   font-weight: var(--typography-weight-bold);
+  line-height: var(--typography-line-height-tight);
 }
 
 .docs-component-card-desc {
@@ -1541,8 +1549,9 @@ a:hover {
 .docs-do h3,
 .docs-dont h3 {
   margin: 0 0 var(--spacing-xs) 0;
-  font-size: var(--typography-size-base);
+  font-size: var(--typography-title-card);
   font-weight: var(--typography-weight-bold);
+  line-height: var(--typography-line-height-tight);
 }
 
 .docs-do h3 {

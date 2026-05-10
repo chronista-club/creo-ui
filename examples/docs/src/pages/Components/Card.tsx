@@ -54,7 +54,7 @@ export default function Card() {
           <div class="docs-preview-row-label">Variants</div>
           <div class="docs-preview-grid docs-preview-grid--cards">
             <article class="creo-card" data-variant="default">
-              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">
+              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-title-card); font-weight: var(--typography-weight-bold); line-height: var(--typography-line-height-tight);">
                 Default
               </h4>
               <p style="margin: 0; font-size: var(--typography-size-s); color: var(--color-text-secondary);">
@@ -62,7 +62,7 @@ export default function Card() {
               </p>
             </article>
             <article class="creo-card" data-variant="elevated">
-              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">
+              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-title-card); font-weight: var(--typography-weight-bold); line-height: var(--typography-line-height-tight);">
                 Elevated
               </h4>
               <p style="margin: 0; font-size: var(--typography-size-s); color: var(--color-text-secondary);">
@@ -70,7 +70,7 @@ export default function Card() {
               </p>
             </article>
             <article class="creo-card" data-variant="outlined">
-              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-size-base); font-weight: var(--typography-weight-bold);">
+              <h4 style="margin: 0 0 8px 0; font-size: var(--typography-title-card); font-weight: var(--typography-weight-bold); line-height: var(--typography-line-height-tight);">
                 Outlined
               </h4>
               <p style="margin: 0; font-size: var(--typography-size-s); color: var(--color-text-secondary);">
@@ -259,8 +259,9 @@ function CardEditorDemo() {
         <h3
           style={{
             margin: '0 0 8px 0',
-            'font-size': 'var(--typography-size-base)',
+            'font-size': 'var(--typography-title-card)',
             'font-weight': 'var(--typography-weight-bold)',
+            'line-height': 'var(--typography-line-height-tight)',
           }}
         >
           {title()}

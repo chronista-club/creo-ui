@@ -95,7 +95,13 @@ export default {
   hooks: {
     formats: {
       'css/creo-ui-themed': ({ dictionary }) => {
-        const commonLines = []
+        // Common (theme-非依存) tokens は category (path[0]) ごとに group して、
+        // :root を category 別に複数 block で emit する。
+        // Why: 単一 :root block に 150+ props 入れると Chrome の CSS parser が
+        //   block 全体を drop する閾値に当たり、 token が解決されない事故が出る
+        //   (v0.18 で 169 props に到達して visible regression 発生)。
+        //   category 別に分けると 各 block 50 props 以下に収まり parser が安定。
+        const commonByCategory = {}
         const themes = {}
 
         for (const token of dictionary.allTokens) {
@@ -106,7 +112,9 @@ export default {
             themes[tid].push(line)
           } else {
             const line = `  ${nonThemedVarName(token.path)}: ${renderValue(token)};${renderDescription(token)}`
-            commonLines.push(line)
+            const cat = token.path[0]
+            if (!commonByCategory[cat]) commonByCategory[cat] = []
+            commonByCategory[cat].push(line)
           }
         }
 
@@ -127,11 +135,28 @@ export default {
           ' * Switch theme via `[data-theme="{id}"]` attribute on any ancestor.',
           ' * fleetstage 後方互換: `.dark` / `[data-theme="dark"]` = mint-dark、',
           ' * `[data-theme="light"]` = mint-light。',
+          ' *',
+          ' * NOTE: :root block は category (depth / editor-mode / frame / layout 等)',
+          ' * 別に分割して emit する (Chrome CSS parser の prop-count 閾値回避)。',
           ' */',
           '',
         ].join('\n')
 
-        const rootBlock = [':root {', ...commonLines, ...defaultLines, '}'].join('\n')
+        const commonBlocks = Object.keys(commonByCategory)
+          .sort()
+          .map((cat) =>
+            [`/* === ${cat} === */`, ':root {', ...commonByCategory[cat], '}'].join('\n'),
+          )
+          .join('\n\n')
+
+        const defaultThemeBlock = [
+          `/* === default theme color (${DEFAULT_THEME_ID}) === */`,
+          ':root {',
+          ...defaultLines,
+          '}',
+        ].join('\n')
+
+        const rootBlock = `${commonBlocks}\n\n${defaultThemeBlock}`
 
         const fleetstageAlias = [
           '/* fleetstage / legacy 後方互換 */',
