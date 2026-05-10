@@ -95,7 +95,8 @@
 /* ---------- Entrance animation (gentle) ---------- */
 
 .creo-popover:popover-open {
-  animation: creoPopoverIn 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: creoPopoverIn var(--motion-mapping-dropdown-duration)
+    var(--motion-mapping-dropdown-easing);
 }
 
 @keyframes creoPopoverIn {

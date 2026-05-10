@@ -56,7 +56,7 @@
   text-decoration: none;
   padding: var(--spacing-xs) 0;
   border-radius: var(--radius-xs);
-  transition: color 120ms ease;
+  transition: color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing);
 
   /* truncate support */
   max-width: 240px;

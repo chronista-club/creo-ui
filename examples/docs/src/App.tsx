@@ -14,6 +14,7 @@ const Radius = lazy(() => import('./pages/Foundations/Radius'))
 const Shadow = lazy(() => import('./pages/Foundations/Shadow'))
 const Theming = lazy(() => import('./pages/Foundations/Theming'))
 const FocusRing = lazy(() => import('./pages/Foundations/FocusRing'))
+const Motion = lazy(() => import('./pages/Foundations/Motion'))
 
 // Concepts
 const FrameSystem = lazy(() => import('./pages/Concepts/FrameSystem'))
@@ -79,6 +80,7 @@ export default function App() {
       <Route path="/foundations/shadow" component={Shadow} />
       <Route path="/foundations/theming" component={Theming} />
       <Route path="/foundations/focus-ring" component={FocusRing} />
+      <Route path="/foundations/motion" component={Motion} />
       <Route path="/concepts" component={FrameSystem} />
       <Route path="/concepts/frame-system" component={FrameSystem} />
       <Route path="/concepts/editor-mode" component={EditorMode} />

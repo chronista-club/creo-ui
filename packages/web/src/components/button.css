@@ -37,8 +37,11 @@
   /* Default interaction */
   cursor: pointer;
   user-select: none;
-  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, transform
-    120ms ease;
+  transition: background-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing), border-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing), color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing), transform var(--motion-mapping-press-duration)
+    var(--motion-mapping-press-easing);
 
   /* Default (primary) — variant で override される */
   background-color: var(--color-brand-primary);

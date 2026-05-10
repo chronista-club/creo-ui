@@ -58,7 +58,8 @@
   border-radius: var(--radius-m);
   box-shadow: var(--shadow-m);
   color: var(--color-text-primary);
-  animation: creoToastIn 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: creoToastIn var(--motion-mapping-modal-enter-duration)
+    var(--motion-mapping-modal-enter-easing);
 }
 
 @keyframes creoToastIn {

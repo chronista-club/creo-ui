@@ -1,0 +1,138 @@
+{
+  "motion": {
+    "mapping": {
+      "hover": {
+        "duration": {
+          "$value": "{motion.duration.fast}",
+          "$type": "duration",
+          "$description": "Hover transition duration — fast (160ms)、 small surface motion で 「変化が現れる」 感"
+        },
+        "easing": {
+          "$value": "{motion.easing.out}",
+          "$type": "string",
+          "$description": "Hover transition easing — ease-out で 「登場 → 落ち着く」 (Material 3 default)"
+        }
+      },
+      "press": {
+        "duration": {
+          "$value": "{motion.duration.instant}",
+          "$type": "duration",
+          "$description": "Press transition duration — instant (80ms) で micro feedback、 押下の即時感"
+        },
+        "easing": {
+          "$value": "{motion.easing.in}",
+          "$type": "string",
+          "$description": "Press transition easing — ease-in で 「押し込み」 (急停止)"
+        }
+      },
+      "toggle": {
+        "duration": {
+          "$value": "{motion.duration.normal}",
+          "$type": "duration",
+          "$description": "Toggle transition duration — normal (220ms) で滑らかな state change"
+        },
+        "easing": {
+          "$value": "{motion.easing.in-out}",
+          "$type": "string",
+          "$description": "Toggle transition easing — in-out で両端滑らか (radio / checkbox / switch / segmented)"
+        }
+      },
+      "focus-ring": {
+        "duration": {
+          "$value": "{motion.duration.instant}",
+          "$type": "duration",
+          "$description": "Focus ring transition duration — instant (80ms) で keyboard tab に即応"
+        },
+        "easing": {
+          "$value": "{motion.easing.out}",
+          "$type": "string",
+          "$description": "Focus ring transition easing — ease-out で「ring が現れる」"
+        }
+      },
+      "dropdown": {
+        "duration": {
+          "$value": "{motion.duration.fast}",
+          "$type": "duration",
+          "$description": "Dropdown / popover / tooltip duration — fast (160ms) で軽快な登場"
+        },
+        "easing": {
+          "$value": "{motion.easing.out}",
+          "$type": "string",
+          "$description": "Dropdown easing — ease-out で 「ふわっと出る」"
+        }
+      },
+      "modal-enter": {
+        "duration": {
+          "$value": "{motion.duration.slow}",
+          "$type": "duration",
+          "$description": "Modal entry duration — slow (320ms) で「落ち着いた登場」 (modal / drawer / dialog)"
+        },
+        "easing": {
+          "$value": "{motion.easing.out}",
+          "$type": "string",
+          "$description": "Modal entry easing — ease-out で fast → slow (前面に現れて止まる)"
+        }
+      },
+      "modal-exit": {
+        "duration": {
+          "$value": "{motion.duration.normal}",
+          "$type": "duration",
+          "$description": "Modal exit duration — normal (220ms) で「素早く消える」"
+        },
+        "easing": {
+          "$value": "{motion.easing.in}",
+          "$type": "string",
+          "$description": "Modal exit easing — ease-in で slow → fast (退場、 引っ込む)"
+        }
+      },
+      "page-transition": {
+        "duration": {
+          "$value": "{motion.duration.normal}",
+          "$type": "duration",
+          "$description": "Page route transition duration — normal (220ms) で滑らかな移動"
+        },
+        "easing": {
+          "$value": "{motion.easing.in-out}",
+          "$type": "string",
+          "$description": "Page transition easing — in-out で両端滑らか (route 変化)"
+        }
+      },
+      "frame-morph": {
+        "duration": {
+          "$value": "{motion.duration.slow}",
+          "$type": "duration",
+          "$description": "Frame system morph duration — slow (320ms)、 Creo brand identity の「呼吸」"
+        },
+        "easing": {
+          "$value": "{motion.easing.spring}",
+          "$type": "string",
+          "$description": "Frame morph easing — spring で Creo brand bouncy (3D depth metaphor articulate)"
+        }
+      },
+      "skeleton-shimmer": {
+        "duration": {
+          "$value": "{motion.duration.lazy}",
+          "$type": "duration",
+          "$description": "Skeleton shimmer duration — lazy (480ms) で loading の cumulative motion"
+        },
+        "easing": {
+          "$value": "{motion.easing.linear}",
+          "$type": "string",
+          "$description": "Skeleton shimmer easing — linear で「途切れない流れ」 (loading は時間流動)"
+        }
+      },
+      "progress-indeterminate": {
+        "duration": {
+          "$value": "{motion.duration.lazy}",
+          "$type": "duration",
+          "$description": "Progress indeterminate bar duration — lazy (480ms) で end-less cumulative motion"
+        },
+        "easing": {
+          "$value": "{motion.easing.linear}",
+          "$type": "string",
+          "$description": "Progress indeterminate easing — linear で constant velocity (途中 progress 表現)"
+        }
+      }
+    }
+  }
+}
