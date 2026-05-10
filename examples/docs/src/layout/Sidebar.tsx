@@ -29,6 +29,7 @@ const NAV: readonly NavGroup[] = [
       { href: '/foundations/concentric-corner', label: 'Concentric corner', tag: 'HIG' },
       { href: '/foundations/density', label: 'Density mode', tag: 'NEW' },
       { href: '/foundations/iconography', label: 'Iconography' },
+      { href: '/foundations/kinetic-typography', label: 'Kinetic typography', tag: 'opt-in' },
     ],
   },
   {

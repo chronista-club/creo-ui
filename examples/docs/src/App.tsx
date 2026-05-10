@@ -18,6 +18,7 @@ const Motion = lazy(() => import('./pages/Foundations/Motion'))
 const ConcentricCorner = lazy(() => import('./pages/Foundations/ConcentricCorner'))
 const Density = lazy(() => import('./pages/Foundations/Density'))
 const Iconography = lazy(() => import('./pages/Foundations/Iconography'))
+const KineticTypography = lazy(() => import('./pages/Foundations/KineticTypography'))
 
 // Concepts
 const FrameSystem = lazy(() => import('./pages/Concepts/FrameSystem'))
@@ -88,6 +89,7 @@ export default function App() {
       <Route path="/foundations/concentric-corner" component={ConcentricCorner} />
       <Route path="/foundations/density" component={Density} />
       <Route path="/foundations/iconography" component={Iconography} />
+      <Route path="/foundations/kinetic-typography" component={KineticTypography} />
       <Route path="/concepts" component={FrameSystem} />
       <Route path="/concepts/frame-system" component={FrameSystem} />
       <Route path="/concepts/editor-mode" component={EditorMode} />
