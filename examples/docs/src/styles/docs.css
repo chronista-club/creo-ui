@@ -943,6 +943,117 @@ a:hover {
 }
 
 /* ============================================================
+   Operational table — generic axis articulate primitive
+   (Color / Theming / Typography 系で共通利用)
+   ============================================================ */
+
+.docs-operational-table {
+  margin: var(--spacing-m) 0 var(--spacing-l) 0;
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  overflow-x: auto;
+  background: var(--color-surface-surface);
+}
+
+.docs-operational-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--typography-body-helper);
+  line-height: var(--typography-line-height-normal);
+}
+
+.docs-operational-table thead {
+  background: var(--color-surface-bg-subtle);
+}
+
+.docs-operational-table th,
+.docs-operational-table td {
+  padding: var(--spacing-s) var(--spacing-m);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-surface-border-subtle);
+}
+
+.docs-operational-table thead th {
+  font-size: var(--typography-size-xs);
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}
+
+.docs-operational-table tbody th {
+  font-weight: var(--typography-weight-medium);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  background: color-mix(in oklab, var(--color-surface-bg-subtle) 50%, transparent);
+}
+
+.docs-operational-table tbody th code {
+  font-family: var(--typography-family-mono);
+  font-size: 0.95em;
+  background: transparent;
+  padding: 0;
+  color: var(--color-brand-primary);
+}
+
+.docs-operational-table tbody tr:last-child th,
+.docs-operational-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.docs-operational-table tbody td {
+  color: var(--color-text-secondary);
+}
+
+/* ============================================================
+   Rubric — definition list with bulleted criteria
+   (派生要件 / 選定 rubric を articulate する primitive)
+   ============================================================ */
+
+.docs-rubric {
+  margin: var(--spacing-m) 0 var(--spacing-l) 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--spacing-s) var(--spacing-l);
+  align-items: start;
+}
+
+.docs-rubric dt {
+  margin: 0;
+  padding: var(--spacing-xs) 0;
+  font-weight: var(--typography-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.docs-rubric dt code {
+  font-family: var(--typography-family-mono);
+  background: transparent;
+  padding: 0;
+  color: var(--color-brand-primary);
+  font-size: var(--typography-body-default);
+}
+
+.docs-rubric dd {
+  margin: 0;
+  padding: 0;
+}
+
+.docs-rubric dd ul {
+  margin: 0;
+  padding-inline-start: var(--spacing-l);
+  font-size: var(--typography-body-helper);
+  line-height: var(--typography-line-height-relaxed);
+  color: var(--color-text-secondary);
+}
+
+.docs-rubric dd ul li + li {
+  margin-top: var(--layout-gap-tight);
+}
+
+/* ============================================================
    Concepts — shared bullet list
    ============================================================ */
 
