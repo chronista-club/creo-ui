@@ -28,6 +28,7 @@ const NAV: readonly NavGroup[] = [
       { href: '/foundations/motion', label: 'Motion', tag: 'rubric' },
       { href: '/foundations/concentric-corner', label: 'Concentric corner', tag: 'HIG' },
       { href: '/foundations/density', label: 'Density mode', tag: 'NEW' },
+      { href: '/foundations/iconography', label: 'Iconography' },
     ],
   },
   {
