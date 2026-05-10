@@ -109,6 +109,10 @@ pub const COLOR_SHADOW_BASE: Rgb = Rgb::new(0, 0, 0);
 pub const COLOR_SHADOW_STRONG: Rgb = Rgb::new(0, 0, 0);
 /// Hero gradient — marketing / splash surfaces
 pub const COLOR_GRADIENT_HERO: &str = "linear-gradient(135deg, oklch(0.2 0.04 160) 0%, oklch(0.18 0.03 175) 50%, oklch(0.22 0.05 165) 100%)";
+/// Focus ring color — outer 2px solid ring (mint-dark、 brand 同 hue + luminance UP で AAA contrast 確保)
+pub const COLOR_FOCUS_RING_COLOR: Rgb = Rgb::new(111, 234, 174);
+/// Focus halo — inner 4px subtle bg tint、 ring を 「包む glow」 として演出
+pub const COLOR_FOCUS_RING_HALO: Rgb = Rgb::new(111, 234, 174);
 /// Flat — z=0、 base plane (no elevation)
 pub const DEPTH_FLAT: f32 = 0_f32;
 /// Raised — subtle hover lift / sidebar active item
@@ -163,6 +167,14 @@ pub const EDITOR_MODE_SELECTION_OUTLINE_ACTIVE: &str = "var(--color-brand-primar
 pub const EDITOR_MODE_SELECTION_OUTLINE_WIDTH: f32 = 2_f32;
 /// 要素から outline までの offset (要素本体を遮らない)
 pub const EDITOR_MODE_SELECTION_OUTLINE_OFFSET: f32 = 2_f32;
+/// Outer ring width — WCAG 2.4.11 minimum 2px contrast border、 thinner だと visible 不足
+pub const FOCUS_RING_WIDTH: f32 = 2_f32;
+/// Outline offset — 要素境界から 2px 離す (要素を遮らず ring が呼吸)
+pub const FOCUS_RING_OFFSET: f32 = 2_f32;
+/// Inner halo width — outer ring の補完 subtle bg tint、 ring を 「包む glow」 として演出
+pub const FOCUS_RING_HALO_WIDTH: f32 = 4_f32;
+/// Outline style — solid のみ採用 (dashed は精度に欠ける、 double は thicker 設計)
+pub const FOCUS_RING_STYLE: &str = "solid";
 /// Default perspective — page-level spatial frame (subtle 3D)
 pub const FRAME_PERSPECTIVE_DEFAULT: f32 = 1400_f32;
 /// Shallow — closer camera、 dramatic 3D (hero / playground)

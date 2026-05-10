@@ -53,6 +53,8 @@ public extension Color {
     static let colorTextInverse = Color(red: 0.0275, green: 0.0431, blue: 0.0784) // Inverse text — on dark surfaces
     static let colorShadowBase = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Shadow tint — default
     static let colorShadowStrong = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Shadow tint — strong
+    static let colorFocusRingColor = Color(red: 0.4353, green: 0.9176, blue: 0.6824) // Focus ring color — outer 2px solid ring (mint-dark、 brand 同 hue + luminance UP で AAA contrast 確保)
+    static let colorFocusRingHalo = Color(red: 0.4353, green: 0.9176, blue: 0.6824) // Focus halo — inner 4px subtle bg tint、 ring を 「包む glow」 として演出
 }
 
 public enum CreoUITokens {
@@ -70,6 +72,9 @@ public enum CreoUITokens {
     public static let editorModeRegionRightWidth: CGFloat = 280 // RIGHT region の default 幅 (tool panel、左より広め)
     public static let editorModeSelectionOutlineWidth: CGFloat = 2 // Selection outline の太さ
     public static let editorModeSelectionOutlineOffset: CGFloat = 2 // 要素から outline までの offset (要素本体を遮らない)
+    public static let focusRingWidth: CGFloat = 2 // Outer ring width — WCAG 2.4.11 minimum 2px contrast border、 thinner だと visible 不足
+    public static let focusRingOffset: CGFloat = 2 // Outline offset — 要素境界から 2px 離す (要素を遮らず ring が呼吸)
+    public static let focusRingHaloWidth: CGFloat = 4 // Inner halo width — outer ring の補完 subtle bg tint、 ring を 「包む glow」 として演出
     public static let framePerspectiveDefault: CGFloat = 1400 // Default perspective — page-level spatial frame (subtle 3D)
     public static let framePerspectiveShallow: CGFloat = 800 // Shallow — closer camera、 dramatic 3D (hero / playground)
     public static let framePerspectiveDeep: CGFloat = 2400 // Deep — farther camera、 subtle 3D (long-form content / reading)
@@ -155,6 +160,7 @@ public enum CreoUITokens {
     public static let editorModeRegionBorder: String = "var(--color-surface-border)" // Region の輪郭色 (active theme に追従)
     public static let editorModeSelectionOutlineHover: String = "var(--color-brand-primary-subtle)" // Editor mode 中の hover outline (ghost highlight、Content を触らず上に描画)
     public static let editorModeSelectionOutlineActive: String = "var(--color-brand-primary)" // 選択中の要素 outline (active theme の brand primary)
+    public static let focusRingStyle: String = "solid" // Outline style — solid のみ採用 (dashed は精度に欠ける、 double は thicker 設計)
     public static let motionDurationInstant: String = "80ms" // Instant — micro feedback (button click flash 等)
     public static let motionDurationFast: String = "160ms" // Fast — small UI transitions (tooltip / hover)
     public static let motionDurationNormal: String = "220ms" // Normal — default transition (card lift / nav switch、 5-step 中央)
