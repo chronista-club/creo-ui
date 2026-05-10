@@ -115,7 +115,8 @@
   color: var(--color-text-tertiary);
   font-size: 0.85em;
   vertical-align: baseline;
-  transition: color 120ms ease, transform 120ms ease;
+  transition: color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing),
+    transform var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing);
 }
 
 .creo-table-sortable[aria-sort="ascending"]::after {

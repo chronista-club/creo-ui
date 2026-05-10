@@ -19,8 +19,11 @@
   border-radius: var(--radius-m);
   padding: var(--spacing-m);
   color: var(--color-text-primary);
-  transition: background-color 150ms ease, box-shadow 150ms ease, border-color 150ms ease, transform
-    150ms ease;
+  transition: background-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing), box-shadow var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing), border-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing), transform var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing);
 }
 
 /* ---------- Variants ---------- */

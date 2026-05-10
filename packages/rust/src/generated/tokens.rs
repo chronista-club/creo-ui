@@ -245,6 +245,50 @@ pub const MOTION_EASING_OUT: &str = "cubic-bezier(0, 0, 0.2, 1)";
 pub const MOTION_EASING_IN_OUT: &str = "cubic-bezier(0.4, 0, 0.2, 1)";
 /// Spring — Creo brand bouncy curve (3D Frame morph / lively interactions)
 pub const MOTION_EASING_SPRING: &str = "cubic-bezier(0.2, 0.8, 0.2, 1)";
+/// Hover transition duration — fast (160ms)、 small surface motion で 「変化が現れる」 感
+pub const MOTION_MAPPING_HOVER_DURATION: &str = "160ms";
+/// Hover transition easing — ease-out で 「登場 → 落ち着く」 (Material 3 default)
+pub const MOTION_MAPPING_HOVER_EASING: &str = "cubic-bezier(0, 0, 0.2, 1)";
+/// Press transition duration — instant (80ms) で micro feedback、 押下の即時感
+pub const MOTION_MAPPING_PRESS_DURATION: &str = "80ms";
+/// Press transition easing — ease-in で 「押し込み」 (急停止)
+pub const MOTION_MAPPING_PRESS_EASING: &str = "cubic-bezier(0.4, 0, 1, 1)";
+/// Toggle transition duration — normal (220ms) で滑らかな state change
+pub const MOTION_MAPPING_TOGGLE_DURATION: &str = "220ms";
+/// Toggle transition easing — in-out で両端滑らか (radio / checkbox / switch / segmented)
+pub const MOTION_MAPPING_TOGGLE_EASING: &str = "cubic-bezier(0.4, 0, 0.2, 1)";
+/// Focus ring transition duration — instant (80ms) で keyboard tab に即応
+pub const MOTION_MAPPING_FOCUS_RING_DURATION: &str = "80ms";
+/// Focus ring transition easing — ease-out で「ring が現れる」
+pub const MOTION_MAPPING_FOCUS_RING_EASING: &str = "cubic-bezier(0, 0, 0.2, 1)";
+/// Dropdown / popover / tooltip duration — fast (160ms) で軽快な登場
+pub const MOTION_MAPPING_DROPDOWN_DURATION: &str = "160ms";
+/// Dropdown easing — ease-out で 「ふわっと出る」
+pub const MOTION_MAPPING_DROPDOWN_EASING: &str = "cubic-bezier(0, 0, 0.2, 1)";
+/// Modal entry duration — slow (320ms) で「落ち着いた登場」 (modal / drawer / dialog)
+pub const MOTION_MAPPING_MODAL_ENTER_DURATION: &str = "320ms";
+/// Modal entry easing — ease-out で fast → slow (前面に現れて止まる)
+pub const MOTION_MAPPING_MODAL_ENTER_EASING: &str = "cubic-bezier(0, 0, 0.2, 1)";
+/// Modal exit duration — normal (220ms) で「素早く消える」
+pub const MOTION_MAPPING_MODAL_EXIT_DURATION: &str = "220ms";
+/// Modal exit easing — ease-in で slow → fast (退場、 引っ込む)
+pub const MOTION_MAPPING_MODAL_EXIT_EASING: &str = "cubic-bezier(0.4, 0, 1, 1)";
+/// Page route transition duration — normal (220ms) で滑らかな移動
+pub const MOTION_MAPPING_PAGE_TRANSITION_DURATION: &str = "220ms";
+/// Page transition easing — in-out で両端滑らか (route 変化)
+pub const MOTION_MAPPING_PAGE_TRANSITION_EASING: &str = "cubic-bezier(0.4, 0, 0.2, 1)";
+/// Frame system morph duration — slow (320ms)、 Creo brand identity の「呼吸」
+pub const MOTION_MAPPING_FRAME_MORPH_DURATION: &str = "320ms";
+/// Frame morph easing — spring で Creo brand bouncy (3D depth metaphor articulate)
+pub const MOTION_MAPPING_FRAME_MORPH_EASING: &str = "cubic-bezier(0.2, 0.8, 0.2, 1)";
+/// Skeleton shimmer duration — lazy (480ms) で loading の cumulative motion
+pub const MOTION_MAPPING_SKELETON_SHIMMER_DURATION: &str = "480ms";
+/// Skeleton shimmer easing — linear で「途切れない流れ」 (loading は時間流動)
+pub const MOTION_MAPPING_SKELETON_SHIMMER_EASING: &str = "linear";
+/// Progress indeterminate bar duration — lazy (480ms) で end-less cumulative motion
+pub const MOTION_MAPPING_PROGRESS_INDETERMINATE_DURATION: &str = "480ms";
+/// Progress indeterminate easing — linear で constant velocity (途中 progress 表現)
+pub const MOTION_MAPPING_PROGRESS_INDETERMINATE_EASING: &str = "linear";
 /// No rounding — explicit reset (special, outside 5 tier rule)
 pub const RADIUS_NONE: f32 = 0_f32;
 /// Extra-small radius — minimal rounding (chips, tags)

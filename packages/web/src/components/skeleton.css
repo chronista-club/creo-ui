@@ -14,7 +14,9 @@
     var(--color-surface-bg-subtle) 100%
   );
   background-size: 200% 100%;
-  animation: creoSkeletonShimmer 1.4s linear infinite;
+  /* Note: shimmer cycle 1.4s は keyframes 専用 (mapping lazy 480ms より長い、
+     end-less perception)、 easing は mapping articulate 使用 */
+  animation: creoSkeletonShimmer 1.4s var(--motion-mapping-skeleton-shimmer-easing) infinite;
   border-radius: var(--radius-s);
   width: 100%;
   height: 16px;

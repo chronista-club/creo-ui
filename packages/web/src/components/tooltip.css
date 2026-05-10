@@ -34,7 +34,8 @@
   opacity: 0;
   pointer-events: none;
   z-index: 100;
-  transition: opacity 120ms ease, transform 120ms ease;
+  transition: opacity var(--motion-mapping-dropdown-duration) var(--motion-mapping-dropdown-easing),
+    transform var(--motion-mapping-dropdown-duration) var(--motion-mapping-dropdown-easing);
 }
 
 /* ---------- Hover / focus-within で可視化 ---------- */

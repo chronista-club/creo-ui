@@ -46,7 +46,10 @@
 
   cursor: pointer;
   border-radius: var(--radius-s);
-  transition: background-color 150ms ease, color 150ms ease, box-shadow 150ms ease;
+  transition: background-color var(--motion-mapping-toggle-duration)
+    var(--motion-mapping-toggle-easing), color var(--motion-mapping-toggle-duration)
+    var(--motion-mapping-toggle-easing), box-shadow var(--motion-mapping-toggle-duration)
+    var(--motion-mapping-toggle-easing);
   user-select: none;
 }
 

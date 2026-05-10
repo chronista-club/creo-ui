@@ -40,7 +40,8 @@
   cursor: pointer;
   user-select: none;
   list-style: none; /* default chevron を消す */
-  transition: background-color 120ms ease;
+  transition: background-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing);
 }
 
 /* Safari / Firefox の default marker を完全に消す */
@@ -70,7 +71,7 @@
   margin-left: auto;
   color: var(--color-text-tertiary);
   transform: rotate(0deg);
-  transition: transform 180ms ease;
+  transition: transform var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing);
   font-size: var(--typography-size-m);
   line-height: 1;
 }

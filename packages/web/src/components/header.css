@@ -27,7 +27,9 @@
   background-color: var(--color-surface-surface);
   color: var(--color-text-primary);
   border-bottom: 1px solid var(--color-surface-border);
-  transition: background-color 120ms ease, box-shadow 120ms ease;
+  transition: background-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing), box-shadow var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing);
 }
 
 /* ---------- Variants ---------- */
@@ -108,7 +110,8 @@
   font-weight: var(--typography-weight-regular);
   padding: var(--spacing-xs) var(--spacing-s);
   border-radius: var(--radius-xs);
-  transition: color 120ms ease, background-color 120ms ease;
+  transition: color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing),
+    background-color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing);
 }
 .creo-header-nav a:hover,
 .creo-header-nav a[aria-current="page"] {
