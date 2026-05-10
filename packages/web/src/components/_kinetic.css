@@ -1,0 +1,98 @@
+/**
+ * Kinetic typography — display 限定 dynamic font effects
+ *
+ * 2026 trend (Linear / Vercel Geist Pixel / Tailwind Catalyst で再評価) を
+ * Creo UI に articulate するが、 **read / editor mode は触らない**。
+ * long-form reading では typography stability が最優先、 kinetic effects は
+ * subjective fatigue を生む。 hero / display / onboarding の page-level
+ * visual anchor 限定。
+ *
+ * Aesthetic constraints (avoid path):
+ *   - read mode 侵食禁止 (Purple Haze report の avoid path articulate)
+ *   - reduced-motion 環境では無効化必須
+ *   - font-variation-settings は variable font (Inter Variable / Roboto Flex /
+ *     Recursive 等) 採用時のみ機能、 fallback で stable
+ *
+ * Cascade order: filename `_kinetic.css` の `_` prefix で sort 上位
+ * (focus / density の後)。 utility class なので consumer が opt-in で使う。
+ */
+
+/* ---------- Hero kinetic (hover で letter-spacing / font-weight 動的) ---------- */
+
+.creo-kinetic-hero {
+  font-family: var(--typography-family-display);
+  font-size: var(--typography-display-l);
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: -0.02em;
+  line-height: var(--typography-line-height-tight);
+  /* Variable font 対応 (font-variation-settings、 non-variable fallback で無視) */
+  font-variation-settings: "wght" 700, "slnt" 0;
+  transition: letter-spacing var(--motion-mapping-frame-morph-duration)
+    var(--motion-mapping-frame-morph-easing), font-variation-settings
+    var(--motion-mapping-frame-morph-duration) var(--motion-mapping-frame-morph-easing);
+}
+
+.creo-kinetic-hero:hover {
+  letter-spacing: -0.01em; /* 詰めから少し開く */
+  font-variation-settings: "wght" 800, "slnt" -2;
+}
+
+/* ---------- Display gradient (hero text gradient effect) ---------- */
+
+.creo-kinetic-gradient {
+  font-family: var(--typography-family-display);
+  font-size: var(--typography-display-l);
+  font-weight: var(--typography-weight-bold);
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-primary) 0%,
+    var(--color-brand-secondary) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Reveal animation (page load 時に staggered fade-in) ---------- */
+
+.creo-kinetic-reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: creoKineticReveal var(--motion-mapping-modal-enter-duration)
+    var(--motion-mapping-modal-enter-easing) forwards;
+}
+
+.creo-kinetic-reveal[data-delay="1"] {
+  animation-delay: 80ms;
+}
+.creo-kinetic-reveal[data-delay="2"] {
+  animation-delay: 160ms;
+}
+.creo-kinetic-reveal[data-delay="3"] {
+  animation-delay: 240ms;
+}
+
+@keyframes creoKineticReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Reduced-motion (a11y baseline) ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-kinetic-hero,
+  .creo-kinetic-hero:hover {
+    transition: none;
+    letter-spacing: -0.02em;
+    font-variation-settings: "wght" 700, "slnt" 0;
+  }
+
+  .creo-kinetic-reveal {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
