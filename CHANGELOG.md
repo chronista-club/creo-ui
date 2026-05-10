@@ -3,6 +3,157 @@
 本ファイルは Creo UI の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## v0.20.0 (2026-05-10) — Phase 2-3 完走 (web、 a11y baseline + 4 family identity polish + opt-in articulate)
+
+Purple Haze design system benchmark report の **Top 1-7 finding を Phase 2-3 全 7 完走** で解消。 v0.18-v0.19 の token / attribute layer 統一 (final) を土台に、 component / foundation layer の **a11y baseline + identity polish + opt-in articulate** を additive で追加。 BREAKING なし、 既存 component / token / attribute は 100% backward compat。
+
+並行で発見された **critical CSS parser bug** (6 日間 silent regression、 全 token resolve 失敗) も同 release で fix。
+
+### Phase 2-3 完走 sequence
+
+| # | PR | finding score | 内容 |
+|---|---|---|---|
+| 1/7 | #33 focus-ring | ★★★★★ | a11y baseline + Sophisticated layered (WCAG AA + AAA × 8 theme) |
+| 2/7 | #34 motion mapping | ★★★★★ | base (5×5) → 11 use-case × 4 axis SSOT alias、 18 component sync |
+| 3/7 | #35 state polish | ★★★★ | Skeleton / EmptyState に 4 family identity 追加、 ErrorBoundary 新設 |
+| 4/7 | #36 concentric corner | (foundations docs only) | Apple HIG / visionOS 26 spec articulate |
+| 5/7 | #37 density mode | ★★★ | 4 mode と直交する第 5 axis (comfortable / default / compact / cozy) |
+| 6/7 | #38 iconography | ★★ | 2 system articulate (creo-icon CSS + Iconify SVG) + 4 axis docs |
+| 7/7 | #39 kinetic-typography | ★★ | display 限定 dynamic effects (read / editor mode 侵食防止) |
+
+### 追加 — focus-ring (Phase 2-3 #1, ★★★★★)
+
+WCAG 2.4.7 (AA) + 2.4.11 (AAA) を 8 theme 全部で達成。 Apple HIG visionOS 26 concentric layer + Linear "気付かれない polish" hybrid:
+
+- outer 2px solid + inner 4px halo (offset 2px) を `:focus-visible` policy で 19 interactive element に articulate
+- `tokens/focus-ring.json` (4 scaffold token: `width` / `offset` / `halo-width` / `style`)
+- 8 theme で family hue × luminance 調整 (mint / sora / contrast / oldschool × dark / light)、 全 theme で AAA contrast 確保
+- 10 component CSS sweep (hardcode focus rule 削除 → policy 委譲)
+- reduced-motion 環境でも ring 自体は表示 (a11y 最優先)、 transition のみ無効化
+
+### 追加 — motion mapping (Phase 2-3 #2, ★★★★★)
+
+base token (5 duration × 5 easing) の主観的組み合わせから **11 use-case × 4 axis SSOT mapping** に articulate。 Material 3 distance-based motion を Creo brand (mint + spring) で reinterpret:
+
+- `tokens/motion/mapping.json` 22 token (use-case × duration|easing alias、 base への参照のみで base を変えれば全 mapping 自動追従)
+- 11 use-case: hover / press / toggle / focus-ring / dropdown / modal-enter / modal-exit / page-transition / frame-morph / skeleton-shimmer / progress-indeterminate
+- 18 component CSS sync (hardcode duration / easing 削除 → mapping bind)
+- 例外 articulate: skeleton / progress の cycle 1.4s は keyframes 専用 (mapping lazy 480ms より長く end-less perception 表現)、 easing のみ mapping 参照
+
+### 追加 — state polish (Phase 2-3 #3, ★★★★)
+
+Skeleton / EmptyState を「neutral surface のみ」 から「4 family identity を whisper で articulate」 に shift。 ErrorBoundary を新 primitive として追加 (loading / empty / error の 3 set 完成):
+
+- **Skeleton**: shimmer peak (50%) に brand-primary-subtle を 60% mix、 4 family theme で identity 表現
+- **EmptyState**: subtle radial gradient (brand-primary-subtle 30%) + brand-secondary icon (mint=violet / sora=cyan / contrast=magenta / oldschool=amber) + radius-l で modal-tier surface
+- **ErrorBoundary** (新): semantic-error-subtle (70%) + brand-primary-subtle (30%) dual layer、 s/m/l 3 size、 `role="alert"` + `aria-live="assertive"`、 retry / reload / report CTA articulate
+
+### 追加 — density mode (Phase 2-3 #5, ★★★)
+
+4 mode (Typography axis) と直交する **第 5 axis** で同 mode 内の「呼吸量」 を切替可能に:
+
+- `tokens/density.json` 4 density × 3 scale (padding / gap / min-height):
+  - comfortable: 1.25 / 1.25 / 1.1 (reading / hero / onboarding)
+  - default: 1 / 1 / 1 (base、 backward compat)
+  - compact: 0.85 / 0.85 / 0.95 (data table / dashboard、 tap >= 44 維持)
+  - cozy: 0.7 / 0.7 / 0.85 (terminal / log viewer、 max info-density)
+- `_density.css` で `data-density="..."` を ancestor articulate → CSS variable cascade で内部 component に伝播
+- button / input / card に `calc(base * scale)` で適用 (default scale 1 で attribute 無し時は backward compat 完全)
+
+### 追加 — iconography 2 system (Phase 2-3 #6, ★★)
+
+「inline か hero か」 judgement framework articulate:
+
+- **`creo-icon` CSS class 新設**: Nerd Font glyph (~10k)、 mono color、 inline / dense (5 size × 7 semantic variant、 `font-feature-settings` で ligature 無効化 → emoji 色維持)
+- **`<Icon>` (creo-ui-icons-web)**: Iconify SVG 9 set、 multi-color、 hero / illustration (既存)
+- 2 system 並走で「inline は creo-icon、 hero は Icon」 の judgement basis を articulate
+
+### 追加 — kinetic typography (Phase 2-3 #7, ★★)
+
+2026 dynamic typography trend を **display 限定** で articulate、 read / editor mode の typography stability は厳格保護 (long-form reading の subjective fatigue 防止):
+
+- `_kinetic.css` 3 utility (opt-in):
+  - `.creo-kinetic-hero` — `:hover` で letter-spacing / font-weight / slnt 変動 (Variable font、 fallback 対応)
+  - `.creo-kinetic-gradient` — brand primary → secondary linear-gradient + `background-clip: text` (static)
+  - `.creo-kinetic-reveal` — page load の opacity + translateY animation、 `data-delay` (1/2/3) で staggered
+- transition は motion-mapping (frame-morph / modal-enter) bind、 hardcode 禁止
+- prefers-reduced-motion で hero / reveal は base 固定 (gradient 維持)
+- avoid path articulate: read / editor / terminal mode 侵食禁止、 app mode は controlled (button hover 等限定)
+
+### 追加 — Foundations docs
+
+新 page 6 件 articulate (4 axis × n operational definition + 5 rubric category + Live preview):
+
+- `/foundations/focus-ring`
+- `/foundations/motion`
+- `/foundations/concentric-corner` (Apple HIG / visionOS 26 spec、 docs only)
+- `/foundations/density`
+- `/foundations/iconography`
+- `/foundations/kinetic-typography`
+
+これで **14 foundations page 揃い** (Principles + Color + Typography + Theming + Spacing + Radius + Shadow + Focus Ring + Motion + Concentric Corner + Density + Iconography + Kinetic Typography)、 Phase 2-3 完走で foundation layer の articulate 完成。
+
+### Bug fix — Chrome CSS parser 閾値回避 (#27)
+
+v0.18 で `:root` block prop 数が 169 に到達、 Chrome の CSS parser が **150+ で block 全体を silently drop** する閾値で **6 日間 silent regression** が進行 (token resolve 全失敗、 全要素 browser default 16px / padding 0 / margin 0 で表示)。
+
+- binary search で localized (line 11-95 / 96-179 を split inject すると両方 parse OK、 169 一括は fail = chrome parser 自体が drop)
+- Style Dictionary `transforms/config.web.js` を `commonByCategory` (Map<category, lines[]>) で token.path[0] (= category) ごとに group、 `:root` を **category 別 12 block** に split emit:
+  - color / depth / editor-mode / frame / layout / margin / motion / radius / shadow / spacing: 2-22 props
+  - typography (最大): 46 props
+  - default theme (mint-dark): ~42 props
+- 副次 fix: docs.css の stale token 名 sweep (size-base / size-2xl / size-3xl / spacing-2xl) + semantic alias (`title-page` / `body-default` / `layout-gap-section`) 採用 (原則 03 dogfood)
+- **Living rule articulate**: 1 `:root` block あたり 50 props 以下 (`mem_1CatH9CfXPpG3Pogx2nZjM` Atlas: Creo UI)
+
+### Stability commitment
+
+v0.18 で「5 tier convention 完全統一の最終 release」 と articulate した stability は **継続**。 v0.20 は全 additive、 既存 token / component / attribute は touch なし。 Phase 2-3 完走で foundation layer の articulate framework が揃ったため、 以降は **新 capability の articulate 追加** または **identity polish 深化** が主軸。
+
+### 関連
+
+- Purple Haze report agentId: `abb25a554fccfedce`
+- Phase 2-3 sequence: PR #33 → #34 → #35 → #36 → #37 → #38 → #39 (全 7 完走)
+- Foundations docs: 14 page 揃い
+
+---
+
+## v0.19.0 (2026-05-09) — Shells primitives 抽出 (web、 additive、 retroactive entry)
+
+Creo Memories Layered Surface Phase 1 (CREO-160) で確立した layout pattern を **`creo-ui-web/shells` subpath** に primitive 化。 Phase B (CREO-84) の最初の shells release。 Backward compat 完全、 既存 token / component / attribute touch なし。
+
+> **note**: 本 entry は v0.19.0 publish 時に書き漏れていたため v0.20.0 release 時に retroactive で追加。 npm 上の v0.19.0 とは内容一致。
+
+### 追加 — shells subpath exports
+
+新 subpath: `creo-ui-web/shells` (TypeScript / SolidJS):
+
+| primitive | 役割 | bundle |
+|---|---|---|
+| `<CreoFacetGrid>` | 6 facet narrow form の grid layout (intrinsic top + extrinsic main + sub) | gzip 0.62 kB (JS) |
+| `<CreoPageShell>` | max-width 920px wrapper + entrance animation (page fade in) | gzip 0.39 kB (CSS) |
+
+合計 **1 KB 未満** で entrance animation + responsive grid を提供。
+
+### Tree-shaking
+
+`exports` field の subpath 構造で `creo-ui-web/shells` だけ import すれば components.css / tokens.css は引き込まれない。 single library + subpath の design で:
+
+- consumer は `^0.19.0` 1 entry で全 capability access
+- modular import で kitchen sink 化を回避
+- internal は `src/shells/` `src/components/` で organization 維持
+
+### Consumer
+
+Creo Memories `apps/creo-web` で初 dogfood (creo-memories PR #391)、 net **-22 行** (重複 CSS が primitive へ吸収、 `.memoryPage` + `@keyframes pageFadeIn` + 920px / 480px 重複の 4 ブロック削除)。
+
+### 関連
+
+- Layered Surface Phase 1 vision: `mem_1Cak5rxTFWvLNxjSRiQ1Ak` (Creo Memories Atlas)
+- Phase B PR-1 / PR-2 / PR-3 sequence (creo-ui PR #25 #26 + creo-memories PR #391)
+- Linear: CREO-84 Phase B (In Progress)
+
+---
+
 ## v0.18.0 (2026-05-07) — Component attribute も 5 tier 完全統一 (web、 BREAKING、 attribute layer final)
 
 v0.17.0 で **token layer** の 5 tier convention 完全統一を達成、 v0.18.0 で **component attribute layer** も同 convention に揃え、 ecosystem 全層 (token + CSS var + JS const + Swift identifier + Rust const + HTML attribute) で convention drift が完全解消した状態に到達。
