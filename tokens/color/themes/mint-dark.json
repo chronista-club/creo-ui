@@ -223,6 +223,18 @@
             "$type": "color",
             "$description": "Hero gradient — marketing / splash surfaces"
           }
+        },
+        "focus-ring": {
+          "color": {
+            "$value": "oklch(0.85 0.14 160)",
+            "$type": "color",
+            "$description": "Focus ring color — outer 2px solid ring (mint-dark、 brand 同 hue + luminance UP で AAA contrast 確保)"
+          },
+          "halo": {
+            "$value": "oklch(0.85 0.14 160 / 0.18)",
+            "$type": "color",
+            "$description": "Focus halo — inner 4px subtle bg tint、 ring を 「包む glow」 として演出"
+          }
         }
       }
     }

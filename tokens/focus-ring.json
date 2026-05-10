@@ -1,0 +1,24 @@
+{
+  "focus-ring": {
+    "width": {
+      "$value": "2px",
+      "$type": "dimension",
+      "$description": "Outer ring width — WCAG 2.4.11 minimum 2px contrast border、 thinner だと visible 不足"
+    },
+    "offset": {
+      "$value": "2px",
+      "$type": "dimension",
+      "$description": "Outline offset — 要素境界から 2px 離す (要素を遮らず ring が呼吸)"
+    },
+    "halo-width": {
+      "$value": "4px",
+      "$type": "dimension",
+      "$description": "Inner halo width — outer ring の補完 subtle bg tint、 ring を 「包む glow」 として演出"
+    },
+    "style": {
+      "$value": "solid",
+      "$type": "string",
+      "$description": "Outline style — solid のみ採用 (dashed は精度に欠ける、 double は thicker 設計)"
+    }
+  }
+}

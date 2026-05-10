@@ -31,11 +31,7 @@
   flex-shrink: 0;
 }
 
-.creo-checkbox-input:focus-visible,
-.creo-radio-input:focus-visible {
-  outline: 2px solid var(--color-brand-primary);
-  outline-offset: 2px;
-}
+/* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 .creo-checkbox-input:disabled,
 .creo-radio-input:disabled,
@@ -104,9 +100,13 @@
   transform: translateX(20px);
 }
 
+/* Switch の :focus-visible は track 側に ring を当てる必要があるため、 _focus.css
+   の policy では cover できない (selector が `~` sibling 経由)。 個別 articulate
+   を維持、 ただし新 token を使用。 */
 .creo-switch-input:focus-visible ~ .creo-switch-track {
-  outline: 2px solid var(--color-brand-primary);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--color-focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: 0 0 0 var(--focus-ring-halo-width) var(--color-focus-ring-halo);
 }
 
 .creo-switch-input:disabled ~ .creo-switch-track,

@@ -217,6 +217,18 @@
             "$description": "Shadow tint — strong"
           }
         },
+        "focus-ring": {
+          "color": {
+            "$value": "oklch(0.82 0.14 145)",
+            "$type": "color",
+            "$description": "Focus ring color — outer 2px solid ring (oldschool-dark、 olive hue + luminance UP で AAA contrast)"
+          },
+          "halo": {
+            "$value": "oklch(0.82 0.14 145 / 0.18)",
+            "$type": "color",
+            "$description": "Focus halo — inner 4px subtle bg tint、 retro/corporate identity 保持"
+          }
+        },
         "gradient": {
           "hero": {
             "$value": "linear-gradient(135deg, oklch(0.2 0.03 80) 0%, oklch(0.18 0.02 70) 50%, oklch(0.22 0.04 90) 100%)",

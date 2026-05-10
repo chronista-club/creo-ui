@@ -142,11 +142,9 @@
 }
 
 /* ---------- Focus ring ---------- */
-
-.creo-btn:focus-visible {
-  outline: 2px solid var(--color-brand-primary);
-  outline-offset: 2px;
-}
+/* :focus-visible policy は _focus.css に articulate (component-agnostic、 8 theme で
+   --color-focus-ring-color が brand と整合した luminance)。 component 個別 override
+   は原則禁止 (a11y consistency)、 例外時は _focus.css の articulate を参照。 */
 
 /* ---------- Reduced motion (WCAG 2.1 SC 2.3.3 / SC 2.3.1) ---------- */
 

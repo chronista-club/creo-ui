@@ -24,6 +24,7 @@ const NAV: readonly NavGroup[] = [
       { href: '/foundations/radius', label: 'Radius' },
       { href: '/foundations/shadow', label: 'Shadow' },
       { href: '/foundations/theming', label: 'Theming' },
+      { href: '/foundations/focus-ring', label: 'Focus Ring', tag: 'a11y' },
     ],
   },
   {

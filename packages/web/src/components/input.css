@@ -72,11 +72,12 @@
 }
 
 /* ---------- State: focus ---------- */
+/* :focus は mouse + keyboard 両方で発火、 input 特有の "field active" feedback
+   として border-color 変化を維持。 outline + halo 表現は _focus.css の policy
+   (`:focus-visible`、 keyboard-only) が担う。 */
 
-.creo-input:focus-visible,
 .creo-input:focus {
-  border-color: var(--color-brand-primary);
-  box-shadow: 0 0 0 2px color-mix(in oklch, var(--color-brand-primary) 25%, transparent);
+  border-color: var(--color-focus-ring-color);
 }
 
 /* ---------- State: error ---------- */
