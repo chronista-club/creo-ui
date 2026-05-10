@@ -72,7 +72,7 @@ export default function Combobox() {
             </p>
           </div>
 
-          <div class="docs-preview-row-label">Browser shortcut (filled variant + sm)</div>
+          <div class="docs-preview-row-label">Browser shortcut (filled variant + s)</div>
           <div class="creo-form-field">
             <label class="creo-form-field-label" for="cmd">
               Command

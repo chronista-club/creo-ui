@@ -101,6 +101,16 @@ export default {
         //   block 全体を drop する閾値に当たり、 token が解決されない事故が出る
         //   (v0.18 で 169 props に到達して visible regression 発生)。
         //   category 別に分けると 各 block 50 props 以下に収まり parser が安定。
+        //
+        // Note (block 順): commonBlocks は Object.keys().sort() でアルファベット
+        //   順 emit している。 CSS variable は **late binding** (cascade 後に
+        //   resolve) で順序依存性は無いため、 cross-category alias (例:
+        //   layout.gap.section が margin.l を参照) があっても browser 解決で
+        //   問題は出ない。 ただし build-step で eager に var() inline 展開
+        //   する transform を将来追加する場合 (postcss-custom-properties 等)、
+        //   topological sort へ切替える必要が出る点に注意。
+        //   現時点の cross-category alias: layout.gap.* → spacing/margin,
+        //   typography.{body,title}.* → typography.{size,display}。
         const commonByCategory = {}
         const themes = {}
 
