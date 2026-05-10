@@ -168,6 +168,12 @@ const COMPONENTS: readonly ComponentEntry[] = [
     detail: true,
   },
   {
+    name: 'Error boundary',
+    slug: 'error-boundary',
+    desc: 'State polish — semantic error + brand identity の dual layer + recovery CTA',
+    detail: true,
+  },
+  {
     name: 'Combobox',
     slug: 'combobox',
     desc: 'Native <input list> + <datalist> — type-ahead suggestion',

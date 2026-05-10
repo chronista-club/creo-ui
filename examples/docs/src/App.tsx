@@ -53,6 +53,7 @@ const Drawer = lazy(() => import('./pages/Components/Drawer'))
 const EmptyState = lazy(() => import('./pages/Components/EmptyState'))
 const Combobox = lazy(() => import('./pages/Components/Combobox'))
 const Header = lazy(() => import('./pages/Components/Header'))
+const ErrorBoundary = lazy(() => import('./pages/Components/ErrorBoundary'))
 const Stack = lazy(() => import('./pages/Components/Stack'))
 const Grid = lazy(() => import('./pages/Components/Grid'))
 const Container = lazy(() => import('./pages/Components/Container'))
@@ -117,6 +118,7 @@ export default function App() {
       <Route path="/components/empty-state" component={EmptyState} />
       <Route path="/components/combobox" component={Combobox} />
       <Route path="/components/header" component={Header} />
+      <Route path="/components/error-boundary" component={ErrorBoundary} />
       <Route path="/components/stack" component={Stack} />
       <Route path="/components/grid" component={Grid} />
       <Route path="/components/container" component={Container} />

@@ -7,10 +7,16 @@
 
 .creo-skeleton {
   display: inline-block;
+  /* Shimmer は 4 family identity を articulate する peak tint を持つ:
+     - bg-subtle (start) → brand-primary-subtle mix (peak) → bg-subtle (end)
+     - mint なら mint tint shimmer、 sora なら cool blue、 contrast なら
+       paradox violet、 oldschool なら olive。
+     - color-mix で 60% brand-subtle + 40% bg-emphasis、 brand を主張しすぎず
+       loading 中の identity を articulate。 */
   background: linear-gradient(
     90deg,
     var(--color-surface-bg-subtle) 0%,
-    var(--color-surface-bg-emphasis) 50%,
+    color-mix(in oklch, var(--color-brand-primary-subtle) 60%, var(--color-surface-bg-emphasis)) 50%,
     var(--color-surface-bg-subtle) 100%
   );
   background-size: 200% 100%;
