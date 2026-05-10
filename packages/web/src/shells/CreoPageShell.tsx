@@ -41,14 +41,10 @@ interface CreoPageShellProps {
  * Vision: mem_1Cak5rxTFWvLNxjSRiQ1Ak (Layered Surface v5.1)
  * Origin: Phase 1 (CREO-160) `MemoryPageShell` から layout 部分を抽出
  */
-export const CreoPageShell: Component<CreoPageShellProps> = props => (
+export const CreoPageShell: Component<CreoPageShellProps> = (props) => (
   <main
     class={`${styles.creoPageShell}${props.class ? ` ${props.class}` : ''}`}
-    style={
-      props.maxWidth
-        ? { '--creo-page-shell-max-width': props.maxWidth }
-        : undefined
-    }
+    style={props.maxWidth ? { '--creo-page-shell-max-width': props.maxWidth } : undefined}
   >
     <div
       class={`${styles.creoPageShellInner}${props.noAnimation ? '' : ` ${styles.creoPageShellEntrance}`}`}
