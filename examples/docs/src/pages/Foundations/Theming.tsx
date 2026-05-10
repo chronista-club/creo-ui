@@ -116,8 +116,8 @@ export default function Theming() {
         <p class="docs-page-lead">
           4 family × light/dark = <strong>8 theme</strong> を同梱。 family は{' '}
           <strong>4 axis</strong> (Hue / Mood / Audience / Surface intent) で operational に
-          articulate、 light/dark も 4 axis (Environment / Time / Attention / Luminance target)
-          で。 切替は <code>data-theme</code> 属性、 値は OKLCH、 Swift / Rust ビルド時に hex / Rgb
+          articulate、 light/dark も 4 axis (Environment / Time / Attention / Luminance target) で。
+          切替は <code>data-theme</code> 属性、 値は OKLCH、 Swift / Rust ビルド時に hex / Rgb
           に変換 (Mint Dark のみ)。
         </p>
       </header>
@@ -128,8 +128,9 @@ export default function Theming() {
           各 family を <strong>支配 hue (Hue dominant)</strong> ×{' '}
           <strong>表現される気分 (Mood)</strong> × <strong>想定 audience</strong> ×{' '}
           <strong>適用 surface intent</strong> で articulate。 「mint green」 「sky blue」 のような
-          色名 1 行ではなく、 family の <strong>意図と居場所</strong> を計測可能な軸で定義することで、
-          family 増設や既存 family 改訂の判断が rubric ベースに shift する。
+          色名 1 行ではなく、 family の <strong>意図と居場所</strong>{' '}
+          を計測可能な軸で定義することで、 family 増設や既存 family 改訂の判断が rubric ベースに
+          shift する。
         </p>
         <div class="docs-operational-table">
           <table>
@@ -164,11 +165,11 @@ export default function Theming() {
       <section>
         <h2 class="docs-section-title">Light/Dark mode operational definition — 4 axis</h2>
         <p class="docs-page-helper">
-          light/dark は単なる「user の好み」 ではなく、{' '}
-          <strong>環境 (Environment)</strong> × <strong>時間帯 (Time of day)</strong> ×{' '}
-          <strong>注意状態 (Attention state)</strong> × <strong>luminance target</strong> に応じた
-          surface 適応。 system <code>prefers-color-scheme</code> media query は時間帯軸を
-          自動追従、 user override は注意状態軸を本人が manual に切替える operation。
+          light/dark は単なる「user の好み」 ではなく、 <strong>環境 (Environment)</strong> ×{' '}
+          <strong>時間帯 (Time of day)</strong> × <strong>注意状態 (Attention state)</strong> ×{' '}
+          <strong>luminance target</strong> に応じた surface 適応。 system{' '}
+          <code>prefers-color-scheme</code> media query は時間帯軸を 自動追従、 user override
+          は注意状態軸を本人が manual に切替える operation。
         </p>
         <div class="docs-operational-table">
           <table>

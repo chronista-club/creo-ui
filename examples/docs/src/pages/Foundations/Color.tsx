@@ -150,10 +150,10 @@ export default function Color() {
         <p class="docs-page-helper">
           Color group は <strong>役割 (Purpose)</strong> ×{' '}
           <strong>視覚特性 (Visual character)</strong> × <strong>階層位置 (Hierarchy)</strong> ×{' '}
-          <strong>期待される反応 (Response)</strong> の 4 axis で articulate。
-          「accent」「neutral」 のような subjective 抽象ではなく、 観察可能 / 計測可能な特性で group
-          を定義することで、 新色追加 (Tertiary brand?) や theme family 増設の判断が{' '}
-          <strong>objective rubric</strong> に基づく path に shift する。
+          <strong>期待される反応 (Response)</strong> の 4 axis で articulate。 「accent」「neutral」
+          のような subjective 抽象ではなく、 観察可能 / 計測可能な特性で group を定義することで、
+          新色追加 (Tertiary brand?) や theme family 増設の判断が <strong>objective rubric</strong>{' '}
+          に基づく path に shift する。
         </p>
         <div class="docs-operational-table">
           <table>
