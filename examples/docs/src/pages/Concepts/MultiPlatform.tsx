@@ -11,19 +11,19 @@ const NAMING = [
     token: 'spacing.m',
     web: '--spacing-m',
     apple: 'spacingM',
-    rust: 'SPACING_MD',
+    rust: 'SPACING_M',
   },
   {
     token: 'typography.size.l',
     web: '--typography-size-l',
     apple: 'typographySizeL',
-    rust: 'TYPOGRAPHY_SIZE_LG',
+    rust: 'TYPOGRAPHY_SIZE_L',
   },
   {
     token: 'radius.m',
     web: '--radius-m',
     apple: 'radiusM',
-    rust: 'RADIUS_MD',
+    rust: 'RADIUS_M',
   },
 ] as const
 
