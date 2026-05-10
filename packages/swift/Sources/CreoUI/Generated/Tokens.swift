@@ -138,6 +138,18 @@ public enum CreoUITokens {
     public static let typographyTitleSubsection: CGFloat = 24 // Subsection title — h3 (nested group within a section)
     public static let typographyTitleCard: CGFloat = 20 // Card title — h4 (inline block title, table header, menu label)
 
+    public static let densityDefaultPaddingScale: Double = 1 // Default density — base spacing そのまま (4 mode の現状値)
+    public static let densityDefaultGapScale: Double = 1 // Default density — base gap そのまま
+    public static let densityDefaultMinHeightScale: Double = 1 // Default density — base target そのまま
+    public static let densityComfortablePaddingScale: Double = 1.25 // Comfortable density — base × 1.25、 広い呼吸 (reading mode / hero / onboarding)
+    public static let densityComfortableGapScale: Double = 1.25 // Comfortable density — gap も × 1.25 で element 間に余裕
+    public static let densityComfortableMinHeightScale: Double = 1.1 // Comfortable density — target × 1.1 (tap も focus も少し大きく)
+    public static let densityCompactPaddingScale: Double = 0.85 // Compact density — base × 0.85、 dense interface (data table / dashboard / dev tool)
+    public static let densityCompactGapScale: Double = 0.85 // Compact density — gap も × 0.85
+    public static let densityCompactMinHeightScale: Double = 0.95 // Compact density — target × 0.95 (tap >= 44px は維持、 focus は少し縮)
+    public static let densityCozyPaddingScale: Double = 0.7 // Cozy density — base × 0.7、 最も dense (terminal mode / log viewer / max info-density)
+    public static let densityCozyGapScale: Double = 0.7 // Cozy density — gap も × 0.7
+    public static let densityCozyMinHeightScale: Double = 0.85 // Cozy density — target × 0.85 (a11y minimum 24px は超える)
     public static let editorModeOverlayBackdropOpacity: Double = 0 // Editor Layer 最背面の opacity。デフォルト 0 (完全透過) で Content Layer を遮らない
     public static let editorModeRegionBgOpacity: Double = 0.92 // Region 背景の 不透明度 (0.0-1.0)。Content を完全に隠さず薄く透かす
     public static let typographyLineHeightTight: Double = 1.25 // Tight line-height — headings

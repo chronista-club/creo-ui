@@ -14,13 +14,15 @@
  */
 
 .creo-btn {
-  /* Base layout */
+  /* Base layout — density scale (default 1) で全 spacing 系が ancestor の
+     [data-density] に応じて compact / comfortable / cozy に articulate 切替 */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--layout-gap-tight);
-  min-height: var(--layout-target-tap);
-  padding: var(--spacing-s) var(--spacing-m);
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+  min-height: calc(var(--layout-target-tap) * var(--density-min-height-scale, 1));
+  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
+    calc(var(--spacing-m) * var(--density-padding-scale, 1));
 
   /* Typography */
   font-family: inherit;

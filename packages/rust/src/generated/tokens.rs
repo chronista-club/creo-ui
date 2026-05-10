@@ -113,6 +113,30 @@ pub const COLOR_GRADIENT_HERO: &str = "linear-gradient(135deg, oklch(0.2 0.04 16
 pub const COLOR_FOCUS_RING_COLOR: Rgb = Rgb::new(111, 234, 174);
 /// Focus halo — inner 4px subtle bg tint、 ring を 「包む glow」 として演出
 pub const COLOR_FOCUS_RING_HALO: Rgb = Rgb::new(111, 234, 174);
+/// Default density — base spacing そのまま (4 mode の現状値)
+pub const DENSITY_DEFAULT_PADDING_SCALE: f32 = 1_f32;
+/// Default density — base gap そのまま
+pub const DENSITY_DEFAULT_GAP_SCALE: f32 = 1_f32;
+/// Default density — base target そのまま
+pub const DENSITY_DEFAULT_MIN_HEIGHT_SCALE: f32 = 1_f32;
+/// Comfortable density — base × 1.25、 広い呼吸 (reading mode / hero / onboarding)
+pub const DENSITY_COMFORTABLE_PADDING_SCALE: f32 = 1.25_f32;
+/// Comfortable density — gap も × 1.25 で element 間に余裕
+pub const DENSITY_COMFORTABLE_GAP_SCALE: f32 = 1.25_f32;
+/// Comfortable density — target × 1.1 (tap も focus も少し大きく)
+pub const DENSITY_COMFORTABLE_MIN_HEIGHT_SCALE: f32 = 1.1_f32;
+/// Compact density — base × 0.85、 dense interface (data table / dashboard / dev tool)
+pub const DENSITY_COMPACT_PADDING_SCALE: f32 = 0.85_f32;
+/// Compact density — gap も × 0.85
+pub const DENSITY_COMPACT_GAP_SCALE: f32 = 0.85_f32;
+/// Compact density — target × 0.95 (tap >= 44px は維持、 focus は少し縮)
+pub const DENSITY_COMPACT_MIN_HEIGHT_SCALE: f32 = 0.95_f32;
+/// Cozy density — base × 0.7、 最も dense (terminal mode / log viewer / max info-density)
+pub const DENSITY_COZY_PADDING_SCALE: f32 = 0.7_f32;
+/// Cozy density — gap も × 0.7
+pub const DENSITY_COZY_GAP_SCALE: f32 = 0.7_f32;
+/// Cozy density — target × 0.85 (a11y minimum 24px は超える)
+pub const DENSITY_COZY_MIN_HEIGHT_SCALE: f32 = 0.85_f32;
 /// Flat — z=0、 base plane (no elevation)
 pub const DEPTH_FLAT: f32 = 0_f32;
 /// Raised — subtle hover lift / sidebar active item

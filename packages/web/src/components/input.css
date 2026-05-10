@@ -13,10 +13,12 @@
  */
 
 .creo-input {
+  /* density scale 適用 (default 1)、 ancestor [data-density] で切替 */
   display: block;
   width: 100%;
-  min-height: var(--layout-target-tap);
-  padding: var(--spacing-s) var(--spacing-m);
+  min-height: calc(var(--layout-target-tap) * var(--density-min-height-scale, 1));
+  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
+    calc(var(--spacing-m) * var(--density-padding-scale, 1));
   box-sizing: border-box;
 
   font-family: inherit;
