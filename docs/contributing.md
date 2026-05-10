@@ -108,6 +108,54 @@ v0.17 5 tier rename (commit `942d5eb`、 2026-05-06) で **Layer C (Swift Compon
 
 修復: 4 commit (`8ac9376` / `ebfda42` / `3ca61eb` 等) で全 layer sweep + green 化。 本 checklist はこの経験から articulate。
 
+## Token 増設 sweep checklist (Chrome `:root` block parser 閾値)
+
+> **Living rule**: `dist/tokens.css` の単一 `:root` block 内 prop 数が **150 を超えないように維持**。 超えそうなら sub-category に分けるか、 別 :root block で emit する。
+
+### 何を防ぐか
+
+Chrome の CSS parser は `:root { ... }` block 内 prop 数が **150+ で block 全体を silently drop** する閾値を持つ (warning なし、 console clean、 visible regression のみ顕在化)。 v0.18 で alias 系 (`typography-body-*` / `typography-title-*` / `layout-gap-*` 等) を追加し **169 props** に到達、 全 page で var 解決失敗 → `font-size: 16px` / `padding: 0` に縮退する状態が **6 日間 silent に進行**。
+
+### Token 追加 PR の checklist
+
+- [ ] `tokens/` 配下に新 token / alias を追加した
+- [ ] `bun run build:web` 後、 `dist/tokens.css` の `:root` block 数を確認:
+  ```bash
+  grep -cE "^:root \{" packages/web/dist/tokens.css
+  ```
+- [ ] 各 :root block の prop 数が **50 以下** (category 別 split で各 block 30-46 props が default、 余裕を持って 50 上限)
+- [ ] 例: typography category が 50 を超えそうなら `typography-base / typography-body / typography-display` 等のサブ split を検討
+- [ ] `examples/docs/` を dev で開いて、 visible regression がないか chrome で目視 (Foundations / Components 全 page を 1 度ずつ scroll)
+
+### 検証 path (異常検出時)
+
+`/foundations/principles` 等で「文字が小さい / spacing が無い」 のような視認性異常を検出したら:
+
+1. browser console で var 解決確認:
+   ```js
+   getComputedStyle(document.documentElement).getPropertyValue('--typography-title-page')
+   // 空文字列なら parser drop 発動
+   ```
+2. `:root` rule が DOM stylesheet に存在するか:
+   ```js
+   Array.from(document.styleSheets[0].cssRules).some(r => r.selectorText === ':root')
+   ```
+3. binary search で localize (生 CSS を半分に分けて `<style>` に inject、 どちらが drop されるか観察)
+4. 結論: prop 数閾値超え → `transforms/config.web.js` の format で sub-category split を articulate
+
+### Why this rule exists (実例)
+
+- v0.17 → v0.18 で 5 tier alias / typography-body / typography-title / layout-gap-* 系を追加、 :root block の prop 数が **120 → 169** に増加
+- Chrome は invalid block を **silently drop** する (parse error も warning も出さない)
+- vite / chrome 両方を 「動いている」 と誤認、 `examples/docs` 自身が dogfood 装置として機能していたが **regression check が visible verify ではなく typecheck / build pass のみ** だったため 6 日間気付かず
+- 修復: `transforms/config.web.js` の `css/creo-ui-themed` format を改修、 token.path[0] (= category) で group して **category 別 :root を 12 block emit** (詳細は memory `mem_1CatH9CfXPpG3Pogx2nZjM` Atlas: Creo UI)
+
+### 派生 lesson
+
+- **`bun run typecheck` / `bun run lint` の green は visible regression を保証しない** — CSS は parser が silently drop しても type / lint check は pass する
+- **release sequence に visible verify step** を組み込む (CI で `examples/docs` を screenshot 比較、 もしくは release 前に手動 1-page-1-glance check)
+- **dogfood は visible 検出装置として有効、 でも能動的な目視 watch が前提** — Living docs 原則 07 + 6 日間放置事故からの articulate
+
 ## Living doc 原則
 
 `tokens/`、 `packages/`、 `docs/` の **3 SSOT** は同期義務:
