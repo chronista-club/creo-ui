@@ -1,0 +1,72 @@
+{
+  "density": {
+    "default": {
+      "padding-scale": {
+        "$value": "1",
+        "$type": "number",
+        "$description": "Default density — base spacing そのまま (4 mode の現状値)"
+      },
+      "gap-scale": {
+        "$value": "1",
+        "$type": "number",
+        "$description": "Default density — base gap そのまま"
+      },
+      "min-height-scale": {
+        "$value": "1",
+        "$type": "number",
+        "$description": "Default density — base target そのまま"
+      }
+    },
+    "comfortable": {
+      "padding-scale": {
+        "$value": "1.25",
+        "$type": "number",
+        "$description": "Comfortable density — base × 1.25、 広い呼吸 (reading mode / hero / onboarding)"
+      },
+      "gap-scale": {
+        "$value": "1.25",
+        "$type": "number",
+        "$description": "Comfortable density — gap も × 1.25 で element 間に余裕"
+      },
+      "min-height-scale": {
+        "$value": "1.1",
+        "$type": "number",
+        "$description": "Comfortable density — target × 1.1 (tap も focus も少し大きく)"
+      }
+    },
+    "compact": {
+      "padding-scale": {
+        "$value": "0.85",
+        "$type": "number",
+        "$description": "Compact density — base × 0.85、 dense interface (data table / dashboard / dev tool)"
+      },
+      "gap-scale": {
+        "$value": "0.85",
+        "$type": "number",
+        "$description": "Compact density — gap も × 0.85"
+      },
+      "min-height-scale": {
+        "$value": "0.95",
+        "$type": "number",
+        "$description": "Compact density — target × 0.95 (tap >= 44px は維持、 focus は少し縮)"
+      }
+    },
+    "cozy": {
+      "padding-scale": {
+        "$value": "0.7",
+        "$type": "number",
+        "$description": "Cozy density — base × 0.7、 最も dense (terminal mode / log viewer / max info-density)"
+      },
+      "gap-scale": {
+        "$value": "0.7",
+        "$type": "number",
+        "$description": "Cozy density — gap も × 0.7"
+      },
+      "min-height-scale": {
+        "$value": "0.85",
+        "$type": "number",
+        "$description": "Cozy density — target × 0.85 (a11y minimum 24px は超える)"
+      }
+    }
+  }
+}

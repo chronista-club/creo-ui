@@ -13,11 +13,12 @@
  */
 
 .creo-card {
+  /* density scale 適用 (default 1)、 ancestor [data-density] で切替 */
   display: block;
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
-  padding: var(--spacing-m);
+  padding: calc(var(--spacing-m) * var(--density-padding-scale, 1));
   color: var(--color-text-primary);
   transition: background-color var(--motion-mapping-hover-duration)
     var(--motion-mapping-hover-easing), box-shadow var(--motion-mapping-hover-duration)
