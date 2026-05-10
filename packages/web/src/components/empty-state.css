@@ -14,6 +14,14 @@
   gap: var(--spacing-s);
   padding: var(--spacing-xl);
   color: var(--color-text-primary);
+  /* Subtle radial gradient bg で 「empty な空間に意図がある」 articulate。
+     brand-primary-subtle を 8% mix で whisper、 over-articulate しない。 */
+  background: radial-gradient(
+    circle at 50% 30%,
+    color-mix(in oklch, var(--color-brand-primary-subtle) 30%, transparent) 0%,
+    transparent 60%
+  );
+  border-radius: var(--radius-l);
 }
 
 /* ---------- Sizes ---------- */
@@ -33,8 +41,10 @@
 .creo-empty-state-icon {
   font-size: var(--typography-icon-l);
   line-height: 1;
-  color: var(--color-text-tertiary);
-  opacity: 0.6;
+  /* Brand secondary で family identity を articulate (mint=violet、
+     sora=cyan、 contrast=magenta、 oldschool=amber)、 opacity で whisper */
+  color: var(--color-brand-secondary);
+  opacity: 0.55;
   margin-bottom: var(--spacing-xs);
   user-select: none;
 }

@@ -1,0 +1,165 @@
+/**
+ * Creo UI — Error boundary state
+ *
+ * Spec: design system primitive (Phase 2-3 #3 で articulate)
+ * Token: creo-ui-web/tokens.css (必須)
+ *
+ * Usage:
+ *   <div class="creo-error-boundary" role="alert" aria-live="assertive">
+ *     <span class="creo-error-boundary-icon" aria-hidden="true"></span>
+ *     <h3 class="creo-error-boundary-title">Something went wrong</h3>
+ *     <p class="creo-error-boundary-reason">Reason text...</p>
+ *     <div class="creo-error-boundary-actions">
+ *       <button class="creo-btn" data-variant="primary">Retry</button>
+ *     </div>
+ *   </div>
+ *
+ * Aesthetic:
+ *   semantic error 色 (subtle bg + text) と brand identity の dual layer。
+ *   「壊れたが、 まだ Creo」 を articulate (purely error-tinted は anonymity、
+ *   brand layer を残すことで Creo ecosystem internal の error と認識される)。
+ */
+
+.creo-error-boundary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--spacing-s);
+  padding: var(--spacing-xl);
+  color: var(--color-text-primary);
+
+  /* Dual layer bg: semantic error subtle (主) + brand primary subtle (whisper)。
+     border は semantic error border (8% alpha) で identity 表現。 */
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklch, var(--color-semantic-error-subtle) 70%, var(--color-surface-surface)) 0%,
+    color-mix(in oklch, var(--color-brand-primary-subtle) 30%, var(--color-surface-surface)) 100%
+  );
+  border: 1px solid
+    color-mix(in oklch, var(--color-semantic-error) 35%, var(--color-surface-border));
+  border-radius: var(--radius-l);
+}
+
+/* ---------- Sizes ---------- */
+
+.creo-error-boundary[data-size="s"] {
+  padding: var(--spacing-m);
+  gap: var(--spacing-xs);
+  border-radius: var(--radius-m);
+}
+
+.creo-error-boundary[data-size="l"] {
+  padding: calc(var(--spacing-xl) * 1.5) var(--spacing-xl);
+  gap: var(--spacing-m);
+}
+
+/* ---------- Icon ---------- */
+
+.creo-error-boundary-icon {
+  font-size: var(--typography-icon-l);
+  line-height: 1;
+  color: var(--color-semantic-error);
+  margin-bottom: var(--spacing-xs);
+  user-select: none;
+}
+
+.creo-error-boundary[data-size="s"] .creo-error-boundary-icon {
+  font-size: var(--typography-icon-m);
+  margin-bottom: 0;
+}
+
+.creo-error-boundary[data-size="l"] .creo-error-boundary-icon {
+  font-size: var(--typography-icon-xl);
+  margin-bottom: var(--spacing-s);
+}
+
+/* ---------- Title ---------- */
+
+.creo-error-boundary-title {
+  margin: 0;
+  font-size: var(--typography-title-subsection);
+  font-weight: var(--typography-weight-semibold);
+  color: var(--color-semantic-error-text);
+  line-height: var(--typography-line-height-tight);
+}
+
+.creo-error-boundary[data-size="s"] .creo-error-boundary-title {
+  font-size: var(--typography-title-card);
+}
+
+.creo-error-boundary[data-size="l"] .creo-error-boundary-title {
+  font-size: var(--typography-title-section);
+}
+
+/* ---------- Reason ---------- */
+
+.creo-error-boundary-reason {
+  margin: 0;
+  font-size: var(--typography-body-default);
+  color: var(--color-text-secondary);
+  line-height: var(--typography-line-height-relaxed);
+  max-width: 480px;
+}
+
+.creo-error-boundary[data-size="s"] .creo-error-boundary-reason {
+  font-size: var(--typography-body-helper);
+  max-width: 320px;
+}
+
+/* ---------- Detail (collapsible technical info、 dev mode 用) ---------- */
+
+.creo-error-boundary-detail {
+  margin-top: var(--spacing-s);
+  text-align: left;
+  width: 100%;
+  max-width: 600px;
+}
+
+.creo-error-boundary-detail summary {
+  cursor: pointer;
+  font-size: var(--typography-body-helper);
+  color: var(--color-text-tertiary);
+  font-family: var(--typography-family-mono);
+  padding: var(--spacing-xs) var(--spacing-s);
+  border-radius: var(--radius-xs);
+  transition: background-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing), color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing);
+}
+
+.creo-error-boundary-detail summary:hover {
+  background-color: var(--color-surface-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+.creo-error-boundary-detail pre {
+  margin: var(--spacing-xs) 0 0 0;
+  padding: var(--spacing-s);
+  font-family: var(--typography-family-mono);
+  font-size: var(--typography-body-caption);
+  background-color: var(--color-surface-bg-subtle);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--radius-s);
+  overflow-x: auto;
+  color: var(--color-text-primary);
+}
+
+/* ---------- Actions (CTA group) ---------- */
+
+.creo-error-boundary-actions {
+  display: flex;
+  gap: var(--spacing-s);
+  margin-top: var(--spacing-s);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ---------- Reduced motion (a11y baseline) ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-error-boundary-detail summary {
+    transition: none;
+  }
+}
