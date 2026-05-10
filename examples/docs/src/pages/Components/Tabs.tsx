@@ -13,7 +13,7 @@ const PROPS = [
     attr: 'data-size',
     values: 's / m / l',
     def: 'm',
-    meaning: '5 tier convention、 dense UI なら sm、 hero なら lg',
+    meaning: '5 tier convention、 dense UI なら s、 hero なら l',
   },
   {
     attr: 'role="tablist" / "tab" / "tabpanel"',
@@ -135,15 +135,21 @@ export default function Tabs() {
           <div class="docs-preview-row-label">Sizes</div>
           <div class="creo-tabs" data-size="s">
             <div class="creo-tabs-list" role="tablist">
-              <button type="button" class="creo-tabs-tab" role="tab" aria-selected="true" id="sm-1">
-                sm
+              <button
+                type="button"
+                class="creo-tabs-tab"
+                role="tab"
+                aria-selected="true"
+                id="size-s-1"
+              >
+                s
               </button>
               <button
                 type="button"
                 class="creo-tabs-tab"
                 role="tab"
                 aria-selected="false"
-                id="sm-2"
+                id="size-s-2"
               >
                 Compact
               </button>
@@ -151,15 +157,21 @@ export default function Tabs() {
           </div>
           <div class="creo-tabs" data-size="l">
             <div class="creo-tabs-list" role="tablist">
-              <button type="button" class="creo-tabs-tab" role="tab" aria-selected="true" id="lg-1">
-                lg
+              <button
+                type="button"
+                class="creo-tabs-tab"
+                role="tab"
+                aria-selected="true"
+                id="size-l-1"
+              >
+                l
               </button>
               <button
                 type="button"
                 class="creo-tabs-tab"
                 role="tab"
                 aria-selected="false"
-                id="lg-2"
+                id="size-l-2"
               >
                 Hero
               </button>

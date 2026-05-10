@@ -140,7 +140,7 @@ export default function Card() {
               <li>default を primary な group content に</li>
               <li>elevated を float / popover 様の前面 content に</li>
               <li>outlined を軽量 grouping (filter chip group 等) に</li>
-              <li>padding を content 密度で選ぶ (dense → sm、 hero → lg)</li>
+              <li>padding を content 密度で選ぶ (dense → s、 hero → l)</li>
             </ul>
           </div>
           <div class="docs-dont">
@@ -184,7 +184,7 @@ export default function Card() {
   <p>説明文</p>
 </article>
 
-<!-- Elevated, lg padding (hero) -->
+<!-- Elevated, l padding (hero) -->
 <article class="creo-card" data-variant="elevated" data-padding="l">
   <h2>Feature</h2>
   <p>...</p>

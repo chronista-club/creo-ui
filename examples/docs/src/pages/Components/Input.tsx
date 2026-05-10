@@ -68,10 +68,10 @@ export default function Input() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Variants × Sizes</div>
           <div class="docs-preview-stack">
-            <input class="creo-input" type="text" placeholder="Bordered sm" data-size="s" />
-            <input class="creo-input" type="text" placeholder="Bordered md (default)" />
-            <input class="creo-input" type="text" placeholder="Bordered lg" data-size="l" />
-            <input class="creo-input" type="text" placeholder="Filled md" data-variant="filled" />
+            <input class="creo-input" type="text" placeholder="Bordered s" data-size="s" />
+            <input class="creo-input" type="text" placeholder="Bordered m (default)" />
+            <input class="creo-input" type="text" placeholder="Bordered l" data-size="l" />
+            <input class="creo-input" type="text" placeholder="Filled m" data-variant="filled" />
           </div>
           <div class="docs-preview-row-label">States</div>
           <div class="docs-preview-stack">

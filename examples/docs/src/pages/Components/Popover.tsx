@@ -70,20 +70,20 @@ export default function Popover() {
             </div>
           </div>
 
-          <div class="docs-preview-row-label">Sizes (sm / md / lg)</div>
+          <div class="docs-preview-row-label">Sizes (s / m / l)</div>
           <div class="docs-preview-grid">
-            <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-sm">
-              sm
+            <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-s">
+              s
             </button>
-            <div class="creo-popover" id="pop-sm" popover data-size="s">
+            <div class="creo-popover" id="pop-s" popover data-size="s">
               <div class="creo-popover-body">
                 <p>Compact tip 表示。</p>
               </div>
             </div>
-            <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-lg">
-              lg
+            <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-l">
+              l
             </button>
-            <div class="creo-popover" id="pop-lg" popover data-size="l">
+            <div class="creo-popover" id="pop-l" popover data-size="l">
               <div class="creo-popover-header">
                 <h3 class="creo-popover-title">Large popover</h3>
               </div>

@@ -158,7 +158,7 @@ creo-ui = "0.3"
 // Rust
 use creo_ui::tokens;
 let primary = tokens::COLOR_BRAND_PRIMARY;  // Rgb { r, g, b }
-let md = tokens::SPACING_MD;                 // f32 px`}</code>
+let m = tokens::SPACING_M;                  // f32 px (5 tier 中央)`}</code>
         </pre>
         <p class="docs-page-helper">
           → <A href="/concepts/multi-platform">Multi-platform pipeline</A> で命名規約 + custom

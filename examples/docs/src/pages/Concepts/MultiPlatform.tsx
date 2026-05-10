@@ -153,8 +153,8 @@ public enum CreoUITokens {
 pub struct Rgb { pub r: u8, pub g: u8, pub b: u8 }
 
 pub const COLOR_BRAND_PRIMARY: Rgb = Rgb { r: 33, g: 189, b: 128 };
-pub const SPACING_MD: f32 = 18.0;
-pub const RADIUS_MD: f32 = 15.0;
+pub const SPACING_M: f32 = 18.0;
+pub const RADIUS_M: f32 = 15.0;
 
 // ratatui interop (feature = "ratatui")
 use creo_ui::ratatui::{color, palette};

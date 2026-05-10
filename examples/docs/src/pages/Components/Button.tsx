@@ -21,7 +21,7 @@ const PROPS = [
     attr: 'data-size',
     values: 's / m / l',
     def: 'm',
-    meaning: '5 tier convention 中央の md が標準',
+    meaning: '5 tier convention 中央の m が標準',
   },
   {
     attr: 'disabled',
@@ -46,7 +46,7 @@ const TOKENS = [
   { slot: 'padding', token: 'spacing.{xs/s/m} × spacing.{s/m/l}' },
   { slot: 'gap (icon + label)', token: 'layout.gap.tight' },
   { slot: 'border-radius', token: 'radius.s' },
-  { slot: 'min-height', token: 'layout.target.tap (md/lg) / focus (sm)' },
+  { slot: 'min-height', token: 'layout.target.tap (m/l) / focus (s)' },
 ] as const
 
 export default function Button() {
