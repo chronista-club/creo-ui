@@ -20,10 +20,10 @@ const PROPS = [
 ] as const
 
 const TOKENS = [
-  { slot: 'diameter (sm / md / lg / xl)', token: '24 / 32 / 44 / 64 px (lg = tap target)' },
+  { slot: 'diameter (s / m / l / xl)', token: '24 / 32 / 44 / 64 px (l = tap target)' },
   { slot: 'bg (initials fallback)', token: 'color.brand.primary-subtle' },
   { slot: 'color (initials)', token: 'color.text.primary' },
-  { slot: 'font-size (initials)', token: 'typography.size.{xs/sm/base/md} (size に応じて)' },
+  { slot: 'font-size (initials)', token: 'typography.size.{xs/s/m/l} (size に応じて)' },
   { slot: 'border (square)', token: 'radius.s' },
   { slot: 'status dot', token: '25% of diameter, color.surface.surface 2px border' },
 ] as const

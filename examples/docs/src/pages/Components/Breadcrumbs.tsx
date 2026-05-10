@@ -7,7 +7,7 @@ const PROPS = [
     attr: 'data-size',
     values: 's / m / l',
     def: 'm',
-    meaning: '5 tier convention、 dense header なら sm、 hero page なら lg',
+    meaning: '5 tier convention、 dense header なら s、 hero page なら l',
   },
   {
     attr: 'data-separator',
@@ -111,7 +111,7 @@ export default function Breadcrumbs() {
           </nav>
 
           <div class="docs-preview-row-label">Sizes</div>
-          <nav class="creo-breadcrumbs" data-size="s" aria-label="breadcrumb sm">
+          <nav class="creo-breadcrumbs" data-size="s" aria-label="breadcrumb s">
             <ol class="creo-breadcrumbs-list">
               <li class="creo-breadcrumbs-item">
                 <a class="creo-breadcrumbs-link" href="#h">
@@ -119,11 +119,11 @@ export default function Breadcrumbs() {
                 </a>
               </li>
               <li class="creo-breadcrumbs-item" aria-current="page">
-                Page (sm)
+                Page (s)
               </li>
             </ol>
           </nav>
-          <nav class="creo-breadcrumbs" data-size="l" aria-label="breadcrumb lg">
+          <nav class="creo-breadcrumbs" data-size="l" aria-label="breadcrumb l">
             <ol class="creo-breadcrumbs-list">
               <li class="creo-breadcrumbs-item">
                 <a class="creo-breadcrumbs-link" href="#h">
@@ -131,7 +131,7 @@ export default function Breadcrumbs() {
                 </a>
               </li>
               <li class="creo-breadcrumbs-item" aria-current="page">
-                Page (lg)
+                Page (l)
               </li>
             </ol>
           </nav>

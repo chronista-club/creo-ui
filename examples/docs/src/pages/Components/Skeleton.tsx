@@ -18,9 +18,9 @@ const PROPS = [
   },
   {
     attr: 'data-size (with text shape)',
-    values: 'sm / lg',
+    values: 's / l',
     def: 'm',
-    meaning: 'text の高さ scale (sm = 12px、 md = 16px、 lg = 20px 等)',
+    meaning: 'text の高さ scale (s = 12px、 m = 16px、 l = 20px 等)',
   },
 ] as const
 

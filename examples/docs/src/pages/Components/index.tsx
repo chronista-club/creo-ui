@@ -257,12 +257,12 @@ export default function ComponentsIndex() {
             <A href="/foundations/principles">原則 6</A> 参照
           </li>
           <li>
-            <strong>5-step size-feel convention</strong> — sm / md / lg は xs-xl の 3 段抜粋。
-            <A href="/foundations/principles">原則 1</A> 参照
+            <strong>5 tier size-feel convention</strong> — Component の size variant は s / m / l の
+            3 段階 (xs-xl の中央 3 段抜粋)。 <A href="/foundations/principles">原則 1</A> 参照
           </li>
           <li>
             <strong>Apple HIG</strong> — <code>layout.target.tap</code> (44pt) を min-height、{' '}
-            <code>layout.target.focus</code> (32pt) を sm variant で
+            <code>layout.target.focus</code> (32pt) を s variant で
           </li>
         </ul>
       </section>

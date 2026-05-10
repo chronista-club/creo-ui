@@ -115,7 +115,7 @@ export default function Container() {
       <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
-          <code>{`<!-- Default md (reading-friendly) -->
+          <code>{`<!-- Default m (reading-friendly) -->
 <main class="creo-container">
   <h1>Article</h1>
   <p>...</p>
