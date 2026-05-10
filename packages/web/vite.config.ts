@@ -23,11 +23,7 @@ export default defineConfig({
     dts({
       tsconfigPath: './tsconfig.build.json',
       entryRoot: 'src',
-      include: [
-        'src/shells/**/*.ts',
-        'src/shells/**/*.tsx',
-        'src/global.d.ts',
-      ],
+      include: ['src/shells/**/*.ts', 'src/shells/**/*.tsx', 'src/global.d.ts'],
       exclude: ['src/shells/**/*.test.ts', 'src/shells/**/*.test.tsx'],
       rollupTypes: false,
     }),
@@ -45,7 +41,7 @@ export default defineConfig({
       output: {
         preserveModules: false,
         entryFileNames: '[name].js',
-        assetFileNames: assetInfo => {
+        assetFileNames: (assetInfo) => {
           if (assetInfo.name?.endsWith('.css')) return 'shells/index.css'
           return 'shells/[name][extname]'
         },

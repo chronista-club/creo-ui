@@ -36,7 +36,7 @@ interface CreoFacetGridProps {
  * Vision: mem_1Cak5rxTFWvLNxjSRiQ1Ak (Layered Surface v5.1)
  * Origin: Phase 1 (CREO-160) `.memoryPage` から抽出
  */
-export const CreoFacetGrid: Component<CreoFacetGridProps> = props => (
+export const CreoFacetGrid: Component<CreoFacetGridProps> = (props) => (
   <div
     class={`${styles.creoFacetGrid}${props.class ? ` ${props.class}` : ''}`}
     style={{
