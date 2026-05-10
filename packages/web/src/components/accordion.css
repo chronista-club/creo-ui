@@ -55,11 +55,7 @@
   background-color: var(--color-surface-bg-subtle);
 }
 
-.creo-accordion-summary:focus-visible {
-  outline: 2px solid var(--color-brand-primary);
-  outline-offset: -2px;
-  border-radius: var(--radius-s);
-}
+/* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 /* Chevron (自前で挿入)
  *  - 細身の `›` (U+203A) でモダン、 ▸ より sharper な視覚

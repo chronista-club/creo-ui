@@ -69,10 +69,7 @@
   color: var(--color-text-primary);
 }
 
-.creo-breadcrumbs-link:focus-visible {
-  outline: 2px solid var(--color-brand-primary);
-  outline-offset: 2px;
-}
+/* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 /* 現在 page: link じゃない (span)、font-weight 強調 */
 .creo-breadcrumbs-item[aria-current="page"] > .creo-breadcrumbs-link,

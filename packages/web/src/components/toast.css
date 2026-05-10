@@ -149,10 +149,7 @@
   color: var(--color-text-primary);
   background-color: var(--color-surface-bg-subtle);
 }
-.creo-toast-close:focus-visible {
-  outline: 2px solid var(--color-brand-primary);
-  outline-offset: 1px;
-}
+/* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 /* ---------- Reduced motion ---------- */
 

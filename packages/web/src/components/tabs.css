@@ -55,11 +55,7 @@
   color: var(--color-text-primary);
 }
 
-.creo-tabs-tab:focus-visible {
-  outline: 2px solid var(--color-brand-primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-xs);
-}
+/* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 .creo-tabs-tab:disabled {
   cursor: not-allowed;

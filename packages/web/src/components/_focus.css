@@ -1,0 +1,77 @@
+/**
+ * Focus ring policy — `:focus-visible` based keyboard-only focus indicator
+ *
+ * Creo UI design system の a11y baseline (WCAG 2.4.7 Focus Visible /
+ * 2.4.11 Focus Appearance) を満たす component-agnostic policy。
+ *
+ * Aesthetic direction: Sophisticated layered (Apple HIG visionOS 26 +
+ * Linear "気づかれない polish" の hybrid):
+ *   - outer 2px solid brand ring (--focus-ring-width / --color-focus-ring-color)
+ *   - inner 4px halo (box-shadow with --color-focus-ring-halo alpha 0.18-0.20)
+ *   - offset 2px from element border (要素を遮らず ring が呼吸)
+ *   - 8 theme で brand hue と整合 (light theme は luminance DOWN、 dark theme は UP)
+ *
+ * Behavior:
+ *   - keyboard-only via :focus-visible (mouse focus は ring 出さない、 Radix-pattern)
+ *   - prefers-reduced-motion: ring 自体は表示 (a11y 最優先)、 transition のみ無効化
+ *
+ * Cascade order: filename `_focus.css` の `_` prefix で sort 最優先 (build:web の
+ *   concat order が alphabetical)。 各 component CSS が後から個別 :focus-visible
+ *   を override するのは原則禁止 (a11y consistency)、 例外時はコメントで articulate。
+ */
+
+:where(
+    .creo-btn,
+    .creo-input,
+    .creo-checkbox-input,
+    .creo-radio-input,
+    .creo-switch-input,
+    .creo-tabs-tab,
+    .creo-segmented-option input,
+    .creo-pagination-item,
+    .creo-breadcrumbs-link,
+    .creo-accordion-summary,
+    .creo-menu-item,
+    .creo-combobox-input,
+    .creo-form-field-label,
+    .creo-alert-close,
+    .creo-toast-close,
+    .creo-drawer-close,
+    .creo-dialog-close,
+    .creo-popover-close,
+    a
+  ):focus-visible {
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--color-focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: 0 0 0 var(--focus-ring-halo-width) var(--color-focus-ring-halo);
+}
+
+/* Native popover (button[popovertarget]) の focus-visible も同 policy */
+[popover]:focus-visible,
+button[popovertarget]:focus-visible {
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--color-focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: 0 0 0 var(--focus-ring-halo-width) var(--color-focus-ring-halo);
+}
+
+/* Reduced-motion: ring 自体は表示 (a11y 最優先)、 transition 無効化のみ */
+@media (prefers-reduced-motion: reduce) {
+  :where(
+      .creo-btn,
+      .creo-input,
+      .creo-checkbox-input,
+      .creo-radio-input,
+      .creo-switch-input,
+      .creo-tabs-tab,
+      .creo-segmented-option input,
+      .creo-pagination-item,
+      .creo-breadcrumbs-link,
+      .creo-accordion-summary,
+      .creo-menu-item,
+      .creo-combobox-input,
+      .creo-form-field-label,
+      a
+    ):focus-visible {
+    transition: none;
+  }
+}
