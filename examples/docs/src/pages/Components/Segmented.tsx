@@ -67,20 +67,20 @@ export default function Segmented() {
           </div>
 
           <div class="docs-preview-row-label">Sizes</div>
-          <div class="creo-segmented" data-size="s" role="radiogroup" aria-label="size sm">
+          <div class="creo-segmented" data-size="s" role="radiogroup" aria-label="size s">
             <label class="creo-segmented-option">
               <input type="radio" name="seg-2" value="a" checked />
-              <span>sm</span>
+              <span>s</span>
             </label>
             <label class="creo-segmented-option">
               <input type="radio" name="seg-2" value="b" />
               <span>Compact</span>
             </label>
           </div>
-          <div class="creo-segmented" data-size="l" role="radiogroup" aria-label="size lg">
+          <div class="creo-segmented" data-size="l" role="radiogroup" aria-label="size l">
             <label class="creo-segmented-option">
               <input type="radio" name="seg-3" value="a" checked />
-              <span>lg</span>
+              <span>l</span>
             </label>
             <label class="creo-segmented-option">
               <input type="radio" name="seg-3" value="b" />
