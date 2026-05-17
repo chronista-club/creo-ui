@@ -1,11 +1,11 @@
-//! creo-ui
+//! creoui
 //!
-//! Creo UI Design System tokens for Rust consumers.
+//! creoui Design System tokens for Rust consumers.
 //!
 //! Phase 1: Style Dictionary から生成された token module を再 export する。
 //!
 //! ```ignore
-//! use creo_ui::tokens;
+//! use creoui::tokens;
 //!
 //! let brand = tokens::COLOR_BRAND_PRIMARY; // Rgb (mint-dark default)
 //! let md = tokens::SPACING_M;             // 18.0_f32 (px, 5-step rule)
@@ -58,7 +58,7 @@ mod tests {
 
     #[test]
     fn margin_md_matches_spacing_md() {
-        // Creo UI 規約: 同じ "medium" は spacing.md と margin.md を揃える
+        // creoui 規約: 同じ "medium" は spacing.md と margin.md を揃える
         assert_eq!(tokens::MARGIN_M, tokens::SPACING_M);
     }
 

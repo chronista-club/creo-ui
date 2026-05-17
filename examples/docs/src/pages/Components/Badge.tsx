@@ -6,7 +6,7 @@ import {
   select,
   signalTarget,
   string,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -162,7 +162,7 @@ export default function Badge() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.badge-editor',
+              localStorageNamespace: 'creoui-docs.badge-editor',
             }}
           >
             <BadgeEditorDemo />

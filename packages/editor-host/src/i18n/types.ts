@@ -1,9 +1,9 @@
 /**
- * creo-ui-editor-host — i18n types
+ * creoui-editor-host — i18n types
  *
  * UI primitive (Editor Mode labels, Button default label 等) に使う
  * 最小 i18n 型。anycreative-tech の messages SSOT パターン (CREO-91) を
- * Creo UI の i18n primitive として port したもの。
+ * creoui の i18n primitive として port したもの。
  *
  * 思想:
  *   - UI chrome 文字列は **TypeScript SSOT** で持つ (翻訳漏れが tsc で検出される)
@@ -11,13 +11,13 @@
  *     型駆動に validate できる
  *   - `useT()` hook は current locale を閉じ込めて LocalizedText → string に解決
  *
- * Locale 拡張: Creo UI は minimum `ja | en` を default に持つ。consumer が
+ * Locale 拡張: creoui は minimum `ja | en` を default に持つ。consumer が
  * 他言語 (ko / zh / fr 等) を扱う場合は declaration merging で `Locale` を
  * 拡張し、LocalizedText にも対応キーを持たせる (module augmentation example
  * は src/i18n/README.md 予定)。
  */
 
-/** Creo UI 標準 locale — ja (source), en (international) */
+/** creoui 標準 locale — ja (source), en (international) */
 export type Locale = 'ja' | 'en'
 
 /**

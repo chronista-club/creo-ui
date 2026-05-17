@@ -1,11 +1,11 @@
 /**
- * Creo UI — Menu (Dropdown, popover-based)
+ * creoui — Menu (Dropdown, popover-based)
  *
  * native `popover` API を推奨。consumer は `<div popover="auto">` + `popovertarget` で
  * open/close 制御、JS 最小化。
  *
  * Spec: docs/components/menu.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-menu {

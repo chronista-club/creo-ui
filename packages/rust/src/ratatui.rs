@@ -1,18 +1,18 @@
 //! ratatui (TUI) interop layer.
 //!
-//! Creo UI tokens → `ratatui::Color` 変換 helper を提供。TUI は「色」と
+//! creoui tokens → `ratatui::Color` 変換 helper を提供。TUI は「色」と
 //! 「text style (bold / italic / underline 等)」のみ意味を持つので、spacing /
 //! shadow 系 token はここでは扱わない (character cell 単位の padding helper
 //! は [`pad`] 以下で別途提供)。
 //!
 //! ## Feature flag
-//! `creo-ui = { features = ["ratatui"] }` で有効化。
+//! `creoui = { features = ["ratatui"] }` で有効化。
 //!
 //! ## 使用例
 //!
 //! ```ignore
-//! use creo_ui::ratatui as creo_rat;
-//! use creo_ui::tokens;
+//! use creoui::ratatui as creo_rat;
+//! use creoui::tokens;
 //!
 //! let title_style = ratatui::style::Style::default()
 //!     .fg(creo_rat::color(tokens::COLOR_BRAND_PRIMARY))
@@ -22,7 +22,7 @@
 use crate::tokens::Rgb;
 use ratatui::style::Color;
 
-/// Creo UI の [`Rgb`] を ratatui の [`Color::Rgb`] に変換する。
+/// creoui の [`Rgb`] を ratatui の [`Color::Rgb`] に変換する。
 #[inline]
 #[must_use]
 pub fn color(rgb: Rgb) -> Color {
@@ -32,8 +32,8 @@ pub fn color(rgb: Rgb) -> Color {
 /// Style 作成ヘルパー。前景色を brand.primary に set、bold を add する等の典型パターン。
 ///
 /// ```ignore
-/// let s = creo_ui::ratatui::style()
-///     .fg(creo_ui::ratatui::color(creo_ui::tokens::COLOR_BRAND_PRIMARY));
+/// let s = creoui::ratatui::style()
+///     .fg(creoui::ratatui::color(creoui::tokens::COLOR_BRAND_PRIMARY));
 /// ```
 #[inline]
 #[must_use]
@@ -157,7 +157,7 @@ pub mod widgets {
     /// - title (optional): bold + text.primary
     ///
     /// ```ignore
-    /// use creo_ui::ratatui::widgets;
+    /// use creoui::ratatui::widgets;
     /// let area_block = widgets::section_block(Some("Memories"));
     /// ```
     #[must_use]
@@ -216,7 +216,7 @@ pub mod widgets {
     /// 色は text.secondary 基調で、中央は spacer 展開を consumer 側で。
     ///
     /// ```ignore
-    /// let status = widgets::status_line("project-creo-ui", "active · 2m ago");
+    /// let status = widgets::status_line("project-creoui", "active · 2m ago");
     /// ```
     #[must_use]
     pub fn status_line<'a>(left: &'a str, right: &'a str) -> Line<'a> {

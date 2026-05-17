@@ -2,7 +2,7 @@
  * Corner concentric helper — Apple HIG iOS 16+ 流「親子同心円 radius」計算。
  *
  * 子要素の corner radius を親の radius と padding から計算すると、親子の
- * 角が視覚的に同心円で揃う。Creo UI の "柔らかく気持ちいい" aesthetic で
+ * 角が視覚的に同心円で揃う。creoui の "柔らかく気持ちいい" aesthetic で
  * 最も活きる nesting パターン。
  *
  * @example

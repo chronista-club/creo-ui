@@ -1,6 +1,6 @@
 # FormField
 
-> Creo UI utility component. label + input + helper-text を bundle する minimal wrapper。
+> creoui utility component. label + input + helper-text を bundle する minimal wrapper。
 
 ## Purpose
 

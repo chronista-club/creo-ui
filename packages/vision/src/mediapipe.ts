@@ -15,7 +15,7 @@
  *
  * Coordinate space (V-6, 2026-05-03):
  *   MediaPipe の生 landmark は camera image plane (selfie だと user の右手は x が小さい側に映る)。
- *   Creo UI vision API は **user-space を canonical** とする — `camera: 'user'` の時 x を 1-x で
+ *   creoui vision API は **user-space を canonical** とする — `camera: 'user'` の時 x を 1-x で
  *   反転、 user の右手 → x 大、 左手 → x 小。 これにより VP の ARKit (worldspace、 user 視点と
  *   一致) と semantic 互換になり、 consumer の UI 層は coord 変換不要で書ける。 raw camera POV が
  *   必要な spatial reasoning consumer は `coordSpace: 'camera'` で opt-out 可。

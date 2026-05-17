@@ -57,7 +57,7 @@ export function FrameProvider(props: FrameProviderProps): JSX.Element {
   const setFrame = (id: string): void => {
     if (!framesMap().has(id)) {
       // eslint-disable-next-line no-console
-      console.warn(`[creo-ui-frame] setFrame: frame "${id}" not registered`)
+      console.warn(`[creoui-frame] setFrame: frame "${id}" not registered`)
       return
     }
     setCurrentId(id)
@@ -93,7 +93,7 @@ export function FrameProvider(props: FrameProviderProps): JSX.Element {
 export function useFrame(): FrameContextValue {
   const ctx = useContext(FrameCtx)
   if (!ctx) {
-    throw new Error('[creo-ui-frame] useFrame() must be used inside <FrameProvider>')
+    throw new Error('[creoui-frame] useFrame() must be used inside <FrameProvider>')
   }
   return ctx
 }

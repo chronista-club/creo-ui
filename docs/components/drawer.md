@@ -1,6 +1,6 @@
 # Drawer
 
-> Creo UI MVP component. 画面端から slide in する overlay (Dialog の side 版)。
+> creoui MVP component. 画面端から slide in する overlay (Dialog の side 版)。
 
 ## Purpose
 

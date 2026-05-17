@@ -7,7 +7,7 @@ import {
   select,
   signalTarget,
   string,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -148,7 +148,7 @@ export default function Input() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.input-editor',
+              localStorageNamespace: 'creoui-docs.input-editor',
             }}
           >
             <InputEditorDemo />
@@ -180,7 +180,7 @@ export default function Input() {
         <p class="docs-page-helper">
           詳細 spec:{' '}
           <a
-            href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/input.md"
+            href="https://github.com/chronista-club/creoui/blob/main/docs/components/input.md"
             target="_blank"
             rel="noopener noreferrer"
           >

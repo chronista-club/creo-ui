@@ -1,4 +1,4 @@
-name: Publish creo-ui-web to npm
+name: Publish creoui to npm
 
 on:
   push:
@@ -17,15 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: creo-ui
+        working-directory: creoui
     steps:
-      # creo-ui を nested path に checkout、 creo-views を sibling として
+      # creoui を nested path に checkout、 creo-views を sibling として
       # 並行 checkout (packages/md-view の `file:../../../creo-views` 解決のため)。
       # ci.yml と同 layout。
-      - name: Checkout creo-ui
+      - name: Checkout creoui
         uses: actions/checkout@v4
         with:
-          path: creo-ui
+          path: creoui
 
       - name: Checkout creo-views (sibling, required by packages/md-view)
         uses: actions/checkout@v4
@@ -54,7 +54,7 @@ jobs:
         run: test -s packages/web/dist/tokens.css
 
       - name: Publish to npm
-        working-directory: creo-ui/packages/web
+        working-directory: creoui/packages/web
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public

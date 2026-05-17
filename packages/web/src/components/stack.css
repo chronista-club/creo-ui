@@ -1,11 +1,11 @@
 /**
- * Creo UI — Stack (vertical / horizontal flex layout primitive)
+ * creoui — Stack (vertical / horizontal flex layout primitive)
  *
  * 子要素を一方向に並べる最小 layout primitive。 default vertical (flex-direction column)、
  * `data-direction="horizontal"` で row。 gap / align / justify は token-driven。
  *
  * Spec: docs/components/stack.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-stack {

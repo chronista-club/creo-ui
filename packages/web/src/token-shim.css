@@ -1,14 +1,14 @@
 /**
- * creo-ui-web — token-shim.css
+ * creoui — token-shim.css
  *
- * 既存プロジェクトが creo-ui-web 移行する際の **transitional alias 層**。
+ * 既存プロジェクトが creoui 移行する際の **transitional alias 層**。
  * 典型的な flat 1 階層 (`--color-primary`) / Tailwind 風 / Tabler 風の変数名を
- * Creo UI の DTCG 3 階層 token へ alias する。
+ * creoui の DTCG 3 階層 token へ alias する。
  *
  * 使い方:
  * ```js
- * import 'creo-ui-web/tokens.css'       // 1. SSOT token
- * import 'creo-ui-web/token-shim.css'   // 2. transitional aliases
+ * import 'creoui/tokens.css'       // 1. SSOT token
+ * import 'creoui/token-shim.css'   // 2. transitional aliases
  * // 3. 既存 CSS が徐々に新 token へ置換、shim は最後に削除
  * ```
  *
@@ -17,7 +17,7 @@
  *   Phase B: domain 単位で `bg-primary` → `bg-brand-primary` 等の class/var 置換
  *   Phase C: shim 削除 → 完全移行完了
  *
- * **Creo UI 2 階層目以上の意味的 token** (例: `--color-text-secondary`) を
+ * **creoui 2 階層目以上の意味的 token** (例: `--color-text-secondary`) を
  * `color-muted` にまとめる等、flat 構造への downgrade が主。逆向き (階層化)
  * は consumer 側の設計判断に委ねる。
  */
@@ -58,7 +58,7 @@
   --space-5: var(--spacing-xl); /* 32px */
 
   /* ---------- 5 tier rename legacy alias (sm/md/lg → s/m/l 互換、 v0.16-v0.17 で完了) ----------
-     creo-ui v0.0-v0.16 は xs/sm/md/lg/xl 命名 (Tailwind 流) だったが、 v0.17 で全
+     creoui v0.0-v0.16 は xs/sm/md/lg/xl 命名 (Tailwind 流) だったが、 v0.17 で全
      dimension scale token が xs/s/m/l/xl の 5 tier convention に完全統一。 旧 consumer
      (creo-memories 等) は token-shim.css 経由で互換維持。 v0.18 で component attribute
      (data-size="md" 等) も rename されたが、 attribute は HTML markup 側で書換が必要 (CSS

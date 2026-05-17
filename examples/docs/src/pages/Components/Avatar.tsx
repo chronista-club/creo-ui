@@ -6,7 +6,7 @@ import {
   select,
   signalTarget,
   string,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -166,7 +166,7 @@ export default function Avatar() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.avatar-editor',
+              localStorageNamespace: 'creoui-docs.avatar-editor',
             }}
           >
             <AvatarEditorDemo />
@@ -197,7 +197,7 @@ export default function Avatar() {
         <p class="docs-page-helper">
           詳細 spec:{' '}
           <a
-            href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/avatar.md"
+            href="https://github.com/chronista-club/creoui/blob/main/docs/components/avatar.md"
             target="_blank"
             rel="noopener noreferrer"
           >

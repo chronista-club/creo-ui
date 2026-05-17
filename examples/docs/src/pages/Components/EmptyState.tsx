@@ -73,7 +73,7 @@ export default function EmptyState() {
             <div class="creo-empty-state-icon" aria-hidden="true">
               ✨
             </div>
-            <h3 class="creo-empty-state-title">Welcome to Creo UI</h3>
+            <h3 class="creo-empty-state-title">Welcome to creoui</h3>
             <p class="creo-empty-state-description">
               token-driven な multi-platform design system。 まず Foundations から見るか、 直接
               Components catalog を探索できます。

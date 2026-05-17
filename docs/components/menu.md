@@ -1,6 +1,6 @@
 # Menu (Dropdown)
 
-> Creo UI MVP component. button click でopen、action list を表示する overlay menu。
+> creoui MVP component. button click でopen、action list を表示する overlay menu。
 
 ## Purpose
 

@@ -4,7 +4,7 @@
  * `packages/web/src/components/*.css` を concat して `packages/web/dist/components.css` に出力。
  * Style Dictionary (token 生成) の後に走らせる想定。`bun run build` に chained。
  *
- * 生成物は `creo-ui-web/components.css` として publish される (package.json の exports)。
+ * 生成物は `creoui/components.css` として publish される (package.json の exports)。
  */
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
@@ -35,7 +35,7 @@ if (cssFiles.length === 0) {
 
 const header = [
   '/**',
-  ' * creo-ui-web — components.css',
+  ' * creoui — components.css',
   ' *',
   ' * Generated: concat of packages/web/src/components/*.css.',
   ' * Requires tokens.css to be imported first (CSS variables).',

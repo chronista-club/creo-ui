@@ -3,7 +3,7 @@
 export type IconName = `${string}:${string}`
 
 // Curated VP-favored Iconify prefixes (10-set lineup)
-// 詳細は creo-ui memory: feedback_creo_ui_icon_dual_axis.md (2026-04-29 確定)
+// 詳細は creoui memory: feedback_creoui_icon_dual_axis.md (2026-04-29 確定)
 export type IconPrefix =
   | 'mingcute' // friendly UI (button/dialog/menu)
   | 'iconoir' // minimal/dense (sidebar/list)

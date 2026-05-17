@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — SolidJS provider + host context
+ * creoui-editor-host — SolidJS provider + host context
  *
  * `<EditorHostProvider>` で app を wrap すると、配下で `useEditorHost()` /
  * `useEditorFields()` / `useEditorValue<T>()` / `useEditorSelectable()` が

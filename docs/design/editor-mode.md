@@ -1,8 +1,8 @@
-# Editor Mode — Creo UI Universal Editor Protocol
+# Editor Mode — creoui Universal Editor Protocol
 
 **Status**: Phase 2a **Shipped** (`packages/editor-host/` で SolidJS runtime + 4 region layout を実装済、 19 unit tests pass、 docs site で dogfood 中)
-**Owners**: Creo UI (schema + Web reference runtime) + Consumer packages (Swift / Rust runtime は未着手)
-**Scope**: Creo UI を「視覚的定数の SSOT」から「視覚的定数 + Editor protocol の SSOT」に拡張する設計決定。 Web は `packages/editor-host/` で reference 実装、 Swift / Rust は consumer 側 (Phase 2 後段で別 package 化検討)
+**Owners**: creoui (schema + Web reference runtime) + Consumer packages (Swift / Rust runtime は未着手)
+**Scope**: creoui を「視覚的定数の SSOT」から「視覚的定数 + Editor protocol の SSOT」に拡張する設計決定。 Web は `packages/editor-host/` で reference 実装、 Swift / Rust は consumer 側 (Phase 2 後段で別 package 化検討)
 
 ---
 
@@ -13,8 +13,8 @@
 - 特定の instance (Studio / DevEditor) ではなく、**mode** (状態) として 全 app が持つ
 - Content Layer は一切触らず、**overlay** として 4 領域に展開される
 - mode は**手動 toggle**、OFF 時は完全不可視、ON 時も Content の layout を変化させない
-- field binding の protocol と 4 方向 semantic layout を **Creo UI が schema owner として規定**
-- runtime 実装は consumer 側 (`@creo/ui` for Web, `CreoUI` for Swift, `creo-ui` for Rust) が担う
+- field binding の protocol と 4 方向 semantic layout を **creoui が schema owner として規定**
+- runtime 実装は consumer 側 (`creoui` for Web, `Creoui` for Swift, `creoui` for Rust) が担う
 
 ---
 
@@ -32,7 +32,7 @@
 | D-8 | Mode OFF の挙動 | Editor Layer 完全不可視、field 値は保持 |
 | D-9 | Reactive 反映 | field 変更が bind 先 (token / state / prop) に即反映、Content が再描画 |
 | D-10 | AI agent access | 同 protocol を MCP 経由で (enter/select/set/subscribe/exit) |
-| D-11 | protocol owner | **Creo UI** (schema + TS 型 + JSON schema)、実装は consumer 側 |
+| D-11 | protocol owner | **creoui** (schema + TS 型 + JSON schema)、実装は consumer 側 |
 | D-12 | 段階 | Phase 1 = 設計 memo + editor-mode tokens / Phase 2 = Web 実装・MCP / Phase 3+ = Swift 実装、theme 切替 |
 
 ---
@@ -197,7 +197,7 @@ export interface SelectionInfo {
 
 ### あらかじめ (framework-provided)
 
-Creo UI が標準で宣言する fields。どの app でも自動で存在:
+creoui が標準で宣言する fields。どの app でも自動で存在:
 
 | Field | Semantic | Region | 用途 |
 |-------|----------|--------|------|
@@ -209,7 +209,7 @@ Creo UI が標準で宣言する fields。どの app でも自動で存在:
 | `utility.copy-state` | `utility` | BOTTOM | 現状を clipboard にコピー |
 | `utility.ai-chat` | `utility` | BOTTOM | Claude / AI assistant inline chat |
 
-これらは `@creo/ui` (SolidJS 版) が自動で `registerFields()` する。
+これらは `creoui` (SolidJS 版) が自動で `registerFields()` する。
 
 ### カスタム (app-specific)
 
@@ -217,7 +217,7 @@ Creo UI が標準で宣言する fields。どの app でも自動で存在:
 
 ```tsx
 // creo-memories 側で
-import { useEditor } from '@creo/ui'
+import { useEditor } from 'creoui'
 
 function MemoryItemView() {
   const { registerFields } = useEditor()
@@ -254,7 +254,7 @@ Mode ON で該当要素を選ぶと、LEFT に "Original content"、RIGHT に "P
 
 複数 source から同 semantic の fields が集まったときの順序:
 
-1. **framework** (Creo UI 標準) → 最上部
+1. **framework** (creoui 標準) → 最上部
 2. **app** (app-specific 登録) → 次
 3. **custom** (user 定義の overlay) → 最下部
 4. 同レベル内は `order?` hint → 宣言順 で安定 sort
@@ -353,16 +353,16 @@ Phase 1 で既に生成済み:
 
 ## 9. DevEditor (既存) の migration path
 
-creo-memories/packages/creo-ui/src/components/DevEditor.tsx は現状 single instance で独自 `globalValues()` signal を持つ。Editor Mode protocol への移行は以下の段階で:
+creo-memories/packages/creoui/src/components/DevEditor.tsx は現状 single instance で独自 `globalValues()` signal を持つ。Editor Mode protocol への移行は以下の段階で:
 
 ### Step 1: adapter 実装 (後方互換)
-`@creo/ui` 側に `EditorHost` 実装を追加、DevEditor の既存 API (`devInit` / `devValue`) を `EditorHost.registerFields` / `getValue` に forward する shim を置く。既存 consumer (creo-web / creo-portal) は変更不要。
+`creoui` 側に `EditorHost` 実装を追加、DevEditor の既存 API (`devInit` / `devValue`) を `EditorHost.registerFields` / `getValue` に forward する shim を置く。既存 consumer (creo-web / creo-portal) は変更不要。
 
 ### Step 2: 段階的移行
 DevEditor を呼び出している箇所で、順次 `useEditor()` + `registerFields()` に書き換え。4 方向 layout に自動配置される。
 
 ### Step 3: 廃止
-全箇所移行後、DevEditor 本体を `@creo/ui` から削除、Editor Layer の標準 host のみに。
+全箇所移行後、DevEditor 本体を `creoui` から削除、Editor Layer の標準 host のみに。
 
 ### 現 DevEditor の各要素 → Editor Layer 配置
 
@@ -407,7 +407,7 @@ User: "yes"
 Claude: (tokens リポジトリに PR を作成)
 ```
 
-この loop は **Creo UI 自身の開発** (Creo ecosystem 全体の design token を磨くプロセス) でも同じ grammar で成立する。
+この loop は **creoui 自身の開発** (Creo ecosystem 全体の design token を磨くプロセス) でも同じ grammar で成立する。
 
 ---
 
@@ -416,12 +416,12 @@ Claude: (tokens リポジトリに PR を作成)
 | Phase | 内容 | Status |
 |-------|------|--------|
 | **Phase 1** | 設計 memo (本 doc) + `tokens/editor-mode/*.json` + TS 型 d.ts (optional) | ✅ 完了 |
-| **Phase 2a** | `creo-ui-editor-host` (SolidJS) で `EditorHost` runtime 実装 + 4 region layout | ✅ **Shipped** (`packages/editor-host/`、 19 tests pass、 docs site で dogfood) |
+| **Phase 2a** | `creoui-editor-host` (SolidJS) で `EditorHost` runtime 実装 + 4 region layout | ✅ **Shipped** (`packages/editor-host/`、 19 tests pass、 docs site で dogfood) |
 | **Phase 2b** | MCP server 実装 (editor_mode_* tools)、Claude Code 連携 | 縮小 — `claude-in-chrome` + `window.creoEditor` console REPL で代替可能 (EH-5)、 専用 server 実装は不要 |
 | **Phase 2c** | DevEditor adapter → 段階的移行 | 未着手 (creo-memories lead 判断、 EH-4) |
 | **Phase 3a** | Theme 切替 (light / dark / high-contrast) を Editor Mode で prototyping | 部分着手 (`ThemeEditor` / 8 theme 切替 UI 同梱) |
-| **Phase 3b** | `CreoUI` (Swift) 側に `EditorHost` 実装 | 未着手 (consumer 側 or 将来別 package で) |
-| **Phase 4** | `creo-ui` (Rust / ratatui) 側に最小 Editor Mode (TUI 向け) | 未着手 (要否検討) |
+| **Phase 3b** | `Creoui` (Swift) 側に `EditorHost` 実装 | 未着手 (consumer 側 or 将来別 package で) |
+| **Phase 4** | `creoui` (Rust / ratatui) 側に最小 Editor Mode (TUI 向け) | 未着手 (要否検討) |
 
 ---
 
@@ -443,8 +443,8 @@ Claude: (tokens リポジトリに PR を作成)
 
 - **CLAUDE.md**: scope 定義 (tokens + Editor Mode protocol)
 - **tokens/editor-mode/**: Editor Layer 自身が consume する 5 カテゴリ token
-- **VP 設計 memo** (`~/repos/vantage-point/docs/design/05-pane-content-lane-smart-canvas.md`): D-1 "CreoUI delegation: schema owner = creo-memories" / D-12 "CreoUI schema 戦略 C (Co-design)" が Editor Mode の位置付けを支える上位決定
-- **既存 DevEditor** (`creo-memories/packages/creo-ui/src/components/DevEditor.tsx`): Phase 2 で Editor Mode protocol へ migration
+- **VP 設計 memo** (`~/repos/vantage-point/docs/design/05-pane-content-lane-smart-canvas.md`): D-1 "Creoui delegation: schema owner = creo-memories" / D-12 "Creoui schema 戦略 C (Co-design)" が Editor Mode の位置付けを支える上位決定
+- **既存 DevEditor** (`creo-memories/packages/creoui/src/components/DevEditor.tsx`): Phase 2 で Editor Mode protocol へ migration
 
 ---
 

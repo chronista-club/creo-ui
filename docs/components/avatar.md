@@ -1,6 +1,6 @@
 # Avatar
 
-> Creo UI MVP component. ユーザー / 主体 / アイテムの視覚表現。image or initials fallback。
+> creoui MVP component. ユーザー / 主体 / アイテムの視覚表現。image or initials fallback。
 
 ## Purpose
 

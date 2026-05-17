@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — Cross-tab sync (F5)
+ * creoui-editor-host — Cross-tab sync (F5)
  *
  * BroadcastChannel で同 origin の複数 tab 間で editor values を同期。1 tab で
  * slider を動かすと他 tab の Content が追従する。setValue の silent option で
@@ -8,9 +8,9 @@
 import type { EditorHost } from './types'
 
 export interface CrossTabOptions {
-  /** BroadcastChannel 名 (default: 'creo-ui-editor-host:{namespace}') */
+  /** BroadcastChannel 名 (default: 'creoui-editor-host:{namespace}') */
   channel?: string
-  /** namespace (localStorageNamespace と同値を期待、default 'creo-ui-editor-host') */
+  /** namespace (localStorageNamespace と同値を期待、default 'creoui-editor-host') */
   namespace?: string
 }
 
@@ -20,7 +20,7 @@ type Msg =
   | { t: 'snapshot'; values: Record<string, unknown>; origin: string }
 
 function defaultChannelName(namespace: string): string {
-  return `creo-ui-editor-host:${namespace}`
+  return `creoui-editor-host:${namespace}`
 }
 
 function generateTabId(): string {
@@ -36,7 +36,7 @@ export function installCrossTabSync(host: EditorHost, opts: CrossTabOptions = {}
     return () => {}
   }
 
-  const namespace = opts.namespace ?? 'creo-ui-editor-host'
+  const namespace = opts.namespace ?? 'creoui-editor-host'
   const channelName = opts.channel ?? defaultChannelName(namespace)
   const tabId = generateTabId()
   const channel = new BroadcastChannel(channelName)

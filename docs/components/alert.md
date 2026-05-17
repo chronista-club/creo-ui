@@ -1,6 +1,6 @@
 # Alert
 
-> Creo UI MVP component. inline で status / notice を持続表示する component (Toast とは違う)。
+> creoui MVP component. inline で status / notice を持続表示する component (Toast とは違う)。
 
 ## Purpose
 

@@ -1,12 +1,12 @@
 /**
- * Creo UI — Tabs component (ARIA tablist pattern)
+ * creoui — Tabs component (ARIA tablist pattern)
  *
  * `.creo-tabs` wrapper + `.creo-tabs-list` (role=tablist) + `.creo-tabs-tab`
  * (role=tab) + `.creo-tabs-panel` (role=tabpanel)。active 判定は
  * `aria-selected="true"` を SSOT として CSS selector でスタイル切替。
  *
  * Spec: docs/components/tabs.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-tabs {

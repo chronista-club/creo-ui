@@ -1,6 +1,6 @@
 # Dialog
 
-> Creo UI MVP component. 注意を要求する overlay (modal / confirmation / form)。native `<dialog>` element を採用。
+> creoui MVP component. 注意を要求する overlay (modal / confirmation / form)。native `<dialog>` element を採用。
 
 ## Purpose
 

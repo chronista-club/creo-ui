@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — <EditorLayer> (Editor Mode の UI root)
+ * creoui-editor-host — <EditorLayer> (Editor Mode の UI root)
  *
  * consumer は `<EditorHostProvider>` と一緒に配置:
  *   <EditorHostProvider>
@@ -8,7 +8,7 @@
  *   </EditorHostProvider>
  *
  * Mode OFF では `visibility: hidden`、Mode ON で 4 region + selection outline
- * を描画する。token `--editor-mode-*` を consume するので、creo-ui-web の
+ * を描画する。token `--editor-mode-*` を consume するので、creoui の
  * tokens.css が load されている前提。
  */
 import { For, Show } from 'solid-js'

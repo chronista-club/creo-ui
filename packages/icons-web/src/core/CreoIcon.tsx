@@ -36,7 +36,7 @@ export interface CreoIconProps {
 }
 
 // iconify-icon Web Component の thin wrapper。
-// currentColor + 1em default で creo-ui token に追従させる layer。
+// currentColor + 1em default で creoui token に追従させる layer。
 export const CreoIcon: Component<CreoIconProps> = (props) => {
   const styleObj = (): JSX.CSSProperties | string | undefined => {
     if (typeof props.style === 'string') return props.style

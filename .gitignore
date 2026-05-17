@@ -1,8 +1,8 @@
 node_modules/
 dist/
 
-# Phase 2a PoC — creo-ui-design release artifacts (download 先、 commit しない)
-dist-creo-ui-design/
+# Phase 2a PoC — creoui-design release artifacts (download 先、 commit しない)
+dist-creoui-design/
 .DS_Store
 *.log
 .env
@@ -19,5 +19,5 @@ packages/rust/Cargo.lock
 # swift build expect them to exist without first running `bun run build`.
 # Web tokens live under `packages/web/dist/` which is gitignored (shipped
 # only as npm publish artifact).
-!packages/swift/Sources/CreoUI/Generated/
+!packages/swift/Sources/Creoui/Generated/
 !packages/rust/src/generated/

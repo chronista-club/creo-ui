@@ -13,7 +13,7 @@ const THEMES = [
 
 type ThemeId = (typeof THEMES)[number]['id']
 
-const STORAGE_KEY = 'creo-ui-docs.theme'
+const STORAGE_KEY = 'creoui-docs.theme'
 
 export default function ThemeSwitcher() {
   const [theme, setTheme] = createSignal<ThemeId>('mint-dark')

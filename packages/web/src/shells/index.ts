@@ -1,5 +1,5 @@
 /**
- * creo-ui-web/shells — Layered Surface page grammar primitives
+ * creoui/shells — Layered Surface page grammar primitives
  *
  * Phase 1 (CREO-160) で creo-web 内に直書きされた layout pattern を
  * 抽出した Solid component primitive 群。 vp-app / chronista-hub /

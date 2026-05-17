@@ -38,7 +38,7 @@ type SpringPresetParams = Required<Pick<SpringOptions, 'stiffness' | 'damping' |
 
 /**
  * 5 preset の物理パラメータ table。 Framer Motion / spring-easing lib の慣習
- * を base に Creo UI 用に微調整。 中期 (B-δ-2) で `tokens/motion/spring/*.json`
+ * を base に creoui 用に微調整。 中期 (B-δ-2) で `tokens/motion/spring/*.json`
  * (DTCG) に extract、 multi-platform parity を取る予定。
  */
 const SPRING_PRESETS: Readonly<Record<SpringPreset, SpringPresetParams>> = {

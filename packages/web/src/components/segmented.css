@@ -1,10 +1,10 @@
 /**
- * Creo UI — Segmented control
+ * creoui — Segmented control
  *
  * 2-4 option の排他選択肢を横並びで表示。Tabs は view 切替、Segmented は state 値選択。
  *
  * Spec: docs/components/segmented.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-segmented {

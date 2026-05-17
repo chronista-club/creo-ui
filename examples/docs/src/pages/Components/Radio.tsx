@@ -6,7 +6,7 @@ import {
   boolean,
   signalTarget,
   string,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -148,7 +148,7 @@ export default function Radio() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.radio-editor',
+              localStorageNamespace: 'creoui-docs.radio-editor',
             }}
           >
             <RadioEditorDemo />

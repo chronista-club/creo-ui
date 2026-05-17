@@ -1,11 +1,11 @@
 /**
- * Creo UI — Grid (CSS Grid layout primitive)
+ * creoui — Grid (CSS Grid layout primitive)
  *
  * 2D layout primitive。 column 数を `data-cols` で指定 (1/2/3/4/6/12)、 gap は spacing token、
  * responsive breakpoint は consumer 側で別途 (token として将来追加検討)。
  *
  * Spec: docs/components/grid.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-grid {

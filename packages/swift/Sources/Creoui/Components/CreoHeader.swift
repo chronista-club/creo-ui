@@ -1,4 +1,4 @@
-// CreoUI — Header component (SwiftUI)
+// Creoui — Header component (SwiftUI)
 //
 // CSS `.creo-header` の SwiftUI 版。app shell / toolbar / page top で使用。
 // logo + nav + actions の 3 slot layout (slots via ViewBuilder)。
@@ -50,19 +50,19 @@ public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
     }
 
     public var body: some View {
-        HStack(spacing: CreoUITokens.layoutGapSibling) {
-            HStack(spacing: CreoUITokens.layoutGapTight) {
+        HStack(spacing: CreouiTokens.layoutGapSibling) {
+            HStack(spacing: CreouiTokens.layoutGapTight) {
                 logo
             }
 
             // nav (flex 1 相当、SwiftUI では spacer で対応可能、consumer の実装に委ねる)
-            HStack(spacing: CreoUITokens.spacingM) {
+            HStack(spacing: CreouiTokens.spacingM) {
                 nav
             }
 
             Spacer()
 
-            HStack(spacing: CreoUITokens.layoutGapTight) {
+            HStack(spacing: CreouiTokens.layoutGapTight) {
                 actions
             }
         }
@@ -87,15 +87,15 @@ public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
     // MARK: - Style resolvers
 
     private var horizontalPadding: CGFloat {
-        variant == .marketing ? CreoUITokens.spacingXl : CreoUITokens.spacingL
+        variant == .marketing ? CreouiTokens.spacingXl : CreouiTokens.spacingL
     }
 
     private var verticalPadding: CGFloat {
-        variant == .marketing ? CreoUITokens.spacingM : CreoUITokens.spacingS
+        variant == .marketing ? CreouiTokens.spacingM : CreouiTokens.spacingS
     }
 
     private var minHeight: CGFloat {
-        variant == .marketing ? 72 : CreoUITokens.layoutTargetTap
+        variant == .marketing ? 72 : CreouiTokens.layoutTargetTap
     }
 
     private var backgroundColor: Color {

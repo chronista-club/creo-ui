@@ -19,7 +19,7 @@ kbd {
   border-radius: var(--radius-s);
 }
 
-/* Dark theme は creo-ui-web@0.0.4+ の tokens.css が同梱する:
+/* Dark theme は creoui@0.0.4+ の tokens.css が同梱する:
  *   .dark / [data-theme="dark"]                       — explicit 強制
  *   @media (prefers-color-scheme: dark) のもと
  *     :root:not(.light):not([data-theme="light"])     — system 追従

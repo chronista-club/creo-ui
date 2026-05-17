@@ -1,18 +1,18 @@
 {
-  "name": "creo-ui-web-demo",
+  "name": "creoui-web-demo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Live design surface demo for creo-ui-editor-host (consumer reference)",
+  "description": "Live design surface demo for creoui-editor-host (consumer reference)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "creo-ui-editor-host": "workspace:*",
-    "creo-ui-md-view": "workspace:*",
-    "creo-ui-web": "workspace:*",
+    "creoui-editor-host": "workspace:*",
+    "creoui-md-view": "workspace:*",
+    "creoui": "workspace:*",
     "solid-js": "^1.9.0"
   },
   "devDependencies": {

@@ -17,14 +17,14 @@ type AxisRow = {
 
 const OPERATIONAL: readonly AxisRow[] = [
   {
-    system: 'creo-icon (CSS-only)',
+    system: 'creoui-icon (CSS-only)',
     source: 'Nerd Font glyph (~10k、 typography.family.icon)',
     fidelity: 'mono color (currentColor)、 font-based、 軽量',
     useCase:
       'inline mark / dense list / button leading icon / dev tool aesthetic — text-flow に並ぶ',
   },
   {
-    system: '<Icon> (creo-ui-icons-web、 Iconify-based)',
+    system: '<Icon> (creoui-icons-web、 Iconify-based)',
     source:
       'Iconify 9 set (mingcute/iconoir/ph/svg-spinners/codicon/simple-icons/flagpack/noto/bi)',
     fidelity: 'multi-color、 SVG-based、 stroke 制御可、 dynamic',
@@ -97,19 +97,19 @@ const RUBRIC: readonly RubricItem[] = [
     ],
   },
   {
-    category: 'System 選択 (creo-icon vs Iconify)',
+    category: 'System 選択 (creoui-icon vs Iconify)',
     criteria: [
-      'inline / dense / mono color → .creo-icon (Nerd Font、 軽量、 CSS-only)',
-      'hero / multi-color / brand specific → Iconify (creo-ui-icons-web、 SVG)',
-      '同 icon が 2 system にあるとき: 文脈で選ぶ (button leading は creo-icon、 hero は Iconify)',
+      'inline / dense / mono color → .creoui-icon (Nerd Font、 軽量、 CSS-only)',
+      'hero / multi-color / brand specific → Iconify (creoui-icons-web、 SVG)',
+      '同 icon が 2 system にあるとき: 文脈で選ぶ (button leading は creoui-icon、 hero は Iconify)',
       'mixed の場合は両 system 利用可、 ただし 1 surface 内では 1 system に統一推奨',
     ],
   },
   {
     category: 'Color articulate',
     criteria: [
-      'creo-icon default: `currentColor` (text-color から継承)',
-      'creo-icon variant: data-variant で semantic 変更 (primary / success / warning / error 等)',
+      'creoui-icon default: `currentColor` (text-color から継承)',
+      'creoui-icon variant: data-variant で semantic 変更 (primary / success / warning / error 等)',
       'Iconify: multi-color SVG は brand identity 表現用、 mono color SVG は currentColor',
       'theme switch で色追従 (token alias 経由、 hardcode 禁止)',
     ],
@@ -135,8 +135,8 @@ export default function Iconography() {
           Iconography は <strong>2 system 並走</strong> (Nerd Font glyph + Iconify SVG) を 4 axis
           (System / Source / Fidelity / Use-case) で articulate。 size scale は{' '}
           <A href="/foundations/typography">typography.icon</A> の 5 tier を bind。 inline / dense
-          は <code>.creo-icon</code> CSS class、 hero / multi-color は{' '}
-          <code>creo-ui-icons-web</code> の <code>&lt;Icon&gt;</code> を judge。
+          は <code>.creoui-icon</code> CSS class、 hero / multi-color は{' '}
+          <code>creoui-icons-web</code> の <code>&lt;Icon&gt;</code> を judge。
         </p>
       </header>
 
@@ -248,7 +248,7 @@ export default function Iconography() {
                   gap: 'var(--spacing-xs)',
                 }}
               >
-                <span class="creo-icon" data-size={size} aria-hidden="true">
+                <span class="creoui-icon" data-size={size} aria-hidden="true">
                   ★
                 </span>
                 <code style={{ 'font-size': 'var(--typography-body-helper)' }}>{size}</code>
@@ -273,7 +273,7 @@ export default function Iconography() {
                   gap: 'var(--spacing-xs)',
                 }}
               >
-                <span class="creo-icon" data-size="m" data-variant={variant} aria-hidden="true">
+                <span class="creoui-icon" data-size="m" data-variant={variant} aria-hidden="true">
                   ●
                 </span>
                 <code style={{ 'font-size': 'var(--typography-body-helper)' }}>{variant}</code>
@@ -286,18 +286,18 @@ export default function Iconography() {
       <section>
         <h2 class="docs-section-title">使い方</h2>
         <pre class="docs-code">
-          <code>{`<!-- creo-icon CSS class (Nerd Font glyph) -->
-<span class="creo-icon" data-size="m" aria-hidden="true"></span>
-<span class="creo-icon" data-size="l" data-variant="success">✓</span>
+          <code>{`<!-- creoui-icon CSS class (Nerd Font glyph) -->
+<span class="creoui-icon" data-size="m" aria-hidden="true"></span>
+<span class="creoui-icon" data-size="l" data-variant="success">✓</span>
 
 <!-- Inline 使用 (button 内) -->
 <button class="creo-btn" data-variant="primary">
-  <span class="creo-icon" data-size="s" aria-hidden="true">★</span>
+  <span class="creoui-icon" data-size="s" aria-hidden="true">★</span>
   Favorite
 </button>
 
-<!-- Iconify SVG (creo-ui-icons-web、 separate package) -->
-import { Icon } from 'creo-ui-icons-web'
+<!-- Iconify SVG (creoui-icons-web、 separate package) -->
+import { Icon } from 'creoui-icons-web'
 <Icon set="mingcute" name="star-fill" size="m" variant="warning" />
 
 /* CSS — color customize */
@@ -307,11 +307,11 @@ import { Icon } from 'creo-ui-icons-web'
 
 /* a11y */
 <!-- 装飾 icon -->
-<span class="creo-icon" aria-hidden="true">★</span>
+<span class="creoui-icon" aria-hidden="true">★</span>
 
 <!-- 機能 icon -->
 <button class="creo-btn" aria-label="Add to favorites">
-  <span class="creo-icon" aria-hidden="true">★</span>
+  <span class="creoui-icon" aria-hidden="true">★</span>
 </button>`}</code>
         </pre>
       </section>

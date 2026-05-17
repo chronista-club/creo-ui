@@ -1,5 +1,5 @@
 /**
- * Creo UI — Popover (interactive overlay)
+ * creoui — Popover (interactive overlay)
  *
  * Menu は action list only、Dialog は重要決定 (modal)。Popover はその中間 —
  * 小さい interactive content (inline edit / preview / quick confirm)。
@@ -7,7 +7,7 @@
  * native `popover="auto"` を推奨。browser が outside click / Esc を自動 handle。
  *
  * Spec: docs/components/popover.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-popover {

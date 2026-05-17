@@ -1,10 +1,10 @@
 /**
- * Creo UI — Accordion / Disclosure (native details/summary)
+ * creoui — Accordion / Disclosure (native details/summary)
  *
  * ARIA / keyboard は browser native に任せる。CSS のみで styling + chevron rotate。
  *
  * Spec: docs/components/accordion.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-accordion {

@@ -9,10 +9,10 @@ import {
   select,
   signalTarget,
   string,
-} from 'creo-ui-editor-host'
-import { type Frame, FrameProvider, FrameSlot, useFrame } from 'creo-ui-frame'
-import { VisionProvider, type VisionSource, useGesture, useHandPinch } from 'creo-ui-vision'
-import { createMockSource } from 'creo-ui-vision/mock'
+} from 'creoui-editor-host'
+import { type Frame, FrameProvider, FrameSlot, useFrame } from 'creoui-frame'
+import { VisionProvider, type VisionSource, useGesture, useHandPinch } from 'creoui-vision'
+import { createMockSource } from 'creoui-vision/mock'
 import { For, Show, createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 
 export default function Playground() {
@@ -22,8 +22,8 @@ export default function Playground() {
         <p class="docs-page-eyebrow">Lab</p>
         <h1>Playground — Live design surface</h1>
         <p class="docs-page-lead">
-          <code>creo-ui-editor-host</code> の reference runtime を動かす実演 area。 Editor Mode を
-          ON にして field を操作すると、 下の preview と <strong>token CSS variable</strong>{' '}
+          <code>creoui-editor-host</code> の reference runtime を動かす実演 area。 Editor Mode を ON
+          にして field を操作すると、 下の preview と <strong>token CSS variable</strong>{' '}
           がリアルタイム連動する。 DevTools Console から <code>window.creoEditor</code> 経由で field
           を増やすことも可能。 → <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。
         </p>
@@ -49,7 +49,7 @@ export default function Playground() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.playground',
+              localStorageNamespace: 'creoui-docs.playground',
             }}
           >
             <PlaygroundDemo />
@@ -75,7 +75,7 @@ export default function Playground() {
   select,
   boolean,
   string,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 function Demo() {
@@ -110,7 +110,7 @@ function Demo() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live design surface 機能 (creo-ui-editor-host 0.4+)</h2>
+        <h2 class="docs-section-title">Live design surface 機能 (creoui-editor-host 0.4+)</h2>
         <ul class="docs-bullet-list">
           <li>
             <strong>Console REPL</strong> — <code>window.creoEditor</code> で REPL、 sugar (slider /
@@ -134,7 +134,7 @@ function Demo() {
       <section>
         <h2 class="docs-section-title">Frame system demo (Phase 3)</h2>
         <p class="docs-page-helper">
-          <code>creo-ui-frame</code> の <code>FrameProvider</code> + <code>FrameSlot</code> +{' '}
+          <code>creoui-frame</code> の <code>FrameProvider</code> + <code>FrameSlot</code> +{' '}
           <code>useFrame()</code> で 2 frame (dashboard / reading) を切替。 同 DOM 保持で transform
           / opacity が CSS transition で morph。 →{' '}
           <A href="/concepts/frame-system">Frame system 概念</A> も参照。
@@ -145,7 +145,7 @@ function Demo() {
       <section>
         <h2 class="docs-section-title">Gesture-driven Frame morph (Phase 4 mock)</h2>
         <p class="docs-page-helper">
-          <code>creo-ui-vision</code> の <strong>mock source</strong> (wave pattern) →{' '}
+          <code>creoui-vision</code> の <strong>mock source</strong> (wave pattern) →{' '}
           <code>useGesture('wave')</code> →<code>setFrame(next)</code> の binding。 実 webcam
           は使わず synthetic 信号で実演。
           <code>HandPinch</code> 位置も mock で円周運動。 →{' '}
@@ -182,7 +182,7 @@ function Demo() {
           <strong>Mac / Windows / Linux の desktop browser</strong> 向け。 hand tracking を mouse /
           keyboard と並ぶ <strong>UI input modality の一つ</strong> として使う想定。{' '}
           <strong>Vision Pro Safari では動きません</strong> — OS が eye+pinch を pointer event
-          として透過提供しているので、 VP page では <code>creo-ui-vision</code>を import せず Frame
+          として透過提供しているので、 VP page では <code>creoui-vision</code>を import せず Frame
           system + 通常 <code>onClick</code> で同じ UX が成立する (
           <a href="/concepts/frame-system">Frame system</a> 参照、 vision-cross-platform.md §10
           Phase A observation log)。
@@ -222,7 +222,7 @@ function PlaygroundDemo() {
   // Solid signals for ephemeral state (visible in render)
   const [elevation, setElevation] = createSignal<PlaygroundElevation>('raised')
   const [showLabel, setShowLabel] = createSignal(true)
-  const [title, setTitle] = createSignal('Hello, Creo UI')
+  const [title, setTitle] = createSignal('Hello, creoui')
 
   // CSS variable bindings (live token effect)
   bind({
@@ -451,7 +451,7 @@ function RealMediaPipeDemo() {
     setError(null)
     try {
       // Lazy dynamic import — MediaPipe Tasks (~3MB) は ここで初めて load
-      const { createMediaPipeSource } = await import('creo-ui-vision/mediapipe')
+      const { createMediaPipeSource } = await import('creoui-vision/mediapipe')
       const realSource = await createMediaPipeSource({
         camera: 'user',
         models: ['hand'],

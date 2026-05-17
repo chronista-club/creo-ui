@@ -6,7 +6,7 @@ import {
   select,
   signalTarget,
   string,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -66,7 +66,7 @@ export default function Timeline() {
             <li class="creo-timeline-item" data-variant="info">
               <div class="creo-timeline-marker" aria-hidden="true" />
               <div class="creo-timeline-content">
-                <div class="creo-timeline-title">creo-ui-design v0.0.1 released</div>
+                <div class="creo-timeline-title">creoui-design v0.0.1 released</div>
                 <div class="creo-timeline-description">
                   Design SSOT split 試行 verified、 6 artifacts attached to GitHub Releases。
                 </div>
@@ -175,7 +175,7 @@ export default function Timeline() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.timeline-editor',
+              localStorageNamespace: 'creoui-docs.timeline-editor',
             }}
           >
             <TimelineEditorDemo />

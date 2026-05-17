@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — FieldEditor dispatcher + per-type editors
+ * creoui-editor-host — FieldEditor dispatcher + per-type editors
  *
  * RIGHT region (panel) 向けは縦並び (`<FieldEditor>`)、TOP region (inline)
  * 向けは横並びコンパクト (`<FieldEditorInline>`) の 2 variants を提供。

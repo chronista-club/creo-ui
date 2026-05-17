@@ -1,11 +1,11 @@
 /**
- * Creo UI — Dialog component (native <dialog> based)
+ * creoui — Dialog component (native <dialog> based)
  *
  * native `<dialog>` + `showModal()` で focus trap / Esc close / ARIA を browser に任せる。
  * consumer は JS で showModal() / close() を呼ぶだけ。
  *
  * Spec: docs/components/dialog.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-dialog {

@@ -1,7 +1,7 @@
 {
-  "name": "creo-ui-icons-web",
+  "name": "creoui-icons-web",
   "version": "0.0.1",
-  "description": "Creo UI — Iconify-based icon adapter for SolidJS web apps. Universal semantic registry with curated 9-set Iconify lineup (mingcute/iconoir/ph/svg-spinners/codicon/simple-icons/flagpack/noto/bi).",
+  "description": "creoui — Iconify-based icon adapter for SolidJS web apps. Universal semantic registry with curated 9-set Iconify lineup (mingcute/iconoir/ph/svg-spinners/codicon/simple-icons/flagpack/noto/bi).",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -48,14 +48,14 @@
   "files": ["dist", "README.md"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/chronista-club/creo-ui.git",
+    "url": "https://github.com/chronista-club/creoui.git",
     "directory": "packages/icons-web"
   },
   "bugs": {
-    "url": "https://github.com/chronista-club/creo-ui/issues"
+    "url": "https://github.com/chronista-club/creoui/issues"
   },
-  "homepage": "https://github.com/chronista-club/creo-ui#readme",
-  "keywords": ["design-system", "icons", "iconify", "creo-ui", "solid-js"],
+  "homepage": "https://github.com/chronista-club/creoui#readme",
+  "keywords": ["design-system", "icons", "iconify", "creoui", "solid-js"],
   "publishConfig": {
     "access": "public"
   },

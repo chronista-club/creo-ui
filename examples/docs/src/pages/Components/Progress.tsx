@@ -7,7 +7,7 @@ import {
   number,
   select,
   signalTarget,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -205,7 +205,7 @@ export default function Progress() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.progress-editor',
+              localStorageNamespace: 'creoui-docs.progress-editor',
             }}
           >
             <ProgressEditorDemo />

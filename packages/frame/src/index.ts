@@ -1,5 +1,5 @@
 /**
- * creo-ui-frame — 3D Frame system runtime
+ * creoui-frame — 3D Frame system runtime
  *
  * P-2 (motion engine) + P-3 (Frame protocol) Ship 済。
  * 詳細は ../README.md と docs/design/frame-system.md。

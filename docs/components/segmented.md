@@ -1,6 +1,6 @@
 # Segmented control
 
-> Creo UI MVP component. 2-4 個の排他選択肢を横並びで表示する compact UI。
+> creoui MVP component. 2-4 個の排他選択肢を横並びで表示する compact UI。
 
 ## Purpose
 

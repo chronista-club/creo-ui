@@ -1,15 +1,15 @@
-// CreoUI - Creo UI Design System for Apple platforms
+// Creoui - creoui Design System for Apple platforms
 //
 // Phase 1: Style Dictionary から生成された Generated/Tokens.swift を公開する。
 //
-//   import CreoUI
+//   import Creoui
 //   import SwiftUI
 //
 //   struct Hero: View {
 //       var body: some View {
 //           Text("Creo")
 //               .foregroundColor(.colorBrandPrimary)
-//               .padding(CreoUITokens.spacingM)
+//               .padding(CreouiTokens.spacingM)
 //       }
 //   }
 //
@@ -18,6 +18,6 @@
 
 import Foundation
 
-public enum CreoUI {
+public enum Creoui {
     public static let version = "0.0.1"
 }

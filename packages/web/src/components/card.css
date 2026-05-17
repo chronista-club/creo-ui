@@ -1,10 +1,10 @@
 /**
- * Creo UI — Card component
+ * creoui — Card component
  *
  * `.creo-card` base + data-variant (default / elevated / outlined) + data-padding (s/m/lg)。
  *
  * Spec: docs/components/card.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  *
  * Usage:
  *   <article class="creo-card">...</article>

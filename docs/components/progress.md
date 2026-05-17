@@ -1,6 +1,6 @@
 # Progress / Spinner
 
-> Creo UI MVP components. 処理の進行状況を視覚的に示す 2 形式。
+> creoui MVP components. 処理の進行状況を視覚的に示す 2 形式。
 
 ## Purpose
 

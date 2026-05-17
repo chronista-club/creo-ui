@@ -1,4 +1,4 @@
-// CreoUI — Avatar component (SwiftUI)
+// Creoui — Avatar component (SwiftUI)
 //
 // CSS `.creo-avatar` の SwiftUI 版。user / account / item の視覚 identity。
 // image + initials fallback + optional status dot。VP member 表示や
@@ -87,7 +87,7 @@ public struct CreoAvatar: View {
     private var clipShape: AnyShape {
         switch shape {
         case .circle: return AnyShape(Circle())
-        case .square: return AnyShape(RoundedRectangle(cornerRadius: CreoUITokens.radiusS))
+        case .square: return AnyShape(RoundedRectangle(cornerRadius: CreouiTokens.radiusS))
         }
     }
 
@@ -97,17 +97,17 @@ public struct CreoAvatar: View {
         switch size {
         case .sm: return 24
         case .md: return 32
-        case .lg: return CreoUITokens.layoutTargetTap
+        case .lg: return CreouiTokens.layoutTargetTap
         case .xl: return 64
         }
     }
 
     private var initialsFontSize: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.typographySizeXs
-        case .md: return CreoUITokens.typographySizeS
-        case .lg: return CreoUITokens.typographySizeM
-        case .xl: return CreoUITokens.typographySizeL
+        case .sm: return CreouiTokens.typographySizeXs
+        case .md: return CreouiTokens.typographySizeS
+        case .lg: return CreouiTokens.typographySizeM
+        case .xl: return CreouiTokens.typographySizeL
         }
     }
 

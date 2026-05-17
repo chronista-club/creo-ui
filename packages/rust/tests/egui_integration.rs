@@ -4,8 +4,8 @@
 #![cfg(feature = "egui")]
 
 use ::egui::Color32;
-use creo_ui::egui as creo_eg;
-use creo_ui::tokens;
+use creoui::egui as creo_eg;
+use creoui::tokens;
 
 #[test]
 fn to_color32_converts_rgb_with_opaque_alpha() {

@@ -1,6 +1,6 @@
-# creo-ui-vision
+# creoui-vision
 
-> Webcam motion capture for Creo UI — MediaPipe Tasks wrapper exposed as SolidJS signals。
+> Webcam motion capture for creoui — MediaPipe Tasks wrapper exposed as SolidJS signals。
 > docs/design/vision-input.md の reference 実装。
 
 ## Status (2026-05-03)
@@ -38,14 +38,14 @@ production app は MediaPipe で本番 inference、 と use case 別に最適 so
 ## Install
 
 ```sh
-bun add creo-ui-vision solid-js
+bun add creoui-vision solid-js
 ```
 
 ## Usage — mock source (P-4 ship、 dev / test 向け)
 
 ```tsx
-import { VisionProvider, useHandPinch, useHeadPose } from 'creo-ui-vision'
-import { createMockSource } from 'creo-ui-vision/mock'
+import { VisionProvider, useHandPinch, useHeadPose } from 'creoui-vision'
+import { createMockSource } from 'creoui-vision/mock'
 
 const mockSource = createMockSource({
   // 1.5 秒周期で pinch ON/OFF 繰り返し、 円周上を移動
@@ -84,8 +84,8 @@ bun add @mediapipe/tasks-vision
 ```
 
 ```tsx
-import { VisionProvider, useHandPinch, useHeadPose } from 'creo-ui-vision'
-import { createMediaPipeSource } from 'creo-ui-vision/mediapipe'
+import { VisionProvider, useHandPinch, useHeadPose } from 'creoui-vision'
+import { createMediaPipeSource } from 'creoui-vision/mediapipe'
 
 // Async factory — FilesetResolver + Landmarker を init (Google CDN から WASM + model load)
 const source = await createMediaPipeSource({
@@ -135,11 +135,11 @@ Raw video frame は `<video>` element から HandLandmarker / FaceLandmarker の
 
 ## Editor Mode protocol との統合 (将来 P-5)
 
-`creo-ui-vision` の signals を `creo-ui-editor-host` の field に bridge:
+`creoui-vision` の signals を `creoui-editor-host` の field に bridge:
 
 ```tsx
-import { useHandPinch } from 'creo-ui-vision'
-import { useEditorHost } from 'creo-ui-editor-host'
+import { useHandPinch } from 'creoui-vision'
+import { useEditorHost } from 'creoui-editor-host'
 
 const pinch = useHandPinch()
 const host = useEditorHost()
@@ -156,8 +156,8 @@ createEffect(() => {
 ## Frame system との統合 (将来 P-5)
 
 ```tsx
-import { useFrame } from 'creo-ui-frame'
-import { useGesture } from 'creo-ui-vision'
+import { useFrame } from 'creoui-frame'
+import { useGesture } from 'creoui-vision'
 
 const { setFrame } = useFrame()
 

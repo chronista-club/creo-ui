@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — public hooks
+ * creoui-editor-host — public hooks
  *
  * Step 5 で Target × Control + bind() が正式 API になり、field 直接登録用の
  * hook (`useEditorFields` / `useEditorValue`) は削除された。consumer は

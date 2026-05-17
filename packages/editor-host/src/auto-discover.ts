@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — DOM auto-discover (F2)
+ * creoui-editor-host — DOM auto-discover (F2)
  *
  * 現 page の :root CSS 変数を scan、値から type を infer して Target + Control
  * の組合せで自動 bind する。明示 declare 無しに live editing を始められる。
@@ -8,7 +8,7 @@
  *   creoEditor.autoDiscover()                              // default prefixes
  *   creoEditor.autoDiscover({ prefixes: ['--color-'] })    // 色だけ
  *
- * default prefixes (creo-ui-web 0.1.0 の tokens.css を想定):
+ * default prefixes (creoui 0.1.0 の tokens.css を想定):
  *   --color-, --spacing-, --radius-, --typography-size-
  */
 import { type Owner, runWithOwner } from 'solid-js'

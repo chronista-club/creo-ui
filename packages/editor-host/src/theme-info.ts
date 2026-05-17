@@ -1,7 +1,7 @@
 /**
- * creo-ui-editor-host — 8 theme meta (name / family / flavor)
+ * creoui-editor-host — 8 theme meta (name / family / flavor)
  *
- * creo-ui-web 0.1.0 が同梱する 8 theme に対応。`theme.mode` field の値を引けば
+ * creoui 0.1.0 が同梱する 8 theme に対応。`theme.mode` field の値を引けば
  * ThemeEditor が name / family / flavor を表示できる。theme 追加時は
  * `tokens/color/themes/` と合わせてここも更新する。
  */

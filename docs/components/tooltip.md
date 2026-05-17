@@ -1,6 +1,6 @@
 # Tooltip
 
-> Creo UI MVP component. hover / focus で小さな補足文を表示する overlay。
+> creoui MVP component. hover / focus で小さな補足文を表示する overlay。
 
 ## Purpose
 

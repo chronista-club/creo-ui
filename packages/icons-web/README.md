@@ -1,4 +1,4 @@
-# creo-ui-icons-web
+# creoui-icons-web
 
 Iconify-based icon adapter for SolidJS web apps. Universal semantic registry with curated 9-set Iconify lineup.
 
@@ -21,7 +21,7 @@ Iconify-based icon adapter for SolidJS web apps. Universal semantic registry wit
 ## Usage
 
 ```tsx
-import { CreoIcon, SYSTEM } from 'creo-ui-icons-web'
+import { CreoIcon, SYSTEM } from 'creoui-icons-web'
 
 // 直接 Iconify 名で
 <CreoIcon name="ph:book-open" size={20} />
@@ -35,10 +35,10 @@ import { CreoIcon, SYSTEM } from 'creo-ui-icons-web'
 ## Architecture
 
 2-layer split:
-- **`creo-ui-icons-web`** (this package) — generic adapter + universal semantic registry (system / status / editor / brand / motion / flag / emoji / filetype)
+- **`creoui-icons-web`** (this package) — generic adapter + universal semantic registry (system / status / editor / brand / motion / flag / emoji / filetype)
 - **VP-domain registry** (consumer 側、 例: `vantage-point/.../icons/`) — Stand / Lane / Mailbox / TheWorld 等の VP 概念固有 alias
 
-詳細: creo-ui memory `feedback_creo_ui_icon_dual_axis.md` (2026-04-29 確定)
+詳細: creoui memory `feedback_creoui_icon_dual_axis.md` (2026-04-29 確定)
 
 ## Skeleton 段階の制約
 

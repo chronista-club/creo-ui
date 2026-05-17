@@ -1,6 +1,6 @@
 # Popover
 
-> Creo UI MVP component. 小さな interactive overlay (Menu より自由、Dialog より軽い)。
+> creoui MVP component. 小さな interactive overlay (Menu より自由、Dialog より軽い)。
 
 ## Purpose
 
@@ -28,8 +28,8 @@ Menu よりリッチ (input / button 複数可)、Dialog より軽い (backdrop 
     <h3 class="creo-popover-title" id="up-title">Mako</h3>
   </header>
   <div class="creo-popover-body">
-    <p>Chronista メンバー · creo-ui メンテナ</p>
-    <p>Lane: creo-ui/main</p>
+    <p>Chronista メンバー · creoui メンテナ</p>
+    <p>Lane: creoui/main</p>
   </div>
   <footer class="creo-popover-footer">
     <button class="creo-btn" data-variant="secondary" data-size="s">DM</button>

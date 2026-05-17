@@ -1,6 +1,6 @@
 # Accordion / Disclosure
 
-> Creo UI MVP component. native `<details>` + `<summary>` で expandable/collapsible な group。
+> creoui MVP component. native `<details>` + `<summary>` で expandable/collapsible な group。
 
 ## Purpose
 
@@ -83,7 +83,7 @@
 <section>
   <details class="creo-accordion">
     <summary class="creo-accordion-summary">
-      <span class="creo-accordion-title">What is Creo UI?</span>
+      <span class="creo-accordion-title">What is creoui?</span>
     </summary>
     <div class="creo-accordion-content">
       <p>Design system shared across Web / Swift / Rust...</p>
@@ -95,7 +95,7 @@
       <span class="creo-accordion-title">How to install?</span>
     </summary>
     <div class="creo-accordion-content">
-      <pre><code>bun add creo-ui-web</code></pre>
+      <pre><code>bun add creoui</code></pre>
     </div>
   </details>
 </section>

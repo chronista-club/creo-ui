@@ -1,7 +1,7 @@
 {
-  "name": "@creo/ui",
+  "name": "creoui",
   "version": "0.0.1",
-  "description": "Creo UI - Design System for Creo ecosystem",
+  "description": "creoui - Design System for Creo ecosystem",
   "private": true,
   "type": "module",
   "workspaces": ["packages/*", "examples/*"],
@@ -16,8 +16,8 @@
     "dev": "cd examples/web-demo && bun install --silent && bun run dev",
     "gen:themes": "bun scripts/generate-themes.mjs",
     "test:colors": "bun test transforms/color-utils.test.js",
-    "fetch:design": "bun scripts/fetch-creo-ui-design.mjs",
-    "diff:design": "bun scripts/diff-creo-ui-design.mjs"
+    "fetch:design": "bun scripts/fetch-creoui-design.mjs",
+    "diff:design": "bun scripts/diff-creoui-design.mjs"
   },
   "devDependencies": {
     "style-dictionary": "^4.0.0",

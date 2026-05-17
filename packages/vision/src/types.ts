@@ -2,7 +2,7 @@
  * Vision input — type definitions。
  *
  * MediaPipe Tasks の 4 主要 task (Hand / Pose / Face / Gesture) を
- * creo-ui で扱う semantic 型に正規化。
+ * creoui で扱う semantic 型に正規化。
  */
 
 /** 3D 点 (x, y は normalized [0, 1] viewport 座標、 z は depth proxy) */

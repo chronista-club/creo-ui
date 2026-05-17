@@ -7,7 +7,7 @@ import {
   select,
   signalTarget,
   string,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -202,7 +202,7 @@ export default function Button() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.button-editor',
+              localStorageNamespace: 'creoui-docs.button-editor',
             }}
           >
             <ButtonEditorDemo />
@@ -231,7 +231,7 @@ export default function Button() {
         <p class="docs-page-helper">
           詳細 spec:{' '}
           <a
-            href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/button.md"
+            href="https://github.com/chronista-club/creoui/blob/main/docs/components/button.md"
             target="_blank"
             rel="noopener noreferrer"
           >

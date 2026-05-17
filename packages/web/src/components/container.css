@@ -1,12 +1,12 @@
 /**
- * Creo UI — Container (max-width constraint + horizontal centering)
+ * creoui — Container (max-width constraint + horizontal centering)
  *
  * page-level content の max-width / centering / side padding を 1 attribute で。
  * 5 size + full、 default m (768px)。 reading-friendly な breakpoint を意識。
  * 命名は spacing convention (xs/s/m/l/xl、 5 tier 統一) に揃える。
  *
  * Spec: docs/components/container.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-container {

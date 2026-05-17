@@ -11,17 +11,17 @@
       },
     },
     "examples/docs": {
-      "name": "creo-ui-docs",
+      "name": "creoui-docs",
       "version": "0.0.0",
       "dependencies": {
         "@mediapipe/tasks-vision": "^0.10.0",
         "@solidjs/router": "^0.15.0",
-        "creo-ui-editor-host": "workspace:*",
-        "creo-ui-frame": "workspace:*",
-        "creo-ui-icons-web": "workspace:*",
-        "creo-ui-md-view": "workspace:*",
-        "creo-ui-vision": "workspace:*",
-        "creo-ui-web": "workspace:*",
+        "creoui": "workspace:*",
+        "creoui-editor-host": "workspace:*",
+        "creoui-frame": "workspace:*",
+        "creoui-icons-web": "workspace:*",
+        "creoui-md-view": "workspace:*",
+        "creoui-vision": "workspace:*",
         "solid-js": "^1.9.0",
       },
       "devDependencies": {
@@ -32,12 +32,12 @@
       },
     },
     "examples/web-demo": {
-      "name": "creo-ui-web-demo",
+      "name": "creoui-web-demo",
       "version": "0.0.0",
       "dependencies": {
-        "creo-ui-editor-host": "workspace:*",
-        "creo-ui-md-view": "workspace:*",
-        "creo-ui-web": "workspace:*",
+        "creoui": "workspace:*",
+        "creoui-editor-host": "workspace:*",
+        "creoui-md-view": "workspace:*",
         "solid-js": "^1.9.0",
       },
       "devDependencies": {
@@ -47,7 +47,7 @@
       },
     },
     "packages/editor-host": {
-      "name": "creo-ui-editor-host",
+      "name": "creoui-editor-host",
       "version": "0.5.0",
       "devDependencies": {
         "solid-js": "^1.9.0",
@@ -61,7 +61,7 @@
       },
     },
     "packages/frame": {
-      "name": "creo-ui-frame",
+      "name": "creoui-frame",
       "version": "0.1.1",
       "devDependencies": {
         "@happy-dom/global-registrator": "^20.9.0",
@@ -77,7 +77,7 @@
       },
     },
     "packages/icons-web": {
-      "name": "creo-ui-icons-web",
+      "name": "creoui-icons-web",
       "version": "0.0.1",
       "devDependencies": {
         "iconify-icon": "^3.0.2",
@@ -93,7 +93,7 @@
       },
     },
     "packages/md-view": {
-      "name": "creo-ui-md-view",
+      "name": "creoui-md-view",
       "version": "0.1.0",
       "dependencies": {
         "creo-views": "file:../../../creo-views",
@@ -110,7 +110,7 @@
       },
     },
     "packages/vision": {
-      "name": "creo-ui-vision",
+      "name": "creoui-vision",
       "version": "0.1.0",
       "devDependencies": {
         "@mediapipe/tasks-vision": "^0.10.0",
@@ -129,8 +129,8 @@
       ],
     },
     "packages/web": {
-      "name": "creo-ui-web",
-      "version": "0.19.0",
+      "name": "creoui",
+      "version": "0.20.0",
       "devDependencies": {
         "solid-js": "^1.9.0",
         "typescript": "^5.5.0",
@@ -476,21 +476,21 @@
 
     "convert-source-map": ["convert-source-map@2.0.0", "", {}, "sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg=="],
 
-    "creo-ui-docs": ["creo-ui-docs@workspace:examples/docs"],
+    "creoui": ["creoui@workspace:packages/web"],
 
-    "creo-ui-editor-host": ["creo-ui-editor-host@workspace:packages/editor-host"],
+    "creoui-docs": ["creoui-docs@workspace:examples/docs"],
 
-    "creo-ui-frame": ["creo-ui-frame@workspace:packages/frame"],
+    "creoui-editor-host": ["creoui-editor-host@workspace:packages/editor-host"],
 
-    "creo-ui-icons-web": ["creo-ui-icons-web@workspace:packages/icons-web"],
+    "creoui-frame": ["creoui-frame@workspace:packages/frame"],
 
-    "creo-ui-md-view": ["creo-ui-md-view@workspace:packages/md-view"],
+    "creoui-icons-web": ["creoui-icons-web@workspace:packages/icons-web"],
 
-    "creo-ui-vision": ["creo-ui-vision@workspace:packages/vision"],
+    "creoui-md-view": ["creoui-md-view@workspace:packages/md-view"],
 
-    "creo-ui-web": ["creo-ui-web@workspace:packages/web"],
+    "creoui-vision": ["creoui-vision@workspace:packages/vision"],
 
-    "creo-ui-web-demo": ["creo-ui-web-demo@workspace:examples/web-demo"],
+    "creoui-web-demo": ["creoui-web-demo@workspace:examples/web-demo"],
 
     "cross-spawn": ["cross-spawn@7.0.6", "", { "dependencies": { "path-key": "^3.1.0", "shebang-command": "^2.0.0", "which": "^2.0.1" } }, "sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="],
 
@@ -862,7 +862,7 @@
 
     "babel-plugin-jsx-dom-expressions/@babel/helper-module-imports": ["@babel/helper-module-imports@7.18.6", "", { "dependencies": { "@babel/types": "^7.18.6" } }, "sha512-0NFvs3VkuSYbFi1x2Vd6tKrywq+z/cLeYC/RJNFrIX/30Bf5aiGYbtvGXolEktzJH8o5E5KJ3tT+nkxuuZFVlA=="],
 
-    "creo-ui-md-view/creo-views": ["creo-views@file:../creo-views", { "devDependencies": { "typescript": "^5.5.0" } }],
+    "creoui-md-view/creo-views": ["creo-views@file:../creo-views", { "devDependencies": { "typescript": "^5.5.0" } }],
 
     "glob/minimatch": ["minimatch@9.0.9", "", { "dependencies": { "brace-expansion": "^2.0.2" } }, "sha512-OBwBN9AL4dqmETlpS2zasx+vTeWclWzkblfZk7KTA5j3jeOONz/tRCnZomUyvNg83wL5Zv9Ss6HMJXAgL8R2Yg=="],
 

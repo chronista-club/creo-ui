@@ -1,7 +1,7 @@
 /**
  * Focus ring policy — `:focus-visible` based keyboard-only focus indicator
  *
- * Creo UI design system の a11y baseline (WCAG 2.4.7 Focus Visible /
+ * creoui design system の a11y baseline (WCAG 2.4.7 Focus Visible /
  * 2.4.11 Focus Appearance) を満たす component-agnostic policy。
  *
  * Aesthetic direction: Sophisticated layered (Apple HIG visionOS 26 +

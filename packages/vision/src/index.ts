@@ -1,5 +1,5 @@
 /**
- * creo-ui-vision — Webcam motion capture (Solid signals)
+ * creoui-vision — Webcam motion capture (Solid signals)
  *
  * Phase 4 (skeleton + types + provider + hooks) Ship 済。
  * 実 MediaPipe Tasks Web SDK 統合は P-4.5 で実装。
