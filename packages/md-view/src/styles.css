@@ -1,7 +1,7 @@
 /*
- * creo-ui-md-view — base styles using creo-ui design tokens.
+ * creoui-md-view — base styles using creoui design tokens.
  *
- * Consumer must import creo-ui-web/tokens.css (or token-shim.css) before
+ * Consumer must import creoui/tokens.css (or token-shim.css) before
  * this file so that the --color-*, --spacing-*, --typography-*, --radius-*
  * custom properties are defined.
  */

@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクトの本質
 
-**Creo UI は Creo ecosystem の Design System。** 責務は **3 本柱**:
+**creoui は Creo ecosystem の Design System。** 責務は **3 本柱**:
 
 1. **視覚的定数の SSOT** — `tokens/**/*.json` (W3C DTCG) から Web / Apple / Rust の 3 プラットフォーム向け成果物を **Style Dictionary v4 で生成**
 2. **Editor Mode protocol の schema owner** — 各 app にユニバーサルな "Editor Mode" UI 状態を規定。field 宣言 / 4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) / Content 非侵襲性 / AI agent access を **schema + TS 型として定義** ([docs/design/editor-mode.md](./docs/design/editor-mode.md))
-3. **Web reference runtime (`creo-ui-editor-host`)** — Editor Mode protocol の SolidJS 実装を `packages/editor-host/` に持つ (EH-1)。consumer は `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` で即利用可能。Swift / Rust は引き続き consumer 側 (Phase 2c)
+3. **Web reference runtime (`creoui-editor-host`)** — Editor Mode protocol の SolidJS 実装を `packages/editor-host/` に持つ (EH-1)。consumer は `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` で即利用可能。Swift / Rust は引き続き consumer 側 (Phase 2c)
 
 設計詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md) および [docs/design/theme-system.md](./docs/design/theme-system.md)。
 
@@ -65,14 +65,14 @@ tokens/**/*.json  (W3C DTCG SSOT — 唯一の真実)
 Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
        │
        ├─► packages/web/dist/tokens.{css,js,d.ts}       (gitignore, npm publish 成果物)
-       ├─► packages/swift/Sources/CreoUI/Generated/Tokens.swift  (git commit 対象)
+       ├─► packages/swift/Sources/Creoui/Generated/Tokens.swift  (git commit 対象)
        └─► packages/rust/src/generated/tokens.rs        (git commit 対象)
 ```
 
 ### 3 層構造
 
 1. **tokens/** — DTCG JSON。category (color / spacing / typography / radius / shadow) ごとにファイル分割。`$value` / `$type` / `$description` を持つ 3 階層までの dot-notation (例: `color.brand.primary`)。
-2. **transforms/** — Style Dictionary config。Web は標準 transformGroup を使うが、**Swift と Rust は custom format を hand-roll**（`swift/creo-ui`, `rust/creo-ui`）。標準の iOS transform は UIKit 指向で SwiftUI 用ではないのが理由。
+2. **transforms/** — Style Dictionary config。Web は標準 transformGroup を使うが、**Swift と Rust は custom format を hand-roll**（`swift/creoui`, `rust/creoui`）。標準の iOS transform は UIKit 指向で SwiftUI 用ではないのが理由。
 3. **packages/*** — Bun workspace (`packages/*`)。各 platform の consumer 向け entry point。
 
 ### generated ファイルの commit ポリシー（非対称に注意）
@@ -80,7 +80,7 @@ Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
 `.gitignore` で明示されている通り:
 
 - **Swift/Rust の generated はコミット対象**。`cargo build` や `swift build` はこれらがある前提で動くので、`bun run build` を走らせていない環境 (GitHub Actions の rust/swift job もここには含まれる) でも即ビルド可能である必要がある。
-- **Web の dist/ は gitignore**。npm publish workflow でのみ生成され、npmjs.com の `creo-ui-web` (unscoped) として配布される。
+- **Web の dist/ は gitignore**。npm publish workflow でのみ生成され、npmjs.com の `creoui` (unscoped) として配布される。
 
 **したがって `tokens/` を編集した PR は、Swift/Rust の generated も一緒に commit する必要がある。** `bun run build` を忘れると Swift/Rust の出力が古いまま取り残される。
 
@@ -88,7 +88,7 @@ Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
 
 | Platform | 命名 | Color | Dimension | FontWeight/Number | その他 |
 |----------|------|-------|-----------|-------------------|--------|
-| Swift | camelCase (`colorBrandPrimary`) | `Color(red: ...)` in `extension Color` | `CGFloat` in `enum CreoUITokens` | `Double` in `CreoUITokens` | `String` in `CreoUITokens` |
+| Swift | camelCase (`colorBrandPrimary`) | `Color(red: ...)` in `extension Color` | `CGFloat` in `enum CreouiTokens` | `Double` in `CreouiTokens` | `String` in `CreouiTokens` |
 | Rust | SCREAMING_SNAKE (`COLOR_BRAND_PRIMARY`) | `Rgb { r, g, b }` (u8 構造体) | `f32` (px) | `f32` | `&'static str` |
 
 - Rust の generated は `include!()` で `src/lib.rs` の `pub mod tokens` に取り込まれる設計 (`CREO-86` で確立)。したがって custom format には inner attribute (`#![...]`) や inner doc (`//!`) を入れてはいけない — `include!` 先はモジュールの途中なので parse error になる。この制約は `transforms/config.rust.js` のコメントにも明記されている。
@@ -100,7 +100,7 @@ Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
 1. **`tokens/<category>/<file>.json` を編集**（SSOT）。DTCG 準拠を維持、3 階層まで。
 2. `bun run build` で全 platform 出力を再生成。
 3. `bun run typecheck && bun run lint` を通す。
-4. **`packages/swift/Sources/CreoUI/Generated/Tokens.swift` と `packages/rust/src/generated/tokens.rs` の diff を必ず commit**（忘れると consumer の build が stale token を使う）。
+4. **`packages/swift/Sources/Creoui/Generated/Tokens.swift` と `packages/rust/src/generated/tokens.rs` の diff を必ず commit**（忘れると consumer の build が stale token を使う）。
 5. Web dist は commit しない（gitignore）。
 
 ### Theme (8 preset) の再生成
@@ -112,7 +112,7 @@ bun run gen:themes   # → tokens/color/themes/*.json 8 ファイルを上書き
 bun run build        # 全 platform に反映
 ```
 
-`scripts/generate-themes.mjs` が creo-memories の `packages/creo-ui/src/palette/presets/*.ts` を直接 import し、OKLCH object を DTCG JSON に変換する。path 形式は `color.themes.{theme-id}.{brand,semantic,surface,text,shadow,gradient}.*` で、Web custom format が themes segment を除いて `--color-{...}` variable 名を emit する (旧 0.0.4 までの var 名と互換)。
+`scripts/generate-themes.mjs` が creo-memories の `packages/creoui/src/palette/presets/*.ts` を直接 import し、OKLCH object を DTCG JSON に変換する。path 形式は `color.themes.{theme-id}.{brand,semantic,surface,text,shadow,gradient}.*` で、Web custom format が themes segment を除いて `--color-{...}` variable 名を emit する (旧 0.0.4 までの var 名と互換)。
 
 ## 設定と規約
 
@@ -130,11 +130,11 @@ bun run build        # 全 platform に反映
 - **rust** (ubuntu): `cargo build && cargo test` を `packages/rust` で。Rust 1.95 (ci.yml の toolchain も Cargo.toml も 1.95 で揃える、 mise の `[tools].rust` と SSOT)。
 - **swift** (macos-14): `swift build && swift test` を `packages/swift` で。
 
-`publish-web.yml` は `web-v*` tag push で npmjs.com へ `creo-ui-web` を publish (要 `NPM_TOKEN` secret)。root で `bun run build:web` を実行してから `packages/web/` で `npm publish` する 2 段構え（path が root 相対のため）。
+`publish-web.yml` は `web-v*` tag push で npmjs.com へ `creoui` を publish (要 `NPM_TOKEN` secret)。root で `bun run build:web` を実行してから `packages/web/` で `npm publish` する 2 段構え（path が root 相対のため）。
 
 ## やってはいけない
 
-- 生成物 (`packages/web/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を手編集する。編集すべきは `tokens/` のみ。
+- 生成物 (`packages/web/dist/`, `packages/swift/Sources/Creoui/Generated/`, `packages/rust/src/generated/`) を手編集する。編集すべきは `tokens/` のみ。
 - `tokens/` の変更だけコミットして generated の更新を忘れる (Swift/Rust が古い値のまま残る)。
 - `style-dictionary build` を `packages/*/` の CWD で実行する (path が root 相対なので壊れる)。
 - `rust-version` と mise の Rust バージョンをズラす (CLAUDE.md の global 方針)。
@@ -143,6 +143,6 @@ bun run build        # 全 platform に反映
 - Content Layer を Editor Mode が **押し退ける / layout 変える** 設計にする。非侵襲性 (D-6) は最上位原則。
 - Swift / Rust / 他 framework (React 等) の **runtime 実装を本リポジトリに書く**。Web runtime は `packages/editor-host` に限り reference 実装として保持 (EH-1 / EH-2)、他 platform は consumer 側または将来別 package で。
 - `packages/editor-host/` を **SolidJS 以外の framework 対応で抽象化する**。SolidJS 一本で進める方針 (EH-2)。物理分離を急がない。
-- `creo-memories/packages/creo-ui` の DevEditor を直接触る。参考に留め、 **migration は creo-memories lead の判断** (EH-4)。
+- `creo-memories/packages/creoui` の DevEditor を直接触る。参考に留め、 **migration は creo-memories lead の判断** (EH-4)。
 - 専用 MCP server (`editor-host-mcp`) を実装する。**claude-in-chrome + `window.creoEditor` で代替可能** (EH-5)。Phase 2b は recipes / AI pair design docs に scope 縮小。
 - Console REPL (`window.creoEditor`) を production で無条件に expose する。**dev 自動 expose / production は config で opt-out** (`exposeConsole: false`) が規定 (EH-6)。

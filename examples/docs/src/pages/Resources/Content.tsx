@@ -1,9 +1,9 @@
 import { A } from '@solidjs/router'
-import { CreoMarkdown } from 'creo-ui-md-view'
+import { CreoMarkdown } from 'creoui-md-view'
 
 const SAMPLE_MD = `# Markdown showcase
 
-**creo-ui-md-view** が *creo-views/md* (WASM mdast parser) を消費して描画している demo。
+**creoui-md-view** が *creo-views/md* (WASM mdast parser) を消費して描画している demo。
 ~~CDN の marked.js~~ ではなく、 自作 Rust crate の出力を SolidJS で render している。
 
 ## 構造
@@ -12,7 +12,7 @@ const SAMPLE_MD = `# Markdown showcase
 |---|---|---|
 | parser | wooorm/markdown-rs (Rust) | ~459 KB WASM |
 | AST | ts-rs auto-gen | 27 型 |
-| renderer | SolidJS (creo-ui-md-view) | ~9.7 KB |
+| renderer | SolidJS (creoui-md-view) | ~9.7 KB |
 
 ## リスト
 
@@ -37,7 +37,7 @@ const SAMPLE_MD = `# Markdown showcase
 ## Code
 
 \`\`\`ts
-import { CreoMarkdown } from 'creo-ui-md-view'
+import { CreoMarkdown } from 'creoui-md-view'
 
 const App = () => <CreoMarkdown text="# hi" />
 \`\`\`
@@ -77,7 +77,7 @@ export default function Content() {
         <p class="docs-page-eyebrow">Resources</p>
         <h1>Content (Markdown)</h1>
         <p class="docs-page-lead">
-          <code>creo-ui-md-view</code> が{' '}
+          <code>creoui-md-view</code> が{' '}
           <a
             href="https://github.com/chronista-club/creo-views"
             target="_blank"
@@ -103,10 +103,10 @@ export default function Content() {
 mdast (AST)                 ts-rs 経由で TS 型 auto-gen (27 型)
    │
    ▼
-[creo-ui-md-view (Solid)]   <CreoMarkdown text={...} />
+[creoui-md-view (Solid)]   <CreoMarkdown text={...} />
    │  renderNode (22 node type 対応)
    ▼
-DOM (token-aware)           creo-ui-web tokens.css に追従`}</code>
+DOM (token-aware)           creoui tokens.css に追従`}</code>
         </pre>
       </section>
 
@@ -125,8 +125,8 @@ DOM (token-aware)           creo-ui-web tokens.css に追従`}</code>
       <section>
         <h2 class="docs-section-title">使い方</h2>
         <pre class="docs-code">
-          <code>{`import { CreoMarkdown } from 'creo-ui-md-view'
-import 'creo-ui-md-view/styles.css'
+          <code>{`import { CreoMarkdown } from 'creoui-md-view'
+import 'creoui-md-view/styles.css'
 
 export const App = () => (
   <CreoMarkdown
@@ -147,11 +147,11 @@ export const App = () => (
           22 node type を網羅 — CommonMark + GFM + 3 拡張 (Frontmatter / Admonition / WikiLink)。
           詳細は{' '}
           <a
-            href="https://github.com/chronista-club/creo-ui/blob/main/packages/md-view/README.md"
+            href="https://github.com/chronista-club/creoui/blob/main/packages/md-view/README.md"
             target="_blank"
             rel="noopener noreferrer"
           >
-            creo-ui-md-view/README.md
+            creoui-md-view/README.md
           </a>{' '}
           参照。
         </p>

@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "CreoUI",
+    name: "Creoui",
     platforms: [
         .iOS(.v17),
         .macOS(.v14),
@@ -13,21 +13,21 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "CreoUI",
-            targets: ["CreoUI"]
+            name: "Creoui",
+            targets: ["Creoui"]
         ),
     ],
     dependencies: [],
     targets: [
         .target(
-            name: "CreoUI",
+            name: "Creoui",
             dependencies: [],
-            path: "Sources/CreoUI"
+            path: "Sources/Creoui"
         ),
         .testTarget(
-            name: "CreoUITests",
-            dependencies: ["CreoUI"],
-            path: "Tests/CreoUITests"
+            name: "CreouiTests",
+            dependencies: ["Creoui"],
+            path: "Tests/CreouiTests"
         ),
     ]
 )

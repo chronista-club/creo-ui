@@ -1,6 +1,6 @@
 # Empty state
 
-> Creo UI MVP component. 一覧 / 検索結果 / inbox が **空** の時に出す centering placeholder。
+> creoui MVP component. 一覧 / 検索結果 / inbox が **空** の時に出す centering placeholder。
 
 ## Purpose
 

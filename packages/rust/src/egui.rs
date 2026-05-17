@@ -1,6 +1,6 @@
 //! egui (immediate-mode GUI) interop layer.
 //!
-//! Creo UI tokens → `egui::Color32` 変換 helper と、Creo mint-dark baseline に
+//! creoui tokens → `egui::Color32` 変換 helper と、Creo mint-dark baseline に
 //! 合わせた [`egui::Visuals`] factory を提供する。ratatui と違い egui は
 //! rect / stroke / rounding 等の数値 style も扱うが、ここでは「theme 起点」に
 //! 絞り (visuals)、token の spacing / radius は consumer 側で `egui::Spacing`
@@ -8,13 +8,13 @@
 //! が副作用大きいので、theme 関数ではいじらない)。
 //!
 //! ## Feature flag
-//! `creo-ui = { features = ["egui"] }` で有効化。
+//! `creoui = { features = ["egui"] }` で有効化。
 //!
 //! ## 使用例
 //!
 //! ```ignore
-//! use creo_ui::egui as creo_eg;
-//! use creo_ui::tokens;
+//! use creoui::egui as creo_eg;
+//! use creoui::tokens;
 //!
 //! fn setup(ctx: &egui::Context) {
 //!     // Creo mint-dark theme を一括適用
@@ -29,7 +29,7 @@
 use crate::tokens::{self, Rgb};
 use egui::{Color32, Context, Stroke, Visuals};
 
-/// Creo UI の [`Rgb`] を egui の [`Color32`] に変換する (alpha = 255)。
+/// creoui の [`Rgb`] を egui の [`Color32`] に変換する (alpha = 255)。
 ///
 /// `const fn` で定義されているので `pub const` token と合成して
 /// `const` 初期化にも使える。

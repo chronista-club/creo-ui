@@ -219,11 +219,11 @@ export default function ComponentsIndex() {
         <p class="docs-page-eyebrow">Components</p>
         <h1>All components</h1>
         <p class="docs-page-lead">
-          creo-ui-web v0.14.0 で shipped した 27 component。 全て CSS class +
+          creoui v0.14.0 で shipped した 27 component。 全て CSS class +
           <code> data-* attribute</code> で variant / size / state を表現する{' '}
           <strong>framework-agnostic</strong> 設計 — React / Vue / Solid / 生 HTML どれでも同じ
-          class を import すれば動く。 このサイト自身も consumer (creo-ui-web を import して docs
-          render に使用)。
+          class を import すれば動く。 このサイト自身も consumer (creoui を import して docs render
+          に使用)。
         </p>
       </header>
 

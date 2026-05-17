@@ -8,7 +8,7 @@ export default function FrameSystem() {
         <p class="docs-page-eyebrow">Concepts</p>
         <h1>Frame system — Spatial UI as design DNA</h1>
         <p class="docs-page-lead">
-          Creo UI の layout 哲学。 画面 = <strong>名前付き 3D Frame の連続</strong> として表現する。
+          creoui の layout 哲学。 画面 = <strong>名前付き 3D Frame の連続</strong> として表現する。
           各 Frame は slot 集合と perspective を持ち、 view component は slot に bind される。 Scene
           遷移 = Frame morph で、 view は解体せず spatial 移動。 平面 2D の
           <strong>(x, y, z-index)</strong>
@@ -251,14 +251,14 @@ type SlotPlacement = {
             <div class="docs-decision-topic">自作 motion engine</div>
             <div class="docs-decision-text">
               Web Animations API 直叩き + FLIP + spring + easing token bridge。 ~600-800 LOC、{' '}
-              <code>creo-ui-frame</code> 内同梱。 Motion One が archive 化したため自作必須
+              <code>creoui-frame</code> 内同梱。 Motion One が archive 化したため自作必須
             </div>
           </div>
           <div class="docs-decision-row">
             <code class="docs-decision-id">P-3</code>
             <div class="docs-decision-topic">Runtime API</div>
             <div class="docs-decision-text">
-              新 package <code>creo-ui-frame</code> で <code>&lt;FrameProvider&gt;</code> +{' '}
+              新 package <code>creoui-frame</code> で <code>&lt;FrameProvider&gt;</code> +{' '}
               <code>&lt;FrameSlot&gt;</code> + <code>setFrame()</code>。 自作 motion engine 同梱
             </div>
           </div>

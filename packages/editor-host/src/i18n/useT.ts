@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — useT() translation hook
+ * creoui-editor-host — useT() translation hook
  *
  * `useT()` は current locale を閉じ込めた translate 関数を返す。
  * LocalizedText → string 解決で fallback chain を挟み、"翻訳欠け" で UI

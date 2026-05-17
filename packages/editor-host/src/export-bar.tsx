@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — ExportBar (BOTTOM region 常駐 UI)
+ * creoui-editor-host — ExportBar (BOTTOM region 常駐 UI)
  *
  * 現 editor state を clipboard へ copy する minimal utility。
  * Apple HIG 路線 (d) pipeline の UI 部。format select + Copy button + 短時間 feedback。

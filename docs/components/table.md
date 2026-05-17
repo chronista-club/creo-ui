@@ -1,6 +1,6 @@
 # Table
 
-> Creo UI MVP component. 密な 2 次元データの表示。sort / hover / selection のための visual scaffolding を提供 (state 管理は consumer 責務)。
+> creoui MVP component. 密な 2 次元データの表示。sort / hover / selection のための visual scaffolding を提供 (state 管理は consumer 責務)。
 
 ## Purpose
 

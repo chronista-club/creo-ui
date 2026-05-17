@@ -6,7 +6,7 @@ import {
   boolean,
   signalTarget,
   string,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -181,7 +181,7 @@ export default function Switch() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.switch-editor',
+              localStorageNamespace: 'creoui-docs.switch-editor',
             }}
           >
             <SwitchEditorDemo />

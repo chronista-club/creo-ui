@@ -110,7 +110,7 @@ export default function Principles() {
           radius は 7 step (<code>none</code> / <code>xs</code> / <code>s</code> / <code>m</code> /{' '}
           <code>l</code> / <code>xl</code> / <code>full</code>)。 中の 5 tier が size-feel
           convention に従い、 <code>none</code> / <code>full</code> は special (explicit reset /
-          pill shape)。 機械的計算は <code>creo-ui-editor-host</code> の <code>concentric()</code>{' '}
+          pill shape)。 機械的計算は <code>creoui-editor-host</code> の <code>concentric()</code>{' '}
           helper が担当 — `concentric('var(--radius-m)', 'var(--spacing-m)')` で
           `calc(var(--radius-m) - var(--spacing-m))` を return、 親 radius が theme 切替で動いても
           child が追従する。
@@ -157,7 +157,7 @@ export default function Principles() {
       <Principle
         number="06"
         title="Token SSOT 強制 — no hardcode"
-        rule="component CSS / Swift / Rust で hardcode の値 (色 / 数値 / radius) は禁止。 必ず var(--...) や CreoUITokens 経由。"
+        rule="component CSS / Swift / Rust で hardcode の値 (色 / 数値 / radius) は禁止。 必ず var(--...) や CreouiTokens 経由。"
       >
         <h3>Why</h3>
         <p>Hardcode を 1 箇所許すと、 以下の 3 機能が同時に壊れる:</p>
@@ -177,8 +177,8 @@ export default function Principles() {
         </ul>
         <h3>How it shows up</h3>
         <p>
-          <code>creo-ui-web/components.css</code> 全体が token 経由。 docs site (この page を含む)
-          も <code>--color-*</code> / <code>--spacing-*</code> 経由で書かれているため、 docs 自身が{' '}
+          <code>creoui/components.css</code> 全体が token 経由。 docs site (この page を含む) も{' '}
+          <code>--color-*</code> / <code>--spacing-*</code> 経由で書かれているため、 docs 自身が{' '}
           <strong>regression detection 装置</strong> として働く。 token に変更があれば docs site
           の見た目が即変わる。 v0.16-v0.18 の 5 tier rename では、 <code>token-shim.css</code>{' '}
           legacy alias で旧 var 名を維持しつつ、 dogfood で sweep 漏れを視覚的に検出した
@@ -224,13 +224,13 @@ export default function Principles() {
       <Principle
         number="08"
         title="2 axis hybrid governance — concept proactive / surface feedback"
-        rule="Concept / Architecture / Foundation は creo-ui 側 proactive に drive。 Surface friction / API ergonomics / new component need は consumer feedback driven。"
+        rule="Concept / Architecture / Foundation は creoui 側 proactive に drive。 Surface friction / API ergonomics / new component need は consumer feedback driven。"
       >
         <h3>Why</h3>
         <p>
           設計の駆動源を「 consumer-only feedback」 一本にすると、 consumer が現状の語彙で 要求を
           articulate できない領域 (Frame system / Editor Mode / Theme palette / 5 tier convention
-          等の concept) が永遠に articulate されない。 逆に creo-ui-only proactive だと、 consumer
+          等の concept) が永遠に articulate されない。 逆に creoui-only proactive だと、 consumer
           の実 friction が観察できず「想定 friction を回避するための rename loop」 で疲弊する (v0.16
           → v0.17 → v0.18 で実体験)。
         </p>
@@ -238,9 +238,9 @@ export default function Principles() {
         <p>2 axis を PR ごとに articulate して進める:</p>
         <ul>
           <li>
-            <strong>Concept driven (creo-ui proactive)</strong> — Frame system protocol / Editor
-            Mode 4 region / 8 theme palette / 5 tier convention / OKLCH adoption / DTCG SSOT 設計 /
-            a11y baseline (reduced-motion / WCAG)
+            <strong>Concept driven (creoui proactive)</strong> — Frame system protocol / Editor Mode
+            4 region / 8 theme palette / 5 tier convention / OKLCH adoption / DTCG SSOT 設計 / a11y
+            baseline (reduced-motion / WCAG)
           </li>
           <li>
             <strong>Surface driven (consumer feedback)</strong> — data-* attribute friction / 新
@@ -249,7 +249,7 @@ export default function Principles() {
         </ul>
         <p>
           境界判断: <strong>「consumer が現状の語彙で要求を articulate できるか」</strong> —
-          できない場合は creo-ui 側で先に concept を起こす責務、 できる場合は consumer feedback
+          できない場合は creoui 側で先に concept を起こす責務、 できる場合は consumer feedback
           を待つ。 固定 rule よりも case-by-case 判断を優先、 PR 説明文で どちら駆動か明示。 詳細は{' '}
           <code>docs/contributing.md</code> 参照。
         </p>

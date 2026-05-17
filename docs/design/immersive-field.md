@@ -2,7 +2,7 @@
 
 **Status**: **Exploratory** (vision、 探求 frontier、 ADR ではない)
 **Date**: 2026-05-03
-**Owners**: Creo UI maintainer + future contributors (collaborative)
+**Owners**: creoui maintainer + future contributors (collaborative)
 **Scope**: Story / Scene / Field 統一メンタルモデルの **Field 層** を visionOS の immersive 3D 環境として
 articulate する exploratory memo。 既存 protocol (Frame / Vision / Content viewers) を immersive
 mode に拡張する path を共同探求する
@@ -126,7 +126,7 @@ adapter として持つか? 候補:
   「部屋が回転する」 ような spatial 体験になる。 同 DOM 保持の延長で「同 Entity 保持」、 物理的に
   動く視点
 - **Multi-window spatial layout** — visionOS の window manager が Frame slot を別 window として
-  配置、 user が手動で空間に配置できる (creo-ui 規定の Frame と user の自由配置のハイブリッド)
+  配置、 user が手動で空間に配置できる (creoui 規定の Frame と user の自由配置のハイブリッド)
 - **Voice + gaze + pinch の triadic input** — visionOS は voice も canonical、 keyboard が Bluetooth
   でしか繋がらない environment で voice 経路の Editor Mode が大事に
 - **Spatial Editor Mode** — Editor の 4 region (TOP/LEFT/RIGHT/BOTTOM) が物理的に user の 4 方向
@@ -142,7 +142,7 @@ adapter として持つか? 候補:
 |---|---|---|
 | **IF-A** | この memo articulate (現)、 sibling memo cross-link | 0.3 session |
 | **IF-B** | Vision Pro 実機で Safari for visionOS の docs site を試して Field 体験を測る (Phase A の延長 + visual UX 評価) | 0.5 session |
-| **IF-C** | visionOS native skeleton — `creo-ui-immersive-swift` (or `creo-ui-vision-swift` の visionOS subset) で `<ImmersiveSpace>` + RealityKit + ARKit HandTracking の minimal viable viewer | 2-3 session |
+| **IF-C** | visionOS native skeleton — `creoui-immersive-swift` (or `creoui-vision-swift` の visionOS subset) で `<ImmersiveSpace>` + RealityKit + ARKit HandTracking の minimal viable viewer | 2-3 session |
 | **IF-D** | Frame system Immersive backend — Frame schema の z 解釈を visionOS で literal meters に、 RealityKit Entity binding | multi-session |
 | **IF-E** | Content viewers Immersive — md / mermaid を spatial entity として render | multi-session |
 | **IF-F** | Multi-window / Voice / Spatial Editor Mode 等の dream features | open-ended |

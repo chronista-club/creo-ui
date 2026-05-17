@@ -1,7 +1,7 @@
 {
-  "name": "creo-ui-editor-host",
+  "name": "creoui-editor-host",
   "version": "0.5.0",
-  "description": "Creo UI — Editor Mode reference runtime for SolidJS. Live design surface with console REPL, auto-discover, URL share, cross-tab sync, and export-to-patch.",
+  "description": "creoui — Editor Mode reference runtime for SolidJS. Live design surface with console REPL, auto-discover, URL share, cross-tab sync, and export-to-patch.",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -16,17 +16,17 @@
   "files": ["dist", "README.md"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/chronista-club/creo-ui.git",
+    "url": "https://github.com/chronista-club/creoui.git",
     "directory": "packages/editor-host"
   },
   "bugs": {
-    "url": "https://github.com/chronista-club/creo-ui/issues"
+    "url": "https://github.com/chronista-club/creoui/issues"
   },
-  "homepage": "https://github.com/chronista-club/creo-ui#readme",
+  "homepage": "https://github.com/chronista-club/creoui#readme",
   "keywords": [
     "design-system",
     "editor-mode",
-    "creo-ui",
+    "creoui",
     "solid-js",
     "design-tokens",
     "live-editing",

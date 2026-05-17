@@ -1,7 +1,7 @@
-# Frame system — Creo UI Spatial Layout Protocol
+# Frame system — creoui Spatial Layout Protocol
 
-**Status**: P-0〜P-5 shipped (2026-05-05 時点 — `creo-ui-frame` v0.1.0 / `creo-ui-vision` / docs Playground dogfood)、 P-6 (VP 統合) 残。 詳細は §9 Phase plan
-**Owners**: Creo UI (schema + protocol)、 consumer packages (runtime 実装)
+**Status**: P-0〜P-5 shipped (2026-05-05 時点 — `creoui-frame` v0.1.0 / `creoui-vision` / docs Playground dogfood)、 P-6 (VP 統合) 残。 詳細は §9 Phase plan
+**Owners**: creoui (schema + protocol)、 consumer packages (runtime 実装)
 **Scope**: layout philosophy at the same level as Editor Mode protocol。 既存の Story / Scene / Field 統一メンタルモデル (creo-memories `mem_1CZCk1Zg8cQpiLvjqqDKNA`) の **Scene 層** を spatial に articulate する protocol
 **Related**: [editor-mode.md](./editor-mode.md), [theme-system.md](./theme-system.md), [stack-adr.md](./stack-adr.md), [vision-input.md](./vision-input.md), [vision-cross-platform.md](./vision-cross-platform.md), [immersive-field.md](./immersive-field.md)
 
@@ -9,7 +9,7 @@
 
 ## 1. Overview
 
-Creo UI の layout 哲学。 画面 = **名前付き 3D Frame の連続** として表現する。
+creoui の layout 哲学。 画面 = **名前付き 3D Frame の連続** として表現する。
 各 Frame は slot 集合と perspective を持ち、 view component は slot に bind される。
 Scene 遷移 = Frame morph で、 view は解体せず spatial 移動。 平面 2D の `(x, y, z-index)`
 に対して、 `(x, y, z, rotation, depth-of-field)` で **情報密度を倍以上** に。
@@ -166,8 +166,8 @@ Frame system では:
 | **P-0** | docs site visual depth (perspective + card translateZ + sidebar depth + reduced-motion guard) | 着手中 → 完了 | ✅ Ship |
 | **P-1** | `tokens/depth/` + `tokens/motion/` + `tokens/frame/` 追加 | 1h | ✅ Ship (`tokens/{depth,motion,frame}/*.json`) |
 | **P-2** | **自作 motion engine** (Web Animations API 直叩き、 FLIP + spring + easing token bridge) — Motion One が 2024 年 archive 化したため自作必須。 詳細は [stack-adr.md](./stack-adr.md) | 2-3h | ✅ Ship (`packages/frame/src/motion/`) |
-| **P-3** | 新 package `creo-ui-frame` (Solid + 自作 motion engine 同梱)、 `<FrameProvider>` `<FrameSlot>` `setFrame()` | 1 session | ✅ Ship (v0.1.0) |
-| **P-4** | 新 package `creo-ui-vision` (webcam motion との統合)。 詳細は [vision-input.md](./vision-input.md) | 1 session | ✅ Ship (mock source + MediaPipe lazy load + One-Euro Filter) |
+| **P-3** | 新 package `creoui-frame` (Solid + 自作 motion engine 同梱)、 `<FrameProvider>` `<FrameSlot>` `setFrame()` | 1 session | ✅ Ship (v0.1.0) |
+| **P-4** | 新 package `creoui-vision` (webcam motion との統合)。 詳細は [vision-input.md](./vision-input.md) | 1 session | ✅ Ship (mock source + MediaPipe lazy load + One-Euro Filter) |
 | **P-5** | docs site Playground で Frame morph + gesture demo (P-3, P-4 合成) | 0.5 session | ✅ Ship (`examples/docs/src/pages/Lab/Playground.tsx` — wave gesture / spatial pinch / `<model>` element / camera probe) |
 | **P-6** | VP 統合 (VP の pane を Frame protocol に refactor) | multi-session | ⏳ 別 repo (`vantage-point`) で着手予定 |
 

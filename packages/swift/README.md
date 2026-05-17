@@ -1,8 +1,8 @@
-# CreoUI (Swift)
+# Creoui (Swift)
 
-Creo UI Design System tokens for Apple platforms (iOS / macOS / watchOS / tvOS).
+creoui Design System tokens for Apple platforms (iOS / macOS / watchOS / tvOS).
 
-単一の W3C Design Tokens (DTCG) から生成された SwiftUI `Color` extension と `CreoUITokens` 定数を Swift Package Manager 経由で提供する。
+単一の W3C Design Tokens (DTCG) から生成された SwiftUI `Color` extension と `CreouiTokens` 定数を Swift Package Manager 経由で提供する。
 
 ## 対応 Platform
 
@@ -26,7 +26,7 @@ let package = Package(
     platforms: [.iOS(.v17), .macOS(.v14)],
     dependencies: [
         .package(
-            url: "https://github.com/chronista-club/creo-ui.git",
+            url: "https://github.com/chronista-club/creoui.git",
             from: "0.0.1"
         ),
     ],
@@ -34,32 +34,32 @@ let package = Package(
         .target(
             name: "MyApp",
             dependencies: [
-                .product(name: "CreoUI", package: "creo-ui"),
+                .product(name: "Creoui", package: "creoui"),
             ]
         ),
     ]
 )
 ```
 
-Xcode からは: `File > Add Package Dependencies...` で `https://github.com/chronista-club/creo-ui.git` を入力、Target に `CreoUI` を追加。
+Xcode からは: `File > Add Package Dependencies...` で `https://github.com/chronista-club/creoui.git` を入力、Target に `Creoui` を追加。
 
 ## 使い方
 
 ```swift
-import CreoUI
+import Creoui
 import SwiftUI
 
 struct HeroView: View {
     var body: some View {
         Text("Creo")
             .foregroundColor(.colorBrandPrimary)      // SwiftUI Color extension
-            .padding(CreoUITokens.spacingM)          // CGFloat
+            .padding(CreouiTokens.spacingM)          // CGFloat
             .font(.system(
-                size: CreoUITokens.typographySizeL,  // CGFloat
+                size: CreouiTokens.typographySizeL,  // CGFloat
                 weight: .semibold
             ))
             .background(Color.colorSurfaceSubtle)
-            .cornerRadius(CreoUITokens.radiusM)
+            .cornerRadius(CreouiTokens.radiusM)
     }
 }
 ```
@@ -69,19 +69,19 @@ struct HeroView: View {
 | Category | 命名 | 型 |
 |----------|------|----|
 | `color.*` | `Color.colorBrandPrimary`, `Color.colorSemanticError` 等 | `SwiftUI.Color` |
-| `spacing.*` | `CreoUITokens.spacingXs` ... `spacingXl` (5 step) | `CGFloat` |
-| `margin.*` | `CreoUITokens.marginXs` ... `marginXl` (5 step) | `CGFloat` |
-| `radius.*` | `CreoUITokens.radiusNone`, `radiusXs` ... `radiusFull` (5 step + special) | `CGFloat` |
-| `typography.size.*` | `CreoUITokens.typographySizeM` 等 (body, 5 step) | `CGFloat` |
-| `typography.display.*` | `CreoUITokens.typographyDisplayM` 等 (heading, 5 step) | `CGFloat` |
-| `layout.gap.*` | `CreoUITokens.layoutGapSibling` 等 (semantic between-ness) | `CGFloat` |
-| `layout.target.*` | `CreoUITokens.layoutTargetTap` (=44) / `Focus` / `Hit` (Apple HIG accessibility) | `CGFloat` |
-| `typography.title.*` | `CreoUITokens.typographyTitlePage` 等 (role-based headings) | `CGFloat` |
-| `typography.body.*` | `CreoUITokens.typographyBodyDefault` 等 (role-based body) | `CGFloat` |
-| `typography.weight.*` | `CreoUITokens.typographyWeightRegular` 等 | `Double` |
-| `typography.family.*` / `shadow.*` | `CreoUITokens.typographyFamilySans` 等 | `String` |
+| `spacing.*` | `CreouiTokens.spacingXs` ... `spacingXl` (5 step) | `CGFloat` |
+| `margin.*` | `CreouiTokens.marginXs` ... `marginXl` (5 step) | `CGFloat` |
+| `radius.*` | `CreouiTokens.radiusNone`, `radiusXs` ... `radiusFull` (5 step + special) | `CGFloat` |
+| `typography.size.*` | `CreouiTokens.typographySizeM` 等 (body, 5 step) | `CGFloat` |
+| `typography.display.*` | `CreouiTokens.typographyDisplayM` 等 (heading, 5 step) | `CGFloat` |
+| `layout.gap.*` | `CreouiTokens.layoutGapSibling` 等 (semantic between-ness) | `CGFloat` |
+| `layout.target.*` | `CreouiTokens.layoutTargetTap` (=44) / `Focus` / `Hit` (Apple HIG accessibility) | `CGFloat` |
+| `typography.title.*` | `CreouiTokens.typographyTitlePage` 等 (role-based headings) | `CGFloat` |
+| `typography.body.*` | `CreouiTokens.typographyBodyDefault` 等 (role-based body) | `CGFloat` |
+| `typography.weight.*` | `CreouiTokens.typographyWeightRegular` 等 | `Double` |
+| `typography.family.*` / `shadow.*` | `CreouiTokens.typographyFamilySans` 等 | `String` |
 
-全定数は [packages/swift/Sources/CreoUI/Generated/Tokens.swift](./Sources/CreoUI/Generated/Tokens.swift) で確認できる (Style Dictionary が `bun run build:swift` で自動生成)。
+全定数は [packages/swift/Sources/Creoui/Generated/Tokens.swift](./Sources/Creoui/Generated/Tokens.swift) で確認できる (Style Dictionary が `bun run build:swift` で自動生成)。
 
 ## 設計メモ
 
@@ -91,4 +91,4 @@ struct HeroView: View {
 
 ## License
 
-Apache-2.0 — [LICENSE](https://github.com/chronista-club/creo-ui/blob/main/LICENSE)
+Apache-2.0 — [LICENSE](https://github.com/chronista-club/creoui/blob/main/LICENSE)

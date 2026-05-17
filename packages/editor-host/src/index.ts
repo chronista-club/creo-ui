@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — public API (Step 5 + Target × Control 分離)
+ * creoui-editor-host — public API (Step 5 + Target × Control 分離)
  *
  * Consumer が import するのは bind() を中心とする high-level API。
  * EditorField / EditorHost / register / createEditorHost 等の低レベルは

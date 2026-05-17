@@ -1,4 +1,4 @@
-// CreoUI — Badge component (SwiftUI)
+// Creoui — Badge component (SwiftUI)
 //
 // CSS `.creo-badge` の SwiftUI 版。短い status / count / tag 表示。Rail activity badge
 // (CREO-107) 等で使用。
@@ -51,7 +51,7 @@ public struct CreoBadge: View {
         Text(text)
             .font(.system(size: fontSize, weight: .medium))
             .foregroundColor(foregroundColor)
-            .padding(.horizontal, CreoUITokens.spacingXs)
+            .padding(.horizontal, CreouiTokens.spacingXs)
             .padding(.vertical, verticalPadding)
             .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
@@ -62,7 +62,7 @@ public struct CreoBadge: View {
     // MARK: - Style resolvers
 
     private var fontSize: CGFloat {
-        size == .sm ? CreoUITokens.typographySizeXs : CreoUITokens.typographySizeS
+        size == .sm ? CreouiTokens.typographySizeXs : CreouiTokens.typographySizeS
     }
 
     private var verticalPadding: CGFloat {
@@ -71,8 +71,8 @@ public struct CreoBadge: View {
 
     private var cornerRadius: CGFloat {
         switch shape {
-        case .pill: return CreoUITokens.radiusFull
-        case .square: return CreoUITokens.radiusXs
+        case .pill: return CreouiTokens.radiusFull
+        case .square: return CreouiTokens.radiusXs
         }
     }
 

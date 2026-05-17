@@ -1,8 +1,8 @@
-# creo-ui (Rust)
+# creoui (Rust)
 
-Creo UI Design System tokens for Rust consumers.
+creoui Design System tokens for Rust consumers.
 
-単一の W3C Design Tokens (DTCG) から生成された `pub const` 定義 (色 / 余白 / typography / radius / shadow) を `creo_ui::tokens` モジュールとして提供する。
+単一の W3C Design Tokens (DTCG) から生成された `pub const` 定義 (色 / 余白 / typography / radius / shadow) を `creoui::tokens` モジュールとして提供する。
 
 ## インストール
 
@@ -11,17 +11,17 @@ Creo UI Design System tokens for Rust consumers.
 ```toml
 # Cargo.toml (path 参照の例)
 [dependencies]
-creo-ui = { path = "../creo-ui/packages/rust" }
+creoui = { path = "../creoui/packages/rust" }
 
 # Cargo.toml (git 参照の例)
 [dependencies]
-creo-ui = { git = "https://github.com/chronista-club/creo-ui.git" }
+creoui = { git = "https://github.com/chronista-club/creoui.git" }
 ```
 
 ## 使い方
 
 ```rust
-use creo_ui::tokens;
+use creoui::tokens;
 
 fn main() {
     // Color は Rgb { r: u8, g: u8, b: u8 } 構造体
@@ -43,7 +43,7 @@ fn main() {
 `Rgb` 構造体に `as_array()` が生えているので `[u8; 3]` 経由で他ライブラリの色型に渡せる:
 
 ```rust
-use creo_ui::tokens::COLOR_BRAND_PRIMARY;
+use creoui::tokens::COLOR_BRAND_PRIMARY;
 
 // ratatui
 let bg = ratatui::style::Color::Rgb(
@@ -58,11 +58,11 @@ let pixel = image::Rgb(COLOR_BRAND_PRIMARY.as_array());
 
 ### ratatui interop (`features = ["ratatui"]`)
 
-`creo_ui::ratatui` 下に `Color` 変換と palette helper、character cell padding が生えている:
+`creoui::ratatui` 下に `Color` 変換と palette helper、character cell padding が生えている:
 
 ```rust
-use creo_ui::ratatui as creo_rat;
-use creo_ui::tokens;
+use creoui::ratatui as creo_rat;
+use creoui::tokens;
 
 let title_style = ratatui::style::Style::default()
     .fg(creo_rat::color(tokens::COLOR_BRAND_PRIMARY))
@@ -75,12 +75,12 @@ let left_pad = creo_rat::pad::md(); // 18px → 2 cells
 
 ### egui interop (`features = ["egui"]`)
 
-`creo_ui::egui` で mint-dark baseline の `Visuals` を egui Context にワンショット
+`creoui::egui` で mint-dark baseline の `Visuals` を egui Context にワンショット
 適用できる。`Rgb` → `Color32` 変換も const fn として生えている:
 
 ```rust
-use creo_ui::egui as creo_eg;
-use creo_ui::tokens;
+use creoui::egui as creo_eg;
+use creoui::tokens;
 
 fn setup(ctx: &egui::Context) {
     // Creo mint-dark theme を Visuals に一括反映 (surface / widgets / selection
@@ -120,8 +120,8 @@ let info: egui::Color32 = tokens::COLOR_SEMANTIC_INFO.into();
 
 - **Rust edition 2024** (`rust-version = "1.95"` を `mise` と揃えている)
 - `#![forbid(unsafe_code)]`
-- `creo_ui::tokens` は `include!()` で外部 module に取り込まれる設計 (`src/lib.rs:21`)
+- `creoui::tokens` は `include!()` で外部 module に取り込まれる設計 (`src/lib.rs:21`)
 
 ## License
 
-Apache-2.0 — [LICENSE](https://github.com/chronista-club/creo-ui/blob/main/LICENSE)
+Apache-2.0 — [LICENSE](https://github.com/chronista-club/creoui/blob/main/LICENSE)

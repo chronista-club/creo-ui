@@ -62,17 +62,17 @@ export default function MultiPlatform() {
           <div class="docs-pipeline-outputs">
             <div class="docs-pipeline-step docs-pipeline-out">
               <div class="docs-pipeline-step-label">Web</div>
-              <div class="docs-pipeline-step-name">creo-ui-web</div>
+              <div class="docs-pipeline-step-name">creoui</div>
               <div class="docs-pipeline-step-meta">CSS variable + JS export</div>
             </div>
             <div class="docs-pipeline-step docs-pipeline-out">
               <div class="docs-pipeline-step-label">Apple</div>
-              <div class="docs-pipeline-step-name">CreoUI (Swift)</div>
+              <div class="docs-pipeline-step-name">Creoui (Swift)</div>
               <div class="docs-pipeline-step-meta">SwiftUI Color + CGFloat</div>
             </div>
             <div class="docs-pipeline-step docs-pipeline-out">
               <div class="docs-pipeline-step-label">Rust</div>
-              <div class="docs-pipeline-step-name">creo-ui (Rust)</div>
+              <div class="docs-pipeline-step-name">creoui (Rust)</div>
               <div class="docs-pipeline-step-meta">Rgb 構造体 + f32 const</div>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function MultiPlatform() {
       <section>
         <h2 class="docs-section-title">Per-platform output</h2>
 
-        <h3 class="docs-platform-title">Web — creo-ui-web</h3>
+        <h3 class="docs-platform-title">Web — creoui</h3>
         <p class="docs-page-helper">
           CSS custom property + ESM module。 OKLCH 値は literal で emit、 modern browser
           がそのまま解釈。
@@ -126,24 +126,24 @@ export const spacingM = 18
 .creo-btn { padding: var(--spacing-m); ... }`}</code>
         </pre>
 
-        <h3 class="docs-platform-title">Apple — CreoUI (Swift)</h3>
+        <h3 class="docs-platform-title">Apple — Creoui (Swift)</h3>
         <p class="docs-page-helper">
           SwiftUI <code>Color</code> + <code>CGFloat</code>。 iOS 17+ / macOS 14+ / watchOS 10+ /
           tvOS 17+ 対応。 OKLCH は build 時に hex に変換 (Mint Dark のみ、 他 theme は将来対応)。
         </p>
         <pre class="docs-code">
-          <code>{`// Sources/CreoUI/Generated/Tokens.swift
+          <code>{`// Sources/Creoui/Generated/Tokens.swift
 public extension Color {
     static let colorBrandPrimary = Color(red: 0.13, green: 0.74, blue: 0.50)
 }
 
-public enum CreoUITokens {
+public enum CreouiTokens {
     public static let spacingM: CGFloat = 18.0
     public static let radiusM: CGFloat = 15.0
 }`}</code>
         </pre>
 
-        <h3 class="docs-platform-title">Rust — creo-ui</h3>
+        <h3 class="docs-platform-title">Rust — creoui</h3>
         <p class="docs-page-helper">
           struct + const。 ratatui / egui / iced / dioxus interop は opt-in feature flag。 zero-dep
           base crate。
@@ -157,7 +157,7 @@ pub const SPACING_M: f32 = 18.0;
 pub const RADIUS_M: f32 = 15.0;
 
 // ratatui interop (feature = "ratatui")
-use creo_ui::ratatui::{color, palette};
+use creoui::ratatui::{color, palette};
 let style = ratatui::style::Style::default()
     .fg(palette::brand_primary());`}</code>
         </pre>

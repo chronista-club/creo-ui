@@ -1,11 +1,11 @@
 /**
- * Creo UI — Button component
+ * creoui — Button component
  *
  * data attribute で variant / size を表現。`.creo-btn` base + `data-variant` + `data-size`。
  * Default: primary / md。
  *
  * Spec: docs/components/button.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  *
  * Usage:
  *   <button class="creo-btn" data-variant="primary">Label</button>

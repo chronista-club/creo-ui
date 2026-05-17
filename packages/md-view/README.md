@@ -1,18 +1,18 @@
-# creo-ui-md-view
+# creoui-md-view
 
-> SolidJS Markdown renderer for Creo UI. Consumes [`creo-views/md`](https://github.com/chronista-club/creo-views) (WASM-backed mdast parser).
+> SolidJS Markdown renderer for creoui. Consumes [`creo-views/md`](https://github.com/chronista-club/creo-views) (WASM-backed mdast parser).
 
 ## Install
 
 ```sh
-bun add creo-ui-md-view solid-js
+bun add creoui-md-view solid-js
 ```
 
 ## Usage
 
 ```tsx
-import { CreoMarkdown } from 'creo-ui-md-view'
-import 'creo-ui-md-view/styles.css'
+import { CreoMarkdown } from 'creoui-md-view'
+import 'creoui-md-view/styles.css'
 
 const text = `
 # Hello

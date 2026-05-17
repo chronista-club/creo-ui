@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — ThemeEditor (LEFT region)
+ * creoui-editor-host — ThemeEditor (LEFT region)
  *
  * semantic='source' 寄りの役割: active theme の meta (name / family / flavor)
  * と主要 color swatch grid を表示。swatch 色は CSS 変数 `var(--color-*)` を

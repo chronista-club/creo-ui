@@ -1,6 +1,6 @@
 # Input
 
-> Creo UI MVP component. single-line text field (native `<input>`)。
+> creoui MVP component. single-line text field (native `<input>`)。
 
 ## Purpose
 

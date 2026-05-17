@@ -133,7 +133,7 @@ export function VisionProvider(props: VisionProviderProps): JSX.Element {
 export function useVision(): VisionContextValue {
   const ctx = useContext(VisionCtx)
   if (!ctx) {
-    throw new Error('[creo-ui-vision] useVision() must be used inside <VisionProvider>')
+    throw new Error('[creoui-vision] useVision() must be used inside <VisionProvider>')
   }
   return ctx
 }

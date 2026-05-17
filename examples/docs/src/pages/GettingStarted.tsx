@@ -7,7 +7,7 @@ export default function GettingStarted() {
         <p class="docs-page-eyebrow">Overview</p>
         <h1>Getting started</h1>
         <p class="docs-page-lead">
-          Creo UI は <strong>Web · Apple · Rust</strong> の 3 platform を 1 つの DTCG token から
+          creoui は <strong>Web · Apple · Rust</strong> の 3 platform を 1 つの DTCG token から
           生成する design system。 このページでは Web (CSS + SolidJS) を例に install → first example
           まで案内。
         </p>
@@ -17,24 +17,20 @@ export default function GettingStarted() {
         <h2 class="docs-section-title">Install</h2>
         <pre class="docs-code">
           <code>{`# 必須 (token CSS + components.css)
-bun add creo-ui-web
+bun add creoui
 
 # (任意) Editor Mode の reference runtime
-bun add creo-ui-editor-host solid-js
+bun add creoui-editor-host solid-js
 
 # (任意) Markdown renderer
-bun add creo-ui-md-view
+bun add creoui-md-view
 
 # (任意) Iconify-based icon adapter
-bun add creo-ui-icons-web`}</code>
+bun add creoui-icons-web`}</code>
         </pre>
         <p class="docs-page-helper">
           npm / yarn / pnpm でも同様。 すべての package は{' '}
-          <a
-            href="https://www.npmjs.com/package/creo-ui-web"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="https://www.npmjs.com/package/creoui" target="_blank" rel="noopener noreferrer">
             npmjs.com
           </a>{' '}
           公開中 (Apache-2.0)。
@@ -45,11 +41,11 @@ bun add creo-ui-icons-web`}</code>
         <h2 class="docs-section-title">CSS の取り込み</h2>
         <pre class="docs-code">
           <code>{`// app entry (例: main.tsx)
-import 'creo-ui-web/tokens.css'        // 8 theme + 全 token (--color-*, --spacing-*, ...)
-import 'creo-ui-web/components.css'    // 27 component の CSS class (.creo-btn, .creo-card, ...)
+import 'creoui/tokens.css'        // 8 theme + 全 token (--color-*, --spacing-*, ...)
+import 'creoui/components.css'    // 27 component の CSS class (.creo-btn, .creo-card, ...)
 
 // (任意)
-import 'creo-ui-md-view/styles.css'`}</code>
+import 'creoui-md-view/styles.css'`}</code>
         </pre>
         <p class="docs-page-helper">
           tokens.css は <code>:root</code> に CSS custom property を定義。 components.css は class +
@@ -64,7 +60,7 @@ import 'creo-ui-md-view/styles.css'`}</code>
           <code>{`<!-- React / Vue / Solid / 生 HTML どれでも同じ -->
 <article class="creo-card" data-variant="elevated" data-padding="l">
   <h2>Sign up</h2>
-  <p>creo-ui-web を試してみる</p>
+  <p>creoui を試してみる</p>
 
   <label for="email">Email</label>
   <input id="email" class="creo-input" type="email" placeholder="you@example.com" />
@@ -110,7 +106,7 @@ import 'creo-ui-md-view/styles.css'`}</code>
   bind,
   number,
   cssVarNumberTarget,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 
 // Field 宣言
 bind({
@@ -141,22 +137,22 @@ bind({
         <pre class="docs-code">
           <code>{`# Apple (Swift Package Manager)
 dependencies: [
-  .package(url: "https://github.com/chronista-club/creo-ui", branch: "main"),
+  .package(url: "https://github.com/chronista-club/creoui", branch: "main"),
 ],
 
 // SwiftUI
-import CreoUI
+import Creoui
 Text("Hi").foregroundColor(.colorBrandPrimary)
-  .padding(CreoUITokens.spacingM)
+  .padding(CreouiTokens.spacingM)
 
 # Rust (Cargo)
 [dependencies]
-creo-ui = "0.3"
+creoui = "0.3"
 # 必要に応じて feature flag
-# creo-ui = { version = "0.3", features = ["ratatui"] }
+# creoui = { version = "0.3", features = ["ratatui"] }
 
 // Rust
-use creo_ui::tokens;
+use creoui::tokens;
 let primary = tokens::COLOR_BRAND_PRIMARY;  // Rgb { r, g, b }
 let m = tokens::SPACING_M;                  // f32 px (5 tier 中央)`}</code>
         </pre>

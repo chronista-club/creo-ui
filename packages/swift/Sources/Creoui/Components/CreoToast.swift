@@ -1,4 +1,4 @@
-// CreoUI — Toast (SwiftUI)
+// Creoui — Toast (SwiftUI)
 //
 // Web `.creo-toast` の SwiftUI 版。一時的な status / notification。VP ccwire
 // msg 受信通知、action 完了 feedback 等で使用。
@@ -40,21 +40,21 @@ public struct CreoToast: View {
     }
 
     public var body: some View {
-        HStack(alignment: .top, spacing: CreoUITokens.spacingS) {
+        HStack(alignment: .top, spacing: CreouiTokens.spacingS) {
             if let symbol = iconSymbol {
                 Image(systemName: symbol)
                     .foregroundColor(iconColor)
-                    .font(.system(size: CreoUITokens.typographyTitleCard))
+                    .font(.system(size: CreouiTokens.typographyTitleCard))
             }
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.system(size: CreoUITokens.typographySizeM, weight: .semibold))
+                    .font(.system(size: CreouiTokens.typographySizeM, weight: .semibold))
                     .foregroundColor(Color.colorTextPrimary)
 
                 if let description {
                     Text(description)
-                        .font(.system(size: CreoUITokens.typographyBodyHelper))
+                        .font(.system(size: CreouiTokens.typographyBodyHelper))
                         .foregroundColor(Color.colorTextSecondary)
                         .lineLimit(3)
                 }
@@ -65,20 +65,20 @@ public struct CreoToast: View {
                 Button(action: onClose) {
                     Image(systemName: "xmark")
                         .foregroundColor(Color.colorTextTertiary)
-                        .font(.system(size: CreoUITokens.typographySizeS))
+                        .font(.system(size: CreouiTokens.typographySizeS))
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel("閉じる")
             }
         }
-        .padding(.horizontal, CreoUITokens.spacingM)
-        .padding(.vertical, CreoUITokens.spacingS)
+        .padding(.horizontal, CreouiTokens.spacingM)
+        .padding(.vertical, CreouiTokens.spacingS)
         .background(Color.colorSurfaceSurface)
         .overlay(
-            RoundedRectangle(cornerRadius: CreoUITokens.radiusM)
+            RoundedRectangle(cornerRadius: CreouiTokens.radiusM)
                 .stroke(borderColor, lineWidth: borderWidth)
         )
-        .clipShape(RoundedRectangle(cornerRadius: CreoUITokens.radiusM))
+        .clipShape(RoundedRectangle(cornerRadius: CreouiTokens.radiusM))
         .shadow(color: .black.opacity(0.08), radius: 8, y: 2)
     }
 

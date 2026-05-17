@@ -1,11 +1,11 @@
 /**
- * Creo UI — FormField utility
+ * creoui — FormField utility
  *
  * label + input + helper-text を垂直 stack で束ねる minimal wrapper。
  * component ではなく CSS class utility として提供。
  *
  * Spec: docs/components/form-field.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-form-field {

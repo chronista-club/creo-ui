@@ -1,5 +1,5 @@
 /**
- * creo-ui-editor-host — Export (F3)
+ * creoui-editor-host — Export (F3)
  *
  * host.values() の現 snapshot を JSON / YAML / CSS / CSS-patch に serialize。
  * clipboard 操作はせず string のみ return (consumer が copy するかは任意)。

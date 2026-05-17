@@ -1,5 +1,5 @@
 import { A } from '@solidjs/router'
-import { EditorHostProvider, EditorLayer, bind, select, signalTarget } from 'creo-ui-editor-host'
+import { EditorHostProvider, EditorLayer, bind, select, signalTarget } from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -198,7 +198,7 @@ export default function Breadcrumbs() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.breadcrumbs-editor',
+              localStorageNamespace: 'creoui-docs.breadcrumbs-editor',
             }}
           >
             <BreadcrumbsEditorDemo />

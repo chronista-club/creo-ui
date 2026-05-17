@@ -48,7 +48,7 @@ export default function Header() {
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Default (product app)</div>
           <header class="creo-header" style={{ position: 'static' }}>
-            <div class="creo-header-logo">Creo UI</div>
+            <div class="creo-header-logo">creoui</div>
             <nav class="creo-header-nav">
               <a href="#home">Home</a>
               <a href="#docs">Docs</a>
@@ -66,7 +66,7 @@ export default function Header() {
 
           <div class="docs-preview-row-label">Marketing variant</div>
           <header class="creo-header" data-variant="marketing" style={{ position: 'static' }}>
-            <div class="creo-header-logo">✨ Creo UI</div>
+            <div class="creo-header-logo">✨ creoui</div>
             <nav class="creo-header-nav">
               <a href="#features">Features</a>
               <a href="#pricing">Pricing</a>
@@ -154,7 +154,7 @@ export default function Header() {
             <code>&lt;nav aria-label="primary"&gt;</code>
           </li>
           <li>
-            logo link は <code>aria-label</code> ("Creo UI、 home へ" 等)
+            logo link は <code>aria-label</code> ("creoui、 home へ" 等)
           </li>
           <li>sticky 時 z-index 設計 (modal / drawer の下、 page content の上)</li>
           <li>nav 数 ≤ 7、 8+ なら "More" menu に折り畳み</li>
@@ -167,7 +167,7 @@ export default function Header() {
         <pre class="docs-code">
           <code>{`<header class="creo-header" data-sticky="true">
   <div class="creo-header-logo">
-    <a href="/" aria-label="Creo UI、 home へ">✨ Creo UI</a>
+    <a href="/" aria-label="creoui、 home へ">✨ creoui</a>
   </div>
   <nav class="creo-header-nav" aria-label="primary">
     <a href="/docs">Docs</a>

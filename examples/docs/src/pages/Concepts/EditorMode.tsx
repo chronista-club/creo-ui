@@ -51,7 +51,7 @@ const DECISIONS = [
   {
     id: 'D-11',
     topic: 'Protocol owner',
-    decision: 'Creo UI (schema + TS 型 + JSON schema)、 実装は consumer 側',
+    decision: 'creoui (schema + TS 型 + JSON schema)、 実装は consumer 側',
   },
   {
     id: 'D-12',
@@ -70,8 +70,8 @@ export default function EditorMode() {
         <p class="docs-page-lead">
           Creo ecosystem の任意の app において、 mutable な field を「選んで live 編集」 できる
           ユニバーサルな UI 状態。 Studio / DevEditor 等の instance ではなく、 全 app が持つ
-          <strong> mode (状態)</strong>。 schema は Creo UI が owner、 runtime 実装は consumer (
-          <code>creo-ui-editor-host</code> for Web、 将来 Swift / Rust)。
+          <strong> mode (状態)</strong>。 schema は creoui が owner、 runtime 実装は consumer (
+          <code>creoui-editor-host</code> for Web、 将来 Swift / Rust)。
         </p>
       </header>
 
@@ -109,7 +109,7 @@ export default function EditorMode() {
         </p>
         <h3>How it shows up</h3>
         <p>
-          Creo UI は <code>EditorMode</code> 1 概念のみ規定。 各 app は「Editor Mode を持つ」
+          creoui は <code>EditorMode</code> 1 概念のみ規定。 各 app は「Editor Mode を持つ」
           と表現するだけで、 UI / protocol / MCP API は共通。 instance 名 (Studio など) を Editor
           の修飾子に使うのを禁止。
         </p>
@@ -145,17 +145,17 @@ export default function EditorMode() {
         </p>
       </Decision>
 
-      <Decision number="D-11" title="Protocol owner — Creo UI が schema、 consumer が runtime">
+      <Decision number="D-11" title="Protocol owner — creoui が schema、 consumer が runtime">
         <h3>Why</h3>
         <p>
-          Schema (field 宣言、 layout 規約、 MCP API) を Creo UI が独占的に決めることで、 platform
+          Schema (field 宣言、 layout 規約、 MCP API) を creoui が独占的に決めることで、 platform
           横断の 一貫性を担保。 runtime 実装は platform に最適化したい (Web は SolidJS、 Swift は
           SwiftUI、 Rust は ratatui) ので consumer 側が持つ。
         </p>
         <h3>How it shows up</h3>
         <p>
-          Creo UI repo: <code>tokens/editor-mode/</code> + <code>docs/design/editor-mode.md</code>。
-          Web runtime: <code>packages/editor-host/</code> (creo-ui-editor-host npm)。 Swift / Rust
+          creoui repo: <code>tokens/editor-mode/</code> + <code>docs/design/editor-mode.md</code>。
+          Web runtime: <code>packages/editor-host/</code> (creoui-editor-host npm)。 Swift / Rust
           runtime: 将来別 package。
         </p>
       </Decision>
@@ -181,7 +181,7 @@ export default function EditorMode() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">実装 — creo-ui-editor-host (Web reference)</h2>
+        <h2 class="docs-section-title">実装 — creoui-editor-host (Web reference)</h2>
         <p class="docs-page-helper">
           SolidJS で書かれた Web reference runtime。 <code>EditorHostProvider</code> +{' '}
           <code>EditorLayer</code> +<code>bind()</code> + Console REPL (
@@ -189,7 +189,7 @@ export default function EditorMode() {
           <A href="/playground">Playground</A> で実演。
         </p>
         <pre class="docs-code">
-          <code>{`import { EditorHostProvider, EditorLayer, bind, number, cssVarNumberTarget } from 'creo-ui-editor-host'
+          <code>{`import { EditorHostProvider, EditorLayer, bind, number, cssVarNumberTarget } from 'creoui-editor-host'
 
 bind({
   id: 'tokens.spacing.m',

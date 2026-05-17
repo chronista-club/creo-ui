@@ -1,7 +1,7 @@
 {
-  "name": "creo-ui-md-view",
+  "name": "creoui-md-view",
   "version": "0.1.0",
-  "description": "Creo UI — Markdown renderer (SolidJS) consuming creo-views/md (WASM-backed mdast parser)",
+  "description": "creoui — Markdown renderer (SolidJS) consuming creo-views/md (WASM-backed mdast parser)",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -17,14 +17,14 @@
   "files": ["dist", "README.md"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/chronista-club/creo-ui.git",
+    "url": "https://github.com/chronista-club/creoui.git",
     "directory": "packages/md-view"
   },
   "bugs": {
-    "url": "https://github.com/chronista-club/creo-ui/issues"
+    "url": "https://github.com/chronista-club/creoui/issues"
   },
-  "homepage": "https://github.com/chronista-club/creo-ui#readme",
-  "keywords": ["creo-ui", "markdown", "solid-js", "mdast", "renderer", "wasm"],
+  "homepage": "https://github.com/chronista-club/creoui#readme",
+  "keywords": ["creoui", "markdown", "solid-js", "mdast", "renderer", "wasm"],
   "publishConfig": {
     "access": "public"
   },

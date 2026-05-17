@@ -1,8 +1,8 @@
-# Contributing to Creo UI
+# Contributing to creoui
 
-Creo UI は **2 axis hybrid governance** で進化します:
+creoui は **2 axis hybrid governance** で進化します:
 
-- **Concept / Architecture / Foundation** (Frame system / Editor Mode protocol / Theme palette / 5 tier convention / Token SSOT 設計 等) は **creo-ui 側 proactive** に drive — consumer が「現状の語彙で要求を articulate できない」 領域は本 repo で先に concept を起こす責務。
+- **Concept / Architecture / Foundation** (Frame system / Editor Mode protocol / Theme palette / 5 tier convention / Token SSOT 設計 等) は **creoui 側 proactive** に drive — consumer が「現状の語彙で要求を articulate できない」 領域は本 repo で先に concept を起こす責務。
 - **Surface friction / API ergonomics / new component need / edge case** は **consumer feedback driven** — 外部 consumer (creo-memories / fleetstage / vantage-point 等) の実使用から friction を逆算。
 
 「concept 駆動 or surface 駆動」 は PR ごとに articulate、 固定 rule よりも case-by-case 判断を優先。 token 追加 / component spec 修正 / bug report どれも歓迎、 ただし以下の原則と flow を守ってください。
@@ -28,10 +28,10 @@ xs  /  s  /  m  /  l  /  xl
 
 ## Token 追加・変更 flow
 
-1. **SSOT は `tokens/**/*.json`** のみ。 platform 別 generated 出力 (`packages/web/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を直接編集してはいけない。
+1. **SSOT は `tokens/**/*.json`** のみ。 platform 別 generated 出力 (`packages/web/dist/`, `packages/swift/Sources/Creoui/Generated/`, `packages/rust/src/generated/`) を直接編集してはいけない。
 2. **Issue は Linear** で起票:
    - team: **Creo Memories**
-   - label: **`ui-design-system`** (creo-ui 専用)
+   - label: **`ui-design-system`** (creoui 専用)
    - priority: **必ず設定** (None 不可、 Urgent / High / Medium / Low)
    - assignee: **必ず指定** (default は self)
 3. branch naming は Linear 生成の `mako/{team-key}-XX-...`、 もしくは memory slug ベースの `mako/{slug}` 形式。
@@ -54,7 +54,7 @@ token name 変更 (例: v0.17 で `sm/md/lg` → `s/m/l`) は **ecosystem 全層
 ### Layer B: Generated outputs (build で再生成、 commit 必要)
 
 - [ ] `bun run build` 実行
-- [ ] `packages/swift/Sources/CreoUI/Generated/Tokens.swift` 更新確認
+- [ ] `packages/swift/Sources/Creoui/Generated/Tokens.swift` 更新確認
 - [ ] `packages/rust/src/generated/tokens.rs` 更新確認
 - (Web の `packages/web/dist/` は gitignore、 publish workflow で再生成)
 
@@ -63,8 +63,8 @@ token name 変更 (例: v0.17 で `sm/md/lg` → `s/m/l`) は **ecosystem 全層
 「generated を import / use する code」 は build で更新されない、 **手動 sweep 必須**:
 
 - [ ] `packages/web/src/components/*.css` — `var(--*)` 参照
-- [ ] `packages/swift/Sources/CreoUI/Components/*.swift` — `CreoUITokens.*` 参照 (**production code**)
-- [ ] `packages/swift/Tests/**/*.swift` — `CreoUITokens.*` 参照 (**test code**)
+- [ ] `packages/swift/Sources/Creoui/Components/*.swift` — `CreouiTokens.*` 参照 (**production code**)
+- [ ] `packages/swift/Tests/**/*.swift` — `CreouiTokens.*` 参照 (**test code**)
 - [ ] `packages/rust/src/lib.rs` 等 non-generated rust — `tokens::*` 参照 (test assert を含む)
 - [ ] `packages/editor-host/src/*` — jsdoc + test 内 literal
 - [ ] `packages/frame/src/*` — 同上
@@ -148,7 +148,7 @@ Chrome の CSS parser は `:root { ... }` block 内 prop 数が **150+ で block
 - v0.17 → v0.18 で 5 tier alias / typography-body / typography-title / layout-gap-* 系を追加、 :root block の prop 数が **120 → 169** に増加
 - Chrome は invalid block を **silently drop** する (parse error も warning も出さない)
 - vite / chrome 両方を 「動いている」 と誤認、 `examples/docs` 自身が dogfood 装置として機能していたが **regression check が visible verify ではなく typecheck / build pass のみ** だったため 6 日間気付かず
-- 修復: `transforms/config.web.js` の `css/creo-ui-themed` format を改修、 token.path[0] (= category) で group して **category 別 :root を 12 block emit** (詳細は memory `mem_1CatH9CfXPpG3Pogx2nZjM` Atlas: Creo UI)
+- 修復: `transforms/config.web.js` の `css/creoui-themed` format を改修、 token.path[0] (= category) で group して **category 別 :root を 12 block emit** (詳細は memory `mem_1CatH9CfXPpG3Pogx2nZjM` Atlas: creoui)
 
 ### 派生 lesson
 

@@ -1,12 +1,12 @@
 /**
- * creo-ui-editor-host — UI primitive messages (SSOT)
+ * creoui-editor-host — UI primitive messages (SSOT)
  *
  * Editor Mode chrome (TOP / RIGHT / LEFT / BOTTOM region の既定 label /
  * hint / button text) をここに集約。consumer は Locale を切り替えるだけで
  * 全 chrome が追従する。
  *
  * consumer が独自 app messages を作る時は、`messages.ts` として consumer 側に
- * 用意 (creo-ui が提供するのはあくまで primitive の "UI chrome" 部分のみ)。
+ * 用意 (creoui が提供するのはあくまで primitive の "UI chrome" 部分のみ)。
  */
 import type { LocalizedText } from './types'
 

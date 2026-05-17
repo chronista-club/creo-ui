@@ -1,8 +1,8 @@
 /**
- * Creo UI — Error boundary state
+ * creoui — Error boundary state
  *
  * Spec: design system primitive (Phase 2-3 #3 で articulate)
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  *
  * Usage:
  *   <div class="creo-error-boundary" role="alert" aria-live="assertive">

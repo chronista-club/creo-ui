@@ -1,29 +1,29 @@
 /**
- * Phase 2a PoC — fetch creo-ui-design release artifacts。
+ * Phase 2a PoC — fetch creoui-design release artifacts。
  *
- * `chronista-club/creo-ui-design` の GitHub Releases から指定 tag (default: latest)
- * の artifact 6 種を download し、 `dist-creo-ui-design/{web,swift,rust}/` に配置。
+ * `chronista-club/creoui-design` の GitHub Releases から指定 tag (default: latest)
+ * の artifact 6 種を download し、 `dist-creoui-design/{web,swift,rust}/` に配置。
  *
- * 目的: 「design SSOT split」 試行の consumer 検証。 creo-ui (TS) が
- * creo-ui-design release を consume できるか + local Style Dictionary build
+ * 目的: 「design SSOT split」 試行の consumer 検証。 creoui (TS) が
+ * creoui-design release を consume できるか + local Style Dictionary build
  * と内容一致するかを後段で diff 検証する base にする。
  *
- * 既存 creo-ui の build chain (tokens/ + transforms/ + Style Dictionary) は
+ * 既存 creoui の build chain (tokens/ + transforms/ + Style Dictionary) は
  * **keep** — 試行 phase で並走、 完全置換は別 sprint (Phase 2d)。
  *
  * Usage:
- *   bun run scripts/fetch-creo-ui-design.mjs              # latest
- *   bun run scripts/fetch-creo-ui-design.mjs v0.0.1      # 特定 tag
+ *   bun run scripts/fetch-creoui-design.mjs              # latest
+ *   bun run scripts/fetch-creoui-design.mjs v0.0.1      # 特定 tag
  *   CREO_UI_DESIGN_TAG=v0.0.1 bun run fetch:design       # env 経由
  */
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
-const REPO = 'chronista-club/creo-ui-design'
+const REPO = 'chronista-club/creoui-design'
 const REQUESTED_TAG = process.argv[2] ?? process.env.CREO_UI_DESIGN_TAG ?? 'latest'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
-const DIST_BASE = path.join(ROOT, 'dist-creo-ui-design')
+const DIST_BASE = path.join(ROOT, 'dist-creoui-design')
 
 /** GitHub Releases に attach された artifact の path layout */
 const ARTIFACTS = [
@@ -42,7 +42,7 @@ const ARTIFACTS = [
  */
 function buildHeaders(extra = {}) {
   const headers = {
-    'User-Agent': 'creo-ui-fetch-script',
+    'User-Agent': 'creoui-fetch-script',
     ...extra,
   }
   const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN
@@ -57,7 +57,7 @@ async function fetchRelease() {
     REQUESTED_TAG === 'latest'
       ? `https://api.github.com/repos/${REPO}/releases/latest`
       : `https://api.github.com/repos/${REPO}/releases/tags/${REQUESTED_TAG}`
-  console.log(`[fetch-creo-ui-design] querying ${url}`)
+  console.log(`[fetch-creoui-design] querying ${url}`)
   const res = await fetch(url, {
     headers: buildHeaders({ Accept: 'application/vnd.github+json' }),
   })
@@ -87,7 +87,7 @@ async function downloadArtifact(downloadUrl, destPath) {
 
 async function main() {
   const release = await fetchRelease()
-  console.log(`[fetch-creo-ui-design] release ${release.tag_name} (${release.name})`)
+  console.log(`[fetch-creoui-design] release ${release.tag_name} (${release.name})`)
 
   // Clean previous dist
   await fs.rm(DIST_BASE, { recursive: true, force: true })
@@ -119,14 +119,14 @@ async function main() {
   )
 
   console.log(
-    `[fetch-creo-ui-design] done — ${ARTIFACTS.length} artifacts (${totalBytes} bytes total)`,
+    `[fetch-creoui-design] done — ${ARTIFACTS.length} artifacts (${totalBytes} bytes total)`,
   )
   console.log(
-    `[fetch-creo-ui-design] manifest: ${path.relative(ROOT, path.join(DIST_BASE, 'manifest.json'))}`,
+    `[fetch-creoui-design] manifest: ${path.relative(ROOT, path.join(DIST_BASE, 'manifest.json'))}`,
   )
 }
 
 main().catch((err) => {
-  console.error('[fetch-creo-ui-design] error:', err.message)
+  console.error('[fetch-creoui-design] error:', err.message)
   process.exit(1)
 })

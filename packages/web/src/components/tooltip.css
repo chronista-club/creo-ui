@@ -1,10 +1,10 @@
 /**
- * Creo UI — Tooltip (CSS-only, JS 不要)
+ * creoui — Tooltip (CSS-only, JS 不要)
  *
  * `.creo-tooltip` wrapper に hover / focus-within で `.creo-tooltip-content` が可視化。
  *
  * Spec: docs/components/tooltip.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-tooltip {

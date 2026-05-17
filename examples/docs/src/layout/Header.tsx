@@ -8,7 +8,7 @@ export default function Header() {
         <span class="docs-brand-logo" aria-hidden="true">
           ◎
         </span>
-        <span class="docs-brand-text">Creo UI</span>
+        <span class="docs-brand-text">creoui</span>
         <span class="docs-brand-version">v0.17.0</span>
       </A>
       <nav class="docs-header-nav" aria-label="primary">
@@ -26,7 +26,7 @@ export default function Header() {
         <ThemeSwitcher />
         <a
           class="docs-header-link"
-          href="https://github.com/chronista-club/creo-ui"
+          href="https://github.com/chronista-club/creoui"
           target="_blank"
           rel="noopener noreferrer"
         >

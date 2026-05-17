@@ -1,6 +1,6 @@
 # Breadcrumbs
 
-> Creo UI MVP component. 階層ナビゲーションのための trail UI。
+> creoui MVP component. 階層ナビゲーションのための trail UI。
 
 ## Purpose
 
@@ -30,7 +30,7 @@ semantic HTML + ARIA 標準:
       <a class="creo-breadcrumbs-link" href="/projects">Projects</a>
     </li>
     <li class="creo-breadcrumbs-item">
-      <a class="creo-breadcrumbs-link" href="/projects/creo-ui">creo-ui</a>
+      <a class="creo-breadcrumbs-link" href="/projects/creoui">creoui</a>
     </li>
     <li class="creo-breadcrumbs-item" aria-current="page">
       <span class="creo-breadcrumbs-link">Overview</span>

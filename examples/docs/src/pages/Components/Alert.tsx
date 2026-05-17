@@ -6,7 +6,7 @@ import {
   select,
   signalTarget,
   string,
-} from 'creo-ui-editor-host'
+} from 'creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -172,7 +172,7 @@ export default function Alert() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creo-ui-docs.alert-editor',
+              localStorageNamespace: 'creoui-docs.alert-editor',
             }}
           >
             <AlertEditorDemo />

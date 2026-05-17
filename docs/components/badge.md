@@ -1,6 +1,6 @@
 # Badge
 
-> Creo UI MVP component. 状態 / 数値 / カテゴリの小さな pill 表示。
+> creoui MVP component. 状態 / 数値 / カテゴリの小さな pill 表示。
 
 ## Purpose
 

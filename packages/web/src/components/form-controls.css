@@ -1,10 +1,10 @@
 /**
- * Creo UI — Form controls (Checkbox / Radio / Switch)
+ * creoui — Form controls (Checkbox / Radio / Switch)
  *
  * native <input> を accent-color で brand 色に染める最小実装 + switch (native 非対応) の custom painting。
  *
  * Spec: docs/components/form-controls.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 /* ---------- Checkbox / Radio (label wrapper) ---------- */

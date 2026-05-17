@@ -1,4 +1,4 @@
-// CreoUI — Button component (SwiftUI)
+// Creoui — Button component (SwiftUI)
 //
 // CSS `.creo-btn` の Swift/SwiftUI 版。variant (primary/secondary/ghost) と
 // size (sm/md/lg) を type-safe に表現。Apple HIG 44pt tap target を md/lg で
@@ -66,41 +66,41 @@ public struct CreoButton<Label: View>: View {
 
     private var fontSize: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.typographySizeS
-        case .md: return CreoUITokens.typographySizeM
-        case .lg: return CreoUITokens.typographySizeL
+        case .sm: return CreouiTokens.typographySizeS
+        case .md: return CreouiTokens.typographySizeM
+        case .lg: return CreouiTokens.typographySizeL
         }
     }
 
     private var minHeight: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.layoutTargetFocus
-        case .md: return CreoUITokens.layoutTargetTap
-        case .lg: return CreoUITokens.layoutTargetTap * 1.15
+        case .sm: return CreouiTokens.layoutTargetFocus
+        case .md: return CreouiTokens.layoutTargetTap
+        case .lg: return CreouiTokens.layoutTargetTap * 1.15
         }
     }
 
     private var paddingHorizontal: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.spacingS
-        case .md: return CreoUITokens.spacingM
-        case .lg: return CreoUITokens.spacingL
+        case .sm: return CreouiTokens.spacingS
+        case .md: return CreouiTokens.spacingM
+        case .lg: return CreouiTokens.spacingL
         }
     }
 
     private var paddingVertical: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.spacingXs
-        case .md: return CreoUITokens.spacingS
-        case .lg: return CreoUITokens.spacingM
+        case .sm: return CreouiTokens.spacingXs
+        case .md: return CreouiTokens.spacingS
+        case .lg: return CreouiTokens.spacingM
         }
     }
 
     private var cornerRadius: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.radiusXs
-        case .md: return CreoUITokens.radiusS
-        case .lg: return CreoUITokens.radiusM
+        case .sm: return CreouiTokens.radiusXs
+        case .md: return CreouiTokens.radiusS
+        case .lg: return CreouiTokens.radiusM
         }
     }
 

@@ -1,7 +1,7 @@
-# Vision Input — Creo UI Webcam motion capture
+# Vision Input — creoui Webcam motion capture
 
 **Status**: Vision (architecture proposed、 実装未着手)
-**Owners**: Creo UI (新 package `creo-ui-vision` の schema + Solid signal API)
+**Owners**: creoui (新 package `creoui-vision` の schema + Solid signal API)
 **Scope**: Webcam motion capture を Editor Mode protocol 経由で Frame system に統合する protocol
 **Related**: [frame-system.md](./frame-system.md), [editor-mode.md](./editor-mode.md), [stack-adr.md](./stack-adr.md), [vision-cross-platform.md](./vision-cross-platform.md)
 
@@ -78,12 +78,12 @@ MediaPipe の生 landmark は **camera image plane** 座標 — selfie だと「
 
 ## 5. Editor Mode protocol との統合
 
-`creo-ui-vision` から得られる signal を **Editor Mode protocol 経由で** Frame system に流す。
+`creoui-vision` から得られる signal を **Editor Mode protocol 経由で** Frame system に流す。
 
 ```ts
 // Solid signals
-import { useHandPinch, useHeadPose, useFaceMesh } from 'creo-ui-vision'
-import { useEditorHost } from 'creo-ui-editor-host'
+import { useHandPinch, useHeadPose, useFaceMesh } from 'creoui-vision'
+import { useEditorHost } from 'creoui-editor-host'
 
 const pinch = useHandPinch()           // Accessor<{ active: boolean, x, y, z }>
 const head = useHeadPose()             // Accessor<{ pitch, yaw, roll }>

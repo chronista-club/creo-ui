@@ -1,4 +1,4 @@
-# Bun configuration for @creo/ui monorepo
+# Bun configuration for creoui monorepo
 # https://bun.sh/docs/runtime/bunfig
 
 [install]

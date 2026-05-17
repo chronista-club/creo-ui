@@ -1,7 +1,7 @@
 {
-  "name": "creo-ui-vision",
+  "name": "creoui-vision",
   "version": "0.1.0",
-  "description": "Creo UI — Webcam motion capture (MediaPipe Tasks wrapper)。 Hand pinch / head pose / face mesh / gesture を Solid signals として expose。 docs/design/vision-input.md の reference 実装。",
+  "description": "creoui — Webcam motion capture (MediaPipe Tasks wrapper)。 Hand pinch / head pose / face mesh / gesture を Solid signals として expose。 docs/design/vision-input.md の reference 実装。",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -24,15 +24,15 @@
   "files": ["dist", "README.md"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/chronista-club/creo-ui.git",
+    "url": "https://github.com/chronista-club/creoui.git",
     "directory": "packages/vision"
   },
   "bugs": {
-    "url": "https://github.com/chronista-club/creo-ui/issues"
+    "url": "https://github.com/chronista-club/creoui/issues"
   },
-  "homepage": "https://github.com/chronista-club/creo-ui#readme",
+  "homepage": "https://github.com/chronista-club/creoui#readme",
   "keywords": [
-    "creo-ui",
+    "creoui",
     "vision-input",
     "webcam",
     "motion-capture",

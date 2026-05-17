@@ -1,23 +1,23 @@
 /**
- * Phase 2a PoC — 「local build」 vs 「creo-ui-design release」 の diff 検証。
+ * Phase 2a PoC — 「local build」 vs 「creoui-design release」 の diff 検証。
  *
- * Style Dictionary が tokens/ から build した generated と、 creo-ui-design v0.x.x
- * の release artifact が **byte-level で一致する** ことを confirm。 一致 = creo-ui
- * は creo-ui-design release を consume しても結果同じ、 split が semantically clean。
+ * Style Dictionary が tokens/ から build した generated と、 creoui-design v0.x.x
+ * の release artifact が **byte-level で一致する** ことを confirm。 一致 = creoui
+ * は creoui-design release を consume しても結果同じ、 split が semantically clean。
  *
  * 不一致 = drift あり、 token JSON 編集 / transforms 差分が原因。 Phase 2d (slim
  * down) 前にこの drift を解消する必要を signal。
  *
  * Usage:
- *   bun run scripts/fetch-creo-ui-design.mjs   # 先に release を fetch
+ *   bun run scripts/fetch-creoui-design.mjs   # 先に release を fetch
  *   bun run build                              # local build
- *   bun run scripts/diff-creo-ui-design.mjs    # 比較
+ *   bun run scripts/diff-creoui-design.mjs    # 比較
  */
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
-const DIST_DESIGN = path.join(ROOT, 'dist-creo-ui-design')
+const DIST_DESIGN = path.join(ROOT, 'dist-creoui-design')
 
 /** local build の path → release artifact の path */
 const PAIRS = [
@@ -38,7 +38,7 @@ const PAIRS = [
   },
   {
     label: 'Tokens.swift',
-    local: path.join(ROOT, 'packages/swift/Sources/CreoUI/Generated/Tokens.swift'),
+    local: path.join(ROOT, 'packages/swift/Sources/Creoui/Generated/Tokens.swift'),
     release: path.join(DIST_DESIGN, 'swift/Tokens.swift'),
   },
   {
@@ -62,7 +62,7 @@ async function main() {
   const manifestPath = path.join(DIST_DESIGN, 'manifest.json')
   if (!(await fileExists(manifestPath))) {
     console.error(
-      '[diff-creo-ui-design] no manifest at',
+      '[diff-creoui-design] no manifest at',
       manifestPath,
       '— run `bun run fetch:design` first',
     )
@@ -70,7 +70,7 @@ async function main() {
   }
   const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'))
   console.log(
-    `[diff-creo-ui-design] comparing local vs creo-ui-design ${manifest.tag} (fetched ${manifest.fetchedAt})`,
+    `[diff-creoui-design] comparing local vs creoui-design ${manifest.tag} (fetched ${manifest.fetchedAt})`,
   )
 
   const results = []
@@ -112,7 +112,7 @@ async function main() {
   }
 
   console.log(
-    `\n[diff-creo-ui-design] summary: ${matched} match / ${drift} drift / ${missing} missing`,
+    `\n[diff-creoui-design] summary: ${matched} match / ${drift} drift / ${missing} missing`,
   )
 
   if (drift > 0) {
@@ -129,6 +129,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error('[diff-creo-ui-design] error:', err.message)
+  console.error('[diff-creoui-design] error:', err.message)
   process.exit(1)
 })

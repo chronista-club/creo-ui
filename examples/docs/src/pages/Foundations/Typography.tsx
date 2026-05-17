@@ -585,7 +585,7 @@ export default function Typography() {
                   {s.def && ' (default)'}
                 </span>
                 <span class="docs-typo-size-sample" style={{ 'font-size': `var(${s.cssVar})` }}>
-                  Creo UI — {s.use}
+                  creoui — {s.use}
                 </span>
               </div>
             )}

@@ -4,7 +4,7 @@ import dts from 'vite-plugin-dts'
 import solid from 'vite-plugin-solid'
 
 /**
- * creo-ui-web — JS bundle config (Solid component shells)
+ * creoui — JS bundle config (Solid component shells)
  *
  * web package は元々 style-dictionary 由来の CSS-only design token + components.css。
  * Phase B (CREO-84) で **shell primitives** (`<CreoFacetGrid>` 等の Solid component) を

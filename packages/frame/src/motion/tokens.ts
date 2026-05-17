@@ -1,5 +1,5 @@
 /**
- * Motion token bridge — creo-ui-web の motion CSS variable と runtime API を繋ぐ。
+ * Motion token bridge — creoui の motion CSS variable と runtime API を繋ぐ。
  *
  * 2 つの取得経路:
  *   - 静的: `ease('spring')` / `duration('normal')` — hardcode 値、 SSR / test 等で安全

@@ -93,7 +93,7 @@ const RUBRIC: readonly RubricItem[] = [
     category: 'Concentric corner (Apple HIG)',
     criteria: [
       '親子の radius は 「子 radius = 親 radius - 親 padding」 で揃える',
-      '機械的計算は creo-ui-editor-host の concentric() helper を使用',
+      '機械的計算は creoui-editor-host の concentric() helper を使用',
       'theme 切替で親 radius が変わっても子が追従する設計',
       '原則 04 (Concentric corners) の dogfood — 違和感 「中の要素が角に当たって押される」 防止',
     ],
@@ -230,16 +230,16 @@ export default function Radius() {
 .card { border-radius: var(--radius-m); }      /* 15px、 friendly container */
 .avatar { border-radius: var(--radius-full); } /* pill / circle */
 
-/* concentric helper (creo-ui-editor-host) */
-import { concentric } from 'creo-ui-editor-host'
+/* concentric helper (creoui-editor-host) */
+import { concentric } from 'creoui-editor-host'
 const childRadius = concentric(parentRadius, parentPadding)
 // e.g. parent radius=15, parent padding=8 → child radius=7
 
 /* Swift */
-.cornerRadius(CreoUITokens.radiusM)
+.cornerRadius(CreouiTokens.radiusM)
 
 /* Rust (token const) */
-creo_ui::RADIUS_M  // → 15.0 (f32 px)`}</code>
+creoui::RADIUS_M  // → 15.0 (f32 px)`}</code>
         </pre>
       </section>
     </>

@@ -4,7 +4,7 @@ import { For } from 'solid-js'
 // ============================================================
 // Operational definition — 4 axis で articulate
 // ============================================================
-// Kinetic typography は 2026 dynamic typography trend を Creo UI に articulate
+// Kinetic typography は 2026 dynamic typography trend を creoui に articulate
 // する第 6 axis (size / family / line-height / weight / icon scale に続く)。
 // ただし **display 限定** で、 read / editor mode は侵食禁止 (Purple Haze
 // report avoid path)。 utility class として consumer が opt-in で使う。

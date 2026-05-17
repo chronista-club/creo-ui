@@ -11,8 +11,8 @@ import {
   select,
   string,
   useEditorMode,
-} from 'creo-ui-editor-host'
-import { CreoMarkdown } from 'creo-ui-md-view'
+} from 'creoui-editor-host'
+import { CreoMarkdown } from 'creoui-md-view'
 import { Show, createEffect } from 'solid-js'
 
 export default function App() {
@@ -56,7 +56,7 @@ function Demo() {
 
   // ---------- Tool fields: app state (signal 無しで ephemeral + Accessor) ----------
   const title = bind({
-    target: ephemeralTarget('app.title', 'Creo UI'),
+    target: ephemeralTarget('app.title', 'creoui'),
     control: string('input'),
     placement: { label: 'ページタイトル', semantic: 'tool', group: 'App', order: 10 },
   })
@@ -95,7 +95,7 @@ function Demo() {
             margin: '0 0 var(--spacing-xl) 0',
           }}
         >
-          <strong>creo-ui-editor-host</strong> の live design surface demo。
+          <strong>creoui-editor-host</strong> の live design surface demo。
           <kbd>Ctrl+Shift+E</kbd> で Editor Mode を開き、TOP のテーマ切替、RIGHT の slider、LEFT の
           ThemeEditor で design tokens をリアルタイム編集。
         </p>
@@ -193,7 +193,7 @@ creoEditor.help()                     // 使い方一覧`}
             }}
           >
             <code>.creo-btn</code> + <code>data-variant</code> / <code>data-size</code>.
-            creo-ui-web@0.3.0 (予定) の最初の component。token 変更に全部追従するのを Editor Mode
+            creoui@0.3.0 (予定) の最初の component。token 変更に全部追従するのを Editor Mode
             で確認できます。
           </p>
           <div
@@ -304,7 +304,7 @@ creoEditor.help()                     // 使い方一覧`}
 
 const SAMPLE_MD = `# Markdown showcase
 
-**creo-ui-md-view** が *creo-views/md* (WASM mdast parser) を消費して描画している demo。
+**creoui-md-view** が *creo-views/md* (WASM mdast parser) を消費して描画している demo。
 ~~CDN の marked.js~~ ではなく、 自作 Rust crate の出力を SolidJS で render している。
 
 ## 構造
@@ -313,7 +313,7 @@ const SAMPLE_MD = `# Markdown showcase
 |---|---|---|
 | parser | wooorm/markdown-rs (Rust) | 459 KB WASM |
 | AST | ts-rs auto-gen | 27 型 |
-| renderer | SolidJS (creo-ui-md-view) | 9.69 KB |
+| renderer | SolidJS (creoui-md-view) | 9.69 KB |
 
 ## リスト
 
@@ -338,7 +338,7 @@ const SAMPLE_MD = `# Markdown showcase
 ## Code
 
 \`\`\`ts
-import { CreoMarkdown } from 'creo-ui-md-view'
+import { CreoMarkdown } from 'creoui-md-view'
 
 const App = () => <CreoMarkdown text="# hi" />
 \`\`\`
@@ -389,7 +389,7 @@ function MarkdownDemo() {
           'font-weight': 'var(--typography-weight-semibold)',
         }}
       >
-        Markdown showcase (creo-ui-md-view)
+        Markdown showcase (creoui-md-view)
       </h2>
       <p
         style={{

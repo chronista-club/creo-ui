@@ -1,4 +1,4 @@
-// CreoUI — Menu / context menu (SwiftUI)
+// Creoui — Menu / context menu (SwiftUI)
 //
 // Web `.creo-menu` の SwiftUI 版。native `Menu` を Creo token で整えた wrapper。
 // VP lane right-click、toolbar ⋯ button の dropdown で使用。

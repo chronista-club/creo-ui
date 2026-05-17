@@ -1,5 +1,5 @@
 /**
- * creo-ui-frame frame protocol — public API
+ * creoui-frame frame protocol — public API
  *
  * Frame system runtime: <FrameProvider> + <FrameSlot> + setFrame()。
  * docs/design/frame-system.md F-1〜F-3 の reference 実装。

@@ -1,10 +1,10 @@
 #!/usr/bin/env bun
 /**
- * creo-memories/packages/creo-ui の 8 preset (OKLCH オブジェクト) を読み込み、
- * creo-ui 側 DTCG JSON として tokens/color/themes/ に書き出す。
+ * creo-memories/packages/creoui の 8 preset (OKLCH オブジェクト) を読み込み、
+ * creoui 側 DTCG JSON として tokens/color/themes/ に書き出す。
  *
  * 出力 path は `color.themes.{theme-id}.{brand, semantic, surface, text, shadow,
- * gradient}.*` — web custom format で themes segment を除くと、旧 Creo UI 0.0.4
+ * gradient}.*` — web custom format で themes segment を除くと、旧 creoui 0.0.4
  * までの var 名 (`--color-brand-primary`, `--color-surface-bg-base`,
  * `--color-text-primary` 等) と互換になる。
  *
@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = `${__dirname}/..`
-const CM_PRESETS = '/Users/makoto/repos/creo-memories/packages/creo-ui/src/palette/presets'
+const CM_PRESETS = '/Users/makoto/repos/creo-memories/packages/creoui/src/palette/presets'
 
 const themes = [
   { file: 'light', newId: 'mint-light', exportName: 'lightPalette' },
@@ -60,7 +60,7 @@ function colorToDtcg(color, description) {
 
 /**
  * Palette → DTCG。creo-memories の nested structure (brand.primary.{base,hover,...})
- * を creo-ui 0.0.4 の flat 命名 (brand.primary / brand.primary-hover / ...) に
+ * を creoui 0.0.4 の flat 命名 (brand.primary / brand.primary-hover / ...) に
  * unfold する。これで var 名が旧版と互換になる。
  */
 function paletteToDtcg(palette, themeId) {

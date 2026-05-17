@@ -48,7 +48,7 @@ export default function Home() {
           Tokens, components, and a live design surface — for the Creo ecosystem.
         </h1>
         <p class="docs-hero-lead">
-          Creo UI は <strong>Web · Apple · Rust</strong> の 3 platform を 1 つの DTCG token から
+          creoui は <strong>Web · Apple · Rust</strong> の 3 platform を 1 つの DTCG token から
           生成する design system。 Editor Mode protocol で designer と AI agent が同じ surface 上で
           token を編集する。
         </p>
@@ -66,7 +66,7 @@ export default function Home() {
       </section>
 
       <section class="docs-features">
-        <h2 class="docs-section-title">Why Creo UI</h2>
+        <h2 class="docs-section-title">Why creoui</h2>
         <div class="docs-features-grid">
           {FEATURES.map((f) => (
             <article class="docs-feature-card">
@@ -83,13 +83,13 @@ export default function Home() {
       <section class="docs-quick-install">
         <h2 class="docs-section-title">Install</h2>
         <pre class="docs-code">
-          <code>{`bun add creo-ui-web solid-js
-bun add creo-ui-md-view        # Markdown renderer
-bun add creo-ui-editor-host    # Editor Mode runtime`}</code>
+          <code>{`bun add creoui solid-js
+bun add creoui-md-view        # Markdown renderer
+bun add creoui-editor-host    # Editor Mode runtime`}</code>
         </pre>
         <p class="docs-quick-install-note">
-          Token CSS は <code>creo-ui-web/tokens.css</code> + <code>creo-ui-web/components.css</code>
-          。 詳しくは <A href="/getting-started">Getting started</A>。
+          Token CSS は <code>creoui/tokens.css</code> + <code>creoui/components.css</code>。
+          詳しくは <A href="/getting-started">Getting started</A>。
         </p>
       </section>
     </>

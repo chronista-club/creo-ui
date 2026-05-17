@@ -14,13 +14,13 @@
     "jsxImportSource": "solid-js",
     "baseUrl": ".",
     "paths": {
-      "creo-ui-editor-host": ["../../packages/editor-host/src/index.ts"],
-      "creo-ui-frame": ["../../packages/frame/src/index.ts"],
-      "creo-ui-icons-web": ["../../packages/icons-web/src/index.ts"],
-      "creo-ui-icons-web/registry/*": ["../../packages/icons-web/src/registry/*.ts"],
-      "creo-ui-vision": ["../../packages/vision/src/index.ts"],
-      "creo-ui-vision/mock": ["../../packages/vision/src/mock.ts"],
-      "creo-ui-vision/mediapipe": ["../../packages/vision/src/mediapipe.ts"]
+      "creoui-editor-host": ["../../packages/editor-host/src/index.ts"],
+      "creoui-frame": ["../../packages/frame/src/index.ts"],
+      "creoui-icons-web": ["../../packages/icons-web/src/index.ts"],
+      "creoui-icons-web/registry/*": ["../../packages/icons-web/src/registry/*.ts"],
+      "creoui-vision": ["../../packages/vision/src/index.ts"],
+      "creoui-vision/mock": ["../../packages/vision/src/mock.ts"],
+      "creoui-vision/mediapipe": ["../../packages/vision/src/mediapipe.ts"]
     }
   },
   "include": ["src"]

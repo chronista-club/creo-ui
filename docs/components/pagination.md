@@ -1,6 +1,6 @@
 # Pagination
 
-> Creo UI MVP component. 長いリスト / Table の **ページ分割** navigation。
+> creoui MVP component. 長いリスト / Table の **ページ分割** navigation。
 
 ## Purpose
 

@@ -1,8 +1,8 @@
 /**
- * Creo UI — Badge component (pill-shaped status / count / tag)
+ * creoui — Badge component (pill-shaped status / count / tag)
  *
  * Spec: docs/components/badge.md
- * Token: creo-ui-web/tokens.css (必須)
+ * Token: creoui/tokens.css (必須)
  */
 
 .creo-badge {

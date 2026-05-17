@@ -3,8 +3,8 @@
 
 #![cfg(feature = "ratatui")]
 
-use creo_ui::ratatui as creo_rat;
-use creo_ui::tokens;
+use creoui::ratatui as creo_rat;
+use creoui::tokens;
 use ::ratatui::style::Color;
 
 #[test]
