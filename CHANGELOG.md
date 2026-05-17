@@ -3,6 +3,19 @@
 本ファイルは Creo UI の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## creoui rename (2026-05-17) — web v0.20.1 / editor-host v0.5.1
+
+デザインシステムの正式名を `creoui` に統一 ([#41](https://github.com/chronista-club/creoui/pull/41))。`Creo UI` / `creo-ui` / `CreoUI` の散在を廃し、`creoui` を naming SSOT とする。
+
+npm package を rename publish (機能変更なし、patch bump):
+
+| 旧 | 新 |
+|---|---|
+| `creo-ui-web@0.20.0` | `creoui@0.20.1` |
+| `creo-ui-editor-host@0.5.0` | `creoui-editor-host@0.5.1` |
+
+旧 package は `npm deprecate` で新名へ誘導。Swift module `CreoUI` → `Creoui`、Rust crate `creo-ui` → `creoui`、CSS `creo-icon` → `creoui-icon`、GitHub repo も `creoui` に統一。
+
 ## v0.20.0 (2026-05-10) — Phase 2-3 完走 (web、 a11y baseline + 4 family identity polish + opt-in articulate)
 
 Purple Haze design system benchmark report の **Top 1-7 finding を Phase 2-3 全 7 完走** で解消。 v0.18-v0.19 の token / attribute layer 統一 (final) を土台に、 component / foundation layer の **a11y baseline + identity polish + opt-in articulate** を additive で追加。 BREAKING なし、 既存 component / token / attribute は 100% backward compat。
