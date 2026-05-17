@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — UI primitive messages (SSOT)
+ * @chronista-club/creoui-editor-host — UI primitive messages (SSOT)
  *
  * Editor Mode chrome (TOP / RIGHT / LEFT / BOTTOM region の既定 label /
  * hint / button text) をここに集約。consumer は Locale を切り替えるだけで

@@ -1,4 +1,4 @@
-name: Publish creoui-editor-host to npm
+name: Publish @chronista-club/creoui-editor-host to npm
 
 on:
   push:

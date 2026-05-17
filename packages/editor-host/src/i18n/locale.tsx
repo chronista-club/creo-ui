@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — Locale detection & provider
+ * @chronista-club/creoui-editor-host — Locale detection & provider
  *
  * `<LocaleProvider>` で現 locale を closure 化し、子 subtree が `useLocale()` /
  * `useT()` で読める。SSR / Node 環境では `navigator` を touch しない。

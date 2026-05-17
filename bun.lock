@@ -14,10 +14,10 @@
       "name": "creoui-docs",
       "version": "0.0.0",
       "dependencies": {
+        "@chronista-club/creoui-editor-host": "workspace:*",
         "@mediapipe/tasks-vision": "^0.10.0",
         "@solidjs/router": "^0.15.0",
         "creoui": "workspace:*",
-        "creoui-editor-host": "workspace:*",
         "creoui-frame": "workspace:*",
         "creoui-icons-web": "workspace:*",
         "creoui-md-view": "workspace:*",
@@ -35,8 +35,8 @@
       "name": "creoui-web-demo",
       "version": "0.0.0",
       "dependencies": {
+        "@chronista-club/creoui-editor-host": "workspace:*",
         "creoui": "workspace:*",
-        "creoui-editor-host": "workspace:*",
         "creoui-md-view": "workspace:*",
         "solid-js": "^1.9.0",
       },
@@ -47,8 +47,8 @@
       },
     },
     "packages/editor-host": {
-      "name": "creoui-editor-host",
-      "version": "0.5.0",
+      "name": "@chronista-club/creoui-editor-host",
+      "version": "0.5.1",
       "devDependencies": {
         "solid-js": "^1.9.0",
         "typescript": "^5.5.0",
@@ -130,7 +130,7 @@
     },
     "packages/web": {
       "name": "creoui",
-      "version": "0.20.0",
+      "version": "0.20.1",
       "devDependencies": {
         "solid-js": "^1.9.0",
         "typescript": "^5.5.0",
@@ -203,6 +203,8 @@
     "@bundled-es-modules/glob": ["@bundled-es-modules/glob@10.4.2", "", { "dependencies": { "buffer": "^6.0.3", "events": "^3.3.0", "glob": "^10.4.2", "patch-package": "^8.0.0", "path": "^0.12.7", "stream": "^0.0.3", "string_decoder": "^1.3.0", "url": "^0.11.3" } }, "sha512-740y5ofkzydsFao5EXJrGilcIL6EFEw/cmPf2uhTw9J6G1YOhiIFjNFCHdpgEiiH5VlU3G0SARSjlFlimRRSMA=="],
 
     "@bundled-es-modules/memfs": ["@bundled-es-modules/memfs@4.17.0", "", { "dependencies": { "assert": "^2.1.0", "buffer": "^6.0.3", "events": "^3.3.0", "memfs": "^4.17.0", "path": "^0.12.7", "stream": "^0.0.3", "util": "^0.12.5" } }, "sha512-ykdrkEmQr9BV804yd37ikXfNnvxrwYfY9Z2/EtMHFEFadEjsQXJ1zL9bVZrKNLDtm91UdUOEHso6Aweg93K6xQ=="],
+
+    "@chronista-club/creoui-editor-host": ["@chronista-club/creoui-editor-host@workspace:packages/editor-host"],
 
     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.21.5", "", { "os": "aix", "cpu": "ppc64" }, "sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ=="],
 
@@ -479,8 +481,6 @@
     "creoui": ["creoui@workspace:packages/web"],
 
     "creoui-docs": ["creoui-docs@workspace:examples/docs"],
-
-    "creoui-editor-host": ["creoui-editor-host@workspace:packages/editor-host"],
 
     "creoui-frame": ["creoui-frame@workspace:packages/frame"],
 

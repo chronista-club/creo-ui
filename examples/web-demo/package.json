@@ -3,14 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "Live design surface demo for creoui-editor-host (consumer reference)",
+  "description": "Live design surface demo for @chronista-club/creoui-editor-host (consumer reference)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "creoui-editor-host": "workspace:*",
+    "@chronista-club/creoui-editor-host": "workspace:*",
     "creoui-md-view": "workspace:*",
     "creoui": "workspace:*",
     "solid-js": "^1.9.0"

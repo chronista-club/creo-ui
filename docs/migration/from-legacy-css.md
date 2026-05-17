@@ -135,7 +135,7 @@ A. `tailwind.config.js` の `theme.colors.primary` が古い hex を指してな
 A. Mermaid は CSS var を直接読まないので、`mermaid.initialize({ theme: 'base', themeVariables: { primaryColor: 'var(--color-brand-primary)' } })` ではなく `getComputedStyle(document.documentElement).getPropertyValue('--color-brand-primary')` で resolve してから渡す必要あり。theme 切替時に再初期化。
 
 ### Q. Editor Mode (editor-host) と併用できる?
-A. できる。`creoui-editor-host` は `creoui` の token に乗るだけなので、shim + editor-host の同居 OK。consumer は Editor Mode で変えたい token を `bind()` 経由で操作、shim は alias 層として常駐。
+A. できる。`@chronista-club/creoui-editor-host` は `creoui` の token に乗るだけなので、shim + editor-host の同居 OK。consumer は Editor Mode で変えたい token を `bind()` 経由で操作、shim は alias 層として常駐。
 
 ## 関連
 

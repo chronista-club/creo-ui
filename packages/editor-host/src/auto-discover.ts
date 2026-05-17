@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — DOM auto-discover (F2)
+ * @chronista-club/creoui-editor-host — DOM auto-discover (F2)
  *
  * 現 page の :root CSS 変数を scan、値から type を infer して Target + Control
  * の組合せで自動 bind する。明示 declare 無しに live editing を始められる。

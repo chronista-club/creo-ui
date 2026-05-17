@@ -20,7 +20,7 @@ export default function GettingStarted() {
 bun add creoui
 
 # (任意) Editor Mode の reference runtime
-bun add creoui-editor-host solid-js
+bun add @chronista-club/creoui-editor-host solid-js
 
 # (任意) Markdown renderer
 bun add creoui-md-view
@@ -106,7 +106,7 @@ import 'creoui-md-view/styles.css'`}</code>
   bind,
   number,
   cssVarNumberTarget,
-} from 'creoui-editor-host'
+} from '@chronista-club/creoui-editor-host'
 
 // Field 宣言
 bind({

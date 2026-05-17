@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — Binder (Target × Control の conductor)
+ * @chronista-club/creoui-editor-host — Binder (Target × Control の conductor)
  *
  * `bind()` は Target (データ源) と Control (UI 操作体系) と Placement (配置
  * meta) を受け取り、以下を提供する:

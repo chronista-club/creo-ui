@@ -14,7 +14,7 @@
     "jsxImportSource": "solid-js",
     "baseUrl": ".",
     "paths": {
-      "creoui-editor-host": ["../../packages/editor-host/src/index.ts"],
+      "@chronista-club/creoui-editor-host": ["../../packages/editor-host/src/index.ts"],
       "creoui-frame": ["../../packages/frame/src/index.ts"],
       "creoui-icons-web": ["../../packages/icons-web/src/index.ts"],
       "creoui-icons-web/registry/*": ["../../packages/icons-web/src/registry/*.ts"],

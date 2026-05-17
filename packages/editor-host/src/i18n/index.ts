@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — i18n public API
+ * @chronista-club/creoui-editor-host — i18n public API
  */
 export { type LocaleProviderProps, LocaleProvider, detectLocale, useLocale } from './locale'
 export { messages } from './messages'

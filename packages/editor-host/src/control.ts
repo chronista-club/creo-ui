@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — Control (UI 操作体系)
+ * @chronista-club/creoui-editor-host — Control (UI 操作体系)
  *
  * "どう編集するか" の抽象。Target (データ源) と直交。kind で型を、variant で
  * UI widget の好みを表す。

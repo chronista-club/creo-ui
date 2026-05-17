@@ -6,9 +6,9 @@ import { __test__ } from './cross-tab'
 
 describe('defaultChannelName', () => {
   test('prefixes namespace', () => {
-    expect(__test__.defaultChannelName('my-app')).toBe('creoui-editor-host:my-app')
-    expect(__test__.defaultChannelName('creoui-editor-host')).toBe(
-      'creoui-editor-host:creoui-editor-host',
+    expect(__test__.defaultChannelName('my-app')).toBe('@chronista-club/creoui-editor-host:my-app')
+    expect(__test__.defaultChannelName('@chronista-club/creoui-editor-host')).toBe(
+      '@chronista-club/creoui-editor-host:@chronista-club/creoui-editor-host',
     )
   })
 })

@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — SolidJS provider + host context
+ * @chronista-club/creoui-editor-host — SolidJS provider + host context
  *
  * `<EditorHostProvider>` で app を wrap すると、配下で `useEditorHost()` /
  * `useEditorFields()` / `useEditorValue<T>()` / `useEditorSelectable()` が

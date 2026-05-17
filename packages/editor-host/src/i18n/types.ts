@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — i18n types
+ * @chronista-club/creoui-editor-host — i18n types
  *
  * UI primitive (Editor Mode labels, Button default label 等) に使う
  * 最小 i18n 型。anycreative-tech の messages SSOT パターン (CREO-91) を

@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — keyboard shortcut handler
+ * @chronista-club/creoui-editor-host — keyboard shortcut handler
  *
  * D-7 (手動 toggle only): Ctrl+Shift+E (default) で Mode ON/OFF、Escape で
  * selection 解除 → mode OFF の 2 段階退出。
