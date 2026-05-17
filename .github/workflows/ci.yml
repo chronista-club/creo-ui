@@ -12,17 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: creo-ui
+        working-directory: creoui
     steps:
-      # creo-ui は workspace 配下の `creo-ui/` に置く。 sibling として
+      # creoui は workspace 配下の `creoui/` に置く。 sibling として
       # `creo-views/` も同階層に配置 — `packages/md-view/package.json` の
       # `"creo-views": "file:../../../creo-views"` (md-view から 3 階層上 =
-      # workspace root) と整合する。 local dev (`~/repos/creo-ui` /
+      # workspace root) と整合する。 local dev (`~/repos/creoui` /
       # `~/repos/creo-views`) と同 layout。
-      - name: Checkout creo-ui
+      - name: Checkout creoui
         uses: actions/checkout@v4
         with:
-          path: creo-ui
+          path: creoui
 
       - name: Checkout creo-views (sibling, required by packages/md-view)
         uses: actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
         # 忘れていないか検証する。Web の dist/ は gitignore なので対象外。
         run: |
           git diff --exit-code \
-            packages/swift/Sources/CreoUI/Generated/ \
+            packages/swift/Sources/Creoui/Generated/ \
             packages/rust/src/generated/
 
       - name: Typecheck examples/docs
@@ -63,7 +63,7 @@ jobs:
         # を指すが、 CI / dev 環境で dist/ は build しないと無い (gitignore)。
         # examples/docs/tsconfig.json に `paths` で workspace member を src/ に
         # 直接 map することで、 dist build 無しで typecheck 可能にしている。
-        working-directory: creo-ui/examples/docs
+        working-directory: creoui/examples/docs
         run: bun x tsc --noEmit
 
   rust:
