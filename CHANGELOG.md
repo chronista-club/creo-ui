@@ -1,6 +1,6 @@
 # Changelog
 
-本ファイルは Creo UI の version 別変更履歴を記録する。
+本ファイルは creoui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
 ## creoui rename (2026-05-17) — web v0.20.1 / editor-host v0.5.1
@@ -12,9 +12,9 @@ npm package を rename publish (機能変更なし、patch bump):
 | 旧 | 新 |
 |---|---|
 | `creo-ui-web@0.20.0` | `creoui@0.20.1` |
-| `creo-ui-editor-host@0.5.0` | `creoui-editor-host@0.5.1` |
+| `creo-ui-editor-host@0.5.0` | `@chronista-club/creoui-editor-host@0.5.1` |
 
-旧 package は `npm deprecate` で新名へ誘導。Swift module `CreoUI` → `Creoui`、Rust crate `creo-ui` → `creoui`、CSS `creo-icon` → `creoui-icon`、GitHub repo も `creoui` に統一。
+editor-host が scoped なのは npm の類似名ガード回避（unscoped `creoui-editor-host` は既存 `creo-ui-editor-host` に似すぎて E403）。旧 package は `npm deprecate` で新名へ誘導。Swift module `CreoUI` → `Creoui`、Rust crate `creo-ui` → `creoui`、CSS `creo-icon` → `creoui-icon`、GitHub repo も `creoui` に統一。
 
 ## v0.20.0 (2026-05-10) — Phase 2-3 完走 (web、 a11y baseline + 4 family identity polish + opt-in articulate)
 
