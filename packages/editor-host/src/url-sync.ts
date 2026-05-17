@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — URL shareable state (F4)
+ * @chronista-club/creoui-editor-host — URL shareable state (F4)
  *
  * location.hash に editor state を base64-encoded JSON で書く / 読む。
  * autoSync: setValue で自動 hash 更新。autoApply: mount 時に hash から復元。

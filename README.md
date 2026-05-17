@@ -126,7 +126,7 @@ cd packages/swift && swift build && swift test
 
 1. **視覚的定数の SSOT** — `tokens/**/*.json` (DTCG) → Style Dictionary → 3 platform 配布
 2. **Editor Mode protocol** — 任意 app にユニバーサルな "Editor Mode" を規定 (schema owner)。詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md)
-3. **Web reference runtime (`creoui-editor-host`)** — Editor Mode protocol の SolidJS 実装を `packages/editor-host/` に同梱 (EH-1、 Phase 2a Shipped)。consumer は `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` で即利用可能
+3. **Web reference runtime (`@chronista-club/creoui-editor-host`)** — Editor Mode protocol の SolidJS 実装を `packages/editor-host/` に同梱 (EH-1、 Phase 2a Shipped)。consumer は `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` で即利用可能
 
 Editor Mode は instance ではなく **mode** (universal state)。4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) + Content 非侵襲性 + AI agent access を protocol で規定。 **Web は本 repo の `packages/editor-host/` で reference 実装済**、 Swift / Rust の runtime 実装は consumer 側 (`Creoui`, `creoui` crate) で担う (Phase 3b 以降の予定)。
 

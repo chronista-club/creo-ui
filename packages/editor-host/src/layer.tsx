@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — <EditorLayer> (Editor Mode の UI root)
+ * @chronista-club/creoui-editor-host — <EditorLayer> (Editor Mode の UI root)
  *
  * consumer は `<EditorHostProvider>` と一緒に配置:
  *   <EditorHostProvider>

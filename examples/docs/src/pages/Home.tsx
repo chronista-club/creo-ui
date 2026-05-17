@@ -85,7 +85,7 @@ export default function Home() {
         <pre class="docs-code">
           <code>{`bun add creoui solid-js
 bun add creoui-md-view        # Markdown renderer
-bun add creoui-editor-host    # Editor Mode runtime`}</code>
+bun add @chronista-club/creoui-editor-host    # Editor Mode runtime`}</code>
         </pre>
         <p class="docs-quick-install-note">
           Token CSS は <code>creoui/tokens.css</code> + <code>creoui/components.css</code>。

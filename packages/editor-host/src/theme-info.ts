@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — 8 theme meta (name / family / flavor)
+ * @chronista-club/creoui-editor-host — 8 theme meta (name / family / flavor)
  *
  * creoui 0.1.0 が同梱する 8 theme に対応。`theme.mode` field の値を引けば
  * ThemeEditor が name / family / flavor を表示できる。theme 追加時は

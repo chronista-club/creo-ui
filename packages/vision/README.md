@@ -135,11 +135,11 @@ Raw video frame は `<video>` element から HandLandmarker / FaceLandmarker の
 
 ## Editor Mode protocol との統合 (将来 P-5)
 
-`creoui-vision` の signals を `creoui-editor-host` の field に bridge:
+`creoui-vision` の signals を `@chronista-club/creoui-editor-host` の field に bridge:
 
 ```tsx
 import { useHandPinch } from 'creoui-vision'
-import { useEditorHost } from 'creoui-editor-host'
+import { useEditorHost } from '@chronista-club/creoui-editor-host'
 
 const pinch = useHandPinch()
 const host = useEditorHost()

@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — selection handlers
+ * @chronista-club/creoui-editor-host — selection handlers
  *
  * `data-editor-fields="id1,id2,..."` 属性を持つ要素を hover / click で検出し、
  * host の selection / hover state を更新する。選択中の要素は ResizeObserver

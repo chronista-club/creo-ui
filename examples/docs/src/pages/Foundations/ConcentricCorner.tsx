@@ -7,7 +7,7 @@ import { For } from 'solid-js'
 // Concentric corner は「親子の角を視覚的に同心円で揃える」 慣習。 Apple HIG
 // (iOS 16+ / visionOS 26) で formal articulate、 creoui でも原則 04 (Principles)
 // として SSOT 化。 子 radius = 親 radius - 親 padding の formula で機械的に
-// 揃える、 helper は creoui-editor-host の concentric() / concentricTokens()。
+// 揃える、 helper は @chronista-club/creoui-editor-host の concentric() / concentricTokens()。
 
 type AxisRow = {
   readonly useCase: string
@@ -73,7 +73,7 @@ const RUBRIC: readonly RubricItem[] = [
     ],
   },
   {
-    category: 'Helper API (creoui-editor-host)',
+    category: 'Helper API (@chronista-club/creoui-editor-host)',
     criteria: [
       '`concentric(parentRadius, padding)` — string (CSS length) を受けて calc() string を返す',
       '`concentricTokens(radiusKey, paddingKey, opts?)` — token key の shortcut',
@@ -146,9 +146,9 @@ export default function ConcentricCorner() {
           Apple HIG (iOS 16+ / visionOS 26) で formal articulate された{' '}
           <strong>「親子同心円 radius」</strong> 慣習。 子 radius = 親 radius - 親 padding の
           formula で機械的に揃える。 creoui では <A href="/foundations/principles">Principles</A>{' '}
-          原則 04 (Concentric corners) として SSOT 化、 <code>creoui-editor-host</code> の{' '}
-          <code>concentric()</code> / <code>concentricTokens()</code> helper が CSS calc を
-          articulate する。
+          原則 04 (Concentric corners) として SSOT 化、{' '}
+          <code>@chronista-club/creoui-editor-host</code> の <code>concentric()</code> /{' '}
+          <code>concentricTokens()</code> helper が CSS calc を articulate する。
         </p>
       </header>
 
@@ -329,8 +329,8 @@ export default function ConcentricCorner() {
   border-radius: calc(var(--radius-xl) - var(--spacing-l));
 }
 
-/* TS helper (creoui-editor-host) */
-import { concentric, concentricTokens } from 'creoui-editor-host'
+/* TS helper (@chronista-club/creoui-editor-host) */
+import { concentric, concentricTokens } from '@chronista-club/creoui-editor-host'
 
 // String 引数版
 concentric('var(--radius-xl)', 'var(--spacing-l)')

@@ -110,10 +110,10 @@ export default function Principles() {
           radius は 7 step (<code>none</code> / <code>xs</code> / <code>s</code> / <code>m</code> /{' '}
           <code>l</code> / <code>xl</code> / <code>full</code>)。 中の 5 tier が size-feel
           convention に従い、 <code>none</code> / <code>full</code> は special (explicit reset /
-          pill shape)。 機械的計算は <code>creoui-editor-host</code> の <code>concentric()</code>{' '}
-          helper が担当 — `concentric('var(--radius-m)', 'var(--spacing-m)')` で
-          `calc(var(--radius-m) - var(--spacing-m))` を return、 親 radius が theme 切替で動いても
-          child が追従する。
+          pill shape)。 機械的計算は <code>@chronista-club/creoui-editor-host</code> の{' '}
+          <code>concentric()</code> helper が担当 — `concentric('var(--radius-m)',
+          'var(--spacing-m)')` で `calc(var(--radius-m) - var(--spacing-m))` を return、 親 radius
+          が theme 切替で動いても child が追従する。
         </p>
       </Principle>
 

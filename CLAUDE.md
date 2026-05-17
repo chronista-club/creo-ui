@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 1. **視覚的定数の SSOT** — `tokens/**/*.json` (W3C DTCG) から Web / Apple / Rust の 3 プラットフォーム向け成果物を **Style Dictionary v4 で生成**
 2. **Editor Mode protocol の schema owner** — 各 app にユニバーサルな "Editor Mode" UI 状態を規定。field 宣言 / 4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) / Content 非侵襲性 / AI agent access を **schema + TS 型として定義** ([docs/design/editor-mode.md](./docs/design/editor-mode.md))
-3. **Web reference runtime (`creoui-editor-host`)** — Editor Mode protocol の SolidJS 実装を `packages/editor-host/` に持つ (EH-1)。consumer は `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` で即利用可能。Swift / Rust は引き続き consumer 側 (Phase 2c)
+3. **Web reference runtime (`@chronista-club/creoui-editor-host`)** — Editor Mode protocol の SolidJS 実装を `packages/editor-host/` に持つ (EH-1)。consumer は `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` で即利用可能。Swift / Rust は引き続き consumer 側 (Phase 2c)
 
 設計詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md) および [docs/design/theme-system.md](./docs/design/theme-system.md)。
 

@@ -1,4 +1,3 @@
-import { A } from '@solidjs/router'
 import {
   EditorHostProvider,
   EditorLayer,
@@ -7,7 +6,8 @@ import {
   select,
   signalTarget,
   string,
-} from 'creoui-editor-host'
+} from '@chronista-club/creoui-editor-host'
+import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 
 const PROPS = [

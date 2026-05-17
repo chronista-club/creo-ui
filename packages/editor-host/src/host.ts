@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — core state
+ * @chronista-club/creoui-editor-host — core state
  *
  * Editor Mode protocol (docs/design/editor-mode.md D-1〜D-12) の reference
  * runtime 実装。SolidJS signal を内部で使うが、`EditorHost` interface 越しに
@@ -18,7 +18,7 @@ import type {
 
 // ---------- Persistence strategy ----------
 
-const DEFAULT_NAMESPACE = 'creoui-editor-host'
+const DEFAULT_NAMESPACE = '@chronista-club/creoui-editor-host'
 
 function persistKey(namespace: string, id: string): string {
   return `${namespace}:field:${id}`

@@ -83,7 +83,7 @@ MediaPipe の生 landmark は **camera image plane** 座標 — selfie だと「
 ```ts
 // Solid signals
 import { useHandPinch, useHeadPose, useFaceMesh } from 'creoui-vision'
-import { useEditorHost } from 'creoui-editor-host'
+import { useEditorHost } from '@chronista-club/creoui-editor-host'
 
 const pinch = useHandPinch()           // Accessor<{ active: boolean, x, y, z }>
 const head = useHeadPose()             // Accessor<{ pitch, yaw, roll }>

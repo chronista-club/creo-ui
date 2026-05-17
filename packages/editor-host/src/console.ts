@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — Console REPL (F1)
+ * @chronista-club/creoui-editor-host — Console REPL (F1)
  *
  * `window.creoEditor` に expose される DevTools Console / Claude
  * (claude-in-chrome) 兼用の live design API。Target × Control 分離が factory

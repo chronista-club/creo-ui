@@ -71,7 +71,7 @@ export default function EditorMode() {
           Creo ecosystem の任意の app において、 mutable な field を「選んで live 編集」 できる
           ユニバーサルな UI 状態。 Studio / DevEditor 等の instance ではなく、 全 app が持つ
           <strong> mode (状態)</strong>。 schema は creoui が owner、 runtime 実装は consumer (
-          <code>creoui-editor-host</code> for Web、 将来 Swift / Rust)。
+          <code>@chronista-club/creoui-editor-host</code> for Web、 将来 Swift / Rust)。
         </p>
       </header>
 
@@ -155,8 +155,8 @@ export default function EditorMode() {
         <h3>How it shows up</h3>
         <p>
           creoui repo: <code>tokens/editor-mode/</code> + <code>docs/design/editor-mode.md</code>。
-          Web runtime: <code>packages/editor-host/</code> (creoui-editor-host npm)。 Swift / Rust
-          runtime: 将来別 package。
+          Web runtime: <code>packages/editor-host/</code> (@chronista-club/creoui-editor-host npm)。
+          Swift / Rust runtime: 将来別 package。
         </p>
       </Decision>
 
@@ -181,7 +181,9 @@ export default function EditorMode() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">実装 — creoui-editor-host (Web reference)</h2>
+        <h2 class="docs-section-title">
+          実装 — @chronista-club/creoui-editor-host (Web reference)
+        </h2>
         <p class="docs-page-helper">
           SolidJS で書かれた Web reference runtime。 <code>EditorHostProvider</code> +{' '}
           <code>EditorLayer</code> +<code>bind()</code> + Console REPL (
@@ -189,7 +191,7 @@ export default function EditorMode() {
           <A href="/playground">Playground</A> で実演。
         </p>
         <pre class="docs-code">
-          <code>{`import { EditorHostProvider, EditorLayer, bind, number, cssVarNumberTarget } from 'creoui-editor-host'
+          <code>{`import { EditorHostProvider, EditorLayer, bind, number, cssVarNumberTarget } from '@chronista-club/creoui-editor-host'
 
 bind({
   id: 'tokens.spacing.m',

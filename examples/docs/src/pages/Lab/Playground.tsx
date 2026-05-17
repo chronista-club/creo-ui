@@ -1,4 +1,3 @@
-import { A } from '@solidjs/router'
 import {
   EditorHostProvider,
   EditorLayer,
@@ -9,7 +8,8 @@ import {
   select,
   signalTarget,
   string,
-} from 'creoui-editor-host'
+} from '@chronista-club/creoui-editor-host'
+import { A } from '@solidjs/router'
 import { type Frame, FrameProvider, FrameSlot, useFrame } from 'creoui-frame'
 import { VisionProvider, type VisionSource, useGesture, useHandPinch } from 'creoui-vision'
 import { createMockSource } from 'creoui-vision/mock'
@@ -22,10 +22,11 @@ export default function Playground() {
         <p class="docs-page-eyebrow">Lab</p>
         <h1>Playground — Live design surface</h1>
         <p class="docs-page-lead">
-          <code>creoui-editor-host</code> の reference runtime を動かす実演 area。 Editor Mode を ON
-          にして field を操作すると、 下の preview と <strong>token CSS variable</strong>{' '}
-          がリアルタイム連動する。 DevTools Console から <code>window.creoEditor</code> 経由で field
-          を増やすことも可能。 → <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。
+          <code>@chronista-club/creoui-editor-host</code> の reference runtime を動かす実演 area。
+          Editor Mode を ON にして field を操作すると、 下の preview と{' '}
+          <strong>token CSS variable</strong> がリアルタイム連動する。 DevTools Console から{' '}
+          <code>window.creoEditor</code> 経由で field を増やすことも可能。 →{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。
         </p>
       </header>
 
@@ -75,7 +76,7 @@ export default function Playground() {
   select,
   boolean,
   string,
-} from 'creoui-editor-host'
+} from '@chronista-club/creoui-editor-host'
 import { createSignal } from 'solid-js'
 
 function Demo() {
@@ -110,7 +111,9 @@ function Demo() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live design surface 機能 (creoui-editor-host 0.4+)</h2>
+        <h2 class="docs-section-title">
+          Live design surface 機能 (@chronista-club/creoui-editor-host 0.4+)
+        </h2>
         <ul class="docs-bullet-list">
           <li>
             <strong>Console REPL</strong> — <code>window.creoEditor</code> で REPL、 sugar (slider /

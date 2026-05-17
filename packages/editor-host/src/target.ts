@@ -1,5 +1,5 @@
 /**
- * creoui-editor-host — Target (対象、データ源)
+ * @chronista-club/creoui-editor-host — Target (対象、データ源)
  *
  * "何をどこから read/write するか" の抽象。UI 操作体系 (Control) と直交。
  * Target factory を組み合わせて `bind()` で binder を作る。
@@ -95,7 +95,7 @@ export function signalTarget<T>(
 export function localStorageTarget<T>(
   id: string,
   initial: T,
-  namespace = 'creoui-editor-host',
+  namespace = '@chronista-club/creoui-editor-host',
 ): Target<T> {
   const key = `${namespace}:target:${id}`
   let fallback = initial

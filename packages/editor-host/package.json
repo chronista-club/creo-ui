@@ -1,5 +1,5 @@
 {
-  "name": "creoui-editor-host",
+  "name": "@chronista-club/creoui-editor-host",
   "version": "0.5.1",
   "description": "creoui — Editor Mode reference runtime for SolidJS. Live design surface with console REPL, auto-discover, URL share, cross-tab sync, and export-to-patch.",
   "type": "module",

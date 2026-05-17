@@ -11,7 +11,7 @@ import {
   select,
   string,
   useEditorMode,
-} from 'creoui-editor-host'
+} from '@chronista-club/creoui-editor-host'
 import { CreoMarkdown } from 'creoui-md-view'
 import { Show, createEffect } from 'solid-js'
 
@@ -95,7 +95,7 @@ function Demo() {
             margin: '0 0 var(--spacing-xl) 0',
           }}
         >
-          <strong>creoui-editor-host</strong> の live design surface demo。
+          <strong>@chronista-club/creoui-editor-host</strong> の live design surface demo。
           <kbd>Ctrl+Shift+E</kbd> で Editor Mode を開き、TOP のテーマ切替、RIGHT の slider、LEFT の
           ThemeEditor で design tokens をリアルタイム編集。
         </p>
