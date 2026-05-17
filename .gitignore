@@ -1,8 +1,6 @@
 node_modules/
 dist/
 
-# Phase 2a PoC — creoui-design release artifacts (download 先、 commit しない)
-dist-creoui-design/
 .DS_Store
 *.log
 .env
@@ -14,6 +12,9 @@ packages/rust/target/
 packages/rust/Cargo.lock
 .idea/
 .vscode/
+
+# Claude Code のローカル設定 (ccws worker-files など)
+.claude/
 
 # Generated token outputs for Swift / Rust ARE checked in — cargo build /
 # swift build expect them to exist without first running `bun run build`.
