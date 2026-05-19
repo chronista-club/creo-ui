@@ -1,6 +1,6 @@
 # Principal Layout — creoui Edge Ring + Rail System
 
-**Status**: Design Draft (2026-05-19) — 未実装。fleetstage handoff (`mem_1CbCE1rdYJ4ySg87DF5hwa`) を起点に creoui lead が起こした設計。CREO-84 Phase B の primitive スライス。
+**Status**: P-0〜P-1 実装済 (2026-05-19、PR #48) — Edge Ring + Rail primitive 本体。P-2 以降 (consumer 移行) は未着手。fleetstage handoff (`mem_1CbCE1rdYJ4ySg87DF5hwa`) を起点に creoui lead が起こした設計 + 実装。CREO-84 Phase B の primitive スライス。
 **Owners**: creoui (primitive schema + SolidJS reference 実装)、consumer apps (Rail registry 供給)
 **Scope**: 2D の基盤レイアウト primitive — 4 edge + center の Edge Ring と、left edge の Rail System。app に依存しない layout 機構のみを規定し、各 App は Rail registry を供給する。
 **Related**: [frame-system.md](./frame-system.md) (3D spatial morph、別 primitive), [editor-mode.md](./editor-mode.md), creo-memories doc 29 `29-3x3-frame.md` / doc 30 `30-principal-layout.md` (概念の起源)
@@ -141,8 +141,8 @@ doc 29 §4 / doc 30 §5-6 の Z 軸 (認知境界の積層、cross-layer / in-la
 
 | Phase | scope |
 |---|---|
-| **P-0** | 位置語彙 vocabulary type + `<CreoEdgeShell>` (4 edge 枠 + center) + epistemic status (格子でない) の CSS 規律 |
-| **P-1** | `<CreoRail>` — Rail column + peek (collapsed⇄expanded) + `RailDef`/registry + `selectRailId` pure logic + contract test 枠 |
+| **P-0** ✅ | 位置語彙 vocabulary type (`regions.ts`) + `<CreoEdgeShell>` (4 edge 枠 + center) + epistemic status (格子でない) の CSS 規律 |
+| **P-1** ✅ | `<CreoRail>` — Rail column + peek (collapsed⇄expanded) + `RailDef`/`railRegistry` + `selectRailId` pure logic + contract test 11 cases |
 | **P-2** | creo-web を primitive の consumer に rewrite (既存 `RailSystem`/`EdgeFrame` を creoui primitive に置換、Memory/Atlas/Views registry を creo-web 側に) |
 | **P-3** | Z 軸 add-on (`currentLayer` hook + URL sync) — creo-web 専用、optional export |
 | **P-4** | fleetstage hq/backstage が consumer 化 (B、fleetstage lead 領分) |
