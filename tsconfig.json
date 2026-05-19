@@ -24,8 +24,8 @@
     "node_modules",
     "dist",
     "packages/*/dist",
-    "examples/*/node_modules",
-    "examples/*/dist",
+    "apps/*/node_modules",
+    "apps/*/dist",
     "**/*.test.ts",
     "packages/md-view"
   ]

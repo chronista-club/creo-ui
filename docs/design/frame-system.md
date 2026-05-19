@@ -99,7 +99,7 @@ Web 単体でも 「metaphor → literal 3D」 の **段階** が存在する:
 
 これは `<picture>` の progressive enhancement pattern と同 哲学。 Frame system の slot に
 `<model>` を入れると、 slot transform は VP でも他 browser でも適用され、 Frame morph 時に
-3D entity / 平面 image が等しく spatial 移動する。 demo: [Playground](../../examples/docs/src/pages/Lab/Playground.tsx) の Phase B-spatial-web demo 参照。
+3D entity / 平面 image が等しく spatial 移動する。 demo: [Playground](../../apps/site/src/pages/Lab/Playground.tsx) の Phase B-spatial-web demo 参照。
 
 #### 他 platform F-3 mapping
 
@@ -168,7 +168,7 @@ Frame system では:
 | **P-2** | **自作 motion engine** (Web Animations API 直叩き、 FLIP + spring + easing token bridge) — Motion One が 2024 年 archive 化したため自作必須。 詳細は [stack-adr.md](./stack-adr.md) | 2-3h | ✅ Ship (`packages/frame/src/motion/`) |
 | **P-3** | 新 package `creoui-frame` (Solid + 自作 motion engine 同梱)、 `<FrameProvider>` `<FrameSlot>` `setFrame()` | 1 session | ✅ Ship (v0.1.0) |
 | **P-4** | 新 package `creoui-vision` (webcam motion との統合)。 詳細は [vision-input.md](./vision-input.md) | 1 session | ✅ Ship (mock source + MediaPipe lazy load + One-Euro Filter) |
-| **P-5** | docs site Playground で Frame morph + gesture demo (P-3, P-4 合成) | 0.5 session | ✅ Ship (`examples/docs/src/pages/Lab/Playground.tsx` — wave gesture / spatial pinch / `<model>` element / camera probe) |
+| **P-5** | docs site Playground で Frame morph + gesture demo (P-3, P-4 合成) | 0.5 session | ✅ Ship (`apps/site/src/pages/Lab/Playground.tsx` — wave gesture / spatial pinch / `<model>` element / camera probe) |
 | **P-6** | VP 統合 (VP の pane を Frame protocol に refactor) | multi-session | ⏳ 別 repo (`vantage-point`) で着手予定 |
 
 ### 後続改善 (B 系列、 2026-05-05 articulate / 2026-05-06 partial ship as v0.1.1)
@@ -190,4 +190,4 @@ Frame system では:
 - 全 page を Frame で扱おうとしない (適用粒度の判断、 普通の SPA route で十分なケースも)
 - Frame system が Editor Mode を置き換えると思わない (Editor Mode は Frame の Editor scene instance)
 - Web の派手な 3D を SwiftUI / ratatui に強要しない (depth metaphor abstract で render する)
-- 3D 値を hardcode しない (必ず token 経由、 原則 6 ([principles](../../examples/docs/src/pages/Foundations/Principles.tsx)))
+- 3D 値を hardcode しない (必ず token 経由、 原則 6 ([principles](../../apps/site/src/pages/Foundations/Principles.tsx)))

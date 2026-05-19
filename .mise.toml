@@ -36,8 +36,8 @@ description = "Build Rust tokens (committed to packages/rust/src/generated/)"
 run = "bun x style-dictionary build --config transforms/config.rust.js"
 
 [tasks.dev]
-description = "Run web demo dev server"
-dir = "examples/web-demo"
+description = "Run the creoui site dev server (apps/site)"
+dir = "apps/site"
 run = [
   "bun install --silent",
   "bun run dev",

@@ -1,9 +1,9 @@
 {
-  "name": "creoui-docs",
+  "name": "creoui-site",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "creoui documentation site — catalog of foundations / components / icons / content / editor-mode / playground",
+  "description": "creoui official site — live showcase + documentation (foundations / components / icons / content / editor-mode / playground)",
   "scripts": {
     "dev": "vite --port 5173",
     "build": "vite build",

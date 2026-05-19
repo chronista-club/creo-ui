@@ -40,7 +40,7 @@ xs  /  s  /  m  /  l  /  xl
 6. `bun run typecheck && bun run lint && bun test` を通す。
 7. PR description に Linear Issue URL + memory ID (creo-memories) を記載。
 8. Breaking change (既存 token の rename / 削除) は **必ず** [`CHANGELOG.md`](../CHANGELOG.md) に migration 記載 + [`docs/migration/v0.X-to-v0.Y.md`](./migration/) を新設、 consumer 視点で migration steps を articulate する。
-9. dogfood (`examples/docs/`) との drift が出た場合は同 PR で sync (5 tier 表記 / version literal / sample code 全部)。
+9. dogfood (`apps/site/`) との drift が出た場合は同 PR で sync (5 tier 表記 / version literal / sample code 全部)。
 
 ## Token rename sweep checklist (大規模 rename 時の必須確認)
 
@@ -79,14 +79,13 @@ token name 変更 (例: v0.17 で `sm/md/lg` → `s/m/l`) は **ecosystem 全層
 
 ### Layer E: Dogfood
 
-- [ ] `examples/docs/src/**/*.tsx` — token reference + visible labels (button text 等の sample)
-- [ ] `examples/web-demo/src/**/*.tsx` — walking skeleton
+- [ ] `apps/site/src/**/*.tsx` — token reference + visible labels (button text 等の sample)
 
 ### Verify (local)
 
 - [ ] `bun run typecheck` pass
 - [ ] `bun run lint` / `bun run format` clean
-- [ ] `cd examples/docs && bun x tsc --noEmit` 0 errors
+- [ ] `cd apps/site && bun x tsc --noEmit` 0 errors
 - [ ] `bun test packages/editor-host/src` pass
 - [ ] `cd packages/frame && bun run test` pass
 - [ ] `cd packages/rust && cargo build` pass (mise rustc 1.95 必須、 local env が古いと skip しがち)
@@ -125,7 +124,7 @@ Chrome の CSS parser は `:root { ... }` block 内 prop 数が **150+ で block
   ```
 - [ ] 各 :root block の prop 数が **50 以下** (category 別 split で各 block 30-46 props が default、 余裕を持って 50 上限)
 - [ ] 例: typography category が 50 を超えそうなら `typography-base / typography-body / typography-display` 等のサブ split を検討
-- [ ] `examples/docs/` を dev で開いて、 visible regression がないか chrome で目視 (Foundations / Components 全 page を 1 度ずつ scroll)
+- [ ] `apps/site/` を dev で開いて、 visible regression がないか chrome で目視 (Foundations / Components 全 page を 1 度ずつ scroll)
 
 ### 検証 path (異常検出時)
 
@@ -147,13 +146,13 @@ Chrome の CSS parser は `:root { ... }` block 内 prop 数が **150+ で block
 
 - v0.17 → v0.18 で 5 tier alias / typography-body / typography-title / layout-gap-* 系を追加、 :root block の prop 数が **120 → 169** に増加
 - Chrome は invalid block を **silently drop** する (parse error も warning も出さない)
-- vite / chrome 両方を 「動いている」 と誤認、 `examples/docs` 自身が dogfood 装置として機能していたが **regression check が visible verify ではなく typecheck / build pass のみ** だったため 6 日間気付かず
+- vite / chrome 両方を 「動いている」 と誤認、 `apps/site` 自身が dogfood 装置として機能していたが **regression check が visible verify ではなく typecheck / build pass のみ** だったため 6 日間気付かず
 - 修復: `transforms/config.web.js` の `css/creoui-themed` format を改修、 token.path[0] (= category) で group して **category 別 :root を 12 block emit** (詳細は memory `mem_1CatH9CfXPpG3Pogx2nZjM` Atlas: creoui)
 
 ### 派生 lesson
 
 - **`bun run typecheck` / `bun run lint` の green は visible regression を保証しない** — CSS は parser が silently drop しても type / lint check は pass する
-- **release sequence に visible verify step** を組み込む (CI で `examples/docs` を screenshot 比較、 もしくは release 前に手動 1-page-1-glance check)
+- **release sequence に visible verify step** を組み込む (CI で `apps/site` を screenshot 比較、 もしくは release 前に手動 1-page-1-glance check)
 - **dogfood は visible 検出装置として有効、 でも能動的な目視 watch が前提** — Living docs 原則 07 + 6 日間放置事故からの articulate
 
 ## Living doc 原則

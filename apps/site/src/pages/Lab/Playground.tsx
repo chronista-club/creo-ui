@@ -904,7 +904,7 @@ function RealVisionStatus(props: { onDisable: () => void }) {
 
 /**
  * USDZ model URL — Apple Quick Look gallery の公開 USDZ を default に。
- * もし CORS / availability で動かない場合は `examples/docs/public/` 内に vendor して
+ * もし CORS / availability で動かない場合は `apps/site/public/` 内に vendor して
  * 相対 path に切替可能。
  */
 const MODEL_USDZ_URL =

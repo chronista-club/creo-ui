@@ -2,7 +2,7 @@
  * Ambient declaration stub for `creoui-md-view` (sibling-repo `creo-views` 経由
  * の WASM mdast parser に依存)。
  *
- * 設計判断: `examples/docs` の typecheck は **editor-host API drift catch** が
+ * 設計判断: `apps/site` の typecheck は **editor-host API drift catch** が
  * 主目的。 md-view の type drift は `packages/md-view/` 自身の typecheck で
  * catch するべきで、 ここでは public API surface のみ stub 化することで CI 上の
  * sibling-repo WASM 取得問題 (creo-views の `src/{md,mermaid}/wasm/` が
