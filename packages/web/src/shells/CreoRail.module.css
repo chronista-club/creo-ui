@@ -1,0 +1,73 @@
+/**
+ * CreoRail — Principal Layout left edge = Rail System
+ * (docs/design/principal-layout.md §5)
+ *
+ * Rail column (48px icon strip) + peek panel (0 ⇄ 240px)。
+ * PL-5: peek は collapsed (0) ⇄ expanded (240px) の 2 状態。「240px 固定常駐」に
+ * しない — peek が選択 Rail に応じて開閉することで center を邪魔しない。
+ */
+
+.rail {
+  display: flex;
+  height: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex-shrink: 0;
+  width: 48px;
+  padding: var(--spacing-xs) 0;
+  background: var(--color-surface-bg-subtle);
+  border-right: 1px solid var(--color-surface-border);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-m);
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: background var(--motion-duration-fast) var(--motion-easing-out), color
+    var(--motion-duration-fast) var(--motion-easing-out);
+}
+
+.icon:hover {
+  background: var(--color-surface-bg-emphasis);
+  color: var(--color-text-primary);
+}
+
+/* 選択中 Rail (route = SSOT、PL-4) */
+.icon[aria-current="page"] {
+  background: var(--color-brand-primary-subtle);
+  color: var(--color-brand-primary);
+}
+
+/* peek = collapsed (0) ⇄ expanded (240px)、PL-5 */
+.peek {
+  flex-shrink: 0;
+  width: 0;
+  overflow: hidden;
+  background: var(--color-surface-surface);
+  transition: width var(--motion-duration-normal) var(--motion-easing-spring);
+}
+
+.peek[data-expanded="true"] {
+  width: 240px;
+  border-right: 1px solid var(--color-surface-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon,
+  .peek {
+    transition: none;
+  }
+}

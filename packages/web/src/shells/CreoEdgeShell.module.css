@@ -1,0 +1,47 @@
+/**
+ * CreoEdgeShell — Principal Layout の Edge Ring (docs/design/principal-layout.md §2)
+ *
+ * 3x3 grid: 4 edge が center を囲む。corner cell は P-0 では空 (`.`) — corner は
+ * 別スライス (doc 30 §4)。中身が無い edge は component 側で DOM を描かないため、
+ * その auto track は 0 に畳まれる。
+ *
+ * PL-8: `overflow:hidden` で region を clip しない。grid は home region を与える
+ * だけで、要素は寸法自由 (羅針盤であって格子でない、doc 29 §3.5)。
+ */
+
+.edgeShell {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    ".    up     ."
+    "left center right"
+    ".    down   .";
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.upEdge {
+  grid-area: up;
+}
+
+.downEdge {
+  grid-area: down;
+}
+
+.leftEdge {
+  grid-area: left;
+}
+
+.rightEdge {
+  grid-area: right;
+}
+
+/* center = 主要活動拠点。route 内容はここで scroll する */
+.center {
+  grid-area: center;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
