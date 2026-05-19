@@ -1,0 +1,18 @@
+# creoui 公式 site — demo stage 用 static server image
+#
+# この image は build を行わない。host 側で `bun run site:build` を実行して
+# 生成した apps/site/dist/ を Caddy で配信するだけの純粋な static server。
+#
+# なぜ container 内で build しないか:
+#   site の依存 creoui-md-view が外部 sibling repo (creo-views) を
+#   `file:../../../creo-views` で参照しており、creoui repo 単独の
+#   build context では self-contained build ができないため。
+#   host (sibling repo が揃っている) で build し、成果物だけを container に渡す。
+#
+# build context は apps/site/ (compose.yml の build.context 参照)。
+FROM docker.io/library/caddy:2-alpine
+
+COPY Caddyfile /etc/caddy/Caddyfile
+COPY dist /srv
+
+EXPOSE 80

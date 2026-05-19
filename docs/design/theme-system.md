@@ -302,7 +302,7 @@ creo-memories 側を触らず、creoui 側だけで追加したい場合:
 
 - **Protocol spec**: [`editor-mode.md`](./editor-mode.md) (Editor Mode protocol D-1〜D-12)
 - **Token spec**: [`tokens-spec.md`](../tokens-spec.md) (DTCG 適用ルール)
-- **Walking skeleton**: [`../../examples/web-demo/`](../../examples/web-demo/) (Vite + SolidJS demo、8 theme 切替動作版)
+- **Live showcase**: [`../../apps/site/`](../../apps/site/) (creoui 公式 site = Vite + SolidJS、8 theme 切替 + Lab/Playground)
 - **creo-memories 最終像**: `mem_1CaHQrgWuQWSUSbZfV5uXm` (2026-04-22 決定、設計経緯含む)
 - **Fleetstage Issue**: [chronista-club/creoui#1](https://github.com/chronista-club/creoui/issues/1) (0.1.0 で closed、移行手順 comment 付き)
 

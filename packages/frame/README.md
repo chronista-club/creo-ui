@@ -178,7 +178,7 @@ consumer は guard を毎回書かなくて良い。
 | **P-2** | motion engine (this) — FLIP + spring + token bridge + reduced-motion | ✅ Ship (v0.1.0) |
 | **P-3** | `<FrameProvider>` + `<FrameSlot>` + `setFrame()` API | ✅ Ship (v0.1.0) |
 | **P-4** | `creoui-vision` 統合 (gesture → Frame morph) | ✅ Ship (mock + MediaPipe lazy load) |
-| **P-5** | docs Playground demo (Frame morph + gesture + spatial pinch) | ✅ Ship (`examples/docs/src/pages/Lab/Playground.tsx`) |
+| **P-5** | docs Playground demo (Frame morph + gesture + spatial pinch) | ✅ Ship (`apps/site/src/pages/Lab/Playground.tsx`) |
 | **P-6** | VP 統合 (VP の pane を Frame protocol に refactor) | ⏳ multi-session |
 | **B-β** | `morphFrame()` coordinator (複数 slot の atomic transition) | ✅ Ship (本 PR、 `motion/morph.ts`) |
 | **B-γ** | `<FrameSlot>` opt-in `useFlip` path (FLIP + spring 統合) | ⏳ 着手予定 |

@@ -215,9 +215,9 @@ export default function Principles() {
           </li>
         </ul>
         <p>
-          Dogfood (<code>examples/docs/</code>) は <strong>viewer</strong> で、 spec
-          の役割は持たない (visual reference の SSOT は markdown / generated tokens)。 doc の
-          hardcode が token reality と乖離していたら <strong>即時止血</strong> が原則 06 より優先。
+          Dogfood (<code>apps/site/</code>) は <strong>viewer</strong> で、 spec の役割は持たない
+          (visual reference の SSOT は markdown / generated tokens)。 doc の hardcode が token
+          reality と乖離していたら <strong>即時止血</strong> が原則 06 より優先。
         </p>
       </Principle>
 

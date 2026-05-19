@@ -32,7 +32,7 @@ creoui Design System の architecture / migration / component spec のソース�
 
 ### 📦 Component spec (28 component)
 
-[`components/`](./components/) 配下に各 component の class 構造 + data-attribute API + token reference + a11y note を mark down で。 dogfood site の `examples/docs/src/pages/Components/` と 1:1 対応 (markdown が canonical spec、 dogfood が visual reference)。
+[`components/`](./components/) 配下に各 component の class 構造 + data-attribute API + token reference + a11y note を mark down で。 dogfood site の `apps/site/src/pages/Components/` と 1:1 対応 (markdown が canonical spec、 dogfood が visual reference)。
 
 主要 component:
 - [Button](./components/button.md) / [Input](./components/input.md) / [Dialog](./components/dialog.md) / [Drawer](./components/drawer.md)
@@ -59,7 +59,7 @@ creoui Design System の architecture / migration / component spec のソース�
 | `docs/components/*.md` | component class API の canonical spec — implementation との drift は禁忌 |
 | `docs/design/*.md` | architecture の Architectural Decision Record — 「なぜ」 が articulate |
 
-dogfood (`examples/docs/`) は **viewer** で、 spec の役割は持たない (visual reference の SSOT は markdown / generated tokens)。
+dogfood (`apps/site/`) は **viewer** で、 spec の役割は持たない (visual reference の SSOT は markdown / generated tokens)。
 
 ## 関連 link
 

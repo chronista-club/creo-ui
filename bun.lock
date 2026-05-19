@@ -10,8 +10,8 @@
         "typescript": "^5.5.0",
       },
     },
-    "examples/docs": {
-      "name": "creoui-docs",
+    "apps/site": {
+      "name": "creoui-site",
       "version": "0.0.0",
       "dependencies": {
         "@chronista-club/creoui-editor-host": "workspace:*",
@@ -26,21 +26,6 @@
       },
       "devDependencies": {
         "@vitejs/plugin-basic-ssl": "^2.3.0",
-        "typescript": "^5.5.0",
-        "vite": "^5.4.0",
-        "vite-plugin-solid": "^2.10.0",
-      },
-    },
-    "examples/web-demo": {
-      "name": "creoui-web-demo",
-      "version": "0.0.0",
-      "dependencies": {
-        "@chronista-club/creoui-editor-host": "workspace:*",
-        "creoui": "workspace:*",
-        "creoui-md-view": "workspace:*",
-        "solid-js": "^1.9.0",
-      },
-      "devDependencies": {
         "typescript": "^5.5.0",
         "vite": "^5.4.0",
         "vite-plugin-solid": "^2.10.0",
@@ -480,17 +465,15 @@
 
     "creoui": ["creoui@workspace:packages/web"],
 
-    "creoui-docs": ["creoui-docs@workspace:examples/docs"],
-
     "creoui-frame": ["creoui-frame@workspace:packages/frame"],
 
     "creoui-icons-web": ["creoui-icons-web@workspace:packages/icons-web"],
 
     "creoui-md-view": ["creoui-md-view@workspace:packages/md-view"],
 
-    "creoui-vision": ["creoui-vision@workspace:packages/vision"],
+    "creoui-site": ["creoui-site@workspace:apps/site"],
 
-    "creoui-web-demo": ["creoui-web-demo@workspace:examples/web-demo"],
+    "creoui-vision": ["creoui-vision@workspace:packages/vision"],
 
     "cross-spawn": ["cross-spawn@7.0.6", "", { "dependencies": { "path-key": "^3.1.0", "shebang-command": "^2.0.0", "which": "^2.0.1" } }, "sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA=="],
 

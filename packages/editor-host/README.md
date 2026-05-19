@@ -371,7 +371,7 @@ src/
 
 - ✅ Step 1-4: core state / handlers / UI / README
 - ✅ Step 5: Target × Control 分離 + `bind()`
-- ⏳ Step 6: `editor-host-v0.1.0` publish + examples/web-demo を consumer に rewrite
+- ⏳ Step 6: `editor-host-v0.1.0` publish + apps/site を consumer に rewrite
 - 📋 M4: MCP server (`editor_mode_*` stdio tool)
 - 📋 M5: Swift runtime (SwiftUI + NSAppearance)
 - 📋 M6: Custom Control plugin (oklch-sliders / gradient / spline)

@@ -42,10 +42,15 @@ bun run build:rust     # Rust だけ
 bun run typecheck      # tsc --noEmit (root + editor-host + web など全パッケージ)
 bun run lint           # Biome check
 bun run format         # Biome check --write (自動修正)
-bun run dev            # examples/web-demo (walking skeleton) を vite で起動
+bun run dev            # apps/site (creoui 公式 site = live showcase + docs) を vite で起動
 bun run gen:themes     # creo-memories preset から 8 theme JSON を再生成
 bun run test:colors    # transforms/color-utils.js のテストを実行 (50 cases)
 bun test packages/editor-host/src/host.test.ts  # editor-host core state のテスト (19 cases)
+
+# demo stage (local Mac で apps/site を podman 配信)
+bun run site:build     # build:web + build:packages + apps/site を順にビルド → apps/site/dist
+bun run site:up        # site:build → image build → 起動 (http://localhost:8080)
+bun run site:down      # 停止・削除
 
 # Rust (packages/rust で実行)
 cargo build && cargo test
