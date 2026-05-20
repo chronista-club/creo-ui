@@ -3,6 +3,21 @@
 本ファイルは creoui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## v0.21.0 (2026-05-19) — web、Principal Layout primitive (Edge Ring + Rail)
+
+`creoui/shells` に **Principal Layout** primitive を追加 ([#48](https://github.com/chronista-club/creoui/pull/48))。creo-memories doc 29/30 の 3x3 Frame / Rail UX を共有 primitive 化したもの (fleetstage handoff が起点)。設計は [docs/design/principal-layout.md](./docs/design/principal-layout.md)。
+
+additive のみ — 既存 export (`CreoPageShell` / `CreoFacetGrid` / tokens / components.css) は 100% backward compat。
+
+| 追加 export (`creoui/shells`) | 役割 |
+|---|---|
+| `<CreoEdgeShell>` | 4 edge + center の Edge Ring (2D 基盤フレーム) |
+| `<CreoRail>` | Rail column + peek (collapsed⇄expanded)、router-agnostic |
+| `railRegistry` | `RailDef` + pure logic (`selectRailId` / `railsByOrder` / `railById`) |
+| `regions` | 位置語彙 type (`EdgeRegion` / `CornerRegion` / `Region`) |
+
+Rail registry は consumer 供給 (特定 App の rail を hardcode しない)。Rail 選択 = route が唯一の SSOT。
+
 ## creoui rename (2026-05-17) — web v0.20.1 / editor-host v0.5.1
 
 デザインシステムの正式名を `creoui` に統一 ([#41](https://github.com/chronista-club/creoui/pull/41))。`Creo UI` / `creo-ui` / `CreoUI` の散在を廃し、`creoui` を naming SSOT とする。
