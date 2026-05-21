@@ -1,6 +1,6 @@
 # Principal Layout — creoui Edge Ring + Rail System
 
-**Status**: P-0〜P-1 実装済 (2026-05-19、PR #48) — Edge Ring + Rail primitive 本体。P-2 以降 (consumer 移行) は未着手。fleetstage handoff (`mem_1CbCE1rdYJ4ySg87DF5hwa`) を起点に creoui lead が起こした設計 + 実装。CREO-84 Phase B の primitive スライス。
+**Status**: creoui 側 (P-0〜P-1 + P-3) 実装済 — Edge Ring + Rail primitive 本体 (PR #48) + Z 軸 layer add-on。P-2 (creo-web consumer 移行) は creo-memories lead に handoff 済 (`mem_1CbDVwB81yzynrsF4WTKLx`)。fleetstage handoff (`mem_1CbCE1rdYJ4ySg87DF5hwa`) を起点に creoui lead が起こした設計 + 実装。CREO-84 Phase B の primitive スライス。
 **Owners**: creoui (primitive schema + SolidJS reference 実装)、consumer apps (Rail registry 供給)
 **Scope**: 2D の基盤レイアウト primitive — 4 edge + center の Edge Ring と、left edge の Rail System。app に依存しない layout 機構のみを規定し、各 App は Rail registry を供給する。
 **Related**: [frame-system.md](./frame-system.md) (3D spatial morph、別 primitive), [editor-mode.md](./editor-mode.md), creo-memories doc 29 `29-3x3-frame.md` / doc 30 `30-principal-layout.md` (概念の起源)
@@ -132,10 +132,12 @@ primitive は `RailDef[]` を反復し各 entry が描画・選択・peek 表示
 doc 29 §4 / doc 30 §5-6 の Z 軸 (認知境界の積層、cross-layer / in-layer の swap) は **optional feature**:
 
 - primitive 本体 (Edge Ring + Rail) は Z 軸ゼロで完全に動く
-- Z 軸を使う App (creo-web) 向けに `currentLayer` 的な opt-in state hook + URL mirror を別 export として提供
-- Z 軸を使わない App (hq/backstage、ops Console) はその hook を import しないだけ
+- Z 軸を使う App (creo-web) 向けに `currentLayer` の opt-in state store + URL mirror を別 export として提供
+- Z 軸を使わない App (hq/backstage、ops Console) はそれを import しないだけ
 
 → Z 軸は primitive の **add-on**。core surface に Z 軸 API を出さない (PL-6)。
+
+**実装** (`layer.ts`、P-3): `LayerId` (= `atlasId | undefined`、undefined = ルート層) を SSOT に持つ `createLayerStore()` と、URL `?layer` 双方向同期の `createLayerUrlSync(store, { readParam, writeParam })`。後者は router-agnostic — `@solidjs/router` を import せず param accessor を consumer から受ける (`<CreoRail>` と同じ規律、PL-1)。pure logic (`parseLayerParam` / `layerToParam` / `layerEqualsParam`) を分離し、無限ループ収束 (doc 30 §6.6) を `layerEqualsParam` ガードで保証。
 
 ## 7. Phase plan
 
@@ -143,11 +145,11 @@ doc 29 §4 / doc 30 §5-6 の Z 軸 (認知境界の積層、cross-layer / in-la
 |---|---|
 | **P-0** ✅ | 位置語彙 vocabulary type (`regions.ts`) + `<CreoEdgeShell>` (4 edge 枠 + center) + epistemic status (格子でない) の CSS 規律 |
 | **P-1** ✅ | `<CreoRail>` — Rail column + peek (collapsed⇄expanded) + `RailDef`/`railRegistry` + `selectRailId` pure logic + contract test 11 cases |
-| **P-2** | creo-web を primitive の consumer に rewrite (既存 `RailSystem`/`EdgeFrame` を creoui primitive に置換、Memory/Atlas/Views registry を creo-web 側に) |
-| **P-3** | Z 軸 add-on (`currentLayer` hook + URL sync) — creo-web 専用、optional export |
+| **P-2** 📨 | creo-web を primitive の consumer に rewrite (既存 `RailSystem`/`EdgeFrame` を creoui primitive に置換、Memory/Atlas/Views registry を creo-web 側に)。creo-memories lead に handoff 済 (`mem_1CbDVwB81yzynrsF4WTKLx`) |
+| **P-3** ✅ | Z 軸 layer add-on (`layer.ts` — `createLayerStore` / `createLayerUrlSync` + `parseLayerParam`/`layerToParam`/`layerEqualsParam` の pure logic)。router-agnostic、opt-in の optional export |
 | **P-4** | fleetstage hq/backstage が consumer 化 (B、fleetstage lead 領分) |
 
-P-0〜P-1 が creoui primitive 本体。P-2 以降は consumer 移行。各 Phase は独立に出荷可能な縦スライス。
+P-0〜P-1 + P-3 が creoui primitive 本体 (creoui lead 領分、実装済)。P-2 / P-4 は consumer 移行 (別 repo / 別 lead)。各 Phase は独立に出荷可能な縦スライス。
 
 ## 8. やってはいけない
 
