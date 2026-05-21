@@ -22,6 +22,16 @@ export { CreoFacetGrid } from './CreoFacetGrid'
 export { CreoPageShell } from './CreoPageShell'
 export { CreoRail } from './CreoRail'
 export {
+  createLayerStore,
+  createLayerUrlSync,
+  type LayerId,
+  type LayerStore,
+  type LayerUrlSyncPorts,
+  layerEqualsParam,
+  layerToParam,
+  parseLayerParam,
+} from './layer'
+export {
   type RailAspect,
   type RailDef,
   railById,
