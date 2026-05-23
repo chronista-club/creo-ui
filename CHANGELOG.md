@@ -3,6 +3,20 @@
 本ファイルは creoui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## v0.22.0 (2026-05-20) — web、Principal Layout P-3 Z 軸 layer add-on
+
+Principal Layout primitive に **Z 軸 layer add-on** を追加 ([#50](https://github.com/chronista-club/creoui/pull/50))。creo-memories doc 29 §4 / doc 30 §6.6 の多層 Atlas (認知境界の積層) を、creoui/shells の **opt-in add-on** として実装。
+
+PL-6 通り primitive の core surface には出していない — `<CreoEdgeShell>` / `<CreoRail>` は本 add-on を一切参照せず、Z 軸を使う consumer (creo-web) だけが import する。
+
+| 追加 export (`creoui/shells`) | 役割 |
+|---|---|
+| `createLayerStore()` | `LayerId` (`atlasId \| undefined`、undefined = ルート層) を SSOT に持つ Z 位置 store |
+| `createLayerUrlSync(store, { readParam, writeParam })` | URL `?layer` の双方向同期。router-agnostic — param accessor を consumer 供給 |
+| `parseLayerParam` / `layerToParam` / `layerEqualsParam` | pure logic。無限ループ収束を `layerEqualsParam` ガードで保証 |
+
+additive のみ — 既存 export (`<CreoEdgeShell>` / `<CreoRail>` / `railRegistry` / `regions` / tokens / components.css) は 100% backward compat。
+
 ## v0.21.0 (2026-05-19) — web、Principal Layout primitive (Edge Ring + Rail)
 
 `creoui/shells` に **Principal Layout** primitive を追加 ([#48](https://github.com/chronista-club/creoui/pull/48))。creo-memories doc 29/30 の 3x3 Frame / Rail UX を共有 primitive 化したもの (fleetstage handoff が起点)。設計は [docs/design/principal-layout.md](./docs/design/principal-layout.md)。
