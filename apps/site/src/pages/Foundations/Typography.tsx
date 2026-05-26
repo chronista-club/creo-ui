@@ -754,7 +754,7 @@ export default function Typography() {
         <pre class="docs-code">
           <code>{`/* consumer 側 (例: creo-web の src/index.css) */
 :root {
-  --typography-family-app: 'Mizzolet', var(--typography-family-app);
+  --typography-family-app: 'Mizolet', var(--typography-family-app);
 }`}</code>
         </pre>
 
