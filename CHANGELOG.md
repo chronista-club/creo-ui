@@ -3,6 +3,16 @@
 本ファイルは creoui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## v0.22.1 (2026-05-25) — doc: typography-system 追加 (npm artifact 不変)
+
+`docs/design/typography-system.md` を追加 ([#54](https://github.com/chronista-club/creoui/pull/54))。「Mizzolet (local font) を principal に」という要望の reframe を受け、**consumer が任意の local font を CSS custom property cascade で自由に override する path** を first-class supported path として articulate する design doc。
+
+- 14 family token の構造 (mode-based 4 + editor variant 2 + 用途別 8)
+- TY-1〜TY-5 の設計判断 (cascade override = first-class / `@font-face` は creoui に置かない / prepend pattern 推奨 / 4 scope / consumer-side `@font-face` の規律)
+- 4 override 具体例 + 6 件の「やってはいけない」
+
+> ⚠️ **npm artifact 不変**: doc のみの release で `packages/web/dist` の出力は v0.22.0 と完全同一。本 release は doc landing の time marker。consumer から本 doc を確実に参照したい場合に `creoui@0.22.1` を指定する用途。
+
 ## v0.22.0 (2026-05-20) — web、Principal Layout P-3 Z 軸 layer add-on
 
 Principal Layout primitive に **Z 軸 layer add-on** を追加 ([#50](https://github.com/chronista-club/creoui/pull/50))。creo-memories doc 29 §4 / doc 30 §6.6 の多層 Atlas (認知境界の積層) を、creoui/shells の **opt-in add-on** として実装。
