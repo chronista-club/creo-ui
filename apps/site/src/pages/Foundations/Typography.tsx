@@ -724,6 +724,70 @@ export default function Typography() {
           </For>
         </div>
       </section>
+
+      <section>
+        <h2 class="docs-section-title">Override — consumer が任意の local font を乗せる</h2>
+        <p class="docs-page-helper">
+          14 family は <code>--typography-family-&#123;name&#125;</code> という CSS custom property
+          として <code>:root</code> に emit される。 consumer は{' '}
+          <strong>CSS cascade で override 可能</strong>= creoui が認める{' '}
+          <em>first-class supported path</em>。 token を fork する必要は無く、 web-hosted font asset
+          を creoui に同梱する path も取らない。 詳細は{' '}
+          <a
+            href="https://github.com/chronista-club/creoui/blob/main/docs/design/typography-system.md"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <code>docs/design/typography-system.md</code>
+          </a>{' '}
+          (TY-1 〜 TY-5)。
+        </p>
+        <p class="docs-page-helper">
+          <strong>prepend pattern を推奨</strong>: custom font を chain 先頭に、 creoui defaults を
+          fallback として残す。 font 不在環境 (= 別 OS / install 忘れ) で既存 fallback (Nerd Font /
+          PlemolJP / system) に grace degrade する。
+        </p>
+
+        <p class="docs-page-helper">
+          <strong>(a) Global override</strong> — app 全体で 1 font に統一 (典型的な use case)
+        </p>
+        <pre class="docs-code">
+          <code>{`/* consumer 側 (例: creo-web の src/index.css) */
+:root {
+  --typography-family-app: 'Mizzolet', var(--typography-family-app);
+}`}</code>
+        </pre>
+
+        <p class="docs-page-helper">
+          <strong>(b) Multi-family alignment</strong> — read と editor を同 font に揃える
+        </p>
+        <pre class="docs-code">
+          <code>{`:root {
+  --typography-family-read: 'Iosevka', var(--typography-family-read);
+  --typography-family-editor: 'Iosevka', var(--typography-family-editor);
+}`}</code>
+        </pre>
+
+        <p class="docs-page-helper">
+          <strong>(c) Theme-scoped</strong> — 特定 theme でだけ font 切替 (theme と typography は
+          独立 token だが、 cascade selector で組み合わせれば theme-aware typography が可能)
+        </p>
+        <pre class="docs-code">
+          <code>{`[data-theme="oldschool-dark"] {
+  --typography-family-app: var(--typography-family-mono-retro);
+}`}</code>
+        </pre>
+
+        <p class="docs-page-helper">
+          <strong>(d) Subtree-scoped</strong> — 特定 workspace / section のみ
+        </p>
+        <pre class="docs-code">
+          <code>{`.atelier-workspace {
+  --typography-family-app: 'JetBrainsMono Nerd Font Mono', var(--typography-family-app);
+  --typography-family-editor: 'iA Writer Quattro S', var(--typography-family-editor);
+}`}</code>
+        </pre>
+      </section>
     </>
   )
 }
