@@ -1,4 +1,6 @@
 import { A } from '@solidjs/router'
+// `packages/web/package.json` から動的に読み (release 毎 stale 化を防止、build-time bake)
+import pkg from '../../../../packages/web/package.json'
 import ThemeSwitcher from './ThemeSwitcher'
 
 export default function Header() {
@@ -9,7 +11,7 @@ export default function Header() {
           ◎
         </span>
         <span class="docs-brand-text">creoui</span>
-        <span class="docs-brand-version">v0.17.0</span>
+        <span class="docs-brand-version">v{pkg.version}</span>
       </A>
       <nav class="docs-header-nav" aria-label="primary">
         <A href="/getting-started" activeClass="is-active">
