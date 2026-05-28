@@ -3,7 +3,7 @@
  *
  * 多層 Atlas / Z 軸 (認知境界の積層、doc 29 §4) は **optional feature** (PL-6)。
  * Edge Ring + Rail の core は Z 軸ゼロで動く。本 module は Z 軸を使う consumer
- * (creo-web) 向けの opt-in add-on — `<CreoEdgeShell>` / `<CreoRail>` はこれを
+ * (creo-web) 向けの opt-in add-on — `<CUEdgeShell>` / `<CURail>` はこれを
  * 一切参照しない。
  *
  * currentLayer = 「今どの層 (Atlas = 認知境界) に居るか」= Z 位置 (doc 30 §6.6)。
@@ -11,7 +11,7 @@
  *
  * pure logic (parse / serialize / equals) と store / URL sync を分離 — pure 部は
  * router 非依存で bun:test できる。URL sync も router-agnostic (param accessor を
- * 引数で受ける) — `@solidjs/router` 等は import しない (CreoRail と同じ規律)。
+ * 引数で受ける) — `@solidjs/router` 等は import しない (CURail と同じ規律)。
  */
 
 import { type Accessor, createEffect, createSignal } from 'solid-js'

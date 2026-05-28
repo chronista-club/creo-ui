@@ -1,10 +1,10 @@
 import { type Component, type JSX, Show } from 'solid-js'
-import styles from './CreoEdgeShell.module.css'
+import styles from './CUEdgeShell.module.css'
 
-interface CreoEdgeShellProps {
+interface CUEdgeShellProps {
   /** center = 主要活動拠点 (route 内容、principal-layout.md §2) */
   children: JSX.Element
-  /** left edge = 起点。Rail System (<CreoRail>) を入れる枠 */
+  /** left edge = 起点。Rail System (<CURail>) を入れる枠 */
   leftEdge?: JSX.Element
   /** right edge = ツール (center の活動支援) */
   rightEdge?: JSX.Element
@@ -17,10 +17,10 @@ interface CreoEdgeShellProps {
 }
 
 /**
- * CreoEdgeShell — Principal Layout の Edge Ring (docs/design/principal-layout.md §2)
+ * CUEdgeShell — Principal Layout の Edge Ring (docs/design/principal-layout.md §2)
  *
  * 4 edge (left/right/up/down) が center を囲む 2D 基盤フレーム。center は consumer の
- * route component、各 edge は consumer 供給 (left edge には `<CreoRail>` を入れる)。
+ * route component、各 edge は consumer 供給 (left edge には `<CURail>` を入れる)。
  *
  * 設計 (PL-2 / PL-8):
  * - region は位置語彙 (`data-region`) で名づける。「sidebar」等の語は出さない。
@@ -30,14 +30,14 @@ interface CreoEdgeShellProps {
  *   与えるだけで、要素は寸法自由・region を越えてよい (羅針盤であって格子でない)。
  *
  * ```tsx
- * <CreoEdgeShell leftEdge={<CreoRail registry={rails} .../>}>
+ * <CUEdgeShell leftEdge={<CURail registry={rails} .../>}>
  *   <RouteOutlet />
- * </CreoEdgeShell>
+ * </CUEdgeShell>
  * ```
  *
  * Origin: creo-memories doc 30 §4 "Edge Ring" / creo-web `EdgeFrame` の抽出。
  */
-export const CreoEdgeShell: Component<CreoEdgeShellProps> = (props) => (
+export const CUEdgeShell: Component<CUEdgeShellProps> = (props) => (
   <div class={`${styles.edgeShell}${props.class ? ` ${props.class}` : ''}`}>
     <Show when={props.upEdge}>
       <div class={styles.upEdge} data-region="upEdge">

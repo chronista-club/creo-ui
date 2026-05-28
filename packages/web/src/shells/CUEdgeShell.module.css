@@ -1,5 +1,5 @@
 /**
- * CreoEdgeShell — Principal Layout の Edge Ring (docs/design/principal-layout.md §2)
+ * CUEdgeShell — Principal Layout の Edge Ring (docs/design/principal-layout.md §2)
  *
  * 3x3 grid: 4 edge が center を囲む。corner cell は P-0 では空 (`.`) — corner は
  * 別スライス (doc 30 §4)。中身が無い edge は component 側で DOM を描かないため、

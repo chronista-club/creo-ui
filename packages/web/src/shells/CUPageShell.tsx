@@ -1,7 +1,7 @@
 import type { Component, JSX } from 'solid-js'
-import styles from './CreoPageShell.module.css'
+import styles from './CUPageShell.module.css'
 
-interface CreoPageShellProps {
+interface CUPageShellProps {
   children: JSX.Element
   /**
    * Inner container max width (default 1100px)。 CSS variable
@@ -19,29 +19,29 @@ interface CreoPageShellProps {
 }
 
 /**
- * CreoPageShell — full-canvas page wrapper primitive
+ * CUPageShell — full-canvas page wrapper primitive
  *
  * Layered Surface design v5.1 の **page mode** primitive。 Rail / Nav の右側に
  * 配置され、 max-width 1100px の inner container + entrance animation で
- * page 遷移を視覚化。 子要素は consumer が `<CreoFacetGrid>` 等で組み立てる。
+ * page 遷移を視覚化。 子要素は consumer が `<CUFacetGrid>` 等で組み立てる。
  *
  * ```tsx
  * <div class="flex h-screen">
  *   <Rail />
  *   <Nav />
- *   <CreoPageShell>
- *     <CreoFacetGrid>
+ *   <CUPageShell>
+ *     <CUFacetGrid>
  *       <article>main</article>
  *       <aside>sidebar</aside>
- *     </CreoFacetGrid>
- *   </CreoPageShell>
+ *     </CUFacetGrid>
+ *   </CUPageShell>
  * </div>
  * ```
  *
  * Vision: mem_1Cak5rxTFWvLNxjSRiQ1Ak (Layered Surface v5.1)
  * Origin: Phase 1 (CREO-160) `MemoryPageShell` から layout 部分を抽出
  */
-export const CreoPageShell: Component<CreoPageShellProps> = (props) => (
+export const CUPageShell: Component<CUPageShellProps> = (props) => (
   <main
     class={`${styles.creoPageShell}${props.class ? ` ${props.class}` : ''}`}
     style={props.maxWidth ? { '--creo-page-shell-max-width': props.maxWidth } : undefined}
