@@ -1,7 +1,7 @@
 import type { Component, JSX } from 'solid-js'
-import styles from './CreoFacetGrid.module.css'
+import styles from './CUFacetGrid.module.css'
 
-interface CreoFacetGridProps {
+interface CUFacetGridProps {
   children: JSX.Element
   /**
    * Sidebar width (default 320px)。 CSS variable `--creo-facet-grid-sidebar-width` で
@@ -18,7 +18,7 @@ interface CreoFacetGridProps {
 }
 
 /**
- * CreoFacetGrid — 2-col page grid primitive
+ * CUFacetGrid — 2-col page grid primitive
  *
  * Layered Surface design v5.1 で確立した page grammar。 intrinsic main (1fr) +
  * extrinsic sidebar (sidebarWidth) の 2-col grid、 920px breakpoint で 1-col 化。
@@ -27,16 +27,16 @@ interface CreoFacetGridProps {
  * primitive 化予定):
  *
  * ```tsx
- * <CreoFacetGrid>
+ * <CUFacetGrid>
  *   <article>main content</article>
  *   <aside>sidebar content</aside>
- * </CreoFacetGrid>
+ * </CUFacetGrid>
  * ```
  *
  * Vision: mem_1Cak5rxTFWvLNxjSRiQ1Ak (Layered Surface v5.1)
  * Origin: Phase 1 (CREO-160) `.memoryPage` から抽出
  */
-export const CreoFacetGrid: Component<CreoFacetGridProps> = (props) => (
+export const CUFacetGrid: Component<CUFacetGridProps> = (props) => (
   <div
     class={`${styles.creoFacetGrid}${props.class ? ` ${props.class}` : ''}`}
     style={{

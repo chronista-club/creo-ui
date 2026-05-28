@@ -3,6 +3,38 @@
 本ファイルは creoui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## v0.23.0 (2026-05-28) — shells primitive を `CU*` prefix に rename (ecosystem vocabulary 統一)
+
+`creoui/shells` の primitive component prefix を `Creo*` → **`CU*`** に rename (owner decision)。**後方互換 alias を 0.23.x / 0.24.x で同梱**、 0.25.0 で撤去。
+
+**motivation (owner)**: ergonomics 優先で `CU` (= creoui-shells primitive) / `CR` (= project-local) の 2 prefix を全 product 共通 vocabulary にし、 import 1 行で「primitive vs project-local」を即判別できる clarity を ecosystem の SSOT にする。 brand "Creo Memories" / "Creo ID" は touch せず keep — component prefix と brand surface を意味的に分離する articulate。
+
+### rename 一覧 (creoui repo に現存する 4 primitive + Props)
+
+| 旧 | 新 |
+|---|---|
+| `CreoPageShell` | `CUPageShell` |
+| `CreoFacetGrid` | `CUFacetGrid` |
+| `CreoEdgeShell` | `CUEdgeShell` |
+| `CreoRail` | `CURail` |
+
+(他の `CU*` 名 — `CUTimeline` / `CULogo` / `CUCanvas` / `CUMain` / `CUTopbar` / `CUStatusbar` / `CURSidebar` / `CULSidebar` / `CUCorner` / `CUOrientation` / `CULayeredSurface` / `CUEmptyState` / `CUStyle` / `CUDemo` 等 — は consumer 側で実装中の primitive 向け **forward-looking 命名規約**。creoui repo には未実装。)
+
+### 後方互換 (breaking change cost を消す)
+
+`shells/index.ts` で **alias re-export を同梱**:
+
+```ts
+export { CUPageShell } from './CUPageShell'              // canonical (v0.23.0+)
+export { CUPageShell as CreoPageShell } from './CUPageShell'  // alias (0.23.x / 0.24.x keep, 0.25.0 撤去)
+```
+
+既存 consumer (`import { CreoPageShell } from 'creoui/shells'`) は **無改修で動く**。0.22.x には npm deprecate tag を貼り migration 期間を可視化、0.25.0 で alias 撤去。
+
+### 設計 doc
+
+`docs/design/principal-layout.md` §4 の命名節を「proposed」→「確定 (v0.23.0)」に更新。`identity.md` / `typography-system.md` の primitive 表記も CU* に追従。
+
 ## v0.22.1 (2026-05-25) — doc: typography-system 追加 (npm artifact 不変)
 
 `docs/design/typography-system.md` を追加 ([#54](https://github.com/chronista-club/creoui/pull/54))。「Mizolet (local font) を principal に」という要望の reframe を受け、**consumer が任意の local font を CSS custom property cascade で自由に override する path** を first-class supported path として articulate する design doc。

@@ -7,7 +7,7 @@ import solid from 'vite-plugin-solid'
  * creoui — JS bundle config (Solid component shells)
  *
  * web package は元々 style-dictionary 由来の CSS-only design token + components.css。
- * Phase B (CREO-84) で **shell primitives** (`<CreoFacetGrid>` 等の Solid component) を
+ * Phase B (CREO-84) で **shell primitives** (`<CUFacetGrid>` 等の Solid component) を
  * 追加するため vite を導入、 既存 style-dictionary build とは独立して JS bundle を生成。
  *
  * 出力:

@@ -1,5 +1,5 @@
 /**
- * CreoPageShell — full-canvas page wrapper
+ * CUPageShell — full-canvas page wrapper
  *
  * Layered Surface design v5.1 で確立した page primitive。 Phase 1 (CREO-160) の
  * `MemoryPageShell` の layout 部分 (= flex container + max-width inner + entrance
@@ -13,7 +13,7 @@
  * 責務外 (consumer 側):
  *   - auth state / loading state / WebSocket 等 domain logic
  *   - Rail / Nav 等 sibling components の配置
- *   - 子要素の internal layout (= <CreoFacetGrid> 等で組み立て)
+ *   - 子要素の internal layout (= <CUFacetGrid> 等で組み立て)
  *
  * Vision: mem_1Cak5rxTFWvLNxjSRiQ1Ak
  */

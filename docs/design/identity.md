@@ -24,7 +24,7 @@ creoui の 3 本柱は **(1) 視覚的定数の SSOT (DTCG tokens) / (2) Editor 
 | 領域 | 責務 owner |
 |---|---|
 | 視覚的定数 (color / spacing / typography / radius / shadow / motion 等 design tokens) | creoui |
-| Layout primitive (`<CreoEdgeShell>` / `<CreoRail>` / `<CreoPageShell>` / `<CreoFacetGrid>`) | creoui |
+| Layout primitive (`<CUEdgeShell>` / `<CURail>` / `<CUPageShell>` / `<CUFacetGrid>`) | creoui |
 | Editor Mode protocol + Web reference runtime (`@chronista-club/creoui-editor-host`) | creoui |
 | 3D Frame system (`creoui-frame`、 spatial morph) | creoui |
 | Icon / Motion / Vision primitives | creoui |
@@ -55,9 +55,9 @@ creoui は本 3 値の **定数も helper も提供しない**。consumer 側で
 
 | primitive | auth との関係 |
 |---|---|
-| `<CreoEdgeShell>` (Principal Layout、 PL-1) | 純粋な layout (4 edge + center)、 auth context を持たない |
-| `<CreoRail>` (PL-3〜PL-5) | router-agnostic (`pathname` / `onNavigate` 受取)、 auth は consumer 配線 |
-| `<CreoPageShell>` / `<CreoFacetGrid>` | layout primitive、 auth と無関係 |
+| `<CUEdgeShell>` (Principal Layout、 PL-1) | 純粋な layout (4 edge + center)、 auth context を持たない |
+| `<CURail>` (PL-3〜PL-5) | router-agnostic (`pathname` / `onNavigate` 受取)、 auth は consumer 配線 |
+| `<CUPageShell>` / `<CUFacetGrid>` | layout primitive、 auth と無関係 |
 | `creoui-frame` (3D spatial morph) | Scene 層 spatial articulation、 auth と無関係 |
 | `@chronista-club/creoui-editor-host` (Editor Mode) | editor protocol / field 配線、 auth と無関係 (consumer の field を表示するだけ) |
 | `creoui/shells` Z 軸 layer add-on (PL-6) | `currentLayer` store + URL sync、 auth と無関係 |

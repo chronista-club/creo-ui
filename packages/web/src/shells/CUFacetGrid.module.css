@@ -1,5 +1,5 @@
 /**
- * CreoFacetGrid — 2-col page grid (intrinsic main + extrinsic sidebar)
+ * CUFacetGrid — 2-col page grid (intrinsic main + extrinsic sidebar)
  *
  * Layered Surface design v5.1 で確立した primitive。 Phase 1 (CREO-160) の
  * `.memoryPage` から抽出、 920px breakpoint で 1-col に collapse。
