@@ -1,10 +1,13 @@
 name: CI
 
+# PR ゲート。 n = 開発 trunk (default) / main = release。 2026-05-30 移行
+# (creo-memories の n/main 二段運用と parity)
 on:
   push:
-    branches: [main]
+    branches: [n, main]
   pull_request:
-    branches: [main]
+    branches: [n, main]
+  workflow_dispatch: # CI 不具合時の debug 用に手動起動可
 
 jobs:
   build:
