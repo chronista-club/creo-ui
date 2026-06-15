@@ -160,7 +160,8 @@ creo-memories / VP と parity の **「`n` = 開発 trunk (default) / `main` = r
 - Rust generated に inner attribute / inner doc を足す (`include!` 先では構文エラー)。
 - Editor Mode を **instance 名** (Studio / DevEditor / etc) で呼ぶ。Editor は **universal mode**、instance 化しない (`docs/design/editor-mode.md` D-1)。
 - Content Layer を Editor Mode が **押し退ける / layout 変える** 設計にする。非侵襲性 (D-6) は最上位原則。
-- Swift / Rust / 他 framework (React 等) の **runtime 実装を本リポジトリに書く**。Web runtime は `packages/editor-host` に限り reference 実装として保持 (EH-1 / EH-2)、他 platform は consumer 側または将来別 package で。
+- Swift / Rust / 他 JS framework (React / Vue 等) の **runtime 実装を本リポジトリに書く**。本 repo が持つ runtime は **SolidJS の reference 実装に限る** — 現状 `packages/{web (shells/controls), editor-host, frame, vision, md-view, icons-web}` が該当 (EH-1 / EH-2)。Swift / Rust / 他 JS framework は consumer 側または将来別 package で。
+  - web package の component layer は 2 段: **CSS-only component** (`components/*.css`、例 `button.css`) と、それを type-safe に wrap した **SolidJS primitive** (`shells/` = layout grammar、`controls/` = interactive control、例 `CUButton`)。新 interactive component は `controls/` に置き `creoui/controls` で export する。
 - `packages/editor-host/` を **SolidJS 以外の framework 対応で抽象化する**。SolidJS 一本で進める方針 (EH-2)。物理分離を急がない。
 - `creo-memories/packages/creoui` の DevEditor を直接触る。参考に留め、 **migration は creo-memories lead の判断** (EH-4)。
 - 専用 MCP server (`editor-host-mcp`) を実装する。**claude-in-chrome + `window.creoEditor` で代替可能** (EH-5)。Phase 2b は recipes / AI pair design docs に scope 縮小。

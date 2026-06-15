@@ -3,6 +3,26 @@
 本ファイルは creoui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## v0.24.0 (2026-06-16) — `CUButton` interactive primitive を新設 (`creoui/controls`)
+
+interactive component primitive 用の新 export subpath **`creoui/controls`** を切り、第一号として **`CUButton`** を追加。既存の CSS-only component (`components/button.css` = `.creo-btn`) を type-safe に wrap した薄い SolidJS primitive。
+
+**motivation**: creo-memories から「published `creoui` の Button が variant 等の動的 prop を再描画に反映しない」handoff を受領。原因は consumer 側 component の「`const buttonClass = cn(...)` 即時 1 回計算」アンチパターン。creoui を component lib の本拠地とし、`shells/` (layout grammar) と分離した `controls/` (interactive control) に bug-free な reference 実装を置く方針に拡張。
+
+### 追加
+
+- `creoui/controls` export subpath (interactive primitive 用、今後 Input / Select 等も集約)
+- `CUButton` — `variant` (primary / secondary / ghost) / `size` (s / m / l) / `pressed` (aria-pressed toggle) / `disabled` / `href` (→ `<a>` polymorphic) を type-safe に提供
+- `cuButtonAttrs` — props → DOM 属性の純粋関数 (reactivity の核、回帰テスト付き)
+
+### reactivity 設計 (handoff への回答)
+
+`createMemo(() => cuButtonAttrs(local))` で **描画毎に props から属性を導出**。component body で class を eager に 1 回計算しないため、`variant` / `size` / `pressed` を signal で変えても class / data 属性が追従する。さらに variant / size は `cn` 文字列結合ではなく **data 属性 binding** なので、元 bug の構造を持たない。
+
+### consumer
+
+`creo-memories` は published `creoui` を npm 経由で consume するため、本 version の publish 後に `@creo/ui` の Button.tsx を `creoui/controls` の `CUButton` へ移行可能。
+
 ## v0.23.0 (2026-05-28) — shells primitive を `CU*` prefix に rename (ecosystem vocabulary 統一)
 
 `creoui/shells` の primitive component prefix を `Creo*` → **`CU*`** に rename (owner decision)。**後方互換 alias を 0.23.x / 0.24.x で同梱**、 0.25.0 で撤去。
