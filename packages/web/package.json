@@ -1,7 +1,7 @@
 {
   "name": "creoui",
-  "version": "0.23.0",
-  "description": "creoui — Web package (design tokens + components.css + Solid shell primitives)",
+  "version": "0.24.0",
+  "description": "creoui — Web package (design tokens + components.css + Solid shell/control primitives)",
   "type": "module",
   "main": "./dist/shells/index.js",
   "module": "./dist/shells/index.js",
@@ -19,6 +19,10 @@
       "import": "./dist/shells/index.js"
     },
     "./shells/index.css": "./dist/shells/index.css",
+    "./controls": {
+      "types": "./dist/controls/index.d.ts",
+      "import": "./dist/controls/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": ["dist", "README.md"],

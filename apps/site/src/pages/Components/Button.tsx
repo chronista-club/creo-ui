@@ -8,6 +8,7 @@ import {
   string,
 } from '@chronista-club/creoui-editor-host'
 import { A } from '@solidjs/router'
+import { CUButton } from 'creoui/controls'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -108,6 +109,39 @@ export default function Button() {
             </button>
           </div>
         </div>
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">
+          SolidJS API — <code>creoui/controls</code>
+        </h2>
+        <p class="docs-page-lead">
+          素の <code>&lt;button class="creo-btn"&gt;</code> を type-safe に wrap した{' '}
+          <code>&lt;CUButton&gt;</code> primitive。 <code>variant</code> / <code>size</code> /{' '}
+          <code>pressed</code> を <strong>signal で動的に</strong>変えても class / data 属性が
+          追従する (eager な class 計算を持たず、 描画毎に props から導出するため)。{' '}
+          <code>href</code> を渡すと <code>&lt;a&gt;</code> の link button に polymorphic 切替。
+        </p>
+        <div class="docs-component-preview">
+          <div class="docs-preview-row-label">Reactive variant (signal 追従の実証)</div>
+          <CUButtonReactiveDemo />
+        </div>
+        <pre class="docs-code">
+          <code>{`import { CUButton } from 'creoui/controls'
+
+// variant を signal で切替 → 即座に追従 (再描画で固まらない)
+const [primary, setPrimary] = createSignal(true)
+<CUButton
+  variant={primary() ? 'primary' : 'ghost'}
+  onClick={() => setPrimary((v) => !v)}
+>
+  Toggle variant
+</CUButton>
+
+// toggle button (aria-pressed) / link button (href)
+<CUButton variant="ghost" pressed={on()} onClick={toggle}>★</CUButton>
+<CUButton href="/docs" variant="secondary">Docs</CUButton>`}</code>
+        </pre>
       </section>
 
       <section>
@@ -246,6 +280,25 @@ export default function Button() {
 type ButtonVariant = 'primary' | 'secondary' | 'ghost'
 type ButtonSize = 's' | 'm' | 'l'
 
+function CUButtonReactiveDemo() {
+  const [primary, setPrimary] = createSignal(true)
+  const [pressed, setPressed] = createSignal(false)
+
+  return (
+    <div class="docs-preview-grid">
+      <CUButton variant={primary() ? 'primary' : 'ghost'} onClick={() => setPrimary((v) => !v)}>
+        variant: {primary() ? 'primary' : 'ghost'} (click)
+      </CUButton>
+      <CUButton variant="ghost" pressed={pressed()} onClick={() => setPressed((v) => !v)}>
+        toggle: {pressed() ? 'ON' : 'OFF'}
+      </CUButton>
+      <CUButton href="/concepts/editor-mode" variant="secondary">
+        link button (a.creo-btn)
+      </CUButton>
+    </div>
+  )
+}
+
 function ButtonEditorDemo() {
   const [variant, setVariant] = createSignal<ButtonVariant>('primary')
   const [size, setSize] = createSignal<ButtonSize>('m')
@@ -275,15 +328,9 @@ function ButtonEditorDemo() {
 
   return (
     <div class="docs-playground-stage">
-      <button
-        type="button"
-        class="creo-btn"
-        data-variant={variant()}
-        data-size={size()}
-        disabled={disabled()}
-      >
+      <CUButton variant={variant()} size={size()} disabled={disabled()}>
         {label()}
-      </button>
+      </CUButton>
     </div>
   )
 }
