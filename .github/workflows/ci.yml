@@ -4,9 +4,9 @@ name: CI
 # (creo-memories の n/main 二段運用と parity)
 on:
   push:
-    branches: [n, main]
+    branches: [nightly, main]
   pull_request:
-    branches: [n, main]
+    branches: [nightly, main]
   workflow_dispatch: # CI 不具合時の debug 用に手動起動可
 
 jobs:

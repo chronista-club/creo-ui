@@ -137,18 +137,18 @@ bun run build        # 全 platform に反映
 
 `publish-web.yml` は `web-v*` tag push で npmjs.com へ `creoui` を publish (要 `NPM_TOKEN` secret)。root で `bun run build:web` を実行してから `packages/web/` で `npm publish` する 2 段構え（path が root 相対のため）。
 
-## ブランチ運用 (n / main 二段、2026-05-30 移行)
+## ブランチ運用 (nightly / main 二段、2026-06-16 に `n` → `nightly` rename)
 
-creo-memories / VP と parity の **「`n` = 開発 trunk (default) / `main` = release」** 二段運用。
+creo-memories / VP / fleetstage と parity の **「`nightly` = 開発 trunk (default) / `main` = release」** 二段運用。owner directive (2026-06-06) の trunk 名統一 (`n` は分かりづらい) を受け、2026-06-16 に旧 `n` を `nightly` へ rename。
 
 | branch | 役割 |
 |--------|------|
-| **`n`** | 開発 trunk = GitHub default。lane (`mako/*`) の PR は **base=`n`**。CI が gate |
-| **`main`** | release branch (protected: PR 必須 / 直 push・force・delete 禁止)。`n → main` の release PR で promote |
+| **`nightly`** | 開発 trunk = GitHub default。lane (`mako/*`) の PR は **base=`nightly`**。CI が gate (force・delete 禁止) |
+| **`main`** | release branch (protected: PR 必須 / 直 push・force・delete 禁止)。`nightly → main` の release PR で promote |
 
-- **開発フロー**: lane `mako/*` → PR (base=`n`) → squash merge → `n`
-- **release**: `n → main` の release PR でまとめて promote → `main` に `web-v*` / editor-host / rust tag を push → 各 publish workflow が npm publish
-- **CI** (`ci.yml`): push/PR を `[n, main]` で gate (build / rust / swift)
+- **開発フロー**: lane `mako/*` → PR (base=`nightly`) → squash merge → `nightly`
+- **release**: `nightly → main` の release PR でまとめて promote → `main` に `web-v*` / editor-host / rust tag を push → 各 publish workflow が npm publish
+- **CI** (`ci.yml`): push/PR を `[nightly, main]` で gate (build / rust / swift)
 - nightly cadence の自動化 (nightly publish 等) は scope 外 (将来 Phase 2、creo-memories `mem_1CbVbGGnFskVKMBghP1SDi` 参照)
 
 ## やってはいけない
