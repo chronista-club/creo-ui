@@ -23,8 +23,19 @@ export default defineConfig({
     dts({
       tsconfigPath: './tsconfig.build.json',
       entryRoot: 'src',
-      include: ['src/shells/**/*.ts', 'src/shells/**/*.tsx', 'src/global.d.ts'],
-      exclude: ['src/shells/**/*.test.ts', 'src/shells/**/*.test.tsx'],
+      include: [
+        'src/shells/**/*.ts',
+        'src/shells/**/*.tsx',
+        'src/controls/**/*.ts',
+        'src/controls/**/*.tsx',
+        'src/global.d.ts',
+      ],
+      exclude: [
+        'src/shells/**/*.test.ts',
+        'src/shells/**/*.test.tsx',
+        'src/controls/**/*.test.ts',
+        'src/controls/**/*.test.tsx',
+      ],
       rollupTypes: false,
     }),
   ],
@@ -33,6 +44,7 @@ export default defineConfig({
     lib: {
       entry: {
         'shells/index': resolve(__dirname, 'src/shells/index.ts'),
+        'controls/index': resolve(__dirname, 'src/controls/index.ts'),
       },
       formats: ['es'],
     },
