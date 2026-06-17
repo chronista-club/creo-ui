@@ -51,6 +51,19 @@ describe('cuButtonAttrs', () => {
     expect(cuButtonAttrs({})['aria-pressed']).toBeUndefined()
   })
 
+  test('loading=true → data-loading + aria-busy="true" (spinner 表示 + SR に busy 通知)', () => {
+    const a = cuButtonAttrs({ loading: true })
+    expect(a['data-loading']).toBe('true')
+    expect(a['aria-busy']).toBe('true')
+  })
+
+  test('loading 未指定/false → data-loading / aria-busy は出さない', () => {
+    expect(cuButtonAttrs({})['data-loading']).toBeUndefined()
+    expect(cuButtonAttrs({})['aria-busy']).toBeUndefined()
+    expect(cuButtonAttrs({ loading: false })['data-loading']).toBeUndefined()
+    expect(cuButtonAttrs({ loading: false })['aria-busy']).toBeUndefined()
+  })
+
   test('custom class は creo-btn の後ろに連結 (override ではなく追加)', () => {
     expect(cuButtonAttrs({ class: 'my-cta' }).class).toBe('creo-btn my-cta')
   })

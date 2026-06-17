@@ -1,6 +1,6 @@
 {
   "name": "creoui",
-  "version": "0.24.1",
+  "version": "0.24.2",
   "description": "creoui — Web package (design tokens + components.css + Solid shell/control primitives)",
   "type": "module",
   "main": "./dist/shells/index.js",

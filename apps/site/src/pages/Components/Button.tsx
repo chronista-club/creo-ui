@@ -136,9 +136,11 @@ export default function Button() {
         <p class="docs-page-lead">
           素の <code>&lt;button class="creo-btn"&gt;</code> を type-safe に wrap した{' '}
           <code>&lt;CUButton&gt;</code> primitive。 <code>variant</code> / <code>size</code> /{' '}
-          <code>pressed</code> を <strong>signal で動的に</strong>変えても class / data 属性が
-          追従する (eager な class 計算を持たず、 描画毎に props から導出するため)。{' '}
-          <code>href</code> を渡すと <code>&lt;a&gt;</code> の link button に polymorphic 切替。
+          <code>pressed</code> / <code>loading</code> を <strong>signal で動的に</strong>変えても
+          class / data 属性が追従する (eager な class 計算を持たず、 描画毎に props から導出)。{' '}
+          描画先は <code>as</code> &gt; <code>href</code> &gt; <code>&lt;button&gt;</code>{' '}
+          の優先で解決 (<code>as={'{A}'}</code> で solid-router の client-side routing link button
+          に)。
         </p>
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Reactive variant (signal 追従の実証)</div>
@@ -156,9 +158,13 @@ const [primary, setPrimary] = createSignal(true)
   Toggle variant
 </CUButton>
 
-// toggle button (aria-pressed) / link button (href)
+// toggle (aria-pressed) / loading (spinner + disabled + aria-busy)
 <CUButton variant="ghost" pressed={on()} onClick={toggle}>★</CUButton>
-<CUButton href="/docs" variant="secondary">Docs</CUButton>`}</code>
+<CUButton variant="primary" loading={saving()}>Save</CUButton>
+
+// link button: href = 素の <a> / as={A} = solid-router で client-side routing
+<CUButton href="/docs" variant="secondary">Docs</CUButton>
+<CUButton as={A} href="/sessions" variant="ghost">Sessions</CUButton>`}</code>
         </pre>
       </section>
 
@@ -301,6 +307,13 @@ type ButtonSize = 's' | 'm' | 'l'
 function CUButtonReactiveDemo() {
   const [primary, setPrimary] = createSignal(true)
   const [pressed, setPressed] = createSignal(false)
+  const [loading, setLoading] = createSignal(false)
+
+  // loading demo: click → 1.5s spinner → 復帰
+  const runLoading = () => {
+    setLoading(true)
+    setTimeout(() => setLoading(false), 1500)
+  }
 
   return (
     <div class="docs-preview-grid">
@@ -310,8 +323,11 @@ function CUButtonReactiveDemo() {
       <CUButton variant="ghost" pressed={pressed()} onClick={() => setPressed((v) => !v)}>
         toggle: {pressed() ? 'ON' : 'OFF'}
       </CUButton>
-      <CUButton href="/concepts/editor-mode" variant="secondary">
-        link button (a.creo-btn)
+      <CUButton variant="primary" loading={loading()} onClick={runLoading}>
+        {loading() ? 'Generating…' : 'loading (click)'}
+      </CUButton>
+      <CUButton as={A} href="/concepts/editor-mode" variant="secondary">
+        router link (as={'{A}'})
       </CUButton>
     </div>
   )

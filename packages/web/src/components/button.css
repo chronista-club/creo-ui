@@ -36,6 +36,12 @@
   border: 1px solid transparent;
   border-radius: var(--radius-s);
 
+  /* loading spinner の絶対配置基準 + spinner 色 (foreground)。
+     primary / danger は solid fill 上の inverse text 色がデフォルト、
+     secondary / outline / ghost は variant 側で --_btn-fg を text-primary に上書き。 */
+  position: relative;
+  --_btn-fg: var(--color-surface-bg-base);
+
   /* Default interaction */
   cursor: pointer;
   user-select: none;
@@ -74,6 +80,7 @@
   background-color: var(--color-surface-surface);
   border-color: var(--color-surface-border);
   color: var(--color-text-primary);
+  --_btn-fg: var(--color-text-primary);
 }
 .creo-btn[data-variant="secondary"]:hover:not(:disabled) {
   background-color: var(--color-surface-bg-subtle);
@@ -88,6 +95,7 @@
   background-color: transparent;
   border-color: transparent;
   color: var(--color-text-primary);
+  --_btn-fg: var(--color-text-primary);
 }
 .creo-btn[data-variant="ghost"]:hover:not(:disabled) {
   background-color: var(--color-surface-bg-subtle);
@@ -102,6 +110,7 @@
   background-color: transparent;
   border-color: var(--color-surface-border);
   color: var(--color-text-primary);
+  --_btn-fg: var(--color-text-primary);
 }
 .creo-btn[data-variant="outline"]:hover:not(:disabled) {
   background-color: var(--color-surface-bg-subtle);
@@ -154,11 +163,43 @@
 }
 
 /* ---------- State: disabled ---------- */
+/* :disabled は native <button>、 [aria-disabled] は polymorphic / link button (`<a>` 等) 用 */
 
-.creo-btn:disabled {
+.creo-btn:disabled,
+.creo-btn[aria-disabled="true"] {
   cursor: not-allowed;
   opacity: 0.5;
   pointer-events: none;
+}
+
+/* ---------- State: loading ---------- */
+/* label を隠して spinner (::after) を中央に被せる。spinner 色は variant の --_btn-fg。
+   loading 中は :disabled / aria-disabled も付くので opacity が下がるが、 spinner は
+   不透明に出したいので opacity を base に戻す。 */
+
+.creo-btn[data-loading="true"] {
+  color: transparent !important;
+  cursor: progress;
+  pointer-events: none;
+  opacity: 1;
+}
+.creo-btn[data-loading="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1.1em;
+  height: 1.1em;
+  border: 2px solid color-mix(in oklch, var(--_btn-fg) 30%, transparent);
+  border-top-color: var(--_btn-fg);
+  border-radius: var(--radius-full);
+  animation: creoSpinnerRotate 900ms linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-btn[data-loading="true"]::after {
+    animation-duration: 3000ms; /* 動きは残すが遅く (progress.css の spinner と同方針) */
+  }
 }
 
 /* ---------- State: toggle (aria-pressed) ---------- */

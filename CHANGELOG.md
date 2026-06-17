@@ -3,6 +3,19 @@
 本ファイルは creoui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## v0.24.2 (2026-06-18) — `CUButton` に `loading` + `as`(polymorphic) を追加
+
+creo-memories follow-up handoff (`mem_1Cc9EthpMESukrjb6phG1k`) への対応。creo-web の `@creo/ui` Button → CUButton **全面移行 (109 callsite)** に必要な残り 2 prop の parity。
+
+### 追加 (後方互換)
+
+- **`loading?: boolean`** — 処理中状態。`data-loading="true"` + `aria-busy="true"`、native `<button>` は `disabled` 強制 / polymorphic・link は `aria-disabled`。`button.css` が label を隠して spinner (`::after`、progress.css の `creoSpinnerRotate` 流用、新規依存なし) を中央に被せる。spinner 色は variant 毎の `--_btn-fg` (primary/danger=inverse、それ以外=text-primary)。
+- **`as?: ValidComponent`** — 描画 component を差し替える polymorphic prop。`as={A}` (solid-router) で **client-side routing** する link button に。描画先は `as` > `href` > `<button>` の優先で解決 (CUButton を `Show` 分岐から `Dynamic` ベースに作り替え)。
+
+`CUButtonOptions` に `loading`、`CUButtonAttrs` に `data-loading` / `aria-busy` を追加。既存 consumer 無改修。回帰テストに loading の attr マッピングを追加。
+
+> version は additive のため patch (0.24.2)。`0.25.0` は `Creo*` shell alias 撤去 (breaking) に予約済みのため踏まない。
+
 ## v0.24.1 (2026-06-18) — `CUButton` に `danger` / `outline` variant を追加
 
 creo-memories follow-up handoff (`mem_1Cc9Bqc2QKyqsU4uRjV54a`) への対応。creo-web が `@creo/ui` Button → CUButton へ**全面移行**するため、不足していた variant を補完。
