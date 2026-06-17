@@ -25,6 +25,12 @@ export interface CUButtonOptions {
    * - 未指定 → 属性自体を出さない (通常の非 toggle button)
    */
   pressed?: boolean
+  /**
+   * 処理中状態。`true` で spinner 表示 (`data-loading="true"`) + `aria-busy="true"`。
+   * component 側は native `<button>` を `disabled` 強制、polymorphic/link は `aria-disabled` で
+   * 操作を抑止する (button.css が label を隠して spinner を被せる)。
+   */
+  loading?: boolean
   /** consumer 追加 class。creo-btn の後ろに連結 (override せず追加) */
   class?: string
 }
@@ -34,6 +40,8 @@ export interface CUButtonAttrs {
   'data-variant': CUButtonVariant | undefined
   'data-size': CUButtonSize | undefined
   'aria-pressed': 'true' | 'false' | undefined
+  'data-loading': 'true' | undefined
+  'aria-busy': 'true' | undefined
 }
 
 export function cuButtonAttrs(opts: CUButtonOptions): CUButtonAttrs {
@@ -42,5 +50,7 @@ export function cuButtonAttrs(opts: CUButtonOptions): CUButtonAttrs {
     'data-variant': opts.variant,
     'data-size': opts.size,
     'aria-pressed': opts.pressed === undefined ? undefined : opts.pressed ? 'true' : 'false',
+    'data-loading': opts.loading ? 'true' : undefined,
+    'aria-busy': opts.loading ? 'true' : undefined,
   }
 }
