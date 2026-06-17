@@ -10,7 +10,7 @@
  * 解釈する。値を持つときだけ属性を出し、 未指定なら CSS の default (primary / m) に委ねる。
  */
 
-export type CUButtonVariant = 'primary' | 'secondary' | 'ghost'
+export type CUButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
 export type CUButtonSize = 's' | 'm' | 'l'
 
 export interface CUButtonOptions {
