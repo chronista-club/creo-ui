@@ -97,6 +97,38 @@
   transform: translateY(1px);
 }
 
+/* outline — 透明背景 + border の bordered variant (secondary の subtle fill 無し版) */
+.creo-btn[data-variant="outline"] {
+  background-color: transparent;
+  border-color: var(--color-surface-border);
+  color: var(--color-text-primary);
+}
+.creo-btn[data-variant="outline"]:hover:not(:disabled) {
+  background-color: var(--color-surface-bg-subtle);
+  border-color: var(--color-brand-primary);
+}
+.creo-btn[data-variant="outline"]:active:not(:disabled) {
+  background-color: var(--color-surface-bg-subtle);
+  border-color: var(--color-brand-primary);
+  transform: translateY(1px);
+}
+
+/* danger — destructive action 用 (削除等)。semantic error トークンで solid fill */
+.creo-btn[data-variant="danger"] {
+  background-color: var(--color-semantic-error);
+  border-color: var(--color-semantic-error);
+  color: var(--color-surface-bg-base);
+}
+.creo-btn[data-variant="danger"]:hover:not(:disabled) {
+  background-color: var(--color-semantic-error-hover);
+  border-color: var(--color-semantic-error-hover);
+}
+.creo-btn[data-variant="danger"]:active:not(:disabled) {
+  background-color: var(--color-semantic-error-active);
+  border-color: var(--color-semantic-error-active);
+  transform: translateY(1px);
+}
+
 /* ---------- Sizes ---------- */
 
 .creo-btn[data-size="s"] {
@@ -144,6 +176,16 @@
 .creo-btn[data-variant="ghost"][aria-pressed="true"] {
   background-color: var(--color-surface-bg-subtle);
   color: var(--color-brand-primary);
+}
+.creo-btn[data-variant="outline"][aria-pressed="true"] {
+  background-color: var(--color-surface-bg-subtle);
+  border-color: var(--color-brand-primary);
+  color: var(--color-brand-primary);
+}
+.creo-btn[data-variant="danger"][aria-pressed="true"] {
+  background-color: var(--color-semantic-error-active);
+  border-color: var(--color-semantic-error-active);
+  color: var(--color-surface-bg-base);
 }
 
 /* ---------- Focus ring ---------- */
