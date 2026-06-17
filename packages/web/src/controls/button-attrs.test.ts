@@ -25,6 +25,20 @@ describe('cuButtonAttrs', () => {
     expect(a['data-size']).toBe('s')
   })
 
+  test('destructive action 用の danger variant を受け付ける', () => {
+    expect(cuButtonAttrs({ variant: 'danger' })['data-variant']).toBe('danger')
+  })
+
+  test('bordered な outline variant を受け付ける (secondary とは別 style)', () => {
+    expect(cuButtonAttrs({ variant: 'outline' })['data-variant']).toBe('outline')
+  })
+
+  test('5 variant 全て (primary/secondary/outline/ghost/danger) が passthrough される', () => {
+    for (const v of ['primary', 'secondary', 'outline', 'ghost', 'danger'] as const) {
+      expect(cuButtonAttrs({ variant: v })['data-variant']).toBe(v)
+    }
+  })
+
   test('pressed=true → aria-pressed="true"', () => {
     expect(cuButtonAttrs({ pressed: true })['aria-pressed']).toBe('true')
   })

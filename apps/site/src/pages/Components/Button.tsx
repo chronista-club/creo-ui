@@ -14,9 +14,9 @@ import { createSignal } from 'solid-js'
 const PROPS = [
   {
     attr: 'data-variant',
-    values: 'primary / secondary / ghost',
+    values: 'primary / secondary / outline / ghost / danger',
     def: 'primary',
-    meaning: '視覚的強度',
+    meaning: '視覚的強度 (danger = destructive action)',
   },
   {
     attr: 'data-size',
@@ -94,6 +94,24 @@ export default function Button() {
             </button>
             <button type="button" class="creo-btn" data-variant="ghost" data-size="l">
               Ghost l
+            </button>
+            <button type="button" class="creo-btn" data-variant="outline" data-size="s">
+              Outline s
+            </button>
+            <button type="button" class="creo-btn" data-variant="outline" data-size="m">
+              Outline m
+            </button>
+            <button type="button" class="creo-btn" data-variant="outline" data-size="l">
+              Outline l
+            </button>
+            <button type="button" class="creo-btn" data-variant="danger" data-size="s">
+              Danger s
+            </button>
+            <button type="button" class="creo-btn" data-variant="danger" data-size="m">
+              Danger m
+            </button>
+            <button type="button" class="creo-btn" data-variant="danger" data-size="l">
+              Danger l
             </button>
           </div>
           <div class="docs-preview-row-label">States</div>
@@ -277,7 +295,7 @@ const [primary, setPrimary] = createSignal(true)
   )
 }
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost'
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'
 type ButtonSize = 's' | 'm' | 'l'
 
 function CUButtonReactiveDemo() {
@@ -307,7 +325,7 @@ function ButtonEditorDemo() {
 
   bind({
     target: signalTarget('btn.variant', variant, (v) => setVariant(v as ButtonVariant)),
-    control: select(['primary', 'secondary', 'ghost'] as const),
+    control: select(['primary', 'secondary', 'outline', 'ghost', 'danger'] as const),
     placement: { semantic: 'tool', group: 'button', label: 'Variant', order: 1 },
   })
   bind({

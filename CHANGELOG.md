@@ -3,6 +3,19 @@
 本ファイルは creoui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
 
+## v0.24.1 (2026-06-18) — `CUButton` に `danger` / `outline` variant を追加
+
+creo-memories follow-up handoff (`mem_1Cc9Bqc2QKyqsU4uRjV54a`) への対応。creo-web が `@creo/ui` Button → CUButton へ**全面移行**するため、不足していた variant を補完。
+
+### 追加 (後方互換)
+
+- **`danger`** — destructive action 用 (削除等)。`semantic.error` トークンで solid fill (`--color-semantic-error` / `-hover` / `-active`、 8 theme 全対応)。削除ボタンの移行 blocker を解消。
+- **`outline`** — 透明背景 + border の bordered variant (`secondary` の subtle fill 無し版)。owner decision で `secondary` への寄せ (mapping) ではなく**独立 variant として追加**。
+
+`CUButtonVariant` = `'primary' | 'secondary' | 'outline' | 'ghost' | 'danger'` (3 → 5)。`button.css` に各 variant の hover / active / aria-pressed(toggle) ルールを追加。既存 consumer は無改修。回帰テストも 5 variant passthrough を pin。
+
+> version は additive のため patch (0.24.1)。`0.25.0` は `Creo*` shell alias 撤去 (breaking) のマイルストーンに予約済みのため踏まない。
+
 ## v0.24.0 (2026-06-16) — `CUButton` interactive primitive を新設 (`creoui/controls`)
 
 interactive component primitive 用の新 export subpath **`creoui/controls`** を切り、第一号として **`CUButton`** を追加。既存の CSS-only component (`components/button.css` = `.creo-btn`) を type-safe に wrap した薄い SolidJS primitive。
