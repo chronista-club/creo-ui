@@ -1,6 +1,6 @@
-# Theme System — creoui Multi-Palette Matrix
+# Theme System — creo-ui Multi-Palette Matrix
 
-**Status**: Shipped in `creoui@0.1.0` (2026-04-22)
+**Status**: Shipped in `creo-ui@0.1.0` (2026-04-22)
 **Scope**: `tokens/color/themes/**/*.json`、`transforms/config.{web,swift,rust}.js`、`transforms/color-utils.js`
 **Related**: [editor-mode.md](./editor-mode.md)、creo-memories `mem_1CaHQrgWuQWSUSbZfV5uXm`
 
@@ -8,7 +8,7 @@
 
 ## 1. Overview
 
-creoui は **4 color family × light/dark = 8 theme** を同梱する。
+creo-ui は **4 color family × light/dark = 8 theme** を同梱する。
 
 ```mermaid
 flowchart TB
@@ -269,14 +269,14 @@ mixOklch(a, b, t)                  // OKLCH 空間で 2 色を補間 (hue は sh
 
 1. `creo-memories/packages/creoui/src/palette/presets/{new-id}.ts` に TS preset を追加
 2. `creo-memories/packages/creoui/src/palette/presets/index.ts` で export 追加
-3. creoui 側 `scripts/generate-themes.mjs` の `themes` 配列にエントリー追加
+3. creo-ui 側 `scripts/generate-themes.mjs` の `themes` 配列にエントリー追加
 4. `bun run gen:themes` → `tokens/color/themes/{new-id}.json` 生成
 5. `bun run build` で全 platform 反映
 6. web custom format は自動で `[data-theme="{new-id}"]` block を emit
 
-### Option 2: creoui 側で独自 theme を追加
+### Option 2: creo-ui 側で独自 theme を追加
 
-creo-memories 側を触らず、creoui 側だけで追加したい場合:
+creo-memories 側を触らず、creo-ui 側だけで追加したい場合:
 
 1. `tokens/color/themes/{new-id}.json` を手書き (path は `color.themes.{new-id}.brand.primary` 等、flat 構造で 0.0.x 互換)
 2. `bun run build` で反映
@@ -290,9 +290,9 @@ creo-memories 側を触らず、creoui 側だけで追加したい場合:
 | Phase | 内容 | Status |
 |-------|------|--------|
 | 1 | 8 theme matrix + OKLCH source + Mint Dark default | ✅ **0.1.0 (2026-04-22) 完了** |
-| 2a | `creoui` (SolidJS) に `EditorHost` runtime 実装 + ThemeEditor 正式版 | 未着手 |
-| 2b | Swift (`Creoui`) で multi-theme (`Color(dynamicProvider:)` + NSAppearance) | 未着手 |
-| 2c | Rust (`creoui` crate) で multi-theme 対応要否検討 (ratatui 等の theme 概念次第) | 未着手 |
+| 2a | `creo-ui` (SolidJS) に `EditorHost` runtime 実装 + ThemeEditor 正式版 | 未着手 |
+| 2b | Swift (`CreoUI`) で multi-theme (`Color(dynamicProvider:)` + NSAppearance) | 未着手 |
+| 2c | Rust (`creo-ui` crate) で multi-theme 対応要否検討 (ratatui 等の theme 概念次第) | 未着手 |
 | 3 | Figma sync (tokens.studio 連携) — GUI で OKLCH を編集してリポジトリに反映 | Planned |
 | 4 | **Theme authoring pipeline** — ユーザーが独自 theme を登録できる runtime API (Editor Mode 経由で mix / 新規作成) | Planned |
 
@@ -302,9 +302,9 @@ creo-memories 側を触らず、creoui 側だけで追加したい場合:
 
 - **Protocol spec**: [`editor-mode.md`](./editor-mode.md) (Editor Mode protocol D-1〜D-12)
 - **Token spec**: [`tokens-spec.md`](../tokens-spec.md) (DTCG 適用ルール)
-- **Live showcase**: [`../../apps/site/`](../../apps/site/) (creoui 公式 site = Vite + SolidJS、8 theme 切替 + Lab/Playground)
+- **Live showcase**: [`../../apps/site/`](../../apps/site/) (creo-ui 公式 site = Vite + SolidJS、8 theme 切替 + Lab/Playground)
 - **creo-memories 最終像**: `mem_1CaHQrgWuQWSUSbZfV5uXm` (2026-04-22 決定、設計経緯含む)
-- **Fleetstage Issue**: [chronista-club/creoui#1](https://github.com/chronista-club/creoui/issues/1) (0.1.0 で closed、移行手順 comment 付き)
+- **Fleetstage Issue**: [chronista-club/creo-ui#1](https://github.com/chronista-club/creo-ui/issues/1) (0.1.0 で closed、移行手順 comment 付き)
 
 ## 12. Status log
 

@@ -1,10 +1,10 @@
 # Lifecycle Spine — Editor Mode を nostos Bracket で読み替える
 
 **Status**: 設計ドキュメント（reframe）。実装変更は伴わない — 既存 [editor-mode.md](./editor-mode.md) の protocol を **別の語彙で記述し直した翻訳辞書**
-**Owners**: creoui（Editor Mode protocol の schema owner）
-**Scope**: creoui の Editor Mode protocol を `nostos` の `Bracket` / `Outcome` / `Driver` 抽象で読み替える。読み替えによって見えた構造的欠落・改善点を nostos ADR-0002 / 0003 への feedback として articulate する
+**Owners**: creo-ui（Editor Mode protocol の schema owner）
+**Scope**: creo-ui の Editor Mode protocol を `nostos` の `Bracket` / `Outcome` / `Driver` 抽象で読み替える。読み替えによって見えた構造的欠落・改善点を nostos ADR-0002 / 0003 への feedback として articulate する
 **derived_from**: creo-memories `mem_1Cb7aBbzK6xJ8A2Tn5Sane`（Creo Lifecycle Spine）+ club-nostos `docs/adr/0001-bracket-and-outcome.md`
-**関連 handoff**: creo-memories `mem_1Cb7aCKjHmWhusyejBf2Vt`（[INBOUND] creoui → nostos）— 本 doc 完成後にこの handoff memo が update される
+**関連 handoff**: creo-memories `mem_1Cb7aCKjHmWhusyejBf2Vt`（[INBOUND] creo-ui → nostos）— 本 doc 完成後にこの handoff memo が update される
 
 ---
 
@@ -12,26 +12,26 @@
 
 [editor-mode.md](./editor-mode.md) は Editor Mode protocol の **SSOT** である。D-1〜D-12 の設計決定、4 方向 semantic layout、`EditorHost` protocol、非侵襲性 D-6 はすべてそこで規定される。
 
-本ドキュメントは editor-mode.md を **書き換えない**。Editor Mode protocol を `nostos` の lifecycle 語彙（`Bracket` / `Outcome` / `Driver`）で**読み替え**、その読み替えが creoui 設計に対して持つ含意を記述する。
+本ドキュメントは editor-mode.md を **書き換えない**。Editor Mode protocol を `nostos` の lifecycle 語彙（`Bracket` / `Outcome` / `Driver`）で**読み替え**、その読み替えが creo-ui 設計に対して持つ含意を記述する。
 
 > **spine memo の主張**（`mem_1Cb7aBbzK6xJ8A2Tn5Sane`）:
 > nostos の Bracket + Outcome は新概念の発明ではなく、Creo ecosystem が運用で先取りしていた shape の「命名」である。
 > creo-memories の status `done` / `cancelled` / `reborn` は既に `Done` / `Fail` / `Reborn` の ADT であり、stage `序破急` は Bracket の Active 相進行である。
 >
-> 本 doc は spine memo の product 別表にある **1 行 — 「creoui Editor Mode = `Bracket<ContentSession>`」— を 1 本のドキュメントに展開したもの**である。
+> 本 doc は spine memo の product 別表にある **1 行 — 「creo-ui Editor Mode = `Bracket<ContentSession>`」— を 1 本のドキュメントに展開したもの**である。
 
 ### design-for ≠ depend-on（最重要の制約）
 
-nostos は ADR が `proposed` ステータス、実装 0 行の段階にある。本 doc は **nostos を設計規律として参照する（design-for）が、creoui を nostos crate に依存させない（depend-on しない）**。
+nostos は ADR が `proposed` ステータス、実装 0 行の段階にある。本 doc は **nostos を設計規律として参照する（design-for）が、creo-ui を nostos crate に依存させない（depend-on しない）**。
 
 | | design-for（本 doc が行うこと） | depend-on（本 doc が行わないこと） |
 |---|---|---|
 | 語彙 | `Bracket` / `Outcome` / `Driver` を**説明の語彙**として借りる | — |
 | コード | — | `Cargo.toml` / `package.json` に nostos を追加 |
 | 型 | 既存 `EditorHost` TS 型は**そのまま**、本 doc はそこへの投影を示すのみ | nostos が export する trait を import |
-| 検証 | 読み替えで構造的欠落が見えたら nostos ADR へ feedback（§9） | nostos の API が固まるまで creoui を待たせる |
+| 検証 | 読み替えで構造的欠落が見えたら nostos ADR へ feedback（§9） | nostos の API が固まるまで creo-ui を待たせる |
 
-editor-host は **SolidJS 一本**（EH-2）。本 doc は editor-host を他 framework 対応で抽象化する設計を**含まない**。Rust 風 pseudo-code は nostos ADR との語彙整合のための**記法**であり、creoui の実装言語の指定ではない。
+editor-host は **SolidJS 一本**（EH-2）。本 doc は editor-host を他 framework 対応で抽象化する設計を**含まない**。Rust 風 pseudo-code は nostos ADR との語彙整合のための**記法**であり、creo-ui の実装言語の指定ではない。
 
 ---
 
@@ -40,7 +40,7 @@ editor-host は **SolidJS 一本**（EH-2）。本 doc は editor-host を他 fr
 Editor Mode は、Content をラップする **bracket** である。
 
 ```text
-// nostos 語彙での pseudo-code（記法であって creoui の実装言語ではない）
+// nostos 語彙での pseudo-code（記法であって creo-ui の実装言語ではない）
 Bracket<ContentSession> {
     Input   = EditorEntry      // enter に渡る — どの Content を、どの Driver で包むか
     Active  = EditSession      // jo → ha → kyu の 3 相を持つ編集 session
@@ -111,9 +111,9 @@ D-7「Mode toggle は手動のみ・自動 ON なし」は、bracket 語彙で�
 
 ### `Active = EditSession` — 序破急の 3 相
 
-`Active` 相は単一状態ではなく、**序破急（jo-ha-kyū）の 3 相進行**を持つ。これは spine memo が creo-memories の stage 語彙（`jo` / `ha` / `kyu`）を Bracket の Active 相に対応づけたことの、creoui における具体化である。
+`Active` 相は単一状態ではなく、**序破急（jo-ha-kyū）の 3 相進行**を持つ。これは spine memo が creo-memories の stage 語彙（`jo` / `ha` / `kyu`）を Bracket の Active 相に対応づけたことの、creo-ui における具体化である。
 
-| 相 | creoui Editor Mode での意味 | editor-mode.md の対応 |
+| 相 | creo-ui Editor Mode での意味 | editor-mode.md の対応 |
 |---|---|---|
 | **序（jo）** | 対象選択 — 編集する Content 要素を選ぶ | `EditorHost.select()` / `SelectionInfo` |
 | **破（ha）** | field 編集 — 選択要素に bind された field 値を変更 | `EditorHost.setValue()` / D-9 reactive 反映 |
@@ -157,7 +157,7 @@ editor-mode.md §10 のシナリオでは、ユーザが「これで」と言っ
 
 当初案では undo（過去 Active への巻き戻し）を `Reborn` の第 2 用途に置いた。これは `EditContext` に「過去 Active を完全復元できる snapshot」を要求し、bracket と nostos `Outcome` ADT の双方を重くする。
 
-creoui は **「undo は出来ないこともある」を前提**に置き、undo を feasibility で 2 種に割る:
+creo-ui は **「undo は出来ないこともある」を前提**に置き、undo を feasibility で 2 種に割る:
 
 | undo の種類 | feasibility | 実装 |
 |---|---|---|
@@ -184,7 +184,7 @@ spine memo のマッピング表の通り、この 3 variant は creo-memories �
 | `Reborn(EditContext)` | `reborn` | 次の生へ・継続 |
 | `Fail(DiscardReason)` | `cancelled` | 終端・失敗 |
 
-ecosystem が既にこの語彙で動いている事実が、nostos ADR-0001 Open Question 1（`Done` / `Reborn` / `Fail` 命名を fix するか）への creoui からの回答 ── **fix 推奨**（§9）。
+ecosystem が既にこの語彙で動いている事実が、nostos ADR-0001 Open Question 1（`Done` / `Reborn` / `Fail` 命名を fix するか）への creo-ui からの回答 ── **fix 推奨**（§9）。
 
 ---
 
@@ -208,7 +208,7 @@ AgentDriver  : Driver   // window.creoEditor console REPL / claude-in-chrome →
 
 bracket 語彙で読み替えると、これは非対称である。Human も AI も**同じことをしている** ── `EditSession` の Active 相に編集 intent を発行している。違うのは intent の**発行源**だけ。ならば発行源を `Driver` という対等な抽象にし、`HumanDriver` / `AgentDriver` を**差し替え可能な実装**にするのが筋。
 
-これは nostos founding が掲げる **lifecycle ↔ loop dual** の creoui における具体化:
+これは nostos founding が掲げる **lifecycle ↔ loop dual** の creo-ui における具体化:
 
 ```mermaid
 flowchart LR
@@ -279,7 +279,7 @@ flowchart TB
 | **RIGHT** | `tool`（時系列未来） | **transform node** — 変換・生成の出力 port。`ha`（field 編集）の主舞台 |
 | **BOTTOM** | `utility`（D-2） | **driver · loop** — `Driver` の所在。AI chat（AgentDriver の窓口）、loop 制御 |
 
-この読み替えは nostos ADR-0001 Axis D（graph mapping）への creoui からの早期 signal になる ── 「Editor Mode の 4 方向 layout は既に bracket node の graph topology を physical に体現している」。ただし ADR-0001 Axis D の暫定傾きは「founding 段階では深追い不要・別 crate 化が筋」であり、本 doc も**読み替えの提示に留め**、graph editor との接合面の設計には踏み込まない。
+この読み替えは nostos ADR-0001 Axis D（graph mapping）への creo-ui からの早期 signal になる ── 「Editor Mode の 4 方向 layout は既に bracket node の graph topology を physical に体現している」。ただし ADR-0001 Axis D の暫定傾きは「founding 段階では深追い不要・別 crate 化が筋」であり、本 doc も**読み替えの提示に留め**、graph editor との接合面の設計には踏み込まない。
 
 ---
 
@@ -314,7 +314,7 @@ bracket が Content を**所有しない**ことから、editor-mode.md §7「�
 
 ---
 
-## 7. 全体像 ── creoui lifecycle spine
+## 7. 全体像 ── creo-ui lifecycle spine
 
 ```mermaid
 flowchart TB
@@ -337,7 +337,7 @@ flowchart TB
     FailEnd --> Closed
 ```
 
-`Reborn(EditContext)` が `Closed` 経由で次の `enter` へ戻る環 ── これが spine memo の図「`Done`/`Fail` で終端、`Reborn` で次周回」の creoui における具現。AgentDriver の編集 loop は、この環を収束まで回し続けることに等しい。
+`Reborn(EditContext)` が `Closed` 経由で次の `enter` へ戻る環 ── これが spine memo の図「`Done`/`Fail` で終端、`Reborn` で次周回」の creo-ui における具現。AgentDriver の編集 loop は、この環を収束まで回し続けることに等しい。
 
 ---
 
@@ -354,41 +354,41 @@ flowchart TB
 | D-8 | Mode OFF 時 invisible / field 値保持 | `Closed` 状態。保持される値は `Reborn` で持ち越された `EditContext`、または `Done` 済み Patch |
 | D-9 | Reactive 反映 | `ha`（編集）→ subject の再描画 → `kyu`（検証）への遷移を駆動 |
 | D-10 | AI agent access | `AgentDriver`（§4）── `HumanDriver` と対等な first-class Driver へ昇格 |
-| D-11 | protocol owner = creoui | creoui が `Bracket<ContentSession>` の特殊化を schema owner として規定 |
+| D-11 | protocol owner = creo-ui | creo-ui が `Bracket<ContentSession>` の特殊化を schema owner として規定 |
 | D-12 | Phase 段階 | spine への接続は Phase をまたぐ設計規律。実装着手は nostos ADR-0002+ を待たない（design-for） |
 
 ---
 
 ## 9. nostos ADR へのフィードバック
 
-本 doc の読み替え作業で見えた構造的欠落・改善点を、creoui を「nostos の最初の本物の consumer」として articulate する。これは handoff memo（`mem_1Cb7aCKjHmWhusyejBf2Vt`）の暫定 feedback 3 点を、本 doc の §3 / §4 / §8 の議論で裏付けたもの。本 doc 完成後、handoff memo はこの章を典拠に update される。
+本 doc の読み替え作業で見えた構造的欠落・改善点を、creo-ui を「nostos の最初の本物の consumer」として articulate する。これは handoff memo（`mem_1Cb7aCKjHmWhusyejBf2Vt`）の暫定 feedback 3 点を、本 doc の §3 / §4 / §8 の議論で裏付けたもの。本 doc 完成後、handoff memo はこの章を典拠に update される。
 
 ### F-1 → ADR-0002（Outcome ADT）: `Reborn(I)` の `I` は軽くてよい — undo を背負わせない
 
 ADR-0001 Axis B「3 variant で過不足ないか」への現場回答。
 
-当初 creoui は `Reborn(I)` の `I` に「過去 Active を完全復元できるリッチな snapshot」を要求しようとした。これを**取り下げる**（§3「undo は `Reborn` の責務ではない」）。
+当初 creo-ui は `Reborn(I)` の `I` に「過去 Active を完全復元できるリッチな snapshot」を要求しようとした。これを**取り下げる**（§3「undo は `Reborn` の責務ではない」）。
 
-creoui は「undo は出来ないこともある」を前提に置いた。session 内 undo は Active 相の再ループ（`kyu → ha`）で処理し、`exit` をまたぐ undo は best-effort（補償 Patch を生む新 cycle、時に不可能）とする。したがって `Reborn(I)` の `I` は **「次の `enter` の `Input` になる現役 session 状態」** で足り、過去復元の重い契約は要らない。
+creo-ui は「undo は出来ないこともある」を前提に置いた。session 内 undo は Active 相の再ループ（`kyu → ha`）で処理し、`exit` をまたぐ undo は best-effort（補償 Patch を生む新 cycle、時に不可能）とする。したがって `Reborn(I)` の `I` は **「次の `enter` の `Input` になる現役 session 状態」** で足り、過去復元の重い契約は要らない。
 
-- **提案**: ADR-0002 で `Outcome` の `I` を**狭く保ってよい** ── 「`I` は `enter` に再投入可能な次サイクルの入力」。ADR-0001 Axis B 暫定傾き（3 variant で start、拡張は extension trait）と整合する。「`I` に過去復元能力を持たせよ」という creoui からの重い要求は**ない**。
-- 3 variant 集合自体は creoui の用途では**過不足なし**（`Pending` / `Suspended` は不要 ── Editor Mode に「中断中」状態はなく、`Closed` で `EditContext` を保持すれば足りる）。
+- **提案**: ADR-0002 で `Outcome` の `I` を**狭く保ってよい** ── 「`I` は `enter` に再投入可能な次サイクルの入力」。ADR-0001 Axis B 暫定傾き（3 variant で start、拡張は extension trait）と整合する。「`I` に過去復元能力を持たせよ」という creo-ui からの重い要求は**ない**。
+- 3 variant 集合自体は creo-ui の用途では**過不足なし**（`Pending` / `Suspended` は不要 ── Editor Mode に「中断中」状態はなく、`Closed` で `EditContext` を保持すれば足りる）。
 - undo を ADT で表現したくなっても、それは `Outcome` の variant ではなく **consumer 側の「補償 Patch を生む新 bracket cycle」** として表現するのが筋 ── nostos core は undo を knowing しなくてよい。
 
 ### F-2 → ADR-0003（dual view）: option γ 支持 + `Driver` を first-class trait に
 
 ADR-0001 Axis C「lifecycle ↔ loop dual の表現」への貢献。
 
-- creoui は **option γ（`Outcome::Reborn` 自己再帰で loop 表現）を支持**する。§4 の通り AgentDriver の編集 loop は `Reborn` の環の反復そのもので、別 trait（option α）も iter adapter（option β）も要らなかった。
-- ただし γ だけでは足りない。**`Driver` を first-class の trait にする**ことを要請する。creoui Editor Mode の主目的は HumanDriver ⇄ AgentDriver の差し替えであり（§4）、lifecycle/loop の違いは「Driver 実装の違い」に還元される。Driver が抽象化されていないと、human 編集と AI 編集が別 code path に育つ。
+- creo-ui は **option γ（`Outcome::Reborn` 自己再帰で loop 表現）を支持**する。§4 の通り AgentDriver の編集 loop は `Reborn` の環の反復そのもので、別 trait（option α）も iter adapter（option β）も要らなかった。
+- ただし γ だけでは足りない。**`Driver` を first-class の trait にする**ことを要請する。creo-ui Editor Mode の主目的は HumanDriver ⇄ AgentDriver の差し替えであり（§4）、lifecycle/loop の違いは「Driver 実装の違い」に還元される。Driver が抽象化されていないと、human 編集と AI 編集が別 code path に育つ。
 - **提案**: ADR-0003 で dual view を「`Bracket` + `Driver` trait の組」として定義する。lifecycle = 単発 Driver、loop = 反復 Driver、substrate は同一 `Bracket`。
 
 ### F-3 → ADR-0001 Open Question 1: `Done` / `Reborn` / `Fail` 命名は fix 推奨
 
 OQ1「命名を fix するか、別案（`Returned` / `Retried` / `Crashed` 等）を検討するか」への回答。
 
-- **fix 推奨**。tie-breaker は ecosystem 一貫性 ── creo-memories が既に `done` / `reborn` / `cancelled` を **production の status 語彙**として運用中（spine memo マッピング表、本 doc §3）。creoui の `EditOutcome` もこの 3 語に揃えた。別案を採ると ecosystem 内で 2 つの語彙が並立する。
-- 唯一の不整合は `Fail` ⇄ creo-memories `cancelled`。creo-memories は `cancelled`（中止）と表現するが nostos は `Fail`(E)。creoui は `Fail(DiscardReason)` を採用し、`DiscardReason` に `user-cancelled` を含めることで両立させた ── nostos 側は variant 名 `Fail` のままで良いが、「`Fail` は error だけでなく user 起因の cancel も含む」と ADR で明記すると ecosystem 整合が締まる。
+- **fix 推奨**。tie-breaker は ecosystem 一貫性 ── creo-memories が既に `done` / `reborn` / `cancelled` を **production の status 語彙**として運用中（spine memo マッピング表、本 doc §3）。creo-ui の `EditOutcome` もこの 3 語に揃えた。別案を採ると ecosystem 内で 2 つの語彙が並立する。
+- 唯一の不整合は `Fail` ⇄ creo-memories `cancelled`。creo-memories は `cancelled`（中止）と表現するが nostos は `Fail`(E)。creo-ui は `Fail(DiscardReason)` を採用し、`DiscardReason` に `user-cancelled` を含めることで両立させた ── nostos 側は variant 名 `Fail` のままで良いが、「`Fail` は error だけでなく user 起因の cancel も含む」と ADR で明記すると ecosystem 整合が締まる。
 
 ---
 
@@ -407,7 +407,7 @@ OQ1「命名を fix するか、別案（`Returned` / `Retried` / `Crashed` 等�
 - [editor-mode.md](./editor-mode.md) — Editor Mode protocol の SSOT（D-1〜D-12 / 4 方向 layout / `EditorHost` / 非侵襲性）
 - [theme-system.md](./theme-system.md) — 8 theme 設計（本 doc とは独立）
 - creo-memories `mem_1Cb7aBbzK6xJ8A2Tn5Sane` — Creo Lifecycle Spine（本 doc の親概念）
-- creo-memories `mem_1Cb7aCKjHmWhusyejBf2Vt` — [INBOUND] creoui → nostos handoff（§9 が反映先）
+- creo-memories `mem_1Cb7aCKjHmWhusyejBf2Vt` — [INBOUND] creo-ui → nostos handoff（§9 が反映先）
 - creo-memories `mem_1Cb35YiGHG1f7UdXyyt16L` — nostos Founding Decision
 - club-nostos `docs/adr/0001-bracket-and-outcome.md` — Bracket trait + Outcome ADT の最初の議事録（5 axes）
 

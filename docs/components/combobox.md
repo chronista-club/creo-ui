@@ -1,6 +1,6 @@
 # Combobox (native `<input> + <datalist>`)
 
-> creoui MVP component. input + 候補 list の組合せ。native `<input list="...">` + `<datalist>` で JS 最小。
+> creo-ui MVP component. input + 候補 list の組合せ。native `<input list="...">` + `<datalist>` で JS 最小。
 
 ## Purpose
 

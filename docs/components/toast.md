@@ -1,6 +1,6 @@
 # Toast
 
-> creoui MVP component. 画面端に 一時的に 表示される notification / status message。
+> creo-ui MVP component. 画面端に 一時的に 表示される notification / status message。
 
 ## Purpose
 

@@ -1,6 +1,6 @@
 # Tokens Spec
 
-creoui で使う W3C Design Tokens (DTCG) の仕様。
+creo-ui で使う W3C Design Tokens (DTCG) の仕様。
 
 ## Reference
 
@@ -46,7 +46,7 @@ tokens/
 |----------|-----------|--------|
 | Web CSS | `packages/web/dist/tokens.css` | `css/variables` |
 | Web JS | `packages/web/dist/tokens.js` + `.d.ts` | `javascript/es6` + `typescript/es6-declarations` |
-| Swift | `packages/swift/Sources/Creoui/Generated/Tokens.swift` | custom `swift/creoui` |
-| Rust | `packages/rust/src/generated/tokens.rs` | custom `rust/creoui` |
+| Swift | `packages/swift/Sources/CreoUI/Generated/Tokens.swift` | custom `swift/creo-ui` |
+| Rust | `packages/rust/src/generated/tokens.rs` | custom `rust/creo-ui` |
 
 Swift / Rust は標準 transform (iOS 向け UIKit / Rust 未提供) を使わず、`transforms/config.{swift,rust}.js` で hand-roll している。詳細は [CLAUDE.md](../CLAUDE.md) の「custom format のフォーマット仕様」参照。

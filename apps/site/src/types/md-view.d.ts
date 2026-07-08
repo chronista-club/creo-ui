@@ -1,5 +1,5 @@
 /**
- * Ambient declaration stub for `creoui-md-view` (sibling-repo `creo-views` 経由
+ * Ambient declaration stub for `creo-ui-md-view` (sibling-repo `creo-views` 経由
  * の WASM mdast parser に依存)。
  *
  * 設計判断: `apps/site` の typecheck は **editor-host API drift catch** が
@@ -12,7 +12,7 @@
  * catch される (root tsconfig は packages/* を include)、 ここの stub と
  * divergence しても drift detector としての主目的は維持される。
  */
-declare module 'creoui-md-view' {
+declare module 'creo-ui-md-view' {
   import type { JSX } from 'solid-js'
 
   export const CreoMarkdown: (props: {
@@ -27,4 +27,4 @@ declare module 'creoui-md-view' {
   }) => JSX.Element
 }
 
-declare module 'creoui-md-view/styles.css'
+declare module 'creo-ui-md-view/styles.css'

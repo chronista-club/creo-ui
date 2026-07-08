@@ -1,5 +1,5 @@
 /**
- * @chronista-club/creoui-editor-host — protocol types
+ * @chronista-club/creo-ui-editor-host — protocol types
  *
  * `docs/design/editor-mode.md` (D-1〜D-12) で規定された Editor Mode protocol を
  * TypeScript の型として具現化する。これらの型は framework 非依存 — SolidJS 固有の
@@ -86,7 +86,7 @@ export interface EditorHostConfig {
   /**
    * persistence: 'localStorage' の field 保存先 key prefix。
    * 複数 app が同じ origin で動くときに衝突を避ける。
-   * default: "@chronista-club/creoui-editor-host"
+   * default: "@chronista-club/creo-ui-editor-host"
    */
   localStorageNamespace?: string
 
@@ -122,7 +122,7 @@ export interface EditorHostConfig {
 
   /**
    * BroadcastChannel で複数 tab 間の values を同期する。
-   * default: false。enabled 時は channel 名は `@chronista-club/creoui-editor-host:{namespace}`。
+   * default: false。enabled 時は channel 名は `@chronista-club/creo-ui-editor-host:{namespace}`。
    */
   crossTab?: boolean
 
@@ -151,7 +151,7 @@ export interface EditorHostMcpApi {
 // ---------- Host interface ----------
 
 /**
- * creoui Editor Mode host の public interface。
+ * creo-ui Editor Mode host の public interface。
  * SolidJS の `Accessor<T>` を公開するので SolidJS に特化するが、内部 core state
  * 自体は framework 非依存 — 将来 React adapter を作る際も同じ semantics を維持する。
  */

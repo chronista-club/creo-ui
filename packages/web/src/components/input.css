@@ -1,10 +1,10 @@
 /**
- * creoui — Input component
+ * creo-ui — Input component
  *
  * `.creo-input` base + data-variant (bordered / filled) + data-size (s/m/lg) + data-state (default/error)。
  *
  * Spec: docs/components/input.md
- * Token: creoui/tokens.css (必須)
+ * Token: creo-ui/tokens.css (必須)
  *
  * Usage:
  *   <input class="creo-input" type="text">

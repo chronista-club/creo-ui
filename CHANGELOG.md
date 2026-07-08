@@ -1,7 +1,21 @@
 # Changelog
 
-本ファイルは creoui の version 別変更履歴を記録する。
+本ファイルは creo-ui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
+
+> **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
+
+## Unreleased — `creoui` → `creo-ui` へ全面 rename
+
+「繋げた `creoui` は可読性が低い」という owner 判断により、identifier を **`creo-ui`** に統一 (2026-05 に `creo-ui` → `creoui` へ寄せた [v0.6 系の決定](#) を巻き戻す形)。言語制約に合わせゾーン別に変換:
+
+- **npm 公開名**: `creoui` → `creo-ui`、`creoui-frame` / `creoui-vision` / `creoui-md-view` / `creoui-icons-web` も同様、`@chronista-club/creoui-editor-host` → `@chronista-club/creo-ui-editor-host`。**consumer に breaking** (import path 変更 + republish 要)。
+- **Swift**: module / target / type を `Creoui` → **`CreoUI`** (ハイフンは Swift identifier 不可)。`CreouiTokens` → `CreoUITokens`、`Sources/Creoui/` → `Sources/CreoUI/`。
+- **Rust**: crate `creoui` → **`creo-ui`** (package 名)、コード identifier は `creo_ui` (`use creo_ui::tokens`)。
+- **CSS class**: `.creoui-icon` → `.creo-ui-icon` (consumer markup の breaking)。
+- **transforms / docs / CI**: `creoui` 表記を全て `creo-ui` に統一。generated (Tokens.swift / tokens.rs) は再生成。
+- 外部 `creo-memories/packages/creoui` 参照は別 project の実体のため**変更しない**。
+- **owner 手動 TODO**: GitHub repo `chronista-club/creoui` → `creo-ui` へ rename、各 package の npm republish (旧名は `npm deprecate` で誘導)。
 
 ## v0.24.2 (2026-06-18) — `CUButton` に `loading` + `as`(polymorphic) を追加
 

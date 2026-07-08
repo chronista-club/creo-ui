@@ -296,12 +296,12 @@ section + section {
 }
 
 /* Swift */
-.padding(CreouiTokens.spacingM)         // Component 内側
-.padding(.top, CreouiTokens.marginL)    // Section 間
+.padding(CreoUITokens.spacingM)         // Component 内側
+.padding(.top, CreoUITokens.marginL)    // Section 間
 
 /* Rust (token const) */
-creoui::SPACING_M   // → 18.0 (f32 px、 ratatui consumer は cell 換算で適用)
-creoui::MARGIN_L    // → 40.0`}</code>
+creo-ui::SPACING_M   // → 18.0 (f32 px、 ratatui consumer は cell 換算で適用)
+creo-ui::MARGIN_L    // → 40.0`}</code>
         </pre>
       </section>
     </>

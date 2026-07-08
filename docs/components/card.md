@@ -1,6 +1,6 @@
 # Card
 
-> creoui MVP component. 関連したコンテンツを視覚的に束ねる container。
+> creo-ui MVP component. 関連したコンテンツを視覚的に束ねる container。
 
 ## Purpose
 

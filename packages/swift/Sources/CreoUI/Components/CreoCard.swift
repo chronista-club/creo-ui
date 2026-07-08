@@ -1,4 +1,4 @@
-// Creoui — Card component (SwiftUI)
+// CreoUI — Card component (SwiftUI)
 //
 // CSS `.creo-card` の SwiftUI 版。variant (default/elevated/outlined) と
 // padding (sm/md/lg) を type-safe に表現。
@@ -43,10 +43,10 @@ public struct CreoCard<Content: View>: View {
             .padding(paddingValue)
             .background(backgroundColor)
             .overlay(
-                RoundedRectangle(cornerRadius: CreouiTokens.radiusM)
+                RoundedRectangle(cornerRadius: CreoUITokens.radiusM)
                     .stroke(borderColor, lineWidth: borderWidth)
             )
-            .clipShape(RoundedRectangle(cornerRadius: CreouiTokens.radiusM))
+            .clipShape(RoundedRectangle(cornerRadius: CreoUITokens.radiusM))
             .shadow(color: shadowColor, radius: shadowRadius, x: 0, y: shadowY)
     }
 
@@ -54,9 +54,9 @@ public struct CreoCard<Content: View>: View {
 
     private var paddingValue: CGFloat {
         switch padding {
-        case .sm: return CreouiTokens.spacingS
-        case .md: return CreouiTokens.spacingM
-        case .lg: return CreouiTokens.spacingL
+        case .sm: return CreoUITokens.spacingS
+        case .md: return CreoUITokens.spacingM
+        case .lg: return CreoUITokens.spacingL
         }
     }
 

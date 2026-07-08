@@ -21,7 +21,7 @@ export interface CUButtonProps
 }
 
 /**
- * CUButton — creoui の Button primitive (controls layer)
+ * CUButton — creo-ui の Button primitive (controls layer)
  *
  * `button.css` (.creo-btn + data-variant / data-size) を type-safe に wrap した薄い
  * SolidJS component。 描画先は `as` > `href` > `<button>` の優先で解決:
