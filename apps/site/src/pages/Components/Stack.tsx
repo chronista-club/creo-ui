@@ -96,7 +96,7 @@ export default function Stack() {
             style={{ 'max-width': '320px' }}
           >
             <span class="creo-badge" data-variant="brand">
-              creoui
+              creo-ui
             </span>
             <span class="creo-badge" data-variant="success">
               shipped

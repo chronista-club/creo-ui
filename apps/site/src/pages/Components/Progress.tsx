@@ -6,7 +6,7 @@ import {
   number,
   select,
   signalTarget,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 
@@ -205,7 +205,7 @@ export default function Progress() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.progress-editor',
+              localStorageNamespace: 'creo-ui-docs.progress-editor',
             }}
           >
             <ProgressEditorDemo />

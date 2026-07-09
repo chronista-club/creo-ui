@@ -1,4 +1,4 @@
-name: Publish creoui (Rust) to crates.io
+name: Publish creo-ui (Rust) to crates.io
 
 on:
   push:

@@ -1,8 +1,8 @@
 /*
- * creoui documentation site — layout & docs-specific styles.
+ * creo-ui documentation site — layout & docs-specific styles.
  *
  * Token (--color-* / --spacing-* / --typography-* / --radius-* / --shadow-*) は
- * creoui/tokens.css 経由で provided。 docs.css は **layout 構造** の責任のみ。
+ * creo-ui/tokens.css 経由で provided。 docs.css は **layout 構造** の責任のみ。
  */
 
 :root {
@@ -2157,7 +2157,7 @@ kbd {
 }
 
 .docs-component-preview--md .creo-md {
-  /* live <CreoMarkdown> styles are imported via creoui-md-view/styles.css already */
+  /* live <CreoMarkdown> styles are imported via creo-ui-md-view/styles.css already */
 }
 
 /* ============================================================

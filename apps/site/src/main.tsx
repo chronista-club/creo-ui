@@ -1,7 +1,7 @@
 import { render } from 'solid-js/web'
-import 'creoui/tokens.css'
-import 'creoui/components.css'
-import 'creoui-md-view/styles.css'
+import 'creo-ui/tokens.css'
+import 'creo-ui/components.css'
+import 'creo-ui-md-view/styles.css'
 import './styles/docs.css'
 import App from './App'
 

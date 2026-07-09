@@ -1,11 +1,11 @@
 /**
- * creoui — Header component
+ * creo-ui — Header component
  *
  * `.creo-header` base + data-variant (app / marketing) + data-sticky + data-elevation。
  * Slot classes: `.creo-header-logo` / `.creo-header-nav` / `.creo-header-actions`。
  *
  * Spec: docs/components/header.md
- * Token: creoui/tokens.css (必須)
+ * Token: creo-ui/tokens.css (必須)
  *
  * Usage:
  *   <header class="creo-header" data-variant="app" data-sticky="true">

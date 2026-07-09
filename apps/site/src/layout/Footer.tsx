@@ -3,11 +3,11 @@ export default function Footer() {
     <footer class="docs-footer">
       <div class="docs-footer-links">
         <a
-          href="https://github.com/chronista-club/creoui"
+          href="https://github.com/chronista-club/creo-ui"
           target="_blank"
           rel="noopener noreferrer"
         >
-          creoui
+          creo-ui
         </a>
         <a
           href="https://github.com/chronista-club/creo-views"
@@ -16,7 +16,7 @@ export default function Footer() {
         >
           creo-views
         </a>
-        <a href="https://www.npmjs.com/package/creoui" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.npmjs.com/package/creo-ui" target="_blank" rel="noopener noreferrer">
           npm
         </a>
       </div>

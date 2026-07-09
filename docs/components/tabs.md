@@ -1,6 +1,6 @@
 # Tabs
 
-> creoui MVP component. 関連したビュー群を同一 context で切り替える navigation pattern。
+> creo-ui MVP component. 関連したビュー群を同一 context で切り替える navigation pattern。
 
 ## Purpose
 
@@ -97,7 +97,7 @@ active 判定は **`aria-selected="true"` が単一 SSOT** (JS で付け替え�
 - `aria-controls` で panel を link
 - keyboard: Tab で tablist に入り、Arrow Left/Right で tab 移動、Home/End で 先頭/末尾 (consumer 実装、CSS 層では不扱い)
 - active panel 以外は `hidden` 属性 (CSS `display: none` と両立)
-- Arrow key navigation は **consumer の JS 責務** (creoui はあくまで CSS + a11y attribute pattern を提供)
+- Arrow key navigation は **consumer の JS 責務** (creo-ui はあくまで CSS + a11y attribute pattern を提供)
 
 ## Do / Don't
 

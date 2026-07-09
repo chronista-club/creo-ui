@@ -5,9 +5,9 @@ import { For } from 'solid-js'
 // Operational definition — 4 axis で articulate
 // ============================================================
 // Concentric corner は「親子の角を視覚的に同心円で揃える」 慣習。 Apple HIG
-// (iOS 16+ / visionOS 26) で formal articulate、 creoui でも原則 04 (Principles)
+// (iOS 16+ / visionOS 26) で formal articulate、 creo-ui でも原則 04 (Principles)
 // として SSOT 化。 子 radius = 親 radius - 親 padding の formula で機械的に
-// 揃える、 helper は @chronista-club/creoui-editor-host の concentric() / concentricTokens()。
+// 揃える、 helper は @chronista-club/creo-ui-editor-host の concentric() / concentricTokens()。
 
 type AxisRow = {
   readonly useCase: string
@@ -60,7 +60,7 @@ const RUBRIC: readonly RubricItem[] = [
       'iOS 16+ で SwiftUI cornerRadius は default で concentric を internal 計算',
       'visionOS 26 (2025-06 announcement) で container-concentric が formal spec 化',
       'real-time lensing / specular highlights を含む Liquid Glass の foundation',
-      'creoui は Web (CSS calc) / Apple (SwiftUI default) / Rust (手計算 + concentric helper) で articulate',
+      'creo-ui は Web (CSS calc) / Apple (SwiftUI default) / Rust (手計算 + concentric helper) で articulate',
     ],
   },
   {
@@ -73,7 +73,7 @@ const RUBRIC: readonly RubricItem[] = [
     ],
   },
   {
-    category: 'Helper API (@chronista-club/creoui-editor-host)',
+    category: 'Helper API (@chronista-club/creo-ui-editor-host)',
     criteria: [
       '`concentric(parentRadius, padding)` — string (CSS length) を受けて calc() string を返す',
       '`concentricTokens(radiusKey, paddingKey, opts?)` — token key の shortcut',
@@ -145,9 +145,9 @@ export default function ConcentricCorner() {
         <p class="docs-page-lead">
           Apple HIG (iOS 16+ / visionOS 26) で formal articulate された{' '}
           <strong>「親子同心円 radius」</strong> 慣習。 子 radius = 親 radius - 親 padding の
-          formula で機械的に揃える。 creoui では <A href="/foundations/principles">Principles</A>{' '}
+          formula で機械的に揃える。 creo-ui では <A href="/foundations/principles">Principles</A>{' '}
           原則 04 (Concentric corners) として SSOT 化、{' '}
-          <code>@chronista-club/creoui-editor-host</code> の <code>concentric()</code> /{' '}
+          <code>@chronista-club/creo-ui-editor-host</code> の <code>concentric()</code> /{' '}
           <code>concentricTokens()</code> helper が CSS calc を articulate する。
         </p>
       </header>
@@ -329,8 +329,8 @@ export default function ConcentricCorner() {
   border-radius: calc(var(--radius-xl) - var(--spacing-l));
 }
 
-/* TS helper (@chronista-club/creoui-editor-host) */
-import { concentric, concentricTokens } from '@chronista-club/creoui-editor-host'
+/* TS helper (@chronista-club/creo-ui-editor-host) */
+import { concentric, concentricTokens } from '@chronista-club/creo-ui-editor-host'
 
 // String 引数版
 concentric('var(--radius-xl)', 'var(--spacing-l)')
@@ -344,11 +344,11 @@ concentricTokens('xl', 'l')
 concentricTokens('xl', 'l', { radiusPrefix: '--my-radius-', paddingPrefix: '--my-pad-' })
 
 /* Apple SwiftUI — default で concentric */
-.cornerRadius(CreouiTokens.radiusXl)  // 子が同 modifier で nested の場合 default 計算
+.cornerRadius(CreoUITokens.radiusXl)  // 子が同 modifier で nested の場合 default 計算
 
 /* Rust (手計算) */
-let parent_radius = creoui::RADIUS_XL;
-let parent_padding = creoui::SPACING_L;
+let parent_radius = creo-ui::RADIUS_XL;
+let parent_padding = creo-ui::SPACING_L;
 let child_radius = parent_radius - parent_padding;  // 4.0`}</code>
         </pre>
       </section>

@@ -1,11 +1,11 @@
 /**
- * creoui — Divider (visual / semantic separator)
+ * creo-ui — Divider (visual / semantic separator)
  *
  * 区切り線 — section 間の視覚的境界。 native <hr> + class で a11y 自動。
  * orientation (horizontal / vertical)、 thickness (thin / thick)、 spacing 5-step。
  *
  * Spec: docs/components/divider.md
- * Token: creoui/tokens.css (必須)
+ * Token: creo-ui/tokens.css (必須)
  */
 
 .creo-divider {

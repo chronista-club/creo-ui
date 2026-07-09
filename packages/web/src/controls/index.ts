@@ -1,5 +1,5 @@
 /**
- * creoui/controls — interactive component primitives
+ * creo-ui/controls — interactive component primitives
  *
  * `shells/` (Layered Surface の layout grammar) とは別系統の、 ユーザー操作を
  * 起動する atomic control primitive 群。 各 component は対応する CSS-only component

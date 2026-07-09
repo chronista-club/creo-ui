@@ -5,7 +5,7 @@ import {
   number,
   select,
   signalTarget,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { For, createSignal } from 'solid-js'
 
@@ -286,7 +286,7 @@ export default function Pagination() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.pagination-editor',
+              localStorageNamespace: 'creo-ui-docs.pagination-editor',
             }}
           >
             <PaginationEditorDemo />

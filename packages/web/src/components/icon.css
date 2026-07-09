@@ -1,12 +1,12 @@
 /**
- * creoui — Iconography primitive
+ * creo-ui — Iconography primitive
  *
  * Spec: docs/components/icon.md (今後)
- * Token: creoui/tokens.css (必須)
+ * Token: creo-ui/tokens.css (必須)
  *
  * Usage:
- *   <span class="creoui-icon" data-size="m"></span>  <!-- Nerd Font glyph -->
- *   <i class="creoui-icon" data-size="l">★</i>      <!-- Unicode emoji -->
+ *   <span class="creo-ui-icon" data-size="m"></span>  <!-- Nerd Font glyph -->
+ *   <i class="creo-ui-icon" data-size="l">★</i>      <!-- Unicode emoji -->
  *
  * Aesthetic:
  *   typography.family.icon (Symbols Nerd Font + OS native emoji fallback) を
@@ -14,16 +14,16 @@
  *   color は currentColor (consumer が container text-color から継承)、
  *   icon-specific color が必要な場合は inline style で。
  *
- *   Iconify icon (creoui-icons-web) との 差別化:
- *   - .creoui-icon = Nerd Font glyph (font-based、 limit 10k icons、 single color)
- *   - <Icon> from creoui-icons-web = Iconify SVG (multi-color、 dynamic、 flexible)
+ *   Iconify icon (creo-ui-icons-web) との 差別化:
+ *   - .creo-ui-icon = Nerd Font glyph (font-based、 limit 10k icons、 single color)
+ *   - <Icon> from creo-ui-icons-web = Iconify SVG (multi-color、 dynamic、 flexible)
  *
  *   Use case による選択:
- *   - inline / dense / mono color → .creoui-icon (CSS-only、 軽量)
+ *   - inline / dense / mono color → .creo-ui-icon (CSS-only、 軽量)
  *   - hero / multi-color / specific brand icon → Iconify (multi-color、 SVG)
  */
 
-.creoui-icon {
+.creo-ui-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -40,54 +40,54 @@
 
 /* ---------- Sizes (typography.icon scale を bind) ---------- */
 
-.creoui-icon[data-size="xs"] {
+.creo-ui-icon[data-size="xs"] {
   font-size: var(--typography-icon-xs); /* 1rem (16px) — inline mark */
 }
 
-.creoui-icon[data-size="s"],
-.creoui-icon:not([data-size]) {
+.creo-ui-icon[data-size="s"],
+.creo-ui-icon:not([data-size]) {
   font-size: var(--typography-icon-s); /* 1.5rem (24px) — button leading */
 }
 
-.creoui-icon[data-size="m"] {
+.creo-ui-icon[data-size="m"] {
   font-size: var(--typography-icon-m); /* 2.5rem (40px) — list item */
 }
 
-.creoui-icon[data-size="l"] {
+.creo-ui-icon[data-size="l"] {
   font-size: var(--typography-icon-l); /* 4rem (64px) — empty-state default */
 }
 
-.creoui-icon[data-size="xl"] {
+.creo-ui-icon[data-size="xl"] {
   font-size: var(--typography-icon-xl); /* 6rem (96px) — hero / onboarding */
 }
 
 /* ---------- Semantic variants (color override) ---------- */
 
-.creoui-icon[data-variant="primary"] {
+.creo-ui-icon[data-variant="primary"] {
   color: var(--color-brand-primary);
 }
 
-.creoui-icon[data-variant="secondary"] {
+.creo-ui-icon[data-variant="secondary"] {
   color: var(--color-brand-secondary);
 }
 
-.creoui-icon[data-variant="success"] {
+.creo-ui-icon[data-variant="success"] {
   color: var(--color-semantic-success);
 }
 
-.creoui-icon[data-variant="warning"] {
+.creo-ui-icon[data-variant="warning"] {
   color: var(--color-semantic-warning);
 }
 
-.creoui-icon[data-variant="error"] {
+.creo-ui-icon[data-variant="error"] {
   color: var(--color-semantic-error);
 }
 
-.creoui-icon[data-variant="info"] {
+.creo-ui-icon[data-variant="info"] {
   color: var(--color-semantic-info);
 }
 
-.creoui-icon[data-variant="muted"] {
+.creo-ui-icon[data-variant="muted"] {
   color: var(--color-text-tertiary);
   opacity: 0.7;
 }

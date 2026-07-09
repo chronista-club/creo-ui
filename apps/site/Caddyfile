@@ -1,4 +1,4 @@
-# creoui 公式 site — demo stage 用 Caddy 設定
+# creo-ui 公式 site — demo stage 用 Caddy 設定
 # SolidJS Router は history mode のため、未知 path は index.html にフォールバックさせる
 # (これが無いと /components/button 等を直接 reload した時に 404 になる)。
 :80 {

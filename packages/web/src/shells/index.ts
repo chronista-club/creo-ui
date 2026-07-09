@@ -1,5 +1,5 @@
 /**
- * creoui/shells — Layered Surface page grammar primitives
+ * creo-ui/shells — Layered Surface page grammar primitives
  *
  * Phase 1 (CREO-160) で creo-web 内に直書きされた layout pattern を
  * 抽出した Solid component primitive 群。 vp-app / chronista-hub /
@@ -13,7 +13,7 @@
  * (fleetstage handoff mem_1CbCE1rdYJ4ySg87DF5hwa が起点)。
  *
  * v0.23.0 命名規約 (= owner decision、 ecosystem vocabulary 統一):
- *  - primitive component prefix = `CU*` (= creoui-shells、 ergonomics + import 1 行 で
+ *  - primitive component prefix = `CU*` (= creo-ui-shells、 ergonomics + import 1 行 で
  *    primitive vs project-local の即判別を成立させる)
  *  - 旧 `Creo*` 名は 0.23.x / 0.24.x で **alias re-export** で keep、 0.25.0 で撤去
  *  - brand "Creo Memories" / "Creo ID" 等は touch せず keep (= component prefix と

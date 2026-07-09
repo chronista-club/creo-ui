@@ -1,6 +1,6 @@
-# creoui
+# creo-ui
 
-creoui の Web 向け Design Token + Component 配布パッケージ。
+creo-ui の Web 向け Design Token + Component 配布パッケージ。
 
 Creo ecosystem (creo-memories / vantage-point / fleetstage 他) の Web app に、 共通の **色 / 余白 / typography / radius / shadow** を **CSS custom properties** + **JavaScript 定数** + **28 個の class-based component CSS** として提供。
 
@@ -9,18 +9,18 @@ Creo ecosystem (creo-memories / vantage-point / fleetstage 他) の Web app に�
 ## Install
 
 ```bash
-bun add creoui
+bun add creo-ui
 # or
-npm install creoui
+npm install creo-ui
 # or
-pnpm add creoui
+pnpm add creo-ui
 ```
 
 ## Quick start (3 行)
 
 ```ts
-import 'creoui/tokens.css'      // CSS variable + 8 theme + reduced-motion guard
-import 'creoui/components.css'  // 28 component (button / input / dialog / drawer 等)
+import 'creo-ui/tokens.css'      // CSS variable + 8 theme + reduced-motion guard
+import 'creo-ui/components.css'  // 28 component (button / input / dialog / drawer 等)
 
 document.documentElement.dataset.theme = 'mint-dark'  // optional、 default は mint-dark
 ```
@@ -29,7 +29,7 @@ document.documentElement.dataset.theme = 'mint-dark'  // optional、 default は
 
 ## Token catalog — 5 tier convention (v0.17.0 token / v0.18.0 attribute、 完全統一)
 
-すべての dimension scale token + component attribute は **`xs / s / m / l / xl` の 5 tier** に統一。 `sm/md/lg` Tailwind 流命名は **完全廃止** (廃止 history は [`docs/migration/v0.14-to-v0.18.md`](https://github.com/chronista-club/creoui/blob/main/docs/migration/v0.14-to-v0.18.md))。
+すべての dimension scale token + component attribute は **`xs / s / m / l / xl` の 5 tier** に統一。 `sm/md/lg` Tailwind 流命名は **完全廃止** (廃止 history は [`docs/migration/v0.14-to-v0.18.md`](https://github.com/chronista-club/creo-ui/blob/main/docs/migration/v0.14-to-v0.18.md))。
 
 ### Dimension scale (5 tier)
 
@@ -62,7 +62,7 @@ document.documentElement.dataset.theme = 'mint-dark'  // optional、 default は
 | `color.text.*` | `primary / secondary / tertiary / brand / link` |
 | `color.themes.*` | 8 theme palettes (`mint-light` / `mint-dark` / `sora-*` / `contrast-*` / `oldschool-*`) |
 
-theme 切替は `[data-theme="<id>"]` attribute で。 詳細は [`docs/design/theme-system.md`](https://github.com/chronista-club/creoui/blob/main/docs/design/theme-system.md)。
+theme 切替は `[data-theme="<id>"]` attribute で。 詳細は [`docs/design/theme-system.md`](https://github.com/chronista-club/creo-ui/blob/main/docs/design/theme-system.md)。
 
 ### Typography family (v0.14+ mode-based)
 
@@ -109,7 +109,7 @@ theme 切替は `[data-theme="<id>"]` attribute で。 詳細は [`docs/design/t
 ### JS 定数として参照
 
 ```ts
-import { ColorBrandPrimary, SpacingM, RadiusS } from 'creoui/tokens.js'
+import { ColorBrandPrimary, SpacingM, RadiusS } from 'creo-ui/tokens.js'
 
 // Build time に値を埋め込みたい場合
 console.log(ColorBrandPrimary)  // 'oklch(...)'
@@ -141,7 +141,7 @@ camelCase identifier (`SpacingM` 等) も 5 tier convention に揃う。 完全�
 </div>
 ```
 
-28 component の完全 catalog は [docs site](https://creoui.in) (WIP) または [`docs/components/`](https://github.com/chronista-club/creoui/tree/main/docs/components) を参照。
+28 component の完全 catalog は [docs site](https://creo-ui.in) (WIP) または [`docs/components/`](https://github.com/chronista-club/creo-ui/tree/main/docs/components) を参照。
 
 > **note**: v0.18 で `data-size` / `data-padding` / `data-elevation` attribute も 5 tier 統一 (`s/m/l`)。 token と attribute の **convention drift は完全解消**。
 
@@ -155,13 +155,13 @@ camelCase identifier (`SpacingM` 等) も 5 tier convention に揃う。 完全�
 
 | Platform | Package |
 |---|---|
-| Apple (iOS 17+ / macOS 14+ / watchOS 10+ / tvOS 17+) | SPM: `https://github.com/chronista-club/creoui` (target `Creoui`) |
-| Rust | crates.io: `creoui` (Phase 2 で publish 予定、 現状 git/path 参照) |
+| Apple (iOS 17+ / macOS 14+ / watchOS 10+ / tvOS 17+) | SPM: `https://github.com/chronista-club/creo-ui` (target `CreoUI`) |
+| Rust | crates.io: `creo-ui` (Phase 2 で publish 予定、 現状 git/path 参照) |
 
 ## Migration
 
-過去 release からの upgrade は [`docs/migration/v0.14-to-v0.18.md`](https://github.com/chronista-club/creoui/blob/main/docs/migration/v0.14-to-v0.18.md) を参照。 v0.17 以降は **5 tier convention 安定保証** (sm/md/lg 由来の rename はこれ以上発生しない設計)。
+過去 release からの upgrade は [`docs/migration/v0.14-to-v0.18.md`](https://github.com/chronista-club/creo-ui/blob/main/docs/migration/v0.14-to-v0.18.md) を参照。 v0.17 以降は **5 tier convention 安定保証** (sm/md/lg 由来の rename はこれ以上発生しない設計)。
 
 ## License
 
-[Apache-2.0](https://github.com/chronista-club/creoui/blob/main/LICENSE)
+[Apache-2.0](https://github.com/chronista-club/creo-ui/blob/main/LICENSE)

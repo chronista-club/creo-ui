@@ -247,10 +247,10 @@ export default function Color() {
   color: var(--color-text-primary);
 }
 
-/* Swift (CreouiTokens) */
+/* Swift (CreoUITokens) */
 Color.colorBrandPrimary
 
-/* Rust (creoui::tokens) */
+/* Rust (creo-ui::tokens) */
 tokens::COLOR_BRAND_PRIMARY  // → Rgb { r, g, b }`}</code>
         </pre>
       </section>

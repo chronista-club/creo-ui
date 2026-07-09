@@ -1,8 +1,8 @@
 /**
- * creoui-frame motion engine — public API
+ * creo-ui-frame motion engine — public API
  *
  * Web Animations API (`Element.animate()`) を直叩きする narrow self-built engine。
- * Motion One archived (2024) を契機に creoui core dependency として own する判断
+ * Motion One archived (2024) を契機に creo-ui core dependency として own する判断
  * (詳細: docs/design/stack-adr.md)。
  */
 

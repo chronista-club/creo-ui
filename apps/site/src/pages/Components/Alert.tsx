@@ -5,7 +5,7 @@ import {
   select,
   signalTarget,
   string,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 
@@ -172,7 +172,7 @@ export default function Alert() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.alert-editor',
+              localStorageNamespace: 'creo-ui-docs.alert-editor',
             }}
           >
             <AlertEditorDemo />

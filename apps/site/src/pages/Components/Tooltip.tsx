@@ -5,7 +5,7 @@ import {
   select,
   signalTarget,
   string,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 
@@ -163,7 +163,7 @@ export default function Tooltip() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.tooltip-editor',
+              localStorageNamespace: 'creo-ui-docs.tooltip-editor',
             }}
           >
             <TooltipEditorDemo />

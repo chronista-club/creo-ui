@@ -6,7 +6,7 @@ import {
   select,
   signalTarget,
   string,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 
@@ -166,7 +166,7 @@ export default function Card() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.card-editor',
+              localStorageNamespace: 'creo-ui-docs.card-editor',
             }}
           >
             <CardEditorDemo />
@@ -198,7 +198,7 @@ export default function Card() {
         <p class="docs-page-helper">
           詳細 spec:{' '}
           <a
-            href="https://github.com/chronista-club/creoui/blob/main/docs/components/card.md"
+            href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/card.md"
             target="_blank"
             rel="noopener noreferrer"
           >

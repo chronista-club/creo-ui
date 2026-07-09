@@ -1,6 +1,6 @@
 # Skeleton loader
 
-> creoui MVP component. data fetch 中の **placeholder** (shape だけ出して文字は伏せる loading)。
+> creo-ui MVP component. data fetch 中の **placeholder** (shape だけ出して文字は伏せる loading)。
 
 ## Purpose
 

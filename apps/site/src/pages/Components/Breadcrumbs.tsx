@@ -4,7 +4,7 @@ import {
   bind,
   select,
   signalTarget,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 
@@ -204,7 +204,7 @@ export default function Breadcrumbs() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.breadcrumbs-editor',
+              localStorageNamespace: 'creo-ui-docs.breadcrumbs-editor',
             }}
           >
             <BreadcrumbsEditorDemo />

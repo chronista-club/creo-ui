@@ -1,5 +1,5 @@
 /**
- * Color utilities for creoui build tooling.
+ * Color utilities for creo-ui build tooling.
  *
  * OKLCH / sRGB / hex 間の変換と WCAG 計算ヘルパーをまとめる。pure JS、
  * external dep なし。transforms/config.{swift,rust}.js の custom format と

@@ -1,4 +1,4 @@
-// Creoui — Progress bar + Spinner (SwiftUI)
+// CreoUI — Progress bar + Spinner (SwiftUI)
 //
 // Web `.creo-progress` / `.creo-spinner` の SwiftUI 版。VP fetch / compute 中の
 // busy / progress 表示。
@@ -44,12 +44,12 @@ public struct CreoProgress: View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
                 // Track
-                RoundedRectangle(cornerRadius: CreouiTokens.radiusFull)
+                RoundedRectangle(cornerRadius: CreoUITokens.radiusFull)
                     .fill(Color.colorSurfaceBgSubtle)
 
                 // Fill
                 if let value {
-                    RoundedRectangle(cornerRadius: CreouiTokens.radiusFull)
+                    RoundedRectangle(cornerRadius: CreoUITokens.radiusFull)
                         .fill(fillColor)
                         .frame(width: geo.size.width * value)
                         .animation(.easeInOut(duration: 0.24), value: value)
