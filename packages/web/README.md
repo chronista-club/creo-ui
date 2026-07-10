@@ -19,8 +19,8 @@ pnpm add creo-ui
 ## Quick start (3 行)
 
 ```ts
-import 'creo-ui/tokens.css'      // CSS variable + 8 theme + reduced-motion guard
-import 'creo-ui/components.css'  // 28 component (button / input / dialog / drawer 等)
+import '@chronista-club/creo-ui/tokens.css'      // CSS variable + 8 theme + reduced-motion guard
+import '@chronista-club/creo-ui/components.css'  // 28 component (button / input / dialog / drawer 等)
 
 document.documentElement.dataset.theme = 'mint-dark'  // optional、 default は mint-dark
 ```
@@ -109,7 +109,7 @@ theme 切替は `[data-theme="<id>"]` attribute で。 詳細は [`docs/design/t
 ### JS 定数として参照
 
 ```ts
-import { ColorBrandPrimary, SpacingM, RadiusS } from 'creo-ui/tokens.js'
+import { ColorBrandPrimary, SpacingM, RadiusS } from '@chronista-club/creo-ui/tokens.js'
 
 // Build time に値を埋め込みたい場合
 console.log(ColorBrandPrimary)  // 'oklch(...)'

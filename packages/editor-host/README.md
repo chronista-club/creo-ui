@@ -55,7 +55,7 @@ Peer: `solid-js ^1.9.0`。`creo-ui/tokens.css` を app で import しておく�
 
 ```tsx
 import { createSignal } from 'solid-js'
-import 'creo-ui/tokens.css'
+import '@chronista-club/creo-ui/tokens.css'
 import {
   bind,
   cssVarNumberTarget,

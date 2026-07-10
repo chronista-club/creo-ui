@@ -7,8 +7,8 @@ import {
   signalTarget,
   string,
 } from '@chronista-club/creo-ui-editor-host'
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
-import { CUButton } from 'creo-ui/controls'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -147,7 +147,7 @@ export default function Button() {
           <CUButtonReactiveDemo />
         </div>
         <pre class="docs-code">
-          <code>{`import { CUButton } from 'creo-ui/controls'
+          <code>{`import { CUButton } from '@chronista-club/creo-ui/controls'
 
 // variant を signal で切替 → 即座に追従 (再描画で固まらない)
 const [primary, setPrimary] = createSignal(true)

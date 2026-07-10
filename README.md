@@ -42,11 +42,11 @@ bun add creo-ui
 ```
 
 ```ts
-import 'creo-ui/tokens.css'
+import '@chronista-club/creo-ui/tokens.css'
 // .my-button { background: var(--color-brand-primary); padding: var(--spacing-md); }
 
 // または JS 定数として
-import { ColorBrandPrimary, SpacingMd } from 'creo-ui/tokens.js'
+import { ColorBrandPrimary, SpacingMd } from '@chronista-club/creo-ui/tokens.js'
 ```
 
 詳細は [`packages/web/README.md`](./packages/web/README.md)。

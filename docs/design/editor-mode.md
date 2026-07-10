@@ -217,7 +217,7 @@ creo-ui が標準で宣言する fields。どの app でも自動で存在:
 
 ```tsx
 // creo-memories 側で
-import { useEditor } from 'creo-ui'
+import { useEditor } from '@chronista-club/creo-ui'
 
 function MemoryItemView() {
   const { registerFields } = useEditor()

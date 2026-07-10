@@ -7,8 +7,8 @@
  *
  * 使い方:
  * ```js
- * import 'creo-ui/tokens.css'       // 1. SSOT token
- * import 'creo-ui/token-shim.css'   // 2. transitional aliases
+ * import '@chronista-club/creo-ui/tokens.css'       // 1. SSOT token
+ * import '@chronista-club/creo-ui/token-shim.css'   // 2. transitional aliases
  * // 3. 既存 CSS が徐々に新 token へ置換、shim は最後に削除
  * ```
  *

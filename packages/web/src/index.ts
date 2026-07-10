@@ -8,10 +8,10 @@
  * Consumer は以下のいずれかの方法で使う:
  *
  *   1. CSS custom properties を読み込む:
- *        import 'creo-ui/tokens.css'
+ *        import '@chronista-club/creo-ui/tokens.css'
  *
  *   2. JS 値として token を参照する:
- *        import * as tokens from 'creo-ui/tokens.js'
+ *        import * as tokens from '@chronista-club/creo-ui/tokens.js'
  *        // 例: tokens.ColorBrandPrimary === '#73e7aa'
  *
  * 将来 Phase 2 では Web Components / framework helper も追加する予定。

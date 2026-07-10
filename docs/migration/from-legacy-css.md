@@ -26,9 +26,9 @@ bun add creo-ui@^0.3.0
 
 ```ts
 // apps/<your-app>/src/main.ts or entry
-import 'creo-ui/tokens.css'       // 1. SSOT token (必須、先頭)
-import 'creo-ui/token-shim.css'   // 2. transitional alias (Phase A/B 間)
-import 'creo-ui/components.css'   // 3. (optional) Button/Card/Input/Header
+import '@chronista-club/creo-ui/tokens.css'       // 1. SSOT token (必須、先頭)
+import '@chronista-club/creo-ui/token-shim.css'   // 2. transitional alias (Phase A/B 間)
+import '@chronista-club/creo-ui/components.css'   // 3. (optional) Button/Card/Input/Header
 import './styles/app.css'              // 4. app 固有 CSS (既存、unchanged)
 ```
 
@@ -109,9 +109,9 @@ PR 6: console/     (console REPL, editor-host chrome)
 ### 1. token-shim.css の import を削除
 
 ```ts
-import 'creo-ui/tokens.css'
-// import 'creo-ui/token-shim.css'   ← 削除
-import 'creo-ui/components.css'
+import '@chronista-club/creo-ui/tokens.css'
+// import '@chronista-club/creo-ui/token-shim.css'   ← 削除
+import '@chronista-club/creo-ui/components.css'
 import './styles/app.css'
 ```
 

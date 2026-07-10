@@ -41,8 +41,8 @@ bun add creo-ui-icons-web`}</code>
         <h2 class="docs-section-title">CSS の取り込み</h2>
         <pre class="docs-code">
           <code>{`// app entry (例: main.tsx)
-import 'creo-ui/tokens.css'        // 8 theme + 全 token (--color-*, --spacing-*, ...)
-import 'creo-ui/components.css'    // 27 component の CSS class (.creo-btn, .creo-card, ...)
+import '@chronista-club/creo-ui/tokens.css'        // 8 theme + 全 token (--color-*, --spacing-*, ...)
+import '@chronista-club/creo-ui/components.css'    // 27 component の CSS class (.creo-btn, .creo-card, ...)
 
 // (任意)
 import 'creo-ui-md-view/styles.css'`}</code>
