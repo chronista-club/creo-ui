@@ -1,6 +1,6 @@
 {
   "name": "creo-ui",
-  "version": "0.24.2",
+  "version": "0.24.3",
   "description": "creo-ui — Web package (design tokens + components.css + Solid shell/control primitives)",
   "type": "module",
   "main": "./dist/shells/index.js",
