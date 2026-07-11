@@ -5,6 +5,35 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## Unreleased — Deep Luminance (見た目全面改修) + root font 一本化
+
+「理論的には正しいが並べるとかっこよくない」という owner 課題への回答。VP performer 3 lane 並列編成 (conductor 統括) で 4 PR を nightly に集約 (2026-07-11〜12)。
+
+### Deep Luminance — depth/light の視覚言語 (#70 / #69 / #71)
+
+Linear / Vercel 級の dark 洗練を基調に、**dark theme は「影」ではなく「面の明度 ladder + border の光 + 抑制された brand glow」で立体感を作る**。light theme は per-theme shadow tint による従来型 shadow が主役。
+
+- **`_elevation.css` 新設** (視覚言語の SSOT): elevation ladder 0-3 (flat / resting / raised / overlay) の rubric、border-light (面上端の 1px 光)、brand glow 2 チャンネル (button=`filter: drop-shadow` で focus ring policy と非干渉 / 面=box-shadow)、`--fill-brand` (chroma×1.3 + l×0.95) + `--on-fill-brand` (明度で黒白自動選択)、`--text-brand-readable` (brand×text-primary 50/50 mix)
+- **全 recipe は既存 theme 変数から color-mix / relative color syntax で導出** — theme SSOT (generated JSON) 不変のまま 8 theme に自動追従
+- core controls (#70: button / card / input / form-controls / form-field / segmented / tabs) → 残り全 component (#71: overlay=elevation3、menu=2、resting=1、nav/selection の focal fill 化)
+- **a11y 是正**: 旧実装は solid fill の文字色に `--color-surface-bg-base` を固定 → mint-light の primary が **1.46:1** の重大 fail だった。auto on-color で全 8 theme min 4.82:1 (全出荷 recipe を color-utils.js で実測検証)。既知の残 1 件: contrast-light の danger 4.39:1 (AA-large、token 側調整が将来候補)
+- **site showcase 刷新** (#69): /components を実物 live specimen card 15 個に (素の `.creo-*` 標本 = CSS 改修に自動追従)、Home hero に live surface、sidebar / header の視覚階層
+
+### root font 一本化 (#72) — **consumer に breaking**
+
+font 指定を **`--typography-family-sans` = `'Gen Interface JP', 'UDEV Gothic 35NF', sans-serif` の単一 root stack に集約**。mode 別 family 切替 (app / read / editor / terminal) と用途別 variant (mono 系 / display / icon) の機構を全廃 — **family token 13 個を削除**。
+
+- UDEV Gothic 35NF が等幅数字 + Nerd icon glyph (~10k) を root stack 内で供給 (専用 icon family 不要)
+- UA stylesheet が monospace を強制する `pre` / `code` / `kbd` / `samp` と font 非継承の form control のみ `var(--typography-family-sans)` を明示 (新規 font 名は増えない)
+- **migration**: `--typography-family-{mono,app,display,icon,…}` の参照が残っても `var()` invalid → root font へ自然 degrade (壊れない)。次回 upgrade 時に `-sans` へ置換を推奨 (VP の `family-app` 等)
+- Swift / Rust generated も再生成済み (`typographyFamily*` / `TYPOGRAPHY_FAMILY_*` の削除 = API surface の breaking)
+
+### dx
+
+- `CREO_SITE_HTTP=1` で apps/site dev server を http fallback 起動 (browser automation / screenshot QA 用。default は従来どおり https)
+
+> **version 未 stamp**: 次回 web release は breaking (font token 削除) を含むため minor 以上。ただし `0.25.0` は `Creo*` shell alias 撤去に予約済み (v0.24.2 の note 参照) — 同梱するか `0.26.0` へ進めるかは release PR 時に判断。
+
 ## Unreleased — `creoui` → `creo-ui` へ全面 rename
 
 「繋げた `creoui` は可読性が低い」という owner 判断により、identifier を **`creo-ui`** に統一 (2026-05 に `creo-ui` → `creoui` へ寄せた [v0.6 系の決定](#) を巻き戻す形)。言語制約に合わせゾーン別に変換:
