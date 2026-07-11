@@ -17,7 +17,10 @@
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
-  box-shadow: var(--shadow-l);
+  /* elevation 2 (raised tier)。 rubric 上 dropdown / menu は raised = card:hover と
+     同段で、 dialog / drawer / popover (overlay 3) より一段軽い浮きに置く
+     (transparent backdrop で content を dim しない dropdown の性格に合わせる)。 */
+  box-shadow: var(--elevation-2);
   color: var(--color-text-primary);
   font-family: inherit;
   font-size: var(--typography-size-m);
@@ -77,6 +80,29 @@
 .creo-menu-item[data-variant="destructive"]:hover:not(:disabled),
 .creo-menu-item[data-variant="destructive"]:focus-visible {
   background-color: color-mix(in oklch, var(--color-semantic-error) 12%, transparent);
+}
+
+/* ---------- Active / current (選択中 item) ---------- */
+
+/* nav-like dropdown で「現在選択中」を示す。 solid fill は menu の静かな面を
+   壊すので、 brand-subtle の面 + readable brand text で灯す (全 8 theme で
+   text-brand-readable が WCAG 準拠、 --color-brand-primary 直挿しは light theme
+   で contrast が崩れる)。 aria-current (nav) と aria-selected (listbox) の両綴り。 */
+.creo-menu-item[aria-current="true"],
+.creo-menu-item[aria-current="page"],
+.creo-menu-item[aria-selected="true"] {
+  background-color: var(--color-brand-primary-subtle);
+  color: var(--text-brand-readable);
+  font-weight: var(--typography-weight-medium);
+}
+.creo-menu-item[aria-current="true"]:hover:not(:disabled),
+.creo-menu-item[aria-current="page"]:hover:not(:disabled),
+.creo-menu-item[aria-selected="true"]:hover:not(:disabled) {
+  background-color: color-mix(
+    in oklch,
+    var(--color-brand-primary-subtle) 82%,
+    var(--color-text-primary)
+  );
 }
 
 /* ---------- Separator ---------- */
