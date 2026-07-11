@@ -15,7 +15,8 @@
  * v0.23.0 命名規約 (= owner decision、 ecosystem vocabulary 統一):
  *  - primitive component prefix = `CU*` (= creo-ui-shells、 ergonomics + import 1 行 で
  *    primitive vs project-local の即判別を成立させる)
- *  - 旧 `Creo*` 名は 0.23.x / 0.24.x で **alias re-export** で keep、 0.25.0 で撤去
+ *  - 旧 `Creo*` 名は 0.23.x / 0.24.x で **alias re-export** で keep、 予約どおり
+ *    0.25.0 で撤去済み (migration = `Creo{X}` → `CU{X}` の機械的 rename)
  *  - brand "Creo Memories" / "Creo ID" 等は touch せず keep (= component prefix と
  *    brand surface を意味的に分離する articulate)
  */
@@ -25,12 +26,6 @@ export { CUEdgeShell } from './CUEdgeShell'
 export { CUFacetGrid } from './CUFacetGrid'
 export { CUPageShell } from './CUPageShell'
 export { CURail } from './CURail'
-
-// Backward compat alias — 0.23.x / 0.24.x で keep、 0.25.0 撤去予定
-export { CUEdgeShell as CreoEdgeShell } from './CUEdgeShell'
-export { CUFacetGrid as CreoFacetGrid } from './CUFacetGrid'
-export { CUPageShell as CreoPageShell } from './CUPageShell'
-export { CURail as CreoRail } from './CURail'
 
 export {
   createLayerStore,

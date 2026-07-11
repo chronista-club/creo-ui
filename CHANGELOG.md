@@ -5,7 +5,9 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
-## Unreleased — Deep Luminance (見た目全面改修) + root font 一本化
+## v0.25.0 (2026-07-12) — Deep Luminance + root font 一本化 + `Creo*` alias 撤去
+
+> **web `0.25.0`** / **editor-host `0.5.3`** / **rust `0.7.0`** を同時 release。web / rust は breaking (下記)。
 
 「理論的には正しいが並べるとかっこよくない」という owner 課題への回答。VP performer 3 lane 並列編成 (conductor 統括) で 4 PR を nightly に集約 (2026-07-11〜12)。
 
@@ -28,11 +30,18 @@ font 指定を **`--typography-family-sans` = `'Gen Interface JP', 'UDEV Gothic 
 - **migration**: `--typography-family-{mono,app,display,icon,…}` の参照が残っても `var()` invalid → root font へ自然 degrade (壊れない)。次回 upgrade 時に `-sans` へ置換を推奨 (VP の `family-app` 等)
 - Swift / Rust generated も再生成済み (`typographyFamily*` / `TYPOGRAPHY_FAMILY_*` の削除 = API surface の breaking)
 
+### `Creo*` shell alias 撤去 — **consumer に breaking** (v0.24.2 で予約したとおり 0.25.0 で実施)
+
+`shells` の後方互換 alias re-export (`CreoEdgeShell` / `CreoFacetGrid` / `CreoPageShell` / `CreoRail`) を撤去。**migration**: `Creo{X}` → `CU{X}` の機械的 rename (0.23.0 canonical)。breaking を font 一本化と同一 release に束ね、consumer の migration を 1 回で済ませる owner 判断。
+
+### site 公開 — https://doc.anycreative.tech/creo-ui/
+
+- Cloudflare Workers (assets-only) 配信 + hub router (`chronista-club/anycreative-doc`) 配下の path 配信へ移行。vite/router base `/creo-ui/`
+- release cut (main への push) 毎の CD (`deploy-site.yml`、要 `CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` secrets)
+
 ### dx
 
 - `CREO_SITE_HTTP=1` で apps/site dev server を http fallback 起動 (browser automation / screenshot QA 用。default は従来どおり https)
-
-> **version 未 stamp**: 次回 web release は breaking (font token 削除) を含むため minor 以上。ただし `0.25.0` は `Creo*` shell alias 撤去に予約済み (v0.24.2 の note 参照) — 同梱するか `0.26.0` へ進めるかは release PR 時に判断。
 
 ## Unreleased — `creoui` → `creo-ui` へ全面 rename
 
