@@ -68,9 +68,9 @@
   width: 2px;
 }
 
-/* completed item の connector は brand 色 */
+/* completed item の connector は focal brand fill (marker と同じ vivid) */
 .creo-stepper-item[data-status="completed"]:not(:last-child)::after {
-  background-color: var(--color-brand-primary);
+  background-color: var(--fill-brand);
 }
 
 /* ---------- Marker ---------- */
@@ -107,16 +107,22 @@
 
 /* ---------- Status colors ---------- */
 
+/* completed / current の brand marker は focal fill + auto on-color。 旧 bg-base
+   固定は light theme で contrast が崩れていた (--on-fill-brand は全 8 theme min
+   4.82:1 verified)。 current は brand halo (20% ring) で「今ここ」を強調。
+   error marker (下) は semantic solid fill で、 これは意図的に focal 化しない
+   token 面 — 全 theme で on-color の 4.5:1 を保証できないため fill+on-color 言語は
+   当てず既存の据え置き (semantic fill 上の text AA は別途 design 課題)。 */
 .creo-stepper-item[data-status="completed"] .creo-stepper-marker {
-  background-color: var(--color-brand-primary);
-  color: var(--color-surface-bg-base);
-  border-color: var(--color-brand-primary);
+  background-color: var(--fill-brand);
+  color: var(--on-fill-brand);
+  border-color: var(--fill-brand);
 }
 
 .creo-stepper-item[data-status="current"] .creo-stepper-marker {
-  background-color: var(--color-brand-primary);
-  color: var(--color-surface-bg-base);
-  border-color: var(--color-brand-primary);
+  background-color: var(--fill-brand);
+  color: var(--on-fill-brand);
+  border-color: var(--fill-brand);
   box-shadow: 0 0 0 4px color-mix(in oklch, var(--color-brand-primary) 20%, transparent);
 }
 

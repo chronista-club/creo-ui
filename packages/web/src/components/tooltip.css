@@ -23,7 +23,9 @@
   background-color: var(--color-surface-bg-emphasis);
   color: var(--color-text-primary);
   border-radius: var(--radius-xs);
-  box-shadow: var(--shadow-m);
+  /* elevation 3 の最小面。 tooltip は z-stack 最上位 (hover で最前面) なので
+     overlay tier の depth を纏うが、 面積が最小なので語彙の中で最も控えめに効く。 */
+  box-shadow: var(--elevation-3);
 
   font-size: var(--typography-body-caption);
   font-weight: var(--typography-weight-regular);

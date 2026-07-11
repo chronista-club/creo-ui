@@ -56,7 +56,9 @@
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
-  box-shadow: var(--shadow-m);
+  /* elevation 3 (overlay tier)。 toast は viewport に float する最上位通知なので
+     旧 --shadow-m から overlay depth へ格上げ。 border-light + per-theme drop。 */
+  box-shadow: var(--elevation-3);
   color: var(--color-text-primary);
   animation: creoToastIn var(--motion-mapping-modal-enter-duration)
     var(--motion-mapping-modal-enter-easing);

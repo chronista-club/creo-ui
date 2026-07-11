@@ -9,8 +9,10 @@
  *   <i class="creo-ui-icon" data-size="l">★</i>      <!-- Unicode emoji -->
  *
  * Aesthetic:
- *   typography.family.icon (Symbols Nerd Font + OS native emoji fallback) を
- *   default font-stack、 typography.icon scale (xs/s/m/l/xl) で size articulate。
+ *   font-family は root stack を継承 (font 一本化 directive)。 root の
+ *   'Gen Interface JP', 'UDEV Gothic 35NF', sans-serif の UDEV Gothic 35NF が
+ *   Nerd Font glyph を供給するので専用 font 指定は不要。 size は
+ *   typography.icon scale (xs/s/m/l/xl) で articulate。
  *   color は currentColor (consumer が container text-color から継承)、
  *   icon-specific color が必要な場合は inline style で。
  *
@@ -27,7 +29,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--typography-family-icon);
+  font-family: inherit;
   font-size: var(--typography-icon-s);
   line-height: 1;
   color: currentColor;

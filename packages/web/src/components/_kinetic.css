@@ -20,7 +20,7 @@
 /* ---------- Hero kinetic (hover で letter-spacing / font-weight 動的) ---------- */
 
 .creo-kinetic-hero {
-  font-family: var(--typography-family-display);
+  /* font-family は root stack を継承 (font 一本化 directive、 display 専用 font 廃止)。 */
   font-size: var(--typography-display-l);
   font-weight: var(--typography-weight-bold);
   letter-spacing: -0.02em;
@@ -40,7 +40,7 @@
 /* ---------- Display gradient (hero text gradient effect) ---------- */
 
 .creo-kinetic-gradient {
-  font-family: var(--typography-family-display);
+  /* font-family は root stack を継承 (font 一本化 directive、 display 専用 font 廃止)。 */
   font-size: var(--typography-display-l);
   font-weight: var(--typography-weight-bold);
   background: linear-gradient(
