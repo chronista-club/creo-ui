@@ -35,7 +35,7 @@ const monoValueStyle: JSX.CSSProperties = {
   'font-size': '11px',
   'min-width': '52px',
   'text-align': 'right',
-  'font-family': 'var(--typography-family-mono)',
+  'font-family': 'var(--typography-family-sans)',
 }
 
 const selectStyle: JSX.CSSProperties = {
@@ -58,7 +58,7 @@ const readonlyTextStyle: JSX.CSSProperties = {
   background: 'var(--color-surface-bg-subtle)',
   border: '1px solid var(--editor-mode-region-border)',
   'border-radius': '4px',
-  'font-family': 'var(--typography-family-mono)',
+  'font-family': 'var(--typography-family-sans)',
   'font-size': '11px',
   color: 'var(--color-text-secondary)',
   'white-space': 'pre-wrap',
@@ -273,7 +273,7 @@ export function FieldEditorInline(props: { field: EditorField }): JSX.Element {
               <span
                 style={{
                   'font-size': '11px',
-                  'font-family': 'var(--typography-family-mono)',
+                  'font-family': 'var(--typography-family-sans)',
                   color: 'var(--editor-mode-panel-field-value)',
                 }}
               >

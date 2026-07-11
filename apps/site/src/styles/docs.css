@@ -11,6 +11,25 @@
   --docs-content-max-width: 760px;
   --docs-content-padding-x: clamp(20px, 4vw, 56px);
   color-scheme: light dark;
+
+  /* ----------------------------------------------------------
+     Deep Luminance — site-face 派生プリミティブ
+     すべて theme 変数から color-mix(in oklch) で導出。 hardcode 色ゼロ、
+     8 theme で自動追従する「面の明度・光る縁・抑制された glow」の語彙。
+     ---------------------------------------------------------- */
+  /* 上端ハイライト — 面が上から光を受ける bevel 表現 */
+  --face-edge-light: color-mix(in oklch, var(--color-text-primary) 9%, transparent);
+  /* 光る border — brand tint を混ぜた縁 (hover 時の到達色) */
+  --face-border-lum: color-mix(
+    in oklch,
+    var(--color-brand-primary) 40%,
+    var(--color-surface-border)
+  );
+  /* 抑制された brand glow — 外側に漏れる soft light */
+  --face-glow-brand: color-mix(in oklch, var(--color-brand-primary) 26%, transparent);
+  --face-glow-brand-soft: color-mix(in oklch, var(--color-brand-primary) 12%, transparent);
+  /* showcase canvas の dot grid tint */
+  --face-dot: color-mix(in oklch, var(--color-text-primary) 7%, transparent);
 }
 
 * {
@@ -23,11 +42,21 @@ body {
   padding: 0;
   background: var(--color-surface-bg-base);
   color: var(--color-text-primary);
-  font-family: var(--typography-family-app);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-body-default);
   line-height: var(--typography-line-height-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* font 一本化: code / pre / kbd / samp は UA stylesheet が font-family: monospace を
+   強制するため、 root stack を明示して打ち消す (class 無しの inline code も含め全て
+   単一 stack に統一。 UDEV Gothic 35NF が等幅を供給)。 */
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--typography-family-sans);
 }
 
 a {
@@ -110,7 +139,7 @@ a:hover {
   font-size: var(--typography-size-xs);
   font-weight: var(--typography-weight-regular);
   color: var(--color-text-secondary);
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   padding: 2px 6px;
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-s);
@@ -235,7 +264,7 @@ a:hover {
 
 .docs-sidebar-tag {
   font-size: 10px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   padding: 1px 6px;
   background: color-mix(in oklab, var(--color-semantic-success) 25%, transparent);
   color: var(--color-semantic-success);
@@ -276,7 +305,7 @@ a:hover {
 }
 
 .docs-code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-s);
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
@@ -422,7 +451,7 @@ a:hover {
 }
 
 .docs-stub-path {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-s);
   color: var(--color-text-tertiary);
   background: var(--color-surface-bg-subtle);
@@ -553,7 +582,7 @@ a:hover {
 }
 
 .docs-color-swatch-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-primary);
   font-weight: var(--typography-weight-medium);
@@ -561,7 +590,7 @@ a:hover {
 }
 
 .docs-color-swatch-var {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   color: var(--color-text-tertiary);
   word-break: break-all;
@@ -595,7 +624,7 @@ a:hover {
 }
 
 .docs-dim-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-primary);
 }
 
@@ -618,7 +647,7 @@ a:hover {
 }
 
 .docs-dim-value {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-secondary);
   font-size: var(--typography-size-xs);
 }
@@ -654,12 +683,12 @@ a:hover {
   flex-direction: column;
   gap: 2px;
   font-size: var(--typography-size-xs);
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
 }
 
 .docs-typo-meta span {
   color: var(--color-text-secondary);
-  font-family: var(--typography-family-app);
+  font-family: var(--typography-family-sans);
 }
 
 .docs-typo-sample {
@@ -693,14 +722,14 @@ a:hover {
 .docs-typo-size-row > code,
 .docs-typo-weight-row > code,
 .docs-typo-semantic-row > code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-primary);
 }
 
 .docs-typo-size-value,
 .docs-typo-weight-value {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-tertiary);
 }
@@ -732,12 +761,12 @@ a:hover {
 }
 
 .docs-shadow-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-weight: var(--typography-weight-medium);
 }
 
 .docs-shadow-var {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-tertiary);
 }
@@ -783,7 +812,7 @@ a:hover {
 
 .docs-theme-default-badge {
   font-size: 10px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   padding: 1px 6px;
   background: color-mix(in oklab, var(--color-brand-primary) 25%, transparent);
   color: var(--color-brand-primary);
@@ -828,7 +857,7 @@ a:hover {
 }
 
 .docs-theme-preview-label {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   color: var(--color-text-primary);
 }
@@ -863,7 +892,7 @@ a:hover {
 }
 
 .docs-principle-number {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-display-s);
   font-weight: var(--typography-weight-bold);
   color: var(--color-brand-primary);
@@ -921,7 +950,7 @@ a:hover {
 }
 
 .docs-principle-body code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 0.9em;
   padding: 1px 5px;
   background: var(--color-surface-bg-subtle);
@@ -992,7 +1021,7 @@ a:hover {
 }
 
 .docs-operational-table tbody th code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 0.95em;
   background: transparent;
   padding: 0;
@@ -1029,7 +1058,7 @@ a:hover {
 }
 
 .docs-rubric dt code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   background: transparent;
   padding: 0;
   color: var(--color-brand-primary);
@@ -1070,7 +1099,7 @@ a:hover {
 }
 
 .docs-bullet-list code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 0.9em;
   padding: 1px 5px;
   background: var(--color-surface-bg-subtle);
@@ -1114,7 +1143,7 @@ a:hover {
 }
 
 .docs-decision-id {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-weight: var(--typography-weight-bold);
   color: var(--color-brand-primary);
 }
@@ -1158,7 +1187,7 @@ a:hover {
 
 .docs-layer-tag {
   font-size: 10px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-text-tertiary);
@@ -1173,7 +1202,7 @@ a:hover {
 .docs-layer-meta {
   font-size: var(--typography-size-xs);
   color: var(--color-text-secondary);
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
 }
 
 /* ============================================================
@@ -1307,12 +1336,12 @@ a:hover {
 }
 
 .docs-token-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-primary);
 }
 
 .docs-token-value {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-secondary);
 }
 
@@ -1345,7 +1374,7 @@ a:hover {
 
 .docs-pipeline-step-label {
   font-size: 10px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-text-tertiary);
@@ -1355,7 +1384,7 @@ a:hover {
   font-size: var(--typography-body-default);
   font-weight: var(--typography-weight-bold);
   margin: 2px 0;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
 }
 
 .docs-pipeline-step-meta {
@@ -1414,7 +1443,7 @@ a:hover {
 }
 
 .docs-naming-row code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-primary);
   word-break: break-all;
@@ -1430,7 +1459,7 @@ a:hover {
 }
 
 .docs-naming-head > div {
-  font-family: var(--typography-family-app);
+  font-family: var(--typography-family-sans);
 }
 
 .docs-platform-title {
@@ -1573,7 +1602,7 @@ a:hover {
 }
 
 .docs-props-row code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-primary);
 }
 
@@ -1592,7 +1621,7 @@ a:hover {
 }
 
 .docs-props-head > div {
-  font-family: var(--typography-family-app);
+  font-family: var(--typography-family-sans);
 }
 
 /* ============================================================
@@ -1624,7 +1653,7 @@ a:hover {
 }
 
 .docs-tokens-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-primary);
   word-break: break-all;
 }
@@ -1727,7 +1756,7 @@ a:hover {
 }
 
 .docs-playground-label {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1757,7 +1786,7 @@ a:hover {
 kbd {
   display: inline-block;
   padding: 1px 6px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 0.85em;
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
@@ -1785,7 +1814,7 @@ kbd {
 }
 
 .docs-frame-current code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-brand-primary);
 }
 
@@ -1834,7 +1863,7 @@ kbd {
 }
 
 .docs-frame-slot-label {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -2101,7 +2130,7 @@ kbd {
 }
 
 .docs-icons-source {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-tertiary);
 }
@@ -2140,7 +2169,7 @@ kbd {
 }
 
 .docs-icons-key {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   color: var(--color-text-secondary);
   word-break: break-all;
@@ -2187,7 +2216,7 @@ kbd {
 }
 
 .docs-mediapipe-error {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-semantic-error);
   background: color-mix(in oklab, var(--color-semantic-error) 10%, transparent);
@@ -2387,8 +2416,441 @@ kbd {
 }
 
 /* ============================================================
+   SITE FACE — Deep Luminance
+   Linear / Vercel 級の dark 洗練 (面の明度・光る border・抑制された glow)。
+   色は theme 変数から派生 (:root の --face-* 参照)、 hardcode 色を足さない。
+   ============================================================ */
+
+/* ---- Home hero — copy + live surface (2-col、 gradient-hero canvas) ---- */
+
+.docs-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.78fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: center;
+  padding: var(--margin-xl) 0 var(--spacing-xl);
+}
+
+/* 旧 radial glow は surface 側 glow に一本化 */
+.docs-hero::before {
+  display: none;
+}
+
+.docs-hero-copy {
+  min-width: 0;
+}
+
+.docs-hero-title {
+  font-size: clamp(28px, 3.6vw, 40px);
+  text-wrap: balance;
+}
+
+.docs-hero-surface {
+  position: relative;
+  overflow: hidden;
+  min-height: 268px;
+  padding: var(--spacing-l);
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-l);
+  background: var(--color-gradient-hero);
+  border: 1px solid color-mix(in oklch, var(--color-brand-primary) 22%, var(--color-surface-border));
+  box-shadow: inset 0 1px 0 var(--face-edge-light), 0 30px 60px -34px var(--face-glow-brand);
+}
+
+/* 抑制された brand glow — surface 上部から差す光 */
+.docs-hero-surface-glow {
+  position: absolute;
+  inset: -30% -10% auto -10%;
+  height: 80%;
+  background: radial-gradient(60% 100% at 50% 0%, var(--face-glow-brand), transparent 70%);
+  pointer-events: none;
+}
+
+.docs-hero-floats {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+
+.docs-hero-float {
+  box-shadow: 0 12px 28px -16px var(--color-shadow-strong, rgba(0, 0, 0, 0.4));
+}
+
+.docs-hero-float--card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+  box-shadow: inset 0 1px 0 var(--face-edge-light), 0 18px 40px -20px
+    var(--color-shadow-strong, rgba(0, 0, 0, 0.45));
+}
+
+.docs-hero-float-head {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+}
+
+.docs-hero-float-titles {
+  min-width: 0;
+  flex: 1;
+}
+
+.docs-hero-float-title {
+  font-size: var(--typography-size-s);
+  font-weight: var(--typography-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.docs-hero-float-sub {
+  font-size: 11px;
+  font-family: var(--typography-family-sans);
+  color: var(--color-text-tertiary);
+}
+
+.docs-hero-float--actions {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-self: flex-end;
+  box-shadow: none;
+  transform: translateX(-6px);
+}
+
+.docs-hero-float--badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  box-shadow: none;
+  transform: translateX(10px);
+}
+
+/* ---- Components — Featured gallery (live specimen cards) ---- */
+
+.docs-gallery-head {
+  margin-bottom: var(--spacing-m);
+}
+
+.docs-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--spacing-m);
+  margin: var(--spacing-m) 0;
+}
+
+.docs-gallery-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-l);
+  border: 1px solid var(--color-surface-border);
+  background: var(--color-surface-surface);
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--color-text-primary);
+  box-shadow: inset 0 1px 0 var(--face-edge-light);
+  transition: border-color var(--motion-duration-normal), transform var(--motion-duration-normal)
+    var(--motion-easing-spring), box-shadow var(--motion-duration-normal);
+}
+
+.docs-gallery-card:hover {
+  text-decoration: none;
+  border-color: var(--face-border-lum);
+  transform: translateY(-3px);
+  box-shadow: inset 0 1px 0 var(--face-edge-light), 0 20px 44px -20px var(--face-glow-brand), 0 0 0
+    1px var(--face-glow-brand-soft);
+}
+
+/* showcase canvas — 実 component を「標本」として展示する背景 */
+.docs-gallery-preview {
+  position: relative;
+  min-height: 138px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-l) var(--spacing-m);
+  border-bottom: 1px solid var(--color-surface-border-subtle);
+  background: radial-gradient(120% 90% at 50% -10%, var(--face-glow-brand-soft), transparent 62%),
+    var(--color-surface-bg-subtle);
+  overflow: hidden;
+}
+
+/* dot grid overlay — design canvas の気配 */
+.docs-gallery-preview::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--face-dot) 1px, transparent 1px);
+  background-size: 15px 15px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* specimen は inert (card 全体が link) */
+.docs-gallery-specimen {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.docs-gallery-specimen > * {
+  max-width: 100%;
+}
+
+.docs-gallery-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  align-items: center;
+  justify-content: center;
+}
+
+.docs-gallery-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+  align-items: flex-start;
+}
+
+.docs-gallery-stack--wide {
+  width: 100%;
+  align-items: stretch;
+}
+
+.docs-gallery-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-m);
+}
+
+.docs-gallery-meta-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.docs-gallery-name {
+  font-size: var(--typography-title-card);
+  font-weight: var(--typography-weight-bold);
+  line-height: var(--typography-line-height-tight);
+}
+
+.docs-gallery-arrow {
+  color: var(--color-text-tertiary);
+  transition: transform var(--motion-duration-fast), color var(--motion-duration-fast);
+}
+
+.docs-gallery-card:hover .docs-gallery-arrow {
+  color: var(--color-brand-primary);
+  transform: translateX(3px);
+}
+
+.docs-gallery-desc {
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* specimen 個別の見栄え調整 (標本を preview canvas に収める) */
+.docs-gallery-timeline {
+  align-self: center;
+}
+
+.docs-gallery-stepper {
+  width: 100%;
+  transform: scale(0.92);
+}
+
+.docs-gallery-toast {
+  width: 100%;
+  max-width: 260px;
+}
+
+.docs-gallery-mini-card {
+  width: 100%;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+}
+
+.docs-gallery-mini-card-title {
+  font-size: var(--typography-size-s);
+  font-weight: var(--typography-weight-bold);
+  color: var(--color-text-primary);
+}
+
+.docs-gallery-mini-card-body {
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.docs-gallery-skeleton {
+  display: flex;
+  gap: var(--spacing-s);
+  align-items: center;
+  width: 100%;
+  max-width: 240px;
+}
+
+.docs-gallery-skeleton-lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  flex: 1;
+}
+
+/* ---- Component detail — Live preview 器 (showcase らしい canvas) ---- */
+
+.docs-component-preview {
+  position: relative;
+  background: radial-gradient(100% 80% at 50% 0%, var(--face-glow-brand-soft), transparent 60%),
+    var(--color-surface-bg-subtle);
+  box-shadow: inset 0 1px 0 var(--face-edge-light);
+  /* overflow は付けない — Tooltip / Popover / Menu の hover-pop を clip しないため。
+     dot grid の角丸は ::before の border-radius: inherit で揃える。 */
+}
+
+.docs-component-preview::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: radial-gradient(var(--face-dot) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.docs-component-preview > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* md preview は dot grid を出さない (可読性優先) */
+.docs-component-preview--md::before {
+  display: none;
+}
+
+/* ---- Sidebar — group rail + 現在地 indicator + hover 質感 ---- */
+
+.docs-sidebar-group {
+  position: relative;
+}
+
+.docs-sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+/* section label 前に短い brand rail (視覚階層) */
+.docs-sidebar-title::before {
+  content: "";
+  width: 10px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: color-mix(in oklch, var(--color-brand-primary) 60%, transparent);
+  flex-shrink: 0;
+}
+
+.docs-sidebar-link {
+  position: relative;
+}
+
+/* 現在地 indicator — 左端の光る bar */
+.docs-sidebar-link.is-active::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  border-radius: var(--radius-full);
+  background: var(--color-brand-primary);
+  box-shadow: 0 0 8px -1px var(--face-glow-brand);
+}
+
+.docs-sidebar-link:hover {
+  box-shadow: inset 0 0 0 1px var(--color-surface-border-subtle);
+}
+
+.docs-sidebar-tag {
+  transition: transform var(--motion-duration-fast);
+}
+
+/* ---- Header — nav / brand / theme switcher polish ---- */
+
+.docs-brand-logo {
+  transition: transform var(--motion-duration-normal) var(--motion-easing-spring), filter
+    var(--motion-duration-normal);
+}
+
+.docs-brand:hover .docs-brand-logo {
+  transform: rotate(90deg);
+  filter: drop-shadow(0 0 6px var(--face-glow-brand));
+}
+
+.docs-header-nav a.is-active {
+  box-shadow: inset 0 -2px 0 var(--color-brand-primary);
+}
+
+.docs-theme-switcher {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.docs-theme-switcher::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: 10px;
+  width: 6px;
+  height: 6px;
+  border-inline-end: 1.5px solid var(--color-text-tertiary);
+  border-bottom: 1.5px solid var(--color-text-tertiary);
+  transform: translateY(-2px) rotate(45deg);
+  pointer-events: none;
+}
+
+.docs-theme-switcher select {
+  padding-inline-end: 28px;
+  appearance: none;
+  transition: border-color var(--motion-duration-fast), box-shadow var(--motion-duration-fast);
+}
+
+.docs-theme-switcher select:hover {
+  border-color: var(--face-border-lum);
+}
+
+.docs-theme-switcher select:focus-visible {
+  outline: none;
+  border-color: var(--color-brand-primary);
+  box-shadow: 0 0 0 3px var(--face-glow-brand-soft);
+}
+
+/* ============================================================
    Responsive
    ============================================================ */
+
+@media (max-width: 920px) {
+  .docs-hero {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+  .docs-hero-surface {
+    min-height: 220px;
+  }
+}
 
 @media (max-width: 800px) {
   .docs-sidebar {
@@ -2408,5 +2870,17 @@ kbd {
   }
   .docs-dim-row {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Reduced motion — hero float / gallery lift を静止 */
+@media (prefers-reduced-motion: reduce) {
+  .docs-gallery-card,
+  .docs-gallery-card:hover,
+  .docs-hero-float--actions,
+  .docs-hero-float--badges,
+  .docs-brand:hover .docs-brand-logo {
+    transform: none !important;
+    transition: none !important;
   }
 }

@@ -43,9 +43,16 @@
 
 /* ---------- Variants ---------- */
 
+/* filled = borderless の recessed well。 border が無い分、 inset shadow
+   (--elevation-well) で「沈み込んだ入力面」の depth を与える。 focus 時は
+   _focus.css の :focus-visible box-shadow halo に box-shadow を明け渡すため
+   :not(:focus-visible) で guard (override ではなく yield、 focus policy 尊守)。 */
 .creo-input[data-variant="filled"] {
   background-color: var(--color-surface-bg-subtle);
   border-color: transparent;
+}
+.creo-input[data-variant="filled"]:not(:focus-visible) {
+  box-shadow: var(--elevation-well);
 }
 .creo-input[data-variant="filled"]:hover:not(:disabled):not(:focus) {
   background-color: var(--color-surface-bg-subtle);

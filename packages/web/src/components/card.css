@@ -29,17 +29,20 @@
 
 /* ---------- Variants ---------- */
 
+/* default = elevation 1 (resting)。 dark では border-light が上端に灯り、 面が
+   page bg より明るいことで持ち上がる。 light では drop shadow が主役。 */
 .creo-card[data-variant="default"],
 .creo-card:not([data-variant]) {
   background-color: var(--color-surface-surface);
   border-color: var(--color-surface-border);
-  box-shadow: var(--shadow-s);
+  box-shadow: var(--elevation-1);
 }
 
+/* elevated = elevation 2 (raised)。 border を溶かして影で浮かせる。 */
 .creo-card[data-variant="elevated"] {
   background-color: var(--color-surface-surface);
   border-color: transparent;
-  box-shadow: var(--shadow-m);
+  box-shadow: var(--elevation-2);
 }
 
 .creo-card[data-variant="outlined"] {
@@ -67,14 +70,18 @@
 .creo-card[data-interactive="true"] {
   cursor: pointer;
 }
+/* hover = elevation を 1 段上げて lift (1→2) + border が brand に灯る + 微 translateY。
+   depth の変化そのものが interactive feedback になる。 */
 .creo-card[data-interactive="true"]:hover {
   border-color: var(--color-brand-primary);
+  box-shadow: var(--elevation-2);
   transform: translateY(-1px);
 }
 .creo-card[data-interactive="true"][data-variant="elevated"]:hover {
-  box-shadow: var(--shadow-l);
+  box-shadow: var(--elevation-3);
 }
 .creo-card[data-interactive="true"]:active {
+  box-shadow: var(--elevation-1);
   transform: translateY(0);
 }
 

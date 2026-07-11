@@ -8,7 +8,8 @@
 
 .creo-md {
   color: var(--color-text-primary);
-  font-family: var(--typography-family-app);
+  /* font 一本化 (2026-07): root font は consumer の :root (唯一の sans stack) から
+     継承する。 md-view 側で font-family を再宣言しない。 */
   font-size: var(--typography-size-base);
   line-height: var(--typography-line-height-normal);
 }
@@ -80,7 +81,7 @@
 
 /* Code */
 .creo-md-inline-code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 0.92em;
   padding: 0.1em 0.35em;
   background: var(--color-surface-bg-subtle);
@@ -89,7 +90,7 @@
 }
 
 .creo-md-code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-s);
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
@@ -236,7 +237,7 @@
 /* Error */
 .creo-md-error {
   color: var(--color-semantic-error);
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-s);
   padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid var(--color-semantic-error);

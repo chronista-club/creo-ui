@@ -116,9 +116,12 @@
   --font-size-lg: var(--typography-size-l);
   --font-size-xs: var(--typography-size-xs);
 
+  /* font 一本化 (2026-07): base/mono/serif の shim は全て唯一の root stack へ集約。
+     mono/serif alias は後方互換のため残すが値は sans と同一 (UDEV Gothic 35NF が
+     等幅も供給)。 */
   --font-family-base: var(--typography-family-sans);
-  --font-family-mono: var(--typography-family-mono);
-  --font-family-serif: var(--typography-family-sans); /* default fallback */
+  --font-family-mono: var(--typography-family-sans);
+  --font-family-serif: var(--typography-family-sans);
 
   --font-weight-normal: var(--typography-weight-regular);
   --font-weight-medium: var(--typography-weight-medium);

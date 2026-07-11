@@ -11,7 +11,9 @@
   border: 1px solid var(--color-surface-border);
   background-color: var(--color-surface-surface);
   color: var(--color-text-primary);
-  box-shadow: var(--shadow-xl, var(--shadow-l));
+  /* elevation 3 (overlay tier)。 side sheet も dialog と同じ最上位 depth。
+     border-light の上端 highlight + per-theme drop で page から剥がれて浮く。 */
+  box-shadow: var(--elevation-3);
   overflow: hidden;
 
   display: flex;

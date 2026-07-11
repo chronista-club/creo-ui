@@ -1,0 +1,110 @@
+/**
+ * Elevation & luminance language — depth/light の視覚言語 SSOT
+ *
+ * "Deep Luminance" direction (mako 承認) の中核。 dark theme は「影」ではなく
+ * 「面の明度 ladder + border の光 + brand glow」で立体感を作り、 light theme は
+ * theme の shadow tint (--color-shadow-base / --color-shadow-strong) による
+ * 従来型 shadow が主役。 どちらも同じ recipe を共有し、 参照する theme 変数の
+ * 値が自然に効くことで 8 theme (mint/sora/contrast/oldschool × light/dark) へ
+ * 自動追従する (原則 [data-theme] 分岐なし、 color-mix / relative color syntax で導出)。
+ *
+ * ── Elevation ladder rubric (どの component がどの段に乗るか) ─────────────
+ *   0  flat     : 地の面と同一平面。 input (well)、 ghost / secondary btn の rest
+ *   1  resting  : 静止した持ち上がり。 card (default)、 segmented の active pill、
+ *                 switch thumb、 静的な raised surface
+ *   2  raised   : hover / floating。 card:hover、 card[elevated]、 dropdown / menu
+ *   3  overlay  : 画面から浮く最上位。 dialog / drawer / popover / toast
+ *
+ * ── 3 つの深度メカニズム ─────────────────────────────────────────────────
+ *   border-light : 面の上端に乗る 1px の光 (--color-surface-border を L+0.07 相対導出)。
+ *                  dark で最も効き (明るい edge highlight)、 light では自然に控えめ。
+ *   drop shadow  : --color-shadow-base / -strong (per-theme tint)。 light の主役、
+ *                  dark では黒 tint が面の下へ薄く落ちる grounding。
+ *   brand glow   : brand 色の halo (color-mix)。 focal control (primary hover 等) の
+ *                  signature detail。 focus ring policy (_focus.css) と衝突しないよう、
+ *                  button では filter: drop-shadow で、 card 等では box-shadow で使う
+ *                  (filter は focus の outline / box-shadow halo と別チャンネルなので安全)。
+ *
+ * ── Luminance-driven brand fill / on-color ──────────────────────────────
+ *   focal な solid brand control (primary button / active pill tab 等) 用。
+ *   fill = chroma boost (×1.3) + 微 darken (l×0.95) で vivid かつ text contrast 確保。
+ *   on-color = fill 明度から純黒 / 純白を自動選択し、 全 8 theme で label が
+ *   WCAG 4.5:1 を満たす (L≥0.62 → 黒、 else 白)。 旧実装は文字色に
+ *   --color-surface-bg-base を固定していたため light theme で「白文字 on 明るい brand」
+ *   となり contrast が 1.5:1 まで崩れていた — luminance-core lane で是正。
+ *
+ * Cascade order: `_elevation.css` は `_` prefix で sort 上位
+ *   (build-web-components.mjs の alphabetical concat で _density → _elevation →
+ *   _focus → _kinetic の順)。 ここで定義する変数は letter-named component file 群
+ *   (button / card / input …) より必ず先に来るので、 それらが安全に参照できる。
+ */
+
+:root {
+  /* ── border-light: 面の上端に乗る 1px の光 ────────────────────────── */
+  /* surface-border を L+0.07 明るく相対導出。 dark(border L0.30→0.37)で edge が光り、
+     light(border L0.88→0.95)では white 面に対し自然に控えめ。 */
+  --elevation-border-light: inset 0 1px 0 0
+    oklch(from var(--color-surface-border) calc(l + 0.07) c h / 60%);
+
+  /* ── drop shadow layers (per-theme shadow tint) ──────────────────── */
+  --elevation-drop-1: 0 1px 2px 0 var(--color-shadow-base);
+  --elevation-drop-2: 0 4px 12px -2px var(--color-shadow-base), 0 2px 4px -3px
+    var(--color-shadow-base);
+  --elevation-drop-3: 0 14px 32px -8px var(--color-shadow-strong), 0 6px 12px -6px
+    var(--color-shadow-base);
+
+  /* ── composed elevation ladder (border-light + drop shadow) ───────── */
+  --elevation-0: none;
+  --elevation-1: var(--elevation-border-light), var(--elevation-drop-1);
+  --elevation-2: var(--elevation-border-light), var(--elevation-drop-2);
+  --elevation-3: var(--elevation-border-light), var(--elevation-drop-3);
+
+  /* ── recessed well (input 等の沈み込み表現) ──────────────────────── */
+  --elevation-well: inset 0 1px 2px 0 var(--color-shadow-base);
+
+  /* ── brand glow (box-shadow 版) ──────────────────────────────────── */
+  /* focus ring policy と box-shadow を奪い合わない文脈 (card 等、 focus-visible
+     selector 外の element) で使う。 button は下の filter 版を使うこと。 */
+  --elevation-glow-brand-subtle: 0 0 0 1px
+    color-mix(in oklch, var(--color-brand-primary) 20%, transparent), 0 2px 14px -4px
+    color-mix(in oklch, var(--color-brand-primary) 22%, transparent);
+  --elevation-glow-brand: 0 0 0 1px color-mix(in oklch, var(--color-brand-primary) 32%, transparent),
+    0 4px 20px -4px color-mix(in oklch, var(--color-brand-primary) 30%, transparent);
+
+  /* ── brand glow (filter: drop-shadow 版) ─────────────────────────── */
+  /* button 用。 filter は focus の outline / box-shadow halo と別チャンネルなので、
+     _focus.css の :focus-visible policy を一切侵さずに glow を重ねられる。 */
+  --elevation-glow-brand-filter-subtle: drop-shadow(
+    0 1px 6px color-mix(in oklch, var(--color-brand-primary) 30%, transparent)
+  );
+  --elevation-glow-brand-filter: drop-shadow(
+    0 2px 11px color-mix(in oklch, var(--color-brand-primary) 46%, transparent)
+  );
+
+  /* ── Luminance-driven brand solid-fill recipe (focal controls) ───── */
+  /* chroma boost ×1.3 + darken l×0.95。 darken は全 8 theme で on-color を
+     WCAG 4.5:1 に乗せるための headroom (verified: primary min 4.82:1)。 */
+  --fill-brand: oklch(from var(--color-brand-primary) calc(l * 0.95) calc(c * 1.3) h);
+  --fill-brand-hover: oklch(from var(--color-brand-primary-hover) calc(l * 0.95) calc(c * 1.3) h);
+  --fill-brand-active: oklch(from var(--color-brand-primary-active) calc(l * 0.95) calc(c * 1.3) h);
+
+  /* auto on-color: fill 明度から純黒 (L≥0.62) / 純白 (else) をハード選択。
+     chroma boost は L を変えないので、 判定は元の brand-primary の l で行う
+     (relative color の二重ネストを避け browser 互換を最大化)。 */
+  --on-fill-brand: oklch(from var(--color-brand-primary) clamp(0, (0.62 - l) * 1000, 1) 0 0);
+  /* danger solid-fill 用 on-color (semantic-error 明度から自動選択)。
+     danger fill は boost せず token のまま使う (focal 化は primary の役目)。 */
+  --on-fill-danger: oklch(from var(--color-semantic-error) clamp(0, (0.62 - l) * 1000, 1) 0 0);
+
+  /* ── Readable brand text (surface 上に brand 色の文字を置くとき) ───── */
+  /* brand を「文字色」に直接使うと light theme (特に mint L0.85) で surface に
+     対し 1.5:1 まで崩れる。 text-primary と 50/50 で混ぜると、 text-primary が
+     dark theme=明色 / light theme=暗色 に反転するため、 混合結果が常に surface へ
+     読める brand 色に収束する (verified: 全 8 theme surface 上で min 5.22:1)。
+     segmented / tabs の active text 等、 brand を text として使う箇所で参照する。 */
+  --text-brand-readable: color-mix(
+    in oklch,
+    var(--color-brand-primary) 50%,
+    var(--color-text-primary)
+  );
+}
