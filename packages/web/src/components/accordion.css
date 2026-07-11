@@ -20,6 +20,9 @@
   border-radius: var(--radius-s);
   padding: 0;
   overflow: hidden;
+  /* elevation 1 (resting)。 stack した各 disclosure が page から静かに持ち上がる。
+     subtle variant (下) は地の面と同一平面なので flat のまま。 */
+  box-shadow: var(--elevation-1);
 }
 
 .creo-accordion[data-variant="subtle"] {

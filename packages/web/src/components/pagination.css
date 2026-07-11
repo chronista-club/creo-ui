@@ -74,10 +74,14 @@
 
 /* ---------- Active (aria-current=page) ---------- */
 
+/* current page = focal な brand fill + auto on-color。 旧実装は文字色に
+   bg-base を固定していたため light theme で「明色文字 on 明るい brand」で
+   contrast が崩れていた。 --fill-brand + --on-fill-brand は全 8 theme で
+   min 4.82:1 (verified)、 primary button / pill tab と同じ focal 言語。 */
 .creo-pagination-item[aria-current="page"] {
-  background-color: var(--color-brand-primary);
-  color: var(--color-surface-bg-base);
-  border-color: var(--color-brand-primary);
+  background-color: var(--fill-brand);
+  color: var(--on-fill-brand);
+  border-color: var(--fill-brand);
   cursor: default;
 }
 

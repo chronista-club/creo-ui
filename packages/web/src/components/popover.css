@@ -17,7 +17,9 @@
   color: var(--color-text-primary);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
-  box-shadow: var(--shadow-l);
+  /* elevation 3 (overlay tier)。 Popover は interactive overlay なので menu
+     (raised 2) より一段上、 dialog / drawer と同じ最上位 depth に置く。 */
+  box-shadow: var(--elevation-3);
   font-family: inherit;
   font-size: var(--typography-size-m);
   line-height: var(--typography-line-height-normal);
