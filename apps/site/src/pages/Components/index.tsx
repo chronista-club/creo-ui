@@ -1,5 +1,5 @@
 import { A } from '@solidjs/router'
-import { For } from 'solid-js'
+import { For, type JSX } from 'solid-js'
 
 interface ComponentEntry {
   name: string
@@ -7,6 +7,330 @@ interface ComponentEntry {
   desc: string
   detail?: boolean
 }
+
+/**
+ * Featured — 実 component の mini render (標本 / specimen) を見せる card 群。
+ * specimen は `.creo-*` class を素で使う (このサイトは reference consumer)。
+ * pointer-events は CSS 側で無効化され、 card 全体が詳細 page への link になる。
+ */
+interface FeaturedEntry {
+  name: string
+  slug: string
+  desc: string
+  render: () => JSX.Element
+}
+
+const FEATURED: readonly FeaturedEntry[] = [
+  {
+    name: 'Button',
+    slug: 'button',
+    desc: 'Action trigger — 5 variants × 3 sizes',
+    render: () => (
+      <div class="docs-gallery-cluster">
+        <button type="button" class="creo-btn" data-variant="primary" data-size="s">
+          Primary
+        </button>
+        <button type="button" class="creo-btn" data-variant="secondary" data-size="s">
+          Secondary
+        </button>
+        <button type="button" class="creo-btn" data-variant="ghost" data-size="s">
+          Ghost
+        </button>
+      </div>
+    ),
+  },
+  {
+    name: 'Badge',
+    slug: 'badge',
+    desc: 'Pill-shaped status / count / tag — 6 variants',
+    render: () => (
+      <div class="docs-gallery-cluster">
+        <span class="creo-badge" data-variant="brand">
+          v0.24
+        </span>
+        <span class="creo-badge" data-variant="success">
+          Passing
+        </span>
+        <span class="creo-badge" data-variant="warning">
+          Beta
+        </span>
+        <span class="creo-badge" data-variant="error">
+          3
+        </span>
+        <span class="creo-badge" data-variant="info">
+          New
+        </span>
+      </div>
+    ),
+  },
+  {
+    name: 'Alert',
+    slug: 'alert',
+    desc: 'Inline persistent status — 4 semantic variants',
+    render: () => (
+      <div class="creo-alert" data-variant="success">
+        <span class="creo-alert-icon" aria-hidden="true">
+          ✓
+        </span>
+        <div class="creo-alert-content">
+          <strong>Deployed.</strong> creo-ui は 3 platform に着地しました。
+        </div>
+      </div>
+    ),
+  },
+  {
+    name: 'Switch',
+    slug: 'switch',
+    desc: 'Immediate toggle (settings / feature flag)',
+    render: () => (
+      <div class="docs-gallery-stack">
+        <label class="creo-switch">
+          <input
+            type="checkbox"
+            class="creo-switch-input"
+            role="switch"
+            checked
+            aria-checked="true"
+          />
+          <span class="creo-switch-track">
+            <span class="creo-switch-thumb" />
+          </span>
+          <span>Editor Mode</span>
+        </label>
+        <label class="creo-switch">
+          <input type="checkbox" class="creo-switch-input" role="switch" aria-checked="false" />
+          <span class="creo-switch-track">
+            <span class="creo-switch-thumb" />
+          </span>
+          <span>Reduced motion</span>
+        </label>
+      </div>
+    ),
+  },
+  {
+    name: 'Progress',
+    slug: 'progress',
+    desc: 'Determinate + indeterminate bar + inline spinner',
+    render: () => (
+      <div class="docs-gallery-stack docs-gallery-stack--wide">
+        <div class="creo-progress">
+          <div class="creo-progress-fill" style={{ width: '72%' }} />
+        </div>
+        <div class="creo-progress">
+          <div class="creo-progress-fill" style={{ width: '38%' }} />
+        </div>
+      </div>
+    ),
+  },
+  {
+    name: 'Avatar',
+    slug: 'avatar',
+    desc: 'Visual identity — initials × 4 sizes × status',
+    render: () => (
+      <div class="docs-gallery-cluster">
+        <span class="creo-avatar" data-size="l">
+          <span class="creo-avatar-initials" aria-label="Mako">
+            MK
+          </span>
+          <span class="creo-avatar-status" data-status="online" aria-hidden="true" />
+        </span>
+        <span class="creo-avatar" data-size="l">
+          <span class="creo-avatar-initials" aria-label="Claude">
+            CL
+          </span>
+        </span>
+        <span class="creo-avatar" data-shape="square" data-size="l">
+          <span class="creo-avatar-initials" aria-label="Akira">
+            AK
+          </span>
+        </span>
+      </div>
+    ),
+  },
+  {
+    name: 'Input',
+    slug: 'input',
+    desc: 'Text field — bordered / filled × 3 sizes × error',
+    render: () => (
+      <div class="docs-gallery-stack docs-gallery-stack--wide">
+        <input class="creo-input" type="text" value="mako@chronista.club" readonly />
+        <input
+          class="creo-input"
+          type="text"
+          placeholder="Filled variant"
+          data-variant="filled"
+          readonly
+        />
+      </div>
+    ),
+  },
+  {
+    name: 'Segmented',
+    slug: 'segmented',
+    desc: 'Mutually exclusive options bar',
+    render: () => (
+      <div class="creo-segmented" role="radiogroup" aria-label="View mode">
+        <label class="creo-segmented-option">
+          <input type="radio" name="gallery-seg" value="day" checked />
+          <span>Day</span>
+        </label>
+        <label class="creo-segmented-option">
+          <input type="radio" name="gallery-seg" value="week" />
+          <span>Week</span>
+        </label>
+        <label class="creo-segmented-option">
+          <input type="radio" name="gallery-seg" value="month" />
+          <span>Month</span>
+        </label>
+      </div>
+    ),
+  },
+  {
+    name: 'Tabs',
+    slug: 'tabs',
+    desc: 'Tab navigation with aria-selected',
+    render: () => (
+      <div class="creo-tabs">
+        <div class="creo-tabs-list" role="tablist">
+          <button type="button" class="creo-tabs-tab" role="tab" aria-selected="true">
+            Overview
+          </button>
+          <button type="button" class="creo-tabs-tab" role="tab" aria-selected="false">
+            Tokens
+          </button>
+          <button type="button" class="creo-tabs-tab" role="tab" aria-selected="false">
+            API
+          </button>
+        </div>
+      </div>
+    ),
+  },
+  {
+    name: 'Checkbox',
+    slug: 'checkbox',
+    desc: 'Multi-select binary — accent-color brand tint',
+    render: () => (
+      <div class="docs-gallery-stack">
+        <label class="creo-checkbox">
+          <input type="checkbox" class="creo-checkbox-input" checked />
+          <span>DTCG token SSOT</span>
+        </label>
+        <label class="creo-checkbox">
+          <input type="checkbox" class="creo-checkbox-input" checked />
+          <span>8 theme parity</span>
+        </label>
+        <label class="creo-checkbox">
+          <input type="checkbox" class="creo-checkbox-input" />
+          <span>Nightly publish</span>
+        </label>
+      </div>
+    ),
+  },
+  {
+    name: 'Skeleton',
+    slug: 'skeleton',
+    desc: 'Linear-gradient shimmer placeholder',
+    render: () => (
+      <div class="docs-gallery-skeleton">
+        <span class="creo-skeleton" data-shape="circle" style={{ width: '40px', height: '40px' }} />
+        <div class="docs-gallery-skeleton-lines">
+          <span class="creo-skeleton" data-shape="text" data-size="l" />
+          <span class="creo-skeleton" data-shape="text" style={{ width: '60%' }} />
+        </div>
+      </div>
+    ),
+  },
+  {
+    name: 'Timeline',
+    slug: 'timeline',
+    desc: 'Vertical activity feed — 5 marker variants',
+    render: () => (
+      <ol class="creo-timeline docs-gallery-timeline">
+        <li class="creo-timeline-item" data-variant="success">
+          <div class="creo-timeline-marker" aria-hidden="true" />
+          <div class="creo-timeline-content">
+            <div class="creo-timeline-title">PR merged</div>
+            <div class="creo-timeline-meta">2m ago</div>
+          </div>
+        </li>
+        <li class="creo-timeline-item" data-variant="info">
+          <div class="creo-timeline-marker" aria-hidden="true" />
+          <div class="creo-timeline-content">
+            <div class="creo-timeline-title">v0.24 released</div>
+            <div class="creo-timeline-meta">today</div>
+          </div>
+        </li>
+      </ol>
+    ),
+  },
+  {
+    name: 'Toast',
+    slug: 'toast',
+    desc: 'Transient region — 6 placements × 5 variants',
+    render: () => (
+      <div class="creo-toast docs-gallery-toast" data-variant="success">
+        <span class="creo-toast-icon" aria-hidden="true">
+          ✓
+        </span>
+        <div class="creo-toast-content">
+          <strong>Saved.</strong> Token patch を反映しました。
+        </div>
+        <button type="button" class="creo-toast-close" aria-label="閉じる" tabindex="-1">
+          ✕
+        </button>
+      </div>
+    ),
+  },
+  {
+    name: 'Stepper',
+    slug: 'stepper',
+    desc: 'Horizontal wizard — 4 states',
+    render: () => (
+      <ol class="creo-stepper docs-gallery-stepper">
+        <li class="creo-stepper-item" data-state="completed">
+          <span class="creo-stepper-marker" aria-hidden="true">
+            ✓
+          </span>
+          <div class="creo-stepper-content">
+            <div class="creo-stepper-label">Design</div>
+          </div>
+        </li>
+        <li class="creo-stepper-item" data-state="current" aria-current="step">
+          <span class="creo-stepper-marker" aria-hidden="true">
+            2
+          </span>
+          <div class="creo-stepper-content">
+            <div class="creo-stepper-label">Build</div>
+          </div>
+        </li>
+        <li class="creo-stepper-item" data-state="pending">
+          <span class="creo-stepper-marker" aria-hidden="true">
+            3
+          </span>
+          <div class="creo-stepper-content">
+            <div class="creo-stepper-label">Ship</div>
+          </div>
+        </li>
+      </ol>
+    ),
+  },
+  {
+    name: 'Card',
+    slug: 'card',
+    desc: 'Concept boundary — default / elevated / outlined',
+    render: () => (
+      <article class="creo-card docs-gallery-mini-card" data-variant="elevated" data-padding="m">
+        <span class="creo-badge" data-variant="brand">
+          Editor Mode
+        </span>
+        <div class="docs-gallery-mini-card-title">Live design surface</div>
+        <div class="docs-gallery-mini-card-body">
+          Designer と AI agent が同じ surface 上で token を編集。
+        </div>
+      </article>
+    ),
+  },
+]
 
 const COMPONENTS: readonly ComponentEntry[] = [
   // Detail pages (11)
@@ -219,19 +543,49 @@ export default function ComponentsIndex() {
         <p class="docs-page-eyebrow">Components</p>
         <h1>All components</h1>
         <p class="docs-page-lead">
-          creo-ui v0.14.0 で shipped した 27 component。 全て CSS class +
+          creo-ui は <strong>{COMPONENTS.length} 個</strong>の component を提供。 全て CSS class +
           <code> data-* attribute</code> で variant / size / state を表現する{' '}
           <strong>framework-agnostic</strong> 設計 — React / Vue / Solid / 生 HTML どれでも同じ
           class を import すれば動く。 このサイト自身も consumer (creo-ui を import して docs render
-          に使用)。
+          に使用) なので、 下の preview は <strong>実物の live render</strong> である。
         </p>
       </header>
 
       <section>
-        <h2 class="docs-section-title">Detail pages</h2>
+        <div class="docs-gallery-head">
+          <h2 class="docs-section-title">Featured</h2>
+          <p class="docs-page-helper">
+            代表 {FEATURED.length} component の live specimen。 card をクリックすると props table +
+            token reference + a11y note を持つ完全版 page へ。
+          </p>
+        </div>
+        <div class="docs-gallery-grid">
+          <For each={FEATURED}>
+            {(c) => (
+              <A class="docs-gallery-card" href={`/components/${c.slug}`}>
+                <div class="docs-gallery-preview" aria-hidden="true">
+                  <div class="docs-gallery-specimen">{c.render()}</div>
+                </div>
+                <div class="docs-gallery-meta">
+                  <div class="docs-gallery-meta-head">
+                    <span class="docs-gallery-name">{c.name}</span>
+                    <span class="docs-gallery-arrow" aria-hidden="true">
+                      →
+                    </span>
+                  </div>
+                  <div class="docs-gallery-desc">{c.desc}</div>
+                </div>
+              </A>
+            )}
+          </For>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">All {COMPONENTS.length} components</h2>
         <p class="docs-page-helper">
-          live preview + props table + token reference + a11y note を持つ完全版 page。 packages/web
-          の **27 component CSS が全て docs 化** ✨
+          全 component が live preview + props table + token reference + a11y note を持つ完全版 page
+          を持つ。
         </p>
         <div class="docs-components-grid">
           <For each={COMPONENTS.filter((c) => c.detail)}>

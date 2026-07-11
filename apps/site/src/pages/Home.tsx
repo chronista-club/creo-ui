@@ -43,25 +43,84 @@ export default function Home() {
   return (
     <>
       <section class="docs-hero">
-        <p class="docs-hero-eyebrow">Design System</p>
-        <h1 class="docs-hero-title">
-          Tokens, components, and a live design surface — for the Creo ecosystem.
-        </h1>
-        <p class="docs-hero-lead">
-          creo-ui は <strong>Web · Apple · Rust</strong> の 3 platform を 1 つの DTCG token から
-          生成する design system。 Editor Mode protocol で designer と AI agent が同じ surface 上で
-          token を編集する。
-        </p>
-        <div class="docs-hero-cta">
-          <A class="creo-btn" data-variant="primary" href="/getting-started">
-            Get started
-          </A>
-          <A class="creo-btn" data-variant="ghost" href="/components">
-            Browse components
-          </A>
-          <A class="creo-btn" data-variant="ghost" href="/playground">
-            Try the playground
-          </A>
+        <div class="docs-hero-copy">
+          <p class="docs-hero-eyebrow">Design System</p>
+          <h1 class="docs-hero-title">
+            Tokens, components, and a live design surface — for the Creo ecosystem.
+          </h1>
+          <p class="docs-hero-lead">
+            creo-ui は <strong>Web · Apple · Rust</strong> の 3 platform を 1 つの DTCG token から
+            生成する design system。 Editor Mode protocol で designer と AI agent が同じ surface
+            上で token を編集する。
+          </p>
+          <div class="docs-hero-cta">
+            <A class="creo-btn" data-variant="primary" href="/getting-started">
+              Get started
+            </A>
+            <A class="creo-btn" data-variant="ghost" href="/components">
+              Browse components
+            </A>
+            <A class="creo-btn" data-variant="ghost" href="/playground">
+              Try the playground
+            </A>
+          </div>
+        </div>
+
+        {/* Live surface — 実 component を並べた floating showcase。
+            gradient-hero token を canvas に、 specimen は素の .creo-* class (consumer)。 */}
+        <div class="docs-hero-surface" aria-hidden="true">
+          <div class="docs-hero-surface-glow" />
+          <div class="docs-hero-floats">
+            <article
+              class="creo-card docs-hero-float docs-hero-float--card"
+              data-variant="elevated"
+            >
+              <div class="docs-hero-float-head">
+                <span class="creo-avatar" data-size="m">
+                  <span class="creo-avatar-initials">CL</span>
+                  <span class="creo-avatar-status" data-status="online" />
+                </span>
+                <div class="docs-hero-float-titles">
+                  <div class="docs-hero-float-title">Editor Mode</div>
+                  <div class="docs-hero-float-sub">right panel · tool</div>
+                </div>
+                <span class="creo-badge" data-variant="brand">
+                  live
+                </span>
+              </div>
+              <label class="creo-switch">
+                <input type="checkbox" class="creo-switch-input" checked />
+                <span class="creo-switch-track">
+                  <span class="creo-switch-thumb" />
+                </span>
+                <span>Reactive binding</span>
+              </label>
+              <div class="creo-progress">
+                <div class="creo-progress-fill" style={{ width: '68%' }} />
+              </div>
+            </article>
+
+            <div class="docs-hero-float docs-hero-float--actions">
+              <button type="button" class="creo-btn" data-variant="primary" data-size="s">
+                Ship
+              </button>
+              <button type="button" class="creo-btn" data-variant="secondary" data-size="s">
+                Preview
+              </button>
+            </div>
+
+            <div class="docs-hero-float docs-hero-float--badges">
+              <span class="creo-badge" data-variant="success">
+                8 themes
+              </span>
+              <span class="creo-badge" data-variant="info">
+                OKLCH
+              </span>
+              <span class="creo-badge" data-variant="warning">
+                DTCG
+              </span>
+            </div>
+          </div>
         </div>
       </section>
 
