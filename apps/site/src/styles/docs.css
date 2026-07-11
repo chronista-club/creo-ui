@@ -42,11 +42,21 @@ body {
   padding: 0;
   background: var(--color-surface-bg-base);
   color: var(--color-text-primary);
-  font-family: var(--typography-family-app);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-body-default);
   line-height: var(--typography-line-height-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* font 一本化: code / pre / kbd / samp は UA stylesheet が font-family: monospace を
+   強制するため、 root stack を明示して打ち消す (class 無しの inline code も含め全て
+   単一 stack に統一。 UDEV Gothic 35NF が等幅を供給)。 */
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--typography-family-sans);
 }
 
 a {
@@ -129,7 +139,7 @@ a:hover {
   font-size: var(--typography-size-xs);
   font-weight: var(--typography-weight-regular);
   color: var(--color-text-secondary);
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   padding: 2px 6px;
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-s);
@@ -254,7 +264,7 @@ a:hover {
 
 .docs-sidebar-tag {
   font-size: 10px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   padding: 1px 6px;
   background: color-mix(in oklab, var(--color-semantic-success) 25%, transparent);
   color: var(--color-semantic-success);
@@ -295,7 +305,7 @@ a:hover {
 }
 
 .docs-code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-s);
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
@@ -441,7 +451,7 @@ a:hover {
 }
 
 .docs-stub-path {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-s);
   color: var(--color-text-tertiary);
   background: var(--color-surface-bg-subtle);
@@ -572,7 +582,7 @@ a:hover {
 }
 
 .docs-color-swatch-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-primary);
   font-weight: var(--typography-weight-medium);
@@ -580,7 +590,7 @@ a:hover {
 }
 
 .docs-color-swatch-var {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   color: var(--color-text-tertiary);
   word-break: break-all;
@@ -614,7 +624,7 @@ a:hover {
 }
 
 .docs-dim-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-primary);
 }
 
@@ -637,7 +647,7 @@ a:hover {
 }
 
 .docs-dim-value {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-secondary);
   font-size: var(--typography-size-xs);
 }
@@ -673,12 +683,12 @@ a:hover {
   flex-direction: column;
   gap: 2px;
   font-size: var(--typography-size-xs);
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
 }
 
 .docs-typo-meta span {
   color: var(--color-text-secondary);
-  font-family: var(--typography-family-app);
+  font-family: var(--typography-family-sans);
 }
 
 .docs-typo-sample {
@@ -712,14 +722,14 @@ a:hover {
 .docs-typo-size-row > code,
 .docs-typo-weight-row > code,
 .docs-typo-semantic-row > code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-primary);
 }
 
 .docs-typo-size-value,
 .docs-typo-weight-value {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-tertiary);
 }
@@ -751,12 +761,12 @@ a:hover {
 }
 
 .docs-shadow-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-weight: var(--typography-weight-medium);
 }
 
 .docs-shadow-var {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-tertiary);
 }
@@ -802,7 +812,7 @@ a:hover {
 
 .docs-theme-default-badge {
   font-size: 10px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   padding: 1px 6px;
   background: color-mix(in oklab, var(--color-brand-primary) 25%, transparent);
   color: var(--color-brand-primary);
@@ -847,7 +857,7 @@ a:hover {
 }
 
 .docs-theme-preview-label {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   color: var(--color-text-primary);
 }
@@ -882,7 +892,7 @@ a:hover {
 }
 
 .docs-principle-number {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-display-s);
   font-weight: var(--typography-weight-bold);
   color: var(--color-brand-primary);
@@ -940,7 +950,7 @@ a:hover {
 }
 
 .docs-principle-body code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 0.9em;
   padding: 1px 5px;
   background: var(--color-surface-bg-subtle);
@@ -1011,7 +1021,7 @@ a:hover {
 }
 
 .docs-operational-table tbody th code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 0.95em;
   background: transparent;
   padding: 0;
@@ -1048,7 +1058,7 @@ a:hover {
 }
 
 .docs-rubric dt code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   background: transparent;
   padding: 0;
   color: var(--color-brand-primary);
@@ -1089,7 +1099,7 @@ a:hover {
 }
 
 .docs-bullet-list code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 0.9em;
   padding: 1px 5px;
   background: var(--color-surface-bg-subtle);
@@ -1133,7 +1143,7 @@ a:hover {
 }
 
 .docs-decision-id {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-weight: var(--typography-weight-bold);
   color: var(--color-brand-primary);
 }
@@ -1177,7 +1187,7 @@ a:hover {
 
 .docs-layer-tag {
   font-size: 10px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-text-tertiary);
@@ -1192,7 +1202,7 @@ a:hover {
 .docs-layer-meta {
   font-size: var(--typography-size-xs);
   color: var(--color-text-secondary);
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
 }
 
 /* ============================================================
@@ -1326,12 +1336,12 @@ a:hover {
 }
 
 .docs-token-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-primary);
 }
 
 .docs-token-value {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-secondary);
 }
 
@@ -1364,7 +1374,7 @@ a:hover {
 
 .docs-pipeline-step-label {
   font-size: 10px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-text-tertiary);
@@ -1374,7 +1384,7 @@ a:hover {
   font-size: var(--typography-body-default);
   font-weight: var(--typography-weight-bold);
   margin: 2px 0;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
 }
 
 .docs-pipeline-step-meta {
@@ -1433,7 +1443,7 @@ a:hover {
 }
 
 .docs-naming-row code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-primary);
   word-break: break-all;
@@ -1449,7 +1459,7 @@ a:hover {
 }
 
 .docs-naming-head > div {
-  font-family: var(--typography-family-app);
+  font-family: var(--typography-family-sans);
 }
 
 .docs-platform-title {
@@ -1592,7 +1602,7 @@ a:hover {
 }
 
 .docs-props-row code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-primary);
 }
 
@@ -1611,7 +1621,7 @@ a:hover {
 }
 
 .docs-props-head > div {
-  font-family: var(--typography-family-app);
+  font-family: var(--typography-family-sans);
 }
 
 /* ============================================================
@@ -1643,7 +1653,7 @@ a:hover {
 }
 
 .docs-tokens-name {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-primary);
   word-break: break-all;
 }
@@ -1746,7 +1756,7 @@ a:hover {
 }
 
 .docs-playground-label {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1776,7 +1786,7 @@ a:hover {
 kbd {
   display: inline-block;
   padding: 1px 6px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 0.85em;
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
@@ -1804,7 +1814,7 @@ kbd {
 }
 
 .docs-frame-current code {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-brand-primary);
 }
 
@@ -1853,7 +1863,7 @@ kbd {
 }
 
 .docs-frame-slot-label {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -2120,7 +2130,7 @@ kbd {
 }
 
 .docs-icons-source {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-text-tertiary);
 }
@@ -2159,7 +2169,7 @@ kbd {
 }
 
 .docs-icons-key {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: 10px;
   color: var(--color-text-secondary);
   word-break: break-all;
@@ -2206,7 +2216,7 @@ kbd {
 }
 
 .docs-mediapipe-error {
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   font-size: var(--typography-size-xs);
   color: var(--color-semantic-error);
   background: color-mix(in oklab, var(--color-semantic-error) 10%, transparent);
@@ -2496,7 +2506,7 @@ kbd {
 
 .docs-hero-float-sub {
   font-size: 11px;
-  font-family: var(--typography-family-mono);
+  font-family: var(--typography-family-sans);
   color: var(--color-text-tertiary);
 }
 

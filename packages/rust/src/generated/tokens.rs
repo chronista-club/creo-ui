@@ -367,34 +367,8 @@ pub const TYPOGRAPHY_DISPLAY_M: f32 = 44_f32;
 pub const TYPOGRAPHY_DISPLAY_L: f32 = 56_f32;
 /// Display xl — landing mega headline / promotional hero
 pub const TYPOGRAPHY_DISPLAY_XL: f32 = 72_f32;
-/// Default UI sans-serif family (multi-language: EN/JA/KO, multi-platform: macOS/Win/Linux)
-pub const TYPOGRAPHY_FAMILY_SANS: &str = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', 'Yu Gothic UI', 'Meiryo UI', Roboto, 'Noto Sans JP', sans-serif";
-/// Default monospace family for code blocks, tokens, IDs. Top 5 Nerd Fonts (JetBrainsMono / FiraCode / Cascadia / Iosevka / 0xProto) を primary fallback、IBM Plex Mono を corporate fallback。Nerd Font が install 済なら icon glyph も同 stack で使える
-pub const TYPOGRAPHY_FAMILY_MONO: &str = "'JetBrainsMono Nerd Font', 'FiraCode Nerd Font', 'CaskaydiaCove Nerd Font', 'Iosevka Nerd Font', '0xProto Nerd Font', 'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Cascadia Mono', 'Fira Code', 'Consolas', 'Yu Gothic UI', monospace";
-/// Mono variant for accessibility / high legibility. Atkinson Hyperlegible Mono (Braille Institute) + Hack を主軸。低視力 / 小サイズ / long session で読みやすさ最優先
-pub const TYPOGRAPHY_FAMILY_MONO_LEGIBLE: &str = "'AtkinsonHyperlegibleMono Nerd Font', 'Atkinson Hyperlegible Mono', 'Hack Nerd Font', 'Hack', 'JetBrainsMono Nerd Font', 'JetBrains Mono', monospace";
-/// Mono variant for retro / pixel / lo-fi aesthetic. Departure Mono / GohuFont / 3270 / Terminus の bitmap-like / pixel-perfect な font 群。display heading や theme アクセントで使う
-pub const TYPOGRAPHY_FAMILY_MONO_RETRO: &str = "'DepartureMono Nerd Font', 'Departure Mono', 'Gohu Nerd Font', 'GohuFont', '3270 Nerd Font', '3270 Medium', 'Terminus Nerd Font', 'Terminus', 'JetBrainsMono Nerd Font', monospace";
-/// Mono variant for corporate / professional tone. IBM Plex Mono が主軸 (Plex Sans/Serif と family 統一可)、Adwaita Mono が GNOME/Linux native flavor
-pub const TYPOGRAPHY_FAMILY_MONO_CORPORATE: &str = "'IBM Plex Mono Nerd Font', 'IBM Plex Mono', 'AdwaitaMono Nerd Font', 'Adwaita Mono', 'JetBrainsMono Nerd Font', 'JetBrains Mono', monospace";
-/// Mono variant for display / heading / cyberpunk aesthetic. Share Tech Mono (CRT terminal feel) や Victor Mono (cursive italic 強調) が主軸。banner / hero / accent 用
-pub const TYPOGRAPHY_FAMILY_MONO_DISPLAY: &str = "'ShareTechMono Nerd Font', 'Share Tech Mono', 'VictorMono Nerd Font', 'Victor Mono', 'JetBrainsMono Nerd Font', 'JetBrains Mono', monospace";
-/// Display family — heroes, large marketing headlines (multi-platform)
-pub const TYPOGRAPHY_FAMILY_DISPLAY: &str = "'Creo Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', 'Yu Gothic UI', 'Noto Sans JP', sans-serif";
-/// Icon family — Nerd Fonts (~10k アイコン: devicons / octicons / font-awesome / material) + OS native emoji fallback。Nerd Font 未 install 環境では emoji / 普通文字に degrade
-pub const TYPOGRAPHY_FAMILY_ICON: &str = "'Symbols Nerd Font Mono', 'Symbols Nerd Font', 'JetBrainsMono Nerd Font', 'FiraCode Nerd Font', 'CaskaydiaCove Nerd Font', 'Iosevka Nerd Font', '0xProto Nerd Font', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif";
-/// App UI mode — chrome 全般 (sidebar / button / dialog / tab)。等幅 + Nerd Font icon、CJK は PlemolJP fallback で完全等幅統一。VP Phase A1 default
-pub const TYPOGRAPHY_FAMILY_APP: &str = "'JetBrainsMono Nerd Font Mono', 'JetBrainsMono Nerd Font', 'JetBrains Mono', 'PlemolJP', 'Noto Sans JP', monospace";
-/// Read mode — 読み専用表示 (memory view / chat history / canvas markdown render / log viewer)。PlemolJP の Plex Sans JP + JetBrains Mono Latin で CJK 完全等幅統一
-pub const TYPOGRAPHY_FAMILY_READ: &str = "'PlemolJP', 'Noto Sans JP', 'JetBrainsMono Nerd Font Mono', monospace";
-/// Editor mode (write、default) — textarea / Markdown editor / chat input。iA Writer Duo の Duospace で writer 体験、CJK は PlemolJP
-pub const TYPOGRAPHY_FAMILY_EDITOR: &str = "'iAWriterDuoS Nerd Font Mono', 'iAWriterDuoS Nerd Font', 'iA Writer Duo S', 'PlemolJP', 'Noto Sans JP', monospace";
-/// Editor mode option — 純粋 mono。iA Writer Mono、コード重視 user 向け
-pub const TYPOGRAPHY_FAMILY_EDITOR_MONO: &str = "'iAWriterMonoS', 'iA Writer Mono S', 'PlemolJP', 'Noto Sans JP', monospace";
-/// Editor mode option — semi-proportional。iA Writer Quattro、長文散文 user 向け
-pub const TYPOGRAPHY_FAMILY_EDITOR_QUATTRO: &str = "'iAWriterQuattroS', 'iA Writer Quattro S', 'PlemolJP', 'Noto Sans JP', sans-serif";
-/// Terminal mode — xterm.js (app と同じ stack だが意味的に分離、将来 terminal 専用調整に拡張可)
-pub const TYPOGRAPHY_FAMILY_TERMINAL: &str = "'JetBrainsMono Nerd Font Mono', 'JetBrainsMono Nerd Font', 'JetBrains Mono', 'PlemolJP', 'Noto Sans JP', monospace";
+/// 唯一の root font stack — Gen Interface JP (UI text) + UDEV Gothic 35NF (mono 由来の等幅数字・Nerd icon glyph 供給)。他の family token (mono / display / icon / app / read / editor / terminal 等) は 2026-07 の font 一本化 directive で廃止。末尾 sans-serif は CSS 保険の generic fallback
+pub const TYPOGRAPHY_FAMILY_SANS: &str = "'Gen Interface JP', 'UDEV Gothic 35NF', sans-serif";
 /// Tiny inline icon — text-flow に並ぶ 1em 相当の補助 mark / favicon / dense list の leading icon。
 pub const TYPOGRAPHY_ICON_XS: f32 = 16_f32;
 /// Small icon — button / input / chip の leading mark、 toolbar action。 base 16px text と並ぶ comfortable 比率。

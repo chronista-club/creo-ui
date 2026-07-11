@@ -108,7 +108,7 @@ const rightHeadingStyle: JSX.CSSProperties = {
 const kbdInlineStyle: JSX.CSSProperties = {
   display: 'inline-block',
   padding: '1px 5px',
-  'font-family': 'var(--typography-family-mono)',
+  'font-family': 'var(--typography-family-sans)',
   'font-size': '10px',
   background: 'var(--color-surface-bg-subtle)',
   border: '1px solid var(--editor-mode-region-border)',

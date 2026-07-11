@@ -18,7 +18,7 @@ type AxisRow = {
 const OPERATIONAL: readonly AxisRow[] = [
   {
     system: 'creo-ui-icon (CSS-only)',
-    source: 'Nerd Font glyph (~10k、 typography.family.icon)',
+    source: 'Nerd Font glyph (~10k、 root stack の UDEV Gothic 35NF が供給)',
     fidelity: 'mono color (currentColor)、 font-based、 軽量',
     useCase:
       'inline mark / dense list / button leading icon / dev tool aesthetic — text-flow に並ぶ',

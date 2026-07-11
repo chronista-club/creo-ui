@@ -9,132 +9,10 @@ type ScaleEntry = {
 }
 
 // ============================================================
-// Family — 4 group structure (P-3 articulate、 v0.18 cleanup 後)
+// Family — 唯一の root stack (2026-07 font 一本化 directive)
 // ============================================================
-// (1) MODES        — 場面の identity (3)、 単一 stack mode
-// (2) EDITOR_VARIANTS — editor mode の writer preference 3 派
-// (3) MONO_VARIANTS — mono の visual 派 (4)
-// (4) UTILITY_FAMILIES — 用途固定 stack (4)
-// 合計 14 token、 token 名 / 値は不変。 grouping は articulate のみ。
-
-const MODES = [
-  {
-    name: 'typography.family.app',
-    cssVar: '--typography-family-app',
-    label: 'App (UI chrome)',
-    motivation:
-      'sidebar / button / dialog / tab — dev tool 感、 monospace UI で IDE / terminal で work する場感を最大化',
-    sample: '見出し・ボタン・本文 — Aa Bb 123 漢字仮名',
-  },
-  {
-    name: 'typography.family.read',
-    cssVar: '--typography-family-read',
-    label: 'Read (long-form)',
-    motivation:
-      'memory view / chat history / canvas markdown — PlemolJP 主軸で和文重視、 CJK 完全等幅統一',
-    sample: '読み物・記事・ドキュメント — Aa Bb 123 漢字仮名',
-  },
-  {
-    name: 'typography.family.terminal',
-    cssVar: '--typography-family-terminal',
-    label: 'Terminal',
-    motivation:
-      'xterm.js 用 — app と同 stack だが意味的に分離 (terminal context の identity 表現)、 token 分離は intent expression のため',
-    sample: '$ command --flag arg | grep pattern',
-  },
-] as const
-
-const EDITOR_VARIANTS = [
-  {
-    name: 'typography.family.editor',
-    cssVar: '--typography-family-editor',
-    label: 'Editor (Duo、 default)',
-    motivation:
-      'iA Writer Duo の Duospace — proportional + monospace のハイブリッド、 writer 思想の主軸',
-    sample: 'editor input / markdown / chat — 書く時の感覚 (Duo)',
-  },
-  {
-    name: 'typography.family.editor-mono',
-    cssVar: '--typography-family-editor-mono',
-    label: 'Editor (純 mono)',
-    motivation: 'iA Writer Mono — 純粋 mono 派、 等幅厳守 (code-aware writing)',
-    sample: 'monospace strict — Aa Bb 123 (Mono)',
-  },
-  {
-    name: 'typography.family.editor-quattro',
-    cssVar: '--typography-family-editor-quattro',
-    label: 'Editor (semi-prop)',
-    motivation: 'iA Writer Quattro — semi-proportional、 長文散文 / blog post 向け',
-    sample: 'long-form prose — letter spacing balanced (Quattro)',
-  },
-] as const
-
-const MONO_VARIANTS = [
-  {
-    name: 'typography.family.mono-legible',
-    cssVar: '--typography-family-mono-legible',
-    label: 'Legible (a11y)',
-    motivation:
-      'high-legibility — Atkinson Hyperlegible Mono (Braille Institute)、 低視力 / 小サイズ / long session 最優先',
-    sample: 'a11y mono — Atkinson Hyperlegible',
-  },
-  {
-    name: 'typography.family.mono-retro',
-    cssVar: '--typography-family-mono-retro',
-    label: 'Retro (pixel)',
-    motivation:
-      'bitmap / pixel aesthetic — Departure / GohuFont / 3270 / Terminus、 lo-fi な display',
-    sample: 'retro mono — Departure / Gohu / 3270',
-  },
-  {
-    name: 'typography.family.mono-corporate',
-    cssVar: '--typography-family-mono-corporate',
-    label: 'Corporate',
-    motivation:
-      'corporate / professional tone — IBM Plex Mono 主軸 (Plex Sans/Serif と family 統一可)',
-    sample: 'corporate mono — IBM Plex',
-  },
-  {
-    name: 'typography.family.mono-display',
-    cssVar: '--typography-family-mono-display',
-    label: 'Display (hero)',
-    motivation:
-      'display / heading / cyberpunk — Share Tech Mono / Victor Mono、 banner / hero accent',
-    sample: 'display mono — Share Tech / Victor',
-  },
-] as const
-
-const UTILITY_FAMILIES = [
-  {
-    name: 'typography.family.sans',
-    cssVar: '--typography-family-sans',
-    label: 'Sans (legacy default)',
-    motivation: 'back-compat default sans-serif、 multi-language EN/JA/KO + multi-platform',
-    sample: 'Sans default — legacy',
-  },
-  {
-    name: 'typography.family.mono',
-    cssVar: '--typography-family-mono',
-    label: 'Mono (legacy default)',
-    motivation:
-      'back-compat default monospace、 JetBrainsMono Nerd Font 主軸、 mono- variants の base',
-    sample: 'mono default = JetBrainsMono',
-  },
-  {
-    name: 'typography.family.display',
-    cssVar: '--typography-family-display',
-    label: 'Display (hero font)',
-    motivation: 'hero headline 用 — Creo Sans + system display fallback (sans 系の variant)',
-    sample: 'Hero Headline — display',
-  },
-  {
-    name: 'typography.family.icon',
-    cssVar: '--typography-family-icon',
-    label: 'Icon (Nerd Font glyph)',
-    motivation: 'icon glyph — Symbols Nerd Font (~10k icons) + OS native emoji fallback',
-    sample: '     ',
-  },
-] as const
+// mode 別 family (app / read / editor / terminal) や mono / display / icon の
+// variant token は全廃。 --typography-family-sans 1 本のみが root font stack。
 
 const SIZES: readonly ScaleEntry[] = [
   {
@@ -311,262 +189,48 @@ export default function Typography() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Typography</h1>
         <p class="docs-page-lead">
-          <strong>3 軸構造</strong>: <strong>Mode-based family</strong> (場面の identity)、{' '}
-          <strong>5 tier dimension scale</strong> (size / display / icon を xs / s / m / l / xl)、{' '}
-          <strong>Role-based semantic</strong> (title / body の意味的 alias)。 Family 軸はさらに{' '}
-          <strong>4 group</strong> に articulate: <em>Mode (3)</em> + <em>Editor variants (3)</em> +{' '}
-          <em>Mono variants (4)</em> + <em>Utility (4)</em> = 14 token。 Nerd Font 5 種を base
-          stack、 OS が glyph fallback。
+          <strong>2 軸構造</strong>: <strong>単一 root font stack</strong> (Gen Interface JP + UDEV
+          Gothic 35NF)、 <strong>5 tier dimension scale</strong> (size / display / icon を xs / s /
+          m / l / xl)、 <strong>Role-based semantic</strong> (title / body の意味的 alias)。 2026-07
+          の font 一本化 directive で mode 別 family (app / read / editor / terminal) や mono /
+          display / icon の variant は全廃され、 family token は{' '}
+          <code>--typography-family-sans</code> 1 本に集約された。
         </p>
       </header>
 
       <section>
-        <h2 class="docs-section-title">Mode operational definition — 4 axis で articulate</h2>
+        <h2 class="docs-section-title">Family — 唯一の root font stack</h2>
         <p class="docs-page-helper">
-          Mode は <strong>場所 (Context)</strong> × <strong>内容 (Content)</strong> ×{' '}
-          <strong>活動 (Activity)</strong> × <strong>期間 (Duration)</strong> の 4 axis で
-          operational に articulate。 motivation 1 行 (「dev tool 感」 「writer 思想」) ではなく
-          <strong>観察可能 / 計測可能</strong> な特性で mode を定義することで、 font 選定が{' '}
-          <strong>objective rubric</strong> に基づく path に shift する。 mode 境界は 動詞 + 目的
-          (Scan & navigate / Read & retrieve / Write & think / Monitor & execute) で clearly
-          differentiated。
-        </p>
-        <div class="docs-typo-operational">
-          <table>
-            <thead>
-              <tr>
-                <th>Mode</th>
-                <th>場所 (Context)</th>
-                <th>内容 (Content)</th>
-                <th>活動 (Activity)</th>
-                <th>期間 (Duration)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>
-                  <code>app</code>
-                </th>
-                <td>UI chrome (sidebar / header / dialog / button / tab / menu / toast)</td>
-                <td>短い label / nav item / button text / form input / status。 単行〜数行</td>
-                <td>
-                  <strong>Scan &amp; navigate</strong> — UI element を識別して操作 (reading ではなく
-                  識別 + 動作)
-                </td>
-                <td>1 scan 1-5 sec、 repeat 高頻度。 疲労不問、 識別性最優先</td>
-              </tr>
-              <tr>
-                <th>
-                  <code>read</code>
-                </th>
-                <td>memory view / chat history / canvas markdown / log viewer / 文書 page</td>
-                <td>long-form prose、 markdown rendered、 CJK + ASCII 混在、 段落構造あり</td>
-                <td>
-                  <strong>Read &amp; retrieve</strong> — 内容理解 / 過去 memory 取り戻し /
-                  思考しながら読む
-                </td>
-                <td>
-                  連続 5-30 min、 場合により 1 hour+。 <strong>low fatigue tolerance</strong>{' '}
-                  (疲労許容ゼロ)
-                </td>
-              </tr>
-              <tr>
-                <th>
-                  <code>editor</code>
-                </th>
-                <td>textarea / Markdown editor / chat input / multi-line text input</td>
-                <td>書きかけの prose (markdown + code fragments)、 CJK + ASCII</td>
-                <td>
-                  <strong>Write &amp; think</strong> — 文章組み立て / 言葉選び / code を書く / 編集
-                </td>
-                <td>1 sec 〜 1 hour、 burst も continuous も。 思考リズム同期が要</td>
-              </tr>
-              <tr>
-                <th>
-                  <code>terminal</code>
-                </th>
-                <td>xterm.js / dev console / log streaming surface</td>
-                <td>
-                  command output / ANSI escape / fixed-grid table / stack trace / logs (意味的に
-                  <strong>debug payload</strong>)
-                </td>
-                <td>
-                  <strong>Monitor &amp; execute</strong> — output 観察 / command 打つ / debug (誤読
-                  = debug failure、 stake 高)
-                </td>
-                <td>burst (sec) or continuous monitoring (min/hour)</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section>
-        <h2 class="docs-section-title">派生 font 要件 — operational から rubric へ</h2>
-        <p class="docs-page-helper">
-          各 mode の 4 axis から自然に派生する font 要件。 「この font は適切か?」 の判断を rubric
-          ベースで answer 可能にする (主観的 「好み」 から framework decision へ shift)。
-        </p>
-        <dl class="docs-typo-requirements">
-          <dt>
-            <code>app</code>
-          </dt>
-          <dd>
-            等幅 (UI rhythm 確保) + 識別性 (i / l / 1 / 0 区別) + Nerd Font icon co-exist + dev tool
-            aesthetic
-          </dd>
-          <dt>
-            <code>read</code>
-          </dt>
-          <dd>和文 + ASCII 等幅統一 + 30 min readable + 低疲労 + line-height 1.5+ で快適</dd>
-          <dt>
-            <code>editor</code>
-          </dt>
-          <dd>
-            writer 体験 deepening + 思考リズム同期 + char distinction + author preference 切替 (Duo
-            / Mono / Quattro)
-          </dd>
-          <dt>
-            <code>terminal</code>
-          </dt>
-          <dd>
-            完全等幅 (column alignment 必須) + ANSI color reproduction integrity + char distinction
-            debug-critical + grid stable
-          </dd>
-        </dl>
-      </section>
-
-      <section>
-        <h2 class="docs-section-title">editor と terminal の overlap について</h2>
-        <p class="docs-page-helper">
-          editor と terminal は{' '}
-          <strong>font stack の構造 (mono + Nerd Font + CJK fallback) が近い</strong> が、{' '}
-          <strong>cognitive activity と stake が完全に異なる</strong> ため独立 mode として保ちます:
-        </p>
-        <ul class="docs-bullet-list">
-          <li>
-            <strong>editor</strong> = write (slow, creative, 思考リズム同期、 author 視点)
-          </li>
-          <li>
-            <strong>terminal</strong> = monitor (fast, reactive, ANSI / fixed-grid integrity 必須、
-            consumer 視点)
-          </li>
-        </ul>
-        <p>
-          Mode が orthogonal に articulate される時は font stack が overlap しても{' '}
-          <strong>mode の identity は保つ</strong> が原則 (「font stack ベース」 ではなく
-          「人の状態ベース」 で mode を分ける)。 console / terminal の特殊性は{' '}
-          <strong>
-            ANSI escape integrity / fixed-grid column alignment / debug-critical char distinction
-          </strong>{' '}
-          という他 mode に存在しない要件群で articulate されます。
-        </p>
-      </section>
-
-      <section>
-        <h2 class="docs-section-title">(1) Mode-based family — 場面の identity (3 mode)</h2>
-        <p class="docs-page-helper">
-          「
-          <strong>
-            書く時は writer 思想 (iA Writer)、 読む時は和文重視 (PlemolJP)、 UI は dev tool 感
-            (JetBrainsMono)
-          </strong>
-          」 を font swap で UX に乗せる。 単一 stack の 3 mode (App / Read / Terminal) は固有の
-          font stack を持ち、 場面に応じて切替。 「書く」 場面は editor mode で 3 派 (Duo / Mono /
-          Quattro) を持つため別 group (下記 (2)) で articulate。
+          <strong>Gen Interface JP</strong> (UI text) + <strong>UDEV Gothic 35NF</strong> (mono
+          由来の等幅数字・ Nerd Font icon glyph 供給) の 2 段 stack + generic fallback。 UDEV Gothic
+          35NF は Nerd Font glyph を内蔵するため、 icon glyph も同一 stack から供給される (専用 icon
+          family は不要)。 mode / variant による font swap は廃止し、 app 全体を 1 font で統一する。
         </p>
         <div class="docs-typo-table">
-          <For each={MODES}>
-            {(f) => (
-              <article class="docs-typo-row">
-                <div class="docs-typo-meta">
-                  <code>{f.name}</code>
-                  <span>{f.label}</span>
-                  <small>{f.motivation}</small>
-                </div>
-                <div class="docs-typo-sample" style={{ 'font-family': `var(${f.cssVar})` }}>
-                  {f.sample}
-                </div>
-              </article>
-            )}
-          </For>
+          <article class="docs-typo-row">
+            <div class="docs-typo-meta">
+              <code>typography.family.sans</code>
+              <span>Root stack (唯一)</span>
+              <small>
+                'Gen Interface JP', 'UDEV Gothic 35NF', sans-serif — UI text + 等幅数字 + Nerd icon
+                glyph を 1 stack で
+              </small>
+            </div>
+            <div
+              class="docs-typo-sample"
+              style={{ 'font-family': 'var(--typography-family-sans)' }}
+            >
+              見出し・本文・コード — Aa Bb 123 漢字仮名
+            </div>
+          </article>
         </div>
-      </section>
-
-      <section>
-        <h2 class="docs-section-title">(2) Editor mode — writer preference 3 派</h2>
         <p class="docs-page-helper">
-          editor mode は「<strong>writer 思想</strong>」 = textarea / Markdown editor / chat input
-          で「書く快感」 を提供。 writer の preference に応じて 3 派から choose:{' '}
-          <strong>Duo</strong> (Duospace、 default) / <strong>Mono</strong> (純等幅) /{' '}
-          <strong>Quattro</strong> (semi-proportional)。 同じ「書く場面」 だが文字感を切替できる。
+          <code>--typography-family-sans</code> は <code>:root</code> に emit される唯一の family
+          custom property。 <code>code</code> / <code>pre</code> / <code>kbd</code> など UA が
+          monospace を強制する要素だけは、 明示的に <code>var(--typography-family-sans)</code>{' '}
+          を指定して UA 既定を打ち消す (UDEV Gothic 35NF が等幅を供給するため見た目は root stack
+          に統一される)。 その他の要素は <code>:root</code> から継承する。
         </p>
-        <div class="docs-typo-table">
-          <For each={EDITOR_VARIANTS}>
-            {(f) => (
-              <article class="docs-typo-row">
-                <div class="docs-typo-meta">
-                  <code>{f.name}</code>
-                  <span>{f.label}</span>
-                  <small>{f.motivation}</small>
-                </div>
-                <div class="docs-typo-sample" style={{ 'font-family': `var(${f.cssVar})` }}>
-                  {f.sample}
-                </div>
-              </article>
-            )}
-          </For>
-        </div>
-      </section>
-
-      <section>
-        <h2 class="docs-section-title">(3) Mono variants — 見た目切替の 4 派</h2>
-        <p class="docs-page-helper">
-          mono (= 等幅) の <strong>visual 派</strong>。 用途 / 雰囲気 / a11y 要件に応じて switch。
-          orthogonal axis で、 mode (場面) とは独立に選択する design。 typography token は consumer
-          が <strong>意図 = font stack</strong> mapping を articulate するための語彙。
-        </p>
-        <div class="docs-typo-table">
-          <For each={MONO_VARIANTS}>
-            {(f) => (
-              <article class="docs-typo-row">
-                <div class="docs-typo-meta">
-                  <code>{f.name}</code>
-                  <span>{f.label}</span>
-                  <small>{f.motivation}</small>
-                </div>
-                <div class="docs-typo-sample" style={{ 'font-family': `var(${f.cssVar})` }}>
-                  {f.sample}
-                </div>
-              </article>
-            )}
-          </For>
-        </div>
-      </section>
-
-      <section>
-        <h2 class="docs-section-title">(4) Utility families — 用途固定の 4 種</h2>
-        <p class="docs-page-helper">
-          特定用途に縛られた stack。 <code>sans</code> / <code>mono</code> は legacy default
-          (back-compat)、 <code>display</code> は hero / headline、 <code>icon</code> は Nerd Font
-          glyph。 mode 軸 / variant 軸とは別の <strong>用途固定</strong> 専用 token。
-        </p>
-        <div class="docs-typo-table">
-          <For each={UTILITY_FAMILIES}>
-            {(f) => (
-              <article class="docs-typo-row">
-                <div class="docs-typo-meta">
-                  <code>{f.name}</code>
-                  <span>{f.label}</span>
-                  <small>{f.motivation}</small>
-                </div>
-                <div class="docs-typo-sample" style={{ 'font-family': `var(${f.cssVar})` }}>
-                  {f.sample}
-                </div>
-              </article>
-            )}
-          </For>
-        </div>
       </section>
 
       <section>
@@ -623,8 +287,9 @@ export default function Typography() {
       <section>
         <h2 class="docs-section-title">Icon scale (5 tier)</h2>
         <p class="docs-page-helper">
-          Icon font / emoji の visual size。 typography size とは別 scale (icon は visual mass、
-          text は readable height)。 empty-state default は <code>l</code> = 64px。
+          Icon glyph の visual size。 typography size とは別 scale (icon は visual mass、 text は
+          readable height)。 glyph は root stack の UDEV Gothic 35NF (Nerd Font) が供給。
+          empty-state default は <code>l</code> = 64px。
         </p>
         <div class="docs-typo-sizes">
           <For each={ICONS}>
@@ -636,7 +301,7 @@ export default function Typography() {
                   class="docs-typo-size-sample"
                   style={{
                     'font-size': `var(${i.cssVar})`,
-                    'font-family': 'var(--typography-family-icon)',
+                    'font-family': 'var(--typography-family-sans)',
                     'line-height': '1',
                   }}
                 >
@@ -728,9 +393,8 @@ export default function Typography() {
       <section>
         <h2 class="docs-section-title">Override — consumer が任意の local font を乗せる</h2>
         <p class="docs-page-helper">
-          14 family は <code>--typography-family-&#123;name&#125;</code> という CSS custom property
-          として <code>:root</code> に emit される。 consumer は{' '}
-          <strong>CSS cascade で override 可能</strong>= creo-ui が認める{' '}
+          唯一の family token <code>--typography-family-sans</code> は <code>:root</code> に emit
+          される。 consumer は <strong>CSS cascade で override 可能</strong> = creo-ui が認める{' '}
           <em>first-class supported path</em>。 token を fork する必要は無く、 web-hosted font asset
           を creo-ui に同梱する path も取らない。 詳細は{' '}
           <a
@@ -743,9 +407,9 @@ export default function Typography() {
           (TY-1 〜 TY-5)。
         </p>
         <p class="docs-page-helper">
-          <strong>prepend pattern を推奨</strong>: custom font を chain 先頭に、 creo-ui defaults を
-          fallback として残す。 font 不在環境 (= 別 OS / install 忘れ) で既存 fallback (Nerd Font /
-          PlemolJP / system) に grace degrade する。
+          <strong>prepend pattern を推奨</strong>: custom font を chain 先頭に、 creo-ui default
+          (Gen Interface JP + UDEV Gothic 35NF) を fallback として残す。 font 不在環境 (= 別 OS /
+          install 忘れ) で既存 fallback に grace degrade する。
         </p>
 
         <p class="docs-page-helper">
@@ -754,37 +418,26 @@ export default function Typography() {
         <pre class="docs-code">
           <code>{`/* consumer 側 (例: creo-web の src/index.css) */
 :root {
-  --typography-family-app: 'Mizolet', var(--typography-family-app);
+  --typography-family-sans: 'Mizolet', var(--typography-family-sans);
 }`}</code>
         </pre>
 
         <p class="docs-page-helper">
-          <strong>(b) Multi-family alignment</strong> — read と editor を同 font に揃える
-        </p>
-        <pre class="docs-code">
-          <code>{`:root {
-  --typography-family-read: 'Iosevka', var(--typography-family-read);
-  --typography-family-editor: 'Iosevka', var(--typography-family-editor);
-}`}</code>
-        </pre>
-
-        <p class="docs-page-helper">
-          <strong>(c) Theme-scoped</strong> — 特定 theme でだけ font 切替 (theme と typography は
+          <strong>(b) Theme-scoped</strong> — 特定 theme でだけ font 切替 (theme と typography は
           独立 token だが、 cascade selector で組み合わせれば theme-aware typography が可能)
         </p>
         <pre class="docs-code">
           <code>{`[data-theme="oldschool-dark"] {
-  --typography-family-app: var(--typography-family-mono-retro);
+  --typography-family-sans: 'Departure Mono', var(--typography-family-sans);
 }`}</code>
         </pre>
 
         <p class="docs-page-helper">
-          <strong>(d) Subtree-scoped</strong> — 特定 workspace / section のみ
+          <strong>(c) Subtree-scoped</strong> — 特定 workspace / section のみ
         </p>
         <pre class="docs-code">
           <code>{`.atelier-workspace {
-  --typography-family-app: 'JetBrainsMono Nerd Font Mono', var(--typography-family-app);
-  --typography-family-editor: 'iA Writer Quattro S', var(--typography-family-editor);
+  --typography-family-sans: 'iA Writer Quattro S', var(--typography-family-sans);
 }`}</code>
         </pre>
       </section>

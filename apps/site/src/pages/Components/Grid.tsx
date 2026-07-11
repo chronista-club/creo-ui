@@ -25,7 +25,7 @@ export default function Grid() {
     <div
       class="creo-card"
       data-padding="s"
-      style={{ 'text-align': 'center', 'font-family': 'var(--typography-family-mono)' }}
+      style={{ 'text-align': 'center', 'font-family': 'var(--typography-family-sans)' }}
     >
       {text}
     </div>
