@@ -4,7 +4,7 @@ import {
   bind,
   select,
   signalTarget,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 
@@ -244,7 +244,7 @@ export default function Tabs() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.tabs-editor',
+              localStorageNamespace: 'creo-ui-docs.tabs-editor',
             }}
           >
             <TabsEditorDemo />

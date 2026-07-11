@@ -1,10 +1,10 @@
 /**
- * creoui — Avatar component
+ * creo-ui — Avatar component
  *
  * 円形 (or square) の image / initials container。
  *
  * Spec: docs/components/avatar.md
- * Token: creoui/tokens.css (必須)
+ * Token: creo-ui/tokens.css (必須)
  */
 
 .creo-avatar {

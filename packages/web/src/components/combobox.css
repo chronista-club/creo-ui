@@ -1,10 +1,10 @@
 /**
- * creoui — Combobox (`<input list>` + `<datalist>`)
+ * creo-ui — Combobox (`<input list>` + `<datalist>`)
  *
  * native datalist を使う小さい visual cue 追加のみ。`.creo-input` と組合せて使用。
  *
  * Spec: docs/components/combobox.md
- * Token: creoui/tokens.css (必須)
+ * Token: creo-ui/tokens.css (必須)
  */
 
 .creo-combobox {

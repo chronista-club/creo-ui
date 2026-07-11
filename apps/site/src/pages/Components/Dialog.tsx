@@ -5,7 +5,7 @@ import {
   select,
   signalTarget,
   string,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { type JSX, createSignal } from 'solid-js'
 
@@ -247,7 +247,7 @@ export default function Dialog() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.dialog-editor',
+              localStorageNamespace: 'creo-ui-docs.dialog-editor',
             }}
           >
             <DialogEditorDemo />
@@ -280,7 +280,7 @@ export default function Dialog() {
         <p class="docs-page-helper">
           詳細 spec:{' '}
           <a
-            href="https://github.com/chronista-club/creoui/blob/main/docs/components/dialog.md"
+            href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/dialog.md"
             target="_blank"
             rel="noopener noreferrer"
           >

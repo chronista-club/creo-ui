@@ -1,6 +1,6 @@
 # Stepper
 
-> creoui MVP component. 多段プロセス (onboarding / checkout / wizard) の進行状況を視覚化。
+> creo-ui MVP component. 多段プロセス (onboarding / checkout / wizard) の進行状況を視覚化。
 
 ## Purpose
 

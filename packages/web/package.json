@@ -1,7 +1,7 @@
 {
-  "name": "creoui",
-  "version": "0.24.2",
-  "description": "creoui — Web package (design tokens + components.css + Solid shell/control primitives)",
+  "name": "@chronista-club/creo-ui",
+  "version": "0.24.4",
+  "description": "creo-ui — Web package (design tokens + components.css + Solid shell/control primitives)",
   "type": "module",
   "main": "./dist/shells/index.js",
   "module": "./dist/shells/index.js",
@@ -28,20 +28,20 @@
   "files": ["dist", "README.md"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/chronista-club/creoui.git",
+    "url": "https://github.com/chronista-club/creo-ui.git",
     "directory": "packages/web"
   },
   "bugs": {
-    "url": "https://github.com/chronista-club/creoui/issues"
+    "url": "https://github.com/chronista-club/creo-ui/issues"
   },
-  "homepage": "https://github.com/chronista-club/creoui#readme",
+  "homepage": "https://github.com/chronista-club/creo-ui#readme",
   "keywords": [
     "design-system",
     "css-custom-properties",
     "design-tokens",
     "solid-js",
     "layout-primitives",
-    "creoui"
+    "creo-ui"
   ],
   "publishConfig": {
     "access": "public"

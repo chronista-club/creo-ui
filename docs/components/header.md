@@ -1,6 +1,6 @@
 # Header
 
-> creoui MVP component. app / marketing 用の page top shell。
+> creo-ui MVP component. app / marketing 用の page top shell。
 
 ## Purpose
 
@@ -107,7 +107,7 @@ page の最上部で "どこにいるか / 誰の製品か / 何ができるか"
 
 <!-- Marketing header -->
 <header class="creo-header" data-variant="marketing">
-  <a href="/" class="creo-header-logo">creoui</a>
+  <a href="/" class="creo-header-logo">creo-ui</a>
   <nav class="creo-header-nav">
     <a href="#features">Features</a>
     <a href="#pricing">Pricing</a>

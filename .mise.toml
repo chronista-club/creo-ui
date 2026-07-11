@@ -1,4 +1,4 @@
-## creoui — mise 設定
+## creo-ui — mise 設定
 ##
 ## 開発環境 (bun) と task 群を mise 配下で統一管理する。
 ## 使い方:
@@ -28,7 +28,7 @@ run = [
 ]
 
 [tasks."build:swift"]
-description = "Build Swift tokens (committed to packages/swift/Sources/Creoui/Generated/)"
+description = "Build Swift tokens (committed to packages/swift/Sources/CreoUI/Generated/)"
 run = "bun x style-dictionary build --config transforms/config.swift.js"
 
 [tasks."build:rust"]
@@ -36,7 +36,7 @@ description = "Build Rust tokens (committed to packages/rust/src/generated/)"
 run = "bun x style-dictionary build --config transforms/config.rust.js"
 
 [tasks.dev]
-description = "Run the creoui site dev server (apps/site)"
+description = "Run the creo-ui site dev server (apps/site)"
 dir = "apps/site"
 run = [
   "bun install --silent",

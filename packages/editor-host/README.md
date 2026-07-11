@@ -1,6 +1,6 @@
-# @chronista-club/creoui-editor-host
+# @chronista-club/creo-ui-editor-host
 
-creoui — Editor Mode reference runtime for SolidJS。**Live design surface** として、デザイナ / エンジニア / AI agent が同じ app を rebuild なしで mutate できる paradigm を提供。
+creo-ui — Editor Mode reference runtime for SolidJS。**Live design surface** として、デザイナ / エンジニア / AI agent が同じ app を rebuild なしで mutate できる paradigm を提供。
 
 - **Target × Control 2 軸直交設計** + `bind()` 1 本で field を宣言
 - **DevTools Console REPL** (`window.creoEditor.slider(...)` で即 slider 追加)
@@ -10,7 +10,7 @@ creoui — Editor Mode reference runtime for SolidJS。**Live design surface** �
 - **Export to patch** (JSON / YAML / CSS / CSS-patch の serializer)
 - **AI pair design** (claude-in-chrome MCP + `window.creoEditor` で Claude が直接 field 操作)
 
-[docs/design/editor-mode.md](https://github.com/chronista-club/creoui/blob/main/docs/design/editor-mode.md) (D-1〜D-12) の protocol を実装。
+[docs/design/editor-mode.md](https://github.com/chronista-club/creo-ui/blob/main/docs/design/editor-mode.md) (D-1〜D-12) の protocol を実装。
 
 ## v0.5.0 changes (2026-05-06)
 
@@ -25,7 +25,7 @@ import type {
   EditorField,         // field 宣言用
   EditorFieldType,
   EditorFieldConstraints,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 ```
 
 ### `exposeConsole` の default が DEV-gated に変更 (consumer-actionable)
@@ -46,16 +46,16 @@ CLAUDE.md EH-6 規定 (`Console REPL を production で無条件に expose し�
 ## インストール
 
 ```bash
-bun add @chronista-club/creoui-editor-host creoui solid-js
+bun add @chronista-club/creo-ui-editor-host creo-ui solid-js
 ```
 
-Peer: `solid-js ^1.9.0`。`creoui/tokens.css` を app で import しておくと、Editor Layer が `--editor-mode-*` / `--color-*` token を consume する。
+Peer: `solid-js ^1.9.0`。`creo-ui/tokens.css` を app で import しておくと、Editor Layer が `--editor-mode-*` / `--color-*` token を consume する。
 
 ## Quick start
 
 ```tsx
 import { createSignal } from 'solid-js'
-import 'creoui/tokens.css'
+import '@chronista-club/creo-ui/tokens.css'
 import {
   bind,
   cssVarNumberTarget,
@@ -68,7 +68,7 @@ import {
   EditorLayer,
   useEditorHost,
   useEditorSelectable,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 
 export default function App() {
   return (
@@ -259,7 +259,7 @@ Editor Layer は Content layer の座標・可視性を奪わない:
 
 ## AI agent ready (D-10)
 
-`useEditorHost().mcp` に `listFields` / `getValue` / `setValue` / `mode` / `enable` / `disable` を expose。Phase 2b の `@chronista-club/creoui-editor-host-mcp` (予定) がこれを stdio MCP server として公開、Claude 等から直接 field を操作できる。
+`useEditorHost().mcp` に `listFields` / `getValue` / `setValue` / `mode` / `enable` / `disable` を expose。Phase 2b の `@chronista-club/creo-ui-editor-host-mcp` (予定) がこれを stdio MCP server として公開、Claude 等から直接 field を操作できる。
 
 ```tsx
 const host = useEditorHost()
@@ -338,10 +338,10 @@ Accessor として読み、`.set()` で書き、`.selectable()` で selection re
 
 ### Theme meta
 
-8 theme (4 family × light/dark) の公式 meta は `creoui@0.1.0` に同梱。consumer は `THEME_INFO[themeId]` で取得。
+8 theme (4 family × light/dark) の公式 meta は `creo-ui@0.1.0` に同梱。consumer は `THEME_INFO[themeId]` で取得。
 
 ```tsx
-import { THEME_INFO, THEME_IDS, DEFAULT_THEME_ID, SWATCH_ROWS } from '@chronista-club/creoui-editor-host'
+import { THEME_INFO, THEME_IDS, DEFAULT_THEME_ID, SWATCH_ROWS } from '@chronista-club/creo-ui-editor-host'
 ```
 
 ## ファイル構成
@@ -378,4 +378,4 @@ src/
 
 ## License
 
-Apache-2.0 — [LICENSE](https://github.com/chronista-club/creoui/blob/main/LICENSE)
+Apache-2.0 — [LICENSE](https://github.com/chronista-club/creo-ui/blob/main/LICENSE)

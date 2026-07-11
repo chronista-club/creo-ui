@@ -1,7 +1,30 @@
 # Changelog
 
-本ファイルは creoui の version 別変更履歴を記録する。
+本ファイルは creo-ui の version 別変更履歴を記録する。
 package 別 version (web / swift / rust / editor-host) は独立に bump される — 該当 package の `package.json` / `Package.swift` / `Cargo.toml` を SSOT とする。
+
+> **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
+
+## Unreleased — `creoui` → `creo-ui` へ全面 rename
+
+「繋げた `creoui` は可読性が低い」という owner 判断により、identifier を **`creo-ui`** に統一 (2026-05 に `creo-ui` → `creoui` へ寄せた [v0.6 系の決定](#) を巻き戻す形)。言語制約に合わせゾーン別に変換:
+
+- **npm 公開名**: web は `creoui` → **`@chronista-club/creo-ui`**（org scope）、editor-host は `@chronista-club/creoui-editor-host` → **`@chronista-club/creo-ui-editor-host`**。**unscoped `creo-ui` は取得不可**だった — npm の類似名ガードが既存 `creoui` に似すぎと判定して E403、かつ `creoui@0.24.2` は 72h 超で unpublish できずガードが恒久化するため。よって scope 化で回避（scoped は namespace 分離でガード対象外）。`creoui-frame` / `vision` / `md-view` / `icons-web` は元々 npm 未 publish（今回対象外）。**consumer に breaking**（scoped import path + 依存名の変更）。
+- **Swift**: module / target / type を `Creoui` → **`CreoUI`** (ハイフンは Swift identifier 不可)。`CreouiTokens` → `CreoUITokens`、`Sources/Creoui/` → `Sources/CreoUI/`。
+- **Rust**: crate `creoui` → **`creo-ui`** (package 名)、コード identifier は `creo_ui` (`use creo_ui::tokens`)。
+- **CSS class**: `.creoui-icon` → `.creo-ui-icon` (consumer markup の breaking)。
+- **transforms / docs / CI**: `creoui` 表記を全て `creo-ui` に統一。generated (Tokens.swift / tokens.rs) は再生成。
+- 外部 `creo-memories/packages/creoui` 参照は別 project の実体のため**変更しない**。
+
+### 実施状況 (2026-07-11)
+
+- ✅ GitHub repo `chronista-club/creoui` → **`creo-ui`** に rename 済み（旧 URL は redirect）。
+- ✅ npm publish: **`@chronista-club/creo-ui@0.24.4`**（web、`0.24.2` を bump — `web-v0.24.3` は unscoped で E403 のため scope 化して `web-v0.24.4` で成功） / **`@chronista-club/creo-ui-editor-host@0.5.2`**。
+- ✅ 旧 `creoui` を `npm deprecate`（"renamed to 'creo-ui'"）。
+- ⏳ 旧 `@chronista-club/creoui-editor-host` の deprecate は未実施。
+- ⏳ 他 consumer repo（creo-memories / vantage-point-portal 等）の import を `@chronista-club/creo-ui` へ載せ替えは別途。
+
+consumer の import 例: `import '@chronista-club/creo-ui/tokens.css'` / `import { CUButton } from '@chronista-club/creo-ui/controls'`。
 
 ## v0.24.2 (2026-06-18) — `CUButton` に `loading` + `as`(polymorphic) を追加
 

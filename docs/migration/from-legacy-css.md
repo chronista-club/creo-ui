@@ -1,6 +1,6 @@
-# Migration guide — legacy CSS → creoui
+# Migration guide — legacy CSS → creo-ui
 
-flat 1 階層 (`--color-primary`) / Tailwind 風 / Tabler 風の token を使ってる既存プロジェクトを、creoui の DTCG 3 階層 token に段階移行するための手引き。
+flat 1 階層 (`--color-primary`) / Tailwind 風 / Tabler 風の token を使ってる既存プロジェクトを、creo-ui の DTCG 3 階層 token に段階移行するための手引き。
 
 CREO-103 (Creo Memories UI Foundation Migration) の Phase 1 ベースに汎用化。
 
@@ -19,16 +19,16 @@ Phase C: shim 削除 → 完全移行完了
 ### 1. package install
 
 ```bash
-bun add creoui@^0.3.0
+bun add creo-ui@^0.3.0
 ```
 
 ### 2. import 順を整備
 
 ```ts
 // apps/<your-app>/src/main.ts or entry
-import 'creoui/tokens.css'       // 1. SSOT token (必須、先頭)
-import 'creoui/token-shim.css'   // 2. transitional alias (Phase A/B 間)
-import 'creoui/components.css'   // 3. (optional) Button/Card/Input/Header
+import '@chronista-club/creo-ui/tokens.css'       // 1. SSOT token (必須、先頭)
+import '@chronista-club/creo-ui/token-shim.css'   // 2. transitional alias (Phase A/B 間)
+import '@chronista-club/creo-ui/components.css'   // 3. (optional) Button/Card/Input/Header
 import './styles/app.css'              // 4. app 固有 CSS (既存、unchanged)
 ```
 
@@ -96,7 +96,7 @@ PR 6: console/     (console REPL, editor-host chrome)
   --color-bg: #0f1419;
 }
 
-/* AFTER — creoui/tokens.css が供給するので空、または DTCG 参照のみ */
+/* AFTER — creo-ui/tokens.css が供給するので空、または DTCG 参照のみ */
 @theme {
   /* 必要な追加 token があればここで定義 */
 }
@@ -109,9 +109,9 @@ PR 6: console/     (console REPL, editor-host chrome)
 ### 1. token-shim.css の import を削除
 
 ```ts
-import 'creoui/tokens.css'
-// import 'creoui/token-shim.css'   ← 削除
-import 'creoui/components.css'
+import '@chronista-club/creo-ui/tokens.css'
+// import '@chronista-club/creo-ui/token-shim.css'   ← 削除
+import '@chronista-club/creo-ui/components.css'
 import './styles/app.css'
 ```
 
@@ -135,11 +135,11 @@ A. `tailwind.config.js` の `theme.colors.primary` が古い hex を指してな
 A. Mermaid は CSS var を直接読まないので、`mermaid.initialize({ theme: 'base', themeVariables: { primaryColor: 'var(--color-brand-primary)' } })` ではなく `getComputedStyle(document.documentElement).getPropertyValue('--color-brand-primary')` で resolve してから渡す必要あり。theme 切替時に再初期化。
 
 ### Q. Editor Mode (editor-host) と併用できる?
-A. できる。`@chronista-club/creoui-editor-host` は `creoui` の token に乗るだけなので、shim + editor-host の同居 OK。consumer は Editor Mode で変えたい token を `bind()` 経由で操作、shim は alias 層として常駐。
+A. できる。`@chronista-club/creo-ui-editor-host` は `creo-ui` の token に乗るだけなので、shim + editor-host の同居 OK。consumer は Editor Mode で変えたい token を `bind()` 経由で操作、shim は alias 層として常駐。
 
 ## 関連
 
 - [CREO-103](https://linear.app/chronista/issue/CREO-103) Creo Memories migration Epic
-- [CREO-84](https://linear.app/chronista/issue/CREO-84) creoui Design System Epic
+- [CREO-84](https://linear.app/chronista/issue/CREO-84) creo-ui Design System Epic
 - [CREO-87 / CREO-88](https://linear.app/chronista/issue/CREO-87) component spec + impl
 - [docs/components/README.md](../components/README.md) — MVP component index

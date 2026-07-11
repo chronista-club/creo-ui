@@ -1,6 +1,6 @@
 # Button
 
-> creoui MVP component. CSS クラス + data attribute で variant / size / state を表現。
+> creo-ui MVP component. CSS クラス + data attribute で variant / size / state を表現。
 > Framework agnostic (React / Vue / Solid / 生 HTML で動く)。
 
 ## Purpose

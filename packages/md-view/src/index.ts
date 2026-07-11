@@ -1,5 +1,5 @@
 /**
- * creoui-md-view — public API
+ * creo-ui-md-view — public API
  *
  * SolidJS Markdown renderer consuming creo-views/md (WASM mdast parser).
  */

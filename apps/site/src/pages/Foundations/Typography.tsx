@@ -585,7 +585,7 @@ export default function Typography() {
                   {s.def && ' (default)'}
                 </span>
                 <span class="docs-typo-size-sample" style={{ 'font-size': `var(${s.cssVar})` }}>
-                  creoui — {s.use}
+                  creo-ui — {s.use}
                 </span>
               </div>
             )}
@@ -730,11 +730,11 @@ export default function Typography() {
         <p class="docs-page-helper">
           14 family は <code>--typography-family-&#123;name&#125;</code> という CSS custom property
           として <code>:root</code> に emit される。 consumer は{' '}
-          <strong>CSS cascade で override 可能</strong>= creoui が認める{' '}
+          <strong>CSS cascade で override 可能</strong>= creo-ui が認める{' '}
           <em>first-class supported path</em>。 token を fork する必要は無く、 web-hosted font asset
-          を creoui に同梱する path も取らない。 詳細は{' '}
+          を creo-ui に同梱する path も取らない。 詳細は{' '}
           <a
-            href="https://github.com/chronista-club/creoui/blob/main/docs/design/typography-system.md"
+            href="https://github.com/chronista-club/creo-ui/blob/main/docs/design/typography-system.md"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -743,7 +743,7 @@ export default function Typography() {
           (TY-1 〜 TY-5)。
         </p>
         <p class="docs-page-helper">
-          <strong>prepend pattern を推奨</strong>: custom font を chain 先頭に、 creoui defaults を
+          <strong>prepend pattern を推奨</strong>: custom font を chain 先頭に、 creo-ui defaults を
           fallback として残す。 font 不在環境 (= 別 OS / install 忘れ) で既存 fallback (Nerd Font /
           PlemolJP / system) に grace degrade する。
         </p>

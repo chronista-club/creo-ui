@@ -1,4 +1,4 @@
-# creoui demo stage — local Mac で公式 site (apps/site) を podman で配信する。
+# creo-ui demo stage — local Mac で公式 site (apps/site) を podman で配信する。
 #
 # 使い方:
 #   bun run site:up     # site をビルド → image build → 起動 (-> http://localhost:8080)
@@ -8,7 +8,7 @@
 # 理由は apps/site/Containerfile のコメント参照。
 services:
   site:
-    container_name: creoui-site
+    container_name: creo-ui-site
     build:
       context: ./apps/site
       dockerfile: Containerfile

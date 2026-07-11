@@ -1,6 +1,6 @@
 # Form controls: Checkbox / Radio / Switch
 
-> creoui MVP form primitives。native HTML `<input>` を Creo token で整えた minimal styling。
+> creo-ui MVP form primitives。native HTML `<input>` を Creo token で整えた minimal styling。
 
 ## Purpose
 

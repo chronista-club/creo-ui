@@ -6,9 +6,9 @@ import {
   select,
   signalTarget,
   string,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
-import { CUButton } from 'creoui/controls'
 import { createSignal } from 'solid-js'
 
 const PROPS = [
@@ -131,7 +131,7 @@ export default function Button() {
 
       <section>
         <h2 class="docs-section-title">
-          SolidJS API — <code>creoui/controls</code>
+          SolidJS API — <code>creo-ui/controls</code>
         </h2>
         <p class="docs-page-lead">
           素の <code>&lt;button class="creo-btn"&gt;</code> を type-safe に wrap した{' '}
@@ -147,7 +147,7 @@ export default function Button() {
           <CUButtonReactiveDemo />
         </div>
         <pre class="docs-code">
-          <code>{`import { CUButton } from 'creoui/controls'
+          <code>{`import { CUButton } from '@chronista-club/creo-ui/controls'
 
 // variant を signal で切替 → 即座に追従 (再描画で固まらない)
 const [primary, setPrimary] = createSignal(true)
@@ -260,7 +260,7 @@ const [primary, setPrimary] = createSignal(true)
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.button-editor',
+              localStorageNamespace: 'creo-ui-docs.button-editor',
             }}
           >
             <ButtonEditorDemo />
@@ -289,7 +289,7 @@ const [primary, setPrimary] = createSignal(true)
         <p class="docs-page-helper">
           詳細 spec:{' '}
           <a
-            href="https://github.com/chronista-club/creoui/blob/main/docs/components/button.md"
+            href="https://github.com/chronista-club/creo-ui/blob/main/docs/components/button.md"
             target="_blank"
             rel="noopener noreferrer"
           >

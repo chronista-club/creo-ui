@@ -1,7 +1,7 @@
-# Principal Layout — creoui Edge Ring + Rail System
+# Principal Layout — creo-ui Edge Ring + Rail System
 
-**Status**: creoui 側 (P-0〜P-1 + P-3) 実装済 — Edge Ring + Rail primitive 本体 (PR #48) + Z 軸 layer add-on。P-2 (creo-web consumer 移行) は creo-memories lead に handoff 済 (`mem_1CbDVwB81yzynrsF4WTKLx`)。fleetstage handoff (`mem_1CbCE1rdYJ4ySg87DF5hwa`) を起点に creoui lead が起こした設計 + 実装。CREO-84 Phase B の primitive スライス。
-**Owners**: creoui (primitive schema + SolidJS reference 実装)、consumer apps (Rail registry 供給)
+**Status**: creo-ui 側 (P-0〜P-1 + P-3) 実装済 — Edge Ring + Rail primitive 本体 (PR #48) + Z 軸 layer add-on。P-2 (creo-web consumer 移行) は creo-memories lead に handoff 済 (`mem_1CbDVwB81yzynrsF4WTKLx`)。fleetstage handoff (`mem_1CbCE1rdYJ4ySg87DF5hwa`) を起点に creo-ui lead が起こした設計 + 実装。CREO-84 Phase B の primitive スライス。
+**Owners**: creo-ui (primitive schema + SolidJS reference 実装)、consumer apps (Rail registry 供給)
 **Scope**: 2D の基盤レイアウト primitive — 4 edge + center の Edge Ring と、left edge の Rail System。app に依存しない layout 機構のみを規定し、各 App は Rail registry を供給する。
 **Related**: [frame-system.md](./frame-system.md) (3D spatial morph、別 primitive), [editor-mode.md](./editor-mode.md), creo-memories doc 29 `29-3x3-frame.md` / doc 30 `30-principal-layout.md` (概念の起源)
 
@@ -9,11 +9,11 @@
 
 ## 1. Overview (Why)
 
-creo-memories が doc 29/30 で確立した **3x3 Frame + Rail UX 哲学** を、creoui の共有 primitive として landing させる。creo-web / fleetstage hq / fleetstage backstage の 3 App が同一の layout 基盤に乗るための土台。
+creo-memories が doc 29/30 で確立した **3x3 Frame + Rail UX 哲学** を、creo-ui の共有 primitive として landing させる。creo-web / fleetstage hq / fleetstage backstage の 3 App が同一の layout 基盤に乗るための土台。
 
-> **起源**: fleetstage が hq/backstage 画面を creo-memories の Rail UX を reference に再構成したい、と。コピー実装は creoui primitive との divergence を生むため、**creoui primitive 経由** (A) で共有し、各 App が consumer になる (B) 方針を fleetstage lead が確定 (handoff `mem_1CbCE1rdYJ4ySg87DF5hwa`)。本 doc が A。
+> **起源**: fleetstage が hq/backstage 画面を creo-memories の Rail UX を reference に再構成したい、と。コピー実装は creo-ui primitive との divergence を生むため、**creo-ui primitive 経由** (A) で共有し、各 App が consumer になる (B) 方針を fleetstage lead が確定 (handoff `mem_1CbCE1rdYJ4ySg87DF5hwa`)。本 doc が A。
 
-creoui には既に layout protocol が 1 本ある — `creoui-frame` ([frame-system.md](./frame-system.md))。これは **3D spatial morph** (名前付き 3D Frame の連続、slot binding、FLIP morph)。本 doc の Principal Layout はそれとは **別の primitive** — 2D の基盤フレーム。両者の関係は §4。
+creo-ui には既に layout protocol が 1 本ある — `creo-ui-frame` ([frame-system.md](./frame-system.md))。これは **3D spatial morph** (名前付き 3D Frame の連続、slot binding、FLIP morph)。本 doc の Principal Layout はそれとは **別の primitive** — 2D の基盤フレーム。両者の関係は §4。
 
 ## 2. 何が Principal Layout か
 
@@ -52,7 +52,7 @@ doc 29 §3.5 の epistemic status を primitive の不変条件として継承�
 
 ## 3. 設計決定 (PL-1 〜 PL-8)
 
-### PL-1 — Principal Layout は `creoui-frame` と別 primitive
+### PL-1 — Principal Layout は `creo-ui-frame` と別 primitive
 
 2D consumer (hq/backstage) が 3D morph 機構をゼロ背負いで使えること。詳細 §4。
 
@@ -76,17 +76,17 @@ peek panel は **collapsed (細い/0) ⇄ expanded (~240px)**。default collapse
 
 Z 軸 (認知境界の積層、doc 29 §4) は creo-memories 固有の product 概念。hq/backstage・ops Console は Z 軸を持たない。primitive は **Z 軸機能を使わなくても成立する形** にする — `currentLayer` 的な state hook は opt-in の add-on、registry / Edge Ring は Z 軸ゼロで動く (handoff 要件4)。primitive の core surface に Z 軸 API を出さない。
 
-### PL-7 — landing 先 = `creoui/shells` subpath、SolidJS reference 実装
+### PL-7 — landing 先 = `creo-ui/shells` subpath、SolidJS reference 実装
 
-`packages/web/src/shells/` (CREO-84 Phase B、既に `CUPageShell` / `CUFacetGrid` が在る) に追加。fleetstage backstage は既に `creoui/shells` の `CUPageShell` を使用 — 同 family。SolidJS reference 実装を creoui に持ち、Swift / 他 framework は consumer 側 ([editor-mode.md](./editor-mode.md) EH-1/EH-2 方針と整合)。
+`packages/web/src/shells/` (CREO-84 Phase B、既に `CUPageShell` / `CUFacetGrid` が在る) に追加。fleetstage backstage は既に `creo-ui/shells` の `CUPageShell` を使用 — 同 family。SolidJS reference 実装を creo-ui に持ち、Swift / 他 framework は consumer 側 ([editor-mode.md](./editor-mode.md) EH-1/EH-2 方針と整合)。
 
 ### PL-8 — Rail 入場資格は consumer の product strategy
 
 doc 30 §6.2 の admission gate (「Rail = 記憶の相、first-class entity に裏打ち」) は creo-memories 固有の規律。primitive は gate を **強制しない** — registry に何を入れるかは各 App の product 判断。primitive が課すのは構造契約 (`RailDef` の形、route 必須) のみ。
 
-## 4. `creoui-frame` との関係 — 語彙だけ共有
+## 4. `creo-ui-frame` との関係 — 語彙だけ共有
 
-| | `creoui-frame` (既存) | Principal Layout (本 doc) |
+| | `creo-ui-frame` (既存) | Principal Layout (本 doc) |
 |---|---|---|
 | 本質 | 3D spatial morph protocol | 2D 基盤レイアウト |
 | slot | 3D 配置 (x/y/z/rotate/scale) | 位置 region (4 edge + center + corner) |
@@ -95,9 +95,9 @@ doc 30 §6.2 の admission gate (「Rail = 記憶の相、first-class entity に
 
 両者は無関係ではない — doc 29 §3.5 は「同じ認知構造が 2D display でも 3D field でも違う形で現れる」と言う。**位置語彙** (leftEdge/center/... の region 名) はその *同じ認知構造* の表層。
 
-→ **決定**: 位置語彙を **単一の canonical vocabulary type** として定義し、`creoui-frame` と Principal Layout の双方が参照する。ただし Principal Layout は `creoui-frame` を **import しない** (3D 依存を 2D consumer に持ち込まないため、PL-1)。vocabulary type は両者から依存できる軽量な置き場に持つ (厳密な module 位置は実装 P-0 の確定事項)。
+→ **決定**: 位置語彙を **単一の canonical vocabulary type** として定義し、`creo-ui-frame` と Principal Layout の双方が参照する。ただし Principal Layout は `creo-ui-frame` を **import しない** (3D 依存を 2D consumer に持ち込まないため、PL-1)。vocabulary type は両者から依存できる軽量な置き場に持つ (厳密な module 位置は実装 P-0 の確定事項)。
 
-**命名**: 既存 `creoui-frame` が "Frame" 語を持つため、本 primitive は別名で名乗る。handoff / doc 29/30 の placeholder 名 `<CreoFrame>` は採らない (衝突回避)。**確定 (v0.23.0、owner decision)**: **`<CUEdgeShell>`** (Edge Ring) + **`<CURail>`** (Rail System)。`CU*` prefix = creoui-shells primitive を ergonomics 優先で全 product 共通 vocabulary とする規約 (= import 1 行で primitive vs project-local を即判別)。旧 `Creo*` 名は 0.23.x / 0.24.x で alias re-export で keep、0.25.0 で撤去。brand "Creo Memories" / "Creo ID" は touch せず keep (component prefix と brand surface を意味的に分離)。
+**命名**: 既存 `creo-ui-frame` が "Frame" 語を持つため、本 primitive は別名で名乗る。handoff / doc 29/30 の placeholder 名 `<CreoFrame>` は採らない (衝突回避)。**確定 (v0.23.0、owner decision)**: **`<CUEdgeShell>`** (Edge Ring) + **`<CURail>`** (Rail System)。`CU*` prefix = creo-ui-shells primitive を ergonomics 優先で全 product 共通 vocabulary とする規約 (= import 1 行で primitive vs project-local を即判別)。旧 `Creo*` 名は 0.23.x / 0.24.x で alias re-export で keep、0.25.0 で撤去。brand "Creo Memories" / "Creo ID" は touch せず keep (component prefix と brand surface を意味的に分離)。
 
 ## 5. Rail System (left edge)
 
@@ -145,26 +145,26 @@ doc 29 §4 / doc 30 §5-6 の Z 軸 (認知境界の積層、cross-layer / in-la
 |---|---|
 | **P-0** ✅ | 位置語彙 vocabulary type (`regions.ts`) + `<CUEdgeShell>` (4 edge 枠 + center) + epistemic status (格子でない) の CSS 規律 |
 | **P-1** ✅ | `<CURail>` — Rail column + peek (collapsed⇄expanded) + `RailDef`/`railRegistry` + `selectRailId` pure logic + contract test 11 cases |
-| **P-2** 📨 | creo-web を primitive の consumer に rewrite (既存 `RailSystem`/`EdgeFrame` を creoui primitive に置換、Memory/Atlas/Views registry を creo-web 側に)。creo-memories lead に handoff 済 (`mem_1CbDVwB81yzynrsF4WTKLx`) |
+| **P-2** 📨 | creo-web を primitive の consumer に rewrite (既存 `RailSystem`/`EdgeFrame` を creo-ui primitive に置換、Memory/Atlas/Views registry を creo-web 側に)。creo-memories lead に handoff 済 (`mem_1CbDVwB81yzynrsF4WTKLx`) |
 | **P-3** ✅ | Z 軸 layer add-on (`layer.ts` — `createLayerStore` / `createLayerUrlSync` + `parseLayerParam`/`layerToParam`/`layerEqualsParam` の pure logic)。router-agnostic、opt-in の optional export |
 | **P-4** | fleetstage hq/backstage が consumer 化 (B、fleetstage lead 領分) |
 
-P-0〜P-1 + P-3 が creoui primitive 本体 (creoui lead 領分、実装済)。P-2 / P-4 は consumer 移行 (別 repo / 別 lead)。各 Phase は独立に出荷可能な縦スライス。
+P-0〜P-1 + P-3 が creo-ui primitive 本体 (creo-ui lead 領分、実装済)。P-2 / P-4 は consumer 移行 (別 repo / 別 lead)。各 Phase は独立に出荷可能な縦スライス。
 
 ## 8. やってはいけない
 
 - 特定 App の Rail (Memory/Atlas/Views 等) を primitive に hardcode する (PL-3 違反)
 - 「sidebar」「nav」等の位置を持たない語を API・class・data-attribute に出す (PL-2 違反)
-- Principal Layout を `creoui-frame` の 3D Frame protocol の上に乗せる (PL-1 で否決、2D consumer に 3D 依存を持ち込む)
+- Principal Layout を `creo-ui-frame` の 3D Frame protocol の上に乗せる (PL-1 で否決、2D consumer に 3D 依存を持ち込む)
 - Z 軸 / 多層 Atlas API を primitive の core surface に出す (PL-6 — optional add-on に留める)
 - Edge Ring を `overflow:hidden` の rigid grid にする (PL-8 / doc 29 §3.5 — 羅針盤であって格子でない)
 - Rail 選択に route 以外の signal を作る (PL-4 — route が唯一の SSOT)
-- `creoui-frame` を rename する (別 primitive 方針で不要、既存 consumer の breaking change を避ける)
+- `creo-ui-frame` を rename する (別 primitive 方針で不要、既存 consumer の breaking change を避ける)
 
 ## 9. 関連
 
 - 概念の起源: creo-memories doc 29 `docs/design/29-3x3-frame.md` (3x3 Frame + 多層 Atlas) / doc 30 `30-principal-layout.md` (Edge System / Rail System)
-- handoff: `mem_1CbCE1rdYJ4ySg87DF5hwa` (fleetstage → creoui lead) + 受領 annotation `mem_1CbCEC1Ng5YE5kfEQe1Zd2`
+- handoff: `mem_1CbCE1rdYJ4ySg87DF5hwa` (fleetstage → creo-ui lead) + 受領 annotation `mem_1CbCEC1Ng5YE5kfEQe1Zd2`
 - 別 primitive: [frame-system.md](./frame-system.md) (3D spatial morph)
 - 抽出元実装: creo-web `apps/creo-web/src/components/layout/{rail/,edge/}` (`RailSystem` / `EdgeFrame` / `registry.ts` / `rails.tsx`)
-- Epic: CREO-84 Phase B (creoui Design System、shells primitive)
+- Epic: CREO-84 Phase B (creo-ui Design System、shells primitive)

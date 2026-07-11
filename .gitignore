@@ -23,5 +23,8 @@ history.txt
 # swift build expect them to exist without first running `bun run build`.
 # Web tokens live under `packages/web/dist/` which is gitignored (shipped
 # only as npm publish artifact).
-!packages/swift/Sources/Creoui/Generated/
+!packages/swift/Sources/CreoUI/Generated/
 !packages/rust/src/generated/
+
+# Vantage Point lane workspaces (project-local lane refactor)
+.vp/

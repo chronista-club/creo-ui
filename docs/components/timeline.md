@@ -1,6 +1,6 @@
 # Timeline
 
-> creoui MVP component. 時系列の activity / event / history を縦並びで表示。
+> creo-ui MVP component. 時系列の activity / event / history を縦並びで表示。
 
 ## Purpose
 
@@ -33,7 +33,7 @@ Stepper は **予定された工程** (未来志向)、Timeline は **起きた�
       <span class="creo-timeline-title">Memory "X" を公開</span>
       <time class="creo-timeline-meta">2026-04-23 14:20 by Mako</time>
       <p class="creo-timeline-description">
-        atlas "creoui" に公開され、team メンバーが subscribe 可能になりました。
+        atlas "creo-ui" に公開され、team メンバーが subscribe 可能になりました。
       </p>
     </div>
   </li>

@@ -5,7 +5,7 @@ import {
   number,
   select,
   signalTarget,
-} from '@chronista-club/creoui-editor-host'
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 
@@ -172,7 +172,7 @@ export default function Skeleton() {
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
-              localStorageNamespace: 'creoui-docs.skeleton-editor',
+              localStorageNamespace: 'creo-ui-docs.skeleton-editor',
             }}
           >
             <SkeletonEditorDemo />

@@ -3,7 +3,7 @@
 
 #![cfg(feature = "ratatui")]
 
-use creoui::ratatui::widgets;
+use creo_ui::ratatui::widgets;
 
 #[test]
 fn section_block_builds_with_title() {

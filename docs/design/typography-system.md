@@ -1,20 +1,20 @@
-# Typography system — creoui の font family 規約 + consumer override path
+# Typography system — creo-ui の font family 規約 + consumer override path
 
-**Status**: Boundary + override declaration (2026-05-25) — typography token は creoui の sensible defaults、override は CSS variable cascade を first-class supported path とする。
-**Owners**: creoui (token defaults + override path 明文化)、consumer apps (任意 local font の override 実装)
-**Scope**: `tokens/typography/family.json` の 14 family token と Web emit 経路の articulate、および **consumer が任意の local font を自由に乗せる override path** の規律。`@font-face` を creoui 側に置かないこと・font museum 化しないことを宣言。
+**Status**: Boundary + override declaration (2026-05-25) — typography token は creo-ui の sensible defaults、override は CSS variable cascade を first-class supported path とする。
+**Owners**: creo-ui (token defaults + override path 明文化)、consumer apps (任意 local font の override 実装)
+**Scope**: `tokens/typography/family.json` の 14 family token と Web emit 経路の articulate、および **consumer が任意の local font を自由に乗せる override path** の規律。`@font-face` を creo-ui 側に置かないこと・font museum 化しないことを宣言。
 **Related**: [frame-system.md](./frame-system.md), [theme-system.md](./theme-system.md), [principal-layout.md](./principal-layout.md), [identity.md](./identity.md), [editor-mode.md](./editor-mode.md), [stack-adr.md](./stack-adr.md)
 
 ---
 
 ## 1. Overview (Why)
 
-creoui の typography token は **mode-based + variant-aware** に組まれている (v0.12 multi-platform fonts → v0.13 mono variant → v0.14 mode-based 確立 → v0.18 5 tier 統一 → v0.20 安定)。14 family token が `tokens/typography/family.json` に置かれ、Style Dictionary が `--typography-family-{name}` という CSS custom property として `:root` に emit する。
+creo-ui の typography token は **mode-based + variant-aware** に組まれている (v0.12 multi-platform fonts → v0.13 mono variant → v0.14 mode-based 確立 → v0.18 5 tier 統一 → v0.20 安定)。14 family token が `tokens/typography/family.json` に置かれ、Style Dictionary が `--typography-family-{name}` という CSS custom property として `:root` に emit する。
 
 ところが **「consumer が好みの local font を乗せる supported path」が明文化されていない**。CSS cascade で override 可能なのは事実だが、どの doc にも書かれておらず、consumer が「token を fork するしかない」と誤解する余地がある。本 doc はその override path を **first-class supported path** として articulate する。
 
-> **暗黙のメッセージ**: 「Mizolet を creoui の principal にしたい」 のような local font 採用は **creoui 側に追加しない**。consumer 側 (creo-web / fleetstage hq・backstage / apps/site 等) で **1 行 CSS override** すれば達成する。creoui は「sensible defaults + 明確な override API」を提供する design system であって、全 user の font 好みを内蔵する font museum ではない。
-> これは PL-1 (`creoui-frame` 別 primitive) / EH-1 (Web reference runtime に限定) / [identity.md](./identity.md) (auth は consumer 領分) と同じ **「consumer の自由を奪わない / SSOT を declarative に articulate する」規律** の延長。
+> **暗黙のメッセージ**: 「Mizolet を creo-ui の principal にしたい」 のような local font 採用は **creo-ui 側に追加しない**。consumer 側 (creo-web / fleetstage hq・backstage / apps/site 等) で **1 行 CSS override** すれば達成する。creo-ui は「sensible defaults + 明確な override API」を提供する design system であって、全 user の font 好みを内蔵する font museum ではない。
+> これは PL-1 (`creo-ui-frame` 別 primitive) / EH-1 (Web reference runtime に限定) / [identity.md](./identity.md) (auth は consumer 領分) と同じ **「consumer の自由を奪わない / SSOT を declarative に articulate する」規律** の延長。
 
 ## 2. 14 family token の構造
 
@@ -57,7 +57,7 @@ creoui の typography token は **mode-based + variant-aware** に組まれて�
 
 ### TY-1 — Override = CSS custom property の cascade、first-class supported path
 
-全 14 family は `--typography-family-{name}` という CSS custom property として `:root` に emit される。consumer は **CSS cascade で override 可能** = creoui が認める first-class supported override path。token を fork する必要は無い。
+全 14 family は `--typography-family-{name}` という CSS custom property として `:root` に emit される。consumer は **CSS cascade で override 可能** = creo-ui が認める first-class supported override path。token を fork する必要は無い。
 
 ```css
 /* consumer 側 (例: creo-web の src/index.css) */
@@ -68,17 +68,17 @@ creoui の typography token は **mode-based + variant-aware** に組まれて�
 
 これだけで `app` family を参照する全 UI primitive (Principal Layout / CUPageShell / CURail icon 等) が Mizolet を使う。
 
-### TY-2 — `@font-face` / web-hosted font asset は creoui 側に置かない
+### TY-2 — `@font-face` / web-hosted font asset は creo-ui 側に置かない
 
-creoui は web font asset (woff2 / otf / ttf) を提供しない。全 font は **OS local / user-installed 前提** (Nerd Font も同様、user が install してる前提で chain に並んでる)。`@font-face` declaration も creoui 側には置かない。
+creo-ui は web font asset (woff2 / otf / ttf) を提供しない。全 font は **OS local / user-installed 前提** (Nerd Font も同様、user が install してる前提で chain に並んでる)。`@font-face` declaration も creo-ui 側には置かない。
 
-理由: web font asset を creoui が host すると (a) bundle 肥大化、(b) license 管理が creoui に縛られる、(c) consumer が別 host (self-host / Google Fonts / Adobe Fonts 等) を選ぶ自由を奪う。auth SDK ラッパーを creoui に入れない ([identity.md](./identity.md) §6) と同じ規律。
+理由: web font asset を creo-ui が host すると (a) bundle 肥大化、(b) license 管理が creo-ui に縛られる、(c) consumer が別 host (self-host / Google Fonts / Adobe Fonts 等) を選ぶ自由を奪う。auth SDK ラッパーを creo-ui に入れない ([identity.md](./identity.md) §6) と同じ規律。
 
 consumer 側で `@font-face` が必要なら、そちらの index.css / global stylesheet で declare する (TY-5 参照)。
 
 ### TY-3 — Override は **prepend pattern** を推奨
 
-custom font を chain 先頭に置き、creoui defaults を fallback として残す:
+custom font を chain 先頭に置き、creo-ui defaults を fallback として残す:
 
 ```css
 /* ✅ 推奨 (prepend pattern) — Mizolet 不在環境では既存 chain に degrade */
@@ -105,11 +105,11 @@ scope の柔軟性は **CSS cascade そのものの性質** であり、consumer
 | **app/section-scoped** | `.my-workspace { ... }` | 特定 subtree のみ |
 | **inline** | `style={{ '--typography-family-app': '...' }}` | 動的 / 例外 |
 
-scope 間で 1 ヶ所だけ override すれば、他 scope は creoui defaults を継続。
+scope 間で 1 ヶ所だけ override すれば、他 scope は creo-ui defaults を継続。
 
 ### TY-5 — Consumer-side `@font-face` を足す場合の規律
 
-consumer が web-hosted custom font (e.g., woff2) を使う場合、**creoui repo の外** (consumer の index.css 等) で declare する:
+consumer が web-hosted custom font (e.g., woff2) を使う場合、**creo-ui repo の外** (consumer の index.css 等) で declare する:
 
 ```css
 /* consumer 側の index.css 例 */
@@ -179,17 +179,17 @@ theme と typography は独立 token category だが、cascade selector で組�
 
 ## 5. やってはいけない
 
-- creoui の `tokens/typography/family.json` を **consumer が fork** する (override で十分、fork は upstream drift の元)
+- creo-ui の `tokens/typography/family.json` を **consumer が fork** する (override で十分、fork は upstream drift の元)
 - consumer の component で `font-family: 'XXX'` を **inline で大量 hard-code** する (token 経由を維持しないと override の起点を失う)
-- creoui に **web-hosted font asset (woff2 / otf 等) を入れる** PR を出す (TY-2、bundle 肥大化と license 縛りで consumer の自由を奪う)
-- principal font を creoui defaults で **1 個に固定する** (mode-based の articulate が崩れ、editor mode に app mode 用 font が漏れる)
+- creo-ui に **web-hosted font asset (woff2 / otf 等) を入れる** PR を出す (TY-2、bundle 肥大化と license 縛りで consumer の自由を奪う)
+- principal font を creo-ui defaults で **1 個に固定する** (mode-based の articulate が崩れ、editor mode に app mode 用 font が漏れる)
 - 4 mode family の意味を ambiguate する **新 mode token** を追加する (CHANGELOG v0.14.0 で確立した 4 mode 規律を壊さない)
-- creoui に **font picker UI / font management API を出す** (font 選択は consumer のドメイン、auth SDK ラッパーを入れない規律と同じ)
+- creo-ui に **font picker UI / font management API を出す** (font 選択は consumer のドメイン、auth SDK ラッパーを入れない規律と同じ)
 
 ## 6. 関連
 
 - token SSOT: [`tokens/typography/family.json`](../../tokens/typography/family.json) (14 family token の正本)
-- emit 経路: [`transforms/config.web.js`](../../transforms/config.web.js) (Style Dictionary `css/creoui-themed` format)
+- emit 経路: [`transforms/config.web.js`](../../transforms/config.web.js) (Style Dictionary `css/creo-ui-themed` format)
 - 生成物: `packages/web/dist/tokens.css` (`--typography-family-*` の宣言、gitignore、npm publish 成果物)
 - dogfood viewer: [`apps/site/src/pages/Foundations/Typography.tsx`](../../apps/site/src/pages/Foundations/Typography.tsx) (typography 全 family の visible 確認)
 - 兄弟 doc: [theme-system.md](./theme-system.md), [principal-layout.md](./principal-layout.md), [identity.md](./identity.md), [editor-mode.md](./editor-mode.md), [frame-system.md](./frame-system.md), [stack-adr.md](./stack-adr.md)

@@ -3,8 +3,8 @@
  *
  * docs/design/principal-layout.md §2-3。
  * region は位置 (どこ) で命名する。「sidebar」のような位置を持たない語を禁ずる。
- * この語彙は creoui-frame (3D spatial morph) とも共有しうる canonical vocabulary
- * (principal-layout.md §4) — ただし本 module は creoui-frame を import しない
+ * この語彙は creo-ui-frame (3D spatial morph) とも共有しうる canonical vocabulary
+ * (principal-layout.md §4) — ただし本 module は creo-ui-frame を import しない
  * (2D consumer に 3D 依存を持ち込まないため、PL-1)。
  */
 
