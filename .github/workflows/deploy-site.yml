@@ -1,0 +1,76 @@
+# creo-ui 公式 site を doc.anycreative.tech へ deploy する CD。
+#
+# trigger = release cut: nightly → main の release PR が merge され main に push された時。
+# (nightly の日々の push では動かない — 公開 site は release 品質を追う)
+#
+# 前提 secrets (repo settings で登録):
+#   CLOUDFLARE_API_TOKEN  — "Edit Cloudflare Workers" template の API token
+#   CLOUDFLARE_ACCOUNT_ID — Cloudflare dashboard の Account ID
+#
+# site:build は sibling repo creo-views (PUBLIC) の WASM 成果物に依存するため、
+# creo-ui と creo-views を並列 checkout し、wasm-pack で先に creo-views を build する。
+# 依存関係の詳細: creo-memories mem_1Ccvacu4aEfmaHPzUonWkq
+
+name: Deploy site (doc.anycreative.tech)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout creo-ui
+        uses: actions/checkout@v4
+        with:
+          path: creo-ui
+
+      # md-view の file:../../../creo-views が workspace root の sibling を指すため、
+      # creo-ui と並列の path に checkout する
+      - name: Checkout creo-views (sibling)
+        uses: actions/checkout@v4
+        with:
+          repository: chronista-club/creo-views
+          path: creo-views
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Setup Rust (wasm32)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Install wasm-pack
+        uses: taiki-e/install-action@v2
+        with:
+          tool: wasm-pack
+
+      - name: Cache cargo (creo-views wasm)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            creo-views/target
+          key: wasm-creo-views-${{ runner.os }}-${{ hashFiles('creo-views/Cargo.toml') }}
+
+      - name: Build creo-views (wasm + ts)
+        working-directory: creo-views
+        run: |
+          bun install
+          bun run build
+
+      - name: Build site
+        working-directory: creo-ui
+        run: |
+          bun install
+          bun run site:build
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: creo-ui

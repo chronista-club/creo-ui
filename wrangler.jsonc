@@ -1,0 +1,23 @@
+// creo-ui 公式 site (apps/site) の Cloudflare Workers (static assets) 配信設定。
+//
+// - 公開 URL: https://doc.anycreative.tech (custom domain、deploy 時に DNS + cert 自動 provision)
+// - assets-only worker (script なし)。SPA なので not_found_handling で index.html に fallback
+// - deploy 経路は 2 つ:
+//     local:  bun run site:deploy (要 `bunx wrangler login`)
+//     CD:     .github/workflows/deploy-site.yml — release cut (main への push) 毎に自動 deploy
+// - dist は site:build (build:web → build:packages → vite build) の成果物。
+//   creo-views (sibling repo) の事前ビルドが必要 — mem_1Ccvacu4aEfmaHPzUonWkq 参照
+{
+  "name": "creo-ui-doc",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": "./apps/site/dist",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    {
+      "pattern": "doc.anycreative.tech",
+      "custom_domain": true
+    }
+  ]
+}
