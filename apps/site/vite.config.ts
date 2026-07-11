@@ -11,6 +11,10 @@ import solid from 'vite-plugin-solid'
 const useHttps = process.env.CREO_SITE_HTTP !== '1'
 
 export default defineConfig({
+  // doc.anycreative.tech の hub (anycreative-doc worker) 配下 /creo-ui/ で配信するため。
+  // hub は prefix を strip して creo-ui-doc worker へ転送するが、browser から見える
+  // asset URL は /creo-ui/assets/... なので build 側で base を合わせる。
+  base: '/creo-ui/',
   plugins: useHttps ? [solid(), basicSsl()] : [solid()],
   server: {
     host: true,

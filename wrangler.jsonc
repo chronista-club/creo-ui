@@ -1,7 +1,11 @@
 // creo-ui 公式 site (apps/site) の Cloudflare Workers (static assets) 配信設定。
 //
-// - 公開 URL: https://doc.anycreative.tech (custom domain、deploy 時に DNS + cert 自動 provision)
+// - 公開 URL: https://doc.anycreative.tech/creo-ui/
+//   custom domain は hub (chronista-club/anycreative-doc の worker) が保有し、
+//   /creo-ui/* を prefix strip してこの worker へ service binding 転送する。
+//   この worker 自体は route を持たない (workers.dev preview のみ)。
 // - assets-only worker (script なし)。SPA なので not_found_handling で index.html に fallback
+// - browser から見える asset URL は /creo-ui/... — apps/site/vite.config.ts の base と対
 // - deploy 経路は 2 つ:
 //     local:  bun run site:deploy (要 `bunx wrangler login`)
 //     CD:     .github/workflows/deploy-site.yml — release cut (main への push) 毎に自動 deploy
@@ -13,11 +17,5 @@
   "assets": {
     "directory": "./apps/site/dist",
     "not_found_handling": "single-page-application"
-  },
-  "routes": [
-    {
-      "pattern": "doc.anycreative.tech",
-      "custom_domain": true
-    }
-  ]
+  }
 }

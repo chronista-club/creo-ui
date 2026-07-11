@@ -187,7 +187,7 @@ function Demo() {
           <strong>Vision Pro Safari では動きません</strong> — OS が eye+pinch を pointer event
           として透過提供しているので、 VP page では <code>creo-ui-vision</code>を import せず Frame
           system + 通常 <code>onClick</code> で同じ UX が成立する (
-          <a href="/concepts/frame-system">Frame system</a> 参照、 vision-cross-platform.md §10
+          <A href="/concepts/frame-system">Frame system</A> 参照、 vision-cross-platform.md §10
           Phase A observation log)。
         </p>
         <RealMediaPipeDemo />

@@ -73,7 +73,8 @@ const GettingStarted = lazy(() => import('./pages/GettingStarted'))
 
 export default function App() {
   return (
-    <Router root={Layout}>
+    // base: doc.anycreative.tech の hub 配下 /creo-ui/ で配信 (vite.config.ts の base と対)
+    <Router base="/creo-ui" root={Layout}>
       <Route path="/" component={Home} />
       <Route path="/getting-started" component={GettingStarted} />
       <Route path="/foundations" component={Principles} />
