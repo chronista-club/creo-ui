@@ -65,10 +65,11 @@
 
 /* ---------- Active state (aria-selected=true) ---------- */
 
-/* underline variant (default): 下線で active を示す */
+/* underline variant (default): 下線で active を示す。 text は readable brand
+   (全 theme WCAG 準拠)、 下線 bar は vivid な --fill-brand の accent。 */
 .creo-tabs[data-variant="underline"] .creo-tabs-tab[aria-selected="true"],
 .creo-tabs:not([data-variant]) .creo-tabs-tab[aria-selected="true"] {
-  color: var(--color-brand-primary);
+  color: var(--text-brand-readable);
 }
 .creo-tabs[data-variant="underline"] .creo-tabs-tab[aria-selected="true"]::after,
 .creo-tabs:not([data-variant]) .creo-tabs-tab[aria-selected="true"]::after {
@@ -78,7 +79,7 @@
   right: var(--spacing-s);
   bottom: -1px;
   height: 2px;
-  background-color: var(--color-brand-primary);
+  background-color: var(--fill-brand);
   border-radius: var(--radius-xs);
 }
 
@@ -86,9 +87,11 @@
 .creo-tabs[data-variant="pill"] .creo-tabs-tab {
   border-radius: var(--radius-s);
 }
+/* pill active = focal な brand fill (--fill-brand) + auto on-color。
+   button の primary と同じ focal 言語で、 選択 tab が画面で灯る。 */
 .creo-tabs[data-variant="pill"] .creo-tabs-tab[aria-selected="true"] {
-  background-color: var(--color-brand-primary);
-  color: var(--color-surface-bg-base);
+  background-color: var(--fill-brand);
+  color: var(--on-fill-brand);
 }
 
 /* ---------- Sizes ---------- */

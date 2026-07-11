@@ -7,6 +7,8 @@
  * Token: creo-ui/tokens.css (必須)
  */
 
+/* container = 沈んだ track。 recessed well の inset shadow で、 active pill が
+   そこから浮き上がる depth 対比を作る。 */
 .creo-segmented {
   display: inline-flex;
   align-items: stretch;
@@ -15,6 +17,7 @@
   background-color: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
+  box-shadow: var(--elevation-well);
 }
 
 .creo-segmented[data-width="full"] {
@@ -66,11 +69,14 @@
 
 /* ---------- Active state (aria-pressed + :has(radio:checked)) ---------- */
 
+/* active = track から浮く raised pill (elevation 1: border-light + drop)。
+   text は readable brand (--text-brand-readable) で全 theme WCAG 準拠
+   (旧 --color-brand-primary 直挿しは light theme で 1.5:1 まで低下していた)。 */
 .creo-segmented-option[aria-pressed="true"],
 .creo-segmented-option:has(> input[type="radio"]:checked) {
   background-color: var(--color-surface-surface);
-  color: var(--color-brand-primary);
-  box-shadow: var(--shadow-s);
+  color: var(--text-brand-readable);
+  box-shadow: var(--elevation-1);
 }
 
 /* ---------- Radio inside (hide native input) ---------- */

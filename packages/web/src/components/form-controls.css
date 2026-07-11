@@ -89,13 +89,15 @@
   height: 18px;
   background-color: var(--color-surface-surface);
   border-radius: var(--radius-full);
-  box-shadow: var(--shadow-s);
+  /* elevation 1: 上端に border-light、 下に drop shadow で摘みが浮く。 */
+  box-shadow: var(--elevation-1);
   transition: transform var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing);
 }
 
+/* checked = vivid な focal fill (--fill-brand) で「on」を明確に灯す。 */
 .creo-switch-input:checked ~ .creo-switch-track {
-  background-color: var(--color-brand-primary);
-  border-color: var(--color-brand-primary);
+  background-color: var(--fill-brand);
+  border-color: var(--fill-brand);
 }
 
 .creo-switch-input:checked ~ .creo-switch-track .creo-switch-thumb {
