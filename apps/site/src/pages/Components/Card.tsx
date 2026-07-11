@@ -81,17 +81,17 @@ export default function Card() {
           <div class="docs-preview-row-label">Paddings</div>
           <div class="docs-preview-grid docs-preview-grid--cards">
             <article class="creo-card" data-padding="s">
-              <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">
+              <code style="font-family: var(--typography-family-sans); font-size: var(--typography-size-xs);">
                 data-padding="s"
               </code>
             </article>
             <article class="creo-card" data-padding="m">
-              <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">
+              <code style="font-family: var(--typography-family-sans); font-size: var(--typography-size-xs);">
                 data-padding="m"
               </code>
             </article>
             <article class="creo-card" data-padding="l">
-              <code style="font-family: var(--typography-family-mono); font-size: var(--typography-size-xs);">
+              <code style="font-family: var(--typography-family-sans); font-size: var(--typography-size-xs);">
                 data-padding="l"
               </code>
             </article>

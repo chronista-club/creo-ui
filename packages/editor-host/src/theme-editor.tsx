@@ -40,7 +40,7 @@ const infoFamilyStyle: JSX.CSSProperties = {
   'font-size': '10px',
   color: 'var(--color-text-tertiary)',
   'margin-bottom': '4px',
-  'font-family': 'var(--typography-family-mono)',
+  'font-family': 'var(--typography-family-sans)',
 }
 
 const infoFlavorStyle: JSX.CSSProperties = {
@@ -62,7 +62,7 @@ const swatchRowStyle: JSX.CSSProperties = {
   'align-items': 'center',
   gap: '6px',
   'font-size': '10px',
-  'font-family': 'var(--typography-family-mono)',
+  'font-family': 'var(--typography-family-sans)',
 }
 
 const swatchBoxBase: JSX.CSSProperties = {
