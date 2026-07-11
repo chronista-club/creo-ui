@@ -24,9 +24,12 @@
 
 /* ---------- Variants ---------- */
 
+/* brand variant text は readable brand。 brand-primary 直挿しは light theme で
+   brand-subtle 面に対し contrast が崩れる (badge は size-s/xs の小字なので 4.5:1
+   必須)。 text-brand-readable は全 8 theme で brand-subtle 上 min 4.56:1 (verified)。 */
 .creo-badge[data-variant="brand"] {
   background-color: var(--color-brand-primary-subtle);
-  color: var(--color-brand-primary);
+  color: var(--text-brand-readable);
 }
 .creo-badge[data-variant="success"] {
   background-color: color-mix(in oklch, var(--color-semantic-success) 20%, transparent);
