@@ -94,6 +94,16 @@ export {
 // F3: Export
 export { exportSnapshot, type ExportFormat, type ExportOptions } from './export'
 
+// Phase M6: OKLCH utilities (color editor / theme editor 向け)
+export {
+  formatOklch,
+  oklchTrackGradient,
+  OKLCH_C_MAX,
+  parseOklch,
+  type Oklch,
+  type OklchChannel,
+} from './oklch'
+
 // F4: URL share
 export {
   shareUrl,

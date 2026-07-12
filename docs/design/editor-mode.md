@@ -499,3 +499,9 @@ Claude: (tokens リポジトリに PR を作成)
   + ScopeSection)。console REPL の dev 自動 expose を localhost 判定に変更
   (library build で `import.meta.env.DEV` が false に固定化される問題の fix)。
   sentinel 値 (px 512 超) を slider ノブから除外
+- 2026-07-13: OKLCH color editor (Phase M6 第一弾) — color field の値が oklch
+  literal のとき L/C/H/A の 4 slider editor に切替 (`src/oklch.ts` +
+  `OklchEditor`)。track は CSS `oklch()` グラデーション (色空間変換の数学
+  不要、browser が解釈)、書き戻しも oklch literal で token の SSOT 形式を
+  保つ。hex 等 oklch でない値は従来の native color picker に fallback。
+  ThemeEditor の swatch クリック起動は未実装 (M6 残り)
