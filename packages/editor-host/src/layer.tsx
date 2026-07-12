@@ -11,7 +11,7 @@
  * を描画する。token `--editor-mode-*` を consume するので、creo-ui の
  * tokens.css が load されている前提。
  */
-import { For, Show } from 'solid-js'
+import { For, Show, createSignal } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { ExportBar } from './export-bar'
 import { FieldEditor, FieldEditorInline } from './fields'
@@ -19,7 +19,7 @@ import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
 import { useEditorHost } from './provider'
 import { ThemeEditor } from './theme-editor'
-import type { EditorField } from './types'
+import type { EditorField, EditorScope } from './types'
 
 // ---------- Styles ----------
 
@@ -134,6 +134,112 @@ const clearButtonStyle: JSX.CSSProperties = {
   width: '100%',
 }
 
+// ---------- Scope sections (D-13 3-scope: instance / component / token) ----------
+
+const scopeSectionStyle = (accent: string): JSX.CSSProperties => ({
+  'margin-bottom': 'var(--editor-mode-panel-group-gap)',
+  padding: '8px',
+  background: `color-mix(in oklch, ${accent} 7%, transparent)`,
+  border: `1px solid color-mix(in oklch, ${accent} 25%, transparent)`,
+  'border-radius': '6px',
+})
+
+const scopeTitleStyle = (accent: string, clickable: boolean): JSX.CSSProperties => ({
+  display: 'flex',
+  'align-items': 'center',
+  gap: '6px',
+  width: '100%',
+  margin: '0 0 6px 0',
+  padding: '0',
+  background: 'none',
+  border: 'none',
+  'font-size': '10px',
+  'font-weight': '700',
+  'letter-spacing': '0.08em',
+  'text-transform': 'uppercase',
+  'text-align': 'left',
+  color: accent,
+  cursor: clickable ? 'pointer' : 'default',
+})
+
+const scopeDotStyle = (accent: string): JSX.CSSProperties => ({
+  width: '6px',
+  height: '6px',
+  'border-radius': '999px',
+  background: accent,
+  'flex-shrink': '0',
+})
+
+const scopeGroupLabelStyle: JSX.CSSProperties = {
+  margin: '6px 0 4px',
+  'font-size': '10px',
+  color: 'var(--color-text-tertiary)',
+  'text-transform': 'uppercase',
+  'letter-spacing': '0.05em',
+}
+
+/**
+ * RIGHT panel の scope section。fields が空なら描画しない。
+ * collapsible (Tokens 想定) は default 折りたたみで件数を表示。
+ */
+function ScopeSection(props: {
+  title: string
+  accent: string
+  fields: EditorField[]
+  collapsible?: boolean
+}): JSX.Element {
+  const [open, setOpen] = createSignal(!props.collapsible)
+  const grouped = (): [string, EditorField[]][] => {
+    const m = new Map<string, EditorField[]>()
+    for (const f of props.fields) {
+      const g = f.group ?? ''
+      const list = m.get(g)
+      if (list) list.push(f)
+      else m.set(g, [f])
+    }
+    return [...m.entries()]
+  }
+  return (
+    <Show when={props.fields.length > 0}>
+      <section style={scopeSectionStyle(props.accent)}>
+        <Show
+          when={props.collapsible}
+          fallback={
+            <div style={scopeTitleStyle(props.accent, false)}>
+              <span style={scopeDotStyle(props.accent)} />
+              {props.title}
+            </div>
+          }
+        >
+          <button
+            type="button"
+            onClick={() => setOpen(!open())}
+            style={scopeTitleStyle(props.accent, true)}
+          >
+            <span style={scopeDotStyle(props.accent)} />
+            {props.title}
+            <span style={{ 'margin-left': 'auto', 'font-weight': '400' }}>
+              {open() ? '▾' : `▸ ${props.fields.length}`}
+            </span>
+          </button>
+        </Show>
+        <Show when={open()}>
+          <For each={grouped()}>
+            {([group, fields]) => (
+              <>
+                <Show when={group}>
+                  <div style={scopeGroupLabelStyle}>{group}</div>
+                </Show>
+                <For each={fields}>{(field) => <FieldEditor field={field} />}</For>
+              </>
+            )}
+          </For>
+        </Show>
+      </section>
+    </Show>
+  )
+}
+
 // ---------- Outline (selection / hover) ----------
 
 function Outline(props: { rect: DOMRect; state: 'hover' | 'active' }): JSX.Element {
@@ -185,6 +291,10 @@ export function EditorLayer(): JSX.Element {
     return toolFields.filter((f: EditorField) => idSet.has(f.id))
   }
 
+  // D-13 3-scope: scope 未指定 (app 宣言 field) は 'instance' 扱い
+  const scopeFields = (scope: EditorScope): EditorField[] =>
+    visibleToolFields().filter((f: EditorField) => (f.scope ?? 'instance') === scope)
+
   return (
     <div data-editor-layer style={layerRootStyle(mode() === 'on')}>
       <Show when={mode() === 'on'}>
@@ -225,14 +335,30 @@ export function EditorLayer(): JSX.Element {
           </div>
         </div>
 
-        {/* RIGHT region: tool fields (selection あれば絞り込み) */}
+        {/* RIGHT region: tool fields を 3-scope (D-13) で分割表示。
+            並びは射程の狭い順 = instance → component → token */}
         <div style={rightRegionStyle}>
           <h3 style={rightHeadingStyle}>{t(messages.toolPanel.heading)}</h3>
           <Show
             when={visibleToolFields().length > 0}
             fallback={<p style={emptyHintStyle}>{t(messages.toolPanel.noFieldsForSelection)}</p>}
           >
-            <For each={visibleToolFields()}>{(field) => <FieldEditor field={field} />}</For>
+            <ScopeSection
+              title={t(messages.toolPanel.scopeInstance)}
+              accent="var(--editor-mode-axis-future)"
+              fields={scopeFields('instance')}
+            />
+            <ScopeSection
+              title={t(messages.toolPanel.scopeComponent)}
+              accent="var(--color-brand-primary)"
+              fields={scopeFields('component')}
+            />
+            <ScopeSection
+              title={t(messages.toolPanel.scopeToken)}
+              accent="var(--color-semantic-info)"
+              fields={scopeFields('token')}
+              collapsible
+            />
           </Show>
           <Show when={selection()}>
             <button type="button" onClick={() => host.clearSelection()} style={clearButtonStyle}>

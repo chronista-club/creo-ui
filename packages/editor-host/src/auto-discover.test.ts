@@ -131,3 +131,19 @@ describe('tweakVarToId / tweakPlacement', () => {
     expect(tweakPlacement('--_gap')).toEqual({ group: 'gap', label: 'Gap' })
   })
 })
+
+describe('isSliderFriendly', () => {
+  const { isSliderFriendly } = __test__
+  test('通常の px 値は slider 化 OK', () => {
+    expect(isSliderFriendly(8, 'px')).toBe(true)
+    expect(isSliderFriendly(512, 'px')).toBe(true)
+  })
+  test('radius.full 等の sentinel (512px 超) は除外', () => {
+    expect(isSliderFriendly(513, 'px')).toBe(false)
+    expect(isSliderFriendly(9999, 'px')).toBe(false)
+  })
+  test('px 以外の unit は制限しない', () => {
+    expect(isSliderFriendly(9999, 'ms')).toBe(true)
+    expect(isSliderFriendly(2, 'rem')).toBe(true)
+  })
+})

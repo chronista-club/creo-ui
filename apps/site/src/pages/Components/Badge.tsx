@@ -156,8 +156,9 @@ export default function Badge() {
         <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> で Editor Mode toggle、 right panel から badge の variant (6 種) /
-          text を即時編集。 padding / radius のノブは page 側の bind ではなく、 badge.css の private
-          tweak var (<code>--_badge-*</code>) を editor が CSSOM から自動発見して生成 (F2b、
+          text を即時編集。 padding のノブは page 側の bind ではなく、 badge.css の private tweak
+          var (<code>--_badge-*</code>) を editor が CSSOM から自動発見して生成 (F2b、 radius は
+          radius.full = 9999px が sentinel のため slider 化されない、
           <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
         </p>
         <div class="docs-playground-frame">

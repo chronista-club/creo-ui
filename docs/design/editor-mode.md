@@ -283,8 +283,12 @@ Mode ON で該当要素を選ぶと、LEFT に "Original content"、RIGHT に "P
 | component-type | 当該 component の全 instance | `:root` の `--_badge-*` | tweak var 規約 (F2b) |
 | instance | 選択中の 1 要素 | signal / app state | 手動 bind |
 
-panel を scope で 3 分割する表示は Phase B (未実装)。instance scope の
-data-attribute discovery (selector から variant 候補を列挙) は将来の設計課題。
+panel の scope 3 分割表示 (Phase B) は 2026-07-12 実装済み — RIGHT region が
+「App state (instance) → 画面上の component → Tokens (折りたたみ)」の順に、
+射程の狭い順で section 表示する。空 section は非表示。radius.full = 9999px の
+ような **sentinel 値 (px で 512 超) は slider ノブから除外**する
+(`isSliderFriendly`)。instance scope の data-attribute discovery (selector から
+variant 候補を列挙) は将来の設計課題。
 
 ### RIGHT 領域の並び順
 
@@ -491,3 +495,7 @@ Claude: (tokens リポジトリに PR を作成)
   DOM presence filter) を editor-host に実装、badge.css で dogfood。3-scope
   model (token / component-type / instance) を確定。bind() に host 明示注入を
   追加 (onMount owner に context が無く F2/F2b が throw する問題の fix)
+- 2026-07-12: Phase B — RIGHT panel の 3-scope 分割表示を実装 (EditorField.scope
+  + ScopeSection)。console REPL の dev 自動 expose を localhost 判定に変更
+  (library build で `import.meta.env.DEV` が false に固定化される問題の fix)。
+  sentinel 値 (px 512 超) を slider ノブから除外

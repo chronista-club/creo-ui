@@ -23,12 +23,15 @@ import type {
   EditorHost,
   EditorPersistence,
   EditorRole,
+  EditorScope,
   EditorSemantic,
 } from './types'
 
 export interface Placement {
   label: string
   semantic: EditorSemantic
+  /** 編集の射程 (D-13 3-scope)。省略時は 'instance' 扱い */
+  scope?: EditorScope
   group?: string
   order?: number
   role?: EditorRole
@@ -103,6 +106,7 @@ export function bind<T>(opts: BindOptions<T>): Binder<T> {
     label: placement.label,
     type: controlKindToFieldType(control.kind),
     semantic: placement.semantic,
+    scope: placement.scope,
     group: placement.group,
     order: placement.order,
     role: placement.role,

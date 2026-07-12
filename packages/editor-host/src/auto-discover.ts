@@ -145,7 +145,7 @@ export function autoDiscover(
           host,
           target: cssVarTarget(d.id, d.cssVar, d.value),
           control: color({ variant: 'picker' }),
-          placement: { label, semantic, order, role: 'dev' },
+          placement: { label, semantic, order, role: 'dev', scope: 'token' },
         }),
       )
       if (b) binders.push(b)
@@ -159,7 +159,7 @@ export function autoDiscover(
           host,
           target: cssVarNumberTarget(d.id, d.cssVar, d.numericValue as number, d.unit || 'px'),
           control: number({ ...range, unit: d.unit || 'px', variant: 'slider' }),
-          placement: { label, semantic, order, role: 'dev' },
+          placement: { label, semantic, order, role: 'dev', scope: 'token' },
         }),
       )
       if (b) binders.push(b)
@@ -280,6 +280,16 @@ interface TweakSeenEntry {
   selectors: Set<string>
 }
 
+/** slider ノブとして意味を成す px の上限。radius.full = 9999px のような
+    「実質 infinity」の sentinel はノブ化しても操作不能なので除外する */
+const TWEAK_SLIDER_MAX_PX = 512
+
+/** sentinel 値 (px で TWEAK_SLIDER_MAX_PX 超) を slider ノブから除外する判定 */
+function isSliderFriendly(numericValue: number, unit: string): boolean {
+  if (unit === 'px' && Math.abs(numericValue) > TWEAK_SLIDER_MAX_PX) return false
+  return true
+}
+
 function collectTweakRefs(
   rules: CSSRuleList,
   prefix: string,
@@ -387,7 +397,7 @@ export function autoDiscoverTweaks(
           host,
           target: cssVarTarget(d.id, d.cssVar, d.value),
           control: color({ variant: 'picker' }),
-          placement: { label, group, semantic, order, role: 'dev' },
+          placement: { label, group, semantic, order, role: 'dev', scope: 'component' },
         }),
       )
       if (b) binders.push(b)
@@ -395,13 +405,15 @@ export function autoDiscoverTweaks(
     }
 
     if (d.kind === 'number' && d.numericValue !== undefined) {
+      // radius.full (9999px) 等の sentinel 値は slider として意味を成さないので除外
+      if (!isSliderFriendly(d.numericValue, d.unit || 'px')) return
       const range = heuristicRange(d.numericValue)
       const b = run(() =>
         bind<number>({
           host,
           target: cssVarNumberTarget(d.id, d.cssVar, d.numericValue as number, d.unit || 'px'),
           control: number({ ...range, unit: d.unit || 'px', variant: 'slider' }),
-          placement: { label, group, semantic, order, role: 'dev' },
+          placement: { label, group, semantic, order, role: 'dev', scope: 'component' },
         }),
       )
       if (b) binders.push(b)
@@ -420,4 +432,5 @@ export const __test__ = {
   resolveFallback,
   tweakVarToId,
   tweakPlacement,
+  isSliderFriendly,
 }
