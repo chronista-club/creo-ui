@@ -7,7 +7,7 @@
  */
 import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
-import { autoDiscover } from './auto-discover'
+import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
 import { buildConsoleApi, installConsoleApi } from './console'
 import { installCrossTabSync } from './cross-tab'
 import { exportSnapshot } from './export'
@@ -43,6 +43,16 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       uninstallers.push(installUrlSync(host, props.config.urlSync))
     }
 
+    // F2b: private tweak var auto-discover (opt-in via config.discoverTweaks)。
+    // 失敗しても後続の install (console 等) を巻き込まない (D-6 非侵襲)。
+    if (props.config?.discoverTweaks) {
+      try {
+        autoDiscoverTweaks(host, owner)
+      } catch (e) {
+        console.warn('[editor-host] discoverTweaks failed:', e)
+      }
+    }
+
     // F5: Cross-tab sync (opt-in via config.crossTab)
     if (props.config?.crossTab) {
       uninstallers.push(
@@ -65,6 +75,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         exportSnapshot,
         shareUrl: (h) => shareUrl(h, props.config?.urlSync),
         autoDiscover: (h, o, opts) => autoDiscover(h, o, opts),
+        autoDiscoverTweaks: (h, o, opts) => autoDiscoverTweaks(h, o, opts),
       })
       const consoleName = props.config?.consoleName ?? 'creoEditor'
       uninstallers.push(installConsoleApi(api, consoleName))

@@ -65,3 +65,69 @@ describe('heuristicRange', () => {
     expect(r.step).toBe(10)
   })
 })
+
+// ---------- F2b: private tweak var ----------
+
+const { parseTweakVarRefs, resolveFallback, tweakVarToId, tweakPlacement } = __test__
+
+describe('parseTweakVarRefs', () => {
+  test('literal fallback', () => {
+    const refs = parseTweakVarRefs('.creo-badge { padding: var(--_badge-pad-y, 2px); }')
+    expect(refs).toEqual([{ cssVar: '--_badge-pad-y', fallback: '2px' }])
+  })
+  test('var() fallback (nested parens)', () => {
+    const refs = parseTweakVarRefs('padding: var(--_badge-pad-x, var(--spacing-s));')
+    expect(refs).toEqual([{ cssVar: '--_badge-pad-x', fallback: 'var(--spacing-s)' }])
+  })
+  test('multiple refs in one declaration', () => {
+    const refs = parseTweakVarRefs(
+      'padding: var(--_badge-pad-y, 2px) var(--_badge-pad-x, var(--spacing-s));',
+    )
+    expect(refs.map((r) => r.cssVar)).toEqual(['--_badge-pad-y', '--_badge-pad-x'])
+  })
+  test('non-tweak var は無視', () => {
+    const refs = parseTweakVarRefs('color: var(--color-text-primary);')
+    expect(refs).toEqual([])
+  })
+  test('fallback 無しの tweak var は無視 (SSOT が読めない)', () => {
+    const refs = parseTweakVarRefs('padding: var(--_badge-pad-x);')
+    expect(refs).toEqual([])
+  })
+  test('fallback 内の nested var() も走査される', () => {
+    const refs = parseTweakVarRefs('margin: var(--outer, var(--_badge-gap, 4px));')
+    expect(refs).toEqual([{ cssVar: '--_badge-gap', fallback: '4px' }])
+  })
+  test('color-mix 等の関数値 fallback も括弧バランスで拾える', () => {
+    const refs = parseTweakVarRefs(
+      'background: var(--_badge-bg, color-mix(in oklch, red 20%, transparent));',
+    )
+    expect(refs).toEqual([
+      { cssVar: '--_badge-bg', fallback: 'color-mix(in oklch, red 20%, transparent)' },
+    ])
+  })
+})
+
+describe('resolveFallback', () => {
+  test('literal はそのまま返る', () => {
+    expect(resolveFallback('2px')).toBe('2px')
+    expect(resolveFallback('  8px ')).toBe('8px')
+  })
+  test('DOM 無し環境では var() は解決不能 → 空文字', () => {
+    // bun test には getComputedStyle が無い
+    expect(resolveFallback('var(--spacing-s)')).toBe('')
+  })
+})
+
+describe('tweakVarToId / tweakPlacement', () => {
+  test('id: --_ を strip して dot 区切り', () => {
+    expect(tweakVarToId('--_badge-pad-x')).toBe('badge.pad.x')
+    expect(tweakVarToId('--_button-radius')).toBe('button.radius')
+  })
+  test('placement: 先頭 segment が group、残りが label', () => {
+    expect(tweakPlacement('--_badge-pad-x')).toEqual({ group: 'badge', label: 'Pad X' })
+    expect(tweakPlacement('--_button-radius')).toEqual({ group: 'button', label: 'Radius' })
+  })
+  test('placement: segment 1 個だけなら group 名がそのまま label', () => {
+    expect(tweakPlacement('--_gap')).toEqual({ group: 'gap', label: 'Gap' })
+  })
+})

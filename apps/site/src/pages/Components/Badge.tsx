@@ -155,14 +155,16 @@ export default function Badge() {
       <section>
         <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
         <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
-          badge の variant (6 種) / text を即時編集 (
+          <kbd>Ctrl+Shift+E</kbd> で Editor Mode toggle、 right panel から badge の variant (6 種) /
+          text を即時編集。 padding / radius のノブは page 側の bind ではなく、 badge.css の private
+          tweak var (<code>--_badge-*</code>) を editor が CSSOM から自動発見して生成 (F2b、
           <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
         </p>
         <div class="docs-playground-frame">
           <EditorHostProvider
             config={{
               localStorageNamespace: 'creo-ui-docs.badge-editor',
+              discoverTweaks: true,
             }}
           >
             <BadgeEditorDemo />
@@ -192,6 +194,9 @@ function BadgeEditorDemo() {
   const [variant, setVariant] = createSignal<BadgeVariant>('brand')
   const [text, setText] = createSignal('v0.14.0')
 
+  // instance scope: この demo badge の content / variant (app state = signal)。
+  // component-type scope (padding / radius) は bind せず、badge.css の
+  // --_badge-* を config.discoverTweaks が CSSOM から自動発見する (F2b)。
   bind({
     target: signalTarget('badge.variant', variant, (v) => setVariant(v as BadgeVariant)),
     control: select(['neutral', 'brand', 'success', 'warning', 'error', 'info'] as const),

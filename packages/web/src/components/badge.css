@@ -5,16 +5,18 @@
  * Token: creo-ui/tokens.css (必須)
  */
 
+/* --_badge-* は Editor Mode / demo 用の private tweak var (public API ではない)。
+   fallback が SSOT 値。override は editor / playground が scope 内で行う。 */
 .creo-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px var(--spacing-s);
+  padding: var(--_badge-pad-y, 2px) var(--_badge-pad-x, var(--spacing-s));
   font-family: inherit;
   font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-medium);
   line-height: 1;
-  border-radius: var(--radius-full);
+  border-radius: var(--_badge-radius, var(--radius-full));
   white-space: nowrap;
 
   /* default: neutral variant */
@@ -52,11 +54,12 @@
 
 .creo-badge[data-size="s"] {
   font-size: var(--typography-size-xs);
-  padding: 1px var(--spacing-xs);
+  --_badge-pad-y: 1px;
+  --_badge-pad-x: var(--spacing-xs);
 }
 
 /* ---------- Shapes ---------- */
 
 .creo-badge[data-shape="square"] {
-  border-radius: var(--radius-xs);
+  --_badge-radius: var(--radius-xs);
 }

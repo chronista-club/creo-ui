@@ -121,6 +121,14 @@ export interface EditorHostConfig {
   }
 
   /**
+   * mount 時に CSSOM を scan して private tweak var (`--_component-knob`) を
+   * 自動 bind する (F2b)。component CSS 側の規約
+   * `var(--_badge-pad-x, <SSOT fallback>)` だけで panel にノブが生える。
+   * default: false。
+   */
+  discoverTweaks?: boolean
+
+  /**
    * BroadcastChannel で複数 tab 間の values を同期する。
    * default: false。enabled 時は channel 名は `@chronista-club/creo-ui-editor-host:{namespace}`。
    */

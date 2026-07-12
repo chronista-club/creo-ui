@@ -20,6 +20,7 @@ import type {
   EditorField,
   EditorFieldConstraints,
   EditorFieldType,
+  EditorHost,
   EditorPersistence,
   EditorRole,
   EditorSemantic,
@@ -38,6 +39,11 @@ export interface BindOptions<T> {
   target: Target<T>
   control: Control<T>
   placement: Placement
+  /**
+   * provider の context 外 (auto-discover / console 等、onMount owner 経由) から
+   * 呼ぶ場合に host を明示注入する。省略時は useEditorHost() で context 解決。
+   */
+  host?: EditorHost
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: default any で multi-type 配列 (複数 binder を Binder[] で扱う) を許容
@@ -72,7 +78,7 @@ function controlToConstraints(control: Control): EditorFieldConstraints | undefi
 }
 
 export function bind<T>(opts: BindOptions<T>): Binder<T> {
-  const host = useEditorHost()
+  const host = opts.host ?? useEditorHost()
   const { target, control, placement } = opts
 
   // 初期値決定: target.get から読む (persistence 起源を尊重)、例外なら initial

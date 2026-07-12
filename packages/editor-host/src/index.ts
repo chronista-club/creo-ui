@@ -78,12 +78,17 @@ export {
 // F1: Console REPL
 export type { ConsoleApi } from './console'
 
-// F2: DOM auto-discover
+// F2: DOM auto-discover / F2b: private tweak var auto-discover
 export {
   autoDiscover,
+  autoDiscoverTweaks,
+  parseTweakVarRefs,
   scanCssVars,
+  scanTweakVars,
   type AutoDiscoverOptions,
   type DiscoveredVar,
+  type TweakDiscoverOptions,
+  type TweakVarRef,
 } from './auto-discover'
 
 // F3: Export

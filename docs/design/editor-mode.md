@@ -18,7 +18,7 @@
 
 ---
 
-## 2. 設計決定 (D-1 ~ D-12)
+## 2. 設計決定 (D-1 ~ D-13)
 
 | # | 項目 | 決定 |
 |---|------|------|
@@ -34,6 +34,7 @@
 | D-10 | AI agent access | 同 protocol を MCP 経由で (enter/select/set/subscribe/exit) |
 | D-11 | protocol owner | **creo-ui** (schema + TS 型 + JSON schema)、実装は consumer 側 |
 | D-12 | 段階 | Phase 1 = 設計 memo + editor-mode tokens / Phase 2 = Web 実装・MCP / Phase 3+ = Swift 実装、theme 切替 |
+| D-13 | Component tweak 規約 | component CSS の `--_<component>-<knob>` + fallback (= SSOT 値) を editor が CSSOM から自動発見 (F2b)。manifest / 手動 bind 不要 — **D-6 のデータ版非侵襲** (component は editor のために 1 行も書かない) |
 
 ---
 
@@ -250,6 +251,41 @@ function MemoryItemView() {
 
 Mode ON で該当要素を選ぶと、LEFT に "Original content"、RIGHT に "Priority" が自動配置される。
 
+### CSS 規約 — private tweak var (D-13 / F2b)
+
+第 3 の field source。component CSS の**使用箇所そのもの**が宣言になる:
+
+```css
+.creo-badge {
+  padding: var(--_badge-pad-y, 2px) var(--_badge-pad-x, var(--spacing-s));
+  border-radius: var(--_badge-radius, var(--radius-full));
+}
+```
+
+規約は 1 個だけ — **`--_<component>-<knob>` + fallback (= SSOT 初期値)**:
+
+- `--_` prefix は private の印 (public API ではない、theme 契約に含まれない)
+- **fallback を持つ使用箇所だけ**がノブになる。`--_btn-fg` のような fallback 無し
+  内部 var (variant が値を流すだけ) は対象外
+- editor-host (F2b) が `document.styleSheets` を scan → fallback を computed 値まで
+  解決 → 型推論 (number → slider / color → picker) → 自動 bind。
+  rule の `selectorText` で DOM presence を判定し、**画面に居る component の
+  ノブだけ** panel に出す
+- 書き込み先は `:root` — **component-type scope** (当該 component の全 instance
+  に効く)。consumer 側: `config.discoverTweaks: true` (provider) または
+  `creoEditor.discoverTweaks()` (REPL)
+
+編集の 3-scope model (2026-07-12 の設計議論で確定):
+
+| scope | 動く範囲 | 書き込み先 | field source |
+|---|---|---|---|
+| token | design system 全体 | `:root` の `--spacing-s` 等 | autoDiscover (F2) |
+| component-type | 当該 component の全 instance | `:root` の `--_badge-*` | tweak var 規約 (F2b) |
+| instance | 選択中の 1 要素 | signal / app state | 手動 bind |
+
+panel を scope で 3 分割する表示は Phase B (未実装)。instance scope の
+data-attribute discovery (selector から variant 候補を列挙) は将来の設計課題。
+
 ### RIGHT 領域の並び順
 
 複数 source から同 semantic の fields が集まったときの順序:
@@ -451,3 +487,7 @@ Claude: (tokens リポジトリに PR を作成)
 ## 14. Status log
 
 - 2026-04-21: Phase 1 設計 memo 初版、tokens/editor-mode/*.json 同時追加
+- 2026-07-12: D-13 (private tweak var 規約) 追加 — F2b (CSSOM auto-discover +
+  DOM presence filter) を editor-host に実装、badge.css で dogfood。3-scope
+  model (token / component-type / instance) を確定。bind() に host 明示注入を
+  追加 (onMount owner に context が無く F2/F2b が throw する問題の fix)
