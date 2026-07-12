@@ -26,7 +26,7 @@ const TOKENS = [
     token: 'color.semantic.{success/warning/error/info} (20% tint)',
   },
   { slot: 'text color', token: 'color.text.secondary / brand / semantic.*' },
-  { slot: 'padding', token: '2px × spacing.xs' },
+  { slot: 'padding', token: '2px × spacing.s' },
   { slot: 'font-size', token: 'typography.size.s' },
   { slot: 'font-weight', token: 'typography.weight.medium' },
   { slot: 'border-radius', token: 'radius.full (pill)' },

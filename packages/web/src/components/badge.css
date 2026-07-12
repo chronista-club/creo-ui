@@ -9,7 +9,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 2px var(--spacing-xs);
+  padding: 2px var(--spacing-s);
   font-family: inherit;
   font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-medium);
