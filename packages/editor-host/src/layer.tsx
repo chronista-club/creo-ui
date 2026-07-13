@@ -7,18 +7,19 @@
  *     <EditorLayer />
  *   </EditorHostProvider>
  *
- * Mode OFF では `visibility: hidden`、Mode ON で 4 region + selection outline
- * を描画する。token `--editor-mode-*` を consume するので、creo-ui の
- * tokens.css が load されている前提。
+ * Mode OFF では `visibility: hidden`。Mode ON で右上に floating inspector
+ * パネル1枚 + selection outline を描画する (ミニマム版: 旧 4-region を廃し、
+ * page を全面ブライトに保ち「対象を見ながら param を回す」に集中)。theme /
+ * export は既定から外し (theme-editor.tsx / export-bar.tsx は残置)、後で
+ * パネル内に畳み戻せる。token `--editor-mode-*` を consume する。
  */
 import { For, Show, createSignal } from 'solid-js'
 import type { JSX } from 'solid-js'
-import { ExportBar } from './export-bar'
-import { FieldEditor, FieldEditorInline } from './fields'
+import { Portal } from 'solid-js/web'
+import { FieldEditor } from './fields'
 import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
 import { useEditorHost } from './provider'
-import { ThemeEditor } from './theme-editor'
 import type { EditorField, EditorScope } from './types'
 
 // ---------- Styles ----------
@@ -31,78 +32,59 @@ const layerRootStyle = (visible: boolean): JSX.CSSProperties => ({
   visibility: visible ? 'visible' : 'hidden',
 })
 
-const topRegionStyle: JSX.CSSProperties = {
-  position: 'absolute',
+// ミニマム版: 全画面 4-region を廃し、右端に full-height の inspector ドック1枚。
+// content は下敷きのまま (D-6 非侵襲)、右上に固定して上端〜下端まで伸ばす。
+const panelStyle: JSX.CSSProperties = {
+  position: 'fixed',
   top: '0',
-  left: '0',
-  right: '0',
-  height: 'var(--editor-mode-region-top-height)',
-  padding: '0 var(--editor-mode-region-padding)',
-  display: 'flex',
-  'align-items': 'center',
-  'border-bottom': '2px solid var(--editor-mode-axis-global)',
-  background:
-    'color-mix(in oklch, var(--editor-mode-region-bg-color) calc(var(--editor-mode-region-bg-opacity) * 100%), transparent)',
-  'pointer-events': 'auto',
-  'font-size': '12px',
-  color: 'var(--color-text-secondary)',
-  'backdrop-filter': 'blur(8px)',
-  gap: '12px',
-}
-
-const rightRegionStyle: JSX.CSSProperties = {
-  position: 'absolute',
-  right: '0',
-  top: 'var(--editor-mode-region-top-height)',
-  bottom: 'var(--editor-mode-region-bottom-height)',
-  width: 'var(--editor-mode-region-right-width)',
-  padding: 'var(--editor-mode-region-padding)',
-  'border-left': '2px solid var(--editor-mode-axis-future)',
-  background:
-    'color-mix(in oklch, var(--editor-mode-region-bg-color) calc(var(--editor-mode-region-bg-opacity) * 100%), transparent)',
-  'pointer-events': 'auto',
-  'overflow-y': 'auto',
-  'backdrop-filter': 'blur(8px)',
-}
-
-const leftRegionStyle: JSX.CSSProperties = {
-  position: 'absolute',
-  left: '0',
-  top: 'var(--editor-mode-region-top-height)',
-  bottom: 'var(--editor-mode-region-bottom-height)',
-  width: 'var(--editor-mode-region-left-width)',
-  padding: 'var(--editor-mode-region-padding)',
-  'border-right': '2px solid var(--editor-mode-axis-past)',
-  background:
-    'color-mix(in oklch, var(--editor-mode-region-bg-color) calc(var(--editor-mode-region-bg-opacity) * 100%), transparent)',
-  'pointer-events': 'auto',
-  'overflow-y': 'auto',
-  'backdrop-filter': 'blur(8px)',
-}
-
-const bottomRegionStyle: JSX.CSSProperties = {
-  position: 'absolute',
-  left: '0',
   right: '0',
   bottom: '0',
-  height: 'var(--editor-mode-region-bottom-height)',
-  padding: '0 var(--editor-mode-region-padding)',
+  width: '320px',
+  'overflow-y': 'auto',
   display: 'flex',
-  'align-items': 'center',
-  'border-top': '2px solid var(--editor-mode-axis-utility)',
-  background:
-    'color-mix(in oklch, var(--editor-mode-region-bg-color) calc(var(--editor-mode-region-bg-opacity) * 100%), transparent)',
+  'flex-direction': 'column',
+  gap: '10px',
+  padding: '14px',
+  background: 'var(--color-surface-surface)',
+  'border-left': '1px solid var(--editor-mode-region-border)',
+  'box-shadow': '-8px 0 32px oklch(0 0 0 / 0.25)',
   'pointer-events': 'auto',
-  'backdrop-filter': 'blur(8px)',
+  'z-index': '9999',
+  'font-family': 'var(--typography-family-sans)',
 }
 
-const rightHeadingStyle: JSX.CSSProperties = {
-  margin: '0 0 var(--editor-mode-panel-group-gap) 0',
+const panelHeaderStyle: JSX.CSSProperties = {
+  display: 'flex',
+  'flex-direction': 'column',
+  gap: '4px',
+  'padding-bottom': '8px',
+  'border-bottom': '1px solid var(--editor-mode-region-border)',
+}
+
+const panelTitleRowStyle: JSX.CSSProperties = {
+  display: 'flex',
+  'align-items': 'center',
+  gap: '6px',
+  'font-size': '11px',
+  'font-weight': '700',
+  color: 'var(--color-text-primary)',
+}
+
+const panelHintStyle: JSX.CSSProperties = {
+  'font-size': '10px',
+  color: 'var(--color-text-tertiary)',
+  display: 'flex',
+  'align-items': 'center',
+  gap: '5px',
+  'flex-wrap': 'wrap',
+}
+
+const selectionRowStyle: JSX.CSSProperties = {
+  display: 'flex',
+  'align-items': 'center',
+  gap: '8px',
   'font-size': '11px',
   color: 'var(--editor-mode-axis-future)',
-  'text-transform': 'uppercase',
-  'letter-spacing': '0.08em',
-  'font-weight': '700',
 }
 
 const kbdInlineStyle: JSX.CSSProperties = {
@@ -123,15 +105,14 @@ const emptyHintStyle: JSX.CSSProperties = {
 }
 
 const clearButtonStyle: JSX.CSSProperties = {
-  'margin-top': 'var(--editor-mode-panel-group-gap)',
-  padding: '6px 10px',
-  'font-size': '11px',
+  'flex-shrink': '0',
+  padding: '2px 8px',
+  'font-size': '10px',
   background: 'transparent',
   color: 'var(--editor-mode-axis-future)',
   border: '1px solid var(--editor-mode-axis-future)',
   'border-radius': '4px',
   cursor: 'pointer',
-  width: '100%',
 }
 
 // ---------- Scope sections (D-13 3-scope: instance / component / token) ----------
@@ -295,88 +276,88 @@ export function EditorLayer(): JSX.Element {
   const scopeFields = (scope: EditorScope): EditorField[] =>
     visibleToolFields().filter((f: EditorField) => (f.scope ?? 'instance') === scope)
 
+  // Portal で document.body 直下に mount し、祖先 (.docs-main の perspective 等) が
+  // 作る containing block から脱出する。これで position:fixed が viewport 基準に戻り、
+  // パネルが window 右端に貼り付く (fixed が本来効くべき挙動)。
   return (
-    <div data-editor-layer style={layerRootStyle(mode() === 'on')}>
-      <Show when={mode() === 'on'}>
-        {/* Selection outlines (pointer-events: none) */}
-        <Show when={!selection() && hover()}>
-          {(h) => <Outline rect={h().rect} state="hover" />}
-        </Show>
-        <Show when={selection()}>{(s) => <Outline rect={s().rect} state="active" />}</Show>
+    <Portal>
+      <div data-editor-layer style={layerRootStyle(mode() === 'on')}>
+        <Show when={mode() === 'on'}>
+          {/* Selection / hover outline (pointer-events: none)。対象がどこかを示す */}
+          <Show when={!selection() && hover()}>
+            {(h) => <Outline rect={h().rect} state="hover" />}
+          </Show>
+          <Show when={selection()}>{(s) => <Outline rect={s().rect} state="active" />}</Show>
 
-        {/* TOP region: 左に hint (selection 情報) / 右に global fields */}
-        <div style={topRegionStyle}>
-          <span style={{ flex: '1' }}>
-            {t(messages.editorMode.label)} <strong>{t(messages.editorMode.on)}</strong> —{' '}
-            <Show when={selection()} fallback={<span>{t(messages.editorMode.clickToSelect)}</span>}>
-              {(s) => (
-                <span style={{ color: 'var(--editor-mode-axis-future)' }}>
-                  {t(messages.editorMode.selectedPrefix)}
-                  {s().targetId}
-                </span>
-              )}
-            </Show>{' '}
-            · <kbd style={kbdInlineStyle}>Esc</kbd>{' '}
-            <Show when={selection()} fallback={<span>{t(messages.editorMode.escapeToExit)}</span>}>
-              <span>{t(messages.editorMode.escapeToDeselect)}</span>
-            </Show>{' '}
-            · <kbd style={kbdInlineStyle}>Ctrl+Shift+E</kbd> {t(messages.editorMode.toggleShortcut)}
-          </span>
+          {/* ミニマム inspector パネル (右上 floating)。page は全面ブライトのまま */}
+          <div style={panelStyle} data-editor-panel>
+            <header style={panelHeaderStyle}>
+              <div style={panelTitleRowStyle}>
+                <span style={scopeDotStyle('var(--editor-mode-axis-future)')} />
+                {t(messages.editorMode.label)} {t(messages.editorMode.on)}
+              </div>
+              <div style={panelHintStyle}>
+                <kbd style={kbdInlineStyle}>Esc</kbd> {t(messages.editorMode.escapeToExit)} ·{' '}
+                <kbd style={kbdInlineStyle}>Ctrl+Shift+E</kbd>{' '}
+                {t(messages.editorMode.toggleShortcut)}
+              </div>
+              <Show
+                when={selection()}
+                fallback={<div style={panelHintStyle}>{t(messages.editorMode.clickToSelect)}</div>}
+              >
+                {(s) => (
+                  <div style={selectionRowStyle}>
+                    <span
+                      style={{
+                        flex: '1',
+                        'white-space': 'nowrap',
+                        overflow: 'hidden',
+                        'text-overflow': 'ellipsis',
+                      }}
+                    >
+                      {t(messages.editorMode.selectedPrefix)}
+                      {s().targetId}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => host.clearSelection()}
+                      style={clearButtonStyle}
+                    >
+                      {t(messages.toolPanel.showAllFields)}
+                    </button>
+                  </div>
+                )}
+              </Show>
+            </header>
 
-          <div
-            style={{
-              display: 'flex',
-              gap: '16px',
-              'align-items': 'center',
-              'padding-left': '12px',
-            }}
-          >
-            <For each={globalFields()}>{(field) => <FieldEditorInline field={field} />}</For>
+            {/* global fields (theme.mode 等、あれば) */}
+            <For each={globalFields()}>{(field) => <FieldEditor field={field} />}</For>
+
+            {/* tool fields を 3-scope で分割 (instance → component → token) */}
+            <Show
+              when={visibleToolFields().length > 0}
+              fallback={<p style={emptyHintStyle}>{t(messages.toolPanel.noFieldsForSelection)}</p>}
+            >
+              <ScopeSection
+                title={t(messages.toolPanel.scopeInstance)}
+                accent="var(--editor-mode-axis-future)"
+                fields={scopeFields('instance')}
+              />
+              <ScopeSection
+                title={t(messages.toolPanel.scopeComponent)}
+                accent="var(--color-brand-primary)"
+                fields={scopeFields('component')}
+              />
+              <ScopeSection
+                title={t(messages.toolPanel.scopeToken)}
+                accent="var(--color-semantic-info)"
+                fields={scopeFields('token')}
+                collapsible
+              />
+            </Show>
           </div>
-        </div>
-
-        {/* RIGHT region: tool fields を 3-scope (D-13) で分割表示。
-            並びは射程の狭い順 = instance → component → token */}
-        <div style={rightRegionStyle}>
-          <h3 style={rightHeadingStyle}>{t(messages.toolPanel.heading)}</h3>
-          <Show
-            when={visibleToolFields().length > 0}
-            fallback={<p style={emptyHintStyle}>{t(messages.toolPanel.noFieldsForSelection)}</p>}
-          >
-            <ScopeSection
-              title={t(messages.toolPanel.scopeInstance)}
-              accent="var(--editor-mode-axis-future)"
-              fields={scopeFields('instance')}
-            />
-            <ScopeSection
-              title={t(messages.toolPanel.scopeComponent)}
-              accent="var(--color-brand-primary)"
-              fields={scopeFields('component')}
-            />
-            <ScopeSection
-              title={t(messages.toolPanel.scopeToken)}
-              accent="var(--color-semantic-info)"
-              fields={scopeFields('token')}
-              collapsible
-            />
-          </Show>
-          <Show when={selection()}>
-            <button type="button" onClick={() => host.clearSelection()} style={clearButtonStyle}>
-              {t(messages.toolPanel.showAllFields)}
-            </button>
-          </Show>
-        </div>
-
-        {/* LEFT region: ThemeEditor (semantic = source / 過去・参照) */}
-        <div style={leftRegionStyle}>
-          <ThemeEditor />
-        </div>
-
-        {/* BOTTOM region: utility — Export bar で現 editor state を clipboard に出力 */}
-        <div style={bottomRegionStyle}>
-          <ExportBar host={host} />
-        </div>
-      </Show>
-    </div>
+        </Show>
+      </div>
+    </Portal>
   )
 }
