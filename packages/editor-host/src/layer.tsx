@@ -13,7 +13,7 @@
  * export は既定から外し (theme-editor.tsx / export-bar.tsx は残置)、後で
  * パネル内に畳み戻せる。token `--editor-mode-*` を consume する。
  */
-import { For, Show, createSignal, onMount } from 'solid-js'
+import { For, Show, createSignal, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Portal } from 'solid-js/web'
 import { ExportBar } from './export-bar'
@@ -361,8 +361,10 @@ export function EditorLayer(): JSX.Element {
     }
   }
 
-  // 復元位置が (リサイズ後などで) 画面外なら viewport 内へ引き戻す
-  onMount(() => {
+  // 復元位置が (リサイズ後・別解像度などで) 画面外なら viewport 内へ引き戻す。
+  // panel の ref callback から queueMicrotask で呼ぶ (mode off→on の再 mount 毎に効く)。
+  // onMount だと初回 mode=off で panelRef 未定義 → 早期 return し二度と走らないため不可。
+  const clampToViewport = (): void => {
     const p = pos()
     if (!p || !panelRef) return
     const maxX = Math.max(0, window.innerWidth - panelRef.offsetWidth)
@@ -373,7 +375,11 @@ export function EditorLayer(): JSX.Element {
       setPos({ x, y })
       savePos({ x, y })
     }
-  })
+  }
+
+  // drag 中の listener を確実に解除するための cleanup ref。pointerup 前に component が
+  // unmount (Esc で mode off → Show 破棄 / page 遷移) しても window listener を leak しない。
+  let stopDrag: (() => void) | null = null
 
   const onHandleDown = (e: PointerEvent): void => {
     if (!panelRef || e.button !== 0) return
@@ -395,12 +401,19 @@ export function EditorLayer(): JSX.Element {
       setDragging(false)
       const p = pos()
       if (p) savePos(p)
+      stopDrag?.()
+    }
+    stopDrag = (): void => {
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', up)
+      stopDrag = null
     }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', up)
   }
+
+  // component unmount 時に drag が進行中なら listener を解除 (#1 leak fix)
+  onCleanup(() => stopDrag?.())
 
   const panelPosStyle = (): JSX.CSSProperties => {
     const p = pos()
@@ -422,8 +435,16 @@ export function EditorLayer(): JSX.Element {
           </Show>
           <Show when={selection()}>{(s) => <Outline rect={s().rect} state="active" />}</Show>
 
-          {/* ドラッグ移動できる floating inspector パネル。page は全面ブライトのまま */}
-          <div ref={panelRef} style={{ ...panelBaseStyle, ...panelPosStyle() }} data-editor-panel>
+          {/* ドラッグ移動できる floating inspector パネル。page は全面ブライトのまま。
+              ref callback は mode off→on の再 mount 毎に発火 → 画面外復帰を効かせる */}
+          <div
+            ref={(el) => {
+              panelRef = el
+              if (typeof queueMicrotask !== 'undefined') queueMicrotask(clampToViewport)
+            }}
+            style={{ ...panelBaseStyle, ...panelPosStyle() }}
+            data-editor-panel
+          >
             <header style={panelHeaderStyle}>
               <div style={dragHandleStyle(dragging())} onPointerDown={onHandleDown}>
                 <span style={scopeDotStyle('var(--editor-mode-axis-future)')} />
