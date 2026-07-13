@@ -505,3 +505,14 @@ Claude: (tokens リポジトリに PR を作成)
   不要、browser が解釈)、書き戻しも oklch literal で token の SSOT 形式を
   保つ。hex 等 oklch でない値は従来の native color picker に fallback。
   ThemeEditor の swatch クリック起動は未実装 (M6 残り)
+- 2026-07-13: Editor Layer を **ミニマム版に刷新** — 旧 4-region 全画面 overlay を
+  廃し、右上の floating inspector パネル1枚に集約 (page は全面ブライト、対象を
+  見ながら param を回すことに集中)。theme swatch / export bar は既定から外し
+  CollapsibleSection で panel 内に畳み戻し (theme-editor.tsx / export-bar.tsx は
+  残置)。`<Portal>` で document.body 直下に mount し、consumer の `.docs-main` の
+  `perspective` が作る containing block から脱出 (position:fixed を viewport 基準に
+  戻す + outline 座標ズレ解消、transform/filter/perspective を使う consumer でも
+  壊れない堅牢性改善)。パネルは **ヘッダ掴みで drag 移動** + 位置を localStorage
+  永続化 (`{namespace}:layer:panel-pos`、EditorHost.namespace を新規 expose)。
+  被り回避 `--editor-mode-dock-top` / 幅 `--editor-mode-dock-width` を導入。
+  team-b review で drag listener leak / 画面外クランプ不発を修正

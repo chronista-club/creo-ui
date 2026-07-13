@@ -33,7 +33,8 @@ Item の **status / count / tag** を視覚的 accent として pill 形状で�
 | font-size (md) | `typography.size.s` |
 | padding horizontal (md) | `spacing.s` |
 | padding horizontal (sm) | `spacing.xs` |
-| padding vertical | 2px |
+| padding vertical (md) | 2px |
+| padding vertical (sm) | 1px |
 | border-radius (pill) | `radius.full` |
 | border-radius (square) | `radius.xs` |
 | line-height | 1 |
