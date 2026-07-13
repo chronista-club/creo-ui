@@ -201,6 +201,7 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
     enable,
     disable,
     toggle,
+    namespace,
 
     register,
     getField,

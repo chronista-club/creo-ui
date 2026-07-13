@@ -184,6 +184,10 @@ export interface EditorHost {
   disable(): void
   toggle(): void
 
+  /** localStorage 永続化の key prefix (config.localStorageNamespace 由来)。
+   *  Layer 側の UI state (panel 位置等) も同 namespace 配下に保存する。 */
+  readonly namespace: string
+
   // --- Field registration ---
   /**
    * fields を register する。返り値を呼ぶと unregister される。

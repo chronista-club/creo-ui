@@ -12,15 +12,6 @@ import type { JSX } from 'solid-js'
 import { useEditorHost } from './provider'
 import { DEFAULT_THEME_ID, SWATCH_ROWS, THEME_INFO } from './theme-info'
 
-const headingStyle: JSX.CSSProperties = {
-  margin: '0 0 var(--editor-mode-panel-group-gap) 0',
-  'font-size': '11px',
-  color: 'var(--editor-mode-axis-past)',
-  'text-transform': 'uppercase',
-  'letter-spacing': '0.08em',
-  'font-weight': '700',
-}
-
 const infoCardStyle: JSX.CSSProperties = {
   'margin-bottom': 'var(--editor-mode-panel-group-gap)',
   padding: '8px',
@@ -90,8 +81,6 @@ export function ThemeEditor(): JSX.Element {
 
   return (
     <>
-      <h3 style={headingStyle}>◀ Theme</h3>
-
       <div style={infoCardStyle}>
         <div style={infoNameStyle}>{info().name}</div>
         <div style={infoFamilyStyle}>family: {info().family}</div>

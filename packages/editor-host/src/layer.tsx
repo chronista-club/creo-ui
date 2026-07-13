@@ -13,13 +13,15 @@
  * export は既定から外し (theme-editor.tsx / export-bar.tsx は残置)、後で
  * パネル内に畳み戻せる。token `--editor-mode-*` を consume する。
  */
-import { For, Show, createSignal } from 'solid-js'
+import { For, Show, createSignal, onMount } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Portal } from 'solid-js/web'
+import { ExportBar } from './export-bar'
 import { FieldEditor } from './fields'
 import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
 import { useEditorHost } from './provider'
+import { ThemeEditor } from './theme-editor'
 import type { EditorField, EditorScope } from './types'
 
 // ---------- Styles ----------
@@ -34,23 +36,44 @@ const layerRootStyle = (visible: boolean): JSX.CSSProperties => ({
 
 // ミニマム版: 全画面 4-region を廃し、右端に full-height の inspector ドック1枚。
 // content は下敷きのまま (D-6 非侵襲)、右上に固定して上端〜下端まで伸ばす。
-const panelStyle: JSX.CSSProperties = {
+// ドラッグ移動できる floating card。位置座標 (left/top) は JSX 側で pos() から与える。
+// 未ドラッグ時は右上 default (top=--editor-mode-dock-top / right=12px)。
+const panelBaseStyle: JSX.CSSProperties = {
   position: 'fixed',
-  top: '0',
-  right: '0',
-  bottom: '0',
-  width: '320px',
+  width: 'var(--editor-mode-dock-width, 300px)',
+  'max-height': 'calc(100dvh - var(--editor-mode-dock-top, 0px) - 24px)',
   'overflow-y': 'auto',
   display: 'flex',
   'flex-direction': 'column',
   gap: '10px',
   padding: '14px',
   background: 'var(--color-surface-surface)',
-  'border-left': '1px solid var(--editor-mode-region-border)',
-  'box-shadow': '-8px 0 32px oklch(0 0 0 / 0.25)',
+  border: '1px solid var(--editor-mode-region-border)',
+  'border-radius': '12px',
+  'box-shadow': '0 12px 40px oklch(0 0 0 / 0.35)',
   'pointer-events': 'auto',
   'z-index': '9999',
   'font-family': 'var(--typography-family-sans)',
+}
+
+// ドラッグハンドル (ヘッダ title 行)。掴んで panel を移動する。
+const dragHandleStyle = (dragging: boolean): JSX.CSSProperties => ({
+  display: 'flex',
+  'align-items': 'center',
+  gap: '6px',
+  'font-size': '11px',
+  'font-weight': '700',
+  color: 'var(--color-text-primary)',
+  cursor: dragging ? 'grabbing' : 'grab',
+  'touch-action': 'none',
+  'user-select': 'none',
+})
+
+const gripStyle: JSX.CSSProperties = {
+  'margin-left': 'auto',
+  'font-size': '12px',
+  'letter-spacing': '-1px',
+  color: 'var(--color-text-tertiary)',
 }
 
 const panelHeaderStyle: JSX.CSSProperties = {
@@ -59,15 +82,6 @@ const panelHeaderStyle: JSX.CSSProperties = {
   gap: '4px',
   'padding-bottom': '8px',
   'border-bottom': '1px solid var(--editor-mode-region-border)',
-}
-
-const panelTitleRowStyle: JSX.CSSProperties = {
-  display: 'flex',
-  'align-items': 'center',
-  gap: '6px',
-  'font-size': '11px',
-  'font-weight': '700',
-  color: 'var(--color-text-primary)',
 }
 
 const panelHintStyle: JSX.CSSProperties = {
@@ -113,6 +127,50 @@ const clearButtonStyle: JSX.CSSProperties = {
   border: '1px solid var(--editor-mode-axis-future)',
   'border-radius': '4px',
   cursor: 'pointer',
+}
+
+// ---------- Collapsible sub-section (theme / export の畳み戻し用) ----------
+
+const subSectionStyle: JSX.CSSProperties = {
+  'border-top': '1px solid var(--editor-mode-region-border)',
+  'padding-top': '10px',
+}
+
+const subSectionTitleStyle: JSX.CSSProperties = {
+  display: 'flex',
+  'align-items': 'center',
+  gap: '6px',
+  width: '100%',
+  padding: '0',
+  background: 'none',
+  border: 'none',
+  'font-size': '10px',
+  'font-weight': '700',
+  'letter-spacing': '0.08em',
+  'text-transform': 'uppercase',
+  'text-align': 'left',
+  color: 'var(--color-text-tertiary)',
+  cursor: 'pointer',
+}
+
+/** 任意 children を折りたたむ二次 section (theme / export 用、default 閉)。 */
+function CollapsibleSection(props: {
+  title: string
+  defaultOpen?: boolean
+  children: JSX.Element
+}): JSX.Element {
+  const [open, setOpen] = createSignal(props.defaultOpen ?? false)
+  return (
+    <section style={subSectionStyle}>
+      <button type="button" onClick={() => setOpen(!open())} style={subSectionTitleStyle}>
+        {props.title}
+        <span style={{ 'margin-left': 'auto', 'font-weight': '400' }}>{open() ? '▾' : '▸'}</span>
+      </button>
+      <Show when={open()}>
+        <div style={{ 'margin-top': '8px' }}>{props.children}</div>
+      </Show>
+    </section>
+  )
 }
 
 // ---------- Scope sections (D-13 3-scope: instance / component / token) ----------
@@ -276,9 +334,84 @@ export function EditorLayer(): JSX.Element {
   const scopeFields = (scope: EditorScope): EditorField[] =>
     visibleToolFields().filter((f: EditorField) => (f.scope ?? 'instance') === scope)
 
+  // ---- ドラッグ移動 (位置は localStorage 永続化) ----
+  // pos = null なら右上 default 配置、掴んで動かすと {x,y} (viewport 座標) に切替。
+  let panelRef: HTMLDivElement | undefined
+  const posKey = `${host.namespace}:layer:panel-pos`
+  const readSavedPos = (): { x: number; y: number } | null => {
+    if (typeof localStorage === 'undefined') return null
+    try {
+      const raw = localStorage.getItem(posKey)
+      if (!raw) return null
+      const p = JSON.parse(raw)
+      return typeof p?.x === 'number' && typeof p?.y === 'number' ? { x: p.x, y: p.y } : null
+    } catch {
+      return null
+    }
+  }
+  const [pos, setPos] = createSignal<{ x: number; y: number } | null>(readSavedPos())
+  const [dragging, setDragging] = createSignal(false)
+
+  const savePos = (p: { x: number; y: number }): void => {
+    if (typeof localStorage === 'undefined') return
+    try {
+      localStorage.setItem(posKey, JSON.stringify(p))
+    } catch {
+      // quota / serialization 失敗は D-6 非侵襲で silent
+    }
+  }
+
+  // 復元位置が (リサイズ後などで) 画面外なら viewport 内へ引き戻す
+  onMount(() => {
+    const p = pos()
+    if (!p || !panelRef) return
+    const maxX = Math.max(0, window.innerWidth - panelRef.offsetWidth)
+    const maxY = Math.max(0, window.innerHeight - panelRef.offsetHeight)
+    const x = Math.min(Math.max(0, p.x), maxX)
+    const y = Math.min(Math.max(0, p.y), maxY)
+    if (x !== p.x || y !== p.y) {
+      setPos({ x, y })
+      savePos({ x, y })
+    }
+  })
+
+  const onHandleDown = (e: PointerEvent): void => {
+    if (!panelRef || e.button !== 0) return
+    e.preventDefault()
+    const rect = panelRef.getBoundingClientRect()
+    const offX = e.clientX - rect.left
+    const offY = e.clientY - rect.top
+    setDragging(true)
+    const clamp = (v: number, max: number): number => Math.min(Math.max(0, v), Math.max(0, max))
+    const move = (ev: PointerEvent): void => {
+      const w = panelRef?.offsetWidth ?? 0
+      const h = panelRef?.offsetHeight ?? 0
+      setPos({
+        x: clamp(ev.clientX - offX, window.innerWidth - w),
+        y: clamp(ev.clientY - offY, window.innerHeight - h),
+      })
+    }
+    const up = (): void => {
+      setDragging(false)
+      const p = pos()
+      if (p) savePos(p)
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', up)
+    }
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', up)
+  }
+
+  const panelPosStyle = (): JSX.CSSProperties => {
+    const p = pos()
+    return p
+      ? { left: `${p.x}px`, top: `${p.y}px` }
+      : { top: 'var(--editor-mode-dock-top, 12px)', right: '12px' }
+  }
+
   // Portal で document.body 直下に mount し、祖先 (.docs-main の perspective 等) が
   // 作る containing block から脱出する。これで position:fixed が viewport 基準に戻り、
-  // パネルが window 右端に貼り付く (fixed が本来効くべき挙動)。
+  // ドラッグ座標も viewport と一致する (fixed が本来効くべき挙動)。
   return (
     <Portal>
       <div data-editor-layer style={layerRootStyle(mode() === 'on')}>
@@ -289,12 +422,15 @@ export function EditorLayer(): JSX.Element {
           </Show>
           <Show when={selection()}>{(s) => <Outline rect={s().rect} state="active" />}</Show>
 
-          {/* ミニマム inspector パネル (右上 floating)。page は全面ブライトのまま */}
-          <div style={panelStyle} data-editor-panel>
+          {/* ドラッグ移動できる floating inspector パネル。page は全面ブライトのまま */}
+          <div ref={panelRef} style={{ ...panelBaseStyle, ...panelPosStyle() }} data-editor-panel>
             <header style={panelHeaderStyle}>
-              <div style={panelTitleRowStyle}>
+              <div style={dragHandleStyle(dragging())} onPointerDown={onHandleDown}>
                 <span style={scopeDotStyle('var(--editor-mode-axis-future)')} />
                 {t(messages.editorMode.label)} {t(messages.editorMode.on)}
+                <span style={gripStyle} aria-hidden="true">
+                  ⠿
+                </span>
               </div>
               <div style={panelHintStyle}>
                 <kbd style={kbdInlineStyle}>Esc</kbd> {t(messages.editorMode.escapeToExit)} ·{' '}
@@ -355,6 +491,14 @@ export function EditorLayer(): JSX.Element {
                 collapsible
               />
             </Show>
+
+            {/* 二次 UI: theme swatch と export を折りたたみで復活 (既定は閉) */}
+            <CollapsibleSection title="Theme">
+              <ThemeEditor />
+            </CollapsibleSection>
+            <CollapsibleSection title="Export">
+              <ExportBar host={host} />
+            </CollapsibleSection>
           </div>
         </Show>
       </div>
