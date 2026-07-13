@@ -3,7 +3,9 @@ import {
   EditorLayer,
   bind,
   boolean,
+  color,
   cssVarNumberTarget,
+  cssVarTarget,
   number,
   select,
   signalTarget,
@@ -240,19 +242,26 @@ function PlaygroundDemo() {
     placement: { semantic: 'tool', group: 'card', label: 'Card padding', order: 2 },
   })
 
+  // OKLCH literal を initial に持つ color field → OKLCH editor (L/C/H/A slider) が出る
+  bind({
+    target: cssVarTarget('demo.cardAccent', '--demo-card-accent', 'oklch(0.75 0.12 160)'),
+    control: color({ variant: 'picker' }),
+    placement: { semantic: 'tool', group: 'card', label: 'Accent', order: 3 },
+  })
+
   // Signal-backed bindings (component-local state)
   bind({
     target: signalTarget('demo.elevation', elevation, (v) =>
       setElevation(v as PlaygroundElevation),
     ),
     control: select(['flat', 'raised', 'floating'] as const),
-    placement: { semantic: 'tool', group: 'card', label: 'Elevation', order: 3 },
+    placement: { semantic: 'tool', group: 'card', label: 'Elevation', order: 4 },
   })
 
   bind({
     target: signalTarget('demo.showLabel', showLabel, setShowLabel),
     control: boolean({ variant: 'switch' }),
-    placement: { semantic: 'tool', group: 'card', label: 'Show label', order: 4 },
+    placement: { semantic: 'tool', group: 'card', label: 'Show label', order: 5 },
   })
 
   bind({
@@ -269,10 +278,16 @@ function PlaygroundDemo() {
         style={{
           'border-radius': 'var(--demo-card-radius, 12px)',
           padding: 'var(--demo-card-padding, 18px)',
+          'border-left': '3px solid var(--demo-card-accent, oklch(0.75 0.12 160))',
         }}
       >
         <Show when={showLabel()}>
-          <span class="docs-playground-label">PREVIEW CARD</span>
+          <span
+            class="docs-playground-label"
+            style={{ color: 'var(--demo-card-accent, oklch(0.75 0.12 160))' }}
+          >
+            PREVIEW CARD
+          </span>
         </Show>
         <h3 class="docs-playground-title">{title() || 'Untitled'}</h3>
         <p class="docs-playground-body">

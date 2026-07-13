@@ -18,7 +18,7 @@
 
 ---
 
-## 2. 設計決定 (D-1 ~ D-12)
+## 2. 設計決定 (D-1 ~ D-13)
 
 | # | 項目 | 決定 |
 |---|------|------|
@@ -34,6 +34,7 @@
 | D-10 | AI agent access | 同 protocol を MCP 経由で (enter/select/set/subscribe/exit) |
 | D-11 | protocol owner | **creo-ui** (schema + TS 型 + JSON schema)、実装は consumer 側 |
 | D-12 | 段階 | Phase 1 = 設計 memo + editor-mode tokens / Phase 2 = Web 実装・MCP / Phase 3+ = Swift 実装、theme 切替 |
+| D-13 | Component tweak 規約 | component CSS の `--_<component>-<knob>` + fallback (= SSOT 値) を editor が CSSOM から自動発見 (F2b)。manifest / 手動 bind 不要 — **D-6 のデータ版非侵襲** (component は editor のために 1 行も書かない) |
 
 ---
 
@@ -250,6 +251,45 @@ function MemoryItemView() {
 
 Mode ON で該当要素を選ぶと、LEFT に "Original content"、RIGHT に "Priority" が自動配置される。
 
+### CSS 規約 — private tweak var (D-13 / F2b)
+
+第 3 の field source。component CSS の**使用箇所そのもの**が宣言になる:
+
+```css
+.creo-badge {
+  padding: var(--_badge-pad-y, 2px) var(--_badge-pad-x, var(--spacing-s));
+  border-radius: var(--_badge-radius, var(--radius-full));
+}
+```
+
+規約は 1 個だけ — **`--_<component>-<knob>` + fallback (= SSOT 初期値)**:
+
+- `--_` prefix は private の印 (public API ではない、theme 契約に含まれない)
+- **fallback を持つ使用箇所だけ**がノブになる。`--_btn-fg` のような fallback 無し
+  内部 var (variant が値を流すだけ) は対象外
+- editor-host (F2b) が `document.styleSheets` を scan → fallback を computed 値まで
+  解決 → 型推論 (number → slider / color → picker) → 自動 bind。
+  rule の `selectorText` で DOM presence を判定し、**画面に居る component の
+  ノブだけ** panel に出す
+- 書き込み先は `:root` — **component-type scope** (当該 component の全 instance
+  に効く)。consumer 側: `config.discoverTweaks: true` (provider) または
+  `creoEditor.discoverTweaks()` (REPL)
+
+編集の 3-scope model (2026-07-12 の設計議論で確定):
+
+| scope | 動く範囲 | 書き込み先 | field source |
+|---|---|---|---|
+| token | design system 全体 | `:root` の `--spacing-s` 等 | autoDiscover (F2) |
+| component-type | 当該 component の全 instance | `:root` の `--_badge-*` | tweak var 規約 (F2b) |
+| instance | 選択中の 1 要素 | signal / app state | 手動 bind |
+
+panel の scope 3 分割表示 (Phase B) は 2026-07-12 実装済み — RIGHT region が
+「App state (instance) → 画面上の component → Tokens (折りたたみ)」の順に、
+射程の狭い順で section 表示する。空 section は非表示。radius.full = 9999px の
+ような **sentinel 値 (px で 512 超) は slider ノブから除外**する
+(`isSliderFriendly`)。instance scope の data-attribute discovery (selector から
+variant 候補を列挙) は将来の設計課題。
+
 ### RIGHT 領域の並び順
 
 複数 source から同 semantic の fields が集まったときの順序:
@@ -451,3 +491,28 @@ Claude: (tokens リポジトリに PR を作成)
 ## 14. Status log
 
 - 2026-04-21: Phase 1 設計 memo 初版、tokens/editor-mode/*.json 同時追加
+- 2026-07-12: D-13 (private tweak var 規約) 追加 — F2b (CSSOM auto-discover +
+  DOM presence filter) を editor-host に実装、badge.css で dogfood。3-scope
+  model (token / component-type / instance) を確定。bind() に host 明示注入を
+  追加 (onMount owner に context が無く F2/F2b が throw する問題の fix)
+- 2026-07-12: Phase B — RIGHT panel の 3-scope 分割表示を実装 (EditorField.scope
+  + ScopeSection)。console REPL の dev 自動 expose を localhost 判定に変更
+  (library build で `import.meta.env.DEV` が false に固定化される問題の fix)。
+  sentinel 値 (px 512 超) を slider ノブから除外
+- 2026-07-13: OKLCH color editor (Phase M6 第一弾) — color field の値が oklch
+  literal のとき L/C/H/A の 4 slider editor に切替 (`src/oklch.ts` +
+  `OklchEditor`)。track は CSS `oklch()` グラデーション (色空間変換の数学
+  不要、browser が解釈)、書き戻しも oklch literal で token の SSOT 形式を
+  保つ。hex 等 oklch でない値は従来の native color picker に fallback。
+  ThemeEditor の swatch クリック起動は未実装 (M6 残り)
+- 2026-07-13: Editor Layer を **ミニマム版に刷新** — 旧 4-region 全画面 overlay を
+  廃し、右上の floating inspector パネル1枚に集約 (page は全面ブライト、対象を
+  見ながら param を回すことに集中)。theme swatch / export bar は既定から外し
+  CollapsibleSection で panel 内に畳み戻し (theme-editor.tsx / export-bar.tsx は
+  残置)。`<Portal>` で document.body 直下に mount し、consumer の `.docs-main` の
+  `perspective` が作る containing block から脱出 (position:fixed を viewport 基準に
+  戻す + outline 座標ズレ解消、transform/filter/perspective を使う consumer でも
+  壊れない堅牢性改善)。パネルは **ヘッダ掴みで drag 移動** + 位置を localStorage
+  永続化 (`{namespace}:layer:panel-pos`、EditorHost.namespace を新規 expose)。
+  被り回避 `--editor-mode-dock-top` / 幅 `--editor-mode-dock-width` を導入。
+  team-b review で drag listener leak / 画面外クランプ不発を修正

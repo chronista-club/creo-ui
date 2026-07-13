@@ -10,6 +10,8 @@
   --docs-header-height: 56px;
   --docs-content-max-width: 760px;
   --docs-content-padding-x: clamp(20px, 4vw, 56px);
+  /* Editor Mode の右端ドックが固定 header に被らないよう top offset を渡す */
+  --editor-mode-dock-top: var(--docs-header-height);
   color-scheme: light dark;
 
   /* ----------------------------------------------------------

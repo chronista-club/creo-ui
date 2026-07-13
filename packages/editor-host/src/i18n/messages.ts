@@ -44,7 +44,18 @@ export const messages = {
       en: 'No fields bound to the current selection.',
     },
     showAllFields: { ja: '全 tool field を表示', en: 'Show all tool fields' },
-  } satisfies Localized<'heading' | 'noFieldsForSelection' | 'showAllFields'>,
+    // 3-scope sections (D-13)
+    scopeInstance: { ja: 'App state', en: 'App state' },
+    scopeComponent: { ja: '画面上の component', en: 'On-screen components' },
+    scopeToken: { ja: 'Tokens', en: 'Tokens' },
+  } satisfies Localized<
+    | 'heading'
+    | 'noFieldsForSelection'
+    | 'showAllFields'
+    | 'scopeInstance'
+    | 'scopeComponent'
+    | 'scopeToken'
+  >,
 
   /** BOTTOM region: ExportBar */
   exportBar: {

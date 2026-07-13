@@ -124,6 +124,13 @@ export interface ConsoleApi {
     semantic?: EditorSemantic
     skipExisting?: boolean
   }): Binder[]
+  /** F2b: private tweak var (`--_component-knob`) を CSSOM から自動 bind */
+  discoverTweaks(opts?: {
+    prefix?: string
+    semantic?: EditorSemantic
+    skipExisting?: boolean
+    requirePresence?: boolean
+  }): Binder[]
 
   // --- Dev write-back (tokens/<cat>/scale.json に直書き戻し) ---
   /**
@@ -164,6 +171,16 @@ export interface ConsoleApiDeps {
     host: EditorHost,
     owner: Owner | null,
     opts?: { prefixes?: readonly string[]; semantic?: EditorSemantic; skipExisting?: boolean },
+  ) => Binder[]
+  autoDiscoverTweaks: (
+    host: EditorHost,
+    owner: Owner | null,
+    opts?: {
+      prefix?: string
+      semantic?: EditorSemantic
+      skipExisting?: boolean
+      requirePresence?: boolean
+    },
   ) => Binder[]
 }
 
@@ -329,6 +346,9 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
     autoDiscover(opts) {
       return withOwner(() => deps.autoDiscover(host, owner, opts))
     },
+    discoverTweaks(opts) {
+      return withOwner(() => deps.autoDiscoverTweaks(host, owner, opts))
+    },
 
     // --- Dev write-back ---
     async commitToTokens(opts = {}) {
@@ -405,6 +425,7 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
         '  creoEditor.share()                          // URL に #creo=... を付与',
         "  creoEditor.export({ format: 'css-patch' })  // 差分 CSS 返却",
         '  creoEditor.autoDiscover()                    // 既知 CSS var を自動 bind',
+        '  creoEditor.discoverTweaks()                  // --_component-knob を自動 bind (F2b)',
         '',
         '[Dev write-back (Vite plugin 要 attach)]',
         '  await creoEditor.commitToTokens()           // 現値を tokens/*.json に書き戻す',
