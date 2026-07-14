@@ -89,7 +89,11 @@ const NAV: readonly NavGroup[] = [
   },
   {
     title: 'Lab',
-    items: [{ href: '/playground', label: 'Playground', tag: 'live' }],
+    items: [
+      { href: '/lab/editor', label: 'Editor surface', tag: 'live' },
+      { href: '/lab/frame', label: 'Frame & Gaze', tag: 'spec' },
+      { href: '/lab/vision', label: 'Vision input' },
+    ],
   },
 ]
 

@@ -188,7 +188,7 @@ export default function EditorMode() {
           SolidJS で書かれた Web reference runtime。 <code>EditorHostProvider</code> +{' '}
           <code>EditorLayer</code> +<code>bind()</code> + Console REPL (
           <code>window.creoEditor</code>) + Auto-discover + URL share + Cross-tab sync を提供。{' '}
-          <A href="/playground">Playground</A> で実演。
+          <A href="/lab/editor">Playground</A> で実演。
         </p>
         <pre class="docs-code">
           <code>{`import { EditorHostProvider, EditorLayer, bind, number, cssVarNumberTarget } from '@chronista-club/creo-ui-editor-host'

@@ -20,8 +20,8 @@ export default function Header() {
         <A href="/components" activeClass="is-active">
           Components
         </A>
-        <A href="/playground" activeClass="is-active">
-          Playground
+        <A href="/lab/editor" activeClass="is-active">
+          Lab
         </A>
       </nav>
       <div class="docs-header-actions">

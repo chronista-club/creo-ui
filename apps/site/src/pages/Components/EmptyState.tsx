@@ -1,3 +1,17 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { A } from '@solidjs/router'
+import { Show, createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
+
 const PROPS = [
   {
     attr: 'data-size',
@@ -19,7 +33,11 @@ const TOKENS = [
 
 export default function EmptyState() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.empty-state-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Empty state</h1>
@@ -32,7 +50,15 @@ export default function EmptyState() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground empty state の size / actions / icon / title /
+          description を即時編集できる。 Mode ON 中に playground を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <EmptyStateLivePreview />
           <div class="docs-preview-row-label">First-time / no items yet</div>
           <div class="creo-empty-state">
             <div class="creo-empty-state-icon" aria-hidden="true">
@@ -176,6 +202,81 @@ export default function EmptyState() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type EmptyStateSize = 's' | 'm' | 'l'
+
+/**
+ * Live preview の playground。editor-host の bind() で size / actions / icon / title /
+ * description を inspector panel に生やし、stage の empty state 自体を selectable にする
+ * (Mode ON で click → その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function EmptyStateLivePreview() {
+  const [size, setSize] = createSignal<EmptyStateSize>('m')
+  const [showActions, setShowActions] = createSignal(true)
+  const [icon, setIcon] = createSignal('📁')
+  const [title, setTitle] = createSignal('No projects yet')
+  const [description, setDescription] = createSignal(
+    '最初の project を作って始めましょう。 token / component / docs を一元管理できます。',
+  )
+
+  const binders = [
+    bind({
+      target: signalTarget('empty-state.size', size, (v) => setSize(v as EmptyStateSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'empty-state', label: 'Size', order: 1 },
+    }),
+    bind({
+      target: signalTarget('empty-state.actions', showActions, setShowActions),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'empty-state', label: 'Show actions', order: 2 },
+    }),
+    bind({
+      target: signalTarget('empty-state.icon', icon, setIcon),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Icon', order: 1 },
+    }),
+    bind({
+      target: signalTarget('empty-state.title', title, setTitle),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Title', order: 2 },
+    }),
+    bind({
+      target: signalTarget('empty-state.description', description, setDescription),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Description', order: 3 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'empty-state-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div ref={selectable} class="creo-empty-state" data-size={size()}>
+          <div class="creo-empty-state-icon" aria-hidden="true">
+            {icon()}
+          </div>
+          <h3 class="creo-empty-state-title">{title()}</h3>
+          <p class="creo-empty-state-description">{description()}</p>
+          <Show when={showActions()}>
+            <div class="creo-empty-state-actions">
+              <button type="button" class="creo-btn" data-variant="primary">
+                Create project
+              </button>
+              <button type="button" class="creo-btn" data-variant="ghost">
+                Read docs
+              </button>
+            </div>
+          </Show>
+        </div>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }

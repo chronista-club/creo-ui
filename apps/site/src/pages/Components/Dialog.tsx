@@ -5,9 +5,11 @@ import {
   select,
   signalTarget,
   string,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { type JSX, createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -48,7 +50,11 @@ export default function Dialog() {
   }
 
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.dialog-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Dialog</h1>
@@ -61,7 +67,16 @@ export default function Dialog() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground dialog の size / variant / title / body
+          を即時編集できる。 Mode ON 中に playground dialog を click するとその instance に field
+          が絞られる (selection)。 playground は inline 表示 (<code>&lt;dialog open&gt;</code>) で
+          modal を出さずに見せる、 真の modal は下の Open ボタンで試せる。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
+        </p>
         <div class="docs-component-preview">
+          <DialogLivePreview />
           <div class="docs-preview-row-label">Open as modal</div>
           <div class="docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" onClick={openDefault}>
@@ -236,27 +251,6 @@ export default function Dialog() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
-          dialog の size / variant / title / body を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。 inline 表示 (
-          <code>&lt;dialog open&gt;</code>) で modal を出さずに見せる、 真の modal は上の Live
-          preview section の Open ボタンで試せる。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.dialog-editor',
-            }}
-          >
-            <DialogEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<dialog class="creo-dialog" data-size="m" id="confirm-dlg">
@@ -288,65 +282,81 @@ export default function Dialog() {
           </a>
         </p>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type DialogSize = 's' | 'm' | 'l'
 type DialogVariant = 'default' | 'destructive'
 
-function DialogEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で size / variant / title / body を
+ * inspector panel に生やし、stage の dialog 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function DialogLivePreview() {
   const [size, setSize] = createSignal<DialogSize>('m')
   const [variant, setVariant] = createSignal<DialogVariant>('default')
   const [title, setTitle] = createSignal('削除の確認')
   const [body, setBody] = createSignal('この項目を削除します。 この操作は取り消せません。')
 
-  bind({
-    target: signalTarget('dialog.size', size, (v) => setSize(v as DialogSize)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'dialog', label: 'Size', order: 1 },
-  })
-  bind({
-    target: signalTarget('dialog.variant', variant, (v) => setVariant(v as DialogVariant)),
-    control: select(['default', 'destructive'] as const),
-    placement: { semantic: 'tool', group: 'dialog', label: 'Variant', order: 2 },
-  })
-  bind({
-    target: signalTarget('dialog.title', title, setTitle),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'content', label: 'Title', order: 1 },
-  })
-  bind({
-    target: signalTarget('dialog.body', body, setBody),
-    control: string('textarea'),
-    placement: { semantic: 'tool', group: 'content', label: 'Body', order: 2 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('dialog.size', size, (v) => setSize(v as DialogSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'dialog', label: 'Size', order: 1 },
+    }),
+    bind({
+      target: signalTarget('dialog.variant', variant, (v) => setVariant(v as DialogVariant)),
+      control: select(['default', 'destructive'] as const),
+      placement: { semantic: 'tool', group: 'dialog', label: 'Variant', order: 2 },
+    }),
+    bind({
+      target: signalTarget('dialog.title', title, setTitle),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Title', order: 1 },
+    }),
+    bind({
+      target: signalTarget('dialog.body', body, setBody),
+      control: string('textarea'),
+      placement: { semantic: 'tool', group: 'content', label: 'Body', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'dialog-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      {/* inline 表示 (open attribute) — modal でなく直接 view */}
-      <dialog
-        class="creo-dialog"
-        data-size={size()}
-        data-variant={variant() === 'default' ? undefined : variant()}
-        open
-        style={{ position: 'static', margin: 0 }}
-      >
-        <header class="creo-dialog-header">
-          <h2 class="creo-dialog-title">{title()}</h2>
-        </header>
-        <div class="creo-dialog-body">
-          <p>{body()}</p>
-        </div>
-        <footer class="creo-dialog-footer">
-          <button type="button" class="creo-btn" data-variant="secondary">
-            キャンセル
-          </button>
-          <button type="button" class="creo-btn" data-variant="primary">
-            {variant() === 'destructive' ? '永久削除' : 'OK'}
-          </button>
-        </footer>
-      </dialog>
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        {/* inline 表示 (open attribute) — modal でなく直接 view */}
+        <dialog
+          ref={selectable}
+          class="creo-dialog"
+          data-size={size()}
+          data-variant={variant() === 'default' ? undefined : variant()}
+          open
+          style={{ position: 'static', margin: 0 }}
+        >
+          <header class="creo-dialog-header">
+            <h2 class="creo-dialog-title">{title()}</h2>
+          </header>
+          <div class="creo-dialog-body">
+            <p>{body()}</p>
+          </div>
+          <footer class="creo-dialog-footer">
+            <button type="button" class="creo-btn" data-variant="secondary">
+              キャンセル
+            </button>
+            <button type="button" class="creo-btn" data-variant="primary">
+              {variant() === 'destructive' ? '永久削除' : 'OK'}
+            </button>
+          </footer>
+        </dialog>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

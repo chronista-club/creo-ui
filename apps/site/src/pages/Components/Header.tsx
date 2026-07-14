@@ -1,3 +1,16 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  string,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { A } from '@solidjs/router'
+import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
+
 const PROPS = [
   {
     attr: 'data-variant',
@@ -32,7 +45,11 @@ const TOKENS = [
 
 export default function Header() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.header-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Header</h1>
@@ -45,7 +62,15 @@ export default function Header() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground header の variant / elevation / logo / CTA label
+          を即時編集できる。 Mode ON 中に playground を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <HeaderLivePreview />
           <div class="docs-preview-row-label">Default (product app)</div>
           <header class="creo-header" style={{ position: 'static' }}>
             <div class="creo-header-logo">creo-ui</div>
@@ -191,6 +216,81 @@ export default function Header() {
 </header>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type HeaderVariant = 'default' | 'marketing'
+type HeaderElevation = 'default' | 'none'
+
+/**
+ * Live preview の playground。editor-host の bind() で variant / elevation / logo / CTA label を
+ * inspector panel に生やし、stage の header 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function HeaderLivePreview() {
+  const [variant, setVariant] = createSignal<HeaderVariant>('default')
+  const [elevation, setElevation] = createSignal<HeaderElevation>('default')
+  const [logo, setLogo] = createSignal('✨ creo-ui')
+  const [ctaLabel, setCtaLabel] = createSignal('Sign up')
+
+  const binders = [
+    bind({
+      target: signalTarget('header.variant', variant, (v) => setVariant(v as HeaderVariant)),
+      control: select(['default', 'marketing'] as const),
+      placement: { semantic: 'tool', group: 'header', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('header.elevation', elevation, (v) =>
+        setElevation(v as HeaderElevation),
+      ),
+      control: select(['default', 'none'] as const),
+      placement: { semantic: 'tool', group: 'header', label: 'Elevation', order: 2 },
+    }),
+    bind({
+      target: signalTarget('header.logo', logo, setLogo),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Logo', order: 1 },
+    }),
+    bind({
+      target: signalTarget('header.cta', ctaLabel, setCtaLabel),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'CTA label', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'header-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <header
+          ref={selectable}
+          class="creo-header"
+          data-variant={variant() === 'marketing' ? 'marketing' : undefined}
+          data-elevation={elevation() === 'none' ? 'none' : undefined}
+          style={{ position: 'static', width: '100%' }}
+        >
+          <div class="creo-header-logo">{logo()}</div>
+          <nav class="creo-header-nav">
+            <a href="#home">Home</a>
+            <a href="#docs">Docs</a>
+            <a href="#blog">Blog</a>
+          </nav>
+          <div class="creo-header-actions">
+            <button type="button" class="creo-btn" data-variant="ghost" data-size="s">
+              Sign in
+            </button>
+            <button type="button" class="creo-btn" data-variant="primary" data-size="s">
+              {ctaLabel()}
+            </button>
+          </div>
+        </header>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }

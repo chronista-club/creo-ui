@@ -5,9 +5,11 @@ import {
   boolean,
   select,
   signalTarget,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -53,7 +55,11 @@ const TOKENS = [
 
 export default function Table() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.table-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Table</h1>
@@ -67,7 +73,15 @@ export default function Table() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground table の variant / size / sticky-head
+          を即時編集できる。 Mode ON 中に playground table を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <TableLivePreview />
           <div class="docs-preview-row-label">Default</div>
           <table class="creo-table">
             <thead class="creo-table-head">
@@ -206,24 +220,6 @@ export default function Table() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> で variant / size / sticky-head を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.table-editor',
-            }}
-          >
-            <TableEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<table class="creo-table">
@@ -251,79 +247,90 @@ export default function Table() {
 </table>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type TableVariant = 'default' | 'striped'
 type TableSize = 's' | 'm' | 'l'
 
-function TableEditorDemo() {
+function TableLivePreview() {
   const [variant, setVariant] = createSignal<TableVariant>('default')
   const [size, setSize] = createSignal<TableSize>('m')
   const [stickyHead, setStickyHead] = createSignal(false)
 
-  bind({
-    target: signalTarget('table.variant', variant, (v) => setVariant(v as TableVariant)),
-    control: select(['default', 'striped'] as const),
-    placement: { semantic: 'tool', group: 'table', label: 'Variant', order: 1 },
-  })
-  bind({
-    target: signalTarget('table.size', size, (v) => setSize(v as TableSize)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'table', label: 'Size', order: 2 },
-  })
-  bind({
-    target: signalTarget('table.sticky', stickyHead, setStickyHead),
-    control: boolean({ variant: 'switch' }),
-    placement: { semantic: 'tool', group: 'table', label: 'Sticky head', order: 3 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('table.variant', variant, (v) => setVariant(v as TableVariant)),
+      control: select(['default', 'striped'] as const),
+      placement: { semantic: 'tool', group: 'table', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('table.size', size, (v) => setSize(v as TableSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'table', label: 'Size', order: 2 },
+    }),
+    bind({
+      target: signalTarget('table.sticky', stickyHead, setStickyHead),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'table', label: 'Sticky head', order: 3 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'table-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <table
-        class="creo-table"
-        data-variant={variant() === 'default' ? undefined : variant()}
-        data-size={size() === 'm' ? undefined : size()}
-        data-sticky-head={stickyHead() ? 'true' : undefined}
-      >
-        <thead class="creo-table-head">
-          <tr class="creo-table-row">
-            <th class="creo-table-cell" scope="col">
-              Component
-            </th>
-            <th class="creo-table-cell" scope="col">
-              Status
-            </th>
-            <th class="creo-table-cell" scope="col" data-align="end">
-              Bindings
-            </th>
-          </tr>
-        </thead>
-        <tbody class="creo-table-body">
-          <tr class="creo-table-row">
-            <td class="creo-table-cell">Button</td>
-            <td class="creo-table-cell">Detail + dogfood</td>
-            <td class="creo-table-cell" data-align="end">
-              4
-            </td>
-          </tr>
-          <tr class="creo-table-row">
-            <td class="creo-table-cell">Card</td>
-            <td class="creo-table-cell">Detail + dogfood</td>
-            <td class="creo-table-cell" data-align="end">
-              5
-            </td>
-          </tr>
-          <tr class="creo-table-row">
-            <td class="creo-table-cell">Dialog</td>
-            <td class="creo-table-cell">Detail + dogfood</td>
-            <td class="creo-table-cell" data-align="end">
-              4
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <table
+          ref={selectable}
+          class="creo-table"
+          data-variant={variant() === 'default' ? undefined : variant()}
+          data-size={size() === 'm' ? undefined : size()}
+          data-sticky-head={stickyHead() ? 'true' : undefined}
+        >
+          <thead class="creo-table-head">
+            <tr class="creo-table-row">
+              <th class="creo-table-cell" scope="col">
+                Component
+              </th>
+              <th class="creo-table-cell" scope="col">
+                Status
+              </th>
+              <th class="creo-table-cell" scope="col" data-align="end">
+                Bindings
+              </th>
+            </tr>
+          </thead>
+          <tbody class="creo-table-body">
+            <tr class="creo-table-row">
+              <td class="creo-table-cell">Button</td>
+              <td class="creo-table-cell">Detail + dogfood</td>
+              <td class="creo-table-cell" data-align="end">
+                4
+              </td>
+            </tr>
+            <tr class="creo-table-row">
+              <td class="creo-table-cell">Card</td>
+              <td class="creo-table-cell">Detail + dogfood</td>
+              <td class="creo-table-cell" data-align="end">
+                5
+              </td>
+            </tr>
+            <tr class="creo-table-row">
+              <td class="creo-table-cell">Dialog</td>
+              <td class="creo-table-cell">Detail + dogfood</td>
+              <td class="creo-table-cell" data-align="end">
+                4
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

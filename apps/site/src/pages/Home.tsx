@@ -22,7 +22,7 @@ const FEATURES = [
   {
     title: 'Live Design Surface',
     body: 'Console REPL · DOM auto-discover · URL share · Cross-tab sync · Export to CSS patch。 Designer + AI が rebuild 無しで token を編集。',
-    href: '/playground',
+    href: '/lab/editor',
     cta: 'Playground →',
   },
   {
@@ -60,7 +60,7 @@ export default function Home() {
             <A class="creo-btn" data-variant="ghost" href="/components">
               Browse components
             </A>
-            <A class="creo-btn" data-variant="ghost" href="/playground">
+            <A class="creo-btn" data-variant="ghost" href="/lab/editor">
               Try the playground
             </A>
           </div>

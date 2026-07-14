@@ -1,3 +1,17 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { A } from '@solidjs/router'
+import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
+
 const PROPS = [
   {
     attr: 'data-size',
@@ -31,7 +45,11 @@ const TOKENS = [
 
 export default function Segmented() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.segmented-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Segmented</h1>
@@ -45,7 +63,15 @@ export default function Segmented() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground segmented の selected / size / width / option
+          label を即時編集できる。 Mode ON 中に playground segmented を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <SegmentedLivePreview />
           <div class="docs-preview-row-label">Default</div>
           <div class="creo-segmented" role="radiogroup" aria-label="View mode">
             <label class="creo-segmented-option">
@@ -192,6 +218,86 @@ export default function Segmented() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type SegmentedSize = 's' | 'm' | 'l'
+type SegmentedValue = 'day' | 'week' | 'month' | 'year'
+
+/**
+ * Live preview の playground。editor-host の bind() で selected / size / width / option
+ * label を inspector panel に生やし、stage の segmented 自体を selectable にする (Mode ON で
+ * click → その instance に field が絞られる)。stage の radio click → panel の select が
+ * 追従する双方向 sync も見どころ。provider はページ root の 1 枚を共有。
+ */
+function SegmentedLivePreview() {
+  const [value, setValue] = createSignal<SegmentedValue>('day')
+  const [size, setSize] = createSignal<SegmentedSize>('m')
+  const [fullWidth, setFullWidth] = createSignal(false)
+  const [firstLabel, setFirstLabel] = createSignal('Day')
+
+  const binders = [
+    bind({
+      target: signalTarget('segmented.value', value, (v) => setValue(v as SegmentedValue)),
+      control: select(['day', 'week', 'month', 'year'] as const),
+      placement: { semantic: 'tool', group: 'segmented', label: 'Selected', order: 1 },
+    }),
+    bind({
+      target: signalTarget('segmented.size', size, (v) => setSize(v as SegmentedSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'segmented', label: 'Size', order: 2 },
+    }),
+    bind({
+      target: signalTarget('segmented.fullWidth', fullWidth, setFullWidth),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'segmented', label: 'Full width', order: 3 },
+    }),
+    bind({
+      target: signalTarget('segmented.firstLabel', firstLabel, setFirstLabel),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'First option label', order: 1 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'segmented-live-preview' })
+
+  const options: { value: SegmentedValue; label: () => string }[] = [
+    { value: 'day', label: firstLabel },
+    { value: 'week', label: () => 'Week' },
+    { value: 'month', label: () => 'Month' },
+    { value: 'year', label: () => 'Year' },
+  ]
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div
+          class="creo-segmented"
+          data-size={size()}
+          data-width={fullWidth() ? 'full' : undefined}
+          role="radiogroup"
+          aria-label="Playground view mode"
+          ref={selectable}
+        >
+          {options.map((o) => (
+            <label class="creo-segmented-option">
+              <input
+                type="radio"
+                name="seg-playground"
+                value={o.value}
+                checked={value() === o.value}
+                onChange={() => setValue(o.value)}
+              />
+              <span>{o.label()}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }

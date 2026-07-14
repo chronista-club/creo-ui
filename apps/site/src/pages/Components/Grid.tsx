@@ -1,3 +1,16 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  string,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { A } from '@solidjs/router'
+import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
+
 const PROPS = [
   {
     attr: 'data-cols',
@@ -32,7 +45,11 @@ export default function Grid() {
   )
 
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.grid-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components — Layout</p>
         <h1>Grid</h1>
@@ -46,7 +63,15 @@ export default function Grid() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground grid の columns / gap / cell 数 / cell text
+          を即時編集できる。 Mode ON 中に playground を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <GridLivePreview />
           <div class="docs-preview-row-label">3 columns</div>
           <div class="creo-grid" data-cols="3">
             {Cell('1')}
@@ -171,6 +196,91 @@ export default function Grid() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+const GRID_COLS = [
+  '1',
+  '2',
+  '3',
+  '4',
+  '6',
+  '12',
+  'auto-xs',
+  'auto-s',
+  'auto-m',
+  'auto-l',
+  'auto-xl',
+] as const
+const GRID_GAPS = ['xs', 's', 'm', 'l', 'xl'] as const
+const GRID_COUNTS = ['3', '4', '6', '8', '12'] as const
+
+type GridCols = (typeof GRID_COLS)[number]
+type GridGap = (typeof GRID_GAPS)[number]
+type GridCount = (typeof GRID_COUNTS)[number]
+
+/**
+ * Live preview の playground。editor-host の bind() で columns / gap / cell 数 / cell text を
+ * inspector panel に生やし、stage の grid 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function GridLivePreview() {
+  const [cols, setCols] = createSignal<GridCols>('3')
+  const [gap, setGap] = createSignal<GridGap>('m')
+  const [count, setCount] = createSignal<GridCount>('6')
+  const [cellText, setCellText] = createSignal('Cell')
+
+  const binders = [
+    bind({
+      target: signalTarget('grid.cols', cols, (v) => setCols(v as GridCols)),
+      control: select(GRID_COLS),
+      placement: { semantic: 'tool', group: 'grid', label: 'Columns', order: 1 },
+    }),
+    bind({
+      target: signalTarget('grid.gap', gap, (v) => setGap(v as GridGap)),
+      control: select(GRID_GAPS),
+      placement: { semantic: 'tool', group: 'grid', label: 'Gap', order: 2 },
+    }),
+    bind({
+      target: signalTarget('grid.count', count, (v) => setCount(v as GridCount)),
+      control: select(GRID_COUNTS),
+      placement: { semantic: 'tool', group: 'grid', label: 'Cells', order: 3 },
+    }),
+    bind({
+      target: signalTarget('grid.cellText', cellText, setCellText),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Cell text', order: 1 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'grid-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div
+          ref={selectable}
+          class="creo-grid"
+          data-cols={cols()}
+          data-gap={gap()}
+          style={{ width: '100%' }}
+        >
+          {Array.from({ length: Number(count()) }, (_, i) => (
+            <div
+              class="creo-card"
+              data-padding="s"
+              style={{ 'text-align': 'center', 'font-family': 'var(--typography-family-sans)' }}
+            >
+              {cellText()} {i + 1}
+            </div>
+          ))}
+        </div>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }

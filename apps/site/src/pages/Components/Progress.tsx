@@ -6,9 +6,11 @@ import {
   number,
   select,
   signalTarget,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -49,7 +51,11 @@ const TOKENS = [
 
 export default function Progress() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.progress-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Progress</h1>
@@ -63,7 +69,15 @@ export default function Progress() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground progress の variant / size / value (slider) /
+          indeterminate を即時編集できる。 Mode ON 中に playground progress を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
+        </p>
         <div class="docs-component-preview">
+          <ProgressLivePreview />
           <div class="docs-preview-row-label">Determinate (sizes)</div>
           <div
             class="creo-progress"
@@ -197,24 +211,6 @@ export default function Progress() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> で variant / size / value (slider) / indeterminate を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.progress-editor',
-            }}
-          >
-            <ProgressEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Determinate (60%) -->
@@ -242,58 +238,74 @@ export default function Progress() {
 </div>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type ProgressVariant = 'default' | 'success' | 'warning' | 'error'
 type ProgressSize = 's' | 'm' | 'l'
 
-function ProgressEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で variant / size / value / indeterminate を
+ * inspector panel に生やし、stage の progress 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function ProgressLivePreview() {
   const [variant, setVariant] = createSignal<ProgressVariant>('default')
   const [size, setSize] = createSignal<ProgressSize>('m')
   const [value, setValue] = createSignal(60)
   const [indeterminate, setIndeterminate] = createSignal(false)
 
-  bind({
-    target: signalTarget('progress.variant', variant, (v) => setVariant(v as ProgressVariant)),
-    control: select(['default', 'success', 'warning', 'error'] as const),
-    placement: { semantic: 'tool', group: 'progress', label: 'Variant', order: 1 },
-  })
-  bind({
-    target: signalTarget('progress.size', size, (v) => setSize(v as ProgressSize)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'progress', label: 'Size', order: 2 },
-  })
-  bind({
-    target: signalTarget('progress.value', value, setValue),
-    control: number({ variant: 'slider' }),
-    placement: { semantic: 'tool', group: 'progress', label: 'Value (%)', order: 3 },
-  })
-  bind({
-    target: signalTarget('progress.indeterminate', indeterminate, setIndeterminate),
-    control: boolean({ variant: 'switch' }),
-    placement: { semantic: 'tool', group: 'progress', label: 'Indeterminate', order: 4 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('progress.variant', variant, (v) => setVariant(v as ProgressVariant)),
+      control: select(['default', 'success', 'warning', 'error'] as const),
+      placement: { semantic: 'tool', group: 'progress', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('progress.size', size, (v) => setSize(v as ProgressSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'progress', label: 'Size', order: 2 },
+    }),
+    bind({
+      target: signalTarget('progress.value', value, setValue),
+      control: number({ variant: 'slider' }),
+      placement: { semantic: 'tool', group: 'progress', label: 'Value (%)', order: 3 },
+    }),
+    bind({
+      target: signalTarget('progress.indeterminate', indeterminate, setIndeterminate),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'progress', label: 'Indeterminate', order: 4 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'progress-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <div
-        class="creo-progress"
-        data-variant={variant() === 'default' ? undefined : variant()}
-        data-size={size() === 'm' ? undefined : size()}
-        data-indeterminate={indeterminate() ? 'true' : undefined}
-        role="progressbar"
-        aria-label={indeterminate() ? 'Loading' : `${value()}%`}
-        aria-valuenow={indeterminate() ? undefined : value()}
-        aria-valuemin={0}
-        aria-valuemax={100}
-      >
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
         <div
-          class="creo-progress-fill"
-          style={indeterminate() ? undefined : { width: `${value()}%` }}
-        />
+          ref={selectable}
+          class="creo-progress"
+          data-variant={variant() === 'default' ? undefined : variant()}
+          data-size={size() === 'm' ? undefined : size()}
+          data-indeterminate={indeterminate() ? 'true' : undefined}
+          role="progressbar"
+          aria-label={indeterminate() ? 'Loading' : `${value()}%`}
+          aria-valuenow={indeterminate() ? undefined : value()}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
+          <div
+            class="creo-progress-fill"
+            style={indeterminate() ? undefined : { width: `${value()}%` }}
+          />
+        </div>
       </div>
-    </div>
+      <EditorModeToggle />
+    </>
   )
 }

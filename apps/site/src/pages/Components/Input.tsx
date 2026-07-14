@@ -6,9 +6,11 @@ import {
   select,
   signalTarget,
   string,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -53,7 +55,11 @@ const TOKENS = [
 
 export default function Input() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.input-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Input</h1>
@@ -65,7 +71,15 @@ export default function Input() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground input の variant / size / placeholder / value /
+          disabled を即時編集できる。 Mode ON 中に playground input を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <InputLivePreview />
           <div class="docs-preview-row-label">Variants × Sizes</div>
           <div class="docs-preview-stack">
             <input class="creo-input" type="text" placeholder="Bordered s" data-size="s" />
@@ -139,25 +153,6 @@ export default function Input() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
-          input の variant / size / placeholder / value / disabled を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.input-editor',
-            }}
-          >
-            <InputEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Basic bordered -->
@@ -188,58 +183,74 @@ export default function Input() {
           </a>
         </p>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type InputVariant = 'bordered' | 'filled'
 type InputSize = 's' | 'm' | 'l'
 
-function InputEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で variant / size / placeholder / value /
+ * disabled を inspector panel に生やし、stage の input 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function InputLivePreview() {
   const [variant, setVariant] = createSignal<InputVariant>('bordered')
   const [size, setSize] = createSignal<InputSize>('m')
   const [placeholder, setPlaceholder] = createSignal('you@example.com')
   const [value, setValue] = createSignal('')
   const [disabled, setDisabled] = createSignal(false)
 
-  bind({
-    target: signalTarget('input.variant', variant, (v) => setVariant(v as InputVariant)),
-    control: select(['bordered', 'filled'] as const),
-    placement: { semantic: 'tool', group: 'input', label: 'Variant', order: 1 },
-  })
-  bind({
-    target: signalTarget('input.size', size, (v) => setSize(v as InputSize)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'input', label: 'Size', order: 2 },
-  })
-  bind({
-    target: signalTarget('input.disabled', disabled, setDisabled),
-    control: boolean({ variant: 'switch' }),
-    placement: { semantic: 'tool', group: 'input', label: 'Disabled', order: 3 },
-  })
-  bind({
-    target: signalTarget('input.placeholder', placeholder, setPlaceholder),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'content', label: 'Placeholder', order: 1 },
-  })
-  bind({
-    target: signalTarget('input.value', value, setValue),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'content', label: 'Value', order: 2 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('input.variant', variant, (v) => setVariant(v as InputVariant)),
+      control: select(['bordered', 'filled'] as const),
+      placement: { semantic: 'tool', group: 'input', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('input.size', size, (v) => setSize(v as InputSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'input', label: 'Size', order: 2 },
+    }),
+    bind({
+      target: signalTarget('input.disabled', disabled, setDisabled),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'input', label: 'Disabled', order: 3 },
+    }),
+    bind({
+      target: signalTarget('input.placeholder', placeholder, setPlaceholder),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Placeholder', order: 1 },
+    }),
+    bind({
+      target: signalTarget('input.value', value, setValue),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Value', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'input-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <input
-        class="creo-input"
-        type="text"
-        data-variant={variant() === 'bordered' ? undefined : variant()}
-        data-size={size()}
-        placeholder={placeholder()}
-        value={value()}
-        disabled={disabled()}
-        onInput={(e) => setValue(e.currentTarget.value)}
-      />
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <input
+          ref={selectable}
+          class="creo-input"
+          type="text"
+          data-variant={variant() === 'bordered' ? undefined : variant()}
+          data-size={size()}
+          placeholder={placeholder()}
+          value={value()}
+          disabled={disabled()}
+          onInput={(e) => setValue(e.currentTarget.value)}
+        />
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

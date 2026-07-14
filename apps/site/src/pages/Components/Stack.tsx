@@ -1,3 +1,16 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { A } from '@solidjs/router'
+import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
+
 const PROPS = [
   {
     attr: 'data-direction',
@@ -39,7 +52,11 @@ const TOKENS = [
 
 export default function Stack() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.stack-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components — Layout</p>
         <h1>Stack</h1>
@@ -53,7 +70,15 @@ export default function Stack() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground stack の direction / gap / align / justify / wrap
+          を即時編集できる。 Mode ON 中に playground stack を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <StackLivePreview />
           <div class="docs-preview-row-label">Vertical (default)</div>
           <div class="creo-stack" style={{ 'max-width': '320px' }}>
             <div class="creo-card">First</div>
@@ -187,6 +212,80 @@ export default function Stack() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type StackDirection = 'vertical' | 'horizontal'
+type StackGap = 'xs' | 's' | 'm' | 'l' | 'xl'
+type StackAlign = 'start' | 'center' | 'end' | 'stretch'
+type StackJustify = 'start' | 'center' | 'end' | 'between' | 'around'
+
+/**
+ * Live preview の playground。editor-host の bind() で direction / gap / align / justify /
+ * wrap を inspector panel に生やし、stage の stack 自体を selectable にする (Mode ON で
+ * click → その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function StackLivePreview() {
+  const [direction, setDirection] = createSignal<StackDirection>('vertical')
+  const [gap, setGap] = createSignal<StackGap>('m')
+  const [align, setAlign] = createSignal<StackAlign>('stretch')
+  const [justify, setJustify] = createSignal<StackJustify>('start')
+  const [wrap, setWrap] = createSignal(false)
+
+  const binders = [
+    bind({
+      target: signalTarget('stack.direction', direction, (v) => setDirection(v as StackDirection)),
+      control: select(['vertical', 'horizontal'] as const),
+      placement: { semantic: 'tool', group: 'stack', label: 'Direction', order: 1 },
+    }),
+    bind({
+      target: signalTarget('stack.gap', gap, (v) => setGap(v as StackGap)),
+      control: select(['xs', 's', 'm', 'l', 'xl'] as const),
+      placement: { semantic: 'tool', group: 'stack', label: 'Gap', order: 2 },
+    }),
+    bind({
+      target: signalTarget('stack.align', align, (v) => setAlign(v as StackAlign)),
+      control: select(['start', 'center', 'end', 'stretch'] as const),
+      placement: { semantic: 'tool', group: 'stack', label: 'Align', order: 3 },
+    }),
+    bind({
+      target: signalTarget('stack.justify', justify, (v) => setJustify(v as StackJustify)),
+      control: select(['start', 'center', 'end', 'between', 'around'] as const),
+      placement: { semantic: 'tool', group: 'stack', label: 'Justify', order: 4 },
+    }),
+    bind({
+      target: signalTarget('stack.wrap', wrap, setWrap),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'stack', label: 'Wrap', order: 5 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'stack-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        {/* justify / align の効きを見せるため stage 内で幅・高さを確保 */}
+        <div
+          class="creo-stack"
+          data-direction={direction()}
+          data-gap={gap()}
+          data-align={align()}
+          data-justify={justify()}
+          data-wrap={wrap() ? 'true' : undefined}
+          style={{ width: '100%', 'max-width': '360px', 'min-height': '200px' }}
+          ref={selectable}
+        >
+          <div class="creo-card">First</div>
+          <div class="creo-card">Second</div>
+          <div class="creo-card">Third</div>
+        </div>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }
