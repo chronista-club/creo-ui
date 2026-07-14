@@ -8,7 +8,7 @@
 :root {
   --docs-sidebar-width: 248px;
   --docs-header-height: 56px;
-  --docs-content-max-width: 760px;
+  --docs-content-width: 84%; /* 表示領域の 84% (左右 8% ずつ gutter、 border-box) */
   --docs-content-padding-x: clamp(20px, 4vw, 56px);
   /* Editor Mode の右端ドックが固定 header に被らないよう top offset を渡す */
   --editor-mode-dock-top: var(--docs-header-height);
@@ -288,8 +288,8 @@ a:hover {
 
 .docs-article {
   flex: 1;
-  width: 100%;
-  max-width: var(--docs-content-max-width);
+  width: var(--docs-content-width);
+  max-width: none;
   margin: 0 auto;
   padding: var(--margin-xl) var(--docs-content-padding-x);
 }
