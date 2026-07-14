@@ -317,7 +317,7 @@ pub const MOTION_MAPPING_PROGRESS_INDETERMINATE_EASING: &str = "linear";
 pub const RADIUS_NONE: f32 = 0_f32;
 /// Extra-small radius — minimal rounding (chips, tags)
 pub const RADIUS_XS: f32 = 4_f32;
-/// Small radius — subtle rounding (buttons, inputs)
+/// Small radius — subtle rounding (inputs, small surfaces)
 pub const RADIUS_S: f32 = 8_f32;
 /// Medium radius — cards, popovers (soft friendly feel)
 pub const RADIUS_M: f32 = 15_f32;
