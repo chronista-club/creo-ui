@@ -8,6 +8,8 @@ export const dashboardFrame: Frame = {
     main: { x: '20%', y: '10%', z: 4 },
   },
   perspective: 1400,
+  // overview は視線をやや上に (俯瞰気味)
+  gaze: { x: '50%', y: '38%' },
   transition: { duration: 480, easing: 'spring' },
 }
 
@@ -19,5 +21,7 @@ export const readingFrame: Frame = {
     main: { x: '0%', y: '0%', z: 8, scale: 1.05 },
   },
   perspective: 'var(--frame-perspective-deep)',
+  // reading は視線を下げて content に潜り込む (horizon が下がり morph 時に視点も動く)
+  gaze: { x: '50%', y: '56%' },
   transition: { duration: 480, easing: 'spring' },
 }
