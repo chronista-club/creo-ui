@@ -201,12 +201,17 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
     return fn()
   }
 
+  // console 経由の bind は provider context (EditorHostContext) の外側の owner で走るため、
+  // useEditorHost() では host を解決できない。host を明示注入する (binder.ts の host 経路)。
+  // owner は reactive scope (cleanup 紐付け) のために withOwner で復元する。
+  const boundBind = <T>(opts: BindOptions<T>): Binder<T> => withOwner(() => bind({ ...opts, host }))
+
   const api: ConsoleApi = {
     host,
     version: VERSION,
 
     bind<T>(opts: BindOptions<T>): Binder<T> {
-      return withOwner(() => bind(opts))
+      return boundBind(opts)
     },
 
     t: {
@@ -229,57 +234,47 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
     // --- Sugar ---
     slider(cssVar, initial, opts = {}) {
       const { label, semantic = 'tool', ...controlOpts } = opts
-      return withOwner(() =>
-        bind<number>({
-          target: cssVarNumberTarget(cssVar, cssVar, initial, controlOpts.unit ?? 'px'),
-          control: number({ variant: 'slider', ...controlOpts }),
-          placement: { label: label ?? cssVar, semantic },
-        }),
-      )
+      return boundBind<number>({
+        target: cssVarNumberTarget(cssVar, cssVar, initial, controlOpts.unit ?? 'px'),
+        control: number({ variant: 'slider', ...controlOpts }),
+        placement: { label: label ?? cssVar, semantic },
+      })
     },
 
     picker(cssVar, initial, opts = {}) {
       const { label, semantic = 'tool', ...controlOpts } = opts
-      return withOwner(() =>
-        bind<string>({
-          target: cssVarTarget(cssVar, cssVar, initial),
-          control: color({ variant: 'picker', ...controlOpts }),
-          placement: { label: label ?? cssVar, semantic },
-        }),
-      )
+      return boundBind<string>({
+        target: cssVarTarget(cssVar, cssVar, initial),
+        control: color({ variant: 'picker', ...controlOpts }),
+        placement: { label: label ?? cssVar, semantic },
+      })
     },
 
     flip(id, initial, opts = {}) {
       const { label, semantic = 'tool', ...controlOpts } = opts
-      return withOwner(() =>
-        bind<boolean>({
-          target: ephemeralTarget(id, initial),
-          control: booleanControl({ variant: 'switch', ...controlOpts }),
-          placement: { label: label ?? id, semantic },
-        }),
-      )
+      return boundBind<boolean>({
+        target: ephemeralTarget(id, initial),
+        control: booleanControl({ variant: 'switch', ...controlOpts }),
+        placement: { label: label ?? id, semantic },
+      })
     },
 
     chooser(id, initial, options, opts = {}) {
       const { label, semantic = 'tool', variant } = opts
-      return withOwner(() =>
-        bind<string>({
-          target: ephemeralTarget(id, initial),
-          control: select(options, variant),
-          placement: { label: label ?? id, semantic },
-        }),
-      )
+      return boundBind<string>({
+        target: ephemeralTarget(id, initial),
+        control: select(options, variant),
+        placement: { label: label ?? id, semantic },
+      })
     },
 
     text(id, initial, opts = {}) {
       const { label, semantic = 'tool', ...controlOpts } = opts
-      return withOwner(() =>
-        bind<string>({
-          target: ephemeralTarget(id, initial),
-          control: stringControl(controlOpts.variant),
-          placement: { label: label ?? id, semantic },
-        }),
-      )
+      return boundBind<string>({
+        target: ephemeralTarget(id, initial),
+        control: stringControl(controlOpts.variant),
+        placement: { label: label ?? id, semantic },
+      })
     },
 
     // --- Value ---
