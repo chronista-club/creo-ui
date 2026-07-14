@@ -109,6 +109,4 @@ TBD (CREO-87 受け入れ条件で別タスク)。
 
 ## 関連
 
-- [CREO-84](https://linear.app/chronista/issue/CREO-84) (Epic)
-- [CREO-87](https://linear.app/chronista/issue/CREO-87) (Phase 2 spec)
-- [CREO-88](https://linear.app/chronista/issue/CREO-88) (Phase 3 Web impl)
+- [component catalog](./README.md)

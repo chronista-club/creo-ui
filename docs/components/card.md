@@ -100,4 +100,3 @@ Card click で RIGHT region に `data-variant` chooser / `data-padding` chooser 
 ## 関連
 
 - [Button](./button.md) (card 内 primary action)
-- [CREO-87 / CREO-88](https://linear.app/chronista/issue/CREO-87)
