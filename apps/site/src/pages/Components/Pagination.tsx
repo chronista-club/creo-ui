@@ -5,9 +5,11 @@ import {
   number,
   select,
   signalTarget,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { For, createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -55,7 +57,11 @@ const TOKENS = [
 
 export default function Pagination() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.pagination-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Pagination</h1>
@@ -69,7 +75,15 @@ export default function Pagination() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground pagination の variant / size / current page
+          を即時編集できる。 Mode ON 中に playground pagination を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <PaginationLivePreview />
           <div class="docs-preview-row-label">Default (full pages)</div>
           <nav class="creo-pagination" aria-label="pagination">
             <ol class="creo-pagination-list">
@@ -278,24 +292,6 @@ export default function Pagination() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> で variant / size / current page を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.pagination-editor',
-            }}
-          >
-            <PaginationEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<nav class="creo-pagination" aria-label="pagination">
@@ -326,84 +322,102 @@ export default function Pagination() {
 </nav>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type PaginationVariant = 'default' | 'compact'
 type PaginationSize = 's' | 'm' | 'l'
 
-function PaginationEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で variant / size / current page を
+ * inspector panel に生やし、stage の pagination 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function PaginationLivePreview() {
   const [variant, setVariant] = createSignal<PaginationVariant>('default')
   const [size, setSize] = createSignal<PaginationSize>('m')
   const [current, setCurrent] = createSignal(3)
   const totalPages = 7
 
-  bind({
-    target: signalTarget('pagination.variant', variant, (v) => setVariant(v as PaginationVariant)),
-    control: select(['default', 'compact'] as const),
-    placement: { semantic: 'tool', group: 'pagination', label: 'Variant', order: 1 },
-  })
-  bind({
-    target: signalTarget('pagination.size', size, (v) => setSize(v as PaginationSize)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'pagination', label: 'Size', order: 2 },
-  })
-  bind({
-    target: signalTarget('pagination.current', current, setCurrent),
-    control: number({ variant: 'slider' }),
-    placement: { semantic: 'tool', group: 'pagination', label: 'Current page', order: 3 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('pagination.variant', variant, (v) =>
+        setVariant(v as PaginationVariant),
+      ),
+      control: select(['default', 'compact'] as const),
+      placement: { semantic: 'tool', group: 'pagination', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('pagination.size', size, (v) => setSize(v as PaginationSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'pagination', label: 'Size', order: 2 },
+    }),
+    bind({
+      target: signalTarget('pagination.current', current, setCurrent),
+      control: number({ variant: 'slider' }),
+      placement: { semantic: 'tool', group: 'pagination', label: 'Current page', order: 3 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'pagination-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <nav
-        class="creo-pagination"
-        data-variant={variant() === 'default' ? undefined : variant()}
-        data-size={size() === 'm' ? undefined : size()}
-        aria-label="pagination editor demo"
-      >
-        <ol class="creo-pagination-list">
-          <li>
-            <button
-              type="button"
-              class="creo-pagination-item"
-              data-action="prev"
-              aria-label="previous page"
-              disabled={current() <= 1}
-              onClick={() => setCurrent(Math.max(1, current() - 1))}
-            >
-              ‹
-            </button>
-          </li>
-          <For each={Array.from({ length: totalPages }, (_, i) => i + 1)}>
-            {(p) => (
-              <li>
-                <button
-                  type="button"
-                  class="creo-pagination-item"
-                  aria-current={current() === p ? 'page' : undefined}
-                  onClick={() => setCurrent(p)}
-                >
-                  {p}
-                </button>
-              </li>
-            )}
-          </For>
-          <li>
-            <button
-              type="button"
-              class="creo-pagination-item"
-              data-action="next"
-              aria-label="next page"
-              disabled={current() >= totalPages}
-              onClick={() => setCurrent(Math.min(totalPages, current() + 1))}
-            >
-              ›
-            </button>
-          </li>
-        </ol>
-      </nav>
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <nav
+          ref={selectable}
+          class="creo-pagination"
+          data-variant={variant() === 'default' ? undefined : variant()}
+          data-size={size() === 'm' ? undefined : size()}
+          aria-label="pagination editor demo"
+        >
+          <ol class="creo-pagination-list">
+            <li>
+              <button
+                type="button"
+                class="creo-pagination-item"
+                data-action="prev"
+                aria-label="previous page"
+                disabled={current() <= 1}
+                onClick={() => setCurrent(Math.max(1, current() - 1))}
+              >
+                ‹
+              </button>
+            </li>
+            <For each={Array.from({ length: totalPages }, (_, i) => i + 1)}>
+              {(p) => (
+                <li>
+                  <button
+                    type="button"
+                    class="creo-pagination-item"
+                    aria-current={current() === p ? 'page' : undefined}
+                    onClick={() => setCurrent(p)}
+                  >
+                    {p}
+                  </button>
+                </li>
+              )}
+            </For>
+            <li>
+              <button
+                type="button"
+                class="creo-pagination-item"
+                data-action="next"
+                aria-label="next page"
+                disabled={current() >= totalPages}
+                onClick={() => setCurrent(Math.min(totalPages, current() + 1))}
+              >
+                ›
+              </button>
+            </li>
+          </ol>
+        </nav>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

@@ -1,3 +1,17 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { A } from '@solidjs/router'
+import { Show, createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
+
 const PROPS = [
   {
     attr: 'data-placement (on .creo-toast-region)',
@@ -33,7 +47,11 @@ const TOKENS = [
 
 export default function Toast() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.toast-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Toast</h1>
@@ -46,7 +64,15 @@ export default function Toast() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground toast の variant / icon / close button / title /
+          message を即時編集できる。 Mode ON 中に playground toast を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <ToastLivePreview />
           <div class="docs-preview-row-label">5 variants (inline showcase、 真の portal は別)</div>
           <div class="docs-preview-stack" style={{ 'max-width': '420px', gap: 'var(--spacing-s)' }}>
             <div class="creo-toast" data-variant="info" role="status">
@@ -189,6 +215,92 @@ export default function Toast() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type ToastVariant = 'neutral' | 'info' | 'success' | 'warning' | 'error'
+
+const TOAST_ICONS: Record<ToastVariant, string> = {
+  neutral: '•',
+  info: 'ℹ',
+  success: '✓',
+  warning: '⚠',
+  error: '✕',
+}
+
+/**
+ * Live preview の playground。editor-host の bind() で variant / icon / close button /
+ * title / message を inspector panel に生やし、stage の toast 自体を selectable にする
+ * (Mode ON で click → その instance に field が絞られる)。portal は使わず inline 表示
+ * (既存 showcase と同形)。provider はページ root の 1 枚を共有。
+ */
+function ToastLivePreview() {
+  const [variant, setVariant] = createSignal<ToastVariant>('success')
+  const [showIcon, setShowIcon] = createSignal(true)
+  const [showClose, setShowClose] = createSignal(true)
+  const [title, setTitle] = createSignal('Saved:')
+  const [message, setMessage] = createSignal('設定が保存されました。')
+
+  const binders = [
+    bind({
+      target: signalTarget('toast.variant', variant, (v) => setVariant(v as ToastVariant)),
+      control: select(['neutral', 'info', 'success', 'warning', 'error'] as const),
+      placement: { semantic: 'tool', group: 'toast', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('toast.showIcon', showIcon, setShowIcon),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'toast', label: 'Icon', order: 2 },
+    }),
+    bind({
+      target: signalTarget('toast.showClose', showClose, setShowClose),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'toast', label: 'Close button', order: 3 },
+    }),
+    bind({
+      target: signalTarget('toast.title', title, setTitle),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Title', order: 1 },
+    }),
+    bind({
+      target: signalTarget('toast.message', message, setMessage),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Message', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'toast-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div
+          class="creo-toast"
+          data-variant={variant()}
+          role={variant() === 'warning' || variant() === 'error' ? 'alert' : 'status'}
+          style={{ width: '100%', 'max-width': '420px' }}
+          ref={selectable}
+        >
+          <Show when={showIcon()}>
+            <span class="creo-toast-icon" aria-hidden="true">
+              {TOAST_ICONS[variant()]}
+            </span>
+          </Show>
+          <div class="creo-toast-content">
+            <strong>{title()}</strong> {message()}
+          </div>
+          <Show when={showClose()}>
+            <button type="button" class="creo-toast-close" aria-label="閉じる">
+              ✕
+            </button>
+          </Show>
+        </div>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }

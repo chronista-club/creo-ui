@@ -1,3 +1,19 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+  useEditorHost,
+  useEditorMode,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { CUButton } from '@chronista-club/creo-ui/controls'
+import { A } from '@solidjs/router'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'list (on <input>)',
@@ -28,7 +44,11 @@ const TOKENS = [
 
 export default function Combobox() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.combobox-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Combobox</h1>
@@ -42,7 +62,15 @@ export default function Combobox() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground combobox の variant / size / disabled / label /
+          placeholder を即時編集できる。 Mode ON 中に playground input を click するとその instance
+          に field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A>{' '}
+          の dogfood。
+        </p>
         <div class="docs-component-preview">
+          <ComboboxLivePreview />
           <div class="docs-preview-row-label">Country picker</div>
           <div class="creo-form-field">
             <label class="creo-form-field-label" for="country">
@@ -194,6 +222,94 @@ export default function Combobox() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type InputVariant = 'bordered' | 'filled'
+type InputSize = 's' | 'm' | 'l'
+
+/**
+ * Live preview の playground。editor-host の bind() で variant / size / disabled / label /
+ * placeholder を inspector panel に生やし、stage の input 自体を selectable にする (Mode ON で
+ * click → その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function ComboboxLivePreview() {
+  const host = useEditorHost()
+  const mode = useEditorMode()
+
+  const [variant, setVariant] = createSignal<InputVariant>('bordered')
+  const [size, setSize] = createSignal<InputSize>('m')
+  const [disabled, setDisabled] = createSignal(false)
+  const [label, setLabel] = createSignal('Language')
+  const [placeholder, setPlaceholder] = createSignal('Type to search…')
+
+  const binders = [
+    bind({
+      target: signalTarget('combobox.variant', variant, (v) => setVariant(v as InputVariant)),
+      control: select(['bordered', 'filled'] as const),
+      placement: { semantic: 'tool', group: 'combobox', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('combobox.size', size, (v) => setSize(v as InputSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'combobox', label: 'Size', order: 2 },
+    }),
+    bind({
+      target: signalTarget('combobox.disabled', disabled, setDisabled),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'combobox', label: 'Disabled', order: 3 },
+    }),
+    bind({
+      target: signalTarget('combobox.label', label, setLabel),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Field label', order: 1 },
+    }),
+    bind({
+      target: signalTarget('combobox.placeholder', placeholder, setPlaceholder),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Placeholder', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'combobox-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div class="creo-form-field" style={{ width: '100%', 'max-width': '360px' }}>
+          <label class="creo-form-field-label" for="combobox-playground">
+            {label()}
+          </label>
+          <input
+            ref={selectable}
+            class="creo-input"
+            id="combobox-playground"
+            type="text"
+            list="combobox-playground-list"
+            data-variant={variant() === 'filled' ? 'filled' : undefined}
+            data-size={size()}
+            disabled={disabled()}
+            placeholder={placeholder()}
+          />
+          <datalist id="combobox-playground-list">
+            <option value="TypeScript" />
+            <option value="Rust" />
+            <option value="Swift" />
+            <option value="SolidJS" />
+            <option value="OKLCH" />
+            <option value="Style Dictionary" />
+          </datalist>
+        </div>
+      </div>
+      <div class="docs-preview-grid">
+        <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
+          Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
+        </CUButton>
+      </div>
     </>
   )
 }

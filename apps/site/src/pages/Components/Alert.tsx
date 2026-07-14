@@ -5,9 +5,11 @@ import {
   select,
   signalTarget,
   string,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -37,7 +39,11 @@ const TOKENS = [
 
 export default function Alert() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.alert-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Alert</h1>
@@ -51,7 +57,15 @@ export default function Alert() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground alert の variant / strong / body
+          を即時編集できる。 role は variant に応じて自動 (warning/error → "alert"、 info/success →
+          "status")。 Mode ON 中に playground alert を click するとその instance に field が絞られる
+          (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
+        </p>
         <div class="docs-component-preview">
+          <AlertLivePreview />
           <div class="docs-preview-row-label">Variants</div>
           <div
             class="docs-preview-grid"
@@ -162,26 +176,6 @@ export default function Alert() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
-          alert の variant / strong / body を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。 role は variant に
-          応じて自動 (warning/error → "alert"、 info/success → "status")。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.alert-editor',
-            }}
-          >
-            <AlertEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Info -->
@@ -201,32 +195,43 @@ export default function Alert() {
 </div>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type AlertVariant = 'info' | 'success' | 'warning' | 'error'
 
-function AlertEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で variant / strong / body を
+ * inspector panel に生やし、stage の alert 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function AlertLivePreview() {
   const [variant, setVariant] = createSignal<AlertVariant>('info')
   const [strongText, setStrongText] = createSignal('Tip:')
   const [bodyText, setBodyText] = createSignal('Ctrl+S で保存できます。')
 
-  bind({
-    target: signalTarget('alert.variant', variant, (v) => setVariant(v as AlertVariant)),
-    control: select(['info', 'success', 'warning', 'error'] as const),
-    placement: { semantic: 'tool', group: 'alert', label: 'Variant', order: 1 },
-  })
-  bind({
-    target: signalTarget('alert.strong', strongText, setStrongText),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'content', label: 'Strong text', order: 1 },
-  })
-  bind({
-    target: signalTarget('alert.body', bodyText, setBodyText),
-    control: string('textarea'),
-    placement: { semantic: 'tool', group: 'content', label: 'Body text', order: 2 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('alert.variant', variant, (v) => setVariant(v as AlertVariant)),
+      control: select(['info', 'success', 'warning', 'error'] as const),
+      placement: { semantic: 'tool', group: 'alert', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('alert.strong', strongText, setStrongText),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Strong text', order: 1 },
+    }),
+    bind({
+      target: signalTarget('alert.body', bodyText, setBodyText),
+      control: string('textarea'),
+      placement: { semantic: 'tool', group: 'content', label: 'Body text', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'alert-live-preview' })
 
   // role mapping: warning/error → alert (即時)、 info/success → status (polite)
   const role = (): 'alert' | 'status' =>
@@ -239,15 +244,19 @@ function AlertEditorDemo() {
   }
 
   return (
-    <div class="docs-playground-stage">
-      <div class="creo-alert" data-variant={variant()} role={role()}>
-        <span class="creo-alert-icon" aria-hidden="true">
-          {icon()}
-        </span>
-        <div class="creo-alert-content">
-          <strong>{strongText()}</strong> {bodyText()}
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div ref={selectable} class="creo-alert" data-variant={variant()} role={role()}>
+          <span class="creo-alert-icon" aria-hidden="true">
+            {icon()}
+          </span>
+          <div class="creo-alert-content">
+            <strong>{strongText()}</strong> {bodyText()}
+          </div>
         </div>
       </div>
-    </div>
+      <EditorModeToggle />
+    </>
   )
 }

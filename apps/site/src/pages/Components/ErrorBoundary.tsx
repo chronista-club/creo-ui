@@ -1,4 +1,16 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
+import { Show, createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -41,7 +53,11 @@ const TOKENS = [
 
 export default function ErrorBoundary() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.error-boundary-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Error boundary</h1>
@@ -56,7 +72,15 @@ export default function ErrorBoundary() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground error boundary の size / technical detail / title
+          / reason を即時編集できる。 Mode ON 中に playground を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <ErrorBoundaryLivePreview />
           <div class="docs-preview-row-label">Default (medium)</div>
           <div class="creo-error-boundary" role="alert" aria-live="assertive">
             <span class="creo-error-boundary-icon" aria-hidden="true">
@@ -224,6 +248,89 @@ export default function ErrorBoundary() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type ErrorBoundarySize = 's' | 'm' | 'l'
+
+/**
+ * Live preview の playground。editor-host の bind() で size / technical detail / title / reason
+ * を inspector panel に生やし、stage の error boundary 自体を selectable にする (Mode ON で
+ * click → その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function ErrorBoundaryLivePreview() {
+  const [size, setSize] = createSignal<ErrorBoundarySize>('m')
+  const [showDetail, setShowDetail] = createSignal(true)
+  const [title, setTitle] = createSignal('Failed to load memory')
+  const [reason, setReason] = createSignal(
+    'Network error: connection timeout after 30s. Check your VPN connection or retry.',
+  )
+
+  const binders = [
+    bind({
+      target: signalTarget('error-boundary.size', size, (v) => setSize(v as ErrorBoundarySize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'error-boundary', label: 'Size', order: 1 },
+    }),
+    bind({
+      target: signalTarget('error-boundary.detail', showDetail, setShowDetail),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'error-boundary', label: 'Technical detail', order: 2 },
+    }),
+    bind({
+      target: signalTarget('error-boundary.title', title, setTitle),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Title', order: 1 },
+    }),
+    bind({
+      target: signalTarget('error-boundary.reason', reason, setReason),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Reason', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'error-boundary-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div
+          ref={selectable}
+          class="creo-error-boundary"
+          data-size={size()}
+          role="alert"
+          aria-live="assertive"
+        >
+          <span class="creo-error-boundary-icon" aria-hidden="true">
+            ⚠
+          </span>
+          <h3 class="creo-error-boundary-title">{title()}</h3>
+          <p class="creo-error-boundary-reason">{reason()}</p>
+          <Show when={showDetail()}>
+            <details class="creo-error-boundary-detail">
+              <summary>Show technical detail</summary>
+              <pre>
+                {
+                  'Error: ECONNRESET\n  at SurrealDBConnection.connect()\n  at MemoryRepository.find()\n  ... 4 more frames'
+                }
+              </pre>
+            </details>
+          </Show>
+          <div class="creo-error-boundary-actions">
+            <button type="button" class="creo-btn" data-variant="primary">
+              Retry
+            </button>
+            <button type="button" class="creo-btn" data-variant="secondary">
+              Go back
+            </button>
+          </div>
+        </div>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }

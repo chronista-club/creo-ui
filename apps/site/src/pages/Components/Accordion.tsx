@@ -1,3 +1,19 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+  useEditorHost,
+  useEditorMode,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { CUButton } from '@chronista-club/creo-ui/controls'
+import { A } from '@solidjs/router'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-variant',
@@ -30,7 +46,11 @@ const TOKENS = [
 
 export default function Accordion() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.accordion-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Accordion</h1>
@@ -44,7 +64,15 @@ export default function Accordion() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground accordion の variant / exclusive / open state /
+          title を即時編集できる。 Mode ON 中に playground accordion を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <AccordionLivePreview />
           <div class="docs-preview-row-label">Default (bordered)</div>
           <div class="creo-accordion">
             <details class="creo-accordion-item" open>
@@ -183,6 +211,102 @@ export default function Accordion() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type AccordionVariant = 'bordered' | 'subtle'
+
+/**
+ * Live preview の playground。editor-host の bind() で variant / exclusive / open state / title
+ * を inspector panel に生やし、stage の accordion 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function AccordionLivePreview() {
+  const host = useEditorHost()
+  const mode = useEditorMode()
+
+  const [variant, setVariant] = createSignal<AccordionVariant>('bordered')
+  const [exclusive, setExclusive] = createSignal(false)
+  const [firstOpen, setFirstOpen] = createSignal(true)
+  const [title, setTitle] = createSignal('Frame system')
+
+  const binders = [
+    bind({
+      target: signalTarget('accordion.variant', variant, (v) => setVariant(v as AccordionVariant)),
+      control: select(['bordered', 'subtle'] as const),
+      placement: { semantic: 'tool', group: 'accordion', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('accordion.exclusive', exclusive, setExclusive),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'accordion', label: 'Exclusive (name attr)', order: 2 },
+    }),
+    bind({
+      target: signalTarget('accordion.firstOpen', firstOpen, setFirstOpen),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'accordion', label: 'First item open', order: 3 },
+    }),
+    bind({
+      target: signalTarget('accordion.title', title, setTitle),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'First item title', order: 1 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'accordion-live-preview' })
+
+  // exclusive ON → 同 name の details 群で「1 つだけ open」 (Chrome 120+ native)
+  const groupName = () => (exclusive() ? 'accordion-playground' : undefined)
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div
+          ref={selectable}
+          class="creo-accordion"
+          data-variant={variant()}
+          style={{ width: '100%', 'max-width': '480px' }}
+        >
+          <details class="creo-accordion-item" name={groupName()} open={firstOpen()}>
+            <summary class="creo-accordion-summary">
+              <span class="creo-accordion-title">{title()}</span>
+            </summary>
+            <div class="creo-accordion-content">
+              <p>
+                3D Frame system protocol — 名前付き spatial container + slot binding。 setFrame() で
+                morph trigger。
+              </p>
+            </div>
+          </details>
+          <details class="creo-accordion-item" name={groupName()}>
+            <summary class="creo-accordion-summary">
+              <span class="creo-accordion-title">Editor Mode</span>
+            </summary>
+            <div class="creo-accordion-content">
+              <p>
+                universal Editor Mode protocol — field 宣言 / 4 方向 layout / Content 非侵襲性。
+              </p>
+            </div>
+          </details>
+          <details class="creo-accordion-item" name={groupName()}>
+            <summary class="creo-accordion-summary">
+              <span class="creo-accordion-title">Vision input</span>
+            </summary>
+            <div class="creo-accordion-content">
+              <p>Webcam motion capture + on-device only — gesture は fluent input layer。</p>
+            </div>
+          </details>
+        </div>
+      </div>
+      <div class="docs-preview-grid">
+        <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
+          Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
+        </CUButton>
+      </div>
     </>
   )
 }

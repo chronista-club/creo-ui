@@ -84,6 +84,33 @@ function FrameSwitcher() {
 `transition: none` で snap。 同 DOM が保持されるので scroll position / focus / animation
 state は連続 (D-2 視点移動メタファ)。
 
+### Gaze — 視線 (perspective-origin) を動かす (F-4)
+
+`Frame.gaze` で **観察者の視線** = 消失点の水平位置 (`x`) と水平線の高さ (`y`) を宣言できる。
+`FrameProvider` が root の `perspective-origin` として適用するので、3D grid / slot が
+その視点に向かって収束する。runtime では `useFrame().setGaze()` で上書きでき、これが
+「user が水平線を動かす」入口になる。
+
+```tsx
+const readingFrame: Frame = {
+  id: 'reading',
+  slots: { /* ... */ },
+  gaze: { x: '50%', y: '56%' },   // 消失点 X + 水平線 Y (number = px, string = 任意 CSS <position>)
+}
+
+function GazeControl() {
+  const { gaze, setGaze } = useFrame()
+  // gaze() は 有効 gaze (runtime override > Frame.gaze > default '50% 50%')
+  setGaze({ x: '35%', y: '30%' })   // horizon を上げて見下ろす
+  setGaze(undefined)                // override 解除 → Frame.gaze に戻す
+}
+```
+
+- `gaze` 未指定の Frame は中央 (`50% 50%`) = CSS perspective-origin の初期値。
+- `setFrame(id)` で **runtime override は解除**され、切替先 Frame の宣言 gaze が優先される。
+- literal 3D 非対応の platform (TUI / native) では gaze は「深度 metaphor の強調方向」と解釈する
+  abstract (F-3 と同じ multi-platform 方針)。
+
 ## Usage — motion engine
 
 ### FLIP technique

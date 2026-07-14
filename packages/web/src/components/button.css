@@ -21,8 +21,10 @@
   justify-content: center;
   gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
   min-height: calc(var(--layout-target-tap) * var(--density-min-height-scale, 1));
-  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
-    calc(var(--spacing-m) * var(--density-padding-scale, 1));
+  /* --_btn-* は Editor Mode / demo 用の private tweak var (public API ではない)。
+     未設定なら size 別の spacing token default が効く。 */
+  padding: calc(var(--_btn-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_btn-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
 
   /* Typography */
   font-family: inherit;
@@ -32,9 +34,10 @@
   text-decoration: none;
   white-space: nowrap;
 
-  /* Shape */
+  /* Shape — 基本両サイドは半円 (pill)。--_btn-radius は Editor Mode / demo 用の
+     private tweak var で、固定 px に override したいときだけ設定する。 */
   border: 1px solid transparent;
-  border-radius: var(--radius-s);
+  border-radius: var(--_btn-radius, var(--radius-full));
 
   /* loading spinner の絶対配置基準 + spinner 色 (foreground)。
      primary / danger は solid fill 上の auto on-color (--on-fill-*) がデフォルト、
@@ -162,24 +165,21 @@
 
 .creo-btn[data-size="s"] {
   min-height: var(--layout-target-focus);
-  padding: var(--spacing-xs) var(--spacing-s);
+  padding: var(--_btn-pad-y, var(--spacing-xs)) var(--_btn-pad-x, var(--spacing-s));
   font-size: var(--typography-size-s);
-  border-radius: var(--radius-xs);
 }
 
 /* data-size="m" は base と同じ、明示しなくても OK だが editor-mode 親和で一応ルール定義 */
 .creo-btn[data-size="m"] {
   min-height: var(--layout-target-tap);
-  padding: var(--spacing-s) var(--spacing-m);
+  padding: var(--_btn-pad-y, var(--spacing-s)) var(--_btn-pad-x, var(--spacing-m));
   font-size: var(--typography-size-m);
-  border-radius: var(--radius-s);
 }
 
 .creo-btn[data-size="l"] {
   min-height: calc(var(--layout-target-tap) * 1.15);
-  padding: var(--spacing-m) var(--spacing-l);
+  padding: var(--_btn-pad-y, var(--spacing-m)) var(--_btn-pad-x, var(--spacing-l));
   font-size: var(--typography-size-l);
-  border-radius: var(--radius-m);
 }
 
 /* ---------- State: disabled ---------- */

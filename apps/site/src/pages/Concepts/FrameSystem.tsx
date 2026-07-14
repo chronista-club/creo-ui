@@ -1,5 +1,6 @@
 import { A } from '@solidjs/router'
 import type { JSX } from 'solid-js'
+import GazeLivePreview from '../../ui/GazeLivePreview'
 
 export default function FrameSystem() {
   return (
@@ -23,6 +24,7 @@ export default function FrameSystem() {
   id: string                              // "dashboard" / "reading" / "editor" / ...
   slots: Record<SlotName, SlotPlacement>  // 名前付き slot の集合
   perspective: PerspectiveConfig          // camera 位置 / FOV / depth budget
+  gaze?: { x, y }                         // 視線 = perspective-origin (消失点 / horizon)
   transition: TransitionConfig            // 別 Frame への morph (FLIP + z + opacity)
 }
 
@@ -93,6 +95,54 @@ type SlotPlacement = {
           <code>depth.background</code> の 3 段が 抽象 token。 Web では translateZ + perspective
           で、 TUI では color/style 強度で、 SwiftUI では z-axis + blur で実装。 同じ semantic が
           platform 慣習で render される (原則 5 と同じ仕組み)。
+        </p>
+      </Decision>
+
+      <Decision number="F-4" title="視線 (Gaze) — perspective-origin は観察者の目">
+        <h3>Why</h3>
+        <p>
+          3D grid が「馴染む」 かどうかは、 grid の座標ではなく{' '}
+          <strong>観察者がどこを見ているか</strong> で決まる。 現実の遠近法は{' '}
+          <strong>消失点 (vanishing point)</strong> と <strong>水平線 (horizon)</strong>{' '}
+          が視線の高さで決まり、 そこに向かって平行線が収束する。 CSS の{' '}
+          <code>perspective-origin</code> は まさにこの <strong>「目の位置」</strong>で、 Frame
+          system が literal 3D を持つ web では、 これを{' '}
+          <strong>ユーザが設定できる視点 parameter</strong> として露出できる。 視点が定まると 3D
+          grid は 幾何的な格子ではなく <strong>「空間」 として知覚</strong>される。
+        </p>
+        <h3>How it shows up</h3>
+        <p>
+          実装済 (<code>creo-ui-frame</code> v0.1+): <code>Frame.gaze: {'{ x, y }'}</code>{' '}
+          で消失点の水平位置 + 水平線の高さを宣言し、 <code>FrameProvider</code> が{' '}
+          <code>perspective-origin</code> として root に適用する。 runtime では{' '}
+          <code>useFrame().setGaze()</code> で視点を上書きでき、 これが「user が水平線を動かす」
+          入口になる (Frame 切替で override は解除)。 下の demo は{' '}
+          <strong>その実 runtime を dogfood</strong> — stage を掴むと <code>setGaze</code> が
+          呼ばれ、 floor grid と深度カードがその視線に向かって収束し直す。 水平線を目の高さに
+          合わせるほど grid が地面として「馴染む」。 platform 抽象としては、 literal 3D 非対応の TUI
+          / native では gaze は <strong>深度 metaphor の強調方向</strong> (どの layer を foreground
+          に引き出すか) として解釈される。
+        </p>
+        <pre class="docs-code">
+          <code>{`const frame: Frame = {
+  id: 'reading',
+  slots: { /* ... */ },
+  gaze: { x: '50%', y: '42%' },   // 消失点(x) + 水平線の高さ(y)
+}
+
+// runtime で視点を user 操作に開く
+const { gaze, setGaze } = useFrame()
+setGaze({ x: '35%', y: '30%' })   // horizon を上げて見下ろす
+setGaze(undefined)                // Frame.gaze に戻す`}</code>
+        </pre>
+        <GazeLivePreview namespace="creo-ui-docs.gaze-editor" />
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か鉛筆 toggle で Editor Mode ON →
+          inspector パネルの slider で 消失点 X / 水平線 Y / perspective を精密調整できる (stage
+          ドラッグと同じ gaze を双方向 sync)。{' '}
+          <code>perspective-origin: {'{gaze.x}% {gaze.y}%'}</code> — horizon (<code>gaze.y</code>)
+          を境に上が sky (奥)、 下が ground。 <code>prefers-reduced-motion</code> では grid の追従
+          transition を切る (F-4 も原則 8 の契約下)。
         </p>
       </Decision>
 

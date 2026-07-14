@@ -13,7 +13,7 @@
     "s": {
       "$value": "8px",
       "$type": "dimension",
-      "$description": "Small radius — subtle rounding (buttons, inputs)"
+      "$description": "Small radius — subtle rounding (inputs, small surfaces)"
     },
     "m": {
       "$value": "15px",

@@ -5,9 +5,11 @@ import {
   select,
   signalTarget,
   string,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -31,7 +33,11 @@ const TOKENS = [
 
 export default function Tooltip() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.tooltip-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Tooltip</h1>
@@ -45,7 +51,15 @@ export default function Tooltip() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground tooltip の placement (4 方向) / content
+          を即時編集できる。 Mode ON 中に playground tooltip を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <TooltipLivePreview />
           <div class="docs-preview-row-label">Placements (hover / focus me)</div>
           <div class="docs-preview-grid">
             <span class="creo-tooltip">
@@ -154,25 +168,6 @@ export default function Tooltip() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
-          tooltip の placement (4 方向) / content を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.tooltip-editor',
-            }}
-          >
-            <TooltipEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<span class="creo-tooltip">
@@ -193,46 +188,56 @@ export default function Tooltip() {
 </span>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type TooltipPlacement = 'top' | 'bottom' | 'left' | 'right'
 
-function TooltipEditorDemo() {
+function TooltipLivePreview() {
   const [placement, setPlacement] = createSignal<TooltipPlacement>('top')
   const [content, setContent] = createSignal('Save changes (Ctrl+S)')
 
-  bind({
-    target: signalTarget('tooltip.placement', placement, (v) =>
-      setPlacement(v as TooltipPlacement),
-    ),
-    control: select(['top', 'bottom', 'left', 'right'] as const),
-    placement: { semantic: 'tool', group: 'tooltip', label: 'Placement', order: 1 },
-  })
-  bind({
-    target: signalTarget('tooltip.content', content, setContent),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'content', label: 'Tooltip text', order: 1 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('tooltip.placement', placement, (v) =>
+        setPlacement(v as TooltipPlacement),
+      ),
+      control: select(['top', 'bottom', 'left', 'right'] as const),
+      placement: { semantic: 'tool', group: 'tooltip', label: 'Placement', order: 1 },
+    }),
+    bind({
+      target: signalTarget('tooltip.content', content, setContent),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Tooltip text', order: 1 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'tooltip-live-preview' })
 
   return (
-    <div
-      class="docs-playground-stage"
-      style={{ 'min-height': '120px', 'align-items': 'center', 'justify-content': 'center' }}
-    >
-      <span class="creo-tooltip">
-        <button type="button" class="creo-btn" data-variant="secondary">
-          Hover / focus me
-        </button>
-        <span
-          class="creo-tooltip-content"
-          role="tooltip"
-          data-placement={placement() === 'top' ? undefined : placement()}
-        >
-          {content()}
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div
+        class="docs-playground-stage"
+        style={{ 'min-height': '120px', 'align-items': 'center', 'justify-content': 'center' }}
+      >
+        <span ref={selectable} class="creo-tooltip">
+          <button type="button" class="creo-btn" data-variant="secondary">
+            Hover / focus me
+          </button>
+          <span
+            class="creo-tooltip-content"
+            role="tooltip"
+            data-placement={placement() === 'top' ? undefined : placement()}
+          >
+            {content()}
+          </span>
         </span>
-      </span>
-    </div>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

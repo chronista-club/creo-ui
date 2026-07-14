@@ -5,9 +5,11 @@ import {
   number,
   select,
   signalTarget,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -35,7 +37,11 @@ const TOKENS = [
 
 export default function Skeleton() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.skeleton-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Skeleton</h1>
@@ -50,7 +56,15 @@ export default function Skeleton() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground skeleton の shape / width / height
+          を即時編集できる。 Mode ON 中に playground skeleton を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <SkeletonLivePreview />
           <div class="docs-preview-row-label">Shapes</div>
           <div class="docs-preview-stack" style={{ width: '320px', gap: 'var(--spacing-s)' }}>
             <span class="creo-skeleton" data-shape="text" data-size="l" />
@@ -164,24 +178,6 @@ export default function Skeleton() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> で shape / width / height を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.skeleton-editor',
-            }}
-          >
-            <SkeletonEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Text lines -->
@@ -203,41 +199,57 @@ export default function Skeleton() {
 </article>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type SkeletonShape = 'text' | 'circle' | 'rect'
 
-function SkeletonEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で shape / width / height を
+ * inspector panel に生やし、stage の skeleton 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function SkeletonLivePreview() {
   const [shape, setShape] = createSignal<SkeletonShape>('rect')
   const [width, setWidth] = createSignal(280)
   const [height, setHeight] = createSignal(80)
 
-  bind({
-    target: signalTarget('skeleton.shape', shape, (v) => setShape(v as SkeletonShape)),
-    control: select(['text', 'circle', 'rect'] as const),
-    placement: { semantic: 'tool', group: 'skeleton', label: 'Shape', order: 1 },
-  })
-  bind({
-    target: signalTarget('skeleton.width', width, setWidth),
-    control: number({ variant: 'slider' }),
-    placement: { semantic: 'tool', group: 'skeleton', label: 'Width (px)', order: 2 },
-  })
-  bind({
-    target: signalTarget('skeleton.height', height, setHeight),
-    control: number({ variant: 'slider' }),
-    placement: { semantic: 'tool', group: 'skeleton', label: 'Height (px)', order: 3 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('skeleton.shape', shape, (v) => setShape(v as SkeletonShape)),
+      control: select(['text', 'circle', 'rect'] as const),
+      placement: { semantic: 'tool', group: 'skeleton', label: 'Shape', order: 1 },
+    }),
+    bind({
+      target: signalTarget('skeleton.width', width, setWidth),
+      control: number({ variant: 'slider' }),
+      placement: { semantic: 'tool', group: 'skeleton', label: 'Width (px)', order: 2 },
+    }),
+    bind({
+      target: signalTarget('skeleton.height', height, setHeight),
+      control: number({ variant: 'slider' }),
+      placement: { semantic: 'tool', group: 'skeleton', label: 'Height (px)', order: 3 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'skeleton-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <span
-        class="creo-skeleton"
-        data-shape={shape() === 'rect' ? undefined : shape()}
-        style={{ width: `${width()}px`, height: `${height()}px` }}
-        aria-hidden="true"
-      />
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <span
+          ref={selectable}
+          class="creo-skeleton"
+          data-shape={shape() === 'rect' ? undefined : shape()}
+          style={{ width: `${width()}px`, height: `${height()}px` }}
+          aria-hidden="true"
+        />
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

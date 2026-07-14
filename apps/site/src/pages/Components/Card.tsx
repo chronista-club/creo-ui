@@ -6,9 +6,11 @@ import {
   select,
   signalTarget,
   string,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -38,7 +40,11 @@ const TOKENS = [
 
 export default function Card() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.card-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Card</h1>
@@ -50,7 +56,15 @@ export default function Card() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground card の variant / padding / interactive / title /
+          body を即時編集できる。 Mode ON 中に playground card を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <CardLivePreview />
           <div class="docs-preview-row-label">Variants</div>
           <div class="docs-preview-grid docs-preview-grid--cards">
             <article class="creo-card" data-variant="default">
@@ -157,25 +171,6 @@ export default function Card() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
-          card の variant / padding / interactive / title / body を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.card-editor',
-            }}
-          >
-            <CardEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Default -->
@@ -206,14 +201,21 @@ export default function Card() {
           </a>
         </p>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type CardVariant = 'default' | 'elevated' | 'outlined'
 type CardPadding = 's' | 'm' | 'l'
 
-function CardEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で variant / padding / interactive /
+ * title / body を inspector panel に生やし、stage の card 自体を selectable にする (Mode ON で
+ * click → その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function CardLivePreview() {
   const [variant, setVariant] = createSignal<CardVariant>('default')
   const [padding, setPadding] = createSignal<CardPadding>('m')
   const [interactive, setInteractive] = createSignal(false)
@@ -222,60 +224,69 @@ function CardEditorDemo() {
     '説明文を ここに。 token-driven で radius / shadow / padding が一貫。',
   )
 
-  bind({
-    target: signalTarget('card.variant', variant, (v) => setVariant(v as CardVariant)),
-    control: select(['default', 'elevated', 'outlined'] as const),
-    placement: { semantic: 'tool', group: 'card', label: 'Variant', order: 1 },
-  })
-  bind({
-    target: signalTarget('card.padding', padding, (v) => setPadding(v as CardPadding)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'card', label: 'Padding', order: 2 },
-  })
-  bind({
-    target: signalTarget('card.interactive', interactive, setInteractive),
-    control: boolean({ variant: 'switch' }),
-    placement: { semantic: 'tool', group: 'card', label: 'Interactive (hover)', order: 3 },
-  })
-  bind({
-    target: signalTarget('card.title', title, setTitle),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'content', label: 'Title', order: 1 },
-  })
-  bind({
-    target: signalTarget('card.body', body, setBody),
-    control: string('textarea'),
-    placement: { semantic: 'tool', group: 'content', label: 'Body', order: 2 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('card.variant', variant, (v) => setVariant(v as CardVariant)),
+      control: select(['default', 'elevated', 'outlined'] as const),
+      placement: { semantic: 'tool', group: 'card', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('card.padding', padding, (v) => setPadding(v as CardPadding)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'card', label: 'Padding', order: 2 },
+    }),
+    bind({
+      target: signalTarget('card.interactive', interactive, setInteractive),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'card', label: 'Interactive (hover)', order: 3 },
+    }),
+    bind({
+      target: signalTarget('card.title', title, setTitle),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Title', order: 1 },
+    }),
+    bind({
+      target: signalTarget('card.body', body, setBody),
+      control: string('textarea'),
+      placement: { semantic: 'tool', group: 'content', label: 'Body', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'card-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <article
-        class="creo-card"
-        data-variant={variant()}
-        data-padding={padding()}
-        data-interactive={interactive() ? 'true' : undefined}
-      >
-        <h3
-          style={{
-            margin: '0 0 8px 0',
-            'font-size': 'var(--typography-title-card)',
-            'font-weight': 'var(--typography-weight-bold)',
-            'line-height': 'var(--typography-line-height-tight)',
-          }}
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <article
+          ref={selectable}
+          class="creo-card"
+          data-variant={variant()}
+          data-padding={padding()}
+          data-interactive={interactive() ? 'true' : undefined}
         >
-          {title()}
-        </h3>
-        <p
-          style={{
-            margin: 0,
-            'font-size': 'var(--typography-size-s)',
-            color: 'var(--color-text-secondary)',
-          }}
-        >
-          {body()}
-        </p>
-      </article>
-    </div>
+          <h3
+            style={{
+              margin: '0 0 8px 0',
+              'font-size': 'var(--typography-title-card)',
+              'font-weight': 'var(--typography-weight-bold)',
+              'line-height': 'var(--typography-line-height-tight)',
+            }}
+          >
+            {title()}
+          </h3>
+          <p
+            style={{
+              margin: 0,
+              'font-size': 'var(--typography-size-s)',
+              color: 'var(--color-text-secondary)',
+            }}
+          >
+            {body()}
+          </p>
+        </article>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

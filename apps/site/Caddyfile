@@ -1,15 +1,27 @@
 # creo-ui 公式 site — demo stage 用 Caddy 設定
+# dist は hub (doc.anycreative.tech) 配下配信のため base=/creo-ui/ でビルドされる
+# (vite.config.ts / App.tsx の Router base と対)。stage でも同じ prefix 配下で配信し、
+# handle_path で prefix を strip して /srv の実ファイルへ map する。
 # SolidJS Router は history mode のため、未知 path は index.html にフォールバックさせる
-# (これが無いと /components/button 等を直接 reload した時に 404 になる)。
+# (これが無いと /creo-ui/components/button 等を直接 reload した時に 404 になる)。
 :80 {
-	root * /srv
 	encode gzip zstd
-	try_files {path} /index.html
-	file_server
 
-	# Vite が content hash を付けた assets は長期キャッシュ可
-	@hashed path /assets/*
-	header @hashed Cache-Control "public, max-age=31536000, immutable"
-	# index.html は常に最新を取りに行かせる
-	header /index.html Cache-Control "no-cache"
+	redir /creo-ui /creo-ui/ 308
+	handle_path /creo-ui/* {
+		root * /srv
+		try_files {path} /index.html
+		file_server
+
+		# Vite が content hash を付けた assets は長期キャッシュ可
+		@hashed path /assets/*
+		header @hashed Cache-Control "public, max-age=31536000, immutable"
+		# index.html は常に最新を取りに行かせる
+		header /index.html Cache-Control "no-cache"
+	}
+
+	# prefix 無しの直打ち (http://localhost:8080/components/button 等) は /creo-ui/ 配下へ
+	handle {
+		redir * /creo-ui{uri} 308
+	}
 }

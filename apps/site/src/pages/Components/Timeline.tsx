@@ -5,9 +5,11 @@ import {
   select,
   signalTarget,
   string,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -36,7 +38,11 @@ const TOKENS = [
 
 export default function Timeline() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.timeline-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Timeline</h1>
@@ -50,7 +56,15 @@ export default function Timeline() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground timeline の size / item variant / item title
+          を即時編集できる。 Mode ON 中に playground timeline を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <TimelineLivePreview />
           <div class="docs-preview-row-label">Default activity feed</div>
           <ol class="creo-timeline">
             <li class="creo-timeline-item" data-variant="success">
@@ -167,24 +181,6 @@ export default function Timeline() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> で size / item variant / item title を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.timeline-editor',
-            }}
-          >
-            <TimelineEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<ol class="creo-timeline">
@@ -211,58 +207,68 @@ export default function Timeline() {
 </ol>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type TimelineSize = 's' | 'm' | 'l'
 type TimelineItemVariant = 'default' | 'success' | 'warning' | 'error' | 'info'
 
-function TimelineEditorDemo() {
+function TimelineLivePreview() {
   const [size, setSize] = createSignal<TimelineSize>('m')
   const [itemVariant, setItemVariant] = createSignal<TimelineItemVariant>('success')
   const [itemTitle, setItemTitle] = createSignal('PR merged')
 
-  bind({
-    target: signalTarget('timeline.size', size, (v) => setSize(v as TimelineSize)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'timeline', label: 'Size', order: 1 },
-  })
-  bind({
-    target: signalTarget('timeline.itemVariant', itemVariant, (v) =>
-      setItemVariant(v as TimelineItemVariant),
-    ),
-    control: select(['default', 'success', 'warning', 'error', 'info'] as const),
-    placement: { semantic: 'tool', group: 'item', label: 'Item variant', order: 1 },
-  })
-  bind({
-    target: signalTarget('timeline.itemTitle', itemTitle, setItemTitle),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'item', label: 'Item title', order: 2 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('timeline.size', size, (v) => setSize(v as TimelineSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'timeline', label: 'Size', order: 1 },
+    }),
+    bind({
+      target: signalTarget('timeline.itemVariant', itemVariant, (v) =>
+        setItemVariant(v as TimelineItemVariant),
+      ),
+      control: select(['default', 'success', 'warning', 'error', 'info'] as const),
+      placement: { semantic: 'tool', group: 'item', label: 'Item variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('timeline.itemTitle', itemTitle, setItemTitle),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'item', label: 'Item title', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'timeline-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <ol class="creo-timeline" data-size={size() === 'm' ? undefined : size()}>
-        <li
-          class="creo-timeline-item"
-          data-variant={itemVariant() === 'default' ? undefined : itemVariant()}
-        >
-          <div class="creo-timeline-marker" aria-hidden="true" />
-          <div class="creo-timeline-content">
-            <div class="creo-timeline-title">{itemTitle()}</div>
-            <div class="creo-timeline-description">この item の variant + title を編集中</div>
-            <div class="creo-timeline-meta">just now</div>
-          </div>
-        </li>
-        <li class="creo-timeline-item">
-          <div class="creo-timeline-marker" aria-hidden="true" />
-          <div class="creo-timeline-content">
-            <div class="creo-timeline-title">Repository created</div>
-            <div class="creo-timeline-meta">2026-04</div>
-          </div>
-        </li>
-      </ol>
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <ol ref={selectable} class="creo-timeline" data-size={size() === 'm' ? undefined : size()}>
+          <li
+            class="creo-timeline-item"
+            data-variant={itemVariant() === 'default' ? undefined : itemVariant()}
+          >
+            <div class="creo-timeline-marker" aria-hidden="true" />
+            <div class="creo-timeline-content">
+              <div class="creo-timeline-title">{itemTitle()}</div>
+              <div class="creo-timeline-description">この item の variant + title を編集中</div>
+              <div class="creo-timeline-meta">just now</div>
+            </div>
+          </li>
+          <li class="creo-timeline-item">
+            <div class="creo-timeline-marker" aria-hidden="true" />
+            <div class="creo-timeline-content">
+              <div class="creo-timeline-title">Repository created</div>
+              <div class="creo-timeline-meta">2026-04</div>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

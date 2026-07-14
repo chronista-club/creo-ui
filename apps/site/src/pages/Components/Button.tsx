@@ -3,13 +3,17 @@ import {
   EditorLayer,
   bind,
   boolean,
+  cssVarNumberTarget,
+  number,
   select,
   signalTarget,
   string,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -46,13 +50,17 @@ const TOKENS = [
   { slot: 'font-size', token: 'typography.size.{s/m/l}' },
   { slot: 'padding', token: 'spacing.{xs/s/m} × spacing.{s/m/l}' },
   { slot: 'gap (icon + label)', token: 'layout.gap.tight' },
-  { slot: 'border-radius', token: 'radius.s' },
+  { slot: 'border-radius', token: 'radius.full (pill — 両サイド半円)' },
   { slot: 'min-height', token: 'layout.target.tap (m/l) / focus (s)' },
 ] as const
 
 export default function Button() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.button-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Button</h1>
@@ -65,7 +73,16 @@ export default function Button() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground button の variant / size / label / state
+          を即時編集できる。 Padding X/Y と corner radius は <code>.creo-btn</code> 全体に効く
+          component scope (radius 未設定時の default は半円 = <code>radius.full</code> の pill)。{' '}
+          Mode ON 中に playground button を click するとその instance に field が絞られる
+          (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。
+        </p>
         <div class="docs-component-preview">
+          <ButtonLivePreview />
           <div class="docs-preview-row-label">Variants × Sizes</div>
           <div class="docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" data-size="s">
@@ -250,26 +267,6 @@ const [primary, setPrimary] = createSignal(true)
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle。 right panel から
-          button の variant / size / disabled / label を即時編集できる。 token-driven の component
-          が runtime で操作可能になる感触 (<A href="/concepts/editor-mode">Editor Mode protocol</A>{' '}
-          dogfood) を試せる scope は この section 内のみ。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.button-editor',
-            }}
-          >
-            <ButtonEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Primary -->
@@ -297,7 +294,9 @@ const [primary, setPrimary] = createSignal(true)
           </a>
         </p>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
@@ -333,38 +332,101 @@ function CUButtonReactiveDemo() {
   )
 }
 
-function ButtonEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で variant / size / state / label を
+ * inspector panel に生やし、stage の button 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。corner radius だけは instance prop ではなく
+ * --radius-s token への bind (token scope)。provider はページ root の 1 枚を共有。
+ */
+function ButtonLivePreview() {
   const [variant, setVariant] = createSignal<ButtonVariant>('primary')
   const [size, setSize] = createSignal<ButtonSize>('m')
   const [disabled, setDisabled] = createSignal(false)
+  const [loading, setLoading] = createSignal(false)
   const [label, setLabel] = createSignal('Click me')
 
-  bind({
-    target: signalTarget('btn.variant', variant, (v) => setVariant(v as ButtonVariant)),
-    control: select(['primary', 'secondary', 'outline', 'ghost', 'danger'] as const),
-    placement: { semantic: 'tool', group: 'button', label: 'Variant', order: 1 },
-  })
-  bind({
-    target: signalTarget('btn.size', size, (v) => setSize(v as ButtonSize)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'button', label: 'Size', order: 2 },
-  })
-  bind({
-    target: signalTarget('btn.disabled', disabled, setDisabled),
-    control: boolean({ variant: 'switch' }),
-    placement: { semantic: 'tool', group: 'button', label: 'Disabled', order: 3 },
-  })
-  bind({
-    target: signalTarget('btn.label', label, setLabel),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'content', label: 'Button label', order: 1 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('btn.variant', variant, (v) => setVariant(v as ButtonVariant)),
+      control: select(['primary', 'secondary', 'outline', 'ghost', 'danger'] as const),
+      placement: { semantic: 'tool', group: 'button', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('btn.size', size, (v) => setSize(v as ButtonSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'button', label: 'Size', order: 2 },
+    }),
+    bind({
+      target: signalTarget('btn.disabled', disabled, setDisabled),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'button', label: 'Disabled', order: 3 },
+    }),
+    bind({
+      target: signalTarget('btn.loading', loading, setLoading),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'button', label: 'Loading', order: 4 },
+    }),
+    bind({
+      target: signalTarget('btn.label', label, setLabel),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Button label', order: 1 },
+    }),
+    // padding は button.css の private tweak var --_btn-pad-{x,y} へ (D-13 component scope)。
+    // 未設定なら size 別の spacing token default、設定すると全 .creo-btn instance が追従する。
+    bind({
+      target: cssVarNumberTarget('btn.padX', '--_btn-pad-x', 18, 'px'),
+      control: number({ min: 4, max: 40, step: 1, unit: 'px', variant: 'slider' }),
+      placement: {
+        semantic: 'tool',
+        group: 'padding',
+        label: 'Padding X (--_btn-pad-x)',
+        order: 1,
+        scope: 'component',
+      },
+    }),
+    bind({
+      target: cssVarNumberTarget('btn.padY', '--_btn-pad-y', 8, 'px'),
+      control: number({ min: 2, max: 24, step: 1, unit: 'px', variant: 'slider' }),
+      placement: {
+        semantic: 'tool',
+        group: 'padding',
+        label: 'Padding Y (--_btn-pad-y)',
+        order: 2,
+        scope: 'component',
+      },
+    }),
+    // corner radius の default は半円 (radius.full の pill)。--_btn-radius は固定 px への
+    // override 用 tweak var で、slider を触ったときだけ pill から離れる (D-13 component scope)。
+    bind({
+      target: cssVarNumberTarget('btn.radius', '--_btn-radius', 22, 'px'),
+      control: number({ min: 0, max: 30, step: 1, unit: 'px', variant: 'slider' }),
+      placement: {
+        semantic: 'tool',
+        group: 'radius',
+        label: 'Corner radius (--_btn-radius)',
+        order: 1,
+        scope: 'component',
+      },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'button-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <CUButton variant={variant()} size={size()} disabled={disabled()}>
-        {label()}
-      </CUButton>
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <CUButton
+          ref={selectable}
+          variant={variant()}
+          size={size()}
+          disabled={disabled()}
+          loading={loading()}
+        >
+          {label()}
+        </CUButton>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

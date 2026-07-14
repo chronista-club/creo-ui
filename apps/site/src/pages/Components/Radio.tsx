@@ -5,9 +5,11 @@ import {
   boolean,
   signalTarget,
   string,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -46,7 +48,11 @@ const TOKENS = [
 
 export default function Radio() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.radio-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Radio</h1>
@@ -59,7 +65,15 @@ export default function Radio() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground radio の checked / disabled / label
+          を即時編集できる。 Mode ON 中に playground radio を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood (group 全体は scope 大のため single radio で示す)。
+        </p>
         <div class="docs-component-preview">
+          <RadioLivePreview />
           <div class="docs-preview-row-label">Group (vertical)</div>
           <div class="docs-preview-grid">
             <label class="creo-radio">
@@ -138,26 +152,6 @@ export default function Radio() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
-          single radio の checked / disabled / label を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。 group 全体の dogfood
-          は scope 大のため single radio で示す。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.radio-editor',
-            }}
-          >
-            <RadioEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<fieldset>
@@ -180,43 +174,58 @@ export default function Radio() {
 </fieldset>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
-function RadioEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で checked / disabled / label を
+ * inspector panel に生やし、stage の radio 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function RadioLivePreview() {
   const [checked, setChecked] = createSignal(true)
   const [disabled, setDisabled] = createSignal(false)
   const [label, setLabel] = createSignal('Light')
 
-  bind({
-    target: signalTarget('radio.checked', checked, setChecked),
-    control: boolean({ variant: 'switch' }),
-    placement: { semantic: 'tool', group: 'radio', label: 'Checked', order: 1 },
-  })
-  bind({
-    target: signalTarget('radio.disabled', disabled, setDisabled),
-    control: boolean({ variant: 'switch' }),
-    placement: { semantic: 'tool', group: 'radio', label: 'Disabled', order: 2 },
-  })
-  bind({
-    target: signalTarget('radio.label', label, setLabel),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'content', label: 'Label', order: 1 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('radio.checked', checked, setChecked),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'radio', label: 'Checked', order: 1 },
+    }),
+    bind({
+      target: signalTarget('radio.disabled', disabled, setDisabled),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'radio', label: 'Disabled', order: 2 },
+    }),
+    bind({
+      target: signalTarget('radio.label', label, setLabel),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Label', order: 1 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'radio-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <label class="creo-radio">
-        <input
-          type="radio"
-          class="creo-radio-input"
-          name="radio-editor-demo"
-          checked={checked()}
-          disabled={disabled()}
-        />
-        <span>{label()}</span>
-      </label>
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <label ref={selectable} class="creo-radio">
+          <input
+            type="radio"
+            class="creo-radio-input"
+            name="radio-editor-demo"
+            checked={checked()}
+            disabled={disabled()}
+          />
+          <span>{label()}</span>
+        </label>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

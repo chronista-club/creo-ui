@@ -5,9 +5,11 @@ import {
   select,
   signalTarget,
   string,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -30,7 +32,11 @@ const TOKENS = [
 
 export default function Avatar() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.avatar-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Avatar</h1>
@@ -43,7 +49,15 @@ export default function Avatar() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground avatar の size / shape / initials
+          を即時編集できる。 Mode ON 中に playground avatar を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <AvatarLivePreview />
           <div class="docs-preview-row-label">Sizes (initials fallback)</div>
           <div class="docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-size="s">
@@ -157,25 +171,6 @@ export default function Avatar() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) で Editor Mode toggle、 right panel から
-          avatar の size / shape / initials を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.avatar-editor',
-            }}
-          >
-            <AvatarEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<!-- Image -->
@@ -205,44 +200,60 @@ export default function Avatar() {
           </a>
         </p>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type AvatarSize = 's' | 'm' | 'l' | 'xl'
 type AvatarShape = 'circle' | 'square'
 
-function AvatarEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で size / shape / initials を
+ * inspector panel に生やし、stage の avatar 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function AvatarLivePreview() {
   const [size, setSize] = createSignal<AvatarSize>('l')
   const [shape, setShape] = createSignal<AvatarShape>('circle')
   const [initials, setInitials] = createSignal('CU')
 
-  bind({
-    target: signalTarget('avatar.size', size, (v) => setSize(v as AvatarSize)),
-    control: select(['s', 'm', 'l', 'xl'] as const),
-    placement: { semantic: 'tool', group: 'avatar', label: 'Size', order: 1 },
-  })
-  bind({
-    target: signalTarget('avatar.shape', shape, (v) => setShape(v as AvatarShape)),
-    control: select(['circle', 'square'] as const),
-    placement: { semantic: 'tool', group: 'avatar', label: 'Shape', order: 2 },
-  })
-  bind({
-    target: signalTarget('avatar.initials', initials, setInitials),
-    control: string('input'),
-    placement: { semantic: 'tool', group: 'content', label: 'Initials', order: 1 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('avatar.size', size, (v) => setSize(v as AvatarSize)),
+      control: select(['s', 'm', 'l', 'xl'] as const),
+      placement: { semantic: 'tool', group: 'avatar', label: 'Size', order: 1 },
+    }),
+    bind({
+      target: signalTarget('avatar.shape', shape, (v) => setShape(v as AvatarShape)),
+      control: select(['circle', 'square'] as const),
+      placement: { semantic: 'tool', group: 'avatar', label: 'Shape', order: 2 },
+    }),
+    bind({
+      target: signalTarget('avatar.initials', initials, setInitials),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Initials', order: 1 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'avatar-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <span
-        class="creo-avatar"
-        data-size={size()}
-        data-shape={shape() === 'circle' ? undefined : shape()}
-        aria-label={`Avatar with initials ${initials()}`}
-      >
-        <span class="creo-avatar-initials">{initials()}</span>
-      </span>
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <span
+          ref={selectable}
+          class="creo-avatar"
+          data-size={size()}
+          data-shape={shape() === 'circle' ? undefined : shape()}
+          aria-label={`Avatar with initials ${initials()}`}
+        >
+          <span class="creo-avatar-initials">{initials()}</span>
+        </span>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

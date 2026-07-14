@@ -126,7 +126,7 @@ bind({
 // Ctrl+Shift+E で Editor Mode toggle、 RIGHT panel で field 操作`}</code>
         </pre>
         <p class="docs-page-helper">
-          → <A href="/playground">Playground</A> で動作実演、{' '}
+          → <A href="/lab/editor">Playground</A> で動作実演、{' '}
           <A href="/concepts/editor-mode">Editor Mode protocol</A> で D-1 〜 D-12 articulate。
         </p>
       </section>
@@ -176,7 +176,7 @@ let m = tokens::SPACING_M;                  // f32 px (5 tier 中央)`}</code>
             <A href="/components">Components</A> — 27 component (live preview + Token reference)
           </li>
           <li>
-            <A href="/playground">Playground</A> — Editor Mode の live demo
+            <A href="/lab/editor">Playground</A> — Editor Mode の live demo
           </li>
         </ul>
       </section>
