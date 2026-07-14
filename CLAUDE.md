@@ -27,7 +27,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 token 値は **OKLCH** で保持 (`oklch(l c h [/ a])`)、Web は literal で emit し modern browser が解釈。Swift/Rust は build 時に hex / Rgb に変換 (Mint Dark のみ)。
 
-Linear Epic: [CREO-84](https://linear.app/chronista/issue/CREO-84) / Phase は README.md に記載。
+Phase は README.md に記載。
 
 ## コマンド
 
@@ -125,7 +125,7 @@ bun run build        # 全 platform に反映
 - **Biome 1.9**: single quote、no semicolons (as-needed)、trailing commas all、indent 2 space、line width 100。`*.md` は無視。
 - **Rust**: edition `2024`、`rust-version = "1.95"`（mise の `[tools].rust = "1.95.0"` と一致）、`#![forbid(unsafe_code)]`。
 - **Swift**: multi-platform (iOS 17+ / macOS 14+ / watchOS 10+ / tvOS 17+)、tools-version 5.9。UIKit ではなく SwiftUI `Color` を使う（cross-platform のため）。
-- **コミット/PR の言語**: 日本語。ブランチは Linear 生成の `mako/{team-key}-XX-...`。Issue 管理は Linear (GitHub Issues は無効化済)。
+- **コミット/PR の言語**: 日本語。ブランチは memory slug ベースの `mako/{slug}` 形式。Issue 管理は creo-memories の memory / todo (GitHub Issues は無効化済)。
 
 ## CI (`.github/workflows/ci.yml`)
 

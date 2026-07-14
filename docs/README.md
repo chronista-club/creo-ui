@@ -47,7 +47,7 @@ creo-ui Design System の architecture / migration / component spec のソース
 
 ### 🛠 Contribute
 
-- [`contributing.md`](./contributing.md) — token 追加・変更 flow、 5 tier convention rule、 feedback channel (Linear)、 PR convention
+- [`contributing.md`](./contributing.md) — token 追加・変更 flow、 5 tier convention rule、 feedback channel、 PR convention
 
 ## Living docs sync rule
 
@@ -65,5 +65,4 @@ dogfood (`apps/site/`) は **viewer** で、 spec の役割は持たない (visu
 
 - repo root [README.md](../README.md)
 - [CHANGELOG.md](../CHANGELOG.md)
-- Linear Epic [CREO-84 — creo-ui Design System](https://linear.app/chronista/issue/CREO-84)
 - npm [creo-ui](https://www.npmjs.com/package/creo-ui) / [@chronista-club/creo-ui-editor-host](https://www.npmjs.com/package/@chronista-club/creo-ui-editor-host)

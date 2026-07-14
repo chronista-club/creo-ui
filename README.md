@@ -12,8 +12,6 @@
 - 2026-04-26: Mode-based typography family token 6 種追加 ([`v0.14.0`](./CHANGELOG.md#v0140-2026-04-26--mode-based-typography-family))。
 - 2026-04-21: Web パッケージを npmjs.com へ初回 publish ([`creo-ui@0.0.1`](https://www.npmjs.com/package/creo-ui))。
 
-Linear Epic: [CREO-84 creo-ui Design System](https://linear.app/chronista/issue/CREO-84) — Phase ごとの子 Issue が紐付く。
-
 ### 次フェーズ — 2 axis hybrid governance
 
 デザインシステムは、内部のドッグフーディングと複数ラウンドのレビューを経て安定化しました。以降は **2 軸ハイブリッド** で進化していきます:
@@ -149,12 +147,10 @@ token 値は **OKLCH** で保持し (`oklch(l c h / a)`)、modern browser が直
 
 | Phase | 内容 | Status |
 |-------|------|--------|
-| 0 | Repo scaffold + CI skeleton | ✅ 完了 (CREO-85) |
-| 1 | Token MVP + Web/SwiftUI/Rust 出力 + Editor Mode protocol schema + editor-mode tokens + **8-theme matrix** (0.1.0) | **進行中** (CREO-86) |
+| 0 | Repo scaffold + CI skeleton | ✅ 完了 |
+| 1 | Token MVP + Web/SwiftUI/Rust 出力 + Editor Mode protocol schema + editor-mode tokens + **8-theme matrix** (0.1.0) | **進行中** |
 | 2 | `creo-ui` に `EditorHost` runtime 実装 + MCP AI agent 連携 + DevEditor migration + Swift/Rust の multi-theme | Planned |
 | 3 | Figma sync (tokens.studio 連携) + theme authoring pipeline | Planned |
-
-詳細は [Epic CREO-84](https://linear.app/chronista/issue/CREO-84) を参照してください。
 
 ## Ecosystem split (Phase 2 architectural pivot)
 
