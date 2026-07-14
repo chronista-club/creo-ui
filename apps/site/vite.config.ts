@@ -1,6 +1,7 @@
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import { defineConfig } from 'vite'
 import solid from 'vite-plugin-solid'
+import { creoAgentBridge } from './vite-plugins/creo-agent-bridge'
 
 // HTTPS is enabled so that visionOS Safari (and iOS Safari) accepts
 // `navigator.mediaDevices.getUserMedia()` over LAN IP — non-localhost http is not
@@ -15,7 +16,7 @@ export default defineConfig({
   // hub は prefix を strip して creo-ui-doc worker へ転送するが、browser から見える
   // asset URL は /creo-ui/assets/... なので build 側で base を合わせる。
   base: '/creo-ui/',
-  plugins: useHttps ? [solid(), basicSsl()] : [solid()],
+  plugins: useHttps ? [solid(), basicSsl(), creoAgentBridge()] : [solid(), creoAgentBridge()],
   server: {
     host: true,
     port: 5173,
