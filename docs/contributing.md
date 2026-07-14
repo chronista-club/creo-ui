@@ -29,7 +29,7 @@ xs  /  s  /  m  /  l  /  xl
 ## Token 追加・変更 flow
 
 1. **SSOT は `tokens/**/*.json`** のみ。 platform 別 generated 出力 (`packages/web/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を直接編集してはいけない。
-2. **Issue は creo-memories** で管理: todo / memory として起票し、 PR と pair にする (GitHub Issues は無効化済)。
+2. **Issue は creo-memories** で管理: タスク・TODO として起票し、 PR と pair にする (GitHub Issues は無効化済)。
 3. branch naming は memory slug ベースの `mako/{slug}` 形式。
 4. `tokens/<category>/<file>.json` を編集。 DTCG 準拠を維持、 3 階層まで dot-notation。
 5. **`bun run build` で全 platform 出力を再生成**。 Swift / Rust の generated は **commit 対象** (consumer は generated 前提で build する)、 Web の `packages/web/dist/` は **gitignore** (npm publish workflow が再生成)。
