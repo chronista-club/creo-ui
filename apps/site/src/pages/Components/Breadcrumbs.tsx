@@ -4,9 +4,11 @@ import {
   bind,
   select,
   signalTarget,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -45,7 +47,11 @@ const TOKENS = [
 
 export default function Breadcrumbs() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.breadcrumbs-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Breadcrumbs</h1>
@@ -58,7 +64,15 @@ export default function Breadcrumbs() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground breadcrumbs の size / separator
+          を即時編集できる。 Mode ON 中に playground breadcrumbs を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <BreadcrumbsLivePreview />
           <div class="docs-preview-row-label">Default (chevron separator)</div>
           <nav class="creo-breadcrumbs" aria-label="breadcrumb">
             <ol class="creo-breadcrumbs-list">
@@ -196,24 +210,6 @@ export default function Breadcrumbs() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> で size / separator を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.breadcrumbs-editor',
-            }}
-          >
-            <BreadcrumbsEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<nav class="creo-breadcrumbs" aria-label="breadcrumb">
@@ -234,54 +230,70 @@ export default function Breadcrumbs() {
 </nav>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type BreadcrumbsSize = 's' | 'm' | 'l'
 type BreadcrumbsSeparator = 'default' | 'slash' | 'dot'
 
-function BreadcrumbsEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で size / separator を
+ * inspector panel に生やし、stage の breadcrumbs 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function BreadcrumbsLivePreview() {
   const [size, setSize] = createSignal<BreadcrumbsSize>('m')
   const [separator, setSeparator] = createSignal<BreadcrumbsSeparator>('default')
 
-  bind({
-    target: signalTarget('breadcrumbs.size', size, (v) => setSize(v as BreadcrumbsSize)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'breadcrumbs', label: 'Size', order: 1 },
-  })
-  bind({
-    target: signalTarget('breadcrumbs.separator', separator, (v) =>
-      setSeparator(v as BreadcrumbsSeparator),
-    ),
-    control: select(['default', 'slash', 'dot'] as const),
-    placement: { semantic: 'tool', group: 'breadcrumbs', label: 'Separator', order: 2 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('breadcrumbs.size', size, (v) => setSize(v as BreadcrumbsSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'breadcrumbs', label: 'Size', order: 1 },
+    }),
+    bind({
+      target: signalTarget('breadcrumbs.separator', separator, (v) =>
+        setSeparator(v as BreadcrumbsSeparator),
+      ),
+      control: select(['default', 'slash', 'dot'] as const),
+      placement: { semantic: 'tool', group: 'breadcrumbs', label: 'Separator', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'breadcrumbs-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <nav
-        class="creo-breadcrumbs"
-        data-size={size() === 'm' ? undefined : size()}
-        data-separator={separator() === 'default' ? undefined : separator()}
-        aria-label="breadcrumb editor demo"
-      >
-        <ol class="creo-breadcrumbs-list">
-          <li class="creo-breadcrumbs-item">
-            <a class="creo-breadcrumbs-link" href="#home">
-              Home
-            </a>
-          </li>
-          <li class="creo-breadcrumbs-item">
-            <a class="creo-breadcrumbs-link" href="#components">
-              Components
-            </a>
-          </li>
-          <li class="creo-breadcrumbs-item" aria-current="page">
-            Breadcrumbs
-          </li>
-        </ol>
-      </nav>
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <nav
+          ref={selectable}
+          class="creo-breadcrumbs"
+          data-size={size() === 'm' ? undefined : size()}
+          data-separator={separator() === 'default' ? undefined : separator()}
+          aria-label="breadcrumb editor demo"
+        >
+          <ol class="creo-breadcrumbs-list">
+            <li class="creo-breadcrumbs-item">
+              <a class="creo-breadcrumbs-link" href="#home">
+                Home
+              </a>
+            </li>
+            <li class="creo-breadcrumbs-item">
+              <a class="creo-breadcrumbs-link" href="#components">
+                Components
+              </a>
+            </li>
+            <li class="creo-breadcrumbs-item" aria-current="page">
+              Breadcrumbs
+            </li>
+          </ol>
+        </nav>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

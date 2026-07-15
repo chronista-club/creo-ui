@@ -124,6 +124,13 @@ export interface ConsoleApi {
     semantic?: EditorSemantic
     skipExisting?: boolean
   }): Binder[]
+  /** F2b: private tweak var (`--_component-knob`) を CSSOM から自動 bind */
+  discoverTweaks(opts?: {
+    prefix?: string
+    semantic?: EditorSemantic
+    skipExisting?: boolean
+    requirePresence?: boolean
+  }): Binder[]
 
   // --- Dev write-back (tokens/<cat>/scale.json に直書き戻し) ---
   /**
@@ -165,6 +172,16 @@ export interface ConsoleApiDeps {
     owner: Owner | null,
     opts?: { prefixes?: readonly string[]; semantic?: EditorSemantic; skipExisting?: boolean },
   ) => Binder[]
+  autoDiscoverTweaks: (
+    host: EditorHost,
+    owner: Owner | null,
+    opts?: {
+      prefix?: string
+      semantic?: EditorSemantic
+      skipExisting?: boolean
+      requirePresence?: boolean
+    },
+  ) => Binder[]
 }
 
 /** provider 側で deps を wire して console API object を構築する */
@@ -184,12 +201,17 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
     return fn()
   }
 
+  // console 経由の bind は provider context (EditorHostContext) の外側の owner で走るため、
+  // useEditorHost() では host を解決できない。host を明示注入する (binder.ts の host 経路)。
+  // owner は reactive scope (cleanup 紐付け) のために withOwner で復元する。
+  const boundBind = <T>(opts: BindOptions<T>): Binder<T> => withOwner(() => bind({ ...opts, host }))
+
   const api: ConsoleApi = {
     host,
     version: VERSION,
 
     bind<T>(opts: BindOptions<T>): Binder<T> {
-      return withOwner(() => bind(opts))
+      return boundBind(opts)
     },
 
     t: {
@@ -212,57 +234,47 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
     // --- Sugar ---
     slider(cssVar, initial, opts = {}) {
       const { label, semantic = 'tool', ...controlOpts } = opts
-      return withOwner(() =>
-        bind<number>({
-          target: cssVarNumberTarget(cssVar, cssVar, initial, controlOpts.unit ?? 'px'),
-          control: number({ variant: 'slider', ...controlOpts }),
-          placement: { label: label ?? cssVar, semantic },
-        }),
-      )
+      return boundBind<number>({
+        target: cssVarNumberTarget(cssVar, cssVar, initial, controlOpts.unit ?? 'px'),
+        control: number({ variant: 'slider', ...controlOpts }),
+        placement: { label: label ?? cssVar, semantic },
+      })
     },
 
     picker(cssVar, initial, opts = {}) {
       const { label, semantic = 'tool', ...controlOpts } = opts
-      return withOwner(() =>
-        bind<string>({
-          target: cssVarTarget(cssVar, cssVar, initial),
-          control: color({ variant: 'picker', ...controlOpts }),
-          placement: { label: label ?? cssVar, semantic },
-        }),
-      )
+      return boundBind<string>({
+        target: cssVarTarget(cssVar, cssVar, initial),
+        control: color({ variant: 'picker', ...controlOpts }),
+        placement: { label: label ?? cssVar, semantic },
+      })
     },
 
     flip(id, initial, opts = {}) {
       const { label, semantic = 'tool', ...controlOpts } = opts
-      return withOwner(() =>
-        bind<boolean>({
-          target: ephemeralTarget(id, initial),
-          control: booleanControl({ variant: 'switch', ...controlOpts }),
-          placement: { label: label ?? id, semantic },
-        }),
-      )
+      return boundBind<boolean>({
+        target: ephemeralTarget(id, initial),
+        control: booleanControl({ variant: 'switch', ...controlOpts }),
+        placement: { label: label ?? id, semantic },
+      })
     },
 
     chooser(id, initial, options, opts = {}) {
       const { label, semantic = 'tool', variant } = opts
-      return withOwner(() =>
-        bind<string>({
-          target: ephemeralTarget(id, initial),
-          control: select(options, variant),
-          placement: { label: label ?? id, semantic },
-        }),
-      )
+      return boundBind<string>({
+        target: ephemeralTarget(id, initial),
+        control: select(options, variant),
+        placement: { label: label ?? id, semantic },
+      })
     },
 
     text(id, initial, opts = {}) {
       const { label, semantic = 'tool', ...controlOpts } = opts
-      return withOwner(() =>
-        bind<string>({
-          target: ephemeralTarget(id, initial),
-          control: stringControl(controlOpts.variant),
-          placement: { label: label ?? id, semantic },
-        }),
-      )
+      return boundBind<string>({
+        target: ephemeralTarget(id, initial),
+        control: stringControl(controlOpts.variant),
+        placement: { label: label ?? id, semantic },
+      })
     },
 
     // --- Value ---
@@ -328,6 +340,9 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
     },
     autoDiscover(opts) {
       return withOwner(() => deps.autoDiscover(host, owner, opts))
+    },
+    discoverTweaks(opts) {
+      return withOwner(() => deps.autoDiscoverTweaks(host, owner, opts))
     },
 
     // --- Dev write-back ---
@@ -405,6 +420,7 @@ export function buildConsoleApi(deps: ConsoleApiDeps): ConsoleApi {
         '  creoEditor.share()                          // URL に #creo=... を付与',
         "  creoEditor.export({ format: 'css-patch' })  // 差分 CSS 返却",
         '  creoEditor.autoDiscover()                    // 既知 CSS var を自動 bind',
+        '  creoEditor.discoverTweaks()                  // --_component-knob を自動 bind (F2b)',
         '',
         '[Dev write-back (Vite plugin 要 attach)]',
         '  await creoEditor.commitToTokens()           // 現値を tokens/*.json に書き戻す',

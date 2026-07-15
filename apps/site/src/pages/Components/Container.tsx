@@ -1,3 +1,18 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  string,
+  useEditorHost,
+  useEditorMode,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { CUButton } from '@chronista-club/creo-ui/controls'
+import { A } from '@solidjs/router'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-size',
@@ -40,7 +55,11 @@ export default function Container() {
   )
 
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.container-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components — Layout</p>
         <h1>Container</h1>
@@ -54,7 +73,15 @@ export default function Container() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground container の size / padding / content
+          を即時編集できる。 Mode ON 中に playground container を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <ContainerLivePreview />
           <div class="docs-preview-row-label">
             5 sizes + full (visual outline で max-width を示す)
           </div>
@@ -140,6 +167,82 @@ export default function Container() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type ContainerSize = 'xs' | 's' | 'm' | 'l' | 'xl' | 'full'
+type ContainerPadding = 'none' | 's' | 'm' | 'l'
+
+/**
+ * Live preview の playground。editor-host の bind() で size / padding / content を inspector
+ * panel に生やし、stage の container 自体を selectable にする (Mode ON で click → その instance
+ * に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function ContainerLivePreview() {
+  const host = useEditorHost()
+  const mode = useEditorMode()
+
+  const [size, setSize] = createSignal<ContainerSize>('m')
+  const [padding, setPadding] = createSignal<ContainerPadding>('m')
+  const [label, setLabel] = createSignal('content — max-width で制限、 左右 padding が gutter')
+
+  const binders = [
+    bind({
+      target: signalTarget('container.size', size, (v) => setSize(v as ContainerSize)),
+      control: select(['xs', 's', 'm', 'l', 'xl', 'full'] as const),
+      placement: { semantic: 'tool', group: 'container', label: 'Size', order: 1 },
+    }),
+    bind({
+      target: signalTarget('container.padding', padding, (v) => setPadding(v as ContainerPadding)),
+      control: select(['none', 's', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'container', label: 'Padding', order: 2 },
+    }),
+    bind({
+      target: signalTarget('container.label', label, setLabel),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Content text', order: 1 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'container-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        {/* subtle bg = container の実 extent (max-width)、 内側 dashed box が padding を可視化 */}
+        <div
+          ref={selectable}
+          class="creo-container"
+          data-size={size()}
+          data-padding={padding()}
+          style={{
+            'background-color': 'var(--color-surface-bg-subtle)',
+            'border-radius': 'var(--radius-m)',
+          }}
+        >
+          <div
+            style={{
+              'background-color': 'var(--color-surface-surface)',
+              border: '1px dashed var(--color-surface-border)',
+              'border-radius': 'var(--radius-s)',
+              padding: 'var(--spacing-s)',
+              margin: 'var(--spacing-s) 0',
+              'text-align': 'center',
+            }}
+          >
+            {label()}
+          </div>
+        </div>
+      </div>
+      <div class="docs-preview-grid">
+        <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
+          Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
+        </CUButton>
+      </div>
     </>
   )
 }

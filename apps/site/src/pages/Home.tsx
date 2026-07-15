@@ -22,7 +22,7 @@ const FEATURES = [
   {
     title: 'Live Design Surface',
     body: 'Console REPL · DOM auto-discover · URL share · Cross-tab sync · Export to CSS patch。 Designer + AI が rebuild 無しで token を編集。',
-    href: '/playground',
+    href: '/lab/editor',
     cta: 'Playground →',
   },
   {
@@ -49,9 +49,9 @@ export default function Home() {
             Tokens, components, and a live design surface — for the Creo ecosystem.
           </h1>
           <p class="docs-hero-lead">
-            creo-ui は <strong>Web · Apple · Rust</strong> の 3 platform を 1 つの DTCG token から
-            生成する design system。 Editor Mode protocol で designer と AI agent が同じ surface
-            上で token を編集する。
+            creo-ui は <strong>Web · Apple · Rust</strong> の 3 つのプラットフォームを 1 つの DTCG
+            token から生成するデザインシステムです。 Editor Mode protocol によって、デザイナーと AI
+            エージェントが同じ surface 上で token を編集できます。
           </p>
           <div class="docs-hero-cta">
             <A class="creo-btn" data-variant="primary" href="/getting-started">
@@ -60,7 +60,7 @@ export default function Home() {
             <A class="creo-btn" data-variant="ghost" href="/components">
               Browse components
             </A>
-            <A class="creo-btn" data-variant="ghost" href="/playground">
+            <A class="creo-btn" data-variant="ghost" href="/lab/editor">
               Try the playground
             </A>
           </div>

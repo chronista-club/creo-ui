@@ -38,6 +38,8 @@ export interface EditorField<T = any> {
   label: string
   type: EditorFieldType
   semantic: EditorSemantic
+  /** 編集の射程 (D-13 3-scope)。省略時は 'instance' 扱い (app 宣言 field) */
+  scope?: EditorScope
   /** 同 semantic 内でのグループ分け */
   group?: string
   initial: T
@@ -66,6 +68,16 @@ export interface SelectionInfo {
 // ---------- Mode ----------
 
 export type EditorMode = 'on' | 'off'
+
+// ---------- Scope (D-13 / 3-scope model) ----------
+
+/**
+ * 編集の射程。panel はこれを構造として表示する (2026-07-12 設計議論で確定):
+ * - 'token':     design system 全体 (:root の --spacing-* 等) — autoDiscover (F2)
+ * - 'component': 当該 component の全 instance (:root の --_badge-* 等) — tweak var (F2b)
+ * - 'instance':  選択中 / app 宣言の 1 要素分 (signal 等) — 手動 bind (default)
+ */
+export type EditorScope = 'token' | 'component' | 'instance'
 
 // ---------- Host configuration ----------
 
@@ -98,7 +110,9 @@ export interface EditorHostConfig {
 
   /**
    * window に console REPL API (creoEditor) を expose する。
-   * default: `import.meta.env.DEV` (Vite 環境で dev 時 true、 production build 時 false)。
+   * default: localhost 判定 (hostname が localhost / 127.0.0.1 / [::1] なら true)。
+   * library build では `import.meta.env.DEV` が build 時に固定化され consumer の
+   * dev/prod を反映できないため、runtime の hostname heuristic で dev を近似する。
    * EH-6 (CLAUDE.md): production で expose したい場合は明示的に `true` を、
    * dev でも expose したくない場合は `false` を渡す。
    */
@@ -119,6 +133,14 @@ export interface EditorHostConfig {
     key?: string
     onlyChanged?: boolean
   }
+
+  /**
+   * mount 時に CSSOM を scan して private tweak var (`--_component-knob`) を
+   * 自動 bind する (F2b)。component CSS 側の規約
+   * `var(--_badge-pad-x, <SSOT fallback>)` だけで panel にノブが生える。
+   * default: false。
+   */
+  discoverTweaks?: boolean
 
   /**
    * BroadcastChannel で複数 tab 間の values を同期する。
@@ -161,6 +183,10 @@ export interface EditorHost {
   enable(): void
   disable(): void
   toggle(): void
+
+  /** localStorage 永続化の key prefix (config.localStorageNamespace 由来)。
+   *  Layer 側の UI state (panel 位置等) も同 namespace 配下に保存する。 */
+  readonly namespace: string
 
   // --- Field registration ---
   /**

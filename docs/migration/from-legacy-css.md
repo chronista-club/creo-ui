@@ -139,7 +139,4 @@ A. できる。`@chronista-club/creo-ui-editor-host` は `creo-ui` の token に
 
 ## 関連
 
-- [CREO-103](https://linear.app/chronista/issue/CREO-103) Creo Memories migration Epic
-- [CREO-84](https://linear.app/chronista/issue/CREO-84) creo-ui Design System Epic
-- [CREO-87 / CREO-88](https://linear.app/chronista/issue/CREO-87) component spec + impl
 - [docs/components/README.md](../components/README.md) — MVP component index

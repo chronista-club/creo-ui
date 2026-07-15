@@ -47,6 +47,8 @@ export interface DiscoveredVar {
   kind: 'color' | 'number' | 'unknown'
   numericValue?: number
   unit?: string
+  /** tweak var (F2b) の使用 rule の selector 群 — DOM presence 判定に使う */
+  selectors?: string[]
 }
 
 /** :root の computed style から prefix match の CSS var を列挙 */
@@ -140,9 +142,10 @@ export function autoDiscover(
     if (d.kind === 'color') {
       const b = run(() =>
         bind<string>({
+          host,
           target: cssVarTarget(d.id, d.cssVar, d.value),
           control: color({ variant: 'picker' }),
-          placement: { label, semantic, order, role: 'dev' },
+          placement: { label, semantic, order, role: 'dev', scope: 'token' },
         }),
       )
       if (b) binders.push(b)
@@ -153,9 +156,10 @@ export function autoDiscover(
       const range = heuristicRange(d.numericValue)
       const b = run(() =>
         bind<number>({
+          host,
           target: cssVarNumberTarget(d.id, d.cssVar, d.numericValue as number, d.unit || 'px'),
           control: number({ ...range, unit: d.unit || 'px', variant: 'slider' }),
-          placement: { label, semantic, order, role: 'dev' },
+          placement: { label, semantic, order, role: 'dev', scope: 'token' },
         }),
       )
       if (b) binders.push(b)
@@ -168,4 +172,265 @@ export function autoDiscover(
   return binders
 }
 
-export const __test__ = { scanCssVars, inferType, cssVarToId, heuristicRange }
+// ---------- F2b: private tweak var auto-discover (--_component-knob) ----------
+//
+// component CSS の private tweak var 規約 (creo-ui 側はこの規約 1 個のみ):
+//
+//   .creo-badge {
+//     padding: var(--_badge-pad-y, 2px) var(--_badge-pad-x, var(--spacing-s));
+//   }
+//
+// `--_<component>-<knob>` + fallback (= SSOT 値) で書かれた **使用箇所** を
+// CSSOM (document.styleSheets) から発見し、fallback を解決した値を初期値として
+// 自動 bind する。manifest / per-page bind は不要。書き込み先は :root なので
+// 「その component 全 instance」に効く (= component-type scope)。
+
+const TWEAK_PREFIX = '--_'
+
+export interface TweakVarRef {
+  cssVar: string // '--_badge-pad-x'
+  fallback: string // 'var(--spacing-s)' / '2px'
+}
+
+export interface TweakDiscoverOptions {
+  /** tweak var の prefix (default: '--_') */
+  prefix?: string
+  /** 配置 (default: 'tool') */
+  semantic?: EditorSemantic
+  /** 既に register 済みの id は skip (default: true) */
+  skipExisting?: boolean
+  /** field.order の start (default: 500、token autoDiscover の 1000 より前) */
+  placementOrderStart?: number
+  /**
+   * 使用 rule の selector が現 DOM に居る component のノブだけ bind する
+   * (default: true)。stylesheet は bundle 全体なので、これが無いと画面に
+   * 存在しない component のノブまで panel に並ぶ。
+   */
+  requirePresence?: boolean
+}
+
+/** cssText 中の `var(--_x, fallback)` を括弧バランスで抽出 (pure、nested var 対応) */
+export function parseTweakVarRefs(cssText: string, prefix = TWEAK_PREFIX): TweakVarRef[] {
+  const refs: TweakVarRef[] = []
+  let from = 0
+  while (true) {
+    const start = cssText.indexOf('var(', from)
+    if (start === -1) break
+    let depth = 1
+    let comma = -1
+    let j = start + 4
+    while (j < cssText.length && depth > 0) {
+      const ch = cssText[j]
+      if (ch === '(') depth++
+      else if (ch === ')') depth--
+      else if (ch === ',' && depth === 1 && comma === -1) comma = j
+      j++
+    }
+    const end = j - 1 // 対応する ')'
+    const name = cssText.slice(start + 4, comma === -1 ? end : comma).trim()
+    const fallback = comma === -1 ? '' : cssText.slice(comma + 1, end).trim()
+    if (name.startsWith(prefix) && fallback) refs.push({ cssVar: name, fallback })
+    from = start + 4 // fallback 内の nested var() も走査する
+  }
+  return refs
+}
+
+/** fallback を computed 値まで解決 ('var(--spacing-s)' → '8px')。解決不能なら '' */
+function resolveFallback(fallback: string, depth = 0): string {
+  const fb = fallback.trim()
+  if (!fb.startsWith('var(')) return fb
+  if (depth > 4 || typeof getComputedStyle === 'undefined') return ''
+  // var(--name[, inner]) を分解
+  let parenDepth = 1
+  let comma = -1
+  let j = 4
+  while (j < fb.length && parenDepth > 0) {
+    const ch = fb[j]
+    if (ch === '(') parenDepth++
+    else if (ch === ')') parenDepth--
+    else if (ch === ',' && parenDepth === 1 && comma === -1) comma = j
+    j++
+  }
+  const end = j - 1
+  const name = fb.slice(4, comma === -1 ? end : comma).trim()
+  const inner = comma === -1 ? '' : fb.slice(comma + 1, end).trim()
+  const computed = getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+  if (computed) return computed
+  return inner ? resolveFallback(inner, depth + 1) : ''
+}
+
+/** '--_badge-pad-x' → 'badge.pad.x' */
+function tweakVarToId(cssVar: string, prefix = TWEAK_PREFIX): string {
+  return cssVar.slice(prefix.length).replace(/-/g, '.')
+}
+
+/** '--_badge-pad-x' → { group: 'badge', label: 'Pad X' } */
+function tweakPlacement(cssVar: string, prefix = TWEAK_PREFIX): { group: string; label: string } {
+  const segments = cssVar.slice(prefix.length).split('-')
+  const group = segments[0] ?? 'tweak'
+  const rest = segments.slice(1)
+  const label = (rest.length > 0 ? rest : segments)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
+  return { group, label }
+}
+
+interface TweakSeenEntry {
+  fallback: string
+  selectors: Set<string>
+}
+
+/** slider ノブとして意味を成す px の上限。radius.full = 9999px のような
+    「実質 infinity」の sentinel はノブ化しても操作不能なので除外する */
+const TWEAK_SLIDER_MAX_PX = 512
+
+/** sentinel 値 (px で TWEAK_SLIDER_MAX_PX 超) を slider ノブから除外する判定 */
+function isSliderFriendly(numericValue: number, unit: string): boolean {
+  if (unit === 'px' && Math.abs(numericValue) > TWEAK_SLIDER_MAX_PX) return false
+  return true
+}
+
+function collectTweakRefs(
+  rules: CSSRuleList,
+  prefix: string,
+  seen: Map<string, TweakSeenEntry>,
+): void {
+  for (const rule of Array.from(rules)) {
+    // media / supports / layer / CSS nesting は再帰
+    const nested = (rule as { cssRules?: CSSRuleList }).cssRules
+    if (nested && nested.length > 0) collectTweakRefs(nested, prefix, seen)
+    const cssText = rule.cssText
+    if (!cssText || !cssText.includes(`var(${prefix}`)) continue
+    const selector = (rule as { selectorText?: string }).selectorText
+    for (const ref of parseTweakVarRefs(cssText, prefix)) {
+      const entry = seen.get(ref.cssVar)
+      if (entry) {
+        if (selector) entry.selectors.add(selector)
+      } else {
+        // 最初に見つかった fallback を SSOT とみなす (使用箇所 = 宣言)
+        seen.set(ref.cssVar, {
+          fallback: ref.fallback,
+          selectors: new Set(selector ? [selector] : []),
+        })
+      }
+    }
+  }
+}
+
+/** document.styleSheets から tweak var を列挙 (fallback 解決 + type 推論込み) */
+export function scanTweakVars(prefix = TWEAK_PREFIX): DiscoveredVar[] {
+  if (typeof document === 'undefined' || typeof getComputedStyle === 'undefined') return []
+  const seen = new Map<string, TweakSeenEntry>()
+  for (const sheet of Array.from(document.styleSheets)) {
+    let rules: CSSRuleList
+    try {
+      rules = sheet.cssRules
+    } catch {
+      continue // cross-origin stylesheet は読めない
+    }
+    collectTweakRefs(rules, prefix, seen)
+  }
+  const discovered: DiscoveredVar[] = []
+  for (const [cssVar, entry] of seen) {
+    const resolved = resolveFallback(entry.fallback)
+    if (!resolved) continue
+    const info = inferType(cssVar, resolved)
+    discovered.push({
+      ...info,
+      id: tweakVarToId(cssVar, prefix),
+      selectors: Array.from(entry.selectors),
+    })
+  }
+  return discovered
+}
+
+/** selector のどれかが現 DOM に存在するか (不正 selector は fail-open) */
+function anySelectorPresent(selectors: readonly string[]): boolean {
+  if (typeof document === 'undefined') return true
+  for (const sel of selectors) {
+    try {
+      if (document.querySelector(sel)) return true
+    } catch {
+      return true
+    }
+  }
+  return false
+}
+
+/**
+ * CSSOM の tweak var (`--_component-knob`) を scan して自動 bind する。
+ * group = component 名で panel に固まって表示される。
+ */
+export function autoDiscoverTweaks(
+  host: EditorHost,
+  owner: Owner | null,
+  opts: TweakDiscoverOptions = {},
+): Binder[] {
+  const prefix = opts.prefix ?? TWEAK_PREFIX
+  const semantic = opts.semantic ?? 'tool'
+  const skipExisting = opts.skipExisting ?? true
+  const orderStart = opts.placementOrderStart ?? 500
+  const requirePresence = opts.requirePresence ?? true
+
+  // presence filter: 画面に居ない component のノブは panel に出さない
+  const discovered = scanTweakVars(prefix).filter(
+    (d) =>
+      !requirePresence ||
+      !d.selectors ||
+      d.selectors.length === 0 ||
+      anySelectorPresent(d.selectors),
+  )
+  const binders: Binder[] = []
+
+  const run = <R>(fn: () => R): R | undefined =>
+    owner ? (runWithOwner(owner, fn) as R | undefined) : fn()
+
+  discovered.forEach((d, index) => {
+    if (skipExisting && host.getField(d.id)) return
+
+    const { group, label } = tweakPlacement(d.cssVar, prefix)
+    const order = orderStart + index
+
+    if (d.kind === 'color') {
+      const b = run(() =>
+        bind<string>({
+          host,
+          target: cssVarTarget(d.id, d.cssVar, d.value),
+          control: color({ variant: 'picker' }),
+          placement: { label, group, semantic, order, role: 'dev', scope: 'component' },
+        }),
+      )
+      if (b) binders.push(b)
+      return
+    }
+
+    if (d.kind === 'number' && d.numericValue !== undefined) {
+      // radius.full (9999px) 等の sentinel 値は slider として意味を成さないので除外
+      if (!isSliderFriendly(d.numericValue, d.unit || 'px')) return
+      const range = heuristicRange(d.numericValue)
+      const b = run(() =>
+        bind<number>({
+          host,
+          target: cssVarNumberTarget(d.id, d.cssVar, d.numericValue as number, d.unit || 'px'),
+          control: number({ ...range, unit: d.unit || 'px', variant: 'slider' }),
+          placement: { label, group, semantic, order, role: 'dev', scope: 'component' },
+        }),
+      )
+      if (b) binders.push(b)
+    }
+  })
+
+  return binders
+}
+
+export const __test__ = {
+  scanCssVars,
+  inferType,
+  cssVarToId,
+  heuristicRange,
+  parseTweakVarRefs,
+  resolveFallback,
+  tweakVarToId,
+  tweakPlacement,
+  isSliderFriendly,
+}

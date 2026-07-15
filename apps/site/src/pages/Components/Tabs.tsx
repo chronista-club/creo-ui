@@ -4,9 +4,11 @@ import {
   bind,
   select,
   signalTarget,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -47,7 +49,11 @@ const TOKENS = [
 
 export default function Tabs() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.tabs-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Tabs</h1>
@@ -62,7 +68,15 @@ export default function Tabs() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground tabs の variant / size / selected tab
+          を即時編集できる。 Mode ON 中に playground tabs を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <TabsLivePreview />
           <div class="docs-preview-row-label">Default (underline)</div>
           <div class="creo-tabs">
             <div class="creo-tabs-list" role="tablist">
@@ -236,24 +250,6 @@ export default function Tabs() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> で variant / size / selected tab を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.tabs-editor',
-            }}
-          >
-            <TabsEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<div class="creo-tabs">
@@ -280,7 +276,9 @@ export default function Tabs() {
 </div>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
@@ -288,64 +286,73 @@ type TabsVariant = 'default' | 'pill'
 type TabsSize = 's' | 'm' | 'l'
 type TabsSelected = 'tab1' | 'tab2' | 'tab3'
 
-function TabsEditorDemo() {
+function TabsLivePreview() {
   const [variant, setVariant] = createSignal<TabsVariant>('default')
   const [size, setSize] = createSignal<TabsSize>('m')
   const [selected, setSelected] = createSignal<TabsSelected>('tab1')
 
-  bind({
-    target: signalTarget('tabs.variant', variant, (v) => setVariant(v as TabsVariant)),
-    control: select(['default', 'pill'] as const),
-    placement: { semantic: 'tool', group: 'tabs', label: 'Variant', order: 1 },
-  })
-  bind({
-    target: signalTarget('tabs.size', size, (v) => setSize(v as TabsSize)),
-    control: select(['s', 'm', 'l'] as const),
-    placement: { semantic: 'tool', group: 'tabs', label: 'Size', order: 2 },
-  })
-  bind({
-    target: signalTarget('tabs.selected', selected, (v) => setSelected(v as TabsSelected)),
-    control: select(['tab1', 'tab2', 'tab3'] as const),
-    placement: { semantic: 'tool', group: 'tabs', label: 'Selected', order: 3 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('tabs.variant', variant, (v) => setVariant(v as TabsVariant)),
+      control: select(['default', 'pill'] as const),
+      placement: { semantic: 'tool', group: 'tabs', label: 'Variant', order: 1 },
+    }),
+    bind({
+      target: signalTarget('tabs.size', size, (v) => setSize(v as TabsSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'tabs', label: 'Size', order: 2 },
+    }),
+    bind({
+      target: signalTarget('tabs.selected', selected, (v) => setSelected(v as TabsSelected)),
+      control: select(['tab1', 'tab2', 'tab3'] as const),
+      placement: { semantic: 'tool', group: 'tabs', label: 'Selected', order: 3 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'tabs-live-preview' })
 
   return (
-    <div class="docs-playground-stage">
-      <div
-        class="creo-tabs"
-        data-variant={variant() === 'default' ? undefined : variant()}
-        data-size={size() === 'm' ? undefined : size()}
-      >
-        <div class="creo-tabs-list" role="tablist">
-          <button
-            type="button"
-            class="creo-tabs-tab"
-            role="tab"
-            aria-selected={selected() === 'tab1' ? 'true' : 'false'}
-            onClick={() => setSelected('tab1')}
-          >
-            Overview
-          </button>
-          <button
-            type="button"
-            class="creo-tabs-tab"
-            role="tab"
-            aria-selected={selected() === 'tab2' ? 'true' : 'false'}
-            onClick={() => setSelected('tab2')}
-          >
-            Foundations
-          </button>
-          <button
-            type="button"
-            class="creo-tabs-tab"
-            role="tab"
-            aria-selected={selected() === 'tab3' ? 'true' : 'false'}
-            onClick={() => setSelected('tab3')}
-          >
-            Components
-          </button>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div
+          ref={selectable}
+          class="creo-tabs"
+          data-variant={variant() === 'default' ? undefined : variant()}
+          data-size={size() === 'm' ? undefined : size()}
+        >
+          <div class="creo-tabs-list" role="tablist">
+            <button
+              type="button"
+              class="creo-tabs-tab"
+              role="tab"
+              aria-selected={selected() === 'tab1' ? 'true' : 'false'}
+              onClick={() => setSelected('tab1')}
+            >
+              Overview
+            </button>
+            <button
+              type="button"
+              class="creo-tabs-tab"
+              role="tab"
+              aria-selected={selected() === 'tab2' ? 'true' : 'false'}
+              onClick={() => setSelected('tab2')}
+            >
+              Foundations
+            </button>
+            <button
+              type="button"
+              class="creo-tabs-tab"
+              role="tab"
+              aria-selected={selected() === 'tab3' ? 'true' : 'false'}
+              onClick={() => setSelected('tab3')}
+            >
+              Components
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+      <EditorModeToggle />
+    </>
   )
 }

@@ -1,4 +1,4 @@
-import { Route, Router } from '@solidjs/router'
+import { Navigate, Route, Router } from '@solidjs/router'
 import { lazy } from 'solid-js'
 import Layout from './layout/Layout'
 
@@ -68,7 +68,9 @@ const Icons = lazy(() => import('./pages/Resources/Icons'))
 const Content = lazy(() => import('./pages/Resources/Content'))
 
 // Lab + Overview
-const Playground = lazy(() => import('./pages/Lab/Playground'))
+const EditorLab = lazy(() => import('./pages/Lab/EditorLab'))
+const FrameLab = lazy(() => import('./pages/Lab/FrameLab'))
+const VisionLab = lazy(() => import('./pages/Lab/VisionLab'))
 const GettingStarted = lazy(() => import('./pages/GettingStarted'))
 
 export default function App() {
@@ -134,7 +136,11 @@ export default function App() {
       <Route path="/components/divider" component={Divider} />
       <Route path="/icons" component={Icons} />
       <Route path="/content" component={Content} />
-      <Route path="/playground" component={Playground} />
+      <Route path="/lab/editor" component={EditorLab} />
+      <Route path="/lab/frame" component={FrameLab} />
+      <Route path="/lab/vision" component={VisionLab} />
+      {/* 旧 /playground は Editor lab へ redirect (既存リンク保護) */}
+      <Route path="/playground" component={() => <Navigate href="/lab/editor" />} />
       <Route path="*" component={Stub} />
     </Router>
   )

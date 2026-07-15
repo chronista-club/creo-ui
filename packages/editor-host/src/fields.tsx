@@ -4,8 +4,16 @@
  * RIGHT region (panel) 向けは縦並び (`<FieldEditor>`)、TOP region (inline)
  * 向けは横並びコンパクト (`<FieldEditorInline>`) の 2 variants を提供。
  */
-import { For } from 'solid-js'
+import { For, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
+import {
+  OKLCH_C_MAX,
+  type Oklch,
+  type OklchChannel,
+  formatOklch,
+  oklchTrackGradient,
+  parseOklch,
+} from './oklch'
 import { useEditorHost } from './provider'
 import type { EditorField } from './types'
 
@@ -90,7 +98,22 @@ function NumberEditor(props: {
   )
 }
 
+/**
+ * color field の dispatcher: OKLCH literal は OKLCH editor (L/C/H/A slider)、
+ * それ以外 (hex 等) は native color input に fallback。
+ */
 function ColorEditor(props: {
+  value: string
+  onChange: (v: string) => void
+}): JSX.Element {
+  return (
+    <Show when={parseOklch(props.value)} fallback={<HexColorEditor {...props} />}>
+      {(parsed) => <OklchEditor parsed={parsed()} raw={props.value} onChange={props.onChange} />}
+    </Show>
+  )
+}
+
+function HexColorEditor(props: {
   value: string
   onChange: (v: string) => void
 }): JSX.Element {
@@ -120,6 +143,140 @@ function ColorEditor(props: {
       >
         {props.value}
       </span>
+    </div>
+  )
+}
+
+// ---------- OKLCH editor (Phase M6) ----------
+
+/* input[type=range] の thumb は pseudo-element でしか style できないため、
+   inline style ではなく 1 回だけ <style> を注入する */
+const OKLCH_STYLE_ID = 'creo-eh-oklch-style'
+const OKLCH_SLIDER_CSS = `
+.creo-eh-oklch-range {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--editor-mode-region-border, rgba(128,128,128,0.4));
+  margin: 0;
+  cursor: pointer;
+}
+.creo-eh-oklch-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.55);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.creo-eh-oklch-range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgba(0, 0, 0, 0.55);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.creo-eh-oklch-range:focus-visible {
+  outline: 2px solid var(--editor-mode-axis-future, #7cc);
+  outline-offset: 2px;
+}
+`
+
+function ensureOklchStyle(): void {
+  if (typeof document === 'undefined') return
+  if (document.getElementById(OKLCH_STYLE_ID)) return
+  const style = document.createElement('style')
+  style.id = OKLCH_STYLE_ID
+  style.textContent = OKLCH_SLIDER_CSS
+  document.head.appendChild(style)
+}
+
+/** alpha track の下に敷く市松模様 (transparent の視認用) */
+const CHECKER_BG =
+  'repeating-conic-gradient(rgba(128,128,128,0.5) 0% 25%, rgba(220,220,220,0.5) 0% 50%) 0 0 / 8px 8px'
+
+const oklchChannelLabelStyle: JSX.CSSProperties = {
+  width: '12px',
+  'flex-shrink': '0',
+  'font-size': '10px',
+  'font-weight': '700',
+  color: 'var(--editor-mode-panel-field-label)',
+}
+
+const oklchValueStyle: JSX.CSSProperties = {
+  ...monoValueStyle,
+  'min-width': '44px',
+  'font-size': '10px',
+}
+
+const CHANNELS: {
+  key: OklchChannel
+  label: string
+  min: number
+  max: number
+  step: number
+  display: (o: Oklch) => string
+}[] = [
+  { key: 'l', label: 'L', min: 0, max: 1, step: 0.005, display: (o) => o.l.toFixed(3) },
+  { key: 'c', label: 'C', min: 0, max: OKLCH_C_MAX, step: 0.002, display: (o) => o.c.toFixed(3) },
+  { key: 'h', label: 'H', min: 0, max: 360, step: 1, display: (o) => `${Math.round(o.h)}°` },
+  { key: 'a', label: 'A', min: 0, max: 1, step: 0.01, display: (o) => o.a.toFixed(2) },
+]
+
+function OklchEditor(props: {
+  parsed: Oklch
+  raw: string
+  onChange: (v: string) => void
+}): JSX.Element {
+  ensureOklchStyle()
+  const update = (channel: OklchChannel, value: number): void =>
+    props.onChange(formatOklch({ ...props.parsed, [channel]: value }))
+
+  return (
+    <div style={{ display: 'flex', 'flex-direction': 'column', gap: '5px' }}>
+      {/* swatch + raw 値 */}
+      <div style={rowStyle}>
+        <span
+          style={{
+            width: '24px',
+            height: '18px',
+            'border-radius': '4px',
+            border: '1px solid var(--editor-mode-region-border)',
+            background: `linear-gradient(${props.raw}, ${props.raw}), ${CHECKER_BG}`,
+            'flex-shrink': '0',
+          }}
+        />
+        <span style={{ ...monoValueStyle, 'min-width': 'auto', flex: '1', 'text-align': 'left' }}>
+          {props.raw}
+        </span>
+      </div>
+      <For each={CHANNELS}>
+        {(ch) => (
+          <div style={rowStyle}>
+            <span style={oklchChannelLabelStyle}>{ch.label}</span>
+            <input
+              type="range"
+              class="creo-eh-oklch-range"
+              min={ch.min}
+              max={ch.max}
+              step={ch.step}
+              value={props.parsed[ch.key]}
+              onInput={(e) => update(ch.key, Number(e.currentTarget.value))}
+              style={{
+                background:
+                  ch.key === 'a'
+                    ? `${oklchTrackGradient('a', props.parsed)}, ${CHECKER_BG}`
+                    : oklchTrackGradient(ch.key, props.parsed),
+              }}
+            />
+            <span style={oklchValueStyle}>{ch.display(props.parsed)}</span>
+          </div>
+        )}
+      </For>
     </div>
   )
 }

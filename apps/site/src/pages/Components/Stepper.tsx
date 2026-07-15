@@ -4,9 +4,11 @@ import {
   bind,
   select,
   signalTarget,
+  useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
 
 const PROPS = [
   {
@@ -36,7 +38,11 @@ const TOKENS = [
 
 export default function Stepper() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.stepper-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Stepper</h1>
@@ -50,7 +56,15 @@ export default function Stepper() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground stepper の orientation / current step
+          を即時編集できる。 Mode ON 中に playground stepper を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <StepperLivePreview />
           <div class="docs-preview-row-label">Horizontal (default)</div>
           <ol class="creo-stepper">
             <li class="creo-stepper-item" data-state="completed">
@@ -174,24 +188,6 @@ export default function Stepper() {
       </section>
 
       <section>
-        <h2 class="docs-section-title">Live editor (Editor Mode)</h2>
-        <p class="docs-page-helper">
-          <kbd>Ctrl+Shift+E</kbd> で orientation / current step を即時編集 (
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> dogfood)。
-        </p>
-        <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.stepper-editor',
-            }}
-          >
-            <StepperEditorDemo />
-            <EditorLayer />
-          </EditorHostProvider>
-        </div>
-      </section>
-
-      <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<ol class="creo-stepper">
@@ -222,29 +218,40 @@ export default function Stepper() {
 </ol>`}</code>
         </pre>
       </section>
-    </>
+
+      <EditorLayer />
+    </EditorHostProvider>
   )
 }
 
 type StepperOrientation = 'horizontal' | 'vertical'
 type StepperCurrent = '1' | '2' | '3' | '4'
 
-function StepperEditorDemo() {
+/**
+ * Live preview の playground。editor-host の bind() で orientation / current step を
+ * inspector panel に生やし、stage の stepper 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function StepperLivePreview() {
   const [orientation, setOrientation] = createSignal<StepperOrientation>('horizontal')
   const [current, setCurrent] = createSignal<StepperCurrent>('2')
 
-  bind({
-    target: signalTarget('stepper.orientation', orientation, (v) =>
-      setOrientation(v as StepperOrientation),
-    ),
-    control: select(['horizontal', 'vertical'] as const),
-    placement: { semantic: 'tool', group: 'stepper', label: 'Orientation', order: 1 },
-  })
-  bind({
-    target: signalTarget('stepper.current', current, (v) => setCurrent(v as StepperCurrent)),
-    control: select(['1', '2', '3', '4'] as const),
-    placement: { semantic: 'tool', group: 'stepper', label: 'Current step', order: 2 },
-  })
+  const binders = [
+    bind({
+      target: signalTarget('stepper.orientation', orientation, (v) =>
+        setOrientation(v as StepperOrientation),
+      ),
+      control: select(['horizontal', 'vertical'] as const),
+      placement: { semantic: 'tool', group: 'stepper', label: 'Orientation', order: 1 },
+    }),
+    bind({
+      target: signalTarget('stepper.current', current, (v) => setCurrent(v as StepperCurrent)),
+      control: select(['1', '2', '3', '4'] as const),
+      placement: { semantic: 'tool', group: 'stepper', label: 'Current step', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'stepper-live-preview' })
 
   const stateOf = (n: number): 'completed' | 'current' | 'pending' => {
     const c = Number(current())
@@ -258,44 +265,49 @@ function StepperEditorDemo() {
   }
 
   return (
-    <div class="docs-playground-stage">
-      <ol
-        class="creo-stepper"
-        data-orientation={orientation() === 'horizontal' ? undefined : orientation()}
-      >
-        <li class="creo-stepper-item" data-state={stateOf(1)}>
-          <span class="creo-stepper-marker" aria-hidden="true">
-            {markerOf(1)}
-          </span>
-          <div>
-            <div class="creo-stepper-label">Account</div>
-          </div>
-        </li>
-        <li class="creo-stepper-item" data-state={stateOf(2)}>
-          <span class="creo-stepper-marker" aria-hidden="true">
-            {markerOf(2)}
-          </span>
-          <div>
-            <div class="creo-stepper-label">Profile</div>
-          </div>
-        </li>
-        <li class="creo-stepper-item" data-state={stateOf(3)}>
-          <span class="creo-stepper-marker" aria-hidden="true">
-            {markerOf(3)}
-          </span>
-          <div>
-            <div class="creo-stepper-label">Payment</div>
-          </div>
-        </li>
-        <li class="creo-stepper-item" data-state={stateOf(4)}>
-          <span class="creo-stepper-marker" aria-hidden="true">
-            {markerOf(4)}
-          </span>
-          <div>
-            <div class="creo-stepper-label">Confirm</div>
-          </div>
-        </li>
-      </ol>
-    </div>
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <ol
+          ref={selectable}
+          class="creo-stepper"
+          data-orientation={orientation() === 'horizontal' ? undefined : orientation()}
+        >
+          <li class="creo-stepper-item" data-state={stateOf(1)}>
+            <span class="creo-stepper-marker" aria-hidden="true">
+              {markerOf(1)}
+            </span>
+            <div>
+              <div class="creo-stepper-label">Account</div>
+            </div>
+          </li>
+          <li class="creo-stepper-item" data-state={stateOf(2)}>
+            <span class="creo-stepper-marker" aria-hidden="true">
+              {markerOf(2)}
+            </span>
+            <div>
+              <div class="creo-stepper-label">Profile</div>
+            </div>
+          </li>
+          <li class="creo-stepper-item" data-state={stateOf(3)}>
+            <span class="creo-stepper-marker" aria-hidden="true">
+              {markerOf(3)}
+            </span>
+            <div>
+              <div class="creo-stepper-label">Payment</div>
+            </div>
+          </li>
+          <li class="creo-stepper-item" data-state={stateOf(4)}>
+            <span class="creo-stepper-marker" aria-hidden="true">
+              {markerOf(4)}
+            </span>
+            <div>
+              <div class="creo-stepper-label">Confirm</div>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <EditorModeToggle />
+    </>
   )
 }

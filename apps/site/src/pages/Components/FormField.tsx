@@ -1,3 +1,16 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  signalTarget,
+  string,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { A } from '@solidjs/router'
+import { Show, createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
+
 const PROPS = [
   {
     attr: 'label markup',
@@ -30,7 +43,11 @@ const TOKENS = [
 
 export default function FormField() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.form-field-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Form field</h1>
@@ -43,7 +60,15 @@ export default function FormField() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground form field の required / error state / label /
+          helper text を即時編集できる。 Mode ON 中に playground を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <FormFieldLivePreview />
           <div class="docs-preview-row-label">Default</div>
           <div class="creo-form-field">
             <label class="creo-form-field-label" for="email-1">
@@ -157,6 +182,78 @@ export default function FormField() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+/**
+ * Live preview の playground。editor-host の bind() で required / error state / label /
+ * helper text を inspector panel に生やし、stage の form field 自体を selectable にする
+ * (Mode ON で click → その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function FormFieldLivePreview() {
+  const [required, setRequired] = createSignal(false)
+  const [error, setError] = createSignal(false)
+  const [label, setLabel] = createSignal('Email')
+  const [helper, setHelper] = createSignal('仕事用 email を入力してください')
+
+  const binders = [
+    bind({
+      target: signalTarget('form-field.required', required, setRequired),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'form-field', label: 'Required', order: 1 },
+    }),
+    bind({
+      target: signalTarget('form-field.error', error, setError),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'form-field', label: 'Error state', order: 2 },
+    }),
+    bind({
+      target: signalTarget('form-field.label', label, setLabel),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Label', order: 1 },
+    }),
+    bind({
+      target: signalTarget('form-field.helper', helper, setHelper),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Helper text', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'form-field-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        <div ref={selectable} class="creo-form-field" style={{ 'min-width': '280px' }}>
+          <label class="creo-form-field-label" for="form-field-playground">
+            {label()}{' '}
+            <Show when={required()}>
+              <span class="creo-form-field-required">*</span>
+            </Show>
+          </label>
+          <input
+            class="creo-input"
+            id="form-field-playground"
+            type="email"
+            placeholder="you@example.com"
+            required={required()}
+            data-state={error() ? 'error' : undefined}
+            aria-invalid={error() ? 'true' : undefined}
+            aria-describedby="form-field-playground-helper"
+          />
+          <p
+            classList={{ 'creo-helper-text': true, 'creo-helper-text--error': error() }}
+            id="form-field-playground-helper"
+          >
+            {helper()}
+          </p>
+        </div>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }

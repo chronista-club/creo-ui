@@ -12,8 +12,8 @@ import {
   createSignal,
   useContext,
 } from 'solid-js'
-import type { Frame } from './types'
-import { formatPerspective } from './utils'
+import type { Frame, Gaze } from './types'
+import { DEFAULT_GAZE, formatGaze, formatPerspective } from './utils'
 
 export interface FrameContextValue {
   /** 現在 active な Frame (signal accessor) */
@@ -22,8 +22,18 @@ export interface FrameContextValue {
   currentFrameId: Accessor<string>
   /** 全 frame map (id → Frame) */
   frames: Accessor<ReadonlyMap<string, Frame>>
-  /** Frame 切替 trigger (id が未登録なら no-op + warn) */
+  /** Frame 切替 trigger (id が未登録なら no-op + warn)。runtime gaze override は解除される */
   setFrame: (id: string) => void
+  /**
+   * 有効な gaze (視点 = perspective-origin)。runtime override > Frame.gaze > default の順で解決。
+   * (F-4)
+   */
+  gaze: Accessor<Gaze>
+  /**
+   * runtime で視点を上書き (user が水平線を動かす等)。`undefined` で override 解除 →
+   * Frame.gaze (無ければ中央) に戻る。
+   */
+  setGaze: (gaze: Gaze | undefined) => void
 }
 
 const FrameCtx = createContext<FrameContextValue>()
@@ -54,23 +64,38 @@ export function FrameProvider(props: FrameProviderProps): JSX.Element {
 
   const currentFrame = createMemo(() => framesMap().get(currentId()))
 
+  // runtime gaze override (null = override 無し → Frame.gaze / default を使う)
+  const [gazeOverride, setGazeOverride] = createSignal<Gaze | undefined>(undefined)
+
   const setFrame = (id: string): void => {
     if (!framesMap().has(id)) {
       // eslint-disable-next-line no-console
       console.warn(`[creo-ui-frame] setFrame: frame "${id}" not registered`)
       return
     }
+    // Frame 切替時は runtime override を解除 (新 Frame の宣言 gaze を尊重)
+    setGazeOverride(undefined)
     setCurrentId(id)
   }
+
+  const setGaze = (gaze: Gaze | undefined): void => {
+    setGazeOverride(gaze ? { ...gaze } : undefined)
+  }
+
+  // 有効 gaze: override > Frame.gaze > default
+  const gaze = createMemo<Gaze>(() => gazeOverride() ?? currentFrame()?.gaze ?? DEFAULT_GAZE)
 
   const ctx: FrameContextValue = {
     currentFrame,
     currentFrameId: currentId,
     frames: framesMap,
     setFrame,
+    gaze,
+    setGaze,
   }
 
   const perspective = createMemo(() => formatPerspective(currentFrame()?.perspective))
+  const perspectiveOrigin = createMemo(() => formatGaze(gaze()))
 
   return (
     <FrameCtx.Provider value={ctx}>
@@ -79,6 +104,7 @@ export function FrameProvider(props: FrameProviderProps): JSX.Element {
         data-frame={currentId()}
         style={{
           perspective: perspective(),
+          'perspective-origin': perspectiveOrigin(),
           'transform-style': 'preserve-3d',
           position: 'relative',
         }}

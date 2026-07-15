@@ -29,16 +29,12 @@ xs  /  s  /  m  /  l  /  xl
 ## Token 追加・変更 flow
 
 1. **SSOT は `tokens/**/*.json`** のみ。 platform 別 generated 出力 (`packages/web/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を直接編集してはいけない。
-2. **Issue は Linear** で起票:
-   - team: **Creo Memories**
-   - label: **`ui-design-system`** (creo-ui 専用)
-   - priority: **必ず設定** (None 不可、 Urgent / High / Medium / Low)
-   - assignee: **必ず指定** (default は self)
-3. branch naming は Linear 生成の `mako/{team-key}-XX-...`、 もしくは memory slug ベースの `mako/{slug}` 形式。
+2. **Issue は creo-memories** で管理: タスク・TODO として起票し、 PR と pair にする (GitHub Issues は無効化済)。
+3. branch naming は memory slug ベースの `mako/{slug}` 形式。
 4. `tokens/<category>/<file>.json` を編集。 DTCG 準拠を維持、 3 階層まで dot-notation。
 5. **`bun run build` で全 platform 出力を再生成**。 Swift / Rust の generated は **commit 対象** (consumer は generated 前提で build する)、 Web の `packages/web/dist/` は **gitignore** (npm publish workflow が再生成)。
 6. `bun run typecheck && bun run lint && bun test` を通す。
-7. PR description に Linear Issue URL + memory ID (creo-memories) を記載。
+7. PR description に memory ID (creo-memories) を記載。
 8. Breaking change (既存 token の rename / 削除) は **必ず** [`CHANGELOG.md`](../CHANGELOG.md) に migration 記載 + [`docs/migration/v0.X-to-v0.Y.md`](./migration/) を新設、 consumer 視点で migration steps を articulate する。
 9. dogfood (`apps/site/`) との drift が出た場合は同 PR で sync (5 tier 表記 / version literal / sample code 全部)。
 
@@ -171,12 +167,12 @@ Chrome の CSS parser は `:root { ... }` block 内 prop 数が **150+ で block
 
 | 種類 | 出し方 |
 |---|---|
-| **Bug** (`var(--...)` が解決しない / build が壊れる / type が不足) | Linear Creo Memories team / `ui-design-system:bug` label。 再現コード or v0.16/0.17 比較を含めて |
-| **API friction** (こう書きたいのに書けない、 token が足りない) | Linear `ui-design-system:friction` label。 use case / 期待 API / 現状の workaround を記載 |
-| **Migration question** (v0.14→v0.18 で何かハマる) | Linear `ui-design-system:migration` label、 もしくは [`docs/migration/v0.14-to-v0.18.md`](./migration/v0.14-to-v0.18.md) に PR で patch |
-| **Design opinion** (5 tier より N tier、 命名 alternative 等) | Linear `ui-design-system:design-debate` label。 trade-off を articulate、 council / second opinion ベースで議論 |
+| **Bug** (`var(--...)` が解決しない / build が壊れる / type が不足) | creo-memories に bug memory として記録。 再現コード or v0.16/0.17 比較を含めて |
+| **API friction** (こう書きたいのに書けない、 token が足りない) | creo-memories に friction memory として記録。 use case / 期待 API / 現状の workaround を記載 |
+| **Migration question** (v0.14→v0.18 で何かハマる) | creo-memories に記録、 もしくは [`docs/migration/v0.14-to-v0.18.md`](./migration/v0.14-to-v0.18.md) に PR で patch |
+| **Design opinion** (5 tier より N tier、 命名 alternative 等) | creo-memories に design-debate memory として記録。 trade-off を articulate、 council / second opinion ベースで議論 |
 
-> **GitHub Issues は無効化されています**。 PR / discussions は GitHub で OK、 issue tracking は Linear に集約。
+> **GitHub Issues は無効化されています**。 PR / discussions は GitHub で OK、 issue tracking は creo-memories に集約。
 
 ## PR review convention
 

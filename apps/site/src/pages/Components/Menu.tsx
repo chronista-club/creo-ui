@@ -1,3 +1,16 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  signalTarget,
+  string,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { A } from '@solidjs/router'
+import { Show, createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
+
 const PROPS = [
   {
     attr: 'popover',
@@ -32,7 +45,11 @@ const TOKENS = [
 
 export default function Menu() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.menu-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Menu (Dropdown)</h1>
@@ -46,7 +63,15 @@ export default function Menu() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground menu の section label / separator / destructive
+          item / item label を即時編集できる。 Mode ON 中に playground menu を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
+        </p>
         <div class="docs-component-preview">
+          <MenuLivePreview />
           <div class="docs-preview-row-label">Basic menu</div>
           <div class="docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="menu-basic">
@@ -164,6 +189,81 @@ export default function Menu() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+/**
+ * Live preview の playground。editor-host の bind() で section label / separator /
+ * destructive item / item label を inspector panel に生やし、stage の menu 自体を
+ * selectable にする (Mode ON で click → その instance に field が絞られる)。
+ * provider はページ root の 1 枚を共有。
+ */
+function MenuLivePreview() {
+  const [showLabels, setShowLabels] = createSignal(true)
+  const [separator, setSeparator] = createSignal(true)
+  const [destructive, setDestructive] = createSignal(true)
+  const [itemLabel, setItemLabel] = createSignal('Rename')
+
+  const binders = [
+    bind({
+      target: signalTarget('menu.showLabels', showLabels, setShowLabels),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'menu', label: 'Section labels', order: 1 },
+    }),
+    bind({
+      target: signalTarget('menu.separator', separator, setSeparator),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'menu', label: 'Separator', order: 2 },
+    }),
+    bind({
+      target: signalTarget('menu.destructive', destructive, setDestructive),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'menu', label: 'Destructive item', order: 3 },
+    }),
+    bind({
+      target: signalTarget('menu.itemLabel', itemLabel, setItemLabel),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'First item label', order: 1 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'menu-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        {/* popover を使わない inline 表示 (position fallback を打ち消して flow 配置) */}
+        <div class="creo-menu" style={{ position: 'static' }} ref={selectable}>
+          <Show when={showLabels()}>
+            <div class="creo-menu-label">Edit</div>
+          </Show>
+          <button type="button" class="creo-menu-item">
+            {itemLabel()}
+          </button>
+          <button type="button" class="creo-menu-item">
+            Duplicate
+          </button>
+          <button type="button" class="creo-menu-item">
+            Move to…
+          </button>
+          <Show when={separator()}>
+            <hr class="creo-menu-separator" />
+          </Show>
+          <Show when={destructive()}>
+            <Show when={showLabels()}>
+              <div class="creo-menu-label">Danger</div>
+            </Show>
+            <button type="button" class="creo-menu-item" data-variant="destructive">
+              Delete
+            </button>
+          </Show>
+        </div>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }

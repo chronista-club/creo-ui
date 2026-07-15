@@ -1,3 +1,17 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  boolean,
+  select,
+  signalTarget,
+  string,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { A } from '@solidjs/router'
+import { Show, createSignal } from 'solid-js'
+import EditorModeToggle from '../../ui/EditorModeToggle'
+
 const PROPS = [
   {
     attr: 'data-size',
@@ -31,7 +45,11 @@ const TOKENS = [
 
 export default function Popover() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.popover-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Popover</h1>
@@ -46,7 +64,15 @@ export default function Popover() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground popover の size / header / footer / title / body
+          を即時編集できる。 Mode ON 中に playground popover を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <PopoverLivePreview />
           <div class="docs-preview-row-label">Basic popover</div>
           <div class="docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" popovertarget="pop-basic">
@@ -191,6 +217,88 @@ export default function Popover() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type PopoverSize = 's' | 'm' | 'l'
+
+/**
+ * Live preview の playground。editor-host の bind() で size / header / footer / title /
+ * body を inspector panel に生やし、stage の popover 自体を selectable にする (Mode ON で
+ * click → その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function PopoverLivePreview() {
+  const [size, setSize] = createSignal<PopoverSize>('m')
+  const [header, setHeader] = createSignal(true)
+  const [footer, setFooter] = createSignal(true)
+  const [title, setTitle] = createSignal('Notification')
+  const [body, setBody] = createSignal('新しい version (v0.14.0) があります。 Update しますか？')
+
+  const binders = [
+    bind({
+      target: signalTarget('popover.size', size, (v) => setSize(v as PopoverSize)),
+      control: select(['s', 'm', 'l'] as const),
+      placement: { semantic: 'tool', group: 'popover', label: 'Size', order: 1 },
+    }),
+    bind({
+      target: signalTarget('popover.header', header, setHeader),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'popover', label: 'Header', order: 2 },
+    }),
+    bind({
+      target: signalTarget('popover.footer', footer, setFooter),
+      control: boolean({ variant: 'switch' }),
+      placement: { semantic: 'tool', group: 'popover', label: 'Footer', order: 3 },
+    }),
+    bind({
+      target: signalTarget('popover.title', title, setTitle),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Title', order: 1 },
+    }),
+    bind({
+      target: signalTarget('popover.body', body, setBody),
+      control: string('input'),
+      placement: { semantic: 'tool', group: 'content', label: 'Body text', order: 2 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'popover-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        {/* popover 属性を使わない inline 表示 (position fallback を打ち消して flow 配置) */}
+        <div
+          class="creo-popover"
+          data-size={size()}
+          style={{ position: 'static' }}
+          ref={selectable}
+        >
+          <Show when={header()}>
+            <div class="creo-popover-header">
+              <h3 class="creo-popover-title">{title()}</h3>
+            </div>
+          </Show>
+          <div class="creo-popover-body">
+            <p>{body()}</p>
+          </div>
+          <Show when={footer()}>
+            <div class="creo-popover-footer">
+              <button type="button" class="creo-btn" data-variant="secondary" data-size="s">
+                Later
+              </button>
+              <button type="button" class="creo-btn" data-variant="primary" data-size="s">
+                Update
+              </button>
+            </div>
+          </Show>
+        </div>
+      </div>
+      <EditorModeToggle />
     </>
   )
 }

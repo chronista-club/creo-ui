@@ -139,6 +139,5 @@ component ごとに s/m/l が何を参照するかは各 spec の Token referenc
 
 ## 関連
 
-- [CREO-84](https://linear.app/chronista/issue/CREO-84) Epic
-- [CREO-87](https://linear.app/chronista/issue/CREO-87) Phase 2 spec
-- [CREO-88](https://linear.app/chronista/issue/CREO-88) Phase 3 Web impl
+- [docs index](../README.md)
+- repo root [README.md](../../README.md) (Phase Roadmap)

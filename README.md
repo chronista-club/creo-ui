@@ -1,8 +1,8 @@
 # creo-ui
 
-> Creo ecosystem のための Design System。単一の W3C Design Tokens (DTCG) から Web / Apple / Rust を横断する Visual Identity を配布する。
+> Creo エコシステムのためのデザインシステムです。単一の W3C Design Tokens (DTCG) から、Web / Apple / Rust を横断するビジュアルアイデンティティを配布します。
 
-**Creo ID** が tenant identity (「誰の空間か」) を表すのに対し、**creo-ui** は Visual Identity (「どう見えるか」) を担う。両者は対の関係。
+**Creo ID** がテナントのアイデンティティ（「誰の空間か」）を表すのに対して、**creo-ui** はビジュアルアイデンティティ（「どう見えるか」）を担います。両者は対をなす関係です。
 
 ## ステータス
 
@@ -12,18 +12,16 @@
 - 2026-04-26: Mode-based typography family token 6 種追加 ([`v0.14.0`](./CHANGELOG.md#v0140-2026-04-26--mode-based-typography-family))。
 - 2026-04-21: Web パッケージを npmjs.com へ初回 publish ([`creo-ui@0.0.1`](https://www.npmjs.com/package/creo-ui))。
 
-Linear Epic: [CREO-84 creo-ui Design System](https://linear.app/chronista/issue/CREO-84) — Phase ごとの子 Issue が紐付く。
-
 ### 次フェーズ — 2 axis hybrid governance
 
-design system は内部 dogfood + multi-round review で stabilize 完了。 以降は **2 axis hybrid** で進化:
+デザインシステムは、内部のドッグフーディングと複数ラウンドのレビューを経て安定化しました。以降は **2 軸ハイブリッド** で進化していきます:
 
-- **Concept / Architecture / Foundation 駆動 (creo-ui 側 proactive)**: Frame system protocol / Editor Mode 4 region / 8 theme palette / 5 tier convention / OKLCH adoption / DTCG SSOT 設計 等、 consumer が「現状の語彙で要求を articulate できない」 領域は **creo-ui 側で先に articulate** する責務。
-- **Surface / API ergonomics / friction 駆動 (consumer feedback driven)**: 外部 consumer (creo-memories / fleetstage / vantage-point 等) で実導入する中で出てくる API friction / 新 token need / migration ハマり / a11y bug 等は consumer 観察から逆算。 報告 channel は [`docs/contributing.md`](./docs/contributing.md) 参照。
+- **Concept / Architecture / Foundation 駆動 (creo-ui 側で先回り)**: Frame system protocol / Editor Mode 4 region / 8 theme palette / 5 tier convention / OKLCH adoption / DTCG SSOT 設計 など、 コンシューマーが「現状の語彙で要求を言語化できない」領域は、 **creo-ui 側で先に言語化する** 責務を担います。
+- **Surface / API ergonomics / friction 駆動 (consumer feedback driven)**: 外部コンシューマー (creo-memories / fleetstage / vantage-point 等) で実導入する中で出てくる API friction / 新しい token need / migration のハマり / a11y bug などは、コンシューマーの観察から逆算します。 報告チャネルは [`docs/contributing.md`](./docs/contributing.md) を参照してください。
 
-「concept か surface か」 は PR ごとに case-by-case 判断、 固定 rule よりも柔軟性優先。
+「concept か surface か」は PR ごとにケースバイケースで判断します。固定的なルールよりも柔軟性を優先します。
 
-Ecosystem split (Phase 2b/c/d、 Rust/Swift repo 切り出し) は **TS 安定化優先で後回し** (Phase 2 Deferred)。
+Ecosystem split (Phase 2b/c/d、 Rust/Swift repo 切り出し) は **TS 安定化を優先して後回し** にしています (Phase 2 Deferred)。
 
 ## 対応 Platform
 
@@ -49,7 +47,7 @@ import '@chronista-club/creo-ui/tokens.css'
 import { ColorBrandPrimary, SpacingMd } from '@chronista-club/creo-ui/tokens.js'
 ```
 
-詳細は [`packages/web/README.md`](./packages/web/README.md)。
+詳細は [`packages/web/README.md`](./packages/web/README.md) を参照してください。
 
 ### Apple (SwiftUI)
 
@@ -66,7 +64,7 @@ import CreoUI
 Text("Creo").foregroundColor(.colorBrandPrimary).padding(CreoUITokens.spacingMd)
 ```
 
-詳細は [`packages/swift/README.md`](./packages/swift/README.md)。
+詳細は [`packages/swift/README.md`](./packages/swift/README.md) を参照してください。
 
 ### Rust
 
@@ -80,7 +78,7 @@ use creo-ui::tokens;
 let brand = tokens::COLOR_BRAND_PRIMARY; // Rgb { r: 115, g: 231, b: 170 }
 ```
 
-詳細は [`packages/rust/README.md`](./packages/rust/README.md)。
+詳細は [`packages/rust/README.md`](./packages/rust/README.md) を参照してください。
 
 ## Consumer (想定)
 
@@ -101,7 +99,7 @@ Style Dictionary
   └─ transforms/config.rust.js  ──► packages/rust/src/generated/tokens.rs
 ```
 
-Token の SSOT は `tokens/` 配下の DTCG JSON のみ。各 platform の出力は build 成果物として生成する。
+Token の SSOT は `tokens/` 配下の DTCG JSON のみです。各プラットフォームの出力は build 成果物として生成されます。
 
 ## 開発
 
@@ -126,13 +124,13 @@ cd packages/swift && swift build && swift test
 
 1. **視覚的定数の SSOT** — `tokens/**/*.json` (DTCG) → Style Dictionary → 3 platform 配布
 2. **Editor Mode protocol** — 任意 app にユニバーサルな "Editor Mode" を規定 (schema owner)。詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md)
-3. **Web reference runtime (`@chronista-club/creo-ui-editor-host`)** — Editor Mode protocol の SolidJS 実装を `packages/editor-host/` に同梱 (EH-1、 Phase 2a Shipped)。consumer は `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` で即利用可能
+3. **Web reference runtime (`@chronista-club/creo-ui-editor-host`)** — Editor Mode protocol の SolidJS 実装を `packages/editor-host/` に同梱 (EH-1、 Phase 2a Shipped)。コンシューマーは `<EditorHostProvider>` + `<EditorLayer>` + `useEditorFields()` ですぐに利用できます
 
-Editor Mode は instance ではなく **mode** (universal state)。4 方向 semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) + Content 非侵襲性 + AI agent access を protocol で規定。 **Web は本 repo の `packages/editor-host/` で reference 実装済**、 Swift / Rust の runtime 実装は consumer 側 (`CreoUI`, `creo-ui` crate) で担う (Phase 3b 以降の予定)。
+Editor Mode は instance ではなく **mode** (universal state) です。4 方向の semantic layout (TOP global / LEFT source / RIGHT tool / BOTTOM utility) + Content 非侵襲性 + AI agent access を protocol で規定します。 **Web は本 repo の `packages/editor-host/` で reference 実装済み**で、 Swift / Rust の runtime 実装はコンシューマー側 (`CreoUI`, `creo-ui` crate) で担います (Phase 3b 以降の予定)。
 
 ## Theme system (0.1.0+)
 
-4 family × light/dark = **8 theme** を内蔵。`:root` default は **Mint Dark**:
+4 family × light/dark = **8 theme** を内蔵しています。`:root` default は **Mint Dark** です:
 
 | family | light | dark (★=default) | brand |
 |---|---|---|---|
@@ -141,24 +139,22 @@ Editor Mode は instance ではなく **mode** (universal state)。4 方向 sema
 | Contrast / Paradox | `contrast-light` | `contrast-dark` | purple × pink × cyan |
 | Old School | `oldschool-light` | `oldschool-dark` | teal × orange |
 
-切替は `[data-theme="{id}"]`。fleetstage 後方互換として `.dark` / `[data-theme="dark"]` = mint-dark、`[data-theme="light"]` = mint-light。system preference が light で `[data-theme]` 未指定なら mint-light に逆転。
+切替は `[data-theme="{id}"]` で行います。fleetstage 後方互換として `.dark` / `[data-theme="dark"]` = mint-dark、`[data-theme="light"]` = mint-light。system preference が light で `[data-theme]` 未指定の場合は mint-light に逆転します。
 
-token 値は **OKLCH** で保持 (`oklch(l c h / a)`)、modern browser が直接解釈。Swift/Rust は Mint Dark のみ hex/Rgb に変換して emit。
+token 値は **OKLCH** で保持し (`oklch(l c h / a)`)、modern browser が直接解釈します。Swift/Rust は Mint Dark のみ hex/Rgb に変換して emit します。
 
 ## Phase Roadmap
 
 | Phase | 内容 | Status |
 |-------|------|--------|
-| 0 | Repo scaffold + CI skeleton | ✅ 完了 (CREO-85) |
-| 1 | Token MVP + Web/SwiftUI/Rust 出力 + Editor Mode protocol schema + editor-mode tokens + **8-theme matrix** (0.1.0) | **進行中** (CREO-86) |
+| 0 | Repo scaffold + CI skeleton | ✅ 完了 |
+| 1 | Token MVP + Web/SwiftUI/Rust 出力 + Editor Mode protocol schema + editor-mode tokens + **8-theme matrix** (0.1.0) | **進行中** |
 | 2 | `creo-ui` に `EditorHost` runtime 実装 + MCP AI agent 連携 + DevEditor migration + Swift/Rust の multi-theme | Planned |
 | 3 | Figma sync (tokens.studio 連携) + theme authoring pipeline | Planned |
 
-詳細は [Epic CREO-84](https://linear.app/chronista/issue/CREO-84) を参照。
-
 ## Ecosystem split (Phase 2 architectural pivot)
 
-`chronista-club/creo-ui-design` を別 repo として切り出し、 design SSOT (tokens + Style Dictionary configs + design memo) を独立化する pivot を進行中。 言語別実装 (`creo-ui` (TS) / `creo-ui-swift` / `creo-ui-rs`) は **trace consumer** として release artifact を取り込む構造に。 Material Design 3 / Fluent 2 / Carbon Design 等の multi-platform design system 業界標準 pattern と一致。
+`chronista-club/creo-ui-design` を別 repo として切り出し、design SSOT (tokens + Style Dictionary configs + design memo) を独立化する方針転換を進めています。 言語別実装 (`creo-ui` (TS) / `creo-ui-swift` / `creo-ui-rs`) は **trace consumer** として release artifact を取り込む構造になります。 Material Design 3 / Fluent 2 / Carbon Design などの multi-platform デザインシステムの業界標準パターンと一致します。
 
 | Phase | scope | Status |
 |---|---|---|
@@ -180,8 +176,8 @@ bun run build         # local Style Dictionary build
 bun run diff:design   # local build vs release artifact の byte-level diff
 ```
 
-**Phase 2a verified (2026-05-06)**: creo-ui の local Style Dictionary build と `creo-ui-design v0.0.1` release artifact が **5/5 file 全て byte-level 一致** (tokens.css / tokens.js / tokens.d.ts / Tokens.swift / tokens.rs)。 design SSOT split は consumer 視点で **drift 0**、 Phase 2b-d (impl repo 切り出し) の前提条件 confirmed。
+**Phase 2a verified (2026-05-06)**: creo-ui の local Style Dictionary build と `creo-ui-design v0.0.1` release artifact が **5/5 file すべて byte-level 一致** しました (tokens.css / tokens.js / tokens.d.ts / Tokens.swift / tokens.rs)。 design SSOT split はコンシューマー視点で **drift 0** で、 Phase 2b-d (impl repo 切り出し) の前提条件が confirmed です。
 
 ## License
 
-Apache-2.0 — [LICENSE](./LICENSE) を参照。
+Apache-2.0 — [LICENSE](./LICENSE) を参照してください。

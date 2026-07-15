@@ -1,3 +1,17 @@
+import {
+  EditorHostProvider,
+  EditorLayer,
+  bind,
+  select,
+  signalTarget,
+  useEditorHost,
+  useEditorMode,
+  useEditorSelectable,
+} from '@chronista-club/creo-ui-editor-host'
+import { CUButton } from '@chronista-club/creo-ui/controls'
+import { A } from '@solidjs/router'
+import { createSignal } from 'solid-js'
+
 const PROPS = [
   {
     attr: 'data-orientation',
@@ -34,7 +48,11 @@ const TOKENS = [
 
 export default function Divider() {
   return (
-    <>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-docs.divider-editor',
+      }}
+    >
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components — Layout</p>
         <h1>Divider</h1>
@@ -47,7 +65,15 @@ export default function Divider() {
 
       <section>
         <h2 class="docs-section-title">Live preview</h2>
+        <p class="docs-page-helper">
+          <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
+          floating inspector panel から playground divider の orientation / thickness / spacing /
+          variant を即時編集できる。 Mode ON 中に playground divider を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
+        </p>
         <div class="docs-component-preview">
+          <DividerLivePreview />
           <div class="docs-preview-row-label">Horizontal (default)</div>
           <div>
             <p>Section A の content</p>
@@ -158,6 +184,93 @@ export default function Divider() {
 </div>`}</code>
         </pre>
       </section>
+
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
+
+type DividerOrientation = 'horizontal' | 'vertical'
+type DividerThickness = 'thin' | 'thick'
+type DividerSpacing = 'xs' | 's' | 'm' | 'l' | 'xl'
+type DividerVariant = 'default' | 'subtle'
+
+/**
+ * Live preview の playground。editor-host の bind() で orientation / thickness / spacing /
+ * variant を inspector panel に生やし、stage の hr 自体を selectable にする (Mode ON で click →
+ * その instance に field が絞られる)。provider はページ root の 1 枚を共有。
+ */
+function DividerLivePreview() {
+  const host = useEditorHost()
+  const mode = useEditorMode()
+
+  const [orientation, setOrientation] = createSignal<DividerOrientation>('horizontal')
+  const [thickness, setThickness] = createSignal<DividerThickness>('thin')
+  const [spacing, setSpacing] = createSignal<DividerSpacing>('m')
+  const [variant, setVariant] = createSignal<DividerVariant>('default')
+
+  const binders = [
+    bind({
+      target: signalTarget('divider.orientation', orientation, (v) =>
+        setOrientation(v as DividerOrientation),
+      ),
+      control: select(['horizontal', 'vertical'] as const),
+      placement: { semantic: 'tool', group: 'divider', label: 'Orientation', order: 1 },
+    }),
+    bind({
+      target: signalTarget('divider.thickness', thickness, (v) =>
+        setThickness(v as DividerThickness),
+      ),
+      control: select(['thin', 'thick'] as const),
+      placement: { semantic: 'tool', group: 'divider', label: 'Thickness', order: 2 },
+    }),
+    bind({
+      target: signalTarget('divider.spacing', spacing, (v) => setSpacing(v as DividerSpacing)),
+      control: select(['xs', 's', 'm', 'l', 'xl'] as const),
+      placement: { semantic: 'tool', group: 'divider', label: 'Spacing', order: 3 },
+    }),
+    bind({
+      target: signalTarget('divider.variant', variant, (v) => setVariant(v as DividerVariant)),
+      control: select(['default', 'subtle'] as const),
+      placement: { semantic: 'tool', group: 'divider', label: 'Variant', order: 4 },
+    }),
+  ]
+
+  const selectable = useEditorSelectable({ binders, id: 'divider-live-preview' })
+
+  return (
+    <>
+      <div class="docs-preview-row-label">Playground (Editor Mode)</div>
+      <div class="docs-playground-stage">
+        {/* orientation で flex 方向を切替 — hr element は作り直さず attribute のみ変える */}
+        <div
+          style={{
+            display: 'flex',
+            'flex-direction': orientation() === 'vertical' ? 'row' : 'column',
+            'align-items': 'center',
+            'justify-content': 'center',
+            width: '100%',
+            'max-width': '360px',
+            'min-height': '64px',
+          }}
+        >
+          <span>Section A</span>
+          <hr
+            ref={selectable}
+            class="creo-divider"
+            data-orientation={orientation()}
+            data-thickness={thickness()}
+            data-spacing={spacing()}
+            data-variant={variant() === 'subtle' ? 'subtle' : undefined}
+          />
+          <span>Section B</span>
+        </div>
+      </div>
+      <div class="docs-preview-grid">
+        <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
+          Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
+        </CUButton>
+      </div>
     </>
   )
 }

@@ -78,16 +78,31 @@ export {
 // F1: Console REPL
 export type { ConsoleApi } from './console'
 
-// F2: DOM auto-discover
+// F2: DOM auto-discover / F2b: private tweak var auto-discover
 export {
   autoDiscover,
+  autoDiscoverTweaks,
+  parseTweakVarRefs,
   scanCssVars,
+  scanTweakVars,
   type AutoDiscoverOptions,
   type DiscoveredVar,
+  type TweakDiscoverOptions,
+  type TweakVarRef,
 } from './auto-discover'
 
 // F3: Export
 export { exportSnapshot, type ExportFormat, type ExportOptions } from './export'
+
+// Phase M6: OKLCH utilities (color editor / theme editor 向け)
+export {
+  formatOklch,
+  oklchTrackGradient,
+  OKLCH_C_MAX,
+  parseOklch,
+  type Oklch,
+  type OklchChannel,
+} from './oklch'
 
 // F4: URL share
 export {

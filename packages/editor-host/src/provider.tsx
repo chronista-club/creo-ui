@@ -7,7 +7,7 @@
  */
 import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
-import { autoDiscover } from './auto-discover'
+import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
 import { buildConsoleApi, installConsoleApi } from './console'
 import { installCrossTabSync } from './cross-tab'
 import { exportSnapshot } from './export'
@@ -18,6 +18,15 @@ import type { EditorHost, EditorHostConfig } from './types'
 import { installUrlSync, shareUrl } from './url-sync'
 
 const EditorHostContext = createContext<EditorHost>()
+
+/**
+ * dev 環境の runtime 近似。library build では `import.meta.env.DEV` が build 時に
+ * 固定化されるため使えない — localhost 系 hostname を dev とみなす (EH-6)。
+ */
+function isLocalhostDev(): boolean {
+  if (typeof location === 'undefined') return false
+  return ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname)
+}
 
 export interface EditorHostProviderProps {
   config?: EditorHostConfig
@@ -43,6 +52,16 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       uninstallers.push(installUrlSync(host, props.config.urlSync))
     }
 
+    // F2b: private tweak var auto-discover (opt-in via config.discoverTweaks)。
+    // 失敗しても後続の install (console 等) を巻き込まない (D-6 非侵襲)。
+    if (props.config?.discoverTweaks) {
+      try {
+        autoDiscoverTweaks(host, owner)
+      } catch (e) {
+        console.warn('[editor-host] discoverTweaks failed:', e)
+      }
+    }
+
     // F5: Cross-tab sync (opt-in via config.crossTab)
     if (props.config?.crossTab) {
       uninstallers.push(
@@ -54,10 +73,10 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     }
 
     // F1: Console REPL — CLAUDE.md EH-6: dev 自動 expose / production は config で opt-out。
-    // default は import.meta.env.DEV (Vite 環境で DEV 時 true、 production build 時 false)。
-    // production で意図的に expose したい場合は `config.exposeConsole: true` を明示。
-    const exposeConsole =
-      props.config?.exposeConsole ?? Boolean((import.meta as { env?: { DEV?: boolean } }).env?.DEV)
+    // 注意: `import.meta.env.DEV` は library build 時に false へ畳み込まれ、consumer の
+    // dev/prod を反映できない (2026-07-12 に dist で `?? !1` になっているのを確認)。
+    // そのため runtime の localhost 判定で dev を近似する。
+    const exposeConsole = props.config?.exposeConsole ?? isLocalhostDev()
     if (exposeConsole) {
       const api = buildConsoleApi({
         host,
@@ -65,6 +84,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         exportSnapshot,
         shareUrl: (h) => shareUrl(h, props.config?.urlSync),
         autoDiscover: (h, o, opts) => autoDiscover(h, o, opts),
+        autoDiscoverTweaks: (h, o, opts) => autoDiscoverTweaks(h, o, opts),
       })
       const consoleName = props.config?.consoleName ?? 'creoEditor'
       uninstallers.push(installConsoleApi(api, consoleName))

@@ -102,7 +102,7 @@ public enum CreoUITokens {
     public static let marginXl: CGFloat = 64 // Extra-large margin — major section or hero break (page-level breathing)
     public static let radiusNone: CGFloat = 0 // No rounding — explicit reset (special, outside 5 tier rule)
     public static let radiusXs: CGFloat = 4 // Extra-small radius — minimal rounding (chips, tags)
-    public static let radiusS: CGFloat = 8 // Small radius — subtle rounding (buttons, inputs)
+    public static let radiusS: CGFloat = 8 // Small radius — subtle rounding (inputs, small surfaces)
     public static let radiusM: CGFloat = 15 // Medium radius — cards, popovers (soft friendly feel)
     public static let radiusL: CGFloat = 22 // Large radius — modals, larger surfaces
     public static let radiusXl: CGFloat = 28 // Extra-large radius — hero surfaces

@@ -7,8 +7,10 @@
 
 import { describe, expect, it } from 'bun:test'
 import {
+  DEFAULT_GAZE,
   DEFAULT_PLACEMENT,
   buildTransformString,
+  formatGaze,
   formatLength,
   formatPerspective,
   mergePlacement,
@@ -96,5 +98,22 @@ describe('formatPerspective', () => {
   it('undefined → token CSS variable fallback', () => {
     const s = formatPerspective(undefined)
     expect(s).toContain('--frame-perspective-default')
+  })
+})
+
+describe('formatGaze', () => {
+  it('number 軸 → px、string 軸 → passthrough', () => {
+    expect(formatGaze({ x: 120, y: '40%' })).toBe('120px 40%')
+    expect(formatGaze({ x: '50%', y: '30%' })).toBe('50% 30%')
+  })
+
+  it('軸欠け / undefined は 50% に fallback (中央)', () => {
+    expect(formatGaze({ y: '25%' })).toBe('50% 25%')
+    expect(formatGaze({})).toBe('50% 50%')
+    expect(formatGaze(undefined)).toBe('50% 50%')
+  })
+
+  it('DEFAULT_GAZE は中央でありCSS perspective-origin 初期値と一致', () => {
+    expect(formatGaze(DEFAULT_GAZE)).toBe('50% 50%')
   })
 })
