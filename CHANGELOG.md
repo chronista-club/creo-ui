@@ -5,6 +5,32 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## v0.26.0 (2026-07-15) — Button pill + Editor Live Preview 全展開 + Frame gaze
+
+> **web `0.26.0`** / **frame `0.2.0`** を release。web は breaking (button shape、下記)。editor-host / rust / swift は API 不変 (rust/swift generated の radius.s は description コメントのみ変更、値は 8px 不変)。
+
+公式 site の Live Preview / Editor Mode 体験を拡充し、Frame system に「視線 (gaze)」を runtime 実装、Lab を topic ページに再編した一連の作業 (#81)。
+
+### Button を pill 化 — **consumer に breaking** (web)
+
+`.creo-btn` の `border-radius` を size 別固定 (`radius.xs/s/m`) から `--_btn-radius` (default `radius.full`) に統一 → **どの size でも高さの半分に自動 clamp される pill 形状**。
+
+- padding も `--_btn-pad-{x,y}` の private tweak var 経由に (Editor Mode から live 調整可能)
+- `radius.s` の description を「buttons, inputs」→「inputs, small surfaces」に更新 (値 8px は不変)
+- **migration**: 角丸を戻したい consumer は `--_btn-radius: <px>` を指定して override 可能
+
+### Frame gaze (視線 = perspective-origin) — F-4 (frame `0.2.0`)
+
+`Frame.gaze: { x, y }` で消失点の水平位置 + 水平線の高さを宣言、`FrameProvider` が `perspective-origin` として適用。`useFrame().setGaze()` で runtime 上書き (user が水平線を動かす入口)、`setFrame` で override 解除。`formatGaze` / `DEFAULT_GAZE` + test 3 ケース追加 (frame 全 59 test green)。
+
+### site — Live Preview 全展開 / gaze demo / Lab 分割
+
+- **34 Components ページ**に Editor Mode playground (bind + selection) を展開、文字 toggle を Phosphor 鉛筆アイコンの `EditorModeToggle` に統一
+- Button に padding X/Y (component scope) と corner radius の Live Preview slider
+- Frame system に **F-4「視線 (gaze)」** の概念 + `GazeLivePreview` (ドラッグ + Editor パネル双方向 sync)
+- **Lab を Playground 1 枚から `EditorLab` / `FrameLab` / `VisionLab` の 3 topic に分割** (`/playground` は `/lab/editor` へ redirect)
+- demo stage の Caddyfile を `/creo-ui/` prefix 配信に、`site:up` に `--force-recreate` 追加
+
 ## v0.25.0 (2026-07-12) — Deep Luminance + root font 一本化 + `Creo*` alias 撤去
 
 > **web `0.25.0`** / **editor-host `0.5.3`** / **rust `0.7.0`** を同時 release。web / rust は breaking (下記)。
