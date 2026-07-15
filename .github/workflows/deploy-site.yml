@@ -74,3 +74,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: creo-ui
+          # wrangler-action のバンドル版は古く、assets-only worker (main 無し・assets のみ) を
+          # script 扱いして "Missing entry-point" で fail する。assets-only を解釈できる 4.x を pin。
+          wranglerVersion: "4.111.0"
+          command: deploy
