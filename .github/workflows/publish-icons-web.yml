@@ -1,0 +1,67 @@
+name: Publish @chronista-club/creo-ui-icons-web to npm
+
+on:
+  push:
+    tags: ["icons-web-v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (must match package.json, or leave blank to use current)"
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: creo-ui
+    steps:
+      # creo-ui を nested path に checkout、 creo-views を sibling として
+      # 並行 checkout (packages/md-view の `file:../../../creo-views` 解決のため)。
+      # publish-editor-host.yml と同 layout。
+      - name: Checkout creo-ui
+        uses: actions/checkout@v4
+        with:
+          path: creo-ui
+
+      - name: Checkout creo-views (sibling, required by packages/md-view)
+        uses: actions/checkout@v4
+        with:
+          repository: chronista-club/creo-views
+          path: creo-views
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies (root workspace)
+        run: bun install --frozen-lockfile
+
+      - name: Typecheck (icons-web build config)
+        working-directory: creo-ui/packages/icons-web
+        run: bun run typecheck:build
+
+      - name: Build icons-web (vite lib)
+        working-directory: creo-ui/packages/icons-web
+        # vite + vite-plugin-solid で JSX を事前 compile、vite-plugin-dts で .d.ts 生成。
+        # 出力は packages/icons-web/dist/ (gitignore) に入る。
+        run: bun run build
+
+      - name: Verify dist artifacts
+        run: |
+          test -s packages/icons-web/dist/index.js
+          test -s packages/icons-web/dist/index.d.ts
+
+      - name: Publish to npm
+        working-directory: creo-ui/packages/icons-web
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public

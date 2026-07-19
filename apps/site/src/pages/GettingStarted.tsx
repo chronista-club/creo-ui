@@ -26,7 +26,7 @@ bun add @chronista-club/creo-ui-editor-host solid-js
 bun add creo-ui-md-view
 
 # (任意) Iconify-based icon adapter
-bun add creo-ui-icons-web`}</code>
+bun add @chronista-club/creo-ui-icons-web`}</code>
         </pre>
         <p class="docs-page-helper">
           npm / yarn / pnpm でも同様。 すべての package は{' '}
