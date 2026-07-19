@@ -16,10 +16,10 @@
       "dependencies": {
         "@chronista-club/creo-ui": "workspace:*",
         "@chronista-club/creo-ui-editor-host": "workspace:*",
+        "@chronista-club/creo-ui-icons-web": "workspace:*",
         "@mediapipe/tasks-vision": "^0.10.0",
         "@solidjs/router": "^0.15.0",
         "creo-ui-frame": "workspace:*",
-        "creo-ui-icons-web": "workspace:*",
         "creo-ui-md-view": "workspace:*",
         "creo-ui-vision": "workspace:*",
         "solid-js": "^1.9.0",
@@ -33,7 +33,7 @@
     },
     "packages/editor-host": {
       "name": "@chronista-club/creo-ui-editor-host",
-      "version": "0.5.2",
+      "version": "0.6.0",
       "devDependencies": {
         "solid-js": "^1.9.0",
         "typescript": "^5.5.0",
@@ -47,7 +47,7 @@
     },
     "packages/frame": {
       "name": "creo-ui-frame",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "devDependencies": {
         "@happy-dom/global-registrator": "^20.9.0",
         "happy-dom": "^20.9.0",
@@ -62,7 +62,7 @@
       },
     },
     "packages/icons-web": {
-      "name": "creo-ui-icons-web",
+      "name": "@chronista-club/creo-ui-icons-web",
       "version": "0.0.1",
       "devDependencies": {
         "iconify-icon": "^3.0.2",
@@ -115,7 +115,7 @@
     },
     "packages/web": {
       "name": "@chronista-club/creo-ui",
-      "version": "0.24.4",
+      "version": "0.26.0",
       "devDependencies": {
         "solid-js": "^1.9.0",
         "typescript": "^5.5.0",
@@ -192,6 +192,8 @@
     "@chronista-club/creo-ui": ["@chronista-club/creo-ui@workspace:packages/web"],
 
     "@chronista-club/creo-ui-editor-host": ["@chronista-club/creo-ui-editor-host@workspace:packages/editor-host"],
+
+    "@chronista-club/creo-ui-icons-web": ["@chronista-club/creo-ui-icons-web@workspace:packages/icons-web"],
 
     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.21.5", "", { "os": "aix", "cpu": "ppc64" }, "sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ=="],
 
@@ -466,8 +468,6 @@
     "convert-source-map": ["convert-source-map@2.0.0", "", {}, "sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg=="],
 
     "creo-ui-frame": ["creo-ui-frame@workspace:packages/frame"],
-
-    "creo-ui-icons-web": ["creo-ui-icons-web@workspace:packages/icons-web"],
 
     "creo-ui-md-view": ["creo-ui-md-view@workspace:packages/md-view"],
 
