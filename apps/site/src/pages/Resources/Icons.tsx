@@ -1,4 +1,3 @@
-import { A } from '@solidjs/router'
 import {
   BRAND,
   CreoIcon,
@@ -11,6 +10,7 @@ import {
   STATUS,
   SYSTEM,
 } from '@chronista-club/creo-ui-icons-web'
+import { A } from '@solidjs/router'
 import { For } from 'solid-js'
 
 interface CategorySpec {
@@ -78,10 +78,10 @@ export default function Icons() {
         <p class="docs-page-eyebrow">Resources</p>
         <h1>Icons</h1>
         <p class="docs-page-lead">
-          Iconify-based icon adapter (<code>@chronista-club/creo-ui-icons-web</code>)。 8 つの semantic category
-          に整理された universal registry。 <code>{'<CreoIcon name="..." size={24} />'}</code> で
-          render、 色は <code>currentColor</code> 経由で{' '}
-          <A href="/foundations/color">creo-ui token</A> に追従。
+          Iconify-based icon adapter (<code>@chronista-club/creo-ui-icons-web</code>)。 8 つの
+          semantic category に整理された universal registry。{' '}
+          <code>{'<CreoIcon name="..." size={24} />'}</code> で render、 色は{' '}
+          <code>currentColor</code> 経由で <A href="/foundations/color">creo-ui token</A> に追従。
         </p>
       </header>
 
