@@ -8,9 +8,9 @@
 
 /** pane identity — 「何が存在するか」は consumer 供給（LE-11/12）。primitive は kind を意味づけしない */
 export interface PaneRef {
-  id: string
-  kind?: string
-  label?: string
+  readonly id: string
+  readonly kind?: string
+  readonly label?: string
 }
 
 /** 列 = 副軸（縦）の並び。構造はサイズを持たない（LE-4） */
