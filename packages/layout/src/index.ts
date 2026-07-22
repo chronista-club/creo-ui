@@ -1,5 +1,5 @@
 /**
- * creo-ui-layout（仮称）— Layout Engine protocol core（LE-P0）。
+ * creo-ui-layout — Layout Engine protocol core（LE-P0）。
  * 設計 SSOT: docs/design/layout-engine.md
  */
 

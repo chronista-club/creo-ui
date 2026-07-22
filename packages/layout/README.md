@@ -1,4 +1,4 @@
-# creo-ui-layout（仮称）
+# @chronista-club/creo-ui-layout
 
 Layout Engine — attention 連続場 + 構造 + scrub の protocol core。
 

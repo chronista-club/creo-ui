@@ -238,7 +238,7 @@ propose: { structure: "ec | cv/pp ~ board", attention: {...}, reason: "レビュ
 | # | 項目 | 決定 |
 |---|------|------|
 | LE-1 | 所有モデル | creo-ui = protocol + SolidJS reference、VP = 最初で最難の consumer。primary dogfood = VP gallery mode |
-| LE-2 | 命名 | 新 package 仮称 `creo-ui-layout`。`creo-ui-frame` は rename しない（遷移実行系として残る） |
+| LE-2 | 命名 | 新 package **`@chronista-club/creo-ui-layout`（確定 2026-07-22、npm 公開）**。`creo-ui-frame` は rename しない（遷移実行系として残る） |
 | LE-3 | 連続場 | attention 1 本が唯一の真実源。0 = 非表示（2 規則）。raw/share 二重読み。taper は token（§2） |
 | LE-4 | 直交分解 | 構造はサイズを持たない（軸交代 + 所属のみ）。記法 `ec \| cv/pp ~ board`（§3） |
 | LE-5 | 主軸水平 | 軸交代 2（横→縦）で打ち止め、arity 無制限。縦画面は将来 transpose 1 穴 |
@@ -336,7 +336,7 @@ DOM 反映（action）は reference 実装（SolidJS）と consumer 実装（VP 
 
 | Phase | scope | 出荷物 |
 |---|---|---|
-| **LE-P0** | protocol types + 純 calculation 全部（normalize / resolve / interpolate / 全 gesture / 記法 parse-format）+ **property-based test 群を受け入れ条件に**（§2 再導出表 + 面積和 = 1 / 非重複 / 端点一致 / 往復 / 全零 guard。golden は記法文字列で書く） | 新 package（仮称 `creo-ui-layout`）、DOM 依存ゼロ |
+| **LE-P0** | protocol types + 純 calculation 全部（normalize / resolve / interpolate / 全 gesture / 記法 parse-format）+ **property-based test 群を受け入れ条件に**（§2 再導出表 + 面積和 = 1 / 非重複 / 端点一致 / 往復 / 全零 guard。golden は記法文字列で書く） | 新 package `creo-ui-layout`、DOM 依存ゼロ |
 | **LE-P1** | SolidJS reference 実装（apply = 連続 rect を transform / grid に写す、reparent なし、float 描画 + ephemeral 移動） | site Playground で secondary dogfood |
 | **LE-P2** | VP gallery mode を最初のコンテンツとして pane 化 + **MCP bridge**（layout_* tools、doc 48 経路の兄弟） | VP 側 PR、primary dogfood 開始 |
 | **LE-P3** | driver 統合 — `morphFrame` の t 外部化 + time / jump driver + **apply policy（Write/Read/Touch）** + 艦隊 mapping registry（VP 側、hand driver = knob/fader） | frame 側改修 + adapter + VP 配線 |
@@ -348,10 +348,10 @@ DOM 反映（action）は reference 実装（SolidJS）と consumer 実装（VP 
 2. **OQ-2 taper の曲線形** — token + Editor Mode knob で dogfood 決定（仕様で当てない）
 3. **OQ-3 settle 判定の詳細** — release / debounce の具体値（P1 実装時）
 4. **OQ-4 float 位置の寿命** — ephemeral の消えるタイミング（scope 切替 / pane 消滅時。P1）
-5. **OQ-5 命名確定** — 仮称 `creo-ui-layout` / `CU*` prefix。owner decision
 
 > 消滅した問い: 分割の次元（軸交代 2 + arity 自由）/ maximized（1.0 独占）/ 退避閾値（0 だけが特別）/
-> Layout の永続（= log 末尾）/ min 競合（negotiation 延期に同梱）
+> Layout の永続（= log 末尾）/ min 競合（negotiation 延期に同梱）/
+> 命名（= `@chronista-club/creo-ui-layout` で確定・npm 公開、2026-07-22 mako 決定）
 
 ## 16. やってはいけない
 
