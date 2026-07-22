@@ -16,5 +16,12 @@ export {
   type EasingName,
   type DurationName,
 } from './tokens'
-export { springEasing, springPreset, type SpringOptions, type SpringPreset } from './spring'
+export {
+  springCurve,
+  springEasing,
+  springPreset,
+  type SpringCurve,
+  type SpringOptions,
+  type SpringPreset,
+} from './spring'
 export { respectsReducedMotion, watchReducedMotion } from './reduced-motion'

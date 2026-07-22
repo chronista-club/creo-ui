@@ -162,8 +162,9 @@ interpolate(A, B, t)   … 唯一の遷移 primitive（純 calculation）
 
 - 純関数なので t の全域で snapshot テスト可能
 - 端点に居ない pane は所属位置（float は自位置）で 0 収束へ補間 — 消える動きも現れる動きも同じ規則
-- creo-ui-frame の `morphFrame` は「t を外から与えられる形」に開く（LE-P3）。FLIP / spring /
-  reduced-motion の実装資産は time driver になる。**core は creo-ui-frame を import しない**
+- frame の spring 資産は `springCurve()`（position 関数の公開）として time driver に刺さる
+  （LE-P3 で着地済 — `morphFrame` 自体は非変更、FLIP scrub 変形は DOM-FLIP consumer が
+  現れたら再訪）。接続は `TimeCurve` の構造型一致のみ — **core は creo-ui-frame を import しない**
 
 ### 一時状態の統一 — 戻り先は常に last settle
 
@@ -362,7 +363,7 @@ gesture の階層 routing は consumer 判断（LE-20 と同じ理由）、float
 | **LE-P0** | protocol types + 純 calculation 全部（normalize / resolve / interpolate / 全 gesture / 記法 parse-format）+ **property-based test 群を受け入れ条件に**（§2 再導出表 + 面積和 = 1 / 非重複 / 端点一致 / 往復 / 全零 guard。golden は記法文字列で書く） | 新 package `creo-ui-layout`、DOM 依存ゼロ |
 | **LE-P1** | SolidJS reference 実装（apply = 連続 rect を transform / grid に写す、reparent なし、float 描画 + ephemeral 移動） | site Playground で secondary dogfood |
 | **LE-P2** | VP gallery mode を最初のコンテンツとして pane 化 + **MCP bridge**（layout_* tools、doc 48 経路の兄弟） | VP 側 PR、primary dogfood 開始 |
-| **LE-P3** | driver 統合 — `morphFrame` の t 外部化 + time / jump driver + **apply policy（Write/Read/Touch）** + 艦隊 mapping registry（VP 側、hand driver = knob/fader） | frame 側改修 + adapter + VP 配線 |
+| **LE-P3** | driver 統合 — spring の t 外部化（`springCurve`。`morphFrame` の FLIP scrub 変形は読み手不在で見送り）+ time / jump driver + **apply policy（Write/Read/Touch）** + 艦隊 mapping registry（VP 側、hand driver = knob/fader） | frame 側改修 + adapter + VP 配線 |
 | **LE-P4** | VP 本統合 — `frame-engine.ts` / `pane-shell.ts` を置換（= frame-system P-6 の完了形） | VP UI フェーズ本体 |
 
 ## 15. Open questions（LE-P0 / P1 で確定）
@@ -414,3 +415,13 @@ gesture の階層 routing は consumer 判断（LE-20 と同じ理由）、float
 - 2026-07-22: **LE-21 列幅 lock**（v0.2.0）— LE-8 の部分前倒し。`Layout.locks` = fader lock の幅版
   （需要 1 号: sidebar 固定、mako。px は consumer resize 再計算で viewport は protocol 外のまま）。
   §8 に**入れ子**（pane の中の LayoutEngine — scope 分離 × 0..1 自己相似で protocol 変更ゼロ）を明文化
+- 2026-07-23: **LE-P3 driver 統合**（v0.3.0）— engine に transition surface
+  （`beginTransition` / `TransitionHandle`: scrub・commit・cancel・updateTarget。base = 投影 snapshot
+  なので提案の連鎖で表示が飛ばない）+ `drivers.ts`（`TimeCurve` 構造型 / `createTimeDriver` /
+  `jumpDriver` / `settleRelease`）+ `policy.ts`（LE-16 の mode table `proposeLayout`）。
+  frame 側は `springCurve` export（**t 外部化は position 関数の公開として着地** — morphFrame の
+  FLIP scrub 変形は読み手不在のため見送り、DOM-FLIP consumer が現れたら再訪）。
+  Touch は 2 段構え: whole-scope seize（直接操作 = 遷移破棄の 1 規則）+ `updateTarget`
+  （morph 継続のまま目標上書き = per-pane 調停の土台。full per-pane は attention 空間補間が
+  要るため将来）。spring overshoot は scrub 側 clamp で吸収（面積和 = 1 を外挿で壊さない）。
+  艦隊 mapping registry（VP 側 hand driver = knob/fader）は P3 内の別 PR に分離

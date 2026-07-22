@@ -48,5 +48,12 @@ export type {
   ResolvedListener,
   SettleAuthor,
   SettleEntry,
+  TransitionHandle,
 } from './engine'
 export { cloneLayout, createLayoutEngine } from './engine'
+
+export type { DriverRun, TimeCurve, TimeDriverOptions, TransitionDriver } from './drivers'
+export { createTimeDriver, defaultCurve, jumpDriver, settleRelease } from './drivers'
+
+export type { ApplyPolicy, ProposeOptions, ProposeResult } from './policy'
+export { proposeLayout } from './policy'
