@@ -1,19 +1,21 @@
 /**
- * Layout Engine lab — attention 連続場の secondary dogfood（LE-P1）。
+ * Layout Engine lab — attention 連続場の secondary dogfood（LE-P1 → P3）。
  *
  * primary dogfood は VP gallery mode（LE-P2）。ここは protocol の全 primitive を
- * 1 画面で触れる検証台: 場（slider = share 指定）/ 構造（記法）/ scrub / settle log / float drag。
- * motion は意図的にゼロ（jump のみ）— 動きは全部 t を手で持つ（時間 driver は LE-P3）。
+ * 1 画面で触れる検証台: 場（slider = share 指定）/ 構造（記法）/ scrub / settle log / float drag
+ * / propose + apply policy（LE-16、time driver = frame の springCurve が t を運ぶ）。
  */
 
 import {
   admit,
   cloneLayout,
   createLayoutEngine,
+  createTimeDriver,
   equalize,
   formatNotation,
   interpolate,
   isMember,
+  jumpDriver,
   lock,
   memberIds,
   moveDominance,
@@ -21,19 +23,25 @@ import {
   parseNotation,
   popIn,
   popOut,
+  proposeLayout,
   resolve,
   setShare,
+  settleRelease,
   solo,
   unlock,
 } from '@chronista-club/creo-ui-layout'
 import type {
+  ApplyPolicy,
   DominanceDirection,
+  DriverRun,
   Layout,
   PaneRef,
   ResolvedMap,
   Scene,
+  TransitionHandle,
 } from '@chronista-club/creo-ui-layout'
 import { PaneStage, useEngineResolved } from '@chronista-club/creo-ui-layout/solid'
+import { respectsReducedMotion, springCurve } from 'creo-ui-frame'
 import { For, Show, createMemo, createSignal } from 'solid-js'
 
 const SCOPE = 'lab'
@@ -123,12 +131,81 @@ export default function LayoutLab() {
     bump()
   }
 
-  /** scrub 手放し = 近い端点へ着地（spring で運ぶのは LE-P3 の time driver。ここでは jump） */
+  /** Scene 間 scrub の手放し = 近い端点へ着地（純 primitive の検証台なのでここは jump のまま） */
   const releaseScrub = () => {
     const t = scrubT()
     if (t == null) return
     applySceneNow(t < 0.5 ? sceneA() : sceneB())
     setScrubT(null)
+  }
+
+  // ---------- propose & apply policy（LE-16、engine transition + time driver） ----------
+  const [policy, setPolicy] = createSignal<ApplyPolicy>('write')
+  const [pendingHandle, setPendingHandle] = createSignal<TransitionHandle | null>(null)
+  const [pendingT, setPendingT] = createSignal(0)
+  const [proposeNote, setProposeNote] = createSignal<string | null>(null)
+  let activeDrive: DriverRun | null = null
+
+  /** reduced-motion は「jump driver の選択」に落ちる（LE-7） */
+  const chooseDriver = () =>
+    respectsReducedMotion() ? jumpDriver : createTimeDriver({ curve: springCurve('stiff') })
+
+  // 直接操作（gesture）は engine 側で遷移を seize する。timer も一緒に畳む
+  const stopDrive = () => {
+    activeDrive?.cancel()
+    activeDrive = null
+  }
+
+  /** write 承認待ちの handle。他操作で seize されたら自然に消える */
+  const livePending = createMemo(() => {
+    resolved() // notify のたびに done を再判定
+    const h = pendingHandle()
+    return h && !h.done ? h : null
+  })
+
+  /** demo 提案: 今の主役の「次」の pane を主役へ（CC の propose の代役） */
+  const proposeDemo = () => {
+    const l = layout()
+    const visible = memberIds(l.structure).filter((id) => (l.attention[id] ?? 0) > 0)
+    if (visible.length < 2) {
+      setProposeNote('可視 pane が 2 枚以上必要')
+      return
+    }
+    const lead = visible.reduce((m, id) =>
+      (l.attention[id] ?? 0) > (l.attention[m] ?? 0) ? id : m,
+    )
+    const next = visible[(visible.indexOf(lead) + 1) % visible.length] as string
+    const target = setShare(cloneLayout(l), next, 0.55)
+
+    stopDrive()
+    const result = proposeLayout(engine, SCOPE, target, {
+      policy: policy(),
+      driver: chooseDriver(),
+    })
+    if (!result.accepted) {
+      setProposeNote('policy = off — 提案は受けない')
+      return
+    }
+    setProposeNote(`propose: 「${next} を主役に」`)
+    if (policy() === 'write') {
+      setPendingHandle(result.handle ?? null)
+      setPendingT(0)
+    } else {
+      activeDrive = result.drive ?? null
+      result.drive?.finished.then(() => bump()) // commit(author: ai) が log に載る
+    }
+  }
+
+  /** write の t フェーダー手放し = 近い端点へ spring で着地（§5、settleRelease） */
+  const releasePending = () => {
+    const h = livePending()
+    if (!h) return
+    stopDrive()
+    activeDrive = settleRelease(h, chooseDriver())
+    activeDrive.finished.then(() => {
+      setPendingHandle(null)
+      bump()
+    })
   }
 
   // ---------- 記法入力 ----------
@@ -181,6 +258,7 @@ export default function LayoutLab() {
   }
 
   const gesture = (fn: (l: Layout) => Layout, opts: { settle?: boolean } = { settle: true }) => {
+    stopDrive() // Touch: 触れた瞬間に奪取（engine.update の seize + driver 停止）
     engine.update(SCOPE, fn)
     if (opts.settle) settle()
   }
@@ -198,9 +276,10 @@ export default function LayoutLab() {
         <p class="docs-page-lead">
           <code>creo-ui-layout</code>（仮称）の secondary dogfood。場（attention 1
           本）がサイズ・可視・重なりの唯一の真実源で、構造（<code>{'ec | cv/pp ~ board'}</code>
-          ）は軸交代と所属だけを持つ。 motion はゼロ — <strong>動きは scrub の t を手で持つ</strong>
-          （時間 driver は LE-P3）。 設計: <code>docs/design/layout-engine.md</code>
-          （LE-1〜LE-20）。
+          ）は軸交代と所属だけを持つ。 動きは scrub の t が全て —{' '}
+          <strong>t を手で持つ（hand）か、spring が運ぶ（time）か、即着地（jump）か</strong>は
+          driver の選択（LE-P3）。 設計: <code>docs/design/layout-engine.md</code>
+          （LE-1〜LE-21）。
         </p>
       </header>
 
@@ -421,7 +500,8 @@ export default function LayoutLab() {
         <h2 class="docs-section-title">Scene & scrub — 遷移を手で持つ</h2>
         <p class="docs-page-helper">
           形を作って capture A / B → slider で <code>interpolate(A, B, t)</code>{' '}
-          の中間を見る。手放すと近い端点へ着地（LE-7 の一時状態規則。spring で運ぶのは LE-P3）。
+          の中間を見る。手放すと近い端点へ着地（LE-7 の一時状態規則）。ここは純 primitive
+          の検証台なので jump 着地 — spring で運ぶ方は下の propose の t フェーダーで。
         </p>
         <div style={{ display: 'flex', gap: '8px', 'align-items': 'center', 'flex-wrap': 'wrap' }}>
           <button type="button" onClick={() => capture('A')}>
@@ -448,6 +528,88 @@ export default function LayoutLab() {
             apply B
           </button>
         </div>
+      </section>
+
+      <section>
+        <h2 class="docs-section-title">Propose & apply policy — DAW automation modes（LE-16）</h2>
+        <p class="docs-page-helper">
+          AI 提案の引き金を誰が引くか。<strong>write</strong> = 提案は t
+          フェーダーで「半分だけ覗いて」から承認（承認行為そのものがスクラブ）。
+          <strong>read</strong> = time driver（spring）が t を 1 へ運び author=ai で settle。
+          <strong>touch</strong> = 駆動中でも触れた瞬間に奪取（slider 操作 = seize）。
+          reduced-motion 設定時は jump driver に落ちる。
+        </p>
+        <div style={{ display: 'flex', gap: '8px', 'align-items': 'center', 'flex-wrap': 'wrap' }}>
+          <For each={['off', 'write', 'read', 'touch'] as ApplyPolicy[]}>
+            {(mode) => (
+              <label style={{ display: 'flex', 'align-items': 'center', gap: '4px' }}>
+                <input
+                  type="radio"
+                  name="apply-policy"
+                  checked={policy() === mode}
+                  onChange={() => setPolicy(mode)}
+                />
+                <code>{mode}</code>
+              </label>
+            )}
+          </For>
+          <button type="button" onClick={proposeDemo}>
+            CC が propose（demo）
+          </button>
+          <Show when={proposeNote()}>
+            <span class="docs-page-helper" style={{ margin: 0 }}>
+              {proposeNote()}
+            </span>
+          </Show>
+        </div>
+        <Show when={livePending()}>
+          {(handle) => (
+            <div
+              style={{
+                display: 'flex',
+                gap: '8px',
+                'align-items': 'center',
+                'flex-wrap': 'wrap',
+                'margin-top': '10px',
+              }}
+            >
+              <code>t</code>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={pendingT()}
+                style={{ flex: '1', 'min-width': '160px' }}
+                onInput={(e) => {
+                  const t = Number(e.currentTarget.value)
+                  setPendingT(t)
+                  handle().scrub(t)
+                }}
+                onChange={releasePending}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  handle().commit('human')
+                  setPendingHandle(null)
+                  bump()
+                }}
+              >
+                承認
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  handle().cancel()
+                  setPendingHandle(null)
+                }}
+              >
+                破棄
+              </button>
+            </div>
+          )}
+        </Show>
       </section>
 
       <section>

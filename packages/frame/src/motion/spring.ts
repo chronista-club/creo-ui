@@ -55,6 +55,38 @@ export function springPreset(name: SpringPreset): Readonly<SpringOptions> {
 }
 
 /**
+ * Spring の「t 外部化」 形 (LE-P3) — 時間を自分で進めず、 caller に position 関数を渡す。
+ *
+ * creo-ui-layout の time driver (`TimeCurve` 構造型) がこれを受けて scrub の t を
+ * 進める。 import 方向は layout → frame では **なく**、 構造型の一致だけで繋がる
+ * (layout core は frame を import しない、 layout-engine.md LE-7)。
+ *
+ * ⚠️ underdamped preset (wobbly 等) の position は 1 を超える (overshoot)。
+ * WAAPI FLIP はそのまま描けるが、 layout の scrub は t を [0,1] に clamp するため
+ * overshoot は端点で吸収される — どちらに繋ぐかは consumer の選択。
+ */
+export interface SpringCurve {
+  /** 経過秒 → 進行度 (0 始まり、 settleTime で ≈1 に静定) */
+  position(elapsedSeconds: number): number
+  /** |x - 1| < precision に静定するまでの秒数 */
+  settleTime: number
+}
+
+export function springCurve(preset: SpringPreset): SpringCurve
+export function springCurve(options?: SpringOptions): SpringCurve
+export function springCurve(arg?: SpringPreset | SpringOptions): SpringCurve {
+  const options: SpringOptions = typeof arg === 'string' ? SPRING_PRESETS[arg] : (arg ?? {})
+  const k = options.stiffness ?? 280
+  const c = options.damping ?? 20
+  const m = options.mass ?? 1
+  const v0 = options.initialVelocity ?? 0
+  const precision = options.precision ?? 0.001
+
+  const position = positionFn(k, c, m, v0)
+  return { position, settleTime: findSettleTime(position, precision) }
+}
+
+/**
  * Spring を Web Animations API の `linear(...)` easing 文字列に変換。
  *
  * @example
@@ -74,23 +106,15 @@ export function springEasing(preset: SpringPreset): string
 export function springEasing(options?: SpringOptions): string
 export function springEasing(arg?: SpringPreset | SpringOptions): string {
   const options: SpringOptions = typeof arg === 'string' ? SPRING_PRESETS[arg] : (arg ?? {})
-
-  const k = options.stiffness ?? 280
-  const c = options.damping ?? 20
-  const m = options.mass ?? 1
-  const v0 = options.initialVelocity ?? 0
-  const precision = options.precision ?? 0.001
   const samples = options.samples ?? 60
+  const { position, settleTime } = springCurve(options)
 
-  const positionAt = positionFn(k, c, m, v0)
-  const settleTime = findSettleTime(positionAt, precision)
-
-  // Sample positionAt から linear() の keyframe 列を作る
+  // Sample position から linear() の keyframe 列を作る
   // linear() syntax: linear(0, 0.1, 0.3, ..., 1) — 等間隔 sample
   const points: number[] = []
   for (let i = 0; i <= samples; i++) {
     const t = (i / samples) * settleTime
-    points.push(positionAt(t))
+    points.push(position(t))
   }
 
   // 最終値は 1 に丸める (overshoot 残存対策)
