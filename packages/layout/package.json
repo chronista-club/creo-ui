@@ -1,6 +1,6 @@
 {
   "name": "@chronista-club/creo-ui-layout",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "creo-ui — Layout Engine（attention 連続場 + 構造 + scrub）。core は純 calculation（DOM 依存ゼロ）、/solid が SolidJS reference 実装。設計 SSOT: docs/design/layout-engine.md（LE-1〜LE-20）",
   "type": "module",
   "keywords": [

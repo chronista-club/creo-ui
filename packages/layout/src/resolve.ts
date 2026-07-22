@@ -50,7 +50,23 @@ export function resolve(layout: Layout, options: ResolveOptions = {}): ResolvedM
   const colEffs = layout.structure.columns.map((col) =>
     col.panes.reduce((m, p) => Math.max(m, eff(p)), 0),
   )
-  const totalW = colEffs.reduce((s, v) => s + v, 0)
+
+  // 列幅 lock（LE-21）: 列内 pane の lock の最大値。可視列にのみ効く（不可視・非所属は休眠）
+  const locks = layout.locks ?? {}
+  const colLocks = layout.structure.columns.map((col, ci) => {
+    if ((colEffs[ci] ?? 0) <= 0) return 0
+    return col.panes.reduce((m, p) => {
+      const v = locks[p] ?? 0
+      return Number.isFinite(v) && v > 0 ? Math.max(m, Math.min(v, 1)) : m
+    }, 0)
+  })
+  const lockSumRaw = colLocks.reduce((s, v) => s + v, 0)
+  const unlockedEffSum = colEffs.reduce((s, v, ci) => ((colLocks[ci] ?? 0) > 0 ? s : s + v), 0)
+  // 幅和 = 1 を常に保つ: 過剰 lock は比例縮小（unlocked は 0 幅まで潰れうる）、
+  // locked しか可視で無ければ正規化して埋める
+  const lockScale =
+    lockSumRaw <= 0 ? 0 : unlockedEffSum > 0 ? Math.min(1, 1 / lockSumRaw) : 1 / lockSumRaw
+  const remaining = Math.max(0, 1 - lockSumRaw * lockScale)
 
   const out: Record<string, ResolvedPane> = {}
 
@@ -58,8 +74,15 @@ export function resolve(layout: Layout, options: ResolveOptions = {}): ResolvedM
   let xCursor = 0
   layout.structure.columns.forEach((col, ci) => {
     const colEff = colEffs[ci] ?? 0
-    const visible = colEff > 0 && totalW > 0
-    const colW = visible ? colEff / totalW : 0
+    const visible = colEff > 0
+    const colLock = (colLocks[ci] ?? 0) * lockScale
+    const colW = !visible
+      ? 0
+      : colLock > 0
+        ? colLock
+        : unlockedEffSum > 0
+          ? remaining * (colEff / unlockedEffSum)
+          : 0
     const colX = xCursor
     const sumH = col.panes.reduce((s, p) => s + eff(p), 0)
     let yCursor = 0

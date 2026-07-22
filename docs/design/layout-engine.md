@@ -131,6 +131,16 @@ resolve は「**兄弟集合内で場を正規化する**」1 つの純関数の
 4. 署名は **`resolve(layout)` の純形**（viewport 引数なし。content negotiation 延期に伴い用途消滅 —
    復帰時に引数ごと戻す）
 
+### 列幅 lock（LE-21、LE-8 の部分前倒し）
+
+`Layout.locks`（pane id → 幅 share）は**その pane を含む列の幅を固定**し、残りの列が余りを
+正規化する（fader lock の幅版）。幅和 = 1 は常に維持 — 過剰 lock は比例縮小、locked しか
+可視で無ければ正規化して埋める。lock は**サイズ情報なので構造・記法には入らず場の側**に住む
+（LE-4）。px 固定は consumer が resize 時に fraction を再計算して lock を更新する（viewport は
+protocol の外のまま、LE-9）。非所属・不可視列の lock は休眠（popIn / 復帰で復活）。
+min / preferredAspect / solver（LE-8 本体）は引き続き据え置き。需要 1 号 = sidebar 固定
+（2026-07-22 mako）。
+
 ### 量子化は投影の縁（LE-9）
 
 protocol は端から端まで**連続**。量子化は各 platform の投影の縁でやる — TUI = 文字セル、Web = px、
@@ -244,7 +254,7 @@ propose: { structure: "ec | cv/pp ~ board", attention: {...}, reason: "レビュ
 | LE-5 | 主軸水平 | 軸交代 2（横→縦）で打ち止め、arity 無制限。縦画面は将来 transpose 1 穴 |
 | LE-6 | resolve | normalize の再帰適用 1 関数、`resolve(layout)` の純形。列集約は初版 max（OQ-1）（§4） |
 | LE-7 | scrub 遷移 | `interpolate(A, B, t)` が唯一の遷移 primitive。時間は driver。一時状態の戻り先 = last settle（§5） |
-| LE-8 | content negotiation | **延期**（follow-up 穴）。min 制約・solver は dogfood で必要になってから |
+| LE-8 | content negotiation | **延期**（follow-up 穴）。min 制約・solver は dogfood で必要になってから。幅 lock だけ LE-21 として前倒し |
 | LE-9 | 量子化は縁 | protocol は連続。番人判定 =「粗い量子化に耐えるか」（§4） |
 | LE-10 | DOM 安定性 | pane host を reparent しない。配置は transform / grid 座標のみ（VP R1、xterm.js 再生成不可） |
 | LE-11 | projection 境界 | engine は純 client。「何が存在するか」は consumer 供給。scope key を型に明示（VP = lane） |
@@ -257,6 +267,7 @@ propose: { structure: "ec | cv/pp ~ board", attention: {...}, reason: "レビュ
 | LE-18 | floating | 構造非所属 × attention > 0。入場は tiled 直入り。リサイズ = attention、移動 = ephemeral 座標（§3） |
 | LE-19 | 物理投影 | 機材 = もう 1 つの renderer。share 指定、mapping registry は consumer 供給（§9） |
 | LE-20 | focus 非所有 | keyboard focus は DOM / consumer の領分。protocol は空間だけ。argmax = 主役（入力先ではない） |
+| LE-21 | 列幅 lock | `locks`（pane id → 幅 share、場の側）が当該列の幅を固定、残りが余りを正規化。幅和 = 1 維持。px は consumer が resize で再計算。LE-8 の部分前倒し（§4） |
 
 ## 11. Protocol（TypeScript 素描）
 
@@ -325,6 +336,18 @@ DOM 反映（action）は reference 実装（SolidJS）と consumer 実装（VP 
 
 位置語彙（`regions.ts`、PL-2）は共有 canonical vocabulary。相互 import はしない。
 
+### 入れ子 — 領域の中の LayoutEngine
+
+pane の中身は protocol の関心外（LE-12）なので、**pane の中に別 scope の LayoutEngine を
+置ける** — App 全体の engine と lane 内の engine は両立する（2026-07-22 mako 確認）。
+成立根拠は 2 つ: **scope（LE-11）**が場・Scene・settle log・scrub を文脈ごとに完全分離すること、
+resolve の出力が 0..1 相対 rect で**自己相似**なこと（どの pane も内側 stage の 1×1 世界になる。
+グローバル座標はどこにも無い）。LE-5 の「軸交代 2」は 1 Layout 内の制約であり、入れ子は
+各層が単純な Layout を持つ render 合成 — 深い木を 1 つの場で背負わない。
+gesture の階層 routing は consumer 判断（LE-20 と同じ理由）、float は自分の engine の枠内で
+のみ浮く（App 全面に浮かせたいものは App 側 engine に置く）。階層を跨いだ実効 attention が
+必要になったら share の積で導出できる（現時点では不要）。
+
 ## 13. Dogfood
 
 - **primary = VP gallery mode**（doc 48 Phase 3）。`bun link` × watch → Reload で WKWebView 実機の秒ループ
@@ -388,3 +411,6 @@ DOM 反映（action）は reference 実装（SolidJS）と consumer 実装（VP 
   settle log（履歴 = 無名 Scene、永続 = 末尾、蒸留 = CC）/ AI 共著 LE-15 + apply policy LE-16
   （DAW automation modes、Touch = per-pane 調停）/ 物理投影 LE-19（share 指定、mapping registry）/
   **focus 追放 LE-20** / taper / 記法 `~` / `resolve(layout)` 純形 / property test を P0 受け入れ条件に
+- 2026-07-22: **LE-21 列幅 lock**（v0.2.0）— LE-8 の部分前倒し。`Layout.locks` = fader lock の幅版
+  （需要 1 号: sidebar 固定、mako。px は consumer resize 再計算で viewport は protocol 外のまま）。
+  §8 に**入れ子**（pane の中の LayoutEngine — scope 分離 × 0..1 自己相似で protocol 変更ゼロ）を明文化

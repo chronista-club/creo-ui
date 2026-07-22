@@ -32,6 +32,14 @@ export type Attention = Readonly<Record<string, number>>
 export interface Layout {
   readonly structure: Structure
   readonly attention: Attention
+  /**
+   * 列幅 lock（LE-21、fader lock の幅版）: pane id → 幅 share ∈ (0, 1)。
+   * その pane を**含む列**の幅を固定し、残りの列が余りを正規化する。
+   * サイズ情報なので構造/記法には入らず場の側に住む（LE-4）。px 固定は consumer が
+   * resize 時に fraction を再計算して更新する（viewport は protocol の外、LE-9）。
+   * 非所属 pane の lock は休眠（popIn で復活）。
+   */
+  readonly locks?: Readonly<Record<string, number>>
 }
 
 /** Scene = Layout の名前付き immutable snapshot = 注視の表現 = scrub の端点（LE-14） */
