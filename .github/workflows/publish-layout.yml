@@ -1,0 +1,73 @@
+name: Publish @chronista-club/creo-ui-layout to npm
+
+on:
+  push:
+    tags: ["layout-v*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (must match package.json, or leave blank to use current)"
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: creo-ui
+    steps:
+      # creo-ui を nested path に checkout、 creo-views を sibling として
+      # 並行 checkout (packages/md-view の `file:../../../creo-views` 解決のため)。
+      # publish-icons-web.yml と同 layout。
+      - name: Checkout creo-ui
+        uses: actions/checkout@v4
+        with:
+          path: creo-ui
+
+      - name: Checkout creo-views (sibling, required by packages/md-view)
+        uses: actions/checkout@v4
+        with:
+          repository: chronista-club/creo-views
+          path: creo-views
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies (root workspace)
+        run: bun install --frozen-lockfile
+
+      - name: Test (protocol core — property + golden)
+        working-directory: creo-ui/packages/layout
+        run: bun test src
+
+      - name: Typecheck (layout build config)
+        working-directory: creo-ui/packages/layout
+        run: bun run typecheck:build
+
+      - name: Build layout (vite lib)
+        working-directory: creo-ui/packages/layout
+        # vite + vite-plugin-solid で /solid の JSX を事前 compile、vite-plugin-dts で .d.ts 生成。
+        # 出力は packages/layout/dist/ (gitignore) に入る。
+        run: bun run build
+
+      - name: Verify dist artifacts
+        run: |
+          test -s packages/layout/dist/index.js
+          test -s packages/layout/dist/index.d.ts
+          test -s packages/layout/dist/solid/index.js
+          test -s packages/layout/dist/solid/index.d.ts
+
+      - name: Publish to npm
+        working-directory: creo-ui/packages/layout
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public

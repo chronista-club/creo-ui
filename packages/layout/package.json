@@ -1,9 +1,20 @@
 {
   "name": "@chronista-club/creo-ui-layout",
   "version": "0.1.0",
-  "description": "creo-ui — Layout Engine（attention 連続場 + 構造 + scrub）。core は純 calculation（DOM 依存ゼロ）、/solid が SolidJS reference 実装（LE-P1）。package 名は仮称（design doc OQ-5）",
+  "description": "creo-ui — Layout Engine（attention 連続場 + 構造 + scrub）。core は純 calculation（DOM 依存ゼロ）、/solid が SolidJS reference 実装。設計 SSOT: docs/design/layout-engine.md（LE-1〜LE-20）",
   "type": "module",
-  "private": true,
+  "keywords": [
+    "creo-ui",
+    "layout-engine",
+    "attention-field",
+    "tiling",
+    "scrub",
+    "design-system",
+    "solid-js"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -27,7 +38,8 @@
   "scripts": {
     "build": "vite build",
     "test": "bun test src",
-    "typecheck:build": "tsc -p tsconfig.build.json --noEmit"
+    "typecheck:build": "tsc -p tsconfig.build.json --noEmit",
+    "prepublishOnly": "bun run build"
   },
   "peerDependencies": {
     "solid-js": "^1.9.0"
