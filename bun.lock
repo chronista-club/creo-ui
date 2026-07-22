@@ -77,6 +77,10 @@
         "solid-js": "^1.9.0",
       },
     },
+    "packages/layout": {
+      "name": "@chronista-club/creo-ui-layout",
+      "version": "0.0.1",
+    },
     "packages/md-view": {
       "name": "creo-ui-md-view",
       "version": "0.1.0",
@@ -194,6 +198,8 @@
     "@chronista-club/creo-ui-editor-host": ["@chronista-club/creo-ui-editor-host@workspace:packages/editor-host"],
 
     "@chronista-club/creo-ui-icons-web": ["@chronista-club/creo-ui-icons-web@workspace:packages/icons-web"],
+
+    "@chronista-club/creo-ui-layout": ["@chronista-club/creo-ui-layout@workspace:packages/layout"],
 
     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.21.5", "", { "os": "aix", "cpu": "ppc64" }, "sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ=="],
 
