@@ -1,0 +1,13 @@
+{
+  "name": "@chronista-club/creo-ui-layout",
+  "version": "0.0.1",
+  "description": "creo-ui — Layout Engine protocol core（attention 連続場 + 構造 + scrub）。LE-P0: 純 calculation のみ、DOM 依存ゼロ。package 名は仮称（design doc OQ-5）",
+  "type": "module",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "bun test src"
+  },
+  "license": "Apache-2.0"
+}
