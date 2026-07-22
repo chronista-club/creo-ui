@@ -30,12 +30,14 @@ export type { AdmitOptions, DominanceDirection } from './gestures'
 export {
   admit,
   equalize,
+  lock,
   moveDominance,
   mute,
   popIn,
   popOut,
   setShare,
   solo,
+  unlock,
   visibleIds,
 } from './gestures'
 
@@ -47,4 +49,4 @@ export type {
   SettleAuthor,
   SettleEntry,
 } from './engine'
-export { createLayoutEngine } from './engine'
+export { cloneLayout, createLayoutEngine } from './engine'

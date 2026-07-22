@@ -60,10 +60,14 @@ interface ScopeState {
 
 const clamp01 = (n: number): number => Math.min(1, Math.max(0, n))
 
-/** Layout の構造的複製（純 data なので手書きで足りる — structuredClone = DOM API に依存しない） */
-const cloneLayout = (layout: Layout): Layout => ({
+/**
+ * Layout の構造的複製（純 data なので手書きで足りる — structuredClone = DOM API に依存しない）。
+ * consumer も Scene capture 等で使う public API（複製の同型実装を増やさないため export）。
+ */
+export const cloneLayout = (layout: Layout): Layout => ({
   structure: { columns: layout.structure.columns.map((col) => ({ panes: [...col.panes] })) },
   attention: { ...layout.attention },
+  locks: layout.locks ? { ...layout.locks } : undefined,
 })
 
 export function createLayoutEngine(options: LayoutEngineOptions = {}): LayoutEngine {

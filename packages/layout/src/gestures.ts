@@ -19,7 +19,7 @@ export function visibleIds(layout: Layout): string[] {
 }
 
 function withAttention(layout: Layout, attention: Attention): Layout {
-  return { structure: layout.structure, attention }
+  return { structure: layout.structure, attention, locks: layout.locks }
 }
 
 /** share の上限（1 に漸近すると raw が発散するため） */
@@ -155,23 +155,53 @@ export function admit(layout: Layout, id: string, opts: AdmitOptions = {}): Layo
       : 1
   const prev = layout.attention[id] ?? 0
   const raw = prev > 0 ? prev : mean
-  const admitted: Layout = { structure, attention: { ...layout.attention, [id]: raw } }
+  const admitted: Layout = {
+    structure,
+    attention: { ...layout.attention, [id]: raw },
+    locks: layout.locks,
+  }
   return opts.share != null ? setShare(admitted, id, opts.share) : admitted
 }
 
-/** tiled → floating（構造から抜くだけ。場は不変 = サイズが保存される） */
+/** tiled → floating（構造から抜くだけ。場は不変 = サイズが保存される。lock は休眠） */
 export function popOut(layout: Layout, id: string): Layout {
   const structure = removePane(layout.structure, id)
   if (structure === layout.structure) return layout
-  return { structure, attention: layout.attention }
+  return { structure, attention: layout.attention, locks: layout.locks }
 }
 
-/** floating → tiled（構造へ戻すだけ。場は不変）。既定 = 末尾に新規列 */
+/** floating → tiled（構造へ戻すだけ。場は不変、休眠 lock は復活）。既定 = 末尾に新規列 */
 export function popIn(layout: Layout, id: string, column?: number): Layout {
   if (isMember(layout.structure, id)) return layout
   const structure =
     column != null
       ? insertIntoColumn(layout.structure, id, column)
       : appendColumn(layout.structure, id)
-  return { structure, attention: layout.attention }
+  return { structure, attention: layout.attention, locks: layout.locks }
+}
+
+/**
+ * 列幅 lock（LE-21、fader lock の幅版）。share = その pane を含む列の幅 share。
+ * サイズ情報なので場の側（Layout.locks）に住む — 構造・記法には入らない（LE-4）。
+ */
+export function lock(layout: Layout, id: string, share: number): Layout {
+  if (!Number.isFinite(share) || share <= 0) return unlock(layout, id)
+  const clamped = Math.min(share, MAX_SHARE)
+  return {
+    structure: layout.structure,
+    attention: layout.attention,
+    locks: { ...(layout.locks ?? {}), [id]: clamped },
+  }
+}
+
+/** lock 解除。無ければ no-op（同一参照） */
+export function unlock(layout: Layout, id: string): Layout {
+  if (!layout.locks || !(id in layout.locks)) return layout
+  const locks: Record<string, number> = { ...layout.locks }
+  delete locks[id]
+  return {
+    structure: layout.structure,
+    attention: layout.attention,
+    locks: Object.keys(locks).length > 0 ? locks : undefined,
+  }
 }

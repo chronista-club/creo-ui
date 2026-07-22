@@ -8,11 +8,13 @@
 
 import {
   admit,
+  cloneLayout,
   createLayoutEngine,
   equalize,
   formatNotation,
   interpolate,
   isMember,
+  lock,
   memberIds,
   moveDominance,
   mute,
@@ -22,6 +24,7 @@ import {
   resolve,
   setShare,
   solo,
+  unlock,
 } from '@chronista-club/creo-ui-layout'
 import type {
   DominanceDirection,
@@ -63,11 +66,6 @@ const paneRef = (id: string): PaneRef => {
   }
   return p
 }
-
-const cloneLayout = (l: Layout): Layout => ({
-  structure: { columns: l.structure.columns.map((c) => ({ panes: [...c.panes] })) },
-  attention: { ...l.attention },
-})
 
 const PANE_ID_RE = /^[^\s|/~]+$/
 
@@ -292,6 +290,16 @@ export default function LayoutLab() {
             {(pane) => {
               const share = () => displayed()[pane.id]?.attention ?? 0
               const floating = () => resolved()[pane.id]?.floating ?? false
+              // lock は列単位に効く（LE-21 の max 集約）ので、表示も列単位で判定する
+              const columnLock = () => {
+                const col = layout().structure.columns.find((c) => c.panes.includes(pane.id))
+                const locks = layout().locks
+                if (!col || !locks) return undefined
+                const vals = col.panes
+                  .map((p) => locks[p])
+                  .filter((v): v is number => v != null && v > 0)
+                return vals.length > 0 ? Math.max(...vals) : undefined
+              }
               return (
                 <div
                   style={{
@@ -345,6 +353,26 @@ export default function LayoutLab() {
                   >
                     {floating() ? 'dock' : 'float'}
                   </button>
+                  <Show when={isMember(layout().structure, pane.id)}>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        gesture((l) => {
+                          const col = l.structure.columns.find((c) => c.panes.includes(pane.id))
+                          if (!col) return l
+                          if (col.panes.some((p) => l.locks?.[p] != null)) {
+                            // 列単位で解除（同一列の lock を全部外す）
+                            return col.panes.reduce((acc, p) => unlock(acc, p), l)
+                          }
+                          return lock(l, pane.id, resolved()[pane.id]?.rect.w ?? 0.3)
+                        })
+                      }
+                    >
+                      {columnLock() != null
+                        ? `🔒 ${Math.round((columnLock() ?? 0) * 100)}%`
+                        : 'lock幅'}
+                    </button>
+                  </Show>
                 </div>
               )
             }}

@@ -4,6 +4,7 @@
  */
 
 import { describe, expect, test } from 'bun:test'
+import { popIn, popOut, setShare } from './gestures'
 import { parseNotation } from './notation'
 import { resolve } from './resolve'
 import { lcg, randomLayout } from './testkit'
@@ -148,5 +149,60 @@ describe('resolve — 壊れた入力への耐性（非有限は 0 = 非表示�
       expect(Number.isFinite(p.rect.x)).toBe(true)
       expect(p.attention).toBe(0)
     }
+  })
+})
+
+describe('resolve — 列幅 lock（LE-21）', () => {
+  test('lock した列の幅は場が動いても不変（sidebar 用途）', () => {
+    const base: Layout = { ...layoutOf('sb | a/b', { sb: 1, a: 1, b: 1 }), locks: { sb: 0.25 } }
+    expect(resolve(base).sb?.rect.w).toBeCloseTo(0.25)
+    // 場を大きく動かしても lock は不変、残り列が余りを吸収する
+    const shifted = setShare(base, 'a', 0.8)
+    expect(shifted.locks?.sb).toBe(0.25) // gesture が locks を保持
+    expect(resolve(shifted).sb?.rect.w).toBeCloseTo(0.25)
+    expect(resolve(shifted).a?.rect.w).toBeCloseTo(0.75)
+  })
+
+  test('unlocked 列が余りを正規化', () => {
+    const l: Layout = { ...layoutOf('sb | a | b', { sb: 1, a: 1, b: 1 }), locks: { sb: 0.25 } }
+    const r = resolve(l)
+    expect(r.a?.rect.w).toBeCloseTo(0.375)
+    expect(r.b?.rect.w).toBeCloseTo(0.375)
+  })
+
+  test('locked 列しか可視で無ければ正規化して埋める（幅和 = 1 維持）', () => {
+    const l: Layout = { ...layoutOf('sb | a', { sb: 1, a: 0 }), locks: { sb: 0.25 } }
+    expect(resolve(l).sb?.rect.w).toBeCloseTo(1)
+  })
+
+  test('過剰 lock は比例縮小して幅和 = 1 を保つ（unlocked は 0 幅まで潰れる）', () => {
+    const l: Layout = { ...layoutOf('x | y | c', { x: 1, y: 1, c: 1 }), locks: { x: 0.7, y: 0.7 } }
+    const r = resolve(l)
+    expect(r.x?.rect.w).toBeCloseTo(0.5)
+    expect(r.y?.rect.w).toBeCloseTo(0.5)
+    expect(r.c?.rect.w).toBeCloseTo(0)
+  })
+
+  test('非所属 pane の lock は休眠し、popIn で復活', () => {
+    const base: Layout = { ...layoutOf('sb | a', { sb: 1, a: 1 }), locks: { sb: 0.3 } }
+    const floated = popOut(base, 'sb')
+    expect(resolve(floated).a?.rect.w).toBeCloseTo(1) // lock 休眠
+    expect(resolve(floated).sb?.floating).toBe(true)
+    const docked = popIn(floated, 'sb')
+    expect(resolve(docked).sb?.rect.w).toBeCloseTo(0.3) // 復活
+    expect(resolve(docked).a?.rect.w).toBeCloseTo(0.7)
+  })
+
+  test('壊れた lock 値（NaN / 負）は無視、範囲外は 1 に clamp', () => {
+    const broken: Layout = {
+      ...layoutOf('a | b', { a: 1, b: 1 }),
+      locks: { a: Number.NaN, b: -1 },
+    }
+    expect(resolve(broken).a?.rect.w).toBeCloseTo(0.5) // 両方無視 → 通常の正規化
+
+    const over: Layout = { ...layoutOf('a | b', { a: 1, b: 1 }), locks: { a: 2.5 } }
+    const r = resolve(over)
+    expect(r.a?.rect.w).toBeCloseTo(1) // clamp → 全幅
+    expect(r.b?.rect.w).toBeCloseTo(0)
   })
 })

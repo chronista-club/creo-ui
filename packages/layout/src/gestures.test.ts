@@ -7,12 +7,14 @@ import { describe, expect, test } from 'bun:test'
 import {
   admit,
   equalize,
+  lock,
   moveDominance,
   mute,
   popIn,
   popOut,
   setShare,
   solo,
+  unlock,
   visibleIds,
 } from './gestures'
 import { parseNotation } from './notation'
@@ -156,6 +158,30 @@ describe('admit / popOut / popIn', () => {
   })
 })
 
+describe('lock / unlock（LE-21）', () => {
+  const base = lock(layoutOf('sb | a', { sb: 1, a: 1 }), 'sb', 0.3)
+
+  test('lock が locks に入り、他 gesture が保持する', () => {
+    expect(base.locks?.sb).toBe(0.3)
+    expect(mute(base, 'a').locks?.sb).toBe(0.3)
+    expect(solo(base, 'a').locks?.sb).toBe(0.3)
+    expect(equalize(base).locks?.sb).toBe(0.3)
+    expect(moveDominance(base, 'right').locks?.sb).toBe(0.3)
+    expect(admit(base, 'nu').locks?.sb).toBe(0.3)
+    expect(popOut(base, 'sb').locks?.sb).toBe(0.3) // 休眠でも保持
+  })
+
+  test('unlock は lock を外し、無ければ no-op（同一参照）', () => {
+    const unlocked = unlock(base, 'sb')
+    expect(unlocked.locks).toBeUndefined()
+    expect(unlock(unlocked, 'sb')).toBe(unlocked)
+  })
+
+  test('share <= 0 の lock は unlock に落ちる', () => {
+    expect(lock(base, 'sb', 0).locks).toBeUndefined()
+  })
+})
+
 describe('全 pane 非表示の layout に対する gesture', () => {
   const dark = layoutOf('a | b', { a: 0, b: 0 })
 
@@ -189,6 +215,8 @@ describe('property: 全 gesture の出力は valid な場', () => {
         moveDominance(base, dirs[Math.floor(rand() * 4)] as (typeof dirs)[number]),
         popOut(base, pick),
         popIn(base, `extra${i}`),
+        lock(base, pick, rand()),
+        unlock(base, pick),
       ]
       for (const l of results) {
         const values = Object.values(l.attention)
