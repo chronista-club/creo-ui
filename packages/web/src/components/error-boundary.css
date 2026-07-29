@@ -145,6 +145,13 @@
   color: var(--color-text-primary);
 }
 
+/* press = veil-2 (_elevation.css の press 語彙)。 */
+.creo-error-boundary-detail summary:active {
+  background-color: var(--surface-veil-2);
+  color: var(--color-text-primary);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
 .creo-error-boundary-detail pre {
   margin: var(--spacing-xs) 0 0 0;
   padding: calc(var(--spacing-s) * var(--density-padding-scale, 1));

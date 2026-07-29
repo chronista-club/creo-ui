@@ -73,6 +73,13 @@
   color: var(--color-text-primary);
 }
 
+/* press = veil-2 (_elevation.css の press 語彙)。 current page は押しても遷移しないので除外。 */
+.creo-pagination-item:active:not(:disabled):not([aria-current="page"]) {
+  background-color: var(--surface-veil-2);
+  color: var(--color-text-primary);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
 /* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 .creo-pagination-item:disabled {

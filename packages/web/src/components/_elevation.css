@@ -124,7 +124,16 @@
      light の段差が一段弱かった — veil 化でこれも解消する。
 
        veil-1 : 控えめな段 (striped / hover / track / marker)。 従来の dark 相当。
-       veil-2 : 明確な面 (filled input / badge / code block / filled hover)。 */
+       veil-2 : 明確な面 (filled input / badge / code block / filled hover)。
+
+     ── Press 語彙 (interactive の標準) ──────────────────────────────────
+     raised な単体 control (button / card) の press は「沈み込み」 (translateY(1px) +
+     fill darken)。 flat な行 target (menu-item / tab / pagination-item / summary /
+     close button 等) の press は **veil ladder をもう一段** — hover = veil-1 →
+     :active = veil-2。 あわせて :active 側で transition-duration を
+     --motion-mapping-press-duration (80ms) に落とすと、 押下は即時・離すと hover
+     速度で柔らかく戻る (press rule が外れるため base の duration に復帰する)。
+     色変化のみなので prefers-reduced-motion でも安全。 */
   --surface-veil-1: color-mix(in oklch, var(--color-text-primary) 4%, transparent);
   --surface-veil-2: color-mix(in oklch, var(--color-text-primary) 8%, transparent);
 }
