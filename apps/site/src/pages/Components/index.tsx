@@ -498,6 +498,12 @@ const COMPONENTS: readonly ComponentEntry[] = [
     detail: true,
   },
   {
+    name: 'Select',
+    slug: 'select',
+    desc: 'Native <select> の styled wrapper — 単一選択 dropdown、arrow は wrapper ::after',
+    detail: true,
+  },
+  {
     name: 'Header',
     slug: 'header',
     desc: '3-slot ViewBuilder (logo / nav / actions) — default/marketing × sticky/elevation',

@@ -78,6 +78,12 @@ token SSOT (`creo-ui/tokens.css`) を必ず一緒に import すること。
 | Timeline | [timeline.md](./timeline.md) | `.creo-timeline` + `-item/-marker/-content/-title/-meta/-description` | default/success/warning/error/info × s/m |
 | Combobox | [combobox.md](./combobox.md) | `.creo-combobox` (native `<input list>` + `<datalist>`) | `.creo-input` の全 variant 継承 |
 
+## 0.27.0+ (1 追加)
+
+| Component | Spec | CSS | 主な variant |
+|-----------|------|-----|-------------|
+| Select | [select.md](./select.md) | `.creo-select` (wrapper + ::after arrow) + `-input` (native `<select>`) | bordered/filled × s/m/l × fit/full、error state。site header の theme switcher が初 consumer |
+
 ## 共通設計方針
 
 ### Framework agnostic (CSS + data attribute)
