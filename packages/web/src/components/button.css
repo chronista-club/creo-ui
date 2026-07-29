@@ -98,20 +98,24 @@
   transform: translateY(1px);
 }
 
+/* secondary = **fill の variant** (tonal fill、 border 無し)。 outline = border の variant、
+   ghost = 無 — 各 variant が識別子を 1 つだけ持つことで、 5 variant が実際に 5 種に見える。
+   旧実装は bg-surface (絶対 token) + outline と同じ border で、 bg-subtle の面 (specimen
+   card / panel) 上では fill の差 ΔL0.02 がほぼ不可視 → outline と見分け不能だった。
+   veil fill は下地が何であれ必ず一段になる (#93 と同じ論法)。 */
 .creo-btn[data-variant="secondary"] {
-  background-color: var(--color-surface-surface);
-  border-color: var(--color-surface-border);
+  background-color: var(--surface-veil-2);
+  border-color: transparent;
   color: var(--color-text-primary);
   --_btn-fg: var(--color-text-primary);
 }
-/* hover = surface ladder を 1 段上げて lift (dark: L0.20→0.28 で明るく浮く、
-   light: white→bg-emphasis で自然な feedback) + border が brand に灯る。 */
+/* hover = veil ladder を一段 (2→3)。 dark でも light でも「濃くなる」方向に揃う。 */
 .creo-btn[data-variant="secondary"]:hover:not(:disabled) {
-  background-color: var(--color-surface-bg-emphasis);
-  border-color: var(--color-brand-primary);
+  background-color: var(--surface-veil-3);
 }
+/* press = 沈み込み (raised control の press 語彙)。 fill は hover 段のまま。 */
 .creo-btn[data-variant="secondary"]:active:not(:disabled) {
-  background-color: var(--surface-veil-1);
+  background-color: var(--surface-veil-3);
   transform: translateY(1px);
 }
 
@@ -124,25 +128,26 @@
 .creo-btn[data-variant="ghost"]:hover:not(:disabled) {
   background-color: var(--surface-veil-1);
 }
+/* press = hover (veil-1) の一段深 + 沈み込み。 */
 .creo-btn[data-variant="ghost"]:active:not(:disabled) {
-  background-color: var(--surface-veil-1);
+  background-color: var(--surface-veil-2);
   transform: translateY(1px);
 }
 
-/* outline — 透明背景 + border の bordered variant (secondary の subtle fill 無し版) */
+/* outline = **border の variant** (fill 無し)。 secondary (fill の variant) との分業 —
+   hover で border が brand に灯るのが signature。 */
 .creo-btn[data-variant="outline"] {
   background-color: transparent;
   border-color: var(--color-surface-border);
   color: var(--color-text-primary);
   --_btn-fg: var(--color-text-primary);
 }
-/* hover = surface ladder を 1 段上げて lift + border が brand に灯る (secondary と同方針)。 */
 .creo-btn[data-variant="outline"]:hover:not(:disabled) {
-  background-color: var(--color-surface-bg-emphasis);
+  background-color: var(--surface-veil-1);
   border-color: var(--color-brand-primary);
 }
 .creo-btn[data-variant="outline"]:active:not(:disabled) {
-  background-color: var(--surface-veil-1);
+  background-color: var(--surface-veil-2);
   border-color: var(--color-brand-primary);
   transform: translateY(1px);
 }
@@ -244,19 +249,22 @@
   border-color: var(--fill-brand-active);
   color: var(--on-fill-brand);
 }
+/* toggle-on の bg は各 variant の rest より一段深く (secondary rest=veil-2 → on=veil-3、
+   ghost/outline rest=透明 → on=veil-2)。 text は --text-brand-readable — brand-primary
+   直挿しは light theme で surface に対し 1.5:1 まで崩れる (_elevation.css の warning)。 */
 .creo-btn[data-variant="secondary"][aria-pressed="true"] {
-  background-color: var(--surface-veil-1);
-  border-color: var(--color-brand-primary);
-  color: var(--color-brand-primary);
+  background-color: var(--surface-veil-3);
+  border-color: transparent;
+  color: var(--text-brand-readable);
 }
 .creo-btn[data-variant="ghost"][aria-pressed="true"] {
-  background-color: var(--surface-veil-1);
-  color: var(--color-brand-primary);
+  background-color: var(--surface-veil-2);
+  color: var(--text-brand-readable);
 }
 .creo-btn[data-variant="outline"][aria-pressed="true"] {
-  background-color: var(--surface-veil-1);
+  background-color: var(--surface-veil-2);
   border-color: var(--color-brand-primary);
-  color: var(--color-brand-primary);
+  color: var(--text-brand-readable);
 }
 .creo-btn[data-variant="danger"][aria-pressed="true"] {
   background-color: var(--color-semantic-error-active);
