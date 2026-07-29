@@ -20,7 +20,7 @@
   white-space: nowrap;
 
   /* default: neutral variant */
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-2);
   color: var(--color-text-secondary);
 }
 

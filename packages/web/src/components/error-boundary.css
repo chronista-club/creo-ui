@@ -129,7 +129,7 @@
 }
 
 .creo-error-boundary-detail summary:hover {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   color: var(--color-text-primary);
 }
 
@@ -140,7 +140,7 @@
      directive で sans token へ)。 mono 専用 font は廃止。 */
   font-family: var(--typography-family-sans);
   font-size: var(--typography-body-caption);
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-2);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-s);
   overflow-x: auto;

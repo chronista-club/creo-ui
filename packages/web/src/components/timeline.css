@@ -51,7 +51,7 @@
   width: 32px;
   height: 32px;
   border-radius: var(--radius-full);
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   color: var(--color-text-primary);
   border: 2px solid var(--color-surface-border);
   font-size: var(--typography-size-s);

@@ -14,7 +14,7 @@
   align-items: stretch;
   gap: var(--spacing-xs);
   padding: var(--spacing-xs);
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
   box-shadow: var(--elevation-well);

@@ -25,7 +25,7 @@
 .creo-tabs[data-variant="pill"] .creo-tabs-list {
   border-bottom: none;
   padding: var(--spacing-xs);
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   border-radius: var(--radius-m);
   gap: var(--spacing-xs);
 }

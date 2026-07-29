@@ -107,4 +107,24 @@
     var(--color-brand-primary) 50%,
     var(--color-text-primary)
   );
+
+  /* ── Surface veil (面の上に重ねる相対的な「段」) ────────────────────── */
+  /* striped row / filled input / track / hover feedback のように「今いる面より
+     一段」を作る差分表現のための veil。
+     絶対 token (--color-surface-bg-subtle) をこの用途に使うと、 「置かれる面が
+     bg-base である」 という暗黙の前提が入る。 card / panel / playground のように
+     面自体が bg-subtle の上では段差が 0 になり、 縞も凹みも消えてしまう
+     (CSS には親の背景色を読む手段が無いので、 絶対値では原理的に解けない)。
+     text-primary は dark theme=明色 / light theme=暗色 に反転するため、 それを
+     低 alpha で重ねれば「今の面が何であれ必ず一段」になる
+     (--text-brand-readable と同じ論法)。 transparent 合成なので下地を問わない。
+
+     ΔL は全 8 theme で veil-1 ≈ 0.032 / veil-2 ≈ 0.064 に揃う。
+     従来の bg-subtle 差分は dark 0.030 / light 0.020 と theme 間で不揃いで、
+     light の段差が一段弱かった — veil 化でこれも解消する。
+
+       veil-1 : 控えめな段 (striped / hover / track / marker)。 従来の dark 相当。
+       veil-2 : 明確な面 (filled input / badge / code block / filled hover)。 */
+  --surface-veil-1: color-mix(in oklch, var(--color-text-primary) 4%, transparent);
+  --surface-veil-2: color-mix(in oklch, var(--color-text-primary) 8%, transparent);
 }

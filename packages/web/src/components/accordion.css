@@ -26,7 +26,7 @@
 }
 
 .creo-accordion[data-variant="subtle"] {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   border: none;
   border-radius: var(--radius-s);
 }
@@ -56,7 +56,7 @@
 }
 
 .creo-accordion-summary:hover {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
 
 /* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
