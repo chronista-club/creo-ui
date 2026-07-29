@@ -125,6 +125,8 @@
 
        veil-1 : 控えめな段 (striped / hover / track / marker)。 従来の dark 相当。
        veil-2 : 明確な面 (filled input / badge / code block / filled hover)。
+       veil-3 : tonal control の fill (secondary button の rest) と、 veil-2 面の
+                hover / press。 「面そのものが control」 な要素に使う最深段。
 
      ── Press 語彙 (interactive の標準) ──────────────────────────────────
      raised な単体 control (button / card) の press は「沈み込み」 (translateY(1px) +
@@ -136,4 +138,5 @@
      色変化のみなので prefers-reduced-motion でも安全。 */
   --surface-veil-1: color-mix(in oklch, var(--color-text-primary) 4%, transparent);
   --surface-veil-2: color-mix(in oklch, var(--color-text-primary) 8%, transparent);
+  --surface-veil-3: color-mix(in oklch, var(--color-text-primary) 12%, transparent);
 }

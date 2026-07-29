@@ -41,10 +41,11 @@ const PROPS = [
 ] as const
 
 const TOKENS = [
-  { slot: 'background (primary)', token: 'color.brand.primary' },
-  { slot: 'background (secondary)', token: 'color.surface.surface + color.surface.border' },
-  { slot: 'background (ghost)', token: 'transparent + hover color.surface.bg-subtle' },
-  { slot: 'label color', token: 'color.text.primary (inverse on primary: color.surface.bg-base)' },
+  { slot: 'background (primary)', token: '--fill-brand (chroma boost 導出)' },
+  { slot: 'background (secondary)', token: '--surface-veil-2 の tonal fill (border 無し)' },
+  { slot: 'background (outline)', token: 'transparent + color.surface.border (fill 無し)' },
+  { slot: 'background (ghost)', token: 'transparent + hover --surface-veil-1' },
+  { slot: 'label color', token: 'color.text.primary (primary/danger 上は --on-fill-* 自動選択)' },
   { slot: 'font-size', token: 'typography.size.{s/m/l}' },
   { slot: 'padding', token: 'spacing.{xs/s/m} × spacing.{s/m/l}' },
   { slot: 'gap (icon + label)', token: 'layout.gap.tight' },
