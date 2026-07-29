@@ -101,3 +101,9 @@
 .creo-avatar-status[data-status="away"] {
   background-color: var(--color-semantic-warning);
 }
+/* offline は base の text-tertiary と同値。 明示 rule が無くても見た目は出るが、
+   spec の 4 status (online / away / busy / offline) を CSS 上でも読み取れるように
+   置いている — consumer が grep したとき「offline は未実装」に見えるのを防ぐ。 */
+.creo-avatar-status[data-status="offline"] {
+  background-color: var(--color-text-tertiary);
+}

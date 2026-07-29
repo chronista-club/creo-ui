@@ -6,6 +6,13 @@
  */
 
 .creo-table {
+  /* cell padding の size 別の素の値。 [data-size] variant はこの 2 変数だけを差し替え、
+     cell 側の padding 宣言 (density calc 込み) は 1 箇所に集約する (button.css と同 pattern)。
+     root に置くのは size variant の selector が .creo-table[data-size] であるため
+     (custom property 継承で cell に届く)。 */
+  --_table-cell-pad-y: var(--spacing-s);
+  --_table-cell-pad-x: var(--spacing-m);
+
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -34,7 +41,8 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   text-align: left;
-  padding: var(--spacing-s) var(--spacing-m);
+  padding: calc(var(--_table-cell-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_table-cell-pad-x) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border);
 }
 
@@ -47,7 +55,8 @@
 /* ---------- Body cells ---------- */
 
 .creo-table-cell {
-  padding: var(--spacing-s) var(--spacing-m);
+  padding: calc(var(--_table-cell-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_table-cell-pad-x) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border-subtle, var(--color-surface-border));
   vertical-align: middle;
 }
@@ -66,12 +75,19 @@
 
 /* ---------- Sizes ---------- */
 
+/* size variant は --_table-cell-pad-* の差し替えのみ (cell 側の density calc を剥がさない)。 */
+.creo-table[data-size="s"] {
+  --_table-cell-pad-y: var(--spacing-xs);
+  --_table-cell-pad-x: var(--spacing-s);
+}
 .creo-table[data-size="s"] .creo-table-cell {
-  padding: var(--spacing-xs) var(--spacing-s);
   font-size: var(--typography-size-s);
 }
+.creo-table[data-size="l"] {
+  --_table-cell-pad-y: var(--spacing-m);
+  --_table-cell-pad-x: var(--spacing-l);
+}
 .creo-table[data-size="l"] .creo-table-cell {
-  padding: var(--spacing-m) var(--spacing-l);
   font-size: var(--typography-size-l);
 }
 

@@ -11,8 +11,16 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: var(--spacing-s);
-  padding: var(--spacing-xl);
+
+  /* size 別の素の値。 [data-size] variant はこの 3 変数だけを差し替え、
+     gap / padding の宣言 (density calc 込み) はここ 1 箇所 (button.css と同 pattern)。 */
+  --_es-gap: var(--spacing-s);
+  --_es-pad-y: var(--spacing-xl);
+  --_es-pad-x: var(--spacing-xl);
+
+  gap: calc(var(--_es-gap) * var(--density-gap-scale, 1));
+  padding: calc(var(--_es-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_es-pad-x) * var(--density-padding-scale, 1));
   color: var(--color-text-primary);
   /* Subtle radial gradient bg で 「empty な空間に意図がある」 articulate。
      brand-primary-subtle を 8% mix で whisper、 over-articulate しない。 */
@@ -26,14 +34,17 @@
 
 /* ---------- Sizes ---------- */
 
+/* size variant は --_es-* の差し替えのみ (base 側の density calc を剥がさない)。 */
 .creo-empty-state[data-size="s"] {
-  padding: var(--spacing-m);
-  gap: var(--spacing-xs);
+  --_es-pad-y: var(--spacing-m);
+  --_es-pad-x: var(--spacing-m);
+  --_es-gap: var(--spacing-xs);
 }
 
 .creo-empty-state[data-size="l"] {
-  padding: calc(var(--spacing-xl) * 2) var(--spacing-xl);
-  gap: var(--spacing-m);
+  --_es-pad-y: calc(var(--spacing-xl) * 2);
+  --_es-pad-x: var(--spacing-xl);
+  --_es-gap: var(--spacing-m);
 }
 
 /* ---------- Icon (typography.icon の 5 tier xs/s/m/l/xl から l/m/xl を参照) ---------- */

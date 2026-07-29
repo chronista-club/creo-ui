@@ -67,7 +67,7 @@ export default function Stepper() {
           <StepperLivePreview />
           <div class="docs-preview-row-label">Horizontal (default)</div>
           <ol class="creo-stepper">
-            <li class="creo-stepper-item" data-state="completed">
+            <li class="creo-stepper-item" data-status="completed">
               <span class="creo-stepper-marker" aria-hidden="true">
                 ✓
               </span>
@@ -76,7 +76,7 @@ export default function Stepper() {
                 <div class="creo-stepper-description">Email verified</div>
               </div>
             </li>
-            <li class="creo-stepper-item" data-state="completed">
+            <li class="creo-stepper-item" data-status="completed">
               <span class="creo-stepper-marker" aria-hidden="true">
                 ✓
               </span>
@@ -85,7 +85,7 @@ export default function Stepper() {
                 <div class="creo-stepper-description">Filled</div>
               </div>
             </li>
-            <li class="creo-stepper-item" data-state="current" aria-current="step">
+            <li class="creo-stepper-item" data-status="current" aria-current="step">
               <span class="creo-stepper-marker" aria-hidden="true">
                 3
               </span>
@@ -94,7 +94,7 @@ export default function Stepper() {
                 <div class="creo-stepper-description">In progress</div>
               </div>
             </li>
-            <li class="creo-stepper-item" data-state="pending">
+            <li class="creo-stepper-item" data-status="pending">
               <span class="creo-stepper-marker" aria-hidden="true">
                 4
               </span>
@@ -107,7 +107,7 @@ export default function Stepper() {
 
           <div class="docs-preview-row-label">Vertical (with error step)</div>
           <ol class="creo-stepper" data-orientation="vertical">
-            <li class="creo-stepper-item" data-state="completed">
+            <li class="creo-stepper-item" data-status="completed">
               <span class="creo-stepper-marker" aria-hidden="true">
                 ✓
               </span>
@@ -116,7 +116,7 @@ export default function Stepper() {
                 <div class="creo-stepper-description">avatar.png (3.2 KB)</div>
               </div>
             </li>
-            <li class="creo-stepper-item" data-state="error">
+            <li class="creo-stepper-item" data-status="error">
               <span class="creo-stepper-marker" aria-hidden="true">
                 ✕
               </span>
@@ -125,7 +125,7 @@ export default function Stepper() {
                 <div class="creo-stepper-description">Failed: dimensions exceed 2048×2048</div>
               </div>
             </li>
-            <li class="creo-stepper-item" data-state="pending">
+            <li class="creo-stepper-item" data-status="pending">
               <span class="creo-stepper-marker" aria-hidden="true">
                 3
               </span>
@@ -191,20 +191,20 @@ export default function Stepper() {
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
           <code>{`<ol class="creo-stepper">
-  <li class="creo-stepper-item" data-state="completed">
+  <li class="creo-stepper-item" data-status="completed">
     <span class="creo-stepper-marker" aria-hidden="true">✓</span>
     <div>
       <div class="creo-stepper-label">Account</div>
       <div class="creo-stepper-description">Email verified</div>
     </div>
   </li>
-  <li class="creo-stepper-item" data-state="current" aria-current="step">
+  <li class="creo-stepper-item" data-status="current" aria-current="step">
     <span class="creo-stepper-marker" aria-hidden="true">2</span>
     <div>
       <div class="creo-stepper-label">Profile</div>
     </div>
   </li>
-  <li class="creo-stepper-item" data-state="pending">
+  <li class="creo-stepper-item" data-status="pending">
     <span class="creo-stepper-marker" aria-hidden="true">3</span>
     <div>
       <div class="creo-stepper-label">Confirm</div>
@@ -273,7 +273,7 @@ function StepperLivePreview() {
           class="creo-stepper"
           data-orientation={orientation() === 'horizontal' ? undefined : orientation()}
         >
-          <li class="creo-stepper-item" data-state={stateOf(1)}>
+          <li class="creo-stepper-item" data-status={stateOf(1)}>
             <span class="creo-stepper-marker" aria-hidden="true">
               {markerOf(1)}
             </span>
@@ -281,7 +281,7 @@ function StepperLivePreview() {
               <div class="creo-stepper-label">Account</div>
             </div>
           </li>
-          <li class="creo-stepper-item" data-state={stateOf(2)}>
+          <li class="creo-stepper-item" data-status={stateOf(2)}>
             <span class="creo-stepper-marker" aria-hidden="true">
               {markerOf(2)}
             </span>
@@ -289,7 +289,7 @@ function StepperLivePreview() {
               <div class="creo-stepper-label">Profile</div>
             </div>
           </li>
-          <li class="creo-stepper-item" data-state={stateOf(3)}>
+          <li class="creo-stepper-item" data-status={stateOf(3)}>
             <span class="creo-stepper-marker" aria-hidden="true">
               {markerOf(3)}
             </span>
@@ -297,7 +297,7 @@ function StepperLivePreview() {
               <div class="creo-stepper-label">Payment</div>
             </div>
           </li>
-          <li class="creo-stepper-item" data-state={stateOf(4)}>
+          <li class="creo-stepper-item" data-status={stateOf(4)}>
             <span class="creo-stepper-marker" aria-hidden="true">
               {markerOf(4)}
             </span>

@@ -13,7 +13,7 @@
 .creo-radio {
   display: inline-flex;
   align-items: center;
-  gap: var(--layout-gap-tight);
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
   font-size: var(--typography-size-m);
   line-height: 1.4;
   color: var(--color-text-primary);
@@ -46,7 +46,7 @@
 .creo-switch {
   display: inline-flex;
   align-items: center;
-  gap: var(--layout-gap-tight);
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
   font-size: var(--typography-size-m);
   line-height: 1.4;
   color: var(--color-text-primary);

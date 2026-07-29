@@ -18,7 +18,10 @@
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
-  padding: calc(var(--spacing-m) * var(--density-padding-scale, 1));
+  /* [data-padding] variant は --_card-pad の差し替えのみ。 padding の宣言 (= density calc)
+     はここ 1 箇所 (button.css と同 pattern)。 */
+  --_card-pad: var(--spacing-m);
+  padding: calc(var(--_card-pad) * var(--density-padding-scale, 1));
   color: var(--color-text-primary);
   transition: background-color var(--motion-mapping-hover-duration)
     var(--motion-mapping-hover-easing), box-shadow var(--motion-mapping-hover-duration)
@@ -54,15 +57,16 @@
 
 /* ---------- Padding sizes ---------- */
 
+/* padding variant は --_card-pad の差し替えのみ (base 側の density calc を剥がさない)。 */
 .creo-card[data-padding="s"] {
-  padding: var(--spacing-s);
+  --_card-pad: var(--spacing-s);
 }
 .creo-card[data-padding="m"],
 .creo-card:not([data-padding]) {
-  padding: var(--spacing-m);
+  --_card-pad: var(--spacing-m);
 }
 .creo-card[data-padding="l"] {
-  padding: var(--spacing-l);
+  --_card-pad: var(--spacing-l);
 }
 
 /* ---------- Interactive state ---------- */
