@@ -67,6 +67,14 @@
   color: var(--color-text-primary);
 }
 
+/* press = veil-2 (_elevation.css の press 語彙)。 color も併記 — touch では
+   :hover を経ずに :active になるため、 hover 側の変化を含めて宣言する。 */
+.creo-tabs-tab:active:not(:disabled) {
+  color: var(--color-text-primary);
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
 /* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 .creo-tabs-tab:disabled {

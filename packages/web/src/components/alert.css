@@ -111,4 +111,10 @@
   color: var(--color-text-primary);
   background-color: var(--surface-veil-1);
 }
+/* press = veil-2 (_elevation.css の press 語彙)。 */
+.creo-alert-close:active {
+  color: var(--color-text-primary);
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
+}
 /* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */

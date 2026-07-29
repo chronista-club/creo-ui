@@ -67,6 +67,16 @@
   color: var(--color-text-primary);
 }
 
+/* press = veil-2 (_elevation.css の press 語彙)。 選択中 pill (solid 面 + elevation で
+   浮いている) は translucent veil で潰さない — raised control の press は別語彙のため除外。 */
+.creo-segmented-option:active:not(:disabled):not([aria-pressed="true"]):not(
+    :has(> input[type="radio"]:checked)
+  ) {
+  color: var(--color-text-primary);
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
 /* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 .creo-segmented-option:disabled {

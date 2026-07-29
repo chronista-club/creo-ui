@@ -69,6 +69,13 @@
   color: var(--color-text-primary);
 }
 
+/* press。 link は horizontal padding 0 なので veil bg だと text 選択風に見える —
+   text 系 target は readable brand text で「掴んでいる」を表す (veil の代替)。 */
+.creo-breadcrumbs-link:active {
+  color: var(--text-brand-readable);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
 /* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 /* 現在 page: link じゃない (span)、font-weight 強調 */

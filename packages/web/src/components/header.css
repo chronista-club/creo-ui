@@ -125,6 +125,13 @@
   background-color: var(--surface-veil-1);
 }
 
+/* press = veil-2 (_elevation.css の press 語彙)。 */
+.creo-header-nav a:active {
+  color: var(--color-text-primary);
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
 .creo-header-actions {
   display: inline-flex;
   align-items: center;

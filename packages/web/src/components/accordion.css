@@ -60,6 +60,12 @@
   background-color: var(--surface-veil-1);
 }
 
+/* press = veil-2 (_elevation.css の press 語彙)。 */
+.creo-accordion-summary:active {
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
 /* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
 /* Chevron (自前で挿入)
