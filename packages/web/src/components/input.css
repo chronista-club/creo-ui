@@ -16,9 +16,16 @@
   /* density scale 適用 (default 1)、 ancestor [data-density] で切替 */
   display: block;
   width: 100%;
-  min-height: calc(var(--layout-target-tap) * var(--density-min-height-scale, 1));
-  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
-    calc(var(--spacing-m) * var(--density-padding-scale, 1));
+
+  /* size 別の素の値。 [data-size] variant はこの 3 変数だけを差し替える —
+     padding / min-height の宣言 (= density calc) は下の 2 行に集約 (button.css と同 pattern)。 */
+  --_input-size-min-h: var(--layout-target-tap);
+  --_input-size-pad-y: var(--spacing-s);
+  --_input-size-pad-x: var(--spacing-m);
+
+  min-height: calc(var(--_input-size-min-h) * var(--density-min-height-scale, 1));
+  padding: calc(var(--_input-size-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_input-size-pad-x) * var(--density-padding-scale, 1));
   box-sizing: border-box;
 
   font-family: inherit;
@@ -62,22 +69,26 @@
 
 /* ---------- Sizes ---------- */
 
+/* size variant は --_input-size-* の差し替えのみ (base 側の density calc を剥がさない)。 */
 .creo-input[data-size="s"] {
-  min-height: var(--layout-target-focus);
-  padding: var(--spacing-xs) var(--spacing-s);
+  --_input-size-min-h: var(--layout-target-focus);
+  --_input-size-pad-y: var(--spacing-xs);
+  --_input-size-pad-x: var(--spacing-s);
   font-size: var(--typography-size-s);
   border-radius: var(--radius-xs);
 }
 .creo-input[data-size="m"],
 .creo-input:not([data-size]) {
-  min-height: var(--layout-target-tap);
-  padding: var(--spacing-s) var(--spacing-m);
+  --_input-size-min-h: var(--layout-target-tap);
+  --_input-size-pad-y: var(--spacing-s);
+  --_input-size-pad-x: var(--spacing-m);
   font-size: var(--typography-size-m);
   border-radius: var(--radius-s);
 }
 .creo-input[data-size="l"] {
-  min-height: calc(var(--layout-target-tap) * 1.15);
-  padding: var(--spacing-m) var(--spacing-l);
+  --_input-size-min-h: calc(var(--layout-target-tap) * 1.15);
+  --_input-size-pad-y: var(--spacing-m);
+  --_input-size-pad-x: var(--spacing-l);
   font-size: var(--typography-size-l);
   border-radius: var(--radius-m);
 }
