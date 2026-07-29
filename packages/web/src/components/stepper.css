@@ -128,7 +128,9 @@
 
 .creo-stepper-item[data-status="error"] .creo-stepper-marker {
   background-color: var(--color-semantic-error);
-  color: var(--color-surface-bg-base);
+  /* completed / current と同じ fill + auto on-color 言語 (bg-base 固定は light theme
+     で白文字 on 明るい fill になり崩れる — luminance-core lane の是正の取り残し)。 */
+  color: var(--on-fill-danger);
   border-color: var(--color-semantic-error);
 }
 
