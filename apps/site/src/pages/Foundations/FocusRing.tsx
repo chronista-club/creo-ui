@@ -217,28 +217,28 @@ export default function FocusRing() {
           articulate。 a11y baseline (WCAG) を measurable 基準で記述、 design intent (Sophisticated
           layered) と分けて articulate。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Token</th>
-                <th>Aesthetic</th>
-                <th>Visibility</th>
-                <th>Behavior</th>
-                <th>Theme integration</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Token</th>
+                <th class="creo-table-cell">Aesthetic</th>
+                <th class="creo-table-cell">Visibility</th>
+                <th class="creo-table-cell">Behavior</th>
+                <th class="creo-table-cell">Theme integration</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.token}</code>
                     </th>
-                    <td>{row.aesthetic}</td>
-                    <td>{row.visibility}</td>
-                    <td>{row.behavior}</td>
-                    <td>{row.themeIntegration}</td>
+                    <td class="creo-table-cell">{row.aesthetic}</td>
+                    <td class="creo-table-cell">{row.visibility}</td>
+                    <td class="creo-table-cell">{row.behavior}</td>
+                    <td class="creo-table-cell">{row.themeIntegration}</td>
                   </tr>
                 )}
               </For>
@@ -276,26 +276,34 @@ export default function FocusRing() {
         <p class="docs-page-helper">
           width / offset / halo-width / style は 8 theme 共通の固定値。
         </p>
-        <div class="docs-token-table">
-          <For each={SCAFFOLD_TOKENS}>
-            {(t) => (
-              <div class="docs-token-row">
-                <code class="docs-token-name">{t.name}</code>
-                <code class="docs-token-value">
-                  {(() => {
-                    const val =
-                      typeof window === 'undefined'
-                        ? ''
-                        : getComputedStyle(document.documentElement)
-                            .getPropertyValue(t.cssVar)
-                            .trim()
-                    return val || '—'
-                  })()}
-                </code>
-                <span class="docs-token-desc">{t.hint}</span>
-              </div>
-            )}
-          </For>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <tbody class="creo-table-body">
+              <For each={SCAFFOLD_TOKENS}>
+                {(t) => (
+                  <tr class="creo-table-row">
+                    <td class="creo-table-cell">
+                      <code>{t.name}</code>
+                    </td>
+                    <td class="creo-table-cell">
+                      <code>
+                        {(() => {
+                          const val =
+                            typeof window === 'undefined'
+                              ? ''
+                              : getComputedStyle(document.documentElement)
+                                  .getPropertyValue(t.cssVar)
+                                  .trim()
+                          return val || '—'
+                        })()}
+                      </code>
+                    </td>
+                    <td class="creo-table-cell">{t.hint}</td>
+                  </tr>
+                )}
+              </For>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -305,26 +313,34 @@ export default function FocusRing() {
           Header の theme switcher で family / light-dark を切替えると、 値が動的に変化。 詳細は{' '}
           <A href="/foundations/theming">Theming</A> page。
         </p>
-        <div class="docs-token-table">
-          <For each={COLOR_TOKENS}>
-            {(t) => (
-              <div class="docs-token-row">
-                <code class="docs-token-name">{t.name}</code>
-                <code class="docs-token-value">
-                  {(() => {
-                    const val =
-                      typeof window === 'undefined'
-                        ? ''
-                        : getComputedStyle(document.documentElement)
-                            .getPropertyValue(t.cssVar)
-                            .trim()
-                    return val || '—'
-                  })()}
-                </code>
-                <span class="docs-token-desc">{t.hint}</span>
-              </div>
-            )}
-          </For>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <tbody class="creo-table-body">
+              <For each={COLOR_TOKENS}>
+                {(t) => (
+                  <tr class="creo-table-row">
+                    <td class="creo-table-cell">
+                      <code>{t.name}</code>
+                    </td>
+                    <td class="creo-table-cell">
+                      <code>
+                        {(() => {
+                          const val =
+                            typeof window === 'undefined'
+                              ? ''
+                              : getComputedStyle(document.documentElement)
+                                  .getPropertyValue(t.cssVar)
+                                  .trim()
+                          return val || '—'
+                        })()}
+                      </code>
+                    </td>
+                    <td class="creo-table-cell">{t.hint}</td>
+                  </tr>
+                )}
+              </For>
+            </tbody>
+          </table>
         </div>
       </section>
 

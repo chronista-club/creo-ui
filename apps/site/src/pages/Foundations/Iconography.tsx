@@ -147,26 +147,26 @@ export default function Iconography() {
           <strong>Fidelity (色 / 表現力)</strong> × <strong>Use-case</strong> で articulate。
           「inline か hero か」 「mono か multi-color か」 で judge する rubric ベース選択。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>System</th>
-                <th>Source</th>
-                <th>Fidelity</th>
-                <th>Use-case</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">System</th>
+                <th class="creo-table-cell">Source</th>
+                <th class="creo-table-cell">Fidelity</th>
+                <th class="creo-table-cell">Use-case</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.system}</code>
                     </th>
-                    <td>{row.source}</td>
-                    <td>{row.fidelity}</td>
-                    <td>{row.useCase}</td>
+                    <td class="creo-table-cell">{row.source}</td>
+                    <td class="creo-table-cell">{row.fidelity}</td>
+                    <td class="creo-table-cell">{row.useCase}</td>
                   </tr>
                 )}
               </For>
@@ -181,26 +181,26 @@ export default function Iconography() {
           5 tier convention strict、 typography.size scale (body 用) と独立。 icon は visual
           hierarchy がより gross-grain で、 12-96px の wide range が必要。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Token</th>
-                <th>Value</th>
-                <th>Visual size</th>
-                <th>Use-case</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Token</th>
+                <th class="creo-table-cell">Value</th>
+                <th class="creo-table-cell">Visual size</th>
+                <th class="creo-table-cell">Use-case</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={SIZES}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.token}</code>
                     </th>
-                    <td>{row.value}</td>
-                    <td>{row.visualSize}</td>
-                    <td>{row.useCase}</td>
+                    <td class="creo-table-cell">{row.value}</td>
+                    <td class="creo-table-cell">{row.visualSize}</td>
+                    <td class="creo-table-cell">{row.useCase}</td>
                   </tr>
                 )}
               </For>

@@ -123,26 +123,26 @@ export default function Density() {
           articulate。 Typography mode と独立、 直交 axis として 「同 mode + 異 density」 「異 mode
           + 同 density」 が成立する設計。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Density</th>
-                <th>Padding scale</th>
-                <th>Target scale</th>
-                <th>Use-case</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Density</th>
+                <th class="creo-table-cell">Padding scale</th>
+                <th class="creo-table-cell">Target scale</th>
+                <th class="creo-table-cell">Use-case</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.density}</code>
                     </th>
-                    <td>{row.paddingScale}</td>
-                    <td>{row.target}</td>
-                    <td>{row.useCase}</td>
+                    <td class="creo-table-cell">{row.paddingScale}</td>
+                    <td class="creo-table-cell">{row.target}</td>
+                    <td class="creo-table-cell">{row.useCase}</td>
                   </tr>
                 )}
               </For>

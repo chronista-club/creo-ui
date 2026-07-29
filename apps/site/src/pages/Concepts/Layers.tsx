@@ -177,24 +177,40 @@ export default function Layers() {
       <section>
         <h2 class="docs-section-title">Region tokens</h2>
         <p class="docs-page-helper">寸法 (region.json):</p>
-        <div class="docs-token-table">
-          {REGION_TOKENS.map((t) => (
-            <div class="docs-token-row">
-              <code class="docs-token-name">{t.name}</code>
-              <code class="docs-token-value">{t.value}</code>
-              <span class="docs-token-desc">{t.desc}</span>
-            </div>
-          ))}
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <tbody class="creo-table-body">
+              {REGION_TOKENS.map((t) => (
+                <tr class="creo-table-row">
+                  <td class="creo-table-cell">
+                    <code>{t.name}</code>
+                  </td>
+                  <td class="creo-table-cell">
+                    <code>{t.value}</code>
+                  </td>
+                  <td class="creo-table-cell">{t.desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <p class="docs-page-helper">軸色 (axis.json) — 各 region の accent 色:</p>
-        <div class="docs-token-table">
-          {AXIS_TOKENS.map((t) => (
-            <div class="docs-token-row">
-              <code class="docs-token-name">{t.name}</code>
-              <code class="docs-token-value">{t.value}</code>
-              <span class="docs-token-desc">{t.desc}</span>
-            </div>
-          ))}
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <tbody class="creo-table-body">
+              {AXIS_TOKENS.map((t) => (
+                <tr class="creo-table-row">
+                  <td class="creo-table-cell">
+                    <code>{t.name}</code>
+                  </td>
+                  <td class="creo-table-cell">
+                    <code>{t.value}</code>
+                  </td>
+                  <td class="creo-table-cell">{t.desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
         <p class="docs-page-helper">
           axis 色は <strong>theme 切替に追従</strong> — 例えば LEFT (past) は{' '}

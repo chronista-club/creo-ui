@@ -132,28 +132,28 @@ export default function Theming() {
           を計測可能な軸で定義することで、 family 増設や既存 family 改訂の判断が rubric ベースに
           shift する。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Family</th>
-                <th>支配 hue</th>
-                <th>気分 (Mood)</th>
-                <th>想定 audience</th>
-                <th>Surface intent</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Family</th>
+                <th class="creo-table-cell">支配 hue</th>
+                <th class="creo-table-cell">気分 (Mood)</th>
+                <th class="creo-table-cell">想定 audience</th>
+                <th class="creo-table-cell">Surface intent</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={FAMILY_OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.family}</code>
                     </th>
-                    <td>{row.hue}</td>
-                    <td>{row.mood}</td>
-                    <td>{row.audience}</td>
-                    <td>{row.surfaceIntent}</td>
+                    <td class="creo-table-cell">{row.hue}</td>
+                    <td class="creo-table-cell">{row.mood}</td>
+                    <td class="creo-table-cell">{row.audience}</td>
+                    <td class="creo-table-cell">{row.surfaceIntent}</td>
                   </tr>
                 )}
               </For>
@@ -171,28 +171,28 @@ export default function Theming() {
           <code>prefers-color-scheme</code> media query は時間帯軸を 自動追従、 user override
           は注意状態軸を本人が manual に切替える operation。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Mode</th>
-                <th>Environment</th>
-                <th>Time of day</th>
-                <th>Attention state</th>
-                <th>Luminance target</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Mode</th>
+                <th class="creo-table-cell">Environment</th>
+                <th class="creo-table-cell">Time of day</th>
+                <th class="creo-table-cell">Attention state</th>
+                <th class="creo-table-cell">Luminance target</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={MODE_OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.mode}</code>
                     </th>
-                    <td>{row.environment}</td>
-                    <td>{row.timeOfDay}</td>
-                    <td>{row.attentionState}</td>
-                    <td>{row.luminanceTarget}</td>
+                    <td class="creo-table-cell">{row.environment}</td>
+                    <td class="creo-table-cell">{row.timeOfDay}</td>
+                    <td class="creo-table-cell">{row.attentionState}</td>
+                    <td class="creo-table-cell">{row.luminanceTarget}</td>
                   </tr>
                 )}
               </For>

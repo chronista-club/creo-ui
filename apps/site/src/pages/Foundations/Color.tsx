@@ -155,28 +155,28 @@ export default function Color() {
           新色追加 (Tertiary brand?) や theme family 増設の判断が <strong>objective rubric</strong>{' '}
           に基づく path に shift する。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Group</th>
-                <th>役割 (Purpose)</th>
-                <th>視覚特性 (Visual)</th>
-                <th>階層位置 (Hierarchy)</th>
-                <th>期待される反応 (Response)</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Group</th>
+                <th class="creo-table-cell">役割 (Purpose)</th>
+                <th class="creo-table-cell">視覚特性 (Visual)</th>
+                <th class="creo-table-cell">階層位置 (Hierarchy)</th>
+                <th class="creo-table-cell">期待される反応 (Response)</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.group}</code>
                     </th>
-                    <td>{row.purpose}</td>
-                    <td>{row.visual}</td>
-                    <td>{row.hierarchy}</td>
-                    <td>{row.response}</td>
+                    <td class="creo-table-cell">{row.purpose}</td>
+                    <td class="creo-table-cell">{row.visual}</td>
+                    <td class="creo-table-cell">{row.hierarchy}</td>
+                    <td class="creo-table-cell">{row.response}</td>
                   </tr>
                 )}
               </For>

@@ -12,6 +12,7 @@ import {
 import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import { PropsTable, TokensTable } from '../../ui/DocsTables'
 
 const PROPS = [
   {
@@ -96,34 +97,12 @@ export default function Container() {
 
       <section>
         <h2 class="docs-section-title">Props</h2>
-        <div class="docs-props-table">
-          <div class="docs-props-row docs-props-head">
-            <div>Attribute</div>
-            <div>Values</div>
-            <div>Default</div>
-            <div>Meaning</div>
-          </div>
-          {PROPS.map((p) => (
-            <div class="docs-props-row">
-              <code>{p.attr}</code>
-              <code>{p.values}</code>
-              <code>{p.def}</code>
-              <span>{p.meaning}</span>
-            </div>
-          ))}
-        </div>
+        <PropsTable rows={PROPS} />
       </section>
 
       <section>
         <h2 class="docs-section-title">Token reference</h2>
-        <div class="docs-tokens-table">
-          {TOKENS.map((t) => (
-            <div class="docs-tokens-row">
-              <span class="docs-tokens-slot">{t.slot}</span>
-              <code class="docs-tokens-name">{t.token}</code>
-            </div>
-          ))}
-        </div>
+        <TokensTable rows={TOKENS} />
       </section>
 
       <section>

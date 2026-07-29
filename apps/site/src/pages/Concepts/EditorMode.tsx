@@ -162,21 +162,35 @@ export default function EditorMode() {
 
       <section>
         <h2 class="docs-section-title">All decisions (D-1 〜 D-12)</h2>
-        <div class="docs-decision-table">
-          <div class="docs-decision-row docs-decision-head">
-            <div>#</div>
-            <div>Topic</div>
-            <div>Decision</div>
-          </div>
-          <For each={DECISIONS}>
-            {(d) => (
-              <div class="docs-decision-row">
-                <code class="docs-decision-id">{d.id}</code>
-                <div class="docs-decision-topic">{d.topic}</div>
-                <div class="docs-decision-text">{d.decision}</div>
-              </div>
-            )}
-          </For>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell" scope="col">
+                  #
+                </th>
+                <th class="creo-table-cell" scope="col">
+                  Topic
+                </th>
+                <th class="creo-table-cell" scope="col">
+                  Decision
+                </th>
+              </tr>
+            </thead>
+            <tbody class="creo-table-body">
+              <For each={DECISIONS}>
+                {(d) => (
+                  <tr class="creo-table-row">
+                    <td class="creo-table-cell">
+                      <code>{d.id}</code>
+                    </td>
+                    <td class="creo-table-cell">{d.topic}</td>
+                    <td class="creo-table-cell">{d.decision}</td>
+                  </tr>
+                )}
+              </For>
+            </tbody>
+          </table>
         </div>
       </section>
 

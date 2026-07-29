@@ -190,28 +190,28 @@ export default function Spacing() {
           articulate。 「間隔を取る」 という単純な操作ではなく 「sibling か section か」
           「密か疎か」 を意識した judge path に shift する。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Category</th>
-                <th>距離 (Distance)</th>
-                <th>役割 (Role)</th>
-                <th>心理的距離</th>
-                <th>適用 surface</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Category</th>
+                <th class="creo-table-cell">距離 (Distance)</th>
+                <th class="creo-table-cell">役割 (Role)</th>
+                <th class="creo-table-cell">心理的距離</th>
+                <th class="creo-table-cell">適用 surface</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.category}</code>
                     </th>
-                    <td>{row.distance}</td>
-                    <td>{row.role}</td>
-                    <td>{row.psychGap}</td>
-                    <td>{row.surface}</td>
+                    <td class="creo-table-cell">{row.distance}</td>
+                    <td class="creo-table-cell">{row.role}</td>
+                    <td class="creo-table-cell">{row.psychGap}</td>
+                    <td class="creo-table-cell">{row.surface}</td>
                   </tr>
                 )}
               </For>
