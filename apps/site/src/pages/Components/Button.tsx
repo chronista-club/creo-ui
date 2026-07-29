@@ -3,8 +3,6 @@ import {
   EditorLayer,
   bind,
   boolean,
-  cssVarNumberTarget,
-  number,
   select,
   signalTarget,
   string,
@@ -76,10 +74,16 @@ export default function Button() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground button の variant / size / label / state
-          を即時編集できる。 Padding X/Y と corner radius は <code>.creo-btn</code> 全体に効く
-          component scope (radius 未設定時の default は半円 = <code>radius.full</code> の pill)。{' '}
-          Mode ON 中に playground button を click するとその instance に field が絞られる
-          (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。
+          を即時編集できる。 Mode ON 中に playground button を click するとその instance に field
+          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。{' '}
+          <br />
+          padding / corner radius は編集対象にしていない。 button.css は上書き用の tweak var (
+          <code>--_btn-pad-x</code> / <code>--_btn-pad-y</code> / <code>--_btn-radius</code>) を
+          持っていて、 利用する app 側ではそれを使って自分の文脈に寄せられる。 ただしこの site が
+          見せるのは <strong>素の creo-ui = standard の姿</strong> なので、 showcase 側からは
+          触らない。 radius は常に pill (<code>radius.full</code>) — これは寸法ではなく
+          「高さの半分にせよ」という指示で、 size / density / text 量が変わっても CSS が自動で
+          半円を保つ。
         </p>
         <div class="docs-component-preview">
           <ButtonLivePreview />
@@ -335,8 +339,8 @@ function CUButtonReactiveDemo() {
 /**
  * Live preview の playground。editor-host の bind() で variant / size / state / label を
  * inspector panel に生やし、stage の button 自体を selectable にする (Mode ON で click →
- * その instance に field が絞られる)。corner radius だけは instance prop ではなく
- * --radius-s token への bind (token scope)。provider はページ root の 1 枚を共有。
+ * その instance に field が絞られる)。corner radius は field にしない (常に pill、
+ * 下の binders のコメント参照)。provider はページ root の 1 枚を共有。
  */
 function ButtonLivePreview() {
   const [variant, setVariant] = createSignal<ButtonVariant>('primary')
@@ -371,43 +375,27 @@ function ButtonLivePreview() {
       control: string('input'),
       placement: { semantic: 'tool', group: 'content', label: 'Button label', order: 1 },
     }),
-    // padding は button.css の private tweak var --_btn-pad-{x,y} へ (D-13 component scope)。
-    // 未設定なら size 別の spacing token default、設定すると全 .creo-btn instance が追従する。
-    bind({
-      target: cssVarNumberTarget('btn.padX', '--_btn-pad-x', 18, 'px'),
-      control: number({ min: 4, max: 40, step: 1, unit: 'px', variant: 'slider' }),
-      placement: {
-        semantic: 'tool',
-        group: 'padding',
-        label: 'Padding X (--_btn-pad-x)',
-        order: 1,
-        scope: 'component',
-      },
-    }),
-    bind({
-      target: cssVarNumberTarget('btn.padY', '--_btn-pad-y', 8, 'px'),
-      control: number({ min: 2, max: 24, step: 1, unit: 'px', variant: 'slider' }),
-      placement: {
-        semantic: 'tool',
-        group: 'padding',
-        label: 'Padding Y (--_btn-pad-y)',
-        order: 2,
-        scope: 'component',
-      },
-    }),
-    // corner radius の default は半円 (radius.full の pill)。--_btn-radius は固定 px への
-    // override 用 tweak var で、slider を触ったときだけ pill から離れる (D-13 component scope)。
-    bind({
-      target: cssVarNumberTarget('btn.radius', '--_btn-radius', 22, 'px'),
-      control: number({ min: 0, max: 30, step: 1, unit: 'px', variant: 'slider' }),
-      placement: {
-        semantic: 'tool',
-        group: 'radius',
-        label: 'Corner radius (--_btn-radius)',
-        order: 1,
-        scope: 'component',
-      },
-    }),
+    // --- shape (padding / radius) は field にしない ---
+    //
+    // button.css の private tweak var (--_btn-pad-{x,y} / --_btn-radius) は **consumer の
+    // app 層が自分の文脈に合わせて上書きするための穴** で、機能としては維持している。
+    // ただし creo-ui の site が見せるべきは **素の creo-ui = standard の姿** なので、
+    // showcase 側からは触らない。
+    //
+    // bind すると standard が壊れるのは、field 登録時 (host.ts の register → field.apply)
+    // に initial が document root へ書き込まれるため。Editor Mode が OFF でも
+    // <html style="--_btn-pad-x: 18px; ..."> が入り、それが CSS の size 別 default
+    //   s: 4px 8px / m: 8px 18px / l: 18px 24px
+    // を全部 m の値に潰していた (= 3 size とも同じ padding、size 差は min-height だけ)。
+    // radius も同じ経路で 22px に固定され、l (高さ 50.6px、半円には 25.3px 必要) だけが
+    // pill から外れて「縦に伸びた角丸」になっていた。
+    //
+    // radius については、そもそも number slider で表現できない。pill (radius.full = 9999px)
+    // は寸法ではなく「高さの半分にせよ」という指示で、CSS の overlapping-curves clamp が
+    // min(w,h)/2 まで自動で縮めてくれる。だから size / density / text 量が変わっても半円が
+    // 保たれる。px 値を 1 つ選ぶ方式ではこの追従性を再現できない。
+    //
+    // Editor Mode の tweak デモは demo 専用 var を使う Lab (EditorLab) が担当する。
   ]
 
   const selectable = useEditorSelectable({ binders, id: 'button-live-preview' })
