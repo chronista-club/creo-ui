@@ -159,26 +159,26 @@ export default function KineticTypography() {
           <strong>Effect (効果)</strong> × <strong>Use-case</strong> で articulate。 「いつ、 どう
           動くか」 を意図的に articulate、 random kinetic effect 適用は NG。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Utility</th>
-                <th>Trigger</th>
-                <th>Effect</th>
-                <th>Use-case</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Utility</th>
+                <th class="creo-table-cell">Trigger</th>
+                <th class="creo-table-cell">Effect</th>
+                <th class="creo-table-cell">Use-case</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.utility}</code>
                     </th>
-                    <td>{row.trigger}</td>
-                    <td>{row.effect}</td>
-                    <td>{row.useCase}</td>
+                    <td class="creo-table-cell">{row.trigger}</td>
+                    <td class="creo-table-cell">{row.effect}</td>
+                    <td class="creo-table-cell">{row.useCase}</td>
                   </tr>
                 )}
               </For>

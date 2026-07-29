@@ -137,28 +137,28 @@ export default function Shadow() {
           articulate。 「subtle / medium」 の大きさ表現ではなく{' '}
           <strong>「どの z-depth に置きたいか」</strong> で judge する rubric ベース選定に shift。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Token</th>
-                <th>Elevation (z-depth)</th>
-                <th>視覚層 (Visual layer)</th>
-                <th>浮遊感</th>
-                <th>Context</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Token</th>
+                <th class="creo-table-cell">Elevation (z-depth)</th>
+                <th class="creo-table-cell">視覚層 (Visual layer)</th>
+                <th class="creo-table-cell">浮遊感</th>
+                <th class="creo-table-cell">Context</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.token}</code>
                     </th>
-                    <td>{row.elevation}</td>
-                    <td>{row.visualLayer}</td>
-                    <td>{row.floatiness}</td>
-                    <td>{row.context}</td>
+                    <td class="creo-table-cell">{row.elevation}</td>
+                    <td class="creo-table-cell">{row.visualLayer}</td>
+                    <td class="creo-table-cell">{row.floatiness}</td>
+                    <td class="creo-table-cell">{row.context}</td>
                   </tr>
                 )}
               </For>

@@ -974,69 +974,15 @@ a:hover {
 }
 
 /* ============================================================
-   Operational table — generic axis articulate primitive
-   (Color / Theming / Typography 系で共通利用)
+   Table scroll — .creo-table 用の横 scroll container
+   (table 自身は scroll できないため、 wide content 用の layout 器だけ site 側に残す。
+    見た目の styling は .creo-table (dogfood) に全委譲 — 旧 .docs-operational-table
+    の独自 styling はここから削除した)
    ============================================================ */
 
-.docs-operational-table {
+.docs-table-scroll {
   margin: var(--spacing-m) 0 var(--spacing-l) 0;
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
   overflow-x: auto;
-  background: var(--color-surface-surface);
-}
-
-.docs-operational-table table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--typography-body-helper);
-  line-height: var(--typography-line-height-normal);
-}
-
-.docs-operational-table thead {
-  background: var(--color-surface-bg-subtle);
-}
-
-.docs-operational-table th,
-.docs-operational-table td {
-  padding: var(--spacing-s) var(--spacing-m);
-  text-align: left;
-  vertical-align: top;
-  border-bottom: 1px solid var(--color-surface-border-subtle);
-}
-
-.docs-operational-table thead th {
-  font-size: var(--typography-size-xs);
-  font-weight: var(--typography-weight-bold);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text-tertiary);
-  white-space: nowrap;
-}
-
-.docs-operational-table tbody th {
-  font-weight: var(--typography-weight-medium);
-  color: var(--color-text-primary);
-  white-space: nowrap;
-  background: color-mix(in oklab, var(--color-surface-bg-subtle) 50%, transparent);
-}
-
-.docs-operational-table tbody th code {
-  font-family: var(--typography-family-sans);
-  font-size: 0.95em;
-  background: transparent;
-  padding: 0;
-  color: var(--color-brand-primary);
-}
-
-.docs-operational-table tbody tr:last-child th,
-.docs-operational-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.docs-operational-table tbody td {
-  color: var(--color-text-secondary);
 }
 
 /* ============================================================
@@ -1107,57 +1053,6 @@ a:hover {
   background: var(--color-surface-bg-subtle);
   border-radius: var(--radius-xs);
   color: var(--color-text-primary);
-}
-
-/* ============================================================
-   Concepts / EditorMode — decision table
-   ============================================================ */
-
-.docs-decision-table {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  font-size: var(--typography-size-s);
-}
-
-.docs-decision-row {
-  display: grid;
-  grid-template-columns: 56px 200px 1fr;
-  align-items: baseline;
-  gap: var(--spacing-s);
-  padding: var(--spacing-s) var(--spacing-m);
-  border-top: 1px solid var(--color-surface-border);
-}
-
-.docs-decision-row:first-child {
-  border-top: 0;
-}
-
-.docs-decision-head {
-  background: var(--color-surface-bg-subtle);
-  font-weight: var(--typography-weight-bold);
-  font-size: var(--typography-size-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text-tertiary);
-}
-
-.docs-decision-id {
-  font-family: var(--typography-family-sans);
-  font-weight: var(--typography-weight-bold);
-  color: var(--color-brand-primary);
-}
-
-.docs-decision-topic {
-  font-weight: var(--typography-weight-medium);
-  color: var(--color-text-primary);
-}
-
-.docs-decision-text {
-  color: var(--color-text-secondary);
-  line-height: 1.5;
 }
 
 /* ============================================================
@@ -1314,45 +1209,6 @@ a:hover {
 }
 
 /* ============================================================
-   Concepts / Layers — token mini-table
-   ============================================================ */
-
-.docs-token-table {
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  margin: var(--spacing-xs) 0 var(--spacing-m) 0;
-}
-
-.docs-token-row {
-  display: grid;
-  grid-template-columns: 220px 1fr 1.5fr;
-  gap: var(--spacing-s);
-  padding: var(--spacing-xs) var(--spacing-m);
-  font-size: var(--typography-size-xs);
-  border-top: 1px solid var(--color-surface-border);
-}
-
-.docs-token-row:first-child {
-  border-top: 0;
-}
-
-.docs-token-name {
-  font-family: var(--typography-family-sans);
-  color: var(--color-text-primary);
-}
-
-.docs-token-value {
-  font-family: var(--typography-family-sans);
-  color: var(--color-text-secondary);
-}
-
-.docs-token-desc {
-  color: var(--color-text-secondary);
-  line-height: 1.5;
-}
-
-/* ============================================================
    Concepts / MultiPlatform — pipeline
    ============================================================ */
 
@@ -1421,48 +1277,8 @@ a:hover {
 }
 
 /* ============================================================
-   Concepts / MultiPlatform — naming table
+   Concepts / MultiPlatform — platform section title
    ============================================================ */
-
-.docs-naming-table {
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  margin: var(--spacing-m) 0;
-}
-
-.docs-naming-row {
-  display: grid;
-  grid-template-columns: 1.4fr 1.4fr 1.2fr 1.4fr;
-  gap: var(--spacing-s);
-  padding: var(--spacing-xs) var(--spacing-m);
-  font-size: var(--typography-size-xs);
-  border-top: 1px solid var(--color-surface-border);
-}
-
-.docs-naming-row:first-child {
-  border-top: 0;
-}
-
-.docs-naming-row code {
-  font-family: var(--typography-family-sans);
-  font-size: var(--typography-size-xs);
-  color: var(--color-text-primary);
-  word-break: break-all;
-}
-
-.docs-naming-head {
-  background: var(--color-surface-bg-subtle);
-  font-size: 10px;
-  font-weight: var(--typography-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text-tertiary);
-}
-
-.docs-naming-head > div {
-  font-family: var(--typography-family-sans);
-}
 
 .docs-platform-title {
   font-size: var(--typography-title-card);

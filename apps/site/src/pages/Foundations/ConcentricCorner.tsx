@@ -160,26 +160,26 @@ export default function ConcentricCorner() {
           <strong>Implementation (実装方法)</strong> で articulate。 「padding を radius
           より小さく設計する」 という設計時の constraint を意識した judge path に shift。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Use-case</th>
-                <th>Formula</th>
-                <th>Visible</th>
-                <th>Implementation</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Use-case</th>
+                <th class="creo-table-cell">Formula</th>
+                <th class="creo-table-cell">Visible</th>
+                <th class="creo-table-cell">Implementation</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.useCase}</code>
                     </th>
-                    <td>{row.formula}</td>
-                    <td>{row.visible}</td>
-                    <td>
+                    <td class="creo-table-cell">{row.formula}</td>
+                    <td class="creo-table-cell">{row.visible}</td>
+                    <td class="creo-table-cell">
                       <code>{row.implementation}</code>
                     </td>
                   </tr>
@@ -219,30 +219,30 @@ export default function ConcentricCorner() {
         <p class="docs-page-helper">
           radius × padding の主要組み合わせと結果 child radius。 設計時の reference table。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>親 radius</th>
-                <th>親 padding</th>
-                <th>子 radius (formula 結果)</th>
-                <th>Note</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">親 radius</th>
+                <th class="creo-table-cell">親 padding</th>
+                <th class="creo-table-cell">子 radius (formula 結果)</th>
+                <th class="creo-table-cell">Note</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={FORMULA_TABLE}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.parentRadius}</code>
                     </th>
-                    <td>
+                    <td class="creo-table-cell">
                       <code>{row.parentPadding}</code>
                     </td>
-                    <td>
+                    <td class="creo-table-cell">
                       <code>{row.childRadius}</code>
                     </td>
-                    <td>{row.note}</td>
+                    <td class="creo-table-cell">{row.note}</td>
                   </tr>
                 )}
               </For>

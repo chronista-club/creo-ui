@@ -164,28 +164,28 @@ export default function Radius() {
           articulate。 「これは chip だから s 使おう」 ではなく 「inline element に gentle rounding
           を当てたい → s」 のように judge path が rubric ベース になる。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Token</th>
-                <th>形状語彙 (Shape)</th>
-                <th>適用 surface</th>
-                <th>柔らかさ</th>
-                <th>用例</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Token</th>
+                <th class="creo-table-cell">形状語彙 (Shape)</th>
+                <th class="creo-table-cell">適用 surface</th>
+                <th class="creo-table-cell">柔らかさ</th>
+                <th class="creo-table-cell">用例</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.token}</code>
                     </th>
-                    <td>{row.shape}</td>
-                    <td>{row.surface}</td>
-                    <td>{row.softness}</td>
-                    <td>{row.example}</td>
+                    <td class="creo-table-cell">{row.shape}</td>
+                    <td class="creo-table-cell">{row.surface}</td>
+                    <td class="creo-table-cell">{row.softness}</td>
+                    <td class="creo-table-cell">{row.example}</td>
                   </tr>
                 )}
               </For>

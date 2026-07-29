@@ -85,21 +85,43 @@ export default function MultiPlatform() {
           同一 token が platform ごとに慣習に従った識別子で expose される。 同じ意味 / 同じ値、
           違う書式。
         </p>
-        <div class="docs-naming-table">
-          <div class="docs-naming-row docs-naming-head">
-            <div>Token (DTCG)</div>
-            <div>Web</div>
-            <div>Apple (Swift)</div>
-            <div>Rust</div>
-          </div>
-          {NAMING.map((n) => (
-            <div class="docs-naming-row">
-              <code>{n.token}</code>
-              <code>{n.web}</code>
-              <code>{n.apple}</code>
-              <code>{n.rust}</code>
-            </div>
-          ))}
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell" scope="col">
+                  Token (DTCG)
+                </th>
+                <th class="creo-table-cell" scope="col">
+                  Web
+                </th>
+                <th class="creo-table-cell" scope="col">
+                  Apple (Swift)
+                </th>
+                <th class="creo-table-cell" scope="col">
+                  Rust
+                </th>
+              </tr>
+            </thead>
+            <tbody class="creo-table-body">
+              {NAMING.map((n) => (
+                <tr class="creo-table-row">
+                  <td class="creo-table-cell">
+                    <code>{n.token}</code>
+                  </td>
+                  <td class="creo-table-cell">
+                    <code>{n.web}</code>
+                  </td>
+                  <td class="creo-table-cell">
+                    <code>{n.apple}</code>
+                  </td>
+                  <td class="creo-table-cell">
+                    <code>{n.rust}</code>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </section>
 

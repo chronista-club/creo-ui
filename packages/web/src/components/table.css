@@ -59,6 +59,10 @@
     calc(var(--_table-cell-pad-x) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border-subtle, var(--color-surface-border));
   vertical-align: middle;
+  /* th (行 header) の browser default (center + bold) を打ち消し、 td と同じ声に揃える。
+     data-align variant で center / end は明示 opt-in。 行 header の強調は下の
+     tbody th rule (weight-medium) が担う。 */
+  text-align: left;
 }
 
 /* 最終 row の下線を消す (radius を曇らせない) */
@@ -71,6 +75,12 @@
 }
 .creo-table-cell[data-align="end"] {
   text-align: right;
+}
+
+/* 行 header (tbody 内の th) — bold (browser default) ではなく weight-medium で
+   「行の名前」 の声。 head cell (uppercase caption) とも本文 td とも別の第 3 の声。 */
+.creo-table-body th.creo-table-cell {
+  font-weight: var(--typography-weight-medium);
 }
 
 /* ---------- Sizes ---------- */
