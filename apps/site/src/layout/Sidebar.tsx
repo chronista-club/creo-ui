@@ -73,6 +73,7 @@ const NAV: readonly NavGroup[] = [
       { href: '/components/drawer', label: 'Drawer' },
       { href: '/components/empty-state', label: 'Empty state' },
       { href: '/components/combobox', label: 'Combobox' },
+      { href: '/components/select', label: 'Select' },
       { href: '/components/header', label: 'Header' },
       { href: '/components/stack', label: 'Stack' },
       { href: '/components/grid', label: 'Grid' },

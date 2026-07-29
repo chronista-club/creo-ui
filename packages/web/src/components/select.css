@@ -1,0 +1,169 @@
+/**
+ * creo-ui — Select component (native <select> の styled wrapper)
+ *
+ * `.creo-select` (wrapper) + `.creo-select-input` (native <select>)。
+ * data-variant (bordered / filled) + data-size (s/m/l) + data-width (fit / full) +
+ * data-state (default / error)。
+ *
+ * <select> は replaced element で ::before / ::after を持てないため、 checkbox /
+ * radio と同じ wrapper + input の 2 要素構成にし、 arrow は wrapper の ::after で
+ * 描く (site header の theme switcher で先行していた形の component 化)。
+ * dropdown の中身 (option list) は browser native — keyboard / a11y / mobile picker
+ * は OS に任せる。 custom listbox が必要なら Menu (popover) の領分。
+ *
+ * Spec: docs/components/select.md
+ * Token: creo-ui/tokens.css (必須)
+ *
+ * Usage:
+ *   <span class="creo-select">
+ *     <select class="creo-select-input">…</select>
+ *   </span>
+ *   <span class="creo-select" data-size="s">…</span>
+ *   <span class="creo-select" data-width="full" data-state="error">…</span>
+ */
+
+.creo-select {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  /* size 別の素の値 (input.css と同 pattern)。 [data-size] variant はこの 5 変数
+     だけを差し替え、 density calc は .creo-select-input 側の宣言 1 箇所に集約。
+     wrapper に置くのは variant selector が .creo-select[data-size] のため
+     (custom property 継承で input に届く)。 */
+  --_select-size-min-h: var(--layout-target-tap);
+  --_select-size-pad-y: var(--spacing-s);
+  --_select-size-pad-x: var(--spacing-m);
+  --_select-radius: var(--radius-s);
+  --_select-font: var(--typography-size-m);
+}
+
+/* fit (default) = 内容幅。 full = form field 的な全幅 (segmented と同じ data-width 語彙)。 */
+.creo-select[data-width="full"] {
+  display: flex;
+}
+.creo-select[data-width="full"] .creo-select-input {
+  width: 100%;
+}
+
+.creo-select-input {
+  appearance: none; /* native arrow を消し、 wrapper の ::after に統一 */
+  min-height: calc(var(--_select-size-min-h) * var(--density-min-height-scale, 1));
+  padding: calc(var(--_select-size-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_select-size-pad-x) * var(--density-padding-scale, 1));
+  /* arrow (6px chevron + 余白) の逃げ */
+  padding-inline-end: calc(var(--_select-size-pad-x) * var(--density-padding-scale, 1) + 14px);
+  box-sizing: border-box;
+
+  font-family: inherit;
+  font-size: var(--_select-font);
+  font-weight: var(--typography-weight-regular);
+  line-height: 1.4;
+  color: var(--color-text-primary);
+
+  background-color: var(--color-surface-surface);
+  border: 1px solid var(--color-surface-border);
+  border-radius: var(--_select-radius);
+
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing),
+    background-color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing),
+    box-shadow var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing);
+}
+
+/* ---------- Arrow (wrapper ::after) ---------- */
+
+/* border 2 辺の 45° 回転で描く chevron。 currentColor 系 token をそのまま使えるので
+   theme 追従が data URI SVG より素直。 flex 中央 (static position) から V の
+   光学中心へ translateY で微調整。 */
+.creo-select::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: var(--spacing-s);
+  width: 6px;
+  height: 6px;
+  border-inline-end: 1.5px solid var(--color-text-tertiary);
+  border-block-end: 1.5px solid var(--color-text-tertiary);
+  transform: translateY(-2px) rotate(45deg);
+  pointer-events: none;
+  transition: border-color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing);
+}
+
+.creo-select:hover:has(.creo-select-input:not(:disabled))::after {
+  border-color: var(--color-text-secondary);
+}
+
+/* ---------- Variants ---------- */
+
+/* filled = borderless の recessed well (input.css の filled と同語彙)。 focus 時は
+   _focus.css の :focus-visible box-shadow halo に明け渡すため :not(:focus-visible) guard。 */
+.creo-select[data-variant="filled"] .creo-select-input {
+  background-color: var(--surface-veil-1);
+  border-color: transparent;
+}
+.creo-select[data-variant="filled"] .creo-select-input:not(:focus-visible) {
+  box-shadow: var(--elevation-well);
+}
+.creo-select[data-variant="filled"] .creo-select-input:hover:not(:disabled) {
+  background-color: var(--surface-veil-2);
+}
+
+/* bordered (default) は base を使う */
+
+/* ---------- Sizes ---------- */
+
+/* size variant は --_select-* の差し替えのみ (input 側の density calc を剥がさない)。 */
+.creo-select[data-size="s"] {
+  --_select-size-min-h: var(--layout-target-focus);
+  --_select-size-pad-y: var(--spacing-xs);
+  --_select-size-pad-x: var(--spacing-s);
+  --_select-radius: var(--radius-xs);
+  --_select-font: var(--typography-size-s);
+}
+.creo-select[data-size="m"],
+.creo-select:not([data-size]) {
+  --_select-size-min-h: var(--layout-target-tap);
+  --_select-size-pad-y: var(--spacing-s);
+  --_select-size-pad-x: var(--spacing-m);
+  --_select-radius: var(--radius-s);
+  --_select-font: var(--typography-size-m);
+}
+.creo-select[data-size="l"] {
+  --_select-size-min-h: calc(var(--layout-target-tap) * 1.15);
+  --_select-size-pad-y: var(--spacing-m);
+  --_select-size-pad-x: var(--spacing-l);
+  --_select-radius: var(--radius-m);
+  --_select-font: var(--typography-size-l);
+}
+
+/* ---------- State: focus ---------- */
+/* :focus は mouse + keyboard 両方の "field active" feedback (input.css と同方針)。
+   outline + halo は _focus.css の :focus-visible policy が担う。 */
+
+.creo-select-input:focus {
+  border-color: var(--color-focus-ring-color);
+}
+
+/* ---------- State: error ---------- */
+
+.creo-select[data-state="error"] .creo-select-input,
+.creo-select .creo-select-input[aria-invalid="true"] {
+  border-color: var(--color-semantic-error);
+  border-width: 1.5px;
+}
+.creo-select[data-state="error"] .creo-select-input:focus-visible,
+.creo-select .creo-select-input[aria-invalid="true"]:focus-visible {
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--color-semantic-error) 25%, transparent);
+}
+
+/* ---------- State: disabled ---------- */
+
+.creo-select-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  background-color: var(--surface-veil-1);
+}
+.creo-select:has(.creo-select-input:disabled)::after {
+  opacity: 0.6;
+}

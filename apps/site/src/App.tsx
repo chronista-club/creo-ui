@@ -56,6 +56,7 @@ const Popover = lazy(() => import('./pages/Components/Popover'))
 const Drawer = lazy(() => import('./pages/Components/Drawer'))
 const EmptyState = lazy(() => import('./pages/Components/EmptyState'))
 const Combobox = lazy(() => import('./pages/Components/Combobox'))
+const Select = lazy(() => import('./pages/Components/Select'))
 const Header = lazy(() => import('./pages/Components/Header'))
 const ErrorBoundary = lazy(() => import('./pages/Components/ErrorBoundary'))
 const Stack = lazy(() => import('./pages/Components/Stack'))
@@ -129,6 +130,7 @@ export default function App() {
       <Route path="/components/drawer" component={Drawer} />
       <Route path="/components/empty-state" component={EmptyState} />
       <Route path="/components/combobox" component={Combobox} />
+      <Route path="/components/select" component={Select} />
       <Route path="/components/header" component={Header} />
       <Route path="/components/error-boundary" component={ErrorBoundary} />
       <Route path="/components/stack" component={Stack} />

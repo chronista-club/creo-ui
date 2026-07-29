@@ -117,16 +117,7 @@ a:hover {
   font-size: 1.2em;
 }
 
-/* theme switcher — select は .creo-input を dogfood。 wrapper は select 固有の
-   差分だけを担う: .creo-input は form field 前提の block / width 100% なので
-   内容幅に戻し、 appearance を消して自前 arrow (::after) の逃げを作る。 */
-.docs-theme-switcher select {
-  display: inline-block;
-  width: auto;
-  padding-inline-end: 28px;
-  appearance: none;
-  cursor: pointer;
-}
+/* theme switcher — .creo-select component (dogfood) に全委譲、 site 側 CSS なし。 */
 
 /* ============================================================
    Sidebar
@@ -2640,25 +2631,7 @@ kbd {
   filter: drop-shadow(0 0 6px var(--face-glow-brand));
 }
 
-.docs-theme-switcher {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-.docs-theme-switcher::after {
-  content: "";
-  position: absolute;
-  inset-inline-end: 10px;
-  width: 6px;
-  height: 6px;
-  border-inline-end: 1.5px solid var(--color-text-tertiary);
-  border-bottom: 1.5px solid var(--color-text-tertiary);
-  transform: translateY(-2px) rotate(45deg);
-  pointer-events: none;
-}
-
-/* select の hover / focus は .creo-input + _focus.css policy に委譲 (独自 override 廃止)。 */
+/* theme switcher の wrapper / arrow は .creo-select component 化に伴い削除。 */
 
 /* ============================================================
    Responsive
