@@ -266,68 +266,94 @@ setGaze(undefined)                // Frame.gaze に戻す`}</code>
 
       <section>
         <h2 class="docs-section-title">Phase plan</h2>
-        <div class="docs-decision-table">
-          <div class="docs-decision-row docs-decision-head">
-            <div>Phase</div>
-            <div>Scope</div>
-            <div>Deliverable</div>
-          </div>
-          <div class="docs-decision-row">
-            <code class="docs-decision-id">P-0</code>
-            <div class="docs-decision-topic">docs site visual</div>
-            <div class="docs-decision-text">
-              perspective root + card translateZ + sidebar depth + reduced-motion guard。 哲学を
-              docs site 自身が dogfood
-            </div>
-          </div>
-          <div class="docs-decision-row">
-            <code class="docs-decision-id">P-1</code>
-            <div class="docs-decision-topic">Concept docs</div>
-            <div class="docs-decision-text">
-              この page (FrameSystem) で Frame system の design memo を articulate。 Editor Mode /
-              VP / multi-platform 連結を明記
-            </div>
-          </div>
-          <div class="docs-decision-row">
-            <code class="docs-decision-id">P-1</code>
-            <div class="docs-decision-topic">Token system</div>
-            <div class="docs-decision-text">
-              <code>tokens/depth/scale.json</code> で foreground / mid / background の 3 step
-              abstract + perspective / FOV を frame.json に
-            </div>
-          </div>
-          <div class="docs-decision-row">
-            <code class="docs-decision-id">P-2</code>
-            <div class="docs-decision-topic">自作 motion engine</div>
-            <div class="docs-decision-text">
-              Web Animations API 直叩き + FLIP + spring + easing token bridge。 ~600-800 LOC、{' '}
-              <code>creo-ui-frame</code> 内同梱。 Motion One が archive 化したため自作必須
-            </div>
-          </div>
-          <div class="docs-decision-row">
-            <code class="docs-decision-id">P-3</code>
-            <div class="docs-decision-topic">Runtime API</div>
-            <div class="docs-decision-text">
-              新 package <code>creo-ui-frame</code> で <code>&lt;FrameProvider&gt;</code> +{' '}
-              <code>&lt;FrameSlot&gt;</code> + <code>setFrame()</code>。 自作 motion engine 同梱
-            </div>
-          </div>
-          <div class="docs-decision-row">
-            <code class="docs-decision-id">P-4</code>
-            <div class="docs-decision-topic">VP migration</div>
-            <div class="docs-decision-text">
-              VP の pane logic を Frame protocol に refactor。 TUI 側は depth metaphor 実装。 Frame
-              system の proof point
-            </div>
-          </div>
-          <div class="docs-decision-row">
-            <code class="docs-decision-id">P-5</code>
-            <div class="docs-decision-topic">Editor Mode 統合</div>
-            <div class="docs-decision-text">
-              Editor Mode を Editor Frame として Frame protocol 上に再実装。 D-2 〜 D-12
-              の精神は維持しつつ、 4 方向 layout = Editor Frame の slot 群へ
-            </div>
-          </div>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell" scope="col">
+                  Phase
+                </th>
+                <th class="creo-table-cell" scope="col">
+                  Scope
+                </th>
+                <th class="creo-table-cell" scope="col">
+                  Deliverable
+                </th>
+              </tr>
+            </thead>
+            <tbody class="creo-table-body">
+              <tr class="creo-table-row">
+                <td class="creo-table-cell">
+                  <code>P-0</code>
+                </td>
+                <td class="creo-table-cell">docs site visual</td>
+                <td class="creo-table-cell">
+                  perspective root + card translateZ + sidebar depth + reduced-motion guard。 哲学を
+                  docs site 自身が dogfood
+                </td>
+              </tr>
+              <tr class="creo-table-row">
+                <td class="creo-table-cell">
+                  <code>P-1</code>
+                </td>
+                <td class="creo-table-cell">Concept docs</td>
+                <td class="creo-table-cell">
+                  この page (FrameSystem) で Frame system の design memo を articulate。 Editor Mode
+                  / VP / multi-platform 連結を明記
+                </td>
+              </tr>
+              <tr class="creo-table-row">
+                <td class="creo-table-cell">
+                  <code>P-1</code>
+                </td>
+                <td class="creo-table-cell">Token system</td>
+                <td class="creo-table-cell">
+                  <code>tokens/depth/scale.json</code> で foreground / mid / background の 3 step
+                  abstract + perspective / FOV を frame.json に
+                </td>
+              </tr>
+              <tr class="creo-table-row">
+                <td class="creo-table-cell">
+                  <code>P-2</code>
+                </td>
+                <td class="creo-table-cell">自作 motion engine</td>
+                <td class="creo-table-cell">
+                  Web Animations API 直叩き + FLIP + spring + easing token bridge。 ~600-800 LOC、{' '}
+                  <code>creo-ui-frame</code> 内同梱。 Motion One が archive 化したため自作必須
+                </td>
+              </tr>
+              <tr class="creo-table-row">
+                <td class="creo-table-cell">
+                  <code>P-3</code>
+                </td>
+                <td class="creo-table-cell">Runtime API</td>
+                <td class="creo-table-cell">
+                  新 package <code>creo-ui-frame</code> で <code>&lt;FrameProvider&gt;</code> +{' '}
+                  <code>&lt;FrameSlot&gt;</code> + <code>setFrame()</code>。 自作 motion engine 同梱
+                </td>
+              </tr>
+              <tr class="creo-table-row">
+                <td class="creo-table-cell">
+                  <code>P-4</code>
+                </td>
+                <td class="creo-table-cell">VP migration</td>
+                <td class="creo-table-cell">
+                  VP の pane logic を Frame protocol に refactor。 TUI 側は depth metaphor 実装。
+                  Frame system の proof point
+                </td>
+              </tr>
+              <tr class="creo-table-row">
+                <td class="creo-table-cell">
+                  <code>P-5</code>
+                </td>
+                <td class="creo-table-cell">Editor Mode 統合</td>
+                <td class="creo-table-cell">
+                  Editor Mode を Editor Frame として Frame protocol 上に再実装。 D-2 〜 D-12
+                  の精神は維持しつつ、 4 方向 layout = Editor Frame の slot 群へ
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 

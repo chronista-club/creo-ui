@@ -72,8 +72,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--spacing-s);
-  padding: var(--spacing-s) var(--spacing-m);
+  gap: calc(var(--spacing-s) * var(--density-gap-scale, 1));
+  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
+    calc(var(--spacing-m) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border);
 }
 
@@ -90,7 +91,7 @@
 }
 
 .creo-dialog-body {
-  padding: var(--spacing-m);
+  padding: calc(var(--spacing-m) * var(--density-padding-scale, 1));
   overflow-y: auto;
   max-height: 60vh;
 }
@@ -103,8 +104,9 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--layout-gap-tight);
-  padding: var(--spacing-s) var(--spacing-m);
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
+    calc(var(--spacing-m) * var(--density-padding-scale, 1));
   border-top: 1px solid var(--color-surface-border);
 }
 

@@ -15,9 +15,9 @@
        loading 中の identity を articulate。 */
   background: linear-gradient(
     90deg,
-    var(--color-surface-bg-subtle) 0%,
+    var(--surface-veil-1) 0%,
     color-mix(in oklch, var(--color-brand-primary-subtle) 60%, var(--color-surface-bg-emphasis)) 50%,
-    var(--color-surface-bg-subtle) 100%
+    var(--surface-veil-1) 100%
   );
   background-size: 200% 100%;
   /* Note: shimmer cycle 1.4s は keyframes 専用 (mapping lazy 480ms より長い、
@@ -82,6 +82,6 @@
 @media (prefers-reduced-motion: reduce) {
   .creo-skeleton {
     animation: none;
-    background: var(--color-surface-bg-subtle);
+    background: var(--surface-veil-1);
   }
 }

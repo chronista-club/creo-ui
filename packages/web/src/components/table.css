@@ -6,6 +6,13 @@
  */
 
 .creo-table {
+  /* cell padding の size 別の素の値。 [data-size] variant はこの 2 変数だけを差し替え、
+     cell 側の padding 宣言 (density calc 込み) は 1 箇所に集約する (button.css と同 pattern)。
+     root に置くのは size variant の selector が .creo-table[data-size] であるため
+     (custom property 継承で cell に届く)。 */
+  --_table-cell-pad-y: var(--spacing-s);
+  --_table-cell-pad-x: var(--spacing-m);
+
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -24,7 +31,7 @@
 /* ---------- Head ---------- */
 
 .creo-table-head .creo-table-row {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
 
 .creo-table-head .creo-table-cell {
@@ -34,7 +41,8 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   text-align: left;
-  padding: var(--spacing-s) var(--spacing-m);
+  padding: calc(var(--_table-cell-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_table-cell-pad-x) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border);
 }
 
@@ -47,9 +55,14 @@
 /* ---------- Body cells ---------- */
 
 .creo-table-cell {
-  padding: var(--spacing-s) var(--spacing-m);
+  padding: calc(var(--_table-cell-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_table-cell-pad-x) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border-subtle, var(--color-surface-border));
   vertical-align: middle;
+  /* th (行 header) の browser default (center + bold) を打ち消し、 td と同じ声に揃える。
+     data-align variant で center / end は明示 opt-in。 行 header の強調は下の
+     tbody th rule (weight-medium) が担う。 */
+  text-align: left;
 }
 
 /* 最終 row の下線を消す (radius を曇らせない) */
@@ -64,21 +77,34 @@
   text-align: right;
 }
 
+/* 行 header (tbody 内の th) — bold (browser default) ではなく weight-medium で
+   「行の名前」 の声。 head cell (uppercase caption) とも本文 td とも別の第 3 の声。 */
+.creo-table-body th.creo-table-cell {
+  font-weight: var(--typography-weight-medium);
+}
+
 /* ---------- Sizes ---------- */
 
+/* size variant は --_table-cell-pad-* の差し替えのみ (cell 側の density calc を剥がさない)。 */
+.creo-table[data-size="s"] {
+  --_table-cell-pad-y: var(--spacing-xs);
+  --_table-cell-pad-x: var(--spacing-s);
+}
 .creo-table[data-size="s"] .creo-table-cell {
-  padding: var(--spacing-xs) var(--spacing-s);
   font-size: var(--typography-size-s);
 }
+.creo-table[data-size="l"] {
+  --_table-cell-pad-y: var(--spacing-m);
+  --_table-cell-pad-x: var(--spacing-l);
+}
 .creo-table[data-size="l"] .creo-table-cell {
-  padding: var(--spacing-m) var(--spacing-l);
   font-size: var(--typography-size-l);
 }
 
 /* ---------- Variants ---------- */
 
 .creo-table[data-variant="striped"] .creo-table-body > .creo-table-row:nth-child(even) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
 
 .creo-table[data-variant="bordered"] .creo-table-cell {
@@ -91,7 +117,7 @@
 /* ---------- Row states ---------- */
 
 .creo-table-body .creo-table-row:hover:not([data-selected="true"]):not([data-disabled="true"]) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
 
 .creo-table-row[data-selected="true"] {

@@ -7,7 +7,7 @@
 
 .creo-stepper {
   display: flex;
-  gap: var(--spacing-xs);
+  gap: calc(var(--spacing-xs) * var(--density-gap-scale, 1));
   padding: 0;
   margin: 0;
   list-style: none;
@@ -25,12 +25,17 @@
 
 /* ---------- Item ---------- */
 
+/* horizontal は 3 列 grid: marker | label | connector。 connector (::after) を
+   absolute overlay ではなく **第 3 列の実要素** として置くことで、 線は label の
+   後ろの余白だけを走る (旧実装は marker 直後から item 右端まで貫く absolute で、
+   label の文字に線が被っていた。 32px / 15px のハードコードも size variant で
+   中心がズレる脆さがあった — grid 化で両方とも構造的に解消)。 */
 .creo-stepper-item {
   position: relative;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto auto 1fr;
   grid-template-rows: auto auto;
-  column-gap: var(--spacing-s);
+  column-gap: calc(var(--spacing-s) * var(--density-gap-scale, 1));
   row-gap: 2px;
   align-items: center;
   flex: 1;
@@ -38,8 +43,9 @@
   padding: 0;
 }
 
-/* vertical の場合、item は row-wise に積む */
+/* vertical の場合、item は row-wise に積む (connector は absolute の縦線なので 2 列で足りる) */
 .creo-stepper[data-orientation="vertical"] .creo-stepper-item {
+  grid-template-columns: auto 1fr;
   flex: 0 1 auto;
   padding-bottom: var(--spacing-m);
 }
@@ -47,21 +53,26 @@
 /* connector: 次 item との繋ぎ線 */
 .creo-stepper-item:not(:last-child)::after {
   content: "";
-  position: absolute;
   background-color: var(--color-surface-border);
   transition: background-color var(--motion-mapping-toggle-duration)
     var(--motion-mapping-toggle-easing);
 }
 
+/* horizontal: 第 3 列 (1fr) を stretch する 2px の横線。 align-self center が
+   marker / label の縦中心に自動追従する (size variant でも計算不要)。
+   column-gap が label との間隔を作る。 */
 .creo-stepper[data-orientation="horizontal"] .creo-stepper-item:not(:last-child)::after,
 .creo-stepper:not([data-orientation]) .creo-stepper-item:not(:last-child)::after {
-  left: calc(32px + var(--spacing-s));
-  right: 0;
-  top: 15px;
+  grid-row: 1;
+  grid-column: 3;
+  align-self: center;
   height: 2px;
+  /* 幅が詰まって 1fr が潰れても「繋がり」が読めるだけの最小の線を残す */
+  min-width: var(--spacing-l);
 }
 
 .creo-stepper[data-orientation="vertical"] .creo-stepper-item:not(:last-child)::after {
+  position: absolute;
   left: 15px;
   top: 32px;
   bottom: 0;
@@ -84,7 +95,7 @@
   width: var(--layout-target-focus);
   height: var(--layout-target-focus);
   border-radius: var(--radius-full);
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   color: var(--color-text-tertiary);
   border: 2px solid var(--color-surface-border);
   font-size: var(--typography-size-s);
@@ -128,7 +139,9 @@
 
 .creo-stepper-item[data-status="error"] .creo-stepper-marker {
   background-color: var(--color-semantic-error);
-  color: var(--color-surface-bg-base);
+  /* completed / current と同じ fill + auto on-color 言語 (bg-base 固定は light theme
+     で白文字 on 明るい fill になり崩れる — luminance-core lane の是正の取り残し)。 */
+  color: var(--on-fill-danger);
   border-color: var(--color-semantic-error);
 }
 

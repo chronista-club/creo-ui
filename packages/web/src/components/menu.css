@@ -13,7 +13,7 @@
      ここは box-style のみを指定。placement (position) は consumer 側 JS or
      data-placement + anchor positioning (browser 対応進行中) で後付け。 */
   min-width: 180px;
-  padding: var(--spacing-xs);
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1));
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
@@ -44,9 +44,10 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: var(--layout-gap-tight);
-  padding: var(--spacing-xs) var(--spacing-s);
-  min-height: var(--layout-target-focus);
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1))
+    calc(var(--spacing-s) * var(--density-padding-scale, 1));
+  min-height: calc(var(--layout-target-focus) * var(--density-min-height-scale, 1));
 
   font-family: inherit;
   font-size: var(--typography-size-m);
@@ -63,8 +64,15 @@
 
 .creo-menu-item:hover:not(:disabled),
 .creo-menu-item:focus-visible {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   outline: none;
+}
+
+/* press = veil ladder をもう一段 (hover veil-1 → active veil-2、 _elevation.css の
+   press 語彙参照)。 transition-duration を press に落とし、 押下即時・離すと柔らかく復帰。 */
+.creo-menu-item:active:not(:disabled) {
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
 }
 
 .creo-menu-item:disabled {
@@ -80,6 +88,12 @@
 .creo-menu-item[data-variant="destructive"]:hover:not(:disabled),
 .creo-menu-item[data-variant="destructive"]:focus-visible {
   background-color: color-mix(in oklch, var(--color-semantic-error) 12%, transparent);
+}
+/* destructive の press (hover 12% → 18% の一段深)。 specificity が plain :active
+   (0,3,0) より高い (0,4,0) ので variant 側にも明示する。 */
+.creo-menu-item[data-variant="destructive"]:active:not(:disabled) {
+  background-color: color-mix(in oklch, var(--color-semantic-error) 18%, transparent);
+  transition-duration: var(--motion-mapping-press-duration);
 }
 
 /* ---------- Active / current (選択中 item) ---------- */
@@ -104,6 +118,17 @@
     var(--color-text-primary)
   );
 }
+/* 選択中 item の press (hover 82% → 72% で text-primary 側へ一段深)。 */
+.creo-menu-item[aria-current="true"]:active:not(:disabled),
+.creo-menu-item[aria-current="page"]:active:not(:disabled),
+.creo-menu-item[aria-selected="true"]:active:not(:disabled) {
+  background-color: color-mix(
+    in oklch,
+    var(--color-brand-primary-subtle) 72%,
+    var(--color-text-primary)
+  );
+  transition-duration: var(--motion-mapping-press-duration);
+}
 
 /* ---------- Separator ---------- */
 
@@ -117,7 +142,9 @@
 /* ---------- Group label ---------- */
 
 .creo-menu-label {
-  padding: var(--spacing-xs) var(--spacing-s) 2px;
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1))
+    calc(var(--spacing-s) * var(--density-padding-scale, 1))
+    calc(2px * var(--density-padding-scale, 1));
   font-size: var(--typography-body-caption);
   font-weight: var(--typography-weight-medium);
   color: var(--color-text-tertiary);

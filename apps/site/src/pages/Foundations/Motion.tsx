@@ -236,26 +236,26 @@ export default function Motion() {
           consumer は mapping token (例: <code>var(--motion-mapping-hover-duration)</code>) を参照、
           maintainer は base (duration / easing) を tune する。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Use-case</th>
-                <th>Duration</th>
-                <th>Easing</th>
-                <th>Why</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Use-case</th>
+                <th class="creo-table-cell">Duration</th>
+                <th class="creo-table-cell">Easing</th>
+                <th class="creo-table-cell">Why</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.useCase}</code>
                     </th>
-                    <td>{row.duration}</td>
-                    <td>{row.easing}</td>
-                    <td>{row.why}</td>
+                    <td class="creo-table-cell">{row.duration}</td>
+                    <td class="creo-table-cell">{row.easing}</td>
+                    <td class="creo-table-cell">{row.why}</td>
                   </tr>
                 )}
               </For>
@@ -294,31 +294,39 @@ export default function Motion() {
           11 use-case で duration + easing が SSOT として articulate。 各 token は base
           (motion.duration.* / motion.easing.*) への alias 参照。
         </p>
-        <div class="docs-token-table">
-          <For each={MAPPING_TOKENS}>
-            {(t) => (
-              <div class="docs-token-row">
-                <code class="docs-token-name">motion.mapping.{t.name}</code>
-                <code class="docs-token-value">
-                  {(() => {
-                    const d =
-                      typeof window === 'undefined'
-                        ? ''
-                        : getComputedStyle(document.documentElement)
-                            .getPropertyValue(t.durationVar)
-                            .trim()
-                    const e =
-                      typeof window === 'undefined'
-                        ? ''
-                        : getComputedStyle(document.documentElement)
-                            .getPropertyValue(t.easingVar)
-                            .trim()
-                    return `${d || '—'} / ${e || '—'}`
-                  })()}
-                </code>
-              </div>
-            )}
-          </For>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <tbody class="creo-table-body">
+              <For each={MAPPING_TOKENS}>
+                {(t) => (
+                  <tr class="creo-table-row">
+                    <td class="creo-table-cell">
+                      <code>motion.mapping.{t.name}</code>
+                    </td>
+                    <td class="creo-table-cell">
+                      <code>
+                        {(() => {
+                          const d =
+                            typeof window === 'undefined'
+                              ? ''
+                              : getComputedStyle(document.documentElement)
+                                  .getPropertyValue(t.durationVar)
+                                  .trim()
+                          const e =
+                            typeof window === 'undefined'
+                              ? ''
+                              : getComputedStyle(document.documentElement)
+                                  .getPropertyValue(t.easingVar)
+                                  .trim()
+                          return `${d || '—'} / ${e || '—'}`
+                        })()}
+                      </code>
+                    </td>
+                  </tr>
+                )}
+              </For>
+            </tbody>
+          </table>
         </div>
       </section>
 

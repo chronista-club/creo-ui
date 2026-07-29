@@ -1,5 +1,5 @@
 {
-  "name": "creo-ui-icons-web",
+  "name": "@chronista-club/creo-ui-icons-web",
   "version": "0.0.1",
   "description": "creo-ui — Iconify-based icon adapter for SolidJS web apps. Universal semantic registry with curated 9-set Iconify lineup (mingcute/iconoir/ph/svg-spinners/codicon/simple-icons/flagpack/noto/bi).",
   "type": "module",

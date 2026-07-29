@@ -95,6 +95,13 @@
   /* danger solid-fill 用 on-color (semantic-error 明度から自動選択)。
      danger fill は boost せず token のまま使う (focal 化は primary の役目)。 */
   --on-fill-danger: oklch(from var(--color-semantic-error) clamp(0, (0.62 - l) * 1000, 1) 0 0);
+  /* 残り semantic fill (success / warning / info) の on-color も同式。 timeline /
+     stepper の status marker 等、 semantic 色の solid fill に文字を乗せる箇所で使う。
+     旧実装の color: bg-base 固定は dark では偶然読める (bg-base = 暗色) が、
+     light theme では白文字 on 明るい semantic fill となり最低 1.4:1 まで崩れていた。 */
+  --on-fill-success: oklch(from var(--color-semantic-success) clamp(0, (0.62 - l) * 1000, 1) 0 0);
+  --on-fill-warning: oklch(from var(--color-semantic-warning) clamp(0, (0.62 - l) * 1000, 1) 0 0);
+  --on-fill-info: oklch(from var(--color-semantic-info) clamp(0, (0.62 - l) * 1000, 1) 0 0);
 
   /* ── Readable brand text (surface 上に brand 色の文字を置くとき) ───── */
   /* brand を「文字色」に直接使うと light theme (特に mint L0.85) で surface に
@@ -107,4 +114,36 @@
     var(--color-brand-primary) 50%,
     var(--color-text-primary)
   );
+
+  /* ── Surface veil (面の上に重ねる相対的な「段」) ────────────────────── */
+  /* striped row / filled input / track / hover feedback のように「今いる面より
+     一段」を作る差分表現のための veil。
+     絶対 token (--color-surface-bg-subtle) をこの用途に使うと、 「置かれる面が
+     bg-base である」 という暗黙の前提が入る。 card / panel / playground のように
+     面自体が bg-subtle の上では段差が 0 になり、 縞も凹みも消えてしまう
+     (CSS には親の背景色を読む手段が無いので、 絶対値では原理的に解けない)。
+     text-primary は dark theme=明色 / light theme=暗色 に反転するため、 それを
+     低 alpha で重ねれば「今の面が何であれ必ず一段」になる
+     (--text-brand-readable と同じ論法)。 transparent 合成なので下地を問わない。
+
+     ΔL は全 8 theme で veil-1 ≈ 0.032 / veil-2 ≈ 0.064 に揃う。
+     従来の bg-subtle 差分は dark 0.030 / light 0.020 と theme 間で不揃いで、
+     light の段差が一段弱かった — veil 化でこれも解消する。
+
+       veil-1 : 控えめな段 (striped / hover / track / marker)。 従来の dark 相当。
+       veil-2 : 明確な面 (filled input / badge / code block / filled hover)。
+       veil-3 : tonal control の fill (secondary button の rest) と、 veil-2 面の
+                hover / press。 「面そのものが control」 な要素に使う最深段。
+
+     ── Press 語彙 (interactive の標準) ──────────────────────────────────
+     raised な単体 control (button / card) の press は「沈み込み」 (translateY(1px) +
+     fill darken)。 flat な行 target (menu-item / tab / pagination-item / summary /
+     close button 等) の press は **veil ladder をもう一段** — hover = veil-1 →
+     :active = veil-2。 あわせて :active 側で transition-duration を
+     --motion-mapping-press-duration (80ms) に落とすと、 押下は即時・離すと hover
+     速度で柔らかく戻る (press rule が外れるため base の duration に復帰する)。
+     色変化のみなので prefers-reduced-motion でも安全。 */
+  --surface-veil-1: color-mix(in oklch, var(--color-text-primary) 4%, transparent);
+  --surface-veil-2: color-mix(in oklch, var(--color-text-primary) 8%, transparent);
+  --surface-veil-3: color-mix(in oklch, var(--color-text-primary) 12%, transparent);
 }

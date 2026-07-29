@@ -13,6 +13,7 @@ import {
 import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
+import { PropsTable, TokensTable } from '../../ui/DocsTables'
 
 const PROPS = [
   {
@@ -74,94 +75,70 @@ export default function Accordion() {
         <div class="docs-component-preview">
           <AccordionLivePreview />
           <div class="docs-preview-row-label">Default (bordered)</div>
-          <div class="creo-accordion">
-            <details class="creo-accordion-item" open>
-              <summary class="creo-accordion-summary">
-                <span class="creo-accordion-title">Frame system</span>
-              </summary>
-              <div class="creo-accordion-content">
-                <p>
-                  3D Frame system protocol — 名前付き spatial container + slot binding。 view
-                  component が slot に bind され、 setFrame() で morph trigger。
-                </p>
-              </div>
-            </details>
-            <details class="creo-accordion-item">
-              <summary class="creo-accordion-summary">
-                <span class="creo-accordion-title">Editor Mode</span>
-              </summary>
-              <div class="creo-accordion-content">
-                <p>
-                  universal Editor Mode protocol — field 宣言 / 4 方向 layout / Content 非侵襲性 /
-                  AI agent access。
-                </p>
-              </div>
-            </details>
-            <details class="creo-accordion-item">
-              <summary class="creo-accordion-summary">
-                <span class="creo-accordion-title">Vision input</span>
-              </summary>
-              <div class="creo-accordion-content">
-                <p>
-                  Webcam motion capture (MediaPipe) + on-device only。 Apple Vision Pro 思想 —
-                  gesture は fluent input layer (keyboard/mouse の上に乗る、 primary 化しない)。
-                </p>
-              </div>
-            </details>
-          </div>
+          {/* .creo-accordion は details 1 つ = 1 disclosure に付ける (container ではない)。
+              margin-bottom で間隔、border/radius/elevation で 1 件の外枠が付く。 */}
+          <details class="creo-accordion" open>
+            <summary class="creo-accordion-summary">
+              <span class="creo-accordion-title">Frame system</span>
+            </summary>
+            <div class="creo-accordion-content">
+              <p>
+                3D Frame system protocol — 名前付き spatial container + slot binding。 view
+                component が slot に bind され、 setFrame() で morph trigger。
+              </p>
+            </div>
+          </details>
+          <details class="creo-accordion">
+            <summary class="creo-accordion-summary">
+              <span class="creo-accordion-title">Editor Mode</span>
+            </summary>
+            <div class="creo-accordion-content">
+              <p>
+                universal Editor Mode protocol — field 宣言 / 4 方向 layout / Content 非侵襲性 / AI
+                agent access。
+              </p>
+            </div>
+          </details>
+          <details class="creo-accordion">
+            <summary class="creo-accordion-summary">
+              <span class="creo-accordion-title">Vision input</span>
+            </summary>
+            <div class="creo-accordion-content">
+              <p>
+                Webcam motion capture (MediaPipe) + on-device only。 Apple Vision Pro 思想 — gesture
+                は fluent input layer (keyboard/mouse の上に乗る、 primary 化しない)。
+              </p>
+            </div>
+          </details>
 
           <div class="docs-preview-row-label">Subtle variant</div>
-          <div class="creo-accordion" data-variant="subtle">
-            <details class="creo-accordion-item">
-              <summary class="creo-accordion-summary">
-                <span class="creo-accordion-title">FAQ 1</span>
-              </summary>
-              <div class="creo-accordion-content">
-                <p>Subtle variant — border なしの minimal 表現、 dense info 群に。</p>
-              </div>
-            </details>
-            <details class="creo-accordion-item">
-              <summary class="creo-accordion-summary">
-                <span class="creo-accordion-title">FAQ 2</span>
-              </summary>
-              <div class="creo-accordion-content">
-                <p>長い content が下に展開、 click で toggle。</p>
-              </div>
-            </details>
-          </div>
+          <details class="creo-accordion" data-variant="subtle">
+            <summary class="creo-accordion-summary">
+              <span class="creo-accordion-title">FAQ 1</span>
+            </summary>
+            <div class="creo-accordion-content">
+              <p>Subtle variant — border なしの minimal 表現、 dense info 群に。</p>
+            </div>
+          </details>
+          <details class="creo-accordion" data-variant="subtle">
+            <summary class="creo-accordion-summary">
+              <span class="creo-accordion-title">FAQ 2</span>
+            </summary>
+            <div class="creo-accordion-content">
+              <p>長い content が下に展開、 click で toggle。</p>
+            </div>
+          </details>
         </div>
       </section>
 
       <section>
         <h2 class="docs-section-title">Props</h2>
-        <div class="docs-props-table">
-          <div class="docs-props-row docs-props-head">
-            <div>Attribute</div>
-            <div>Values</div>
-            <div>Default</div>
-            <div>Meaning</div>
-          </div>
-          {PROPS.map((p) => (
-            <div class="docs-props-row">
-              <code>{p.attr}</code>
-              <code>{p.values}</code>
-              <code>{p.def}</code>
-              <span>{p.meaning}</span>
-            </div>
-          ))}
-        </div>
+        <PropsTable rows={PROPS} />
       </section>
 
       <section>
         <h2 class="docs-section-title">Token reference</h2>
-        <div class="docs-tokens-table">
-          {TOKENS.map((t) => (
-            <div class="docs-tokens-row">
-              <span class="docs-tokens-slot">{t.slot}</span>
-              <code class="docs-tokens-name">{t.token}</code>
-            </div>
-          ))}
-        </div>
+        <TokensTable rows={TOKENS} />
       </section>
 
       <section>
@@ -184,31 +161,33 @@ export default function Accordion() {
       <section>
         <h2 class="docs-section-title">Code</h2>
         <pre class="docs-code">
-          <code>{`<div class="creo-accordion">
-  <details class="creo-accordion-item" open>
-    <summary class="creo-accordion-summary">
-      <span class="creo-accordion-title">Frame system</span>
-    </summary>
-    <div class="creo-accordion-content">
-      <p>3D Frame system protocol — ...</p>
-    </div>
-  </details>
-  <details class="creo-accordion-item">
-    <summary class="creo-accordion-summary">
-      <span class="creo-accordion-title">Editor Mode</span>
-    </summary>
-    <div class="creo-accordion-content">
-      ...
-    </div>
-  </details>
-</div>
+          <code>{`<!-- .creo-accordion は details 1 つ = 1 disclosure に付ける。
+     複数並べるときは container で包まず、そのまま並べる
+     (margin-bottom が間隔を作る)。 -->
+<details class="creo-accordion" open>
+  <summary class="creo-accordion-summary">
+    <span class="creo-accordion-title">Frame system</span>
+  </summary>
+  <div class="creo-accordion-content">
+    <p>3D Frame system protocol — ...</p>
+  </div>
+</details>
+<details class="creo-accordion">
+  <summary class="creo-accordion-summary">
+    <span class="creo-accordion-title">Editor Mode</span>
+  </summary>
+  <div class="creo-accordion-content">
+    ...
+  </div>
+</details>
+
+<!-- subtle variant は各 details に付ける -->
+<details class="creo-accordion" data-variant="subtle">...</details>
 
 <!-- Exclusive (Chrome 120+: name attribute) -->
-<div class="creo-accordion">
-  <details name="faq" open><summary>...</summary>...</details>
-  <details name="faq"><summary>...</summary>...</details>
-  <details name="faq"><summary>...</summary>...</details>
-</div>`}</code>
+<details class="creo-accordion" name="faq" open><summary>...</summary>...</details>
+<details class="creo-accordion" name="faq"><summary>...</summary>...</details>
+<details class="creo-accordion" name="faq"><summary>...</summary>...</details>`}</code>
         </pre>
       </section>
 
@@ -265,13 +244,15 @@ function AccordionLivePreview() {
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
       <div class="docs-playground-stage">
-        <div
-          ref={selectable}
-          class="creo-accordion"
-          data-variant={variant()}
-          style={{ width: '100%', 'max-width': '480px' }}
-        >
-          <details class="creo-accordion-item" name={groupName()} open={firstOpen()}>
+        {/* container は selection の ref と幅制約だけを持つ。 .creo-accordion は
+            各 details 側 (= 1 disclosure) に付ける。 */}
+        <div ref={selectable} style={{ width: '100%', 'max-width': '480px' }}>
+          <details
+            class="creo-accordion"
+            data-variant={variant()}
+            name={groupName()}
+            open={firstOpen()}
+          >
             <summary class="creo-accordion-summary">
               <span class="creo-accordion-title">{title()}</span>
             </summary>
@@ -282,7 +263,7 @@ function AccordionLivePreview() {
               </p>
             </div>
           </details>
-          <details class="creo-accordion-item" name={groupName()}>
+          <details class="creo-accordion" data-variant={variant()} name={groupName()}>
             <summary class="creo-accordion-summary">
               <span class="creo-accordion-title">Editor Mode</span>
             </summary>
@@ -292,7 +273,7 @@ function AccordionLivePreview() {
               </p>
             </div>
           </details>
-          <details class="creo-accordion-item" name={groupName()}>
+          <details class="creo-accordion" data-variant={variant()} name={groupName()}>
             <summary class="creo-accordion-summary">
               <span class="creo-accordion-title">Vision input</span>
             </summary>

@@ -18,12 +18,16 @@
 .creo-header {
   display: flex;
   align-items: center;
-  gap: var(--layout-gap-sibling);
+  gap: calc(var(--layout-gap-sibling) * var(--density-gap-scale, 1));
   /* padding は spacing token (--spacing-s / --spacing-m) を直接参照。
      consumer は CSS scope (例: `.creo-header { --spacing-m: 14px }`) で override 可、
      これにより `.creo-header` 内の var(--spacing-m) は scope 値を pick up
-     (= Project の Size Stepper / HEADER namespace から CSS variable を inject する経路)。 */
-  padding: var(--spacing-s) var(--spacing-m);
+     (= Project の Size Stepper / HEADER namespace から CSS variable を inject する経路)。
+     --_hdr-pad-* は variant (marketing) が差し替える。 density calc はここ 1 箇所。 */
+  --_hdr-pad-y: var(--spacing-s);
+  --_hdr-pad-x: var(--spacing-m);
+  padding: calc(var(--_hdr-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_hdr-pad-x) * var(--density-padding-scale, 1));
   background-color: var(--color-surface-surface);
   color: var(--color-text-primary);
   border-bottom: 1px solid var(--color-surface-border);
@@ -35,8 +39,9 @@
 /* ---------- Variants ---------- */
 
 .creo-header[data-variant="marketing"] {
-  padding: var(--spacing-m) var(--spacing-xl);
-  min-height: 72px;
+  --_hdr-pad-y: var(--spacing-m);
+  --_hdr-pad-x: var(--spacing-xl);
+  min-height: calc(72px * var(--density-min-height-scale, 1));
   background-color: var(--color-surface-bg-base);
 }
 
@@ -108,7 +113,8 @@
   text-decoration: none;
   font-size: var(--typography-size-m);
   font-weight: var(--typography-weight-regular);
-  padding: var(--spacing-xs) var(--spacing-s);
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1))
+    calc(var(--spacing-s) * var(--density-padding-scale, 1));
   border-radius: var(--radius-xs);
   transition: color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing),
     background-color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing);
@@ -116,7 +122,14 @@
 .creo-header-nav a:hover,
 .creo-header-nav a[aria-current="page"] {
   color: var(--color-text-primary);
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
+}
+
+/* press = veil-2 (_elevation.css の press 語彙)。 */
+.creo-header-nav a:active {
+  color: var(--color-text-primary);
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
 }
 
 .creo-header-actions {

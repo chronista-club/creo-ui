@@ -5,7 +5,7 @@
  */
 
 import { describe, expect, it } from 'bun:test'
-import { type SpringPreset, springEasing, springPreset } from './spring'
+import { type SpringPreset, springCurve, springEasing, springPreset } from './spring'
 
 describe('springEasing', () => {
   it('returns a linear() easing string', () => {
@@ -107,5 +107,36 @@ describe('springEasing — preset overload', () => {
     const fromPreset = springEasing('stiff')
     const fromOptions = springEasing(springPreset('stiff'))
     expect(fromPreset).toBe(fromOptions)
+  })
+})
+
+describe('springCurve — t 外部化 (LE-P3)', () => {
+  it('position(0) = 0、 position(settleTime) ≈ 1', () => {
+    const curve = springCurve('stiff')
+    expect(curve.position(0)).toBeCloseTo(0, 6)
+    expect(curve.position(curve.settleTime)).toBeCloseTo(1, 2)
+    expect(curve.settleTime).toBeGreaterThan(0)
+  })
+
+  it('springEasing と同じ物理 — sample 一致 (重複実装ではなく同一の position 関数)', () => {
+    const curve = springCurve('gentle')
+    const points = parseLinearEasing(springEasing('gentle'))
+    // springEasing は samples=60 で curve.position を等間隔 sample している
+    for (const [i, expected] of [
+      [0, points[0]],
+      [30, points[30]],
+      [59, points[59]],
+    ] as [number, number][]) {
+      expect(curve.position((i / 60) * curve.settleTime)).toBeCloseTo(expected, 3)
+    }
+  })
+
+  it('underdamped preset は overshoot する (layout 側 clamp の理由を固定)', () => {
+    const curve = springCurve('wobbly')
+    let max = 0
+    for (let t = 0; t <= curve.settleTime; t += curve.settleTime / 100) {
+      max = Math.max(max, curve.position(t))
+    }
+    expect(max).toBeGreaterThan(1)
   })
 })

@@ -26,8 +26,16 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: var(--spacing-s);
-  padding: var(--spacing-xl);
+
+  /* size 別の素の値。 [data-size] variant はこの 3 変数だけを差し替え、
+     gap / padding の宣言 (density calc 込み) はここ 1 箇所 (button.css と同 pattern)。 */
+  --_eb-gap: var(--spacing-s);
+  --_eb-pad-y: var(--spacing-xl);
+  --_eb-pad-x: var(--spacing-xl);
+
+  gap: calc(var(--_eb-gap) * var(--density-gap-scale, 1));
+  padding: calc(var(--_eb-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_eb-pad-x) * var(--density-padding-scale, 1));
   color: var(--color-text-primary);
 
   /* Dual layer bg: semantic error subtle (主) + brand primary subtle (whisper)。
@@ -44,15 +52,18 @@
 
 /* ---------- Sizes ---------- */
 
+/* size variant は --_eb-* の差し替えのみ (base 側の density calc を剥がさない)。 */
 .creo-error-boundary[data-size="s"] {
-  padding: var(--spacing-m);
-  gap: var(--spacing-xs);
+  --_eb-pad-y: var(--spacing-m);
+  --_eb-pad-x: var(--spacing-m);
+  --_eb-gap: var(--spacing-xs);
   border-radius: var(--radius-m);
 }
 
 .creo-error-boundary[data-size="l"] {
-  padding: calc(var(--spacing-xl) * 1.5) var(--spacing-xl);
-  gap: var(--spacing-m);
+  --_eb-pad-y: calc(var(--spacing-xl) * 1.5);
+  --_eb-pad-x: var(--spacing-xl);
+  --_eb-gap: var(--spacing-m);
 }
 
 /* ---------- Icon ---------- */
@@ -121,7 +132,8 @@
   cursor: pointer;
   font-size: var(--typography-body-helper);
   color: var(--color-text-tertiary);
-  padding: var(--spacing-xs) var(--spacing-s);
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1))
+    calc(var(--spacing-s) * var(--density-padding-scale, 1));
   border-radius: var(--radius-xs);
   transition: background-color var(--motion-mapping-hover-duration)
     var(--motion-mapping-hover-easing), color var(--motion-mapping-hover-duration)
@@ -129,18 +141,25 @@
 }
 
 .creo-error-boundary-detail summary:hover {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   color: var(--color-text-primary);
+}
+
+/* press = veil-2 (_elevation.css の press 語彙)。 */
+.creo-error-boundary-detail summary:active {
+  background-color: var(--surface-veil-2);
+  color: var(--color-text-primary);
+  transition-duration: var(--motion-mapping-press-duration);
 }
 
 .creo-error-boundary-detail pre {
   margin: var(--spacing-xs) 0 0 0;
-  padding: var(--spacing-s);
+  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1));
   /* pre は UA の monospace 既定を打ち消すため font-family を明示 (font 一本化
      directive で sans token へ)。 mono 専用 font は廃止。 */
   font-family: var(--typography-family-sans);
   font-size: var(--typography-body-caption);
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-2);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-s);
   overflow-x: auto;

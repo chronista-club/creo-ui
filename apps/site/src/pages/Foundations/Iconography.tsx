@@ -24,7 +24,7 @@ const OPERATIONAL: readonly AxisRow[] = [
       'inline mark / dense list / button leading icon / dev tool aesthetic — text-flow に並ぶ',
   },
   {
-    system: '<Icon> (creo-ui-icons-web、 Iconify-based)',
+    system: '<Icon> (@chronista-club/creo-ui-icons-web、 Iconify-based)',
     source:
       'Iconify 9 set (mingcute/iconoir/ph/svg-spinners/codicon/simple-icons/flagpack/noto/bi)',
     fidelity: 'multi-color、 SVG-based、 stroke 制御可、 dynamic',
@@ -100,7 +100,7 @@ const RUBRIC: readonly RubricItem[] = [
     category: 'System 選択 (creo-ui-icon vs Iconify)',
     criteria: [
       'inline / dense / mono color → .creo-ui-icon (Nerd Font、 軽量、 CSS-only)',
-      'hero / multi-color / brand specific → Iconify (creo-ui-icons-web、 SVG)',
+      'hero / multi-color / brand specific → Iconify (@chronista-club/creo-ui-icons-web、 SVG)',
       '同 icon が 2 system にあるとき: 文脈で選ぶ (button leading は creo-ui-icon、 hero は Iconify)',
       'mixed の場合は両 system 利用可、 ただし 1 surface 内では 1 system に統一推奨',
     ],
@@ -136,7 +136,7 @@ export default function Iconography() {
           (System / Source / Fidelity / Use-case) で articulate。 size scale は{' '}
           <A href="/foundations/typography">typography.icon</A> の 5 tier を bind。 inline / dense
           は <code>.creo-ui-icon</code> CSS class、 hero / multi-color は{' '}
-          <code>creo-ui-icons-web</code> の <code>&lt;Icon&gt;</code> を judge。
+          <code>@chronista-club/creo-ui-icons-web</code> の <code>&lt;Icon&gt;</code> を judge。
         </p>
       </header>
 
@@ -147,26 +147,26 @@ export default function Iconography() {
           <strong>Fidelity (色 / 表現力)</strong> × <strong>Use-case</strong> で articulate。
           「inline か hero か」 「mono か multi-color か」 で judge する rubric ベース選択。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>System</th>
-                <th>Source</th>
-                <th>Fidelity</th>
-                <th>Use-case</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">System</th>
+                <th class="creo-table-cell">Source</th>
+                <th class="creo-table-cell">Fidelity</th>
+                <th class="creo-table-cell">Use-case</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={OPERATIONAL}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.system}</code>
                     </th>
-                    <td>{row.source}</td>
-                    <td>{row.fidelity}</td>
-                    <td>{row.useCase}</td>
+                    <td class="creo-table-cell">{row.source}</td>
+                    <td class="creo-table-cell">{row.fidelity}</td>
+                    <td class="creo-table-cell">{row.useCase}</td>
                   </tr>
                 )}
               </For>
@@ -181,26 +181,26 @@ export default function Iconography() {
           5 tier convention strict、 typography.size scale (body 用) と独立。 icon は visual
           hierarchy がより gross-grain で、 12-96px の wide range が必要。
         </p>
-        <div class="docs-operational-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Token</th>
-                <th>Value</th>
-                <th>Visual size</th>
-                <th>Use-case</th>
+        <div class="docs-table-scroll">
+          <table class="creo-table" data-size="s">
+            <thead class="creo-table-head">
+              <tr class="creo-table-row">
+                <th class="creo-table-cell">Token</th>
+                <th class="creo-table-cell">Value</th>
+                <th class="creo-table-cell">Visual size</th>
+                <th class="creo-table-cell">Use-case</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="creo-table-body">
               <For each={SIZES}>
                 {(row) => (
-                  <tr>
-                    <th>
+                  <tr class="creo-table-row">
+                    <th class="creo-table-cell">
                       <code>{row.token}</code>
                     </th>
-                    <td>{row.value}</td>
-                    <td>{row.visualSize}</td>
-                    <td>{row.useCase}</td>
+                    <td class="creo-table-cell">{row.value}</td>
+                    <td class="creo-table-cell">{row.visualSize}</td>
+                    <td class="creo-table-cell">{row.useCase}</td>
                   </tr>
                 )}
               </For>
@@ -296,8 +296,8 @@ export default function Iconography() {
   Favorite
 </button>
 
-<!-- Iconify SVG (creo-ui-icons-web、 separate package) -->
-import { Icon } from 'creo-ui-icons-web'
+<!-- Iconify SVG (@chronista-club/creo-ui-icons-web、 separate package) -->
+import { Icon } from '@chronista-club/creo-ui-icons-web'
 <Icon set="mingcute" name="star-fill" size="m" variant="warning" />
 
 /* CSS — color customize */

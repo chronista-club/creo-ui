@@ -26,7 +26,7 @@
 }
 
 .creo-accordion[data-variant="subtle"] {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   border: none;
   border-radius: var(--radius-s);
 }
@@ -36,10 +36,11 @@
 .creo-accordion-summary {
   display: flex;
   align-items: center;
-  gap: var(--layout-gap-tight);
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
   /* tight padding: dashboard 系で 5+ stack した時の縦窮屈さを抑える。
      min-height (target-tap=44px) は desktop では過剰なので削除、 content 高さに従う。 */
-  padding: var(--spacing-xs) var(--spacing-s);
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1))
+    calc(var(--spacing-s) * var(--density-padding-scale, 1));
   cursor: pointer;
   user-select: none;
   list-style: none; /* default chevron を消す */
@@ -56,7 +57,13 @@
 }
 
 .creo-accordion-summary:hover {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
+}
+
+/* press = veil-2 (_elevation.css の press 語彙)。 */
+.creo-accordion-summary:active {
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
 }
 
 /* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
@@ -96,7 +103,9 @@
 /* ---------- Content (expanded body) ---------- */
 
 .creo-accordion-content {
-  padding: var(--spacing-s) var(--spacing-m) var(--spacing-m);
+  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
+    calc(var(--spacing-m) * var(--density-padding-scale, 1))
+    calc(var(--spacing-m) * var(--density-padding-scale, 1));
   font-size: var(--typography-size-m);
   color: var(--color-text-primary);
   line-height: var(--typography-line-height-normal);

@@ -102,107 +102,22 @@ a:hover {
    Header (sticky)
    ============================================================ */
 
+/* Header — `.creo-header` (dogfood) の上に載る site 固有 chrome。
+   sticky / blur / nav の hover・press・active / logo / actions の見た目は
+   component (header.css) に全委譲。 site 側は高さの固定だけを持つ —
+   sidebar / editor dock の offset が --docs-header-height を参照するため。 */
 .docs-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-l);
   height: var(--docs-header-height);
-  padding: 0 var(--spacing-l);
-  background: color-mix(in oklab, var(--color-surface-bg-base) 80%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--color-surface-border);
 }
 
-.docs-brand {
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--spacing-xs);
-  color: var(--color-text-primary);
-  text-decoration: none;
-  font-weight: var(--typography-weight-bold);
-  font-size: var(--typography-size-l);
-  letter-spacing: -0.01em;
-}
-
-.docs-brand:hover {
-  text-decoration: none;
-}
-
+/* logo mark (◎) — brand 色 + hover 回転は site の personality として維持
+   (回転 animation は後方の polish section 参照)。 */
 .docs-brand-logo {
   color: var(--color-brand-primary);
   font-size: 1.2em;
 }
 
-.docs-brand-version {
-  font-size: var(--typography-size-xs);
-  font-weight: var(--typography-weight-regular);
-  color: var(--color-text-secondary);
-  font-family: var(--typography-family-sans);
-  padding: 2px 6px;
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-s);
-}
-
-.docs-header-nav {
-  display: flex;
-  gap: var(--spacing-m);
-  margin-inline-start: auto;
-}
-
-.docs-header-nav a {
-  color: var(--color-text-secondary);
-  font-size: var(--typography-size-s);
-  font-weight: var(--typography-weight-medium);
-  padding: 6px 10px;
-  border-radius: var(--radius-s);
-  transition: color 120ms, background 120ms;
-}
-
-.docs-header-nav a:hover {
-  color: var(--color-text-primary);
-  text-decoration: none;
-  background: var(--color-surface-bg-subtle);
-}
-
-.docs-header-nav a.is-active {
-  color: var(--color-brand-primary);
-  background: color-mix(in oklab, var(--color-brand-primary) 12%, transparent);
-}
-
-.docs-header-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-s);
-}
-
-.docs-header-link {
-  color: var(--color-text-secondary);
-  font-size: var(--typography-size-s);
-  font-weight: var(--typography-weight-medium);
-  padding: 6px 10px;
-  border-radius: var(--radius-s);
-  transition: color 120ms;
-}
-
-.docs-header-link:hover {
-  color: var(--color-text-primary);
-  text-decoration: none;
-}
-
-.docs-theme-switcher select {
-  font-family: inherit;
-  font-size: var(--typography-size-s);
-  padding: 6px 10px;
-  background: var(--color-surface-bg-subtle);
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-s);
-  color: var(--color-text-primary);
-  cursor: pointer;
-}
+/* theme switcher — .creo-select component (dogfood) に全委譲、 site 側 CSS なし。 */
 
 /* ============================================================
    Sidebar
@@ -974,69 +889,15 @@ a:hover {
 }
 
 /* ============================================================
-   Operational table — generic axis articulate primitive
-   (Color / Theming / Typography 系で共通利用)
+   Table scroll — .creo-table 用の横 scroll container
+   (table 自身は scroll できないため、 wide content 用の layout 器だけ site 側に残す。
+    見た目の styling は .creo-table (dogfood) に全委譲 — 旧 .docs-operational-table
+    の独自 styling はここから削除した)
    ============================================================ */
 
-.docs-operational-table {
+.docs-table-scroll {
   margin: var(--spacing-m) 0 var(--spacing-l) 0;
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
   overflow-x: auto;
-  background: var(--color-surface-surface);
-}
-
-.docs-operational-table table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--typography-body-helper);
-  line-height: var(--typography-line-height-normal);
-}
-
-.docs-operational-table thead {
-  background: var(--color-surface-bg-subtle);
-}
-
-.docs-operational-table th,
-.docs-operational-table td {
-  padding: var(--spacing-s) var(--spacing-m);
-  text-align: left;
-  vertical-align: top;
-  border-bottom: 1px solid var(--color-surface-border-subtle);
-}
-
-.docs-operational-table thead th {
-  font-size: var(--typography-size-xs);
-  font-weight: var(--typography-weight-bold);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text-tertiary);
-  white-space: nowrap;
-}
-
-.docs-operational-table tbody th {
-  font-weight: var(--typography-weight-medium);
-  color: var(--color-text-primary);
-  white-space: nowrap;
-  background: color-mix(in oklab, var(--color-surface-bg-subtle) 50%, transparent);
-}
-
-.docs-operational-table tbody th code {
-  font-family: var(--typography-family-sans);
-  font-size: 0.95em;
-  background: transparent;
-  padding: 0;
-  color: var(--color-brand-primary);
-}
-
-.docs-operational-table tbody tr:last-child th,
-.docs-operational-table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.docs-operational-table tbody td {
-  color: var(--color-text-secondary);
 }
 
 /* ============================================================
@@ -1107,57 +968,6 @@ a:hover {
   background: var(--color-surface-bg-subtle);
   border-radius: var(--radius-xs);
   color: var(--color-text-primary);
-}
-
-/* ============================================================
-   Concepts / EditorMode — decision table
-   ============================================================ */
-
-.docs-decision-table {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  font-size: var(--typography-size-s);
-}
-
-.docs-decision-row {
-  display: grid;
-  grid-template-columns: 56px 200px 1fr;
-  align-items: baseline;
-  gap: var(--spacing-s);
-  padding: var(--spacing-s) var(--spacing-m);
-  border-top: 1px solid var(--color-surface-border);
-}
-
-.docs-decision-row:first-child {
-  border-top: 0;
-}
-
-.docs-decision-head {
-  background: var(--color-surface-bg-subtle);
-  font-weight: var(--typography-weight-bold);
-  font-size: var(--typography-size-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text-tertiary);
-}
-
-.docs-decision-id {
-  font-family: var(--typography-family-sans);
-  font-weight: var(--typography-weight-bold);
-  color: var(--color-brand-primary);
-}
-
-.docs-decision-topic {
-  font-weight: var(--typography-weight-medium);
-  color: var(--color-text-primary);
-}
-
-.docs-decision-text {
-  color: var(--color-text-secondary);
-  line-height: 1.5;
 }
 
 /* ============================================================
@@ -1314,45 +1124,6 @@ a:hover {
 }
 
 /* ============================================================
-   Concepts / Layers — token mini-table
-   ============================================================ */
-
-.docs-token-table {
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  margin: var(--spacing-xs) 0 var(--spacing-m) 0;
-}
-
-.docs-token-row {
-  display: grid;
-  grid-template-columns: 220px 1fr 1.5fr;
-  gap: var(--spacing-s);
-  padding: var(--spacing-xs) var(--spacing-m);
-  font-size: var(--typography-size-xs);
-  border-top: 1px solid var(--color-surface-border);
-}
-
-.docs-token-row:first-child {
-  border-top: 0;
-}
-
-.docs-token-name {
-  font-family: var(--typography-family-sans);
-  color: var(--color-text-primary);
-}
-
-.docs-token-value {
-  font-family: var(--typography-family-sans);
-  color: var(--color-text-secondary);
-}
-
-.docs-token-desc {
-  color: var(--color-text-secondary);
-  line-height: 1.5;
-}
-
-/* ============================================================
    Concepts / MultiPlatform — pipeline
    ============================================================ */
 
@@ -1421,48 +1192,8 @@ a:hover {
 }
 
 /* ============================================================
-   Concepts / MultiPlatform — naming table
+   Concepts / MultiPlatform — platform section title
    ============================================================ */
-
-.docs-naming-table {
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  margin: var(--spacing-m) 0;
-}
-
-.docs-naming-row {
-  display: grid;
-  grid-template-columns: 1.4fr 1.4fr 1.2fr 1.4fr;
-  gap: var(--spacing-s);
-  padding: var(--spacing-xs) var(--spacing-m);
-  font-size: var(--typography-size-xs);
-  border-top: 1px solid var(--color-surface-border);
-}
-
-.docs-naming-row:first-child {
-  border-top: 0;
-}
-
-.docs-naming-row code {
-  font-family: var(--typography-family-sans);
-  font-size: var(--typography-size-xs);
-  color: var(--color-text-primary);
-  word-break: break-all;
-}
-
-.docs-naming-head {
-  background: var(--color-surface-bg-subtle);
-  font-size: 10px;
-  font-weight: var(--typography-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text-tertiary);
-}
-
-.docs-naming-head > div {
-  font-family: var(--typography-family-sans);
-}
 
 .docs-platform-title {
   font-size: var(--typography-title-card);
@@ -1576,88 +1307,6 @@ a:hover {
 
 .docs-preview-row--baseline {
   align-items: flex-end;
-}
-
-/* ============================================================
-   Components — props table
-   ============================================================ */
-
-.docs-props-table {
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  margin: var(--spacing-xs) 0;
-  font-size: var(--typography-size-xs);
-}
-
-.docs-props-row {
-  display: grid;
-  grid-template-columns: 1.4fr 2fr 0.8fr 2fr;
-  gap: var(--spacing-s);
-  padding: var(--spacing-xs) var(--spacing-m);
-  border-top: 1px solid var(--color-surface-border);
-  align-items: baseline;
-}
-
-.docs-props-row:first-child {
-  border-top: 0;
-}
-
-.docs-props-row code {
-  font-family: var(--typography-family-sans);
-  color: var(--color-text-primary);
-}
-
-.docs-props-row span {
-  color: var(--color-text-secondary);
-  line-height: 1.5;
-}
-
-.docs-props-head {
-  background: var(--color-surface-bg-subtle);
-  font-size: 10px;
-  font-weight: var(--typography-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-text-tertiary);
-}
-
-.docs-props-head > div {
-  font-family: var(--typography-family-sans);
-}
-
-/* ============================================================
-   Components — slot/token table
-   ============================================================ */
-
-.docs-tokens-table {
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
-  overflow: hidden;
-  margin: var(--spacing-xs) 0;
-  font-size: var(--typography-size-xs);
-}
-
-.docs-tokens-row {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: var(--spacing-s);
-  padding: var(--spacing-xs) var(--spacing-m);
-  border-top: 1px solid var(--color-surface-border);
-}
-
-.docs-tokens-row:first-child {
-  border-top: 0;
-}
-
-.docs-tokens-slot {
-  color: var(--color-text-secondary);
-}
-
-.docs-tokens-name {
-  font-family: var(--typography-family-sans);
-  color: var(--color-text-primary);
-  word-break: break-all;
 }
 
 /* ============================================================
@@ -2977,48 +2626,12 @@ kbd {
     var(--motion-duration-normal);
 }
 
-.docs-brand:hover .docs-brand-logo {
+.creo-header-logo:hover .docs-brand-logo {
   transform: rotate(90deg);
   filter: drop-shadow(0 0 6px var(--face-glow-brand));
 }
 
-.docs-header-nav a.is-active {
-  box-shadow: inset 0 -2px 0 var(--color-brand-primary);
-}
-
-.docs-theme-switcher {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-.docs-theme-switcher::after {
-  content: "";
-  position: absolute;
-  inset-inline-end: 10px;
-  width: 6px;
-  height: 6px;
-  border-inline-end: 1.5px solid var(--color-text-tertiary);
-  border-bottom: 1.5px solid var(--color-text-tertiary);
-  transform: translateY(-2px) rotate(45deg);
-  pointer-events: none;
-}
-
-.docs-theme-switcher select {
-  padding-inline-end: 28px;
-  appearance: none;
-  transition: border-color var(--motion-duration-fast), box-shadow var(--motion-duration-fast);
-}
-
-.docs-theme-switcher select:hover {
-  border-color: var(--face-border-lum);
-}
-
-.docs-theme-switcher select:focus-visible {
-  outline: none;
-  border-color: var(--color-brand-primary);
-  box-shadow: 0 0 0 3px var(--face-glow-brand-soft);
-}
+/* theme switcher の wrapper / arrow は .creo-select component 化に伴い削除。 */
 
 /* ============================================================
    Responsive
@@ -3038,7 +2651,7 @@ kbd {
   .docs-sidebar {
     display: none;
   }
-  .docs-header-nav {
+  .docs-header .creo-header-nav {
     display: none;
   }
   .docs-typo-row {
@@ -3061,7 +2674,7 @@ kbd {
   .docs-gallery-card:hover,
   .docs-hero-float--actions,
   .docs-hero-float--badges,
-  .docs-brand:hover .docs-brand-logo {
+  .creo-header-logo:hover .docs-brand-logo {
     transform: none !important;
     transition: none !important;
   }

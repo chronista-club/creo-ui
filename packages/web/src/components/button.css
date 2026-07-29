@@ -20,11 +20,20 @@
   align-items: center;
   justify-content: center;
   gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
-  min-height: calc(var(--layout-target-tap) * var(--density-min-height-scale, 1));
-  /* --_btn-* は Editor Mode / demo 用の private tweak var (public API ではない)。
-     未設定なら size 別の spacing token default が効く。 */
-  padding: calc(var(--_btn-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
-    calc(var(--_btn-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
+
+  /* Size 別の素の値。 下の [data-size] variant は **この 3 変数だけ** を差し替える。
+     padding / min-height の宣言 (= density calc の場所) はここ 1 箇所 —
+     variant 側に素の padding を書くと density scale が剥がれる (実際に起きた事故、
+     s/m/l 指定時に density が無効化されていた) ので、構造的に防ぐ。 */
+  --_btn-size-min-h: var(--layout-target-tap);
+  --_btn-size-pad-y: var(--spacing-s);
+  --_btn-size-pad-x: var(--spacing-m);
+
+  min-height: calc(var(--_btn-size-min-h) * var(--density-min-height-scale, 1));
+  /* --_btn-pad-{x,y} は consumer / Editor Mode 用の private tweak var (public API では
+     ない)。 未設定なら size 別 default (--_btn-size-pad-*) が効く。 */
+  padding: calc(var(--_btn-pad-y, var(--_btn-size-pad-y)) * var(--density-padding-scale, 1))
+    calc(var(--_btn-pad-x, var(--_btn-size-pad-x)) * var(--density-padding-scale, 1));
 
   /* Typography */
   font-family: inherit;
@@ -89,20 +98,24 @@
   transform: translateY(1px);
 }
 
+/* secondary = **fill の variant** (tonal fill、 border 無し)。 outline = border の variant、
+   ghost = 無 — 各 variant が識別子を 1 つだけ持つことで、 5 variant が実際に 5 種に見える。
+   旧実装は bg-surface (絶対 token) + outline と同じ border で、 bg-subtle の面 (specimen
+   card / panel) 上では fill の差 ΔL0.02 がほぼ不可視 → outline と見分け不能だった。
+   veil fill は下地が何であれ必ず一段になる (#93 と同じ論法)。 */
 .creo-btn[data-variant="secondary"] {
-  background-color: var(--color-surface-surface);
-  border-color: var(--color-surface-border);
+  background-color: var(--surface-veil-2);
+  border-color: transparent;
   color: var(--color-text-primary);
   --_btn-fg: var(--color-text-primary);
 }
-/* hover = surface ladder を 1 段上げて lift (dark: L0.20→0.28 で明るく浮く、
-   light: white→bg-emphasis で自然な feedback) + border が brand に灯る。 */
+/* hover = veil ladder を一段 (2→3)。 dark でも light でも「濃くなる」方向に揃う。 */
 .creo-btn[data-variant="secondary"]:hover:not(:disabled) {
-  background-color: var(--color-surface-bg-emphasis);
-  border-color: var(--color-brand-primary);
+  background-color: var(--surface-veil-3);
 }
+/* press = 沈み込み (raised control の press 語彙)。 fill は hover 段のまま。 */
 .creo-btn[data-variant="secondary"]:active:not(:disabled) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-3);
   transform: translateY(1px);
 }
 
@@ -113,27 +126,28 @@
   --_btn-fg: var(--color-text-primary);
 }
 .creo-btn[data-variant="ghost"]:hover:not(:disabled) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
+/* press = hover (veil-1) の一段深 + 沈み込み。 */
 .creo-btn[data-variant="ghost"]:active:not(:disabled) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-2);
   transform: translateY(1px);
 }
 
-/* outline — 透明背景 + border の bordered variant (secondary の subtle fill 無し版) */
+/* outline = **border の variant** (fill 無し)。 secondary (fill の variant) との分業 —
+   hover で border が brand に灯るのが signature。 */
 .creo-btn[data-variant="outline"] {
   background-color: transparent;
   border-color: var(--color-surface-border);
   color: var(--color-text-primary);
   --_btn-fg: var(--color-text-primary);
 }
-/* hover = surface ladder を 1 段上げて lift + border が brand に灯る (secondary と同方針)。 */
 .creo-btn[data-variant="outline"]:hover:not(:disabled) {
-  background-color: var(--color-surface-bg-emphasis);
+  background-color: var(--surface-veil-1);
   border-color: var(--color-brand-primary);
 }
 .creo-btn[data-variant="outline"]:active:not(:disabled) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-2);
   border-color: var(--color-brand-primary);
   transform: translateY(1px);
 }
@@ -163,22 +177,27 @@
 
 /* ---------- Sizes ---------- */
 
+/* size variant は --_btn-size-* の差し替えのみ。 padding / min-height の宣言は base の
+   1 箇所 (density calc 込み) に集約されているので、ここに素の padding を書かないこと。 */
 .creo-btn[data-size="s"] {
-  min-height: var(--layout-target-focus);
-  padding: var(--_btn-pad-y, var(--spacing-xs)) var(--_btn-pad-x, var(--spacing-s));
+  --_btn-size-min-h: var(--layout-target-focus);
+  --_btn-size-pad-y: var(--spacing-xs);
+  --_btn-size-pad-x: var(--spacing-s);
   font-size: var(--typography-size-s);
 }
 
 /* data-size="m" は base と同じ、明示しなくても OK だが editor-mode 親和で一応ルール定義 */
 .creo-btn[data-size="m"] {
-  min-height: var(--layout-target-tap);
-  padding: var(--_btn-pad-y, var(--spacing-s)) var(--_btn-pad-x, var(--spacing-m));
+  --_btn-size-min-h: var(--layout-target-tap);
+  --_btn-size-pad-y: var(--spacing-s);
+  --_btn-size-pad-x: var(--spacing-m);
   font-size: var(--typography-size-m);
 }
 
 .creo-btn[data-size="l"] {
-  min-height: calc(var(--layout-target-tap) * 1.15);
-  padding: var(--_btn-pad-y, var(--spacing-m)) var(--_btn-pad-x, var(--spacing-l));
+  --_btn-size-min-h: calc(var(--layout-target-tap) * 1.15);
+  --_btn-size-pad-y: var(--spacing-m);
+  --_btn-size-pad-x: var(--spacing-l);
   font-size: var(--typography-size-l);
 }
 
@@ -230,19 +249,22 @@
   border-color: var(--fill-brand-active);
   color: var(--on-fill-brand);
 }
+/* toggle-on の bg は各 variant の rest より一段深く (secondary rest=veil-2 → on=veil-3、
+   ghost/outline rest=透明 → on=veil-2)。 text は --text-brand-readable — brand-primary
+   直挿しは light theme で surface に対し 1.5:1 まで崩れる (_elevation.css の warning)。 */
 .creo-btn[data-variant="secondary"][aria-pressed="true"] {
-  background-color: var(--color-surface-bg-subtle);
-  border-color: var(--color-brand-primary);
-  color: var(--color-brand-primary);
+  background-color: var(--surface-veil-3);
+  border-color: transparent;
+  color: var(--text-brand-readable);
 }
 .creo-btn[data-variant="ghost"][aria-pressed="true"] {
-  background-color: var(--color-surface-bg-subtle);
-  color: var(--color-brand-primary);
+  background-color: var(--surface-veil-2);
+  color: var(--text-brand-readable);
 }
 .creo-btn[data-variant="outline"][aria-pressed="true"] {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-2);
   border-color: var(--color-brand-primary);
-  color: var(--color-brand-primary);
+  color: var(--text-brand-readable);
 }
 .creo-btn[data-variant="danger"][aria-pressed="true"] {
   background-color: var(--color-semantic-error-active);

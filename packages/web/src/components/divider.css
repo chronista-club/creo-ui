@@ -82,5 +82,5 @@
 /* ---------- Variant: subtle (low-emphasis) ---------- */
 
 .creo-divider[data-variant="subtle"] {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }

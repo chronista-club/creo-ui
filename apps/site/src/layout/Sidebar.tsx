@@ -73,6 +73,7 @@ const NAV: readonly NavGroup[] = [
       { href: '/components/drawer', label: 'Drawer' },
       { href: '/components/empty-state', label: 'Empty state' },
       { href: '/components/combobox', label: 'Combobox' },
+      { href: '/components/select', label: 'Select' },
       { href: '/components/header', label: 'Header' },
       { href: '/components/stack', label: 'Stack' },
       { href: '/components/grid', label: 'Grid' },
@@ -93,6 +94,7 @@ const NAV: readonly NavGroup[] = [
       { href: '/lab/editor', label: 'Editor surface', tag: 'live' },
       { href: '/lab/frame', label: 'Frame & Gaze', tag: 'spec' },
       { href: '/lab/vision', label: 'Vision input' },
+      { href: '/lab/layout', label: 'Layout Engine', tag: 'live' },
     ],
   },
 ]

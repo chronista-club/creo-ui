@@ -22,19 +22,36 @@ user intent を起動するための atomic action trigger。typography と colo
 
 | attr | 値 | default | 意味 |
 |---|---|---|---|
-| `data-variant` | `primary` / `secondary` / `ghost` | `primary` | 視覚的強度 |
+| `data-variant` | `primary` / `secondary` / `outline` / `ghost` / `danger` | `primary` | 視覚的強度 (下表参照) |
 | `data-size` | `s` / `m` / `l` | `m` | 5 tier convention 中央の md が標準 |
 | `disabled` | (boolean) | — | 通常の HTML 属性、pointer-events: none + opacity |
 | `aria-pressed` | `"true"` / `"false"` | — | toggle-button 用、視覚的に active state |
+
+### Variant の識別子 (各 variant は identity を 1 つだけ持つ)
+
+強度 ladder は primary > secondary > outline > ghost。secondary と outline は
+「fill か border か」の分業で、同じ identity を共有しない:
+
+| variant | identity | rest の見た目 |
+|---|---|---|
+| `primary` | brand fill + glow | chroma-boosted solid + subtle glow |
+| `secondary` | **fill** (border 無し) | `--surface-veil-2` の tonal pill |
+| `outline` | **border** (fill 無し) | transparent + `color.surface.border`、hover で border が brand に灯る |
+| `ghost` | 無 (hover で現れる) | transparent、hover で `--surface-veil-1` |
+| `danger` | semantic-error fill | destructive action 専用 |
+
+secondary の fill が veil (相対値) なのは、絶対 token だと bg-subtle の面 (card /
+panel) 上で fill が消え、outline と見分けられなくなるため。
 
 ## Token reference (DTCG)
 
 | slot | token |
 |---|---|
-| background (primary) | `color.brand.primary` / hover → `color.brand.primary-hover` |
-| background (secondary) | `color.surface.surface` + `color.surface.border` 1px |
-| background (ghost) | `transparent` + hover `color.surface.surface-muted` |
-| label color | `color.text.primary` (inverse on primary: `color.surface.bg-base`) |
+| background (primary) | `--fill-brand` (chroma boost 導出) / hover → `--fill-brand-hover` |
+| background (secondary) | `--surface-veil-2` / hover → `--surface-veil-3` (border 無し) |
+| background (outline) | `transparent` + `color.surface.border` 1px / hover bg `--surface-veil-1` |
+| background (ghost) | `transparent` / hover → `--surface-veil-1` |
+| label color | `color.text.primary` (primary / danger 上は `--on-fill-*` の auto on-color) |
 | font-size | `typography.size.m` (sm variant は `size.sm`、lg は `size.lg`) |
 | font-weight | `typography.weight.medium` |
 | padding horizontal | `spacing.m` (sm: `spacing.s`、lg: `spacing.l`) |

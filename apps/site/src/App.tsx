@@ -56,6 +56,7 @@ const Popover = lazy(() => import('./pages/Components/Popover'))
 const Drawer = lazy(() => import('./pages/Components/Drawer'))
 const EmptyState = lazy(() => import('./pages/Components/EmptyState'))
 const Combobox = lazy(() => import('./pages/Components/Combobox'))
+const Select = lazy(() => import('./pages/Components/Select'))
 const Header = lazy(() => import('./pages/Components/Header'))
 const ErrorBoundary = lazy(() => import('./pages/Components/ErrorBoundary'))
 const Stack = lazy(() => import('./pages/Components/Stack'))
@@ -71,6 +72,7 @@ const Content = lazy(() => import('./pages/Resources/Content'))
 const EditorLab = lazy(() => import('./pages/Lab/EditorLab'))
 const FrameLab = lazy(() => import('./pages/Lab/FrameLab'))
 const VisionLab = lazy(() => import('./pages/Lab/VisionLab'))
+const LayoutLab = lazy(() => import('./pages/Lab/LayoutLab'))
 const GettingStarted = lazy(() => import('./pages/GettingStarted'))
 
 export default function App() {
@@ -128,6 +130,7 @@ export default function App() {
       <Route path="/components/drawer" component={Drawer} />
       <Route path="/components/empty-state" component={EmptyState} />
       <Route path="/components/combobox" component={Combobox} />
+      <Route path="/components/select" component={Select} />
       <Route path="/components/header" component={Header} />
       <Route path="/components/error-boundary" component={ErrorBoundary} />
       <Route path="/components/stack" component={Stack} />
@@ -139,6 +142,7 @@ export default function App() {
       <Route path="/lab/editor" component={EditorLab} />
       <Route path="/lab/frame" component={FrameLab} />
       <Route path="/lab/vision" component={VisionLab} />
+      <Route path="/lab/layout" component={LayoutLab} />
       {/* 旧 /playground は Editor lab へ redirect (既存リンク保護) */}
       <Route path="/playground" component={() => <Navigate href="/lab/editor" />} />
       <Route path="*" component={Stub} />

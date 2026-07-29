@@ -9,8 +9,8 @@
   position: fixed;
   display: flex;
   flex-direction: column;
-  gap: var(--layout-gap-tight);
-  padding: var(--spacing-m);
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+  padding: calc(var(--spacing-m) * var(--density-padding-scale, 1));
   pointer-events: none;
   z-index: 1000;
   max-width: min(420px, calc(100vw - var(--spacing-l)));
@@ -51,8 +51,9 @@
   pointer-events: auto;
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-s);
-  padding: var(--spacing-s) var(--spacing-m);
+  gap: calc(var(--spacing-s) * var(--density-gap-scale, 1));
+  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
+    calc(var(--spacing-m) * var(--density-padding-scale, 1));
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
@@ -142,7 +143,8 @@
   appearance: none;
   background: transparent;
   border: none;
-  padding: 2px var(--spacing-xs);
+  padding: calc(2px * var(--density-padding-scale, 1))
+    calc(var(--spacing-xs) * var(--density-padding-scale, 1));
   color: var(--color-text-tertiary);
   font-size: var(--typography-size-m);
   cursor: pointer;
@@ -150,7 +152,13 @@
 }
 .creo-toast-close:hover {
   color: var(--color-text-primary);
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
+}
+/* press = veil-2 (_elevation.css の press 語彙)。 */
+.creo-toast-close:active {
+  color: var(--color-text-primary);
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
 }
 /* :focus-visible policy は _focus.css の component-agnostic articulate に委譲。 */
 
