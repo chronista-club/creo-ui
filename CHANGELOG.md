@@ -5,6 +5,59 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## v0.27.0 (2026-07-29) — Surface veil + density 実効化 + press 語彙 + Select
+
+> **web `0.27.0`** を release。editor-host `0.6.0` / layout `0.3.0` は本 cycle 中に nightly から個別 release 済み。rust / swift は token 不変更のため据え置き (tag なし)。
+
+component layer の brush-up 一式 (#93〜#101)。「宣言されているのに効いていない機構」を実測で洗い出して根治する回 — veil / density / press / contrast はすべて同じ物語の章。
+
+### Surface veil — 「面の上の一段」の相対化 (#93)
+
+striped row / filled input / track / hover のような「今いる面より一段」の差分表現が絶対 token (`--color-surface-bg-subtle`) で書かれており、面自体が bg-subtle の場所 (card / panel) では段差が 0 になり消えていた。CSS には親の背景色を読む手段が無いので絶対値では原理的に解けない — `text-primary` の theme 反転を利用した translucent veil を導入:
+
+- `--surface-veil-1` (4%) / `--surface-veil-2` (8%) を `_elevation.css` に追加 (#96 で `veil-3` 12% 追加)
+- 29 箇所を veil 化。ΔL が全 8 theme で揃う (従来は dark 0.030 / light 0.020 と不揃い)
+
+### density axis の実効化 (#94) — 宣言だけだった機構が動く
+
+`data-density="comfortable|default|compact|cozy"` は base rule に calc で入っていたが、**size variant が素の padding で上書きするため size 指定した瞬間に無効化**されていた (fallback の 1 が効いてエラーにもならず、実測で発覚)。size variant を「変数差し替えのみ」に制限し、padding / min-height の宣言 (= density calc の場所) を 1 箇所に集約する **B pattern** で 26 component に展開。`<body data-density="compact">` で dashboard 密度の一括制御が実際に動くように。
+
+### Press 語彙 (#95)
+
+`:active` を持つのが button / card だけだった。press 語彙を 2 層で定義 (`_elevation.css` に SSOT):
+
+- raised control (button / card) = 沈み込み translateY(1px) — 既存
+- flat target (menu-item / tab / pagination / summary / close 等 10 component) = **veil ladder をもう一段** (hover veil-1 → active veil-2) + press duration 80ms の fast-in / soft-out
+
+### Secondary / Outline の分業 (#96) — **視覚変更**
+
+secondary と outline が「同じ border + 不可視の fill 差」でほぼ同一に見えていた。各 variant が識別子を 1 つだけ持つ形に:
+
+- **secondary = fill の variant** (border 無しの veil-2 tonal pill、hover veil-3)
+- **outline = border の variant** (fill 無し、hover で border が brand に灯る)
+- ghost の press を veil-2 に (press 語彙整合)、toggle (aria-pressed) の text を `--text-brand-readable` に (light theme で 1.5:1 まで崩れていた brand 直挿しの是正)
+
+### Semantic fill 上の contrast 根治 (#97)
+
+timeline / stepper marker の文字色 `bg-base` 固定は light theme で最低 1.4:1 まで崩壊していた (luminance-core lane の取り残し)。`--on-fill-success` / `--on-fill-warning` / `--on-fill-info` を追加し全 8 theme で AA (実測 5.91:1 以上)。
+
+### Stepper connector の grid 化 (#99)
+
+horizontal の connector (absolute で item 全幅を貫く) が label の文字に被っていた。connector を grid 第 3 列の実要素に変更 — 線は label の後ろの余白だけを走り、size variant でも中心がズレない。**item の内部 grid が 2 列 → 3 列になったため、内部構造に依存した custom CSS を持つ consumer は要確認** (markup は不変)。
+
+### Select component 新規 (#101)
+
+native `<select>` の styled wrapper。`.creo-select` (wrapper + ::after arrow) + `.creo-select-input`。bordered / filled × s/m/l × fit/full + error state。dropdown は browser native (listbox の再発明をしない)。spec: [docs/components/select.md](./docs/components/select.md)。
+
+### table の行 header 定義 (#98)
+
+`.creo-table-cell` に `text-align: left` を明示し、tbody th (行 header) を weight-medium に — 行 header を使う consumer で browser default (center + bold) が出ていたのを是正。
+
+### site (npm 成果物外)
+
+- showcase drift 一掃 (#94): stepper の `data-state` → `data-status` (状態色が全部死んでいた)、accordion の構造是正、旧 API コードサンプル更新
+- 独自 table CSS 6 種 54 block を `.creo-table` に全面置換 (#98)、header を `.creo-header` に (#100)、theme switcher を `.creo-select` に (#101) — **site の見た目の知識を component へ集約する dogfooding 三部作**
+
 ## v0.26.0 (2026-07-15) — Button pill + Editor Live Preview 全展開 + Frame gaze
 
 > **web `0.26.0`** / **frame `0.2.0`** を release。web は breaking (button shape、下記)。editor-host / rust / swift は API 不変 (rust/swift generated の radius.s は description コメントのみ変更、値は 8px 不変)。
