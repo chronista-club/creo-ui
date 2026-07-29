@@ -10,10 +10,16 @@
 /* container = 沈んだ track。 recessed well の inset shadow で、 active pill が
    そこから浮き上がる depth 対比を作る。 */
 .creo-segmented {
+  /* option の size 別の素の値。 [data-size] variant はこの 3 変数だけを差し替え、
+     option 側の宣言 (density calc 込み) は 1 箇所に集約 (button.css と同 pattern)。 */
+  --_seg-opt-pad-y: var(--spacing-xs);
+  --_seg-opt-pad-x: var(--spacing-m);
+  --_seg-opt-min-h: var(--layout-target-focus);
+
   display: inline-flex;
   align-items: stretch;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs);
+  gap: calc(var(--spacing-xs) * var(--density-gap-scale, 1));
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1));
   background-color: var(--surface-veil-1);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
@@ -34,13 +40,14 @@
   appearance: none;
   background: transparent;
   border: none;
-  padding: var(--spacing-xs) var(--spacing-m);
-  min-height: var(--layout-target-focus);
+  padding: calc(var(--_seg-opt-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_seg-opt-pad-x) * var(--density-padding-scale, 1));
+  min-height: calc(var(--_seg-opt-min-h) * var(--density-min-height-scale, 1));
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--layout-gap-tight);
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
 
   font-family: inherit;
   font-size: var(--typography-size-m);
@@ -94,14 +101,21 @@
 
 /* ---------- Sizes ---------- */
 
+/* size variant は --_seg-opt-* の差し替えのみ (option 側の density calc を剥がさない)。 */
+.creo-segmented[data-size="s"] {
+  --_seg-opt-min-h: 24px;
+  --_seg-opt-pad-y: 2px;
+  --_seg-opt-pad-x: var(--spacing-s);
+}
 .creo-segmented[data-size="s"] .creo-segmented-option {
-  min-height: 24px;
-  padding: 2px var(--spacing-s);
   font-size: var(--typography-size-s);
 }
+.creo-segmented[data-size="l"] {
+  --_seg-opt-min-h: var(--layout-target-tap);
+  --_seg-opt-pad-y: var(--spacing-s);
+  --_seg-opt-pad-x: var(--spacing-l);
+}
 .creo-segmented[data-size="l"] .creo-segmented-option {
-  min-height: var(--layout-target-tap);
-  padding: var(--spacing-s) var(--spacing-l);
   font-size: var(--typography-size-l);
 }
 

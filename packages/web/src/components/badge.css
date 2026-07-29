@@ -11,7 +11,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: var(--_badge-pad-y, 2px) var(--_badge-pad-x, var(--spacing-s));
+  /* --_badge-pad-* は size variant が差し替える (元から B pattern)。 density calc はここ 1 箇所。 */
+  padding: calc(var(--_badge-pad-y, 2px) * var(--density-padding-scale, 1))
+    calc(var(--_badge-pad-x, var(--spacing-s)) * var(--density-padding-scale, 1));
   font-family: inherit;
   font-size: var(--typography-size-s);
   font-weight: var(--typography-weight-medium);

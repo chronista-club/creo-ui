@@ -7,7 +7,7 @@
 
 .creo-stepper {
   display: flex;
-  gap: var(--spacing-xs);
+  gap: calc(var(--spacing-xs) * var(--density-gap-scale, 1));
   padding: 0;
   margin: 0;
   list-style: none;
@@ -30,7 +30,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   grid-template-rows: auto auto;
-  column-gap: var(--spacing-s);
+  column-gap: calc(var(--spacing-s) * var(--density-gap-scale, 1));
   row-gap: 2px;
   align-items: center;
   flex: 1;

@@ -17,27 +17,38 @@
 
 .creo-tabs-list {
   display: flex;
-  gap: var(--spacing-xs);
+  gap: calc(var(--spacing-xs) * var(--density-gap-scale, 1));
   border-bottom: 1px solid var(--color-surface-border);
   overflow-x: auto;
 }
 
 .creo-tabs[data-variant="pill"] .creo-tabs-list {
   border-bottom: none;
-  padding: var(--spacing-xs);
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1));
   background-color: var(--surface-veil-1);
   border-radius: var(--radius-m);
-  gap: var(--spacing-xs);
+  gap: calc(var(--spacing-xs) * var(--density-gap-scale, 1));
 }
 
 /* ---------- Tab button (base) ---------- */
+
+/* tab の size 別の素の値。 [data-size] variant はこの 3 変数だけを差し替え、
+   tab 側の宣言 (density calc 込み) は 1 箇所に集約 (button.css と同 pattern)。
+   root (.creo-tabs) に置くのは variant selector が .creo-tabs[data-size] のため —
+   custom property 継承で tab に届く (table.css と同じ理由)。 */
+.creo-tabs {
+  --_tab-pad-y: var(--spacing-s);
+  --_tab-pad-x: var(--spacing-m);
+  --_tab-min-h: var(--layout-target-tap);
+}
 
 .creo-tabs-tab {
   appearance: none;
   background: transparent;
   border: none;
-  padding: var(--spacing-s) var(--spacing-m);
-  min-height: var(--layout-target-tap);
+  padding: calc(var(--_tab-pad-y) * var(--density-padding-scale, 1))
+    calc(var(--_tab-pad-x) * var(--density-padding-scale, 1));
+  min-height: calc(var(--_tab-min-h) * var(--density-min-height-scale, 1));
 
   font-family: inherit;
   font-size: var(--typography-size-m);
@@ -96,14 +107,21 @@
 
 /* ---------- Sizes ---------- */
 
+/* size variant は --_tab-* の差し替えのみ (tab 側の density calc を剥がさない)。 */
+.creo-tabs[data-size="s"] {
+  --_tab-min-h: var(--layout-target-focus);
+  --_tab-pad-y: var(--spacing-xs);
+  --_tab-pad-x: var(--spacing-s);
+}
 .creo-tabs[data-size="s"] .creo-tabs-tab {
-  min-height: var(--layout-target-focus);
-  padding: var(--spacing-xs) var(--spacing-s);
   font-size: var(--typography-size-s);
 }
+.creo-tabs[data-size="l"] {
+  --_tab-min-h: calc(var(--layout-target-tap) * 1.15);
+  --_tab-pad-y: var(--spacing-m);
+  --_tab-pad-x: var(--spacing-l);
+}
 .creo-tabs[data-size="l"] .creo-tabs-tab {
-  min-height: calc(var(--layout-target-tap) * 1.15);
-  padding: var(--spacing-m) var(--spacing-l);
   font-size: var(--typography-size-l);
 }
 

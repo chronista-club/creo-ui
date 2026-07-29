@@ -10,7 +10,10 @@
 
 .creo-grid {
   display: grid;
-  gap: var(--spacing-m);
+  /* [data-gap] variant は --_grid-gap の差し替えのみ。 gap の宣言 (density calc 込み)
+     はここ 1 箇所 (button.css と同 pattern)。 */
+  --_grid-gap: var(--spacing-m);
+  gap: calc(var(--_grid-gap) * var(--density-gap-scale, 1));
   /* default 12 column (web standard) */
   grid-template-columns: repeat(12, 1fr);
 }
@@ -39,19 +42,19 @@
 /* ---------- Gap (token-driven、 5-step rule) ---------- */
 
 .creo-grid[data-gap="xs"] {
-  gap: var(--spacing-xs);
+  --_grid-gap: var(--spacing-xs);
 }
 .creo-grid[data-gap="s"] {
-  gap: var(--spacing-s);
+  --_grid-gap: var(--spacing-s);
 }
 .creo-grid[data-gap="m"] {
-  gap: var(--spacing-m);
+  --_grid-gap: var(--spacing-m);
 }
 .creo-grid[data-gap="l"] {
-  gap: var(--spacing-l);
+  --_grid-gap: var(--spacing-l);
 }
 .creo-grid[data-gap="xl"] {
-  gap: var(--spacing-xl);
+  --_grid-gap: var(--spacing-xl);
 }
 
 /* ---------- Auto-fit (responsive、 min-column-width 基準、 5 tier xs/s/m/l/xl) ---------- */

@@ -19,7 +19,8 @@
   bottom: calc(100% + var(--spacing-xs));
   transform: translateX(-50%) translateY(4px);
 
-  padding: var(--spacing-xs) var(--spacing-s);
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1))
+    calc(var(--spacing-s) * var(--density-padding-scale, 1));
   background-color: var(--color-surface-bg-emphasis);
   color: var(--color-text-primary);
   border-radius: var(--radius-xs);
