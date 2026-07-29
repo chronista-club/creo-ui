@@ -61,7 +61,7 @@
 }
 
 .creo-pagination-item:hover:not(:disabled):not([aria-current="page"]) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   color: var(--color-text-primary);
 }
 

@@ -48,14 +48,14 @@
    _focus.css の :focus-visible box-shadow halo に box-shadow を明け渡すため
    :not(:focus-visible) で guard (override ではなく yield、 focus policy 尊守)。 */
 .creo-input[data-variant="filled"] {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   border-color: transparent;
 }
 .creo-input[data-variant="filled"]:not(:focus-visible) {
   box-shadow: var(--elevation-well);
 }
 .creo-input[data-variant="filled"]:hover:not(:disabled):not(:focus) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-2);
 }
 
 /* bordered (default) は base を使う */
@@ -108,10 +108,10 @@
 .creo-input:disabled {
   cursor: not-allowed;
   opacity: 0.6;
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
 .creo-input:read-only:not(:disabled) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   color: var(--color-text-secondary);
 }
 

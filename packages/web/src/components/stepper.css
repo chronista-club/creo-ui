@@ -84,7 +84,7 @@
   width: var(--layout-target-focus);
   height: var(--layout-target-focus);
   border-radius: var(--radius-full);
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   color: var(--color-text-tertiary);
   border: 2px solid var(--color-surface-border);
   font-size: var(--typography-size-s);

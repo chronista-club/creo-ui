@@ -63,7 +63,7 @@
 
 .creo-menu-item:hover:not(:disabled),
 .creo-menu-item:focus-visible {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   outline: none;
 }
 

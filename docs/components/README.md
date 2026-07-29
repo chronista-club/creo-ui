@@ -108,6 +108,27 @@ component CSS 内で **hardcode の px / 色は禁止**。必ず `var(--...)` �
 - Editor Mode で token を tune → 全 component が live 反映
 - Swift / Rust 側も同じ token 値を見る (cross-platform 一貫性)
 
+### 「面の上の差分」は surface veil で、絶対 surface token は使わない
+
+striped row / filled input / track / hover feedback のように **今いる面より一段** を作る
+差分表現には、`--color-surface-bg-subtle` のような絶対 token ではなく
+`--surface-veil-1` / `--surface-veil-2` (`_elevation.css`) を使ってください。
+
+絶対 token をこの用途に使うと「置かれる面が `bg-base` である」という暗黙の前提が入ります。
+card / panel / playground のように **面自体が `bg-subtle` の場所ではその差が 0 になり、
+縞も凹みも消えます** (CSS には親の背景色を読む手段が無いので、絶対値では原理的に解けません)。
+
+veil は `text-primary` を低 alpha で重ねる形なので、`text-primary` が
+dark theme=明色 / light theme=暗色 に反転するのを利用して、下地が何であれ必ず一段になります。
+ΔL は全 8 theme で veil-1 ≈ 0.032 / veil-2 ≈ 0.064 に揃います。
+
+- `veil-1` — 控えめな段 (striped / hover / track / marker)
+- `veil-2` — 明確な面 (filled input / badge / code block)
+
+逆に **自分の面を持つべきもの** (menu / popover / toast / dialog / drawer の背景、
+page canvas と同化する header) は絶対 token のままが正解です。浮いている面は下地に
+依存しないので、相対導出する意味がありません。
+
 ### 5-step size-feel convention に沿う
 
 sm / md / lg の size variant は token の xs-xl の中から 3 段抜粋した慣習。

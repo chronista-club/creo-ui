@@ -102,7 +102,7 @@
   border-color: var(--color-brand-primary);
 }
 .creo-btn[data-variant="secondary"]:active:not(:disabled) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   transform: translateY(1px);
 }
 
@@ -113,10 +113,10 @@
   --_btn-fg: var(--color-text-primary);
 }
 .creo-btn[data-variant="ghost"]:hover:not(:disabled) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
 .creo-btn[data-variant="ghost"]:active:not(:disabled) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   transform: translateY(1px);
 }
 
@@ -133,7 +133,7 @@
   border-color: var(--color-brand-primary);
 }
 .creo-btn[data-variant="outline"]:active:not(:disabled) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   border-color: var(--color-brand-primary);
   transform: translateY(1px);
 }
@@ -231,16 +231,16 @@
   color: var(--on-fill-brand);
 }
 .creo-btn[data-variant="secondary"][aria-pressed="true"] {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   border-color: var(--color-brand-primary);
   color: var(--color-brand-primary);
 }
 .creo-btn[data-variant="ghost"][aria-pressed="true"] {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   color: var(--color-brand-primary);
 }
 .creo-btn[data-variant="outline"][aria-pressed="true"] {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
   border-color: var(--color-brand-primary);
   color: var(--color-brand-primary);
 }

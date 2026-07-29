@@ -24,7 +24,7 @@
 /* ---------- Head ---------- */
 
 .creo-table-head .creo-table-row {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
 
 .creo-table-head .creo-table-cell {
@@ -78,7 +78,7 @@
 /* ---------- Variants ---------- */
 
 .creo-table[data-variant="striped"] .creo-table-body > .creo-table-row:nth-child(even) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
 
 .creo-table[data-variant="bordered"] .creo-table-cell {
@@ -91,7 +91,7 @@
 /* ---------- Row states ---------- */
 
 .creo-table-body .creo-table-row:hover:not([data-selected="true"]):not([data-disabled="true"]) {
-  background-color: var(--color-surface-bg-subtle);
+  background-color: var(--surface-veil-1);
 }
 
 .creo-table-row[data-selected="true"] {
