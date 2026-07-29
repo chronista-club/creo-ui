@@ -102,105 +102,29 @@ a:hover {
    Header (sticky)
    ============================================================ */
 
+/* Header — `.creo-header` (dogfood) の上に載る site 固有 chrome。
+   sticky / blur / nav の hover・press・active / logo / actions の見た目は
+   component (header.css) に全委譲。 site 側は高さの固定だけを持つ —
+   sidebar / editor dock の offset が --docs-header-height を参照するため。 */
 .docs-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-l);
   height: var(--docs-header-height);
-  padding: 0 var(--spacing-l);
-  background: color-mix(in oklab, var(--color-surface-bg-base) 80%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--color-surface-border);
 }
 
-.docs-brand {
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--spacing-xs);
-  color: var(--color-text-primary);
-  text-decoration: none;
-  font-weight: var(--typography-weight-bold);
-  font-size: var(--typography-size-l);
-  letter-spacing: -0.01em;
-}
-
-.docs-brand:hover {
-  text-decoration: none;
-}
-
+/* logo mark (◎) — brand 色 + hover 回転は site の personality として維持
+   (回転 animation は後方の polish section 参照)。 */
 .docs-brand-logo {
   color: var(--color-brand-primary);
   font-size: 1.2em;
 }
 
-.docs-brand-version {
-  font-size: var(--typography-size-xs);
-  font-weight: var(--typography-weight-regular);
-  color: var(--color-text-secondary);
-  font-family: var(--typography-family-sans);
-  padding: 2px 6px;
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-s);
-}
-
-.docs-header-nav {
-  display: flex;
-  gap: var(--spacing-m);
-  margin-inline-start: auto;
-}
-
-.docs-header-nav a {
-  color: var(--color-text-secondary);
-  font-size: var(--typography-size-s);
-  font-weight: var(--typography-weight-medium);
-  padding: 6px 10px;
-  border-radius: var(--radius-s);
-  transition: color 120ms, background 120ms;
-}
-
-.docs-header-nav a:hover {
-  color: var(--color-text-primary);
-  text-decoration: none;
-  background: var(--color-surface-bg-subtle);
-}
-
-.docs-header-nav a.is-active {
-  color: var(--color-brand-primary);
-  background: color-mix(in oklab, var(--color-brand-primary) 12%, transparent);
-}
-
-.docs-header-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-s);
-}
-
-.docs-header-link {
-  color: var(--color-text-secondary);
-  font-size: var(--typography-size-s);
-  font-weight: var(--typography-weight-medium);
-  padding: 6px 10px;
-  border-radius: var(--radius-s);
-  transition: color 120ms;
-}
-
-.docs-header-link:hover {
-  color: var(--color-text-primary);
-  text-decoration: none;
-}
-
+/* theme switcher — select は .creo-input を dogfood。 wrapper は select 固有の
+   差分だけを担う: .creo-input は form field 前提の block / width 100% なので
+   内容幅に戻し、 appearance を消して自前 arrow (::after) の逃げを作る。 */
 .docs-theme-switcher select {
-  font-family: inherit;
-  font-size: var(--typography-size-s);
-  padding: 6px 10px;
-  background: var(--color-surface-bg-subtle);
-  border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-s);
-  color: var(--color-text-primary);
+  display: inline-block;
+  width: auto;
+  padding-inline-end: 28px;
+  appearance: none;
   cursor: pointer;
 }
 
@@ -2711,13 +2635,9 @@ kbd {
     var(--motion-duration-normal);
 }
 
-.docs-brand:hover .docs-brand-logo {
+.creo-header-logo:hover .docs-brand-logo {
   transform: rotate(90deg);
   filter: drop-shadow(0 0 6px var(--face-glow-brand));
-}
-
-.docs-header-nav a.is-active {
-  box-shadow: inset 0 -2px 0 var(--color-brand-primary);
 }
 
 .docs-theme-switcher {
@@ -2738,21 +2658,7 @@ kbd {
   pointer-events: none;
 }
 
-.docs-theme-switcher select {
-  padding-inline-end: 28px;
-  appearance: none;
-  transition: border-color var(--motion-duration-fast), box-shadow var(--motion-duration-fast);
-}
-
-.docs-theme-switcher select:hover {
-  border-color: var(--face-border-lum);
-}
-
-.docs-theme-switcher select:focus-visible {
-  outline: none;
-  border-color: var(--color-brand-primary);
-  box-shadow: 0 0 0 3px var(--face-glow-brand-soft);
-}
+/* select の hover / focus は .creo-input + _focus.css policy に委譲 (独自 override 廃止)。 */
 
 /* ============================================================
    Responsive
@@ -2772,7 +2678,7 @@ kbd {
   .docs-sidebar {
     display: none;
   }
-  .docs-header-nav {
+  .docs-header .creo-header-nav {
     display: none;
   }
   .docs-typo-row {
@@ -2795,7 +2701,7 @@ kbd {
   .docs-gallery-card:hover,
   .docs-hero-float--actions,
   .docs-hero-float--badges,
-  .docs-brand:hover .docs-brand-logo {
+  .creo-header-logo:hover .docs-brand-logo {
     transform: none !important;
     transition: none !important;
   }

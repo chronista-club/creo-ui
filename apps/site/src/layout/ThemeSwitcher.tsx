@@ -37,7 +37,14 @@ export default function ThemeSwitcher() {
   return (
     <label class="docs-theme-switcher">
       <span class="visually-hidden">Theme</span>
-      <select value={theme()} onChange={(e) => setTheme(e.currentTarget.value as ThemeId)}>
+      {/* select は creo-ui に専用 component が無いため、.creo-input の見た目を dogfood。
+          wrapper (.docs-theme-switcher) は select 固有の差分 (自前 arrow / 幅) だけを担う。 */}
+      <select
+        class="creo-input"
+        data-size="s"
+        value={theme()}
+        onChange={(e) => setTheme(e.currentTarget.value as ThemeId)}
+      >
         <For each={THEMES}>{(t) => <option value={t.id}>{t.label}</option>}</For>
       </select>
     </label>
