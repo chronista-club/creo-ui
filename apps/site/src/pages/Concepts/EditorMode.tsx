@@ -193,18 +193,20 @@ export default function EditorMode() {
         <pre class="docs-code">
           <code>{`import { EditorHostProvider, EditorLayer, bind, number, cssVarNumberTarget } from '@chronista-club/creo-ui-editor-host'
 
+// bind({ target, control, placement }) — Provider の下で呼ぶ
 bind({
-  id: 'tokens.spacing.m',
-  control: number({ variant: 'slider' }),
-  target: cssVarNumberTarget('--spacing-m', { min: 0, max: 48, unit: 'px' }),
-  initial: 18,
-  semantic: 'tool',
+  target: cssVarNumberTarget('card.padding', '--app-card-padding', 18, 'px'),
+  control: number({ min: 0, max: 48, step: 1, unit: 'px', variant: 'slider' }),
+  placement: { semantic: 'tool', group: 'card', label: 'Card padding', order: 1 },
 })
 
 <EditorHostProvider config={{ exposeConsole: true }}>
   <App />
   <EditorLayer />
-</EditorHostProvider>`}</code>
+</EditorHostProvider>
+
+// 対象は app 固有の var (--app-*) にする。 design token を直接 bind すると
+// field 登録時に initial が document root へ焼き込まれ、全体に効いてしまう。`}</code>
         </pre>
       </section>
     </>

@@ -287,29 +287,23 @@ const FEATURED: readonly FeaturedEntry[] = [
     desc: 'Horizontal wizard — 4 states',
     render: () => (
       <ol class="creo-stepper docs-gallery-stepper">
-        <li class="creo-stepper-item" data-state="completed">
+        <li class="creo-stepper-item" data-status="completed">
           <span class="creo-stepper-marker" aria-hidden="true">
             ✓
           </span>
-          <div class="creo-stepper-content">
-            <div class="creo-stepper-label">Design</div>
-          </div>
+          <div class="creo-stepper-label">Design</div>
         </li>
-        <li class="creo-stepper-item" data-state="current" aria-current="step">
+        <li class="creo-stepper-item" data-status="current" aria-current="step">
           <span class="creo-stepper-marker" aria-hidden="true">
             2
           </span>
-          <div class="creo-stepper-content">
-            <div class="creo-stepper-label">Build</div>
-          </div>
+          <div class="creo-stepper-label">Build</div>
         </li>
-        <li class="creo-stepper-item" data-state="pending">
+        <li class="creo-stepper-item" data-status="pending">
           <span class="creo-stepper-marker" aria-hidden="true">
             3
           </span>
-          <div class="creo-stepper-content">
-            <div class="creo-stepper-label">Ship</div>
-          </div>
+          <div class="creo-stepper-label">Ship</div>
         </li>
       </ol>
     ),

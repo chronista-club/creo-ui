@@ -108,22 +108,28 @@ import 'creo-ui-md-view/styles.css'`}</code>
   cssVarNumberTarget,
 } from '@chronista-club/creo-ui-editor-host'
 
-// Field 宣言
-bind({
-  id: 'tokens.spacing.m',
-  control: number({ variant: 'slider' }),
-  target: cssVarNumberTarget('--spacing-m', { min: 0, max: 48, unit: 'px' }),
-  initial: 18,
-  semantic: 'tool',
-})
+// Field 宣言は Provider の下 (component の中) で呼ぶ。
+// bind({ target, control, placement }) の 3 点セット。
+function CardPanel() {
+  bind({
+    target: cssVarNumberTarget('card.padding', '--app-card-padding', 18, 'px'),
+    control: number({ min: 0, max: 48, step: 1, unit: 'px', variant: 'slider' }),
+    placement: { semantic: 'tool', group: 'card', label: 'Card padding', order: 1 },
+  })
+  return <div class="creo-card">...</div>
+}
 
 // Provider + Layer
 <EditorHostProvider config={{ exposeConsole: true }}>
-  <App />
+  <CardPanel />
   <EditorLayer />
 </EditorHostProvider>
 
-// Ctrl+Shift+E で Editor Mode toggle、 RIGHT panel で field 操作`}</code>
+// Ctrl+Shift+E で Editor Mode toggle、 RIGHT panel で field 操作
+
+// 注意: bind は field 登録時に initial を document root へ適用する。
+// 対象は app 固有の var (--app-*) にすること。design token (--spacing-m 等) を
+// 直接 bind すると、Editor Mode が OFF でもその値が焼き込まれて全体に効く。`}</code>
         </pre>
         <p class="docs-page-helper">
           → <A href="/lab/editor">Playground</A> で動作実演、{' '}
