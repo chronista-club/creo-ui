@@ -95,6 +95,13 @@
   /* danger solid-fill 用 on-color (semantic-error 明度から自動選択)。
      danger fill は boost せず token のまま使う (focal 化は primary の役目)。 */
   --on-fill-danger: oklch(from var(--color-semantic-error) clamp(0, (0.62 - l) * 1000, 1) 0 0);
+  /* 残り semantic fill (success / warning / info) の on-color も同式。 timeline /
+     stepper の status marker 等、 semantic 色の solid fill に文字を乗せる箇所で使う。
+     旧実装の color: bg-base 固定は dark では偶然読める (bg-base = 暗色) が、
+     light theme では白文字 on 明るい semantic fill となり最低 1.4:1 まで崩れていた。 */
+  --on-fill-success: oklch(from var(--color-semantic-success) clamp(0, (0.62 - l) * 1000, 1) 0 0);
+  --on-fill-warning: oklch(from var(--color-semantic-warning) clamp(0, (0.62 - l) * 1000, 1) 0 0);
+  --on-fill-info: oklch(from var(--color-semantic-info) clamp(0, (0.62 - l) * 1000, 1) 0 0);
 
   /* ── Readable brand text (surface 上に brand 色の文字を置くとき) ───── */
   /* brand を「文字色」に直接使うと light theme (特に mint L0.85) で surface に

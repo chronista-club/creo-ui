@@ -70,24 +70,27 @@
 
 /* ---------- Variants (marker 色) ---------- */
 
+/* marker 文字色は fill 明度からの auto on-color (--on-fill-*)。 旧 bg-base 固定は
+   dark では偶然読めるが light theme で白文字 on 明るい semantic fill となり
+   最低 1.4:1 まで崩れていた (_elevation.css の on-fill 群コメント参照)。 */
 .creo-timeline-item[data-variant="success"] .creo-timeline-marker {
   background-color: var(--color-semantic-success);
-  color: var(--color-surface-bg-base);
+  color: var(--on-fill-success);
   border-color: var(--color-semantic-success);
 }
 .creo-timeline-item[data-variant="warning"] .creo-timeline-marker {
   background-color: var(--color-semantic-warning);
-  color: var(--color-surface-bg-base);
+  color: var(--on-fill-warning);
   border-color: var(--color-semantic-warning);
 }
 .creo-timeline-item[data-variant="error"] .creo-timeline-marker {
   background-color: var(--color-semantic-error);
-  color: var(--color-surface-bg-base);
+  color: var(--on-fill-danger);
   border-color: var(--color-semantic-error);
 }
 .creo-timeline-item[data-variant="info"] .creo-timeline-marker {
   background-color: var(--color-semantic-info);
-  color: var(--color-surface-bg-base);
+  color: var(--on-fill-info);
   border-color: var(--color-semantic-info);
 }
 
