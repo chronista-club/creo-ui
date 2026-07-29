@@ -147,12 +147,13 @@ creo-memories / VP / fleetstage と parity の **「`nightly` = 開発 trunk (de
 | **`main`** | release branch (protected: PR 必須 / 直 push・force・delete 禁止)。`nightly → main` の release PR で promote |
 
 - **開発フロー**: lane `mako/*` → PR (base=`nightly`) → squash merge → `nightly`
-- **release**: `nightly → main` の release PR でまとめて promote → `main` に `web-v*` / editor-host / rust tag を push → 各 publish workflow が npm publish
+- **release (2026-07-30 固定化)**: owner トリガーで開始 → nightly で bump + CHANGELOG (release prep PR) → `nightly → main` の release PR を **merge commit** で promote → main push で `release-tag.yml` が **自動 tag + publish dispatch**。人間は tag を打たない。**全出荷は main 経由** (nightly 直 tag = mid-cycle 出荷は廃止)。手順は `.claude/skills/release/SKILL.md` (`/release`)、設計と不変条件は [docs/design/release-flow.md](./docs/design/release-flow.md)
 - **CI** (`ci.yml`): push/PR を `[nightly, main]` で gate (build / rust / swift)
 - nightly cadence の自動化 (nightly publish 等) は scope 外 (将来 Phase 2、creo-memories `mem_1CbVbGGnFskVKMBghP1SDi` 参照)
 
 ## やってはいけない
 
+- nightly 上の commit に直接 `*-v*` tag を打って出荷する (mid-cycle 出荷は 2026-07-30 に廃止。全出荷は main 経由 + `release-tag.yml` の自動 tag — [docs/design/release-flow.md](./docs/design/release-flow.md))。
 - 生成物 (`packages/web/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を手編集する。編集すべきは `tokens/` のみ。
 - `tokens/` の変更だけコミットして generated の更新を忘れる (Swift/Rust が古い値のまま残る)。
 - `style-dictionary build` を `packages/*/` の CWD で実行する (path が root 相対なので壊れる)。

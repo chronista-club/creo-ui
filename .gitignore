@@ -14,7 +14,9 @@ packages/rust/Cargo.lock
 .vscode/
 
 # Claude Code のローカル設定 (ccws worker-files など)
-.claude/
+# .claude は skill (共有知識) を commit 対象にし、local 設定だけ ignore する
+.claude/*
+!.claude/skills/
 
 # 一時的な調査・query dump (例: surreal sql の作業 history) — リポジトリ管理外
 history.txt

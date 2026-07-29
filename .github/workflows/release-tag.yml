@@ -1,0 +1,92 @@
+# Release tag & publish (auto) — 「main にマージ = リリース」の機械保証
+#
+# main への push (= release PR の merge) で発火し、各 package について:
+#   1. manifest の version から tag 名を導出 (bump = 出荷の意思表示、人間は tag を打たない)
+#   2. tag が無ければ merge commit に打つ
+#   3. registry (npm / crates.io) にその version が無ければ publish workflow を
+#      workflow_dispatch で発火
+#
+# tag 経由でなく dispatch で publish を呼ぶのは GitHub の仕様のため:
+# GITHUB_TOKEN で push した tag は on:push:tags の workflow を発火しない (再帰防止)。
+#
+# 冪等設計: 何度走っても「不足分だけ」を埋める。tag 済み + registry 反映済みなら
+# 何もしない。publish が失敗した release も、次の main push で registry 欠落を検出
+# して自動で再 dispatch される (self-healing)。
+#
+# 設計: docs/design/release-flow.md / 手順: .claude/skills/release/SKILL.md
+
+name: Release tag & publish (auto)
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write # tag push
+  actions: write # publish workflow の dispatch
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Tag bumped versions & dispatch publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          npm_has() { npm view "$1@$2" version >/dev/null 2>&1; }
+          crates_has() { curl -sfo /dev/null "https://crates.io/api/v1/crates/$1/$2"; }
+
+          release_one() {
+            local prefix="$1" version="$2" workflow="$3" registry="$4" pkg="$5"
+            local tag="${prefix}-v${version}"
+
+            if git rev-parse -q --verify "refs/tags/${tag}" >/dev/null; then
+              echo "tag ${tag}: 既存"
+            else
+              git tag "${tag}" "${GITHUB_SHA}"
+              git push origin "refs/tags/${tag}"
+              echo "tag ${tag}: 作成 → push"
+            fi
+
+            local has=1
+            case "${registry}" in
+              npm) npm_has "${pkg}" "${version}" || has=0 ;;
+              crates) crates_has "${pkg}" "${version}" || has=0 ;;
+            esac
+
+            if [ "${has}" = "1" ]; then
+              echo "registry ${pkg}@${version}: 反映済み → dispatch しない"
+            else
+              gh workflow run "${workflow}" --ref "${tag}"
+              echo "publish: ${workflow} を dispatch (${tag})"
+            fi
+          }
+
+          jqv() { jq -r .version "$1"; }
+
+          release_one web \
+            "$(jqv packages/web/package.json)" \
+            publish-web.yml npm "@chronista-club/creo-ui"
+
+          release_one editor-host \
+            "$(jqv packages/editor-host/package.json)" \
+            publish-editor-host.yml npm "@chronista-club/creo-ui-editor-host"
+
+          release_one layout \
+            "$(jqv packages/layout/package.json)" \
+            publish-layout.yml npm "@chronista-club/creo-ui-layout"
+
+          release_one icons-web \
+            "$(jqv packages/icons-web/package.json)" \
+            publish-icons-web.yml npm "@chronista-club/creo-ui-icons-web"
+
+          release_one rust \
+            "$(sed -n 's/^version = "\(.*\)"/\1/p' packages/rust/Cargo.toml | head -1)" \
+            publish-rust.yml crates "creo-ui"
