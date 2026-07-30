@@ -5,6 +5,41 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## v0.27.1 (2026-07-31) — npm 導線根治 + rust 0.8.0 (Rgb alpha) + swift theme/typography
+
+> **web `0.27.1`** / **rust `0.8.0`** を release。editor-host `0.6.0` / layout `0.3.0` / icons-web `0.0.1` は src 実変更なしのため据え置き (README の install 行修正は次の実変更出荷に同乗)。swift は publish 経路なし (SPM git/path 参照) — 本 promote で CreoTheme / `.creoText()` が main に載る。
+
+### web 0.27.1 — npm install 導線の 404 根治 (#109, #110)
+
+npm の package 実名は v0.24.4 から `@chronista-club/creo-ui` (scoped) だが、README / site の install 手順とリンクが unscoped `creo-ui` のまま残り、手順通りに `npm install creo-ui` すると 404 になっていた (「外部の第一印象で死ぬ経路」の npm 版)。
+
+- README (= npm ページに表示される) の install コマンドを scoped に統一、「unscoped は 404」の注意書きを追加 (#109)
+- site の Footer (全ページ共通) / Getting Started の npm リンクも scoped URL に (#110)
+- stale な JS 定数例を実 export 名に修正 (`ColorBrandPrimary` → `ColorThemesMintDarkBrandPrimary`、`SpacingMd` → `SpacingM`)
+- **src / dist の実変更なし** — 出荷物の差分は README のみ (patch)
+
+### rust 0.8.0 — **BREAKING**: `Rgb` に alpha field (#108)
+
+swift #11 (alpha 落ち、0.27.0 cycle の #105 で根治) と同根の bug が rust に残っていた: `Rgb { r, g, b }` が alpha を持てず、scrim (`oklch(0 0 0 / 0.4)`) が**不透明の純黒**で emit されていた。
+
+- **`Rgb` に `a: u8` (straight alpha) を追加** — struct literal 構築 (`Rgb { r, g, b }`) はコンパイルエラーになる。`Rgb::new(r, g, b)` (a=255 を補完) は従来通り動き、alpha 付き token (scrim ×2 / shadow ×2 / focus halo の 5 個) のみ `Rgb::with_alpha(r, g, b, a)` で emit
+- **egui interop `to_color32` の const fn 保証を撤回** — `from_rgba_unmultiplied` 化で translucent が正しく届く (egui の premultiply 変換が const でないため)。palette helper も同様に non-const
+- ratatui interop は `Color::Rgb` が alpha を持てないため**意図的に drop** (doc 明記)
+- `as_rgba_array()` / `alpha_f32()` helper 追加。`VERSION` は `env!("CARGO_PKG_VERSION")` 追従に (手書き "0.3.0" と Cargo.toml の乖離根治)
+- **migration**: struct literal は `a` を追加するか `Rgb::new` / `Rgb::with_alpha` に置換。const 文脈の `to_color32` / palette 呼び出しは実行時初期化に変更
+
+### swift — CreoTheme 注入 + .creoText() (SPM、version tag なし) (#105, #107)
+
+ladyland consumer feedback (2026-07-30、10 項) への対応 2 連:
+
+- **#105「今すぐ」群**: alpha 落ち根治 (scrim 不透明 #11) / component enum の命名統一 `.sm/.md/.lg` → `.s/.m/.l` (**BREAKING**) / motion token を `TimeInterval` (秒) に型変換 (#8)
+- **#107「次」群**: `CreoTheme` struct (8 theme preset) + `@Environment(\.creoTheme)` 注入 + `.creoTheme(_ family:)` 外観モード追従 (#4) / `CreoTextStyle` + `.creoText()` typography modifier — Dynamic Type (`@ScaledMetric`) と line-height 換算を一元化 (#6)。既存 9 component は theme 経由に移行済み (default `.mintDark` で見た目不変)
+
+### infra
+
+- release flow 固定化 — 設計文書 + `/release` skill + `release-tag.yml` (main push で auto tag + publish dispatch)。本 release がこの新 flow の初回実走 (#104)
+- 値のテスト 2 層 — token pipeline invariants (tokens → 3 platform 出力の値検査) + docs drift checker、CI 常設 (#106)
+
 ## v0.27.0 (2026-07-29) — Surface veil + density 実効化 + press 語彙 + Select
 
 > **web `0.27.0`** を release。editor-host `0.6.0` / layout `0.3.0` は本 cycle 中に nightly から個別 release 済み。rust / swift は token 不変更のため据え置き (tag なし)。
