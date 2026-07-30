@@ -45,6 +45,8 @@ bun run format         # Biome check --write (自動修正)
 bun run dev            # apps/site (creo-ui 公式 site = live showcase + docs) を vite で起動
 bun run gen:themes     # creo-memories preset から 8 theme JSON を再生成
 bun run test:colors    # transforms/color-utils.js のテストを実行 (50 cases)
+bun run test:transforms # ↑ + pipeline invariant tests (tokens → 3 platform 出力の値検査。CI でも実行)
+bun run check:drift    # site の class / data 属性 / var / specifier を実物と静的照合 (要 build:web、CI でも実行)
 bun test packages/editor-host/src/host.test.ts  # editor-host core state のテスト (19 cases)
 
 # demo stage (local Mac で apps/site を podman 配信)
