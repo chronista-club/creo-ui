@@ -177,12 +177,12 @@ export default function Principles() {
         </ul>
         <h3>How it shows up</h3>
         <p>
-          <code>creo-ui/components.css</code> 全体が token 経由。 docs site (この page を含む) も{' '}
-          <code>--color-*</code> / <code>--spacing-*</code> 経由で書かれているため、 docs 自身が{' '}
-          <strong>regression detection 装置</strong> として働く。 token に変更があれば docs site
-          の見た目が即変わる。 v0.16-v0.18 の 5 tier rename では、 <code>token-shim.css</code>{' '}
-          legacy alias で旧 var 名を維持しつつ、 dogfood で sweep 漏れを視覚的に検出した
-          実例がある。
+          <code>@chronista-club/creo-ui/components.css</code> 全体が token 経由。 docs site (この
+          page を含む) も <code>--color-*</code> / <code>--spacing-*</code> 経由で書かれているため、
+          docs 自身が <strong>regression detection 装置</strong> として働く。 token に変更があれば
+          docs site の見た目が即変わる。 v0.16-v0.18 の 5 tier rename では、{' '}
+          <code>token-shim.css</code> legacy alias で旧 var 名を維持しつつ、 dogfood で sweep
+          漏れを視覚的に検出した 実例がある。
         </p>
       </Principle>
 

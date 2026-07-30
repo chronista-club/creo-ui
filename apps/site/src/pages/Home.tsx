@@ -142,13 +142,14 @@ export default function Home() {
       <section class="docs-quick-install">
         <h2 class="docs-section-title">Install</h2>
         <pre class="docs-code">
-          <code>{`bun add creo-ui solid-js
+          <code>{`bun add @chronista-club/creo-ui solid-js
 bun add creo-ui-md-view        # Markdown renderer
 bun add @chronista-club/creo-ui-editor-host    # Editor Mode runtime`}</code>
         </pre>
         <p class="docs-quick-install-note">
-          Token CSS は <code>creo-ui/tokens.css</code> + <code>creo-ui/components.css</code>。
-          詳しくは <A href="/getting-started">Getting started</A>。
+          Token CSS は <code>@chronista-club/creo-ui/tokens.css</code> +{' '}
+          <code>@chronista-club/creo-ui/components.css</code>。 詳しくは{' '}
+          <A href="/getting-started">Getting started</A>。
         </p>
       </section>
     </>

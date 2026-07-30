@@ -46,10 +46,10 @@ CLAUDE.md EH-6 規定 (`Console REPL を production で無条件に expose し�
 ## インストール
 
 ```bash
-bun add @chronista-club/creo-ui-editor-host creo-ui solid-js
+bun add @chronista-club/creo-ui-editor-host @chronista-club/creo-ui solid-js
 ```
 
-Peer: `solid-js ^1.9.0`。`creo-ui/tokens.css` を app で import しておくと、Editor Layer が `--editor-mode-*` / `--color-*` token を consume する。
+Peer: `solid-js ^1.9.0`。`@chronista-club/creo-ui/tokens.css` を app で import しておくと、Editor Layer が `--editor-mode-*` / `--color-*` token を consume する。
 
 ## Quick start
 
