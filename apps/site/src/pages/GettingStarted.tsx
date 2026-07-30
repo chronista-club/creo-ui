@@ -30,7 +30,11 @@ bun add @chronista-club/creo-ui-icons-web`}</code>
         </pre>
         <p class="docs-page-helper">
           npm / yarn / pnpm でも同様。 すべての package は{' '}
-          <a href="https://www.npmjs.com/package/creo-ui" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://www.npmjs.com/package/@chronista-club/creo-ui"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             npmjs.com
           </a>{' '}
           公開中 (Apache-2.0)。

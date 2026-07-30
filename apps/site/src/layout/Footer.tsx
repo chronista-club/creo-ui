@@ -16,7 +16,11 @@ export default function Footer() {
         >
           creo-views
         </a>
-        <a href="https://www.npmjs.com/package/creo-ui" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://www.npmjs.com/package/@chronista-club/creo-ui"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           npm
         </a>
       </div>
