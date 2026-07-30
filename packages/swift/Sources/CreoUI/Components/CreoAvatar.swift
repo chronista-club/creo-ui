@@ -35,6 +35,7 @@ public struct CreoAvatar: View {
     let size: CreoAvatarSize
     let shape: CreoAvatarShape
     let status: CreoAvatarStatus?
+    @Environment(\.creoTheme) private var theme
 
     public init(
         image: Image? = nil,
@@ -54,7 +55,7 @@ public struct CreoAvatar: View {
         ZStack(alignment: .bottomTrailing) {
             baseContent
                 .frame(width: diameter, height: diameter)
-                .background(Color.colorBrandPrimarySubtle)
+                .background(theme.brandPrimarySubtle)
                 .clipShape(clipShape)
 
             if let status {
@@ -62,7 +63,7 @@ public struct CreoAvatar: View {
                     .fill(statusColor(status))
                     .frame(width: statusDotSize, height: statusDotSize)
                     .overlay(
-                        Circle().stroke(Color.colorSurfaceSurface, lineWidth: 2)
+                        Circle().stroke(theme.surfaceSurface, lineWidth: 2)
                     )
                     .offset(x: statusDotOffset, y: statusDotOffset)
             }
@@ -78,7 +79,7 @@ public struct CreoAvatar: View {
         } else if let initials {
             Text(initials.uppercased())
                 .font(.system(size: initialsFontSize, weight: .semibold))
-                .foregroundColor(Color.colorTextPrimary)
+                .foregroundColor(theme.textPrimary)
         } else {
             Color.clear
         }
@@ -121,10 +122,10 @@ public struct CreoAvatar: View {
 
     private func statusColor(_ s: CreoAvatarStatus) -> Color {
         switch s {
-        case .online: return .colorSemanticSuccess
-        case .busy: return .colorSemanticError
-        case .away: return .colorSemanticWarning
-        case .offline: return .colorTextTertiary
+        case .online: return theme.semanticSuccess
+        case .busy: return theme.semanticError
+        case .away: return theme.semanticWarning
+        case .offline: return theme.textTertiary
         }
     }
 }

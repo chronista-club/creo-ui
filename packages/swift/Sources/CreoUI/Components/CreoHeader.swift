@@ -34,6 +34,7 @@ public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
     let logo: Logo
     let nav: Nav
     let actions: Actions
+    @Environment(\.creoTheme) private var theme
 
     public init(
         variant: CreoHeaderVariant = .app,
@@ -73,7 +74,7 @@ public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
         .overlay(alignment: .bottom) {
             if elevation != .none {
                 Rectangle()
-                    .fill(Color.colorSurfaceBorder)
+                    .fill(theme.surfaceBorder)
                     .frame(height: 1)
             }
         }
@@ -99,6 +100,6 @@ public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
     }
 
     private var backgroundColor: Color {
-        variant == .marketing ? Color.colorSurfaceBgBase : Color.colorSurfaceSurface
+        variant == .marketing ? theme.surfaceBgBase : theme.surfaceSurface
     }
 }

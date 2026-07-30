@@ -29,6 +29,7 @@ public struct CreoProgress: View {
     let value: Double?  // nil → indeterminate
     let variant: CreoProgressVariant
     let size: CreoProgressSize
+    @Environment(\.creoTheme) private var theme
 
     public init(
         value: Double? = nil,
@@ -45,7 +46,7 @@ public struct CreoProgress: View {
             ZStack(alignment: .leading) {
                 // Track
                 RoundedRectangle(cornerRadius: CreoUITokens.radiusFull)
-                    .fill(Color.colorSurfaceBgSubtle)
+                    .fill(theme.surfaceBgSubtle)
 
                 // Fill
                 if let value {
@@ -74,10 +75,10 @@ public struct CreoProgress: View {
 
     private var fillColor: Color {
         switch variant {
-        case .brand: return Color.colorBrandPrimary
-        case .success: return Color.colorSemanticSuccess
-        case .warning: return Color.colorSemanticWarning
-        case .error: return Color.colorSemanticError
+        case .brand: return theme.brandPrimary
+        case .success: return theme.semanticSuccess
+        case .warning: return theme.semanticWarning
+        case .error: return theme.semanticError
         }
     }
 }
@@ -93,6 +94,7 @@ public struct CreoSpinner: View {
     let size: CreoProgressSize
     let variant: CreoSpinnerVariant
     @State private var rotation: Double = 0
+    @Environment(\.creoTheme) private var theme
 
     public init(
         size: CreoProgressSize = .m,
@@ -139,8 +141,8 @@ public struct CreoSpinner: View {
 
     private var arcColor: Color {
         switch variant {
-        case .brand: return Color.colorBrandPrimary
-        case .neutral: return Color.colorTextSecondary
+        case .brand: return theme.brandPrimary
+        case .neutral: return theme.textSecondary
         }
     }
 }

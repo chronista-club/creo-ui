@@ -33,6 +33,7 @@ public struct CreoTextField: View {
     let state: CreoTextFieldState
     @Binding var text: String
     @FocusState private var focused: Bool
+    @Environment(\.creoTheme) private var theme
 
     public init(
         _ prompt: String,
@@ -51,7 +52,7 @@ public struct CreoTextField: View {
     public var body: some View {
         TextField(prompt, text: $text)
             .font(.system(size: fontSize))
-            .foregroundColor(.colorTextPrimary)
+            .foregroundColor(theme.textPrimary)
             .padding(.horizontal, paddingHorizontal)
             .padding(.vertical, paddingVertical)
             .frame(minHeight: minHeight)
@@ -109,20 +110,20 @@ public struct CreoTextField: View {
 
     private var backgroundColor: Color {
         switch variant {
-        case .bordered: return .colorSurfaceSurface
-        case .filled: return .colorSurfaceBgSubtle
+        case .bordered: return theme.surfaceSurface
+        case .filled: return theme.surfaceBgSubtle
         }
     }
 
     private var borderColor: Color {
         if state == .error {
-            return .colorSemanticError
+            return theme.semanticError
         }
         if focused {
-            return .colorBrandPrimary
+            return theme.brandPrimary
         }
         switch variant {
-        case .bordered: return .colorSurfaceBorder
+        case .bordered: return theme.surfaceBorder
         case .filled: return .clear
         }
     }

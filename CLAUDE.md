@@ -25,7 +25,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ★ = `:root` default。切替は `[data-theme="{id}"]`、fleetstage 互換 alias として `.dark` / `[data-theme="dark"]` = mint-dark、`[data-theme="light"]` = mint-light。system preference light で `:root:not([data-theme])` は mint-light に逆転。
 
-token 値は **OKLCH** で保持 (`oklch(l c h [/ a])`)、Web は literal で emit し modern browser が解釈。Swift/Rust は build 時に hex / Rgb に変換 (Mint Dark のみ)。
+token 値は **OKLCH** で保持 (`oklch(l c h [/ a])`)、Web は literal で emit し modern browser が解釈。Swift/Rust は build 時に hex / Rgb に変換。Swift は flat 定数 (mint-dark) に加え **8 theme を `CreoTheme` struct として emit** し `@Environment(\.creoTheme)` で注入 (2026-07-30)。Rust は Mint Dark のみ。
 
 Phase は README.md に記載。
 
