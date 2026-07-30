@@ -15,7 +15,9 @@
 
 #![forbid(unsafe_code)]
 
-pub const VERSION: &str = "0.3.0";
+// Cargo.toml の version を SSOT にする (手書き定数は 0.3.0 で止まったまま
+// Cargo 側が 0.7.0 まで進む drift を起こしていた — ladyland feedback 補足と同類)
+pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[allow(dead_code)]
 pub mod tokens {
@@ -37,8 +39,30 @@ mod tests {
     use super::*;
 
     #[test]
-    fn version_is_set() {
-        assert_eq!(VERSION, "0.3.0");
+    fn version_tracks_cargo_manifest() {
+        assert_eq!(VERSION, env!("CARGO_PKG_VERSION"));
+    }
+
+    #[test]
+    fn scrim_preserves_alpha() {
+        // 旧実装は alpha を落とし scrim が不透明の純黒だった (swift #11 と同根、
+        // rust-v0.8.0 で根治)。40% → 102、50% → 128 (× 255 round)
+        let scrim = tokens::COLOR_SURFACE_SCRIM;
+        assert_eq!((scrim.r, scrim.g, scrim.b, scrim.a), (0, 0, 0, 102));
+        assert_eq!(tokens::COLOR_SURFACE_SCRIM_MODAL.a, 128);
+    }
+
+    #[test]
+    fn opaque_colors_have_full_alpha() {
+        assert_eq!(tokens::COLOR_BRAND_PRIMARY.a, 255);
+        assert_eq!(tokens::COLOR_TEXT_PRIMARY.a, 255);
+    }
+
+    #[test]
+    fn alpha_f32_converts_to_unit_range() {
+        assert_eq!(tokens::COLOR_BRAND_PRIMARY.alpha_f32(), 1.0);
+        let a = tokens::COLOR_SURFACE_SCRIM.alpha_f32();
+        assert!((a - 0.4).abs() < 0.01, "scrim alpha_f32 = {a} should be ~0.4");
     }
 
     #[test]

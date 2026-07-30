@@ -17,6 +17,15 @@ fn to_color32_converts_rgb_with_opaque_alpha() {
 }
 
 #[test]
+fn to_color32_preserves_translucent_alpha() {
+    // scrim (40%) が不透明の純黒に化けないこと (rust-v0.8.0 の alpha 根治)
+    let c = creo_eg::to_color32(tokens::COLOR_SURFACE_SCRIM);
+    assert_eq!(c.a(), 102);
+    let expected = Color32::from_rgba_unmultiplied(0, 0, 0, 102);
+    assert_eq!(c, expected);
+}
+
+#[test]
 fn from_trait_is_equivalent_to_to_color32() {
     let rgb = tokens::COLOR_BRAND_PRIMARY;
     let via_fn = creo_eg::to_color32(rgb);
@@ -107,10 +116,11 @@ fn apply_creo_theme_sets_visuals_on_ctx() {
 }
 
 #[test]
-fn to_color32_is_const_usable() {
-    // const 文脈でも呼べることを保証 (compile test を兼ねた値検証)
-    const PRIMARY: Color32 = creo_eg::to_color32(tokens::COLOR_BRAND_PRIMARY);
-    const SURFACE: Color32 = creo_eg::palette::surface();
-    assert_eq!(PRIMARY.a(), 255);
-    assert_eq!(SURFACE.a(), 255);
+fn to_color32_and_palette_are_alpha_aware() {
+    // 0.8.0 で const fn 保証を撤回 (egui の unmultiplied → premultiplied 変換が
+    // const でないため)。代わりに alpha-aware であることが新しい契約
+    let primary = creo_eg::to_color32(tokens::COLOR_BRAND_PRIMARY);
+    let surface = creo_eg::palette::surface();
+    assert_eq!(primary.a(), 255);
+    assert_eq!(surface.a(), 255);
 }

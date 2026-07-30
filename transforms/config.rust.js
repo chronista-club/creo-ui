@@ -8,10 +8,16 @@
  *   Rust 側は現状 Mint Dark (= Creo Design System default) のみ emit。他 theme は
  *   Phase 3 で要否検討 (ratatui / egui 等、crate 側の theme 概念次第)。
  *   color.$value は "oklch(l c h [/ a])" 文字列なので、transforms/color-utils.js
- *   の oklchStringToHex → hexToRgb255 で Rgb { r, g, b } u8 に変換する。
+ *   の oklchStringToHex → hexToRgb255 で Rgb { r, g, b, a } u8 に変換する。
+ *
+ * Alpha (rust-v0.8.0、breaking):
+ *   旧実装は alpha を落とし scrim (oklch(0 0 0 / 0.4)) が不透明の純黒で emit
+ *   されていた (swift #11 と同根)。Rgb に a: u8 (straight alpha) を追加して根治。
+ *   opaque は Rgb::new(r, g, b) のまま (diff 最小)、alpha 付きのみ
+ *   Rgb::with_alpha(r, g, b, a) で emit する。
  */
 
-import { hexToRgb255, oklchStringToHex } from './color-utils.js'
+import { hexToRgb255, oklchStringToHex, parseOklch } from './color-utils.js'
 
 const DEFAULT_THEME_ID = 'mint-dark'
 
@@ -45,16 +51,20 @@ const identPath = (path) => {
   return path
 }
 
-const colorStringToRgbBytes = (raw) => {
+const colorStringToRgbaBytes = (raw) => {
   const str = String(raw)
   if (/^oklch\(/i.test(str)) {
     const hex = oklchStringToHex(str)
     const [r, g, b] = hexToRgb255(hex)
-    return { r, g, b }
+    // alpha は hex 経由でなく parse 値から (1/255 量子化を 1 回に抑える)
+    const { a } = parseOklch(str)
+    return { r, g, b, a: Math.round((a ?? 1) * 255) }
   }
   if (str.startsWith('#')) {
     const [r, g, b] = hexToRgb255(str)
-    return { r, g, b }
+    const h = str.replace('#', '')
+    const a = h.length === 8 ? Number.parseInt(h.slice(6, 8), 16) : 255
+    return { r, g, b, a }
   }
   return null
 }
@@ -73,22 +83,40 @@ export default {
           '// Do not edit manually — edit tokens/**/*.json instead.',
           `// Theme: ${DEFAULT_THEME_ID} (Creo Design System default).`,
           '',
-          '/// 8-bit-per-channel RGB color, suitable for conversion into',
-          '/// `ratatui::style::Color::Rgb`, `image::Rgb`, etc.',
+          '/// 8-bit-per-channel RGBA color (straight / unpremultiplied alpha)。',
+          '/// `egui::Color32` 等 alpha を扱える色型へはそのまま、',
+          '/// `ratatui::style::Color::Rgb` 等 alpha を持てない型へは RGB channels のみで変換する。',
           '#[derive(Debug, Clone, Copy, PartialEq, Eq)]',
           'pub struct Rgb {',
           '    pub r: u8,',
           '    pub g: u8,',
           '    pub b: u8,',
+          '    /// straight (unpremultiplied) alpha。255 = opaque',
+          '    pub a: u8,',
           '}',
           '',
           'impl Rgb {',
+          '    /// opaque color (a = 255)',
           '    pub const fn new(r: u8, g: u8, b: u8) -> Self {',
-          '        Self { r, g, b }',
+          '        Self { r, g, b, a: 255 }',
           '    }',
           '',
+          '    pub const fn with_alpha(r: u8, g: u8, b: u8, a: u8) -> Self {',
+          '        Self { r, g, b, a }',
+          '    }',
+          '',
+          '    /// RGB channels のみ (alpha は落ちる)',
           '    pub const fn as_array(&self) -> [u8; 3] {',
           '        [self.r, self.g, self.b]',
+          '    }',
+          '',
+          '    pub const fn as_rgba_array(&self) -> [u8; 4] {',
+          '        [self.r, self.g, self.b, self.a]',
+          '    }',
+          '',
+          '    /// alpha を 0.0–1.0 で',
+          '    pub const fn alpha_f32(&self) -> f32 {',
+          '        self.a as f32 / 255.0',
           '    }',
           '}',
           '',
@@ -106,11 +134,13 @@ export default {
             : ''
 
           if (type === 'color') {
-            const rgb = colorStringToRgbBytes(raw)
-            if (rgb) {
-              lines.push(
-                `${comment}pub const ${name}: Rgb = Rgb::new(${rgb.r}, ${rgb.g}, ${rgb.b});`,
-              )
+            const rgba = colorStringToRgbaBytes(raw)
+            if (rgba) {
+              const ctor =
+                rgba.a === 255
+                  ? `Rgb::new(${rgba.r}, ${rgba.g}, ${rgba.b})`
+                  : `Rgb::with_alpha(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`
+              lines.push(`${comment}pub const ${name}: Rgb = ${ctor};`)
               continue
             }
             // gradient 等 — &str fallback (Phase 3 で検討)
