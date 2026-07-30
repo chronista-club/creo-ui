@@ -24,13 +24,17 @@ creo-ui = { git = "https://github.com/chronista-club/creo-ui.git" }
 use creo_ui::tokens;
 
 fn main() {
-    // Color は Rgb { r: u8, g: u8, b: u8 } 構造体
+    // Color は Rgb { r, g, b, a } 構造体 (u8、a は straight alpha。0.8.0 で追加 —
+    // scrim 等の translucent token が alpha を保持して届く)
     let brand = tokens::COLOR_BRAND_PRIMARY;
-    println!("brand primary = rgb({}, {}, {})", brand.r, brand.g, brand.b);
+    println!("brand primary = rgba({}, {}, {}, {})", brand.r, brand.g, brand.b, brand.a);
+
+    let scrim = tokens::COLOR_SURFACE_SCRIM;
+    assert_eq!(scrim.a, 102); // 40% scrim (旧版は alpha が落ちて不透明だった)
 
     // Dimension は f32 (px 単位)
     let md = tokens::SPACING_M;
-    assert_eq!(md, 16.0_f32);
+    assert_eq!(md, 18.0_f32);
 
     // Typography の family 等は &'static str
     let font = tokens::TYPOGRAPHY_FAMILY_SANS;
@@ -40,7 +44,8 @@ fn main() {
 
 ### ratatui / image 等との連携
 
-`Rgb` 構造体に `as_array()` が生えているので `[u8; 3]` 経由で他ライブラリの色型に渡せる:
+`Rgb` 構造体に `as_array()` (`[u8; 3]`、alpha は落ちる) / `as_rgba_array()` (`[u8; 4]`) が
+生えているので他ライブラリの色型に渡せる:
 
 ```rust
 use creo_ui::tokens::COLOR_BRAND_PRIMARY;
@@ -76,7 +81,8 @@ let left_pad = creo_rat::pad::md(); // 18px → 2 cells
 ### egui interop (`features = ["egui"]`)
 
 `creo_ui::egui` で mint-dark baseline の `Visuals` を egui Context にワンショット
-適用できる。`Rgb` → `Color32` 変換も const fn として生えている:
+適用できる。`Rgb` → `Color32` 変換は alpha を保持する (0.8.0 で const fn 保証を撤回 —
+egui の unmultiplied → premultiplied 変換が const でないため):
 
 ```rust
 use creo_ui::egui as creo_eg;
@@ -92,8 +98,8 @@ fn setup(ctx: &egui::Context) {
 let mut v = creo_eg::creo_visuals();
 v.window_rounding = 8.0.into();
 
-// 単発の Color32 変換 (const 文脈でも OK)
-const BRAND: egui::Color32 = creo_eg::to_color32(tokens::COLOR_BRAND_PRIMARY);
+// 単発の Color32 変換 (scrim 等は translucent のまま届く)
+let brand = creo_eg::to_color32(tokens::COLOR_BRAND_PRIMARY);
 let info: egui::Color32 = tokens::COLOR_SEMANTIC_INFO.into();
 ```
 
@@ -101,7 +107,7 @@ let info: egui::Color32 = tokens::COLOR_SEMANTIC_INFO.into();
 
 | Category | 命名 | 型 |
 |----------|------|----|
-| `color.*` | `COLOR_BRAND_PRIMARY`, `COLOR_SEMANTIC_ERROR` 等 | `Rgb { r, g, b }` (u8) |
+| `color.*` | `COLOR_BRAND_PRIMARY`, `COLOR_SEMANTIC_ERROR` 等 | `Rgb { r, g, b, a }` (u8、straight alpha) |
 | `spacing.*` | `SPACING_XS`, `SPACING_M` 等 (5 step) | `f32` (px) |
 | `margin.*` | `MARGIN_XS`, `MARGIN_M` 等 (5 step) | `f32` (px) |
 | `radius.*` | `RADIUS_NONE`, `RADIUS_XS` ... `RADIUS_FULL` (5 step + special) | `f32` |

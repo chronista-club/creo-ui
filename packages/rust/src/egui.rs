@@ -29,14 +29,16 @@
 use crate::tokens::{self, Rgb};
 use egui::{Color32, Context, Stroke, Visuals};
 
-/// creo-ui の [`Rgb`] を egui の [`Color32`] に変換する (alpha = 255)。
+/// creo-ui の [`Rgb`] を egui の [`Color32`] に変換する。
 ///
-/// `const fn` で定義されているので `pub const` token と合成して
-/// `const` 初期化にも使える。
+/// alpha を保持する — scrim 等の translucent token がそのまま届く (rust-v0.8.0)。
+/// egui の unmultiplied → premultiplied 変換が const でないため、旧版と違い
+/// `const fn` ではない。alpha を silent drop する const 経路を残すより、
+/// 変換の正しさを優先した。
 #[inline]
 #[must_use]
-pub const fn to_color32(rgb: Rgb) -> Color32 {
-    Color32::from_rgb(rgb.r, rgb.g, rgb.b)
+pub fn to_color32(rgb: Rgb) -> Color32 {
+    Color32::from_rgba_unmultiplied(rgb.r, rgb.g, rgb.b, rgb.a)
 }
 
 /// Trait 経由での変換も提供 (`Color32::from(rgb)` / `rgb.into()`)。
@@ -135,61 +137,61 @@ pub mod palette {
     /// `color.brand.primary`
     #[inline]
     #[must_use]
-    pub const fn brand_primary() -> Color32 {
+    pub fn brand_primary() -> Color32 {
         to_color32(tokens::COLOR_BRAND_PRIMARY)
     }
     /// `color.brand.secondary`
     #[inline]
     #[must_use]
-    pub const fn brand_secondary() -> Color32 {
+    pub fn brand_secondary() -> Color32 {
         to_color32(tokens::COLOR_BRAND_SECONDARY)
     }
     /// `color.semantic.success`
     #[inline]
     #[must_use]
-    pub const fn success() -> Color32 {
+    pub fn success() -> Color32 {
         to_color32(tokens::COLOR_SEMANTIC_SUCCESS)
     }
     /// `color.semantic.warning`
     #[inline]
     #[must_use]
-    pub const fn warning() -> Color32 {
+    pub fn warning() -> Color32 {
         to_color32(tokens::COLOR_SEMANTIC_WARNING)
     }
     /// `color.semantic.error`
     #[inline]
     #[must_use]
-    pub const fn error() -> Color32 {
+    pub fn error() -> Color32 {
         to_color32(tokens::COLOR_SEMANTIC_ERROR)
     }
     /// `color.semantic.info`
     #[inline]
     #[must_use]
-    pub const fn info() -> Color32 {
+    pub fn info() -> Color32 {
         to_color32(tokens::COLOR_SEMANTIC_INFO)
     }
     /// `color.text.primary`
     #[inline]
     #[must_use]
-    pub const fn text_primary() -> Color32 {
+    pub fn text_primary() -> Color32 {
         to_color32(tokens::COLOR_TEXT_PRIMARY)
     }
     /// `color.text.secondary`
     #[inline]
     #[must_use]
-    pub const fn text_secondary() -> Color32 {
+    pub fn text_secondary() -> Color32 {
         to_color32(tokens::COLOR_TEXT_SECONDARY)
     }
     /// `color.surface.bg-base`
     #[inline]
     #[must_use]
-    pub const fn bg_base() -> Color32 {
+    pub fn bg_base() -> Color32 {
         to_color32(tokens::COLOR_SURFACE_BG_BASE)
     }
     /// `color.surface.surface`
     #[inline]
     #[must_use]
-    pub const fn surface() -> Color32 {
+    pub fn surface() -> Color32 {
         to_color32(tokens::COLOR_SURFACE_SURFACE)
     }
 }

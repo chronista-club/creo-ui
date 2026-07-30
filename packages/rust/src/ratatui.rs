@@ -23,6 +23,10 @@ use crate::tokens::Rgb;
 use ratatui::style::Color;
 
 /// creo-ui の [`Rgb`] を ratatui の [`Color::Rgb`] に変換する。
+///
+/// alpha は**意図的に落とす** — 端末 cell は blend できず [`Color::Rgb`] も
+/// alpha を持てない。scrim 等の translucent token を TUI で使う場合は
+/// consumer 側で近似色 (暗くした背景色等) を選ぶこと。
 #[inline]
 #[must_use]
 pub fn color(rgb: Rgb) -> Color {

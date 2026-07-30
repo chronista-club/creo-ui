@@ -170,8 +170,17 @@ describe('rust (tokens.rs)', () => {
     expect(out.rust).not.toMatch(/COLOR_THEMES/)
   })
 
-  // 既知の課題 (assert しない): rust の Rgb は alpha を持てず、scrim が不透明に
-  // なっている。Rgb struct への field 追加は breaking なので rust-v0.8.0 で対応予定。
+  test('alpha 付き color が Rgb::with_alpha で emit される (scrim 40% / 50%)', () => {
+    // 旧実装は alpha を落とし scrim が不透明の純黒だった (swift #11 と同根、
+    // rust-v0.8.0 で根治)。102 = round(0.4 × 255)、128 = round(0.5 × 255)
+    expect(out.rust).toMatch(/COLOR_SURFACE_SCRIM: Rgb = Rgb::with_alpha\(0, 0, 0, 102\)/)
+    expect(out.rust).toMatch(/COLOR_SURFACE_SCRIM_MODAL: Rgb = Rgb::with_alpha\(0, 0, 0, 128\)/)
+  })
+
+  test('alpha 1 の color は Rgb::new のまま (diff 最小 policy)', () => {
+    expect(out.rust).toMatch(/COLOR_BRAND_PRIMARY: Rgb = Rgb::new\(/)
+    expect(out.rust).not.toMatch(/COLOR_BRAND_PRIMARY: Rgb = Rgb::with_alpha/)
+  })
 })
 
 describe('cross-platform 整合', () => {
