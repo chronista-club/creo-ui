@@ -15,33 +15,32 @@ Swift tools-version: 5.9
 
 ## インストール
 
+現状は **path 依存 (sibling checkout)** で導入します。creo-ui を隣に checkout し、
 `Package.swift` の `dependencies` に追加:
 
 ```swift
-// swift-tools-version:5.9
-import PackageDescription
-
-let package = Package(
-    name: "MyApp",
-    platforms: [.iOS(.v17), .macOS(.v14)],
-    dependencies: [
-        .package(
-            url: "https://github.com/chronista-club/creo-ui.git",
-            from: "0.0.1"
-        ),
-    ],
-    targets: [
-        .target(
-            name: "MyApp",
-            dependencies: [
-                .product(name: "CreoUI", package: "creo-ui"),
-            ]
-        ),
-    ]
-)
+// 例: ~/repos/my-app と ~/repos/creo-ui が並んでいる場合
+dependencies: [
+    .package(path: "../creo-ui/packages/swift"),
+],
+targets: [
+    .target(
+        name: "MyApp",
+        dependencies: [
+            .product(name: "CreoUI", package: "swift"),
+        ]
+    ),
+]
 ```
 
-Xcode からは: `File > Add Package Dependencies...` で `https://github.com/chronista-club/creo-ui.git` を入力、Target に `CreoUI` を追加。
+実例: ladyland (bikeboy-ladyland) が `.package(path: "../../creo-ui/packages/swift")` で
+導入済み (2026-07-30)。
+
+> **URL + version 指定 (`.package(url:from:)`) は現状使えません** — SPM は repo root の
+> Package.swift しか解決できず (subdirectory 参照不可)、かつ SPM が要求する素の
+> semver tag は repo-global namespace のため creo-ui の多 package 独立 version
+> (`web-v*` / `rust-v*` …) と衝突します。正式配布は Phase 2c (`creo-ui-swift` の
+> 別 repo 切り出し) で対応予定です。
 
 ## 使い方
 

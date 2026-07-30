@@ -16,7 +16,7 @@
  *   SwiftUI Color(red, green, blue) に変換する。
  */
 
-import { hexToRgb01, oklchStringToHex } from './color-utils.js'
+import { hexToRgb01, oklchStringToHex, parseOklch } from './color-utils.js'
 
 const DEFAULT_THEME_ID = 'mint-dark'
 
@@ -59,20 +59,43 @@ const identPath = (path) => {
   return path
 }
 
-/** color $value ("oklch(...)") → { r, g, b } in 0-1 */
-const colorStringToRgb = (raw) => {
+/** "#rrggbbaa" の末尾 2 桁から alpha (0-1) を取り出す。無ければ 1 */
+const hexAlpha = (hex) => {
+  const h = String(hex).replace('#', '')
+  if (h.length === 8) return Number.parseInt(h.slice(6, 8), 16) / 255
+  return 1
+}
+
+/** color $value ("oklch(l c h [/ a])") → { r, g, b, a } in 0-1
+ *
+ * alpha を必ず持ち回る — 旧実装は hexToRgb01 が alpha を捨てるため、
+ * scrim (oklch(0 0 0 / 0.4)) が不透明の純黒として emit されていた
+ * (ladyland consumer feedback レビューで発見した #11)。 */
+const colorStringToRgba = (raw) => {
   const str = String(raw)
   if (/^oklch\(/i.test(str)) {
     const hex = oklchStringToHex(str)
     const [r, g, b] = hexToRgb01(hex)
-    return { r, g, b }
+    // alpha は hex 経由 (1/255 量子化で 0.5 → 0.502 になる) でなく parse 値をそのまま使う
+    const { a } = parseOklch(str)
+    return { r, g, b, a: a ?? 1 }
   }
-  // fallback: 既存の hex 直値 ("#rrggbb")
+  // fallback: 既存の hex 直値 ("#rrggbb" / "#rrggbbaa")
   if (str.startsWith('#')) {
     const [r, g, b] = hexToRgb01(str)
-    return { r, g, b }
+    return { r, g, b, a: hexAlpha(str) }
   }
   throw new Error(`Unsupported color value for Swift emit: ${str}`)
+}
+
+/** duration $value ("80ms" / "0.5s") → 秒 (TimeInterval)。解釈不能なら null */
+const durationToSeconds = (raw) => {
+  const str = String(raw).trim()
+  const ms = str.match(/^(-?\d*\.?\d+)ms$/)
+  if (ms) return Number.parseFloat(ms[1]) / 1000
+  const s = str.match(/^(-?\d*\.?\d+)s$/)
+  if (s) return Number.parseFloat(s[1])
+  return null
 }
 
 export default {
@@ -91,12 +114,14 @@ export default {
           '',
           'import SwiftUI',
           'import CoreGraphics',
+          'import Foundation',
           '',
         ].join('\n')
 
         const colors = []
         const dimensions = []
         const numbers = []
+        const durations = []
         const strings = []
 
         for (const token of dictionary.allTokens) {
@@ -109,9 +134,11 @@ export default {
 
           if (type === 'color') {
             try {
-              const { r, g, b } = colorStringToRgb(raw)
+              const { r, g, b, a } = colorStringToRgba(raw)
+              // alpha 1 のときは opacity 引数を省略 (diff を最小に保つ)
+              const opacity = a < 1 ? `, opacity: ${a.toFixed(4)}` : ''
               colors.push(
-                `    static let ${name} = Color(red: ${r.toFixed(4)}, green: ${g.toFixed(4)}, blue: ${b.toFixed(4)})${comment}`,
+                `    static let ${name} = Color(red: ${r.toFixed(4)}, green: ${g.toFixed(4)}, blue: ${b.toFixed(4)}${opacity})${comment}`,
               )
             } catch (err) {
               // gradient 等の複合値は一旦 String として emit (Phase 3 で LinearGradient 対応)
@@ -120,6 +147,15 @@ export default {
               )
             }
             continue
+          }
+          if (type === 'duration') {
+            const sec = durationToSeconds(raw)
+            if (sec !== null) {
+              // SwiftUI Animation にそのまま渡せる秒単位 (旧実装は "80ms" の String で
+              // 実用不能だった — ladyland consumer feedback #8)
+              durations.push(`    public static let ${name}: TimeInterval = ${sec}${comment}`)
+              continue
+            }
           }
           if (type === 'dimension') {
             const n = dimensionToFloat(raw)
@@ -146,7 +182,11 @@ export default {
           ...dimensions,
           ...(dimensions.length && numbers.length ? [''] : []),
           ...numbers,
-          ...((dimensions.length || numbers.length) && strings.length ? [''] : []),
+          ...((dimensions.length || numbers.length) && durations.length ? [''] : []),
+          ...durations,
+          ...((dimensions.length || numbers.length || durations.length) && strings.length
+            ? ['']
+            : []),
           ...strings,
           '}',
           '',

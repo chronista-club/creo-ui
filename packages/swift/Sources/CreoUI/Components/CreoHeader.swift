@@ -12,7 +12,7 @@
 //       NavLink("Memories")
 //       NavLink("Projects")
 //   } actions: {
-//       CreoButton("Sign out", variant: .ghost, size: .sm) { ... }
+//       CreoButton("Sign out", variant: .ghost, size: .s) { ... }
 //   }
 
 import SwiftUI
@@ -24,8 +24,8 @@ public enum CreoHeaderVariant: String, CaseIterable, Sendable {
 
 public enum CreoHeaderElevation: String, CaseIterable, Sendable {
     case none
-    case sm
-    case md
+    case s
+    case m
 }
 
 public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
@@ -37,7 +37,7 @@ public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
 
     public init(
         variant: CreoHeaderVariant = .app,
-        elevation: CreoHeaderElevation = .sm,
+        elevation: CreoHeaderElevation = .s,
         @ViewBuilder logo: () -> Logo,
         @ViewBuilder nav: () -> Nav = { EmptyView() },
         @ViewBuilder actions: () -> Actions = { EmptyView() }
@@ -78,9 +78,9 @@ public struct CreoHeader<Logo: View, Nav: View, Actions: View>: View {
             }
         }
         .shadow(
-            color: elevation == .md ? .black.opacity(0.06) : .clear,
-            radius: elevation == .md ? 4 : 0,
-            y: elevation == .md ? 1 : 0
+            color: elevation == .m ? .black.opacity(0.06) : .clear,
+            radius: elevation == .m ? 4 : 0,
+            y: elevation == .m ? 1 : 0
         )
     }
 

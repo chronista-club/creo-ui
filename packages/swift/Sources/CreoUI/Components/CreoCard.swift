@@ -1,13 +1,13 @@
 // CreoUI — Card component (SwiftUI)
 //
 // CSS `.creo-card` の SwiftUI 版。variant (default/elevated/outlined) と
-// padding (sm/md/lg) を type-safe に表現。
+// padding (s/m/l) を type-safe に表現。
 //
 // Usage:
 //   CreoCard {
 //       VStack { Text("Title"); Text("Body") }
 //   }
-//   CreoCard(variant: .elevated, padding: .lg) { ... }
+//   CreoCard(variant: .elevated, padding: .l) { ... }
 
 import SwiftUI
 
@@ -18,9 +18,9 @@ public enum CreoCardVariant: String, CaseIterable, Sendable {
 }
 
 public enum CreoCardPadding: String, CaseIterable, Sendable {
-    case sm
-    case md
-    case lg
+    case s
+    case m
+    case l
 }
 
 public struct CreoCard<Content: View>: View {
@@ -30,7 +30,7 @@ public struct CreoCard<Content: View>: View {
 
     public init(
         variant: CreoCardVariant = .default,
-        padding: CreoCardPadding = .md,
+        padding: CreoCardPadding = .m,
         @ViewBuilder content: () -> Content
     ) {
         self.variant = variant
@@ -54,9 +54,9 @@ public struct CreoCard<Content: View>: View {
 
     private var paddingValue: CGFloat {
         switch padding {
-        case .sm: return CreoUITokens.spacingS
-        case .md: return CreoUITokens.spacingM
-        case .lg: return CreoUITokens.spacingL
+        case .s: return CreoUITokens.spacingS
+        case .m: return CreoUITokens.spacingM
+        case .l: return CreoUITokens.spacingL
         }
     }
 

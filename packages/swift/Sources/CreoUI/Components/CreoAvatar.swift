@@ -6,14 +6,14 @@
 //
 // Usage:
 //   CreoAvatar(image: Image("mako"))
-//   CreoAvatar(initials: "M", size: .lg, status: .online)
+//   CreoAvatar(initials: "M", size: .l, status: .online)
 
 import SwiftUI
 
 public enum CreoAvatarSize: String, CaseIterable, Sendable {
-    case sm
-    case md
-    case lg
+    case s
+    case m
+    case l
     case xl
 }
 
@@ -39,7 +39,7 @@ public struct CreoAvatar: View {
     public init(
         image: Image? = nil,
         initials: String? = nil,
-        size: CreoAvatarSize = .md,
+        size: CreoAvatarSize = .m,
         shape: CreoAvatarShape = .circle,
         status: CreoAvatarStatus? = nil
     ) {
@@ -95,18 +95,18 @@ public struct CreoAvatar: View {
 
     private var diameter: CGFloat {
         switch size {
-        case .sm: return 24
-        case .md: return 32
-        case .lg: return CreoUITokens.layoutTargetTap
+        case .s: return 24
+        case .m: return 32
+        case .l: return CreoUITokens.layoutTargetTap
         case .xl: return 64
         }
     }
 
     private var initialsFontSize: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.typographySizeXs
-        case .md: return CreoUITokens.typographySizeS
-        case .lg: return CreoUITokens.typographySizeM
+        case .s: return CreoUITokens.typographySizeXs
+        case .m: return CreoUITokens.typographySizeS
+        case .l: return CreoUITokens.typographySizeM
         case .xl: return CreoUITokens.typographySizeL
         }
     }
