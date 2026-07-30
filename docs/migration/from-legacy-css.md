@@ -19,8 +19,11 @@ Phase C: shim 削除 → 完全移行完了
 ### 1. package install
 
 ```bash
-bun add creo-ui@^0.3.0
+bun add @chronista-club/creo-ui
 ```
+
+> 執筆当時は `creo-ui@^0.3.0` だったが、npm の package 名は v0.24.4 で
+> `@chronista-club/creo-ui` に scope 化された (unscoped は 404)。
 
 ### 2. import 順を整備
 
@@ -96,7 +99,7 @@ PR 6: console/     (console REPL, editor-host chrome)
   --color-bg: #0f1419;
 }
 
-/* AFTER — creo-ui/tokens.css が供給するので空、または DTCG 参照のみ */
+/* AFTER — @chronista-club/creo-ui/tokens.css が供給するので空、または DTCG 参照のみ */
 @theme {
   /* 必要な追加 token があればここで定義 */
 }

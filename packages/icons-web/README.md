@@ -21,7 +21,7 @@ Iconify-based icon adapter for SolidJS web apps. Universal semantic registry wit
 ## Usage
 
 ```tsx
-import { CreoIcon, SYSTEM } from 'creo-ui-icons-web'
+import { CreoIcon, SYSTEM } from '@chronista-club/creo-ui-icons-web'
 
 // 直接 Iconify 名で
 <CreoIcon name="ph:book-open" size={20} />

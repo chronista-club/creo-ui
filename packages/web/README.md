@@ -9,12 +9,15 @@ Creo ecosystem (creo-memories / vantage-point / fleetstage 他) の Web app に�
 ## Install
 
 ```bash
-bun add creo-ui
+bun add @chronista-club/creo-ui
 # or
-npm install creo-ui
+npm install @chronista-club/creo-ui
 # or
-pnpm add creo-ui
+pnpm add @chronista-club/creo-ui
 ```
+
+> npm 上の package 名は **`@chronista-club/creo-ui`** (scoped、v0.24.4 で scope 化)。
+> unscoped の `creo-ui` は存在しない (404 になる)。
 
 ## Quick start (3 行)
 

@@ -17,7 +17,7 @@ export default function GettingStarted() {
         <h2 class="docs-section-title">Install</h2>
         <pre class="docs-code">
           <code>{`# 必須 (token CSS + components.css)
-bun add creo-ui
+bun add @chronista-club/creo-ui
 
 # (任意) Editor Mode の reference runtime
 bun add @chronista-club/creo-ui-editor-host solid-js
