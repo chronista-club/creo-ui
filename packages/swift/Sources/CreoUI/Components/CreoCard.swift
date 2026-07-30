@@ -27,6 +27,7 @@ public struct CreoCard<Content: View>: View {
     let variant: CreoCardVariant
     let padding: CreoCardPadding
     let content: Content
+    @Environment(\.creoTheme) private var theme
 
     public init(
         variant: CreoCardVariant = .default,
@@ -62,14 +63,14 @@ public struct CreoCard<Content: View>: View {
 
     private var backgroundColor: Color {
         switch variant {
-        case .default, .elevated: return .colorSurfaceSurface
+        case .default, .elevated: return theme.surfaceSurface
         case .outlined: return .clear
         }
     }
 
     private var borderColor: Color {
         switch variant {
-        case .default, .outlined: return .colorSurfaceBorder
+        case .default, .outlined: return theme.surfaceBorder
         case .elevated: return .clear
         }
     }

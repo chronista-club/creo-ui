@@ -22,6 +22,7 @@ public struct CreoMenuItem: View {
     let label: String
     let variant: CreoMenuItemVariant
     let action: () -> Void
+    @Environment(\.creoTheme) private var theme
 
     public init(
         _ label: String,
@@ -42,8 +43,8 @@ public struct CreoMenuItem: View {
 
     private var textColor: Color {
         switch variant {
-        case .default: return Color.colorTextPrimary
-        case .destructive: return Color.colorSemanticError
+        case .default: return theme.textPrimary
+        case .destructive: return theme.semanticError
         }
     }
 }

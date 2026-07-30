@@ -48,7 +48,7 @@ flowchart TB
 | **T-5** | **`[data-theme="{id}"]` で切替** | 8 theme は全て `[data-theme]` attribute で選択可能。ancestor に指定すれば subtree 全体に適用 |
 | **T-6** | **fleetstage 後方互換 alias** | `.dark` / `[data-theme="dark"]` → mint-dark、`[data-theme="light"]` → mint-light。fleetstage の `<html class="dark">` は変更なしで動作 |
 | **T-7** | **system preference 逆転** | `:root` default が dark なので、`prefers-color-scheme: light` で `[data-theme]` 未指定時は mint-light に逆転 |
-| **T-8** | **Swift/Rust は Mint Dark only (Phase 1)** | Phase 2 で `Color(dynamicProvider:)` / ratatui theme などで multi-theme 対応予定 |
+| **T-8** | **flat 定数は Mint Dark、Swift の multi-theme は `CreoTheme` 注入** | Swift は 2026-07-30 に 8 theme 対応: `Generated/Themes.swift` の `CreoTheme` struct (8 preset) を `@Environment(\.creoTheme)` / `.creoTheme()` で注入、外観モード追従は family 指定。flat 定数 (`Color.colorBrandPrimary` 等) は mint-dark 焼き込みの後方互換 API。Rust は引き続き Mint Dark only |
 | **T-9** | **editor-mode は theme 追従** | `tokens/editor-mode/*` の color は `var(--color-*)` literal で宣言、active theme に自動追従 |
 | **T-10** | **新 theme 追加は DTCG JSON のみで完結** | 新 family を足したいときは `tokens/color/themes/{id}.json` を 1 ファイル追加するだけ。scripts/generate-themes.mjs で creo-memories preset からも再生成可能 |
 
@@ -291,7 +291,7 @@ creo-memories 側を触らず、creo-ui 側だけで追加したい場合:
 |-------|------|--------|
 | 1 | 8 theme matrix + OKLCH source + Mint Dark default | ✅ **0.1.0 (2026-04-22) 完了** |
 | 2a | `creo-ui` (SolidJS) に `EditorHost` runtime 実装 + ThemeEditor 正式版 | 未着手 |
-| 2b | Swift (`CreoUI`) で multi-theme (`Color(dynamicProvider:)` + NSAppearance) | 未着手 |
+| 2b | Swift (`CreoUI`) で multi-theme — `CreoTheme` struct + `@Environment(\.creoTheme)` 注入 (`dynamicProvider` 案は 2 値制約のため不採用) | ✅ **2026-07-30 完了** |
 | 2c | Rust (`creo-ui` crate) で multi-theme 対応要否検討 (ratatui 等の theme 概念次第) | 未着手 |
 | 3 | Figma sync (tokens.studio 連携) — GUI で OKLCH を編集してリポジトリに反映 | Planned |
 | 4 | **Theme authoring pipeline** — ユーザーが独自 theme を登録できる runtime API (Editor Mode 経由で mix / 新規作成) | Planned |

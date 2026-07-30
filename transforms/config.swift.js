@@ -4,12 +4,14 @@
  * Generates SwiftUI Color / CGFloat extensions from W3C DTCG tokens.
  * Consumed by CreoUI SPM package (packages/swift).
  *
- * Theme policy (0.1.0+):
- *   tokens/color/themes/*.json には 8 theme 分の token があるが、Swift 側は
- *   現状 Mint Dark (= Creo Design System default) のみ emit する。他 theme は
- *   Phase 3 で Color(dynamicProvider:) + NSAppearance 対応時に追加する。
- *   token.path が `color.themes.*` の場合は mint-dark のみ pick し、
- *   変数名は themes segment を除去する (例: colorBrandPrimaryBase)。
+ * Theme policy (0.1.0+、2026-07-30 に 8 theme 対応):
+ *   - Tokens.swift (flat 定数): mint-dark (= Creo Design System default) のみ。
+ *     token.path が `color.themes.*` の場合は mint-dark のみ pick し、
+ *     変数名は themes segment を除去する (例: colorBrandPrimary)。後方互換 API。
+ *   - Themes.swift (CreoTheme struct): 8 theme 全部を static preset として emit。
+ *     consumer は @Environment(\.creoTheme) / .creoTheme() modifier で注入する
+ *     (ladyland consumer feedback #4)。gradient slot は CSS 文字列で SwiftUI に
+ *     持ち込めないため struct から除外 (LinearGradient 対応は Phase 3、additive)。
  *
  *   color.$value は "oklch(l c h [/ a])" 文字列で保持されているので、
  *   transforms/color-utils.js の oklchStringToHex → hexToRgb01 で
@@ -88,6 +90,13 @@ const colorStringToRgba = (raw) => {
   throw new Error(`Unsupported color value for Swift emit: ${str}`)
 }
 
+/** color $value → SwiftUI Color literal。alpha 1 のときは opacity 引数を省略 (diff を最小に保つ) */
+const swiftColorLiteral = (raw) => {
+  const { r, g, b, a } = colorStringToRgba(raw)
+  const opacity = a < 1 ? `, opacity: ${a.toFixed(4)}` : ''
+  return `Color(red: ${r.toFixed(4)}, green: ${g.toFixed(4)}, blue: ${b.toFixed(4)}${opacity})`
+}
+
 /** duration $value ("80ms" / "0.5s") → 秒 (TimeInterval)。解釈不能なら null */
 const durationToSeconds = (raw) => {
   const str = String(raw).trim()
@@ -134,12 +143,7 @@ export default {
 
           if (type === 'color') {
             try {
-              const { r, g, b, a } = colorStringToRgba(raw)
-              // alpha 1 のときは opacity 引数を省略 (diff を最小に保つ)
-              const opacity = a < 1 ? `, opacity: ${a.toFixed(4)}` : ''
-              colors.push(
-                `    static let ${name} = Color(red: ${r.toFixed(4)}, green: ${g.toFixed(4)}, blue: ${b.toFixed(4)}${opacity})${comment}`,
-              )
+              colors.push(`    static let ${name} = ${swiftColorLiteral(raw)}${comment}`)
             } catch (err) {
               // gradient 等の複合値は一旦 String として emit (Phase 3 で LinearGradient 対応)
               strings.push(
@@ -194,6 +198,184 @@ export default {
 
         return `${header}\n${sections}`
       },
+
+      /**
+       * 8 theme (color.themes.*) を CreoTheme struct + static preset として emit。
+       *
+       * - slot 名は themes segment 以降を camelCase (例: brandPrimary, focusRingHalo)
+       * - property は public var + memberwise init — consumer が copy-modify で
+       *   独自 theme を作れる (ladyland #10 の AV semantic 発明の受け皿)
+       * - gradient 等 Color 化できない slot は全 theme から除外 (String で入れて
+       *   後から型を変えると breaking になる。除外しておけば LinearGradient 対応は additive)
+       * - 全 theme の slot 構造が一致しない場合は生成を失敗させる (silent drop しない)
+       */
+      'swift/creo-ui-themes': ({ dictionary }) => {
+        const themes = new Map() // theme id → Map(slot ident → Color literal | null)
+        const slots = [] // default theme 由来の slot 定義順 [{ ident, comment }]
+
+        for (const token of dictionary.allTokens) {
+          if (token.path[0] !== 'color' || token.path[1] !== 'themes') continue
+          const id = token.path[2]
+          const ident = sanitizeIdent(camelCase(token.path.slice(3)))
+          const raw = token.$value ?? token.value
+          if (!themes.has(id)) themes.set(id, new Map())
+          let literal = null
+          try {
+            literal = swiftColorLiteral(raw)
+          } catch {
+            // gradient 等の複合値 — struct から除外 (header 参照)
+          }
+          themes.get(id).set(ident, literal)
+          if (id === DEFAULT_THEME_ID && literal !== null) {
+            slots.push({ ident, comment: token.$description ?? '' })
+          }
+        }
+
+        if (!themes.has(DEFAULT_THEME_ID)) {
+          throw new Error(`swift/creo-ui-themes: default theme "${DEFAULT_THEME_ID}" not found`)
+        }
+
+        // parity assert: 全 theme が同一 slot 構造でなければ生成を止める
+        const reference = new Set(themes.get(DEFAULT_THEME_ID).keys())
+        for (const [id, slotMap] of themes) {
+          const own = new Set(slotMap.keys())
+          const diff = [...new Set([...reference, ...own])].filter(
+            (s) => !(reference.has(s) && own.has(s)),
+          )
+          if (diff.length) {
+            throw new Error(
+              `swift/creo-ui-themes: theme "${id}" slot mismatch vs ${DEFAULT_THEME_ID}: ${diff.join(', ')}`,
+            )
+          }
+        }
+
+        // theme id 順: default 先頭、残り alphabetical (出力を deterministic に保つ)
+        const ids = [
+          DEFAULT_THEME_ID,
+          ...[...themes.keys()].filter((id) => id !== DEFAULT_THEME_ID).sort(),
+        ]
+
+        // family 導出: id は "{family}-light" / "{family}-dark" の対で成立している前提
+        const families = new Map() // family → { light: id, dark: id }
+        for (const id of ids) {
+          const m = id.match(/^(.+)-(light|dark)$/)
+          if (!m) {
+            throw new Error(
+              `swift/creo-ui-themes: theme id "${id}" must end with -light/-dark (CreoThemeFamily 導出)`,
+            )
+          }
+          if (!families.has(m[1])) families.set(m[1], {})
+          families.get(m[1])[m[2]] = id
+        }
+        for (const [family, pair] of families) {
+          if (!pair.light || !pair.dark) {
+            throw new Error(`swift/creo-ui-themes: family "${family}" is missing a light/dark pair`)
+          }
+        }
+
+        const swiftName = (id) => sanitizeIdent(camelCase([id]))
+        const familyCase = (family) => sanitizeIdent(camelCase([family]))
+
+        const header = [
+          '//',
+          '// Themes.swift',
+          '//',
+          '// Auto-generated by Style Dictionary from creo-ui tokens (color.themes.*).',
+          '// Do not edit manually — edit tokens/color/themes/*.json instead.',
+          `// ${ids.length} theme (${families.size} family × light/dark) を CreoTheme struct として emit。`,
+          '// gradient slot は CSS 文字列のため除外 (Phase 3 で LinearGradient 対応予定)。',
+          '//',
+          '',
+          'import SwiftUI',
+          '',
+        ]
+
+        const structLines = [
+          '/// theme 1 つ分の color slot 一式。preset (8 theme) は下の extension、',
+          '/// 注入は @Environment(\\.creoTheme) / .creoTheme() modifier (CreoThemeEnvironment.swift)。',
+          '/// property は var なので copy-modify で独自 theme も作れる。',
+          'public struct CreoTheme: Equatable, Sendable {',
+          '    /// Theme id (tokens/color/themes/{id}.json)。例: "mint-dark"',
+          '    public let id: String',
+          ...slots.flatMap(({ ident, comment }) => [
+            ...(comment ? [`    /// ${comment}`] : []),
+            `    public var ${ident}: Color`,
+          ]),
+          '',
+          '    public init(',
+          '        id: String,',
+          ...slots.map(
+            ({ ident }, i) => `        ${ident}: Color${i === slots.length - 1 ? '' : ','}`,
+          ),
+          '    ) {',
+          '        self.id = id',
+          ...slots.map(({ ident }) => `        self.${ident} = ${ident}`),
+          '    }',
+          '}',
+        ]
+
+        const presetLines = ['public extension CreoTheme {']
+        for (const id of ids) {
+          const slotMap = themes.get(id)
+          presetLines.push(`    /// ${id}`)
+          presetLines.push(`    static let ${swiftName(id)} = CreoTheme(`)
+          presetLines.push(`        id: ${JSON.stringify(id)},`)
+          slots.forEach(({ ident }, i) => {
+            const literal = slotMap.get(ident)
+            if (literal === null) {
+              throw new Error(
+                `swift/creo-ui-themes: theme "${id}" slot "${ident}" is not Color-representable`,
+              )
+            }
+            presetLines.push(`        ${ident}: ${literal}${i === slots.length - 1 ? '' : ','}`)
+          })
+          presetLines.push('    )')
+          presetLines.push('')
+        }
+        presetLines.push('    /// 全 preset (default theme が先頭)')
+        presetLines.push(
+          `    static let all: [CreoTheme] = [${ids.map((id) => `.${swiftName(id)}`).join(', ')}]`,
+        )
+        presetLines.push('')
+        presetLines.push('    /// theme id ("mint-dark" 等) から preset を引く')
+        presetLines.push('    static func preset(id: String) -> CreoTheme? {')
+        presetLines.push('        all.first { $0.id == id }')
+        presetLines.push('    }')
+        presetLines.push('}')
+
+        const familyOrder = [...families.keys()]
+        const familyLines = [
+          `/// ${families.size} family × light/dark。外観モード追従は .creoTheme(_ family:)`,
+          '/// (CreoThemeEnvironment.swift) が colorScheme を見て light/dark を選ぶ。',
+          'public enum CreoThemeFamily: String, CaseIterable, Sendable {',
+          ...familyOrder.map((f) =>
+            familyCase(f) === f
+              ? `    case ${familyCase(f)}`
+              : `    case ${familyCase(f)} = ${JSON.stringify(f)}`,
+          ),
+          '',
+          '    /// light variant の preset',
+          '    public var light: CreoTheme {',
+          '        switch self {',
+          ...familyOrder.map(
+            (f) => `        case .${familyCase(f)}: return .${swiftName(families.get(f).light)}`,
+          ),
+          '        }',
+          '    }',
+          '',
+          '    /// dark variant の preset',
+          '    public var dark: CreoTheme {',
+          '        switch self {',
+          ...familyOrder.map(
+            (f) => `        case .${familyCase(f)}: return .${swiftName(families.get(f).dark)}`,
+          ),
+          '        }',
+          '    }',
+          '}',
+        ]
+
+        return [...header, ...structLines, '', ...presetLines, '', ...familyLines, ''].join('\n')
+      },
     },
   },
   platforms: {
@@ -204,6 +386,10 @@ export default {
         {
           destination: 'Tokens.swift',
           format: 'swift/creo-ui',
+        },
+        {
+          destination: 'Themes.swift',
+          format: 'swift/creo-ui-themes',
         },
       ],
     },

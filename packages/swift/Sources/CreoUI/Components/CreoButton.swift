@@ -29,6 +29,7 @@ public struct CreoButton<Label: View>: View {
     let action: () -> Void
     let label: Label
     @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.creoTheme) private var theme
 
     public init(
         variant: CreoButtonVariant = .primary,
@@ -106,23 +107,23 @@ public struct CreoButton<Label: View>: View {
 
     private var backgroundColor: Color {
         switch variant {
-        case .primary: return .colorBrandPrimary
-        case .secondary: return .colorSurfaceSurface
+        case .primary: return theme.brandPrimary
+        case .secondary: return theme.surfaceSurface
         case .ghost: return .clear
         }
     }
 
     private var foregroundColor: Color {
         switch variant {
-        case .primary: return .colorSurfaceBgBase
-        case .secondary, .ghost: return .colorTextPrimary
+        case .primary: return theme.surfaceBgBase
+        case .secondary, .ghost: return theme.textPrimary
         }
     }
 
     private var borderColor: Color {
         switch variant {
-        case .primary: return .colorBrandPrimary
-        case .secondary: return .colorSurfaceBorder
+        case .primary: return theme.brandPrimary
+        case .secondary: return theme.surfaceBorder
         case .ghost: return .clear
         }
     }

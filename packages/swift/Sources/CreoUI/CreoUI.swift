@@ -1,20 +1,26 @@
 // CreoUI - creo-ui Design System for Apple platforms
 //
-// Phase 1: Style Dictionary から生成された Generated/Tokens.swift を公開する。
+// 3 層で構成する (2026-07-30、ladyland consumer feedback #4/#6 対応):
+//   1. Generated/Tokens.swift — flat token 定数 (mint-dark)。後方互換 API
+//   2. Generated/Themes.swift + Theme/ — CreoTheme (8 preset) を
+//      @Environment(\.creoTheme) / .creoTheme() modifier で注入
+//   3. Typography/ — CreoTextStyle + .creoText() modifier (Dynamic Type 対応)
 //
 //   import CreoUI
 //   import SwiftUI
 //
 //   struct Hero: View {
+//       @Environment(\.creoTheme) private var theme
 //       var body: some View {
 //           Text("Creo")
-//               .foregroundColor(.colorBrandPrimary)
+//               .creoText(.titlePage)
+//               .foregroundColor(theme.brandPrimary)
 //               .padding(CreoUITokens.spacingM)
 //       }
 //   }
 //
-// Phase 2 以降で Typography modifier, light/dark adaptive Color, SwiftUI
-// helpers を追加する予定。
+//   // app root で theme を選ぶ (外観モード追従は family 指定)
+//   ContentView().creoTheme(.mint)
 
 import Foundation
 

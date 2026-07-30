@@ -34,6 +34,7 @@ public struct CreoBadge: View {
     let variant: CreoBadgeVariant
     let size: CreoBadgeSize
     let shape: CreoBadgeShape
+    @Environment(\.creoTheme) private var theme
 
     public init(
         _ text: String,
@@ -78,23 +79,23 @@ public struct CreoBadge: View {
 
     private var backgroundColor: Color {
         switch variant {
-        case .neutral: return Color.colorSurfaceBgSubtle
-        case .brand: return Color.colorBrandPrimarySubtle
-        case .success: return Color.colorSemanticSuccess.opacity(0.2)
-        case .warning: return Color.colorSemanticWarning.opacity(0.2)
-        case .error: return Color.colorSemanticError.opacity(0.2)
-        case .info: return Color.colorSemanticInfo.opacity(0.2)
+        case .neutral: return theme.surfaceBgSubtle
+        case .brand: return theme.brandPrimarySubtle
+        case .success: return theme.semanticSuccess.opacity(0.2)
+        case .warning: return theme.semanticWarning.opacity(0.2)
+        case .error: return theme.semanticError.opacity(0.2)
+        case .info: return theme.semanticInfo.opacity(0.2)
         }
     }
 
     private var foregroundColor: Color {
         switch variant {
-        case .neutral: return .colorTextSecondary
-        case .brand: return .colorBrandPrimary
-        case .success: return .colorSemanticSuccess
-        case .warning: return .colorSemanticWarning
-        case .error: return .colorSemanticError
-        case .info: return .colorSemanticInfo
+        case .neutral: return theme.textSecondary
+        case .brand: return theme.brandPrimary
+        case .success: return theme.semanticSuccess
+        case .warning: return theme.semanticWarning
+        case .error: return theme.semanticError
+        case .info: return theme.semanticInfo
         }
     }
 }

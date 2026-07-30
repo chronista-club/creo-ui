@@ -26,6 +26,7 @@ public struct CreoToast: View {
     let description: String?
     let variant: CreoToastVariant
     let onClose: (() -> Void)?
+    @Environment(\.creoTheme) private var theme
 
     public init(
         title: String,
@@ -49,13 +50,13 @@ public struct CreoToast: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.system(size: CreoUITokens.typographySizeM, weight: .semibold))
-                    .foregroundColor(Color.colorTextPrimary)
+                    .creoText(.bodyEmphasis)
+                    .foregroundColor(theme.textPrimary)
 
                 if let description {
                     Text(description)
-                        .font(.system(size: CreoUITokens.typographyBodyHelper))
-                        .foregroundColor(Color.colorTextSecondary)
+                        .creoText(.bodyHelper)
+                        .foregroundColor(theme.textSecondary)
                         .lineLimit(3)
                 }
             }
@@ -64,7 +65,7 @@ public struct CreoToast: View {
             if let onClose {
                 Button(action: onClose) {
                     Image(systemName: "xmark")
-                        .foregroundColor(Color.colorTextTertiary)
+                        .foregroundColor(theme.textTertiary)
                         .font(.system(size: CreoUITokens.typographySizeS))
                 }
                 .buttonStyle(.plain)
@@ -73,7 +74,7 @@ public struct CreoToast: View {
         }
         .padding(.horizontal, CreoUITokens.spacingM)
         .padding(.vertical, CreoUITokens.spacingS)
-        .background(Color.colorSurfaceSurface)
+        .background(theme.surfaceSurface)
         .overlay(
             RoundedRectangle(cornerRadius: CreoUITokens.radiusM)
                 .stroke(borderColor, lineWidth: borderWidth)
@@ -96,21 +97,21 @@ public struct CreoToast: View {
 
     private var iconColor: Color {
         switch variant {
-        case .default: return Color.colorTextPrimary
-        case .success: return Color.colorSemanticSuccess
-        case .warning: return Color.colorSemanticWarning
-        case .error: return Color.colorSemanticError
-        case .info: return Color.colorSemanticInfo
+        case .default: return theme.textPrimary
+        case .success: return theme.semanticSuccess
+        case .warning: return theme.semanticWarning
+        case .error: return theme.semanticError
+        case .info: return theme.semanticInfo
         }
     }
 
     private var borderColor: Color {
         switch variant {
-        case .default: return Color.colorSurfaceBorder
-        case .success: return Color.colorSemanticSuccess
-        case .warning: return Color.colorSemanticWarning
-        case .error: return Color.colorSemanticError
-        case .info: return Color.colorSemanticInfo
+        case .default: return theme.surfaceBorder
+        case .success: return theme.semanticSuccess
+        case .warning: return theme.semanticWarning
+        case .error: return theme.semanticError
+        case .info: return theme.semanticInfo
         }
     }
 

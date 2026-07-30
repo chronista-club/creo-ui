@@ -54,6 +54,7 @@ beforeAll(async () => {
   }
   out.css = readFileSync(path.join(tmp, 'css/tokens.css'), 'utf-8')
   out.swift = readFileSync(path.join(tmp, 'swift/Tokens.swift'), 'utf-8')
+  out.swiftThemes = readFileSync(path.join(tmp, 'swift/Themes.swift'), 'utf-8')
   out.rust = readFileSync(path.join(tmp, 'rust/tokens.rs'), 'utf-8')
 })
 
@@ -110,12 +111,48 @@ describe('swift (Tokens.swift)', () => {
     expect(out.swift).not.toMatch(/String = "\d+ms"/)
   })
 
-  test('theme は mint-dark のみ (themes segment が ident に漏れない)', () => {
+  test('flat 定数の theme は mint-dark のみ (themes segment が ident に漏れない)', () => {
     expect(out.swift).not.toMatch(/colorThemes/)
   })
 
   test('Swift ident 規約 — 数字始まりの ident が無い', () => {
     expect(out.swift).not.toMatch(/static let \d/)
+  })
+})
+
+describe('swift (Themes.swift — CreoTheme 8 preset)', () => {
+  test('8 preset が全部 emit される (4 family × light/dark)', () => {
+    for (const name of [
+      'mintDark',
+      'mintLight',
+      'soraDark',
+      'soraLight',
+      'contrastDark',
+      'contrastLight',
+      'oldschoolDark',
+      'oldschoolLight',
+    ]) {
+      expect(out.swiftThemes).toMatch(new RegExp(`static let ${name} = CreoTheme\\(`))
+    }
+    expect(out.swiftThemes).toMatch(/enum CreoThemeFamily/)
+  })
+
+  test('mintDark preset は flat 定数 (Tokens.swift) と同一の Color literal', () => {
+    const flat = out.swift.match(/colorBrandPrimary = (Color\([^)]+\))/)[1]
+    const preset = out.swiftThemes.match(
+      /static let mintDark = CreoTheme\([\s\S]*?brandPrimary: (Color\([^)]+\))/,
+    )[1]
+    expect(preset).toBe(flat)
+  })
+
+  test('alpha 付き slot (shadow / focus halo) が opacity を保持する', () => {
+    expect(out.swiftThemes).toMatch(/shadowBase: Color\([^)]*opacity: 0\.3000\)/)
+    expect(out.swiftThemes).toMatch(/focusRingHalo: Color\([^)]*opacity: 0\.1800\)/)
+  })
+
+  test('gradient slot は struct から除外される (CSS 文字列を持ち込まない)', () => {
+    expect(out.swiftThemes).not.toContain('linear-gradient')
+    expect(out.swiftThemes).not.toMatch(/gradientHero/)
   })
 })
 
