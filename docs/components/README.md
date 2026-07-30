@@ -1,7 +1,7 @@
 # creo-ui — Component Index
 
 CSS クラス + data attribute で variant / size / state を表現する MVP component 群。
-token SSOT (`creo-ui/tokens.css`) を必ず一緒に import すること。
+token SSOT (`@chronista-club/creo-ui/tokens.css`) を必ず一緒に import すること。
 
 ## MVP (0.3.0+)
 

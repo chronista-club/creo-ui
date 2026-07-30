@@ -27,7 +27,7 @@ Ecosystem split (Phase 2b/c/d、 Rust/Swift repo 切り出し) は **TS 安定�
 
 | Platform | Package | 配布先 | 出力 |
 |----------|---------|--------|------|
-| Web | `creo-ui` | [npmjs.com](https://www.npmjs.com/package/creo-ui) | CSS custom properties + JS 定数 |
+| Web | `@chronista-club/creo-ui` | [npmjs.com](https://www.npmjs.com/package/@chronista-club/creo-ui) | CSS custom properties + JS 定数 |
 | Apple (iOS 17+ / macOS 14+ / watchOS 10+ / tvOS 17+) | `CreoUI` | SPM (GitHub repo 直接参照) | SwiftUI Color / CGFloat extensions |
 | Rust | `creo-ui` | (Phase 2 で crates.io 予定、現状は git/path 参照) | `pub const` 定義 (Rgb 構造体 / f32 / &str) |
 
@@ -36,15 +36,15 @@ Ecosystem split (Phase 2b/c/d、 Rust/Swift repo 切り出し) は **TS 安定�
 ### Web (creo-memories, vantage-point 等)
 
 ```bash
-bun add creo-ui
+bun add @chronista-club/creo-ui
 ```
 
 ```ts
 import '@chronista-club/creo-ui/tokens.css'
-// .my-button { background: var(--color-brand-primary); padding: var(--spacing-md); }
+// .my-button { background: var(--color-brand-primary); padding: var(--spacing-m); }
 
 // または JS 定数として
-import { ColorBrandPrimary, SpacingMd } from '@chronista-club/creo-ui/tokens.js'
+import { ColorThemesMintDarkBrandPrimary, SpacingM } from '@chronista-club/creo-ui/tokens.js'
 ```
 
 詳細は [`packages/web/README.md`](./packages/web/README.md) を参照してください。

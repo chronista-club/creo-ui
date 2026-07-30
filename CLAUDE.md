@@ -25,7 +25,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ★ = `:root` default。切替は `[data-theme="{id}"]`、fleetstage 互換 alias として `.dark` / `[data-theme="dark"]` = mint-dark、`[data-theme="light"]` = mint-light。system preference light で `:root:not([data-theme])` は mint-light に逆転。
 
-token 値は **OKLCH** で保持 (`oklch(l c h [/ a])`)、Web は literal で emit し modern browser が解釈。Swift/Rust は build 時に hex / Rgb に変換 (Mint Dark のみ)。
+token 値は **OKLCH** で保持 (`oklch(l c h [/ a])`)、Web は literal で emit し modern browser が解釈。Swift/Rust は build 時に hex / Rgb に変換。Swift は flat 定数 (mint-dark) に加え **8 theme を `CreoTheme` struct として emit** し `@Environment(\.creoTheme)` で注入 (2026-07-30)。Rust は Mint Dark のみ。
 
 Phase は README.md に記載。
 
@@ -45,6 +45,8 @@ bun run format         # Biome check --write (自動修正)
 bun run dev            # apps/site (creo-ui 公式 site = live showcase + docs) を vite で起動
 bun run gen:themes     # creo-memories preset から 8 theme JSON を再生成
 bun run test:colors    # transforms/color-utils.js のテストを実行 (50 cases)
+bun run test:transforms # ↑ + pipeline invariant tests (tokens → 3 platform 出力の値検査。CI でも実行)
+bun run check:drift    # site の class / data 属性 / var / specifier を実物と静的照合 (要 build:web、CI でも実行)
 bun test packages/editor-host/src/host.test.ts  # editor-host core state のテスト (19 cases)
 
 # demo stage (local Mac で apps/site を podman 配信)
@@ -85,7 +87,7 @@ Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
 `.gitignore` で明示されている通り:
 
 - **Swift/Rust の generated はコミット対象**。`cargo build` や `swift build` はこれらがある前提で動くので、`bun run build` を走らせていない環境 (GitHub Actions の rust/swift job もここには含まれる) でも即ビルド可能である必要がある。
-- **Web の dist/ は gitignore**。npm publish workflow でのみ生成され、npmjs.com の `creo-ui` (unscoped) として配布される。
+- **Web の dist/ は gitignore**。npm publish workflow でのみ生成され、npmjs.com の **`@chronista-club/creo-ui`** (scoped、v0.24.4 で scope 化) として配布される。unscoped の `creo-ui` は npm に存在しない。
 
 **したがって `tokens/` を編集した PR は、Swift/Rust の generated も一緒に commit する必要がある。** `bun run build` を忘れると Swift/Rust の出力が古いまま取り残される。
 
@@ -94,7 +96,7 @@ Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
 | Platform | 命名 | Color | Dimension | FontWeight/Number | その他 |
 |----------|------|-------|-----------|-------------------|--------|
 | Swift | camelCase (`colorBrandPrimary`) | `Color(red: ...)` in `extension Color` | `CGFloat` in `enum CreoUITokens` | `Double` in `CreoUITokens` | `String` in `CreoUITokens` |
-| Rust | SCREAMING_SNAKE (`COLOR_BRAND_PRIMARY`) | `Rgb { r, g, b }` (u8 構造体) | `f32` (px) | `f32` | `&'static str` |
+| Rust | SCREAMING_SNAKE (`COLOR_BRAND_PRIMARY`) | `Rgb { r, g, b, a }` (u8 構造体、straight alpha) | `f32` (px) | `f32` | `&'static str` |
 
 - Rust の generated は `include!()` で `src/lib.rs` の `pub mod tokens` に取り込まれる設計 (`CREO-86` で確立)。したがって custom format には inner attribute (`#![...]`) や inner doc (`//!`) を入れてはいけない — `include!` 先はモジュールの途中なので parse error になる。この制約は `transforms/config.rust.js` のコメントにも明記されている。
 - Rust ident は先頭が数字だと invalid なので `sanitizeIdent` で `_` prefix。Swift も同様。
@@ -135,7 +137,7 @@ bun run build        # 全 platform に反映
 - **rust** (ubuntu): `cargo build && cargo test` を `packages/rust` で。Rust 1.95 (ci.yml の toolchain も Cargo.toml も 1.95 で揃える、 mise の `[tools].rust` と SSOT)。
 - **swift** (macos-14): `swift build && swift test` を `packages/swift` で。
 
-`publish-web.yml` は `web-v*` tag push で npmjs.com へ `creo-ui` を publish (要 `NPM_TOKEN` secret)。root で `bun run build:web` を実行してから `packages/web/` で `npm publish` する 2 段構え（path が root 相対のため）。
+`publish-web.yml` は `web-v*` tag push で npmjs.com へ `@chronista-club/creo-ui` を publish (要 `NPM_TOKEN` secret)。root で `bun run build:web` を実行してから `packages/web/` で `npm publish` する 2 段構え（path が root 相対のため）。
 
 ## ブランチ運用 (nightly / main 二段、2026-06-16 に `n` → `nightly` rename)
 
@@ -147,12 +149,13 @@ creo-memories / VP / fleetstage と parity の **「`nightly` = 開発 trunk (de
 | **`main`** | release branch (protected: PR 必須 / 直 push・force・delete 禁止)。`nightly → main` の release PR で promote |
 
 - **開発フロー**: lane `mako/*` → PR (base=`nightly`) → squash merge → `nightly`
-- **release**: `nightly → main` の release PR でまとめて promote → `main` に `web-v*` / editor-host / rust tag を push → 各 publish workflow が npm publish
+- **release (2026-07-30 固定化)**: owner トリガーで開始 → nightly で bump + CHANGELOG (release prep PR) → `nightly → main` の release PR を **merge commit** で promote → main push で `release-tag.yml` が **自動 tag + publish dispatch**。人間は tag を打たない。**全出荷は main 経由** (nightly 直 tag = mid-cycle 出荷は廃止)。手順は `.claude/skills/release/SKILL.md` (`/release`)、設計と不変条件は [docs/design/release-flow.md](./docs/design/release-flow.md)
 - **CI** (`ci.yml`): push/PR を `[nightly, main]` で gate (build / rust / swift)
 - nightly cadence の自動化 (nightly publish 等) は scope 外 (将来 Phase 2、creo-memories `mem_1CbVbGGnFskVKMBghP1SDi` 参照)
 
 ## やってはいけない
 
+- nightly 上の commit に直接 `*-v*` tag を打って出荷する (mid-cycle 出荷は 2026-07-30 に廃止。全出荷は main 経由 + `release-tag.yml` の自動 tag — [docs/design/release-flow.md](./docs/design/release-flow.md))。
 - 生成物 (`packages/web/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を手編集する。編集すべきは `tokens/` のみ。
 - `tokens/` の変更だけコミットして generated の更新を忘れる (Swift/Rust が古い値のまま残る)。
 - `style-dictionary build` を `packages/*/` の CWD で実行する (path が root 相対なので壊れる)。
@@ -161,7 +164,7 @@ creo-memories / VP / fleetstage と parity の **「`nightly` = 開発 trunk (de
 - Editor Mode を **instance 名** (Studio / DevEditor / etc) で呼ぶ。Editor は **universal mode**、instance 化しない (`docs/design/editor-mode.md` D-1)。
 - Content Layer を Editor Mode が **押し退ける / layout 変える** 設計にする。非侵襲性 (D-6) は最上位原則。
 - Swift / Rust / 他 JS framework (React / Vue 等) の **runtime 実装を本リポジトリに書く**。本 repo が持つ runtime は **SolidJS の reference 実装に限る** — 現状 `packages/{web (shells/controls), editor-host, frame, vision, md-view, icons-web}` が該当 (EH-1 / EH-2)。Swift / Rust / 他 JS framework は consumer 側または将来別 package で。
-  - web package の component layer は 2 段: **CSS-only component** (`components/*.css`、例 `button.css`) と、それを type-safe に wrap した **SolidJS primitive** (`shells/` = layout grammar、`controls/` = interactive control、例 `CUButton`)。新 interactive component は `controls/` に置き `creo-ui/controls` で export する。
+  - web package の component layer は 2 段: **CSS-only component** (`components/*.css`、例 `button.css`) と、それを type-safe に wrap した **SolidJS primitive** (`shells/` = layout grammar、`controls/` = interactive control、例 `CUButton`)。新 interactive component は `controls/` に置き `@chronista-club/creo-ui/controls` で export する。
 - `packages/editor-host/` を **SolidJS 以外の framework 対応で抽象化する**。SolidJS 一本で進める方針 (EH-2)。物理分離を急がない。
 - `creo-memories/packages/creoui` の DevEditor を直接触る。参考に留め、 **migration は creo-memories lead の判断** (EH-4)。
 - 専用 MCP server (`editor-host-mcp`) を実装する。**claude-in-chrome + `window.creoEditor` で代替可能** (EH-5)。Phase 2b は recipes / AI pair design docs に scope 縮小。

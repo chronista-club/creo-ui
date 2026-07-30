@@ -95,7 +95,7 @@
       <span class="creo-accordion-title">How to install?</span>
     </summary>
     <div class="creo-accordion-content">
-      <pre><code>bun add creo-ui</code></pre>
+      <pre><code>bun add @chronista-club/creo-ui</code></pre>
     </div>
   </details>
 </section>

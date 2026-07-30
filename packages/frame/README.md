@@ -188,7 +188,7 @@ consumer は guard を毎回書かなくて良い。
 
 ## Token bridge
 
-`creo-ui/tokens.css` の motion / depth / frame token と直結:
+`@chronista-club/creo-ui/tokens.css` の motion / depth / frame token と直結:
 
 | API | Token (CSS variable) | Status |
 |---|---|---|

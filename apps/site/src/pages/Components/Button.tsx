@@ -154,7 +154,7 @@ export default function Button() {
 
       <section>
         <h2 class="docs-section-title">
-          SolidJS API — <code>creo-ui/controls</code>
+          SolidJS API — <code>@chronista-club/creo-ui/controls</code>
         </h2>
         <p class="docs-page-lead">
           素の <code>&lt;button class="creo-btn"&gt;</code> を type-safe に wrap した{' '}

@@ -17,7 +17,7 @@ export default function GettingStarted() {
         <h2 class="docs-section-title">Install</h2>
         <pre class="docs-code">
           <code>{`# 必須 (token CSS + components.css)
-bun add creo-ui
+bun add @chronista-club/creo-ui
 
 # (任意) Editor Mode の reference runtime
 bun add @chronista-club/creo-ui-editor-host solid-js
@@ -30,7 +30,11 @@ bun add @chronista-club/creo-ui-icons-web`}</code>
         </pre>
         <p class="docs-page-helper">
           npm / yarn / pnpm でも同様。 すべての package は{' '}
-          <a href="https://www.npmjs.com/package/creo-ui" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://www.npmjs.com/package/@chronista-club/creo-ui"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             npmjs.com
           </a>{' '}
           公開中 (Apache-2.0)。

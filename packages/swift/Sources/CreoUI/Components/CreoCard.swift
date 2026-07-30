@@ -1,13 +1,13 @@
 // CreoUI — Card component (SwiftUI)
 //
 // CSS `.creo-card` の SwiftUI 版。variant (default/elevated/outlined) と
-// padding (sm/md/lg) を type-safe に表現。
+// padding (s/m/l) を type-safe に表現。
 //
 // Usage:
 //   CreoCard {
 //       VStack { Text("Title"); Text("Body") }
 //   }
-//   CreoCard(variant: .elevated, padding: .lg) { ... }
+//   CreoCard(variant: .elevated, padding: .l) { ... }
 
 import SwiftUI
 
@@ -18,19 +18,20 @@ public enum CreoCardVariant: String, CaseIterable, Sendable {
 }
 
 public enum CreoCardPadding: String, CaseIterable, Sendable {
-    case sm
-    case md
-    case lg
+    case s
+    case m
+    case l
 }
 
 public struct CreoCard<Content: View>: View {
     let variant: CreoCardVariant
     let padding: CreoCardPadding
     let content: Content
+    @Environment(\.creoTheme) private var theme
 
     public init(
         variant: CreoCardVariant = .default,
-        padding: CreoCardPadding = .md,
+        padding: CreoCardPadding = .m,
         @ViewBuilder content: () -> Content
     ) {
         self.variant = variant
@@ -54,22 +55,22 @@ public struct CreoCard<Content: View>: View {
 
     private var paddingValue: CGFloat {
         switch padding {
-        case .sm: return CreoUITokens.spacingS
-        case .md: return CreoUITokens.spacingM
-        case .lg: return CreoUITokens.spacingL
+        case .s: return CreoUITokens.spacingS
+        case .m: return CreoUITokens.spacingM
+        case .l: return CreoUITokens.spacingL
         }
     }
 
     private var backgroundColor: Color {
         switch variant {
-        case .default, .elevated: return .colorSurfaceSurface
+        case .default, .elevated: return theme.surfaceSurface
         case .outlined: return .clear
         }
     }
 
     private var borderColor: Color {
         switch variant {
-        case .default, .outlined: return .colorSurfaceBorder
+        case .default, .outlined: return theme.surfaceBorder
         case .elevated: return .clear
         }
     }

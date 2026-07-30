@@ -2,29 +2,47 @@
 // Do not edit manually — edit tokens/**/*.json instead.
 // Theme: mint-dark (Creo Design System default).
 
-/// 8-bit-per-channel RGB color, suitable for conversion into
-/// `ratatui::style::Color::Rgb`, `image::Rgb`, etc.
+/// 8-bit-per-channel RGBA color (straight / unpremultiplied alpha)。
+/// `egui::Color32` 等 alpha を扱える色型へはそのまま、
+/// `ratatui::style::Color::Rgb` 等 alpha を持てない型へは RGB channels のみで変換する。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Rgb {
     pub r: u8,
     pub g: u8,
     pub b: u8,
+    /// straight (unpremultiplied) alpha。255 = opaque
+    pub a: u8,
 }
 
 impl Rgb {
+    /// opaque color (a = 255)
     pub const fn new(r: u8, g: u8, b: u8) -> Self {
-        Self { r, g, b }
+        Self { r, g, b, a: 255 }
     }
 
+    pub const fn with_alpha(r: u8, g: u8, b: u8, a: u8) -> Self {
+        Self { r, g, b, a }
+    }
+
+    /// RGB channels のみ (alpha は落ちる)
     pub const fn as_array(&self) -> [u8; 3] {
         [self.r, self.g, self.b]
+    }
+
+    pub const fn as_rgba_array(&self) -> [u8; 4] {
+        [self.r, self.g, self.b, self.a]
+    }
+
+    /// alpha を 0.0–1.0 で
+    pub const fn alpha_f32(&self) -> f32 {
+        self.a as f32 / 255.0
     }
 }
 
 /// Drawer / side sheet backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。 中央 modal (dialog) はより重い注意を引くため `scrim-modal` (50%) を使う。
-pub const COLOR_SURFACE_SCRIM: Rgb = Rgb::new(0, 0, 0);
+pub const COLOR_SURFACE_SCRIM: Rgb = Rgb::with_alpha(0, 0, 0, 102);
 /// Dialog (中央 modal) backdrop scrim — 50% black overlay。 drawer (40%) より強く content を後退させ、 user の注意を modal に集中させる。 dark/light theme 共通。
-pub const COLOR_SURFACE_SCRIM_MODAL: Rgb = Rgb::new(0, 0, 0);
+pub const COLOR_SURFACE_SCRIM_MODAL: Rgb = Rgb::with_alpha(0, 0, 0, 128);
 /// Brand primary (base)
 pub const COLOR_BRAND_PRIMARY: Rgb = Rgb::new(97, 197, 148);
 /// Brand primary — hover
@@ -104,15 +122,15 @@ pub const COLOR_TEXT_DISABLED: Rgb = Rgb::new(82, 85, 91);
 /// Inverse text — on dark surfaces
 pub const COLOR_TEXT_INVERSE: Rgb = Rgb::new(7, 11, 20);
 /// Shadow tint — default
-pub const COLOR_SHADOW_BASE: Rgb = Rgb::new(0, 0, 0);
+pub const COLOR_SHADOW_BASE: Rgb = Rgb::with_alpha(0, 0, 0, 77);
 /// Shadow tint — strong
-pub const COLOR_SHADOW_STRONG: Rgb = Rgb::new(0, 0, 0);
+pub const COLOR_SHADOW_STRONG: Rgb = Rgb::with_alpha(0, 0, 0, 128);
 /// Hero gradient — marketing / splash surfaces
 pub const COLOR_GRADIENT_HERO: &str = "linear-gradient(135deg, oklch(0.2 0.04 160) 0%, oklch(0.18 0.03 175) 50%, oklch(0.22 0.05 165) 100%)";
 /// Focus ring color — outer 2px solid ring (mint-dark、 brand 同 hue + luminance UP で AAA contrast 確保)
 pub const COLOR_FOCUS_RING_COLOR: Rgb = Rgb::new(111, 234, 174);
 /// Focus halo — inner 4px subtle bg tint、 ring を 「包む glow」 として演出
-pub const COLOR_FOCUS_RING_HALO: Rgb = Rgb::new(111, 234, 174);
+pub const COLOR_FOCUS_RING_HALO: Rgb = Rgb::with_alpha(111, 234, 174, 46);
 /// Default density — base spacing そのまま (4 mode の現状値)
 pub const DENSITY_DEFAULT_PADDING_SCALE: f32 = 1_f32;
 /// Default density — base gap そのまま

@@ -49,6 +49,12 @@ jobs:
       - name: Build tokens (Web / Swift / Rust)
         run: bun run build
 
+      - name: Token pipeline invariants (transforms/pipeline.test.js + color-utils)
+        run: bun run test:transforms
+
+      - name: Docs drift check (site の class / data 属性 / var / specifier を実物と照合)
+        run: bun run check:drift
+
       - name: Token diff (Swift / Rust generated は commit 対象)
         # tokens/ を編集した PR が Swift/Rust の generated 更新を
         # 忘れていないか検証する。Web の dist/ は gitignore なので対象外。

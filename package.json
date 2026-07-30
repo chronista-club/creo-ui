@@ -21,6 +21,8 @@
     "site:deploy": "bun run site:build && bunx wrangler deploy",
     "gen:themes": "bun scripts/generate-themes.mjs",
     "test:colors": "bun test transforms/color-utils.test.js",
+    "test:transforms": "bun test transforms/",
+    "check:drift": "bun scripts/check-docs-drift.mjs",
     "fetch:design": "bun scripts/fetch-creo-ui-design.mjs",
     "diff:design": "bun scripts/diff-creo-ui-design.mjs"
   },

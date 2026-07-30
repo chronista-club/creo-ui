@@ -2,7 +2,7 @@
 
 creo-ui Design System tokens for Apple platforms (iOS / macOS / watchOS / tvOS).
 
-単一の W3C Design Tokens (DTCG) から生成された SwiftUI `Color` extension と `CreoUITokens` 定数を Swift Package Manager 経由で提供する。
+単一の W3C Design Tokens (DTCG) から生成された SwiftUI `Color` extension / `CreoUITokens` 定数に加え、8 theme の `CreoTheme` 注入と `.creoText()` typography modifier を Swift Package Manager 経由で提供する。
 
 ## 対応 Platform
 
@@ -15,33 +15,32 @@ Swift tools-version: 5.9
 
 ## インストール
 
+現状は **path 依存 (sibling checkout)** で導入します。creo-ui を隣に checkout し、
 `Package.swift` の `dependencies` に追加:
 
 ```swift
-// swift-tools-version:5.9
-import PackageDescription
-
-let package = Package(
-    name: "MyApp",
-    platforms: [.iOS(.v17), .macOS(.v14)],
-    dependencies: [
-        .package(
-            url: "https://github.com/chronista-club/creo-ui.git",
-            from: "0.0.1"
-        ),
-    ],
-    targets: [
-        .target(
-            name: "MyApp",
-            dependencies: [
-                .product(name: "CreoUI", package: "creo-ui"),
-            ]
-        ),
-    ]
-)
+// 例: ~/repos/my-app と ~/repos/creo-ui が並んでいる場合
+dependencies: [
+    .package(path: "../creo-ui/packages/swift"),
+],
+targets: [
+    .target(
+        name: "MyApp",
+        dependencies: [
+            .product(name: "CreoUI", package: "swift"),
+        ]
+    ),
+]
 ```
 
-Xcode からは: `File > Add Package Dependencies...` で `https://github.com/chronista-club/creo-ui.git` を入力、Target に `CreoUI` を追加。
+実例: ladyland (bikeboy-ladyland) が `.package(path: "../../creo-ui/packages/swift")` で
+導入済み (2026-07-30)。
+
+> **URL + version 指定 (`.package(url:from:)`) は現状使えません** — SPM は repo root の
+> Package.swift しか解決できず (subdirectory 参照不可)、かつ SPM が要求する素の
+> semver tag は repo-global namespace のため creo-ui の多 package 独立 version
+> (`web-v*` / `rust-v*` …) と衝突します。正式配布は Phase 2c (`creo-ui-swift` の
+> 別 repo 切り出し) で対応予定です。
 
 ## 使い方
 
@@ -50,19 +49,57 @@ import CreoUI
 import SwiftUI
 
 struct HeroView: View {
+    @Environment(\.creoTheme) private var theme
+
     var body: some View {
         Text("Creo")
-            .foregroundColor(.colorBrandPrimary)      // SwiftUI Color extension
-            .padding(CreoUITokens.spacingM)          // CGFloat
-            .font(.system(
-                size: CreoUITokens.typographySizeL,  // CGFloat
-                weight: .semibold
-            ))
-            .background(Color.colorSurfaceSubtle)
+            .creoText(.titleCard)                 // typography role (Dynamic Type 対応)
+            .foregroundColor(theme.brandPrimary)  // theme 経由の色
+            .padding(CreoUITokens.spacingM)       // CGFloat token
+            .background(theme.surfaceBgSubtle)
             .cornerRadius(CreoUITokens.radiusM)
     }
 }
 ```
+
+### Theme 注入 (`@Environment(\.creoTheme)`)
+
+8 theme (4 family × light/dark、creo-memories preset 由来) を `CreoTheme` struct として同梱。
+app root で 1 回注入すれば、CreoUI component と `theme.*` 参照の全 view に行き渡る:
+
+```swift
+// 固定 theme
+ContentView().creoTheme(.soraDark)
+
+// 外観モード追従 — colorScheme を見て light/dark を自動選択
+ContentView().creoTheme(.mint)
+
+// 独自 theme (copy-modify) — AV semantic 等の実験にも
+var live = CreoTheme.mintDark
+live.brandPrimary = Color(red: 1.0, green: 0.2, blue: 0.2)
+ContentView().creoTheme(live)
+```
+
+- 何も注入しない場合の default は `.mintDark` (= flat 定数と同じ値。既存 consumer の見た目は不変)
+- flat 定数 (`Color.colorBrandPrimary` 等) は mint-dark 焼き込みの後方互換 API として残る
+- gradient token は CSS 文字列のため `CreoTheme` に含まない (LinearGradient 対応は Phase 3)
+
+### Typography (`.creoText()`)
+
+typography token を「役割」で適用する。`@ScaledMetric` による Dynamic Type scaling と
+line-height 換算 (CSS 倍率 → `lineSpacing`) を一元化:
+
+```swift
+Text("ページ見出し").creoText(.titlePage)      // 44pt bold tight
+Text("本文テキスト").creoText(.body)           // 16pt regular normal
+Text("強調テキスト").creoText(.bodyEmphasis)   // 16pt semibold
+Text("補足").creoText(.bodyHelper)             // 14pt
+```
+
+role は `titleHero / titlePage / titleSection / titleSubsection / titleCard /
+bodyLead / body / bodyEmphasis / bodyHelper / bodyCaption` の 10 種
+(web 実装の size × weight × line-height の実勢と同じ組)。`CreoTextStyle` は struct
+なので copy-modify で独自 style も組める。
 
 ## 提供するトークン
 
@@ -86,8 +123,8 @@ struct HeroView: View {
 ## 設計メモ
 
 - Color は UIKit の `UIColor` ではなく SwiftUI の `Color` で出力している。これは iOS / macOS / watchOS / tvOS 共通で使える唯一の色型のため (UIKit は iOS / tvOS のみ)。
-- Typography の size / weight は `CGFloat` / `Double` 等の値として露出し、`.font()` modifier の作成は consumer 側に任せている (`Font` を返す helper は Phase 2 で検討)。
-- 将来 theme 切替 (light / dark / high-contrast) が入る際は `Color(dynamicProvider:)` に寄せる予定。
+- Typography は生値 (`CGFloat` / `Double`) と `.creoText()` modifier の両方を提供する。role が合う場面では modifier を推奨 (Dynamic Type / line-height が自動で正しくなる)。
+- theme 切替は `Color(dynamicProvider:)` ではなく **`@Environment(\.creoTheme)` の値注入**で実現した (2026-07-30、ladyland consumer feedback #4)。dynamicProvider は light/dark の 2 値しか表現できないが、Environment 注入なら 8 theme + 独自 theme を同じ経路で扱える。外観モード追従は `.creoTheme(_ family:)` が担う。
 
 ## License
 
