@@ -8,10 +8,11 @@
 
 import SwiftUI
 import CoreGraphics
+import Foundation
 
 public extension Color {
-    static let colorSurfaceScrim = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Drawer / side sheet backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。 中央 modal (dialog) はより重い注意を引くため `scrim-modal` (50%) を使う。
-    static let colorSurfaceScrimModal = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Dialog (中央 modal) backdrop scrim — 50% black overlay。 drawer (40%) より強く content を後退させ、 user の注意を modal に集中させる。 dark/light theme 共通。
+    static let colorSurfaceScrim = Color(red: 0.0000, green: 0.0000, blue: 0.0000, opacity: 0.4000) // Drawer / side sheet backdrop scrim — theme-agnostic 40% black overlay。 dark theme でも light theme でも統一して暗 backdrop を使う UX 慣習に従う。 中央 modal (dialog) はより重い注意を引くため `scrim-modal` (50%) を使う。
+    static let colorSurfaceScrimModal = Color(red: 0.0000, green: 0.0000, blue: 0.0000, opacity: 0.5000) // Dialog (中央 modal) backdrop scrim — 50% black overlay。 drawer (40%) より強く content を後退させ、 user の注意を modal に集中させる。 dark/light theme 共通。
     static let colorBrandPrimary = Color(red: 0.3804, green: 0.7725, blue: 0.5804) // Brand primary (base)
     static let colorBrandPrimaryHover = Color(red: 0.4078, green: 0.8431, blue: 0.6314) // Brand primary — hover
     static let colorBrandPrimaryActive = Color(red: 0.3490, green: 0.7020, blue: 0.5294) // Brand primary — active / pressed
@@ -51,10 +52,10 @@ public extension Color {
     static let colorTextTertiary = Color(red: 0.4902, green: 0.5020, blue: 0.5255) // Tertiary text — captions, hints
     static let colorTextDisabled = Color(red: 0.3216, green: 0.3333, blue: 0.3569) // Disabled text
     static let colorTextInverse = Color(red: 0.0275, green: 0.0431, blue: 0.0784) // Inverse text — on dark surfaces
-    static let colorShadowBase = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Shadow tint — default
-    static let colorShadowStrong = Color(red: 0.0000, green: 0.0000, blue: 0.0000) // Shadow tint — strong
+    static let colorShadowBase = Color(red: 0.0000, green: 0.0000, blue: 0.0000, opacity: 0.3000) // Shadow tint — default
+    static let colorShadowStrong = Color(red: 0.0000, green: 0.0000, blue: 0.0000, opacity: 0.5000) // Shadow tint — strong
     static let colorFocusRingColor = Color(red: 0.4353, green: 0.9176, blue: 0.6824) // Focus ring color — outer 2px solid ring (mint-dark、 brand 同 hue + luminance UP で AAA contrast 確保)
-    static let colorFocusRingHalo = Color(red: 0.4353, green: 0.9176, blue: 0.6824) // Focus halo — inner 4px subtle bg tint、 ring を 「包む glow」 として演出
+    static let colorFocusRingHalo = Color(red: 0.4353, green: 0.9176, blue: 0.6824, opacity: 0.1800) // Focus halo — inner 4px subtle bg tint、 ring を 「包む glow」 として演出
 }
 
 public enum CreoUITokens {
@@ -160,6 +161,23 @@ public enum CreoUITokens {
     public static let typographyWeightSemibold: Double = 600 // Semi-bold — subheadings, buttons
     public static let typographyWeightBold: Double = 700 // Bold — headings
 
+    public static let motionDurationInstant: TimeInterval = 0.08 // Instant — micro feedback (button click flash 等)
+    public static let motionDurationFast: TimeInterval = 0.16 // Fast — small UI transitions (tooltip / hover)
+    public static let motionDurationNormal: TimeInterval = 0.22 // Normal — default transition (card lift / nav switch、 5-step 中央)
+    public static let motionDurationSlow: TimeInterval = 0.32 // Slow — Frame morph / page transition (perceptible motion)
+    public static let motionDurationLazy: TimeInterval = 0.48 // Lazy — large layout shift / hero reveal (deliberate)
+    public static let motionMappingHoverDuration: TimeInterval = 0.16 // Hover transition duration — fast (160ms)、 small surface motion で 「変化が現れる」 感
+    public static let motionMappingPressDuration: TimeInterval = 0.08 // Press transition duration — instant (80ms) で micro feedback、 押下の即時感
+    public static let motionMappingToggleDuration: TimeInterval = 0.22 // Toggle transition duration — normal (220ms) で滑らかな state change
+    public static let motionMappingFocusRingDuration: TimeInterval = 0.08 // Focus ring transition duration — instant (80ms) で keyboard tab に即応
+    public static let motionMappingDropdownDuration: TimeInterval = 0.16 // Dropdown / popover / tooltip duration — fast (160ms) で軽快な登場
+    public static let motionMappingModalEnterDuration: TimeInterval = 0.32 // Modal entry duration — slow (320ms) で「落ち着いた登場」 (modal / drawer / dialog)
+    public static let motionMappingModalExitDuration: TimeInterval = 0.22 // Modal exit duration — normal (220ms) で「素早く消える」
+    public static let motionMappingPageTransitionDuration: TimeInterval = 0.22 // Page route transition duration — normal (220ms) で滑らかな移動
+    public static let motionMappingFrameMorphDuration: TimeInterval = 0.32 // Frame system morph duration — slow (320ms)、 Creo brand identity の「呼吸」
+    public static let motionMappingSkeletonShimmerDuration: TimeInterval = 0.48 // Skeleton shimmer duration — lazy (480ms) で loading の cumulative motion
+    public static let motionMappingProgressIndeterminateDuration: TimeInterval = 0.48 // Progress indeterminate bar duration — lazy (480ms) で end-less cumulative motion
+
     public static let colorGradientHero: String = "linear-gradient(135deg, oklch(0.2 0.04 160) 0%, oklch(0.18 0.03 175) 50%, oklch(0.22 0.05 165) 100%)" // Hero gradient — marketing / splash surfaces
     public static let editorModeAxisGlobal: String = "var(--color-brand-secondary)" // TOP 領域 accent — global tools / 視線の起点 (active theme の brand secondary に追従)
     public static let editorModeAxisUtility: String = "var(--color-text-tertiary)" // BOTTOM 領域 accent — ローカル utility (active theme の text tertiary)
@@ -173,37 +191,21 @@ public enum CreoUITokens {
     public static let editorModeSelectionOutlineHover: String = "var(--color-brand-primary-subtle)" // Editor mode 中の hover outline (ghost highlight、Content を触らず上に描画)
     public static let editorModeSelectionOutlineActive: String = "var(--color-brand-primary)" // 選択中の要素 outline (active theme の brand primary)
     public static let focusRingStyle: String = "solid" // Outline style — solid のみ採用 (dashed は精度に欠ける、 double は thicker 設計)
-    public static let motionDurationInstant: String = "80ms" // Instant — micro feedback (button click flash 等)
-    public static let motionDurationFast: String = "160ms" // Fast — small UI transitions (tooltip / hover)
-    public static let motionDurationNormal: String = "220ms" // Normal — default transition (card lift / nav switch、 5-step 中央)
-    public static let motionDurationSlow: String = "320ms" // Slow — Frame morph / page transition (perceptible motion)
-    public static let motionDurationLazy: String = "480ms" // Lazy — large layout shift / hero reveal (deliberate)
     public static let motionEasingLinear: String = "linear" // Linear — constant velocity (progress bars 等の cumulative motion)
     public static let motionEasingIn: String = "cubic-bezier(0.4, 0, 1, 1)" // Ease-in — slow start, fast end (退場 animation)
     public static let motionEasingOut: String = "cubic-bezier(0, 0, 0.2, 1)" // Ease-out — fast start, slow end (登場 animation、 Material 3 default)
     public static let motionEasingInOut: String = "cubic-bezier(0.4, 0, 0.2, 1)" // Ease-in-out — smooth both ends (state change、 standard default)
     public static let motionEasingSpring: String = "cubic-bezier(0.2, 0.8, 0.2, 1)" // Spring — Creo brand bouncy curve (3D Frame morph / lively interactions)
-    public static let motionMappingHoverDuration: String = "160ms" // Hover transition duration — fast (160ms)、 small surface motion で 「変化が現れる」 感
     public static let motionMappingHoverEasing: String = "cubic-bezier(0, 0, 0.2, 1)" // Hover transition easing — ease-out で 「登場 → 落ち着く」 (Material 3 default)
-    public static let motionMappingPressDuration: String = "80ms" // Press transition duration — instant (80ms) で micro feedback、 押下の即時感
     public static let motionMappingPressEasing: String = "cubic-bezier(0.4, 0, 1, 1)" // Press transition easing — ease-in で 「押し込み」 (急停止)
-    public static let motionMappingToggleDuration: String = "220ms" // Toggle transition duration — normal (220ms) で滑らかな state change
     public static let motionMappingToggleEasing: String = "cubic-bezier(0.4, 0, 0.2, 1)" // Toggle transition easing — in-out で両端滑らか (radio / checkbox / switch / segmented)
-    public static let motionMappingFocusRingDuration: String = "80ms" // Focus ring transition duration — instant (80ms) で keyboard tab に即応
     public static let motionMappingFocusRingEasing: String = "cubic-bezier(0, 0, 0.2, 1)" // Focus ring transition easing — ease-out で「ring が現れる」
-    public static let motionMappingDropdownDuration: String = "160ms" // Dropdown / popover / tooltip duration — fast (160ms) で軽快な登場
     public static let motionMappingDropdownEasing: String = "cubic-bezier(0, 0, 0.2, 1)" // Dropdown easing — ease-out で 「ふわっと出る」
-    public static let motionMappingModalEnterDuration: String = "320ms" // Modal entry duration — slow (320ms) で「落ち着いた登場」 (modal / drawer / dialog)
     public static let motionMappingModalEnterEasing: String = "cubic-bezier(0, 0, 0.2, 1)" // Modal entry easing — ease-out で fast → slow (前面に現れて止まる)
-    public static let motionMappingModalExitDuration: String = "220ms" // Modal exit duration — normal (220ms) で「素早く消える」
     public static let motionMappingModalExitEasing: String = "cubic-bezier(0.4, 0, 1, 1)" // Modal exit easing — ease-in で slow → fast (退場、 引っ込む)
-    public static let motionMappingPageTransitionDuration: String = "220ms" // Page route transition duration — normal (220ms) で滑らかな移動
     public static let motionMappingPageTransitionEasing: String = "cubic-bezier(0.4, 0, 0.2, 1)" // Page transition easing — in-out で両端滑らか (route 変化)
-    public static let motionMappingFrameMorphDuration: String = "320ms" // Frame system morph duration — slow (320ms)、 Creo brand identity の「呼吸」
     public static let motionMappingFrameMorphEasing: String = "cubic-bezier(0.2, 0.8, 0.2, 1)" // Frame morph easing — spring で Creo brand bouncy (3D depth metaphor articulate)
-    public static let motionMappingSkeletonShimmerDuration: String = "480ms" // Skeleton shimmer duration — lazy (480ms) で loading の cumulative motion
     public static let motionMappingSkeletonShimmerEasing: String = "linear" // Skeleton shimmer easing — linear で「途切れない流れ」 (loading は時間流動)
-    public static let motionMappingProgressIndeterminateDuration: String = "480ms" // Progress indeterminate bar duration — lazy (480ms) で end-less cumulative motion
     public static let motionMappingProgressIndeterminateEasing: String = "linear" // Progress indeterminate easing — linear で constant velocity (途中 progress 表現)
     public static let shadowNone: String = "none" // No shadow
     public static let shadowS: String = "0 1px 2px 0 rgba(32, 36, 46, 0.06)" // Small elevation — quiet lift for subtle layers

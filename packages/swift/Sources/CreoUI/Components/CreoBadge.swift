@@ -5,7 +5,7 @@
 //
 // Usage:
 //   CreoBadge("Active", variant: .success)
-//   CreoBadge("3", variant: .error, size: .sm)
+//   CreoBadge("3", variant: .error, size: .s)
 //   CreoBadge("Beta", variant: .brand, shape: .square)
 
 import SwiftUI
@@ -20,8 +20,8 @@ public enum CreoBadgeVariant: String, CaseIterable, Sendable {
 }
 
 public enum CreoBadgeSize: String, CaseIterable, Sendable {
-    case sm
-    case md
+    case s
+    case m
 }
 
 public enum CreoBadgeShape: String, CaseIterable, Sendable {
@@ -38,7 +38,7 @@ public struct CreoBadge: View {
     public init(
         _ text: String,
         variant: CreoBadgeVariant = .neutral,
-        size: CreoBadgeSize = .md,
+        size: CreoBadgeSize = .m,
         shape: CreoBadgeShape = .pill
     ) {
         self.text = text
@@ -62,11 +62,11 @@ public struct CreoBadge: View {
     // MARK: - Style resolvers
 
     private var fontSize: CGFloat {
-        size == .sm ? CreoUITokens.typographySizeXs : CreoUITokens.typographySizeS
+        size == .s ? CreoUITokens.typographySizeXs : CreoUITokens.typographySizeS
     }
 
     private var verticalPadding: CGFloat {
-        size == .sm ? 1 : 2
+        size == .s ? 1 : 2
     }
 
     private var cornerRadius: CGFloat {

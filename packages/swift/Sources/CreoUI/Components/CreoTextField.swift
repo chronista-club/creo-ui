@@ -1,7 +1,7 @@
 // CreoUI — Input / TextField component (SwiftUI)
 //
 // CSS `.creo-input` の SwiftUI 版。native TextField をラップして variant
-// (bordered/filled) と size (sm/md/lg) と state (default/error) を creo-ui
+// (bordered/filled) と size (s/m/l) と state (default/error) を creo-ui
 // token で統一。
 //
 // Usage:
@@ -16,9 +16,9 @@ public enum CreoTextFieldVariant: String, CaseIterable, Sendable {
 }
 
 public enum CreoTextFieldSize: String, CaseIterable, Sendable {
-    case sm
-    case md
-    case lg
+    case s
+    case m
+    case l
 }
 
 public enum CreoTextFieldState: String, CaseIterable, Sendable {
@@ -38,7 +38,7 @@ public struct CreoTextField: View {
         _ prompt: String,
         text: Binding<String>,
         variant: CreoTextFieldVariant = .bordered,
-        size: CreoTextFieldSize = .md,
+        size: CreoTextFieldSize = .m,
         state: CreoTextFieldState = .default
     ) {
         self.prompt = prompt
@@ -69,41 +69,41 @@ public struct CreoTextField: View {
 
     private var fontSize: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.typographySizeS
-        case .md: return CreoUITokens.typographySizeM
-        case .lg: return CreoUITokens.typographySizeL
+        case .s: return CreoUITokens.typographySizeS
+        case .m: return CreoUITokens.typographySizeM
+        case .l: return CreoUITokens.typographySizeL
         }
     }
 
     private var minHeight: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.layoutTargetFocus
-        case .md: return CreoUITokens.layoutTargetTap
-        case .lg: return CreoUITokens.layoutTargetTap * 1.15
+        case .s: return CreoUITokens.layoutTargetFocus
+        case .m: return CreoUITokens.layoutTargetTap
+        case .l: return CreoUITokens.layoutTargetTap * 1.15
         }
     }
 
     private var paddingHorizontal: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.spacingS
-        case .md: return CreoUITokens.spacingM
-        case .lg: return CreoUITokens.spacingL
+        case .s: return CreoUITokens.spacingS
+        case .m: return CreoUITokens.spacingM
+        case .l: return CreoUITokens.spacingL
         }
     }
 
     private var paddingVertical: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.spacingXs
-        case .md: return CreoUITokens.spacingS
-        case .lg: return CreoUITokens.spacingM
+        case .s: return CreoUITokens.spacingXs
+        case .m: return CreoUITokens.spacingS
+        case .l: return CreoUITokens.spacingM
         }
     }
 
     private var cornerRadius: CGFloat {
         switch size {
-        case .sm: return CreoUITokens.radiusXs
-        case .md: return CreoUITokens.radiusS
-        case .lg: return CreoUITokens.radiusM
+        case .s: return CreoUITokens.radiusXs
+        case .m: return CreoUITokens.radiusS
+        case .l: return CreoUITokens.radiusM
         }
     }
 
