@@ -25,10 +25,7 @@ Ecosystem split (Phase 2b/c/d、 Rust/Swift repo 切り出し) は **TS 安定�
 
 ## 対応 Platform
 
-Support tier (2026-07-31 owner 裁定):
-
-- **Tier 1** — 第一級サポート。新機能・新 component はここから出る
-- **Tier 2** — 正式サポートだが薄層。CSS 層 (class + data 属性 + CSS variable = **public API**) を土台に、wrapper は実消費者駆動で拡充する。Tier 1 への追従は遅延しうる
+**Support Tier** = 約束の強さの段階 (品質の格ではない)。**Tier 1** は新機能の起点、**Tier 2** は正式サポートだが追従は実消費者駆動 — 保証の詳細・昇格条件・新規参入の入口は [docs/design/support-tiers.md](./docs/design/support-tiers.md) を参照。
 
 | Platform | Tier | Package | 配布先 | 出力 |
 |----------|------|---------|--------|------|
