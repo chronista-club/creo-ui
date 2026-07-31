@@ -12,7 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 設計詳細は [docs/design/editor-mode.md](./docs/design/editor-mode.md) および [docs/design/theme-system.md](./docs/design/theme-system.md)。
 
-Platform サポートは 2 tier (2026-07-31 owner 裁定): **Tier 1 = Web (SolidJS) / Apple / Rust** (第一級、新機能はここから)。**Tier 2 = Svelte** (正式サポート — CSS 層 = public API を土台にした薄い wrapper を実消費者駆動で提供、Tier 1 への追従は遅延しうる)。React / Vue 等はサポート外 (consumer 側)。
+Platform サポートは **Support Tier** で段階化 ([docs/design/support-tiers.md](./docs/design/support-tiers.md)、2026-07-31 owner 裁定で導入): **Tier 1 = Web (SolidJS) / Apple / Rust** (新機能の起点)、**Tier 2 = Svelte** (正式サポート — CSS 層 = public API を土台にした薄い wrapper を実消費者駆動で提供、追従は遅延しうる)、React / Vue 等は対象外。新 platform は Tier 2 から入る (ST-2)。tier の割当変更は owner 裁定 + 文書 sync を同一 PR で。
 
 ### Theme system (0.1.0+)
 
@@ -167,7 +167,7 @@ creo-memories / VP / fleetstage と parity の **「`nightly` = 開発 trunk (de
 - Rust generated に inner attribute / inner doc を足す (`include!` 先では構文エラー)。
 - Editor Mode を **instance 名** (Studio / DevEditor / etc) で呼ぶ。Editor は **universal mode**、instance 化しない (`docs/design/editor-mode.md` D-1)。
 - Content Layer を Editor Mode が **押し退ける / layout 変える** 設計にする。非侵襲性 (D-6) は最上位原則。
-- Swift / Rust / 他 JS framework の **runtime 実装を本リポジトリに書く**。本 repo が持つ runtime は **SolidJS の reference 実装 (Tier 1) に限る** — 現状 `packages/{web (shells/controls), editor-host, frame, vision, md-view, icons-web}` が該当 (EH-1 / EH-2)。**例外は Svelte (Tier 2、2026-07-31 owner 裁定)**: 正式サポート対象で、CSS 層 (components.css の class / data 属性 = public API) を土台にした**薄い wrapper に限り** `packages/svelte` として実消費者駆動で抽出してよい (初回消費者候補 = fleetstage の Podman Desktop 拡張)。React / Vue 等その他の framework は引き続き consumer 側。
+- Swift / Rust / 他 JS framework の **runtime 実装を本リポジトリに書く**。本 repo が持つ runtime は **SolidJS の reference 実装 (Tier 1) に限る** — 現状 `packages/{web (shells/controls), editor-host, frame, vision, md-view, icons-web}` が該当 (EH-1 / EH-2)。**例外は Support Tier 2 の platform** (現在 Svelte のみ — [docs/design/support-tiers.md](./docs/design/support-tiers.md)): CSS 層 public API を土台にした**薄い wrapper (props → class / data 属性変換) に限り** `packages/svelte` 等として実消費者駆動で抽出してよい (ST-3)。React / Vue 等 tier 対象外の framework は引き続き consumer 側。
   - web package の component layer は 2 段: **CSS-only component** (`components/*.css`、例 `button.css`) と、それを type-safe に wrap した **SolidJS primitive** (`shells/` = layout grammar、`controls/` = interactive control、例 `CUButton`)。新 interactive component は `controls/` に置き `@chronista-club/creo-ui/controls` で export する。
 - `packages/editor-host/` を **SolidJS 以外の framework 対応で抽象化する**。SolidJS 一本で進める方針 (EH-2)。物理分離を急がない。
 - `creo-memories/packages/creoui` の DevEditor を直接触る。参考に留め、 **migration は creo-memories lead の判断** (EH-4)。

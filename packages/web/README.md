@@ -32,7 +32,7 @@ document.documentElement.dataset.theme = 'mint-dark'  // optional、 default は
 
 ## 安定性 (public API)
 
-`components.css` の class 名 (`.creo-*`) / data 属性 (`data-variant` / `data-size` 等) / CSS variable 名 (`--color-*` 等) は **public API** — 破壊的変更は semver + migration doc で扱う (v0.14→v0.18 の 5 tier rename が運用実績。[`docs/migration/v0.14-to-v0.18.md`](https://github.com/chronista-club/creo-ui/blob/main/docs/migration/v0.14-to-v0.18.md))。Svelte 等 **Tier 2 framework の wrapper はこの層を土台にする** (2026-07-31 owner 裁定)。SolidJS shells / controls の内部 class (CSS Modules hashed) は契約外。
+`components.css` の class 名 (`.creo-*`) / data 属性 (`data-variant` / `data-size` 等) / CSS variable 名 (`--color-*` 等) は **public API** — 破壊的変更は semver + migration doc で扱う (v0.14→v0.18 の 5 tier rename が運用実績。[`docs/migration/v0.14-to-v0.18.md`](https://github.com/chronista-club/creo-ui/blob/main/docs/migration/v0.14-to-v0.18.md))。Svelte 等 **Support Tier 2 framework の wrapper はこの層を土台にする** ([docs/design/support-tiers.md](https://github.com/chronista-club/creo-ui/blob/main/docs/design/support-tiers.md) ST-3)。SolidJS shells / controls の内部 class (CSS Modules hashed) は契約外。
 
 ## Token catalog — 5 tier convention (v0.17.0 token / v0.18.0 attribute、 完全統一)
 
