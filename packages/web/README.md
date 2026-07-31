@@ -30,6 +30,10 @@ document.documentElement.dataset.theme = 'mint-dark'  // optional、 default は
 
 これで `:root` に **350+ CSS 変数** + 28 component class が usable に。
 
+## 安定性 (public API)
+
+`components.css` の class 名 (`.creo-*`) / data 属性 (`data-variant` / `data-size` 等) / CSS variable 名 (`--color-*` 等) は **public API** — 破壊的変更は semver + migration doc で扱う (v0.14→v0.18 の 5 tier rename が運用実績。[`docs/migration/v0.14-to-v0.18.md`](https://github.com/chronista-club/creo-ui/blob/main/docs/migration/v0.14-to-v0.18.md))。Svelte 等 **Tier 2 framework の wrapper はこの層を土台にする** (2026-07-31 owner 裁定)。SolidJS shells / controls の内部 class (CSS Modules hashed) は契約外。
+
 ## Token catalog — 5 tier convention (v0.17.0 token / v0.18.0 attribute、 完全統一)
 
 すべての dimension scale token + component attribute は **`xs / s / m / l / xl` の 5 tier** に統一。 `sm/md/lg` Tailwind 流命名は **完全廃止** (廃止 history は [`docs/migration/v0.14-to-v0.18.md`](https://github.com/chronista-club/creo-ui/blob/main/docs/migration/v0.14-to-v0.18.md))。
