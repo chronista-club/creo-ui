@@ -49,10 +49,12 @@ bun run test:transforms # ↑ + pipeline invariant tests (tokens → 3 platform 
 bun run check:drift    # site の class / data 属性 / var / specifier を実物と静的照合 (要 build:web、CI でも実行)
 bun test packages/editor-host/src/host.test.ts  # editor-host core state のテスト (19 cases)
 
-# demo stage (local Mac で apps/site を podman 配信)
+# demo stage (local Mac で apps/site を podman 常設配信)
 bun run site:build     # build:web + build:packages + apps/site を順にビルド → apps/site/dist
-bun run site:up        # site:build → image build → 起動 (http://localhost:8080)
+bun run site:up        # site:build → image build → 起動 (http://creo-ui.demo/ or http://localhost:8080/creo-ui/)
 bun run site:down      # 停止・削除
+# 常設: restart=always + host の dnsmasq (*.demo → 127.0.0.1) + podman machine 自動起動
+# LaunchAgent。構成の詳細は compose.yml のコメント参照
 
 # Rust (packages/rust で実行)
 cargo build && cargo test
