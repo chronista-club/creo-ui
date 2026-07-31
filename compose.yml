@@ -19,11 +19,16 @@
 #   - low port の壁は VM 内にもある (2026-07-31 実測): rootless podman が Linux の
 #     ip_unprivileged_port_start=1024 で :80 を弾く。podman machine 内に
 #     /etc/sysctl.d/99-chronista-demo-lowports.conf (=80) を置いて解決済み。
-#     podman-restart.service も default では disabled で、enable 済み。
-#     **どちらも machine 再作成 (podman machine rm/init) では消える** — 再設定:
+#     podman-restart.service も default では disabled で、enable 済み。enable するのは
+#     **user 側 (systemctl --user)** — rootless container は root の podman-restart からは
+#     見えず、sudo で enable しても空振りする (2026-08-01 machine 再起動テストで実測)。
+#     注意: user 側 podman-restart は restart=always の**全 container** を machine boot で
+#     一斉復帰させる (他プロジェクトの停止中 demo も含む)。復帰させたくない container は
+#     `podman update --restart=no <name>` で外す。
+#     **sysctl / enable とも machine 再作成 (podman machine rm/init) では消える** — 再設定:
 #       podman machine ssh "echo 'net.ipv4.ip_unprivileged_port_start=80' | \
 #         sudo tee /etc/sysctl.d/99-chronista-demo-lowports.conf && sudo sysctl --system"
-#       podman machine ssh "sudo systemctl enable --now podman-restart.service"
+#       podman machine ssh "systemctl --user enable --now podman-restart.service"
 #
 # image は dist/ を配信するだけ。ビルドは host 側 (`bun run site:build`) で行う
 # 理由は apps/site/Containerfile のコメント参照。
