@@ -1,8 +1,36 @@
-# creo-ui demo stage — local Mac で公式 site (apps/site) を podman で配信する。
+# creo-ui demo stage — local Mac で公式 site (apps/site) を podman で常設配信する。
 #
 # 使い方:
-#   bun run site:up     # site をビルド → image build → 起動 (-> http://localhost:8080)
+#   bun run site:up     # site をビルド → image build → 起動
 #   bun run site:down   # 停止・削除
+#
+# アクセス: http://demo.creo-ui/ (dnsmasq で *.creo-ui → 127.0.0.1、host :80 に bind。
+#           project 単位 TLD — /etc/resolver/creo-ui と対、project 追加時は sudo で resolver 追加)
+#           http://creo-ui.demo/ (汎用 *.demo wildcard — 新プロジェクトは追加設定ゼロでこちら)
+#           http://localhost:8080/creo-ui/ (従来経路、互換で維持)
+#
+# 常設の仕組み (2026-07-31):
+#   - restart: always — podman machine (VM) の boot 時に podman-restart.service が
+#     拾って自動起動する (unless-stopped は VM reboot 後に拾われないので不可)
+#   - podman machine 自体の login 時自動起動は host 側 LaunchAgent
+#     (~/Library/LaunchAgents/club.chronista.podman-machine.plist) が担う
+#   - :80 は wildcard bind (`80:80`)。macOS の low port 非特権 bind は wildcard
+#     (0.0.0.0) に限り許可され、`127.0.0.1:80:80` の指定 bind は root が要るため
+#     起動に失敗する (2026-07-31 実測)。従来の 8080 も gvproxy が `*:8080` で
+#     wildcard 公開なので露出姿勢は同等 (内容は公開 docs site と同一)
+#   - low port の壁は VM 内にもある (2026-07-31 実測): rootless podman が Linux の
+#     ip_unprivileged_port_start=1024 で :80 を弾く。podman machine 内に
+#     /etc/sysctl.d/99-chronista-demo-lowports.conf (=80) を置いて解決済み。
+#     podman-restart.service も default では disabled で、enable 済み。enable するのは
+#     **user 側 (systemctl --user)** — rootless container は root の podman-restart からは
+#     見えず、sudo で enable しても空振りする (2026-08-01 machine 再起動テストで実測)。
+#     注意: user 側 podman-restart は restart=always の**全 container** を machine boot で
+#     一斉復帰させる (他プロジェクトの停止中 demo も含む)。復帰させたくない container は
+#     `podman update --restart=no <name>` で外す。
+#     **sysctl / enable とも machine 再作成 (podman machine rm/init) では消える** — 再設定:
+#       podman machine ssh "echo 'net.ipv4.ip_unprivileged_port_start=80' | \
+#         sudo tee /etc/sysctl.d/99-chronista-demo-lowports.conf && sudo sysctl --system"
+#       podman machine ssh "systemctl --user enable --now podman-restart.service"
 #
 # image は dist/ を配信するだけ。ビルドは host 側 (`bun run site:build`) で行う
 # 理由は apps/site/Containerfile のコメント参照。
@@ -13,5 +41,6 @@ services:
       context: ./apps/site
       dockerfile: Containerfile
     ports:
+      - '80:80'
       - '8080:80'
-    restart: unless-stopped
+    restart: always

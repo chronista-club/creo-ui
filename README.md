@@ -25,11 +25,14 @@ Ecosystem split (Phase 2b/c/d、 Rust/Swift repo 切り出し) は **TS 安定�
 
 ## 対応 Platform
 
-| Platform | Package | 配布先 | 出力 |
-|----------|---------|--------|------|
-| Web | `@chronista-club/creo-ui` | [npmjs.com](https://www.npmjs.com/package/@chronista-club/creo-ui) | CSS custom properties + JS 定数 |
-| Apple (iOS 17+ / macOS 14+ / watchOS 10+ / tvOS 17+) | `CreoUI` | SPM (GitHub repo 直接参照) | SwiftUI Color / CGFloat extensions |
-| Rust | `creo-ui` | (Phase 2 で crates.io 予定、現状は git/path 参照) | `pub const` 定義 (Rgb 構造体 / f32 / &str) |
+Tier の意味 (約束の強さの段階) と運用は [docs/design/support-tiers.md](./docs/design/support-tiers.md) を参照。
+
+| Platform | Tier | Package | 配布先 | 出力 |
+|----------|------|---------|--------|------|
+| Web (SolidJS) | 1 | `@chronista-club/creo-ui` | [npmjs.com](https://www.npmjs.com/package/@chronista-club/creo-ui) | CSS custom properties + JS 定数 + SolidJS shells/controls |
+| Apple (iOS 17+ / macOS 14+ / watchOS 10+ / tvOS 17+) | 1 | `CreoUI` | SPM (GitHub repo 直接参照) | SwiftUI Color / CreoTheme / .creoText() / CGFloat extensions |
+| Rust | 1 | `creo-ui` | [crates.io](https://crates.io/crates/creo-ui) | `pub const` 定義 (Rgb 構造体 / f32 / &str) |
+| Svelte | 2 | `@chronista-club/creo-ui-svelte` (予定) | 未リリース — 現状は CSS 層 (`tokens.css` / `components.css`) をそのまま利用 | 薄い wrapper (予定) |
 
 ## Consumer 向け: 使い方
 

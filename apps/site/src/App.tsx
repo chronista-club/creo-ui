@@ -52,6 +52,7 @@ const FormField = lazy(() => import('./pages/Components/FormField'))
 const Segmented = lazy(() => import('./pages/Components/Segmented'))
 const Toast = lazy(() => import('./pages/Components/Toast'))
 const Accordion = lazy(() => import('./pages/Components/Accordion'))
+const Outliner = lazy(() => import('./pages/Components/Outliner'))
 const Popover = lazy(() => import('./pages/Components/Popover'))
 const Drawer = lazy(() => import('./pages/Components/Drawer'))
 const EmptyState = lazy(() => import('./pages/Components/EmptyState'))
@@ -126,6 +127,7 @@ export default function App() {
       <Route path="/components/segmented" component={Segmented} />
       <Route path="/components/toast" component={Toast} />
       <Route path="/components/accordion" component={Accordion} />
+      <Route path="/components/outliner" component={Outliner} />
       <Route path="/components/popover" component={Popover} />
       <Route path="/components/drawer" component={Drawer} />
       <Route path="/components/empty-state" component={EmptyState} />

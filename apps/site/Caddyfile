@@ -1,13 +1,57 @@
 # creo-ui 公式 site — demo stage 用 Caddy 設定
+#
 # dist は hub (doc.anycreative.tech) 配下配信のため base=/creo-ui/ でビルドされる
-# (vite.config.ts / App.tsx の Router base と対)。stage でも同じ prefix 配下で配信し、
-# handle_path で prefix を strip して /srv の実ファイルへ map する。
-# SolidJS Router は history mode のため、未知 path は index.html にフォールバックさせる
-# (これが無いと /creo-ui/components/button 等を直接 reload した時に 404 になる)。
+# (vite.config.ts / App.tsx の Router base と対)。stage でも同じ prefix 配下で配信する。
+#
+# dev passthrough (2026-08-01):
+#   常駐 demo は上げたまま、Mac 上で vite dev server (:5173) を起動している間だけ
+#   http://demo.creo-ui/ が「開発中の姿」を HMR 付きで映す。vite を止めれば常駐 demo
+#   (静的 dist) へ自動で rewire する。切替は vite の起動・停止だけ、手動操作は要らない。
+#
+#   仕組み: upstream を 2 つ並べて `lb_policy first` で「生きている先頭」を選ぶ。
+#     1) host.containers.internal:5173 = Mac の vite dev server
+#     2) 127.0.0.1:8081 = container 内の静的 server (下の site block、常駐 demo の実体)
+#   vite が落ちていれば 1) は fail_duration の間 skip され 2) が使われる。
+#   handle_errors による fallback も試したが、deep link で 502/503 が漏れて不安定だった
+#   ため、upstream 選択に寄せている (2026-08-01 実測)。
+#
+#   - dev 側は `bun run site:dev` (= CREO_SITE_HTTP=1) で **http** で上げること。
+#     既定の https (自己署名) だと proxy 側で証明書検証の skip が要り、 HMR の
+#     WebSocket も ws/wss が混ざって面倒になる。
+#   - vite 側は `server.allowedHosts` に `.creo-ui` 等が要る。proxy 経由だと Host が
+#     demo.creo-ui になり、 vite の DNS rebinding 防御が 403 を返すため (vite.config.ts)。
+#   - host.containers.internal = gvproxy gateway (192.168.127.254)。container から
+#     Mac の process へ到達する唯一の経路 (Mac には WSL2 の mirrored 相当が無い —
+#     Mac と container の間に必ず Linux VM が挟まるため)。
 :80 {
 	encode gzip zstd
 
 	redir /creo-ui /creo-ui/ 308
+
+	# handle_path ではなく handle — prefix を strip せずに渡す。vite も内部 static server
+	# も /creo-ui/ 配下で待っているので prefix ごと渡す。
+	handle /creo-ui/* {
+		reverse_proxy {
+			to host.containers.internal:5173 127.0.0.1:8081
+			lb_policy first
+			# 先頭が死んでいたら同一 request 内で次の upstream へ回す (最初の 1 発も落とさない)
+			lb_try_duration 2s
+			lb_try_interval 100ms
+			# 落ちたと判定した upstream は 3 秒 skip (dev 停止中の無駄な接続試行を防ぐ)
+			fail_duration 3s
+		}
+	}
+
+	# prefix 無しの直打ち (http://demo.creo-ui/components/button 等) は /creo-ui/ 配下へ
+	handle {
+		redir * /creo-ui{uri} 308
+	}
+}
+
+# 常駐 demo の実体 — container 内部だけに開く静的 server (compose は 80/8080 のみ publish)。
+# SolidJS Router は history mode のため、未知 path は index.html にフォールバックさせる
+# (これが無いと /creo-ui/components/button 等を直接 reload した時に 404 になる)。
+:8081 {
 	handle_path /creo-ui/* {
 		root * /srv
 		try_files {path} /index.html
@@ -18,10 +62,5 @@
 		header @hashed Cache-Control "public, max-age=31536000, immutable"
 		# index.html は常に最新を取りに行かせる
 		header /index.html Cache-Control "no-cache"
-	}
-
-	# prefix 無しの直打ち (http://localhost:8080/components/button 等) は /creo-ui/ 配下へ
-	handle {
-		redir * /creo-ui{uri} 308
 	}
 }
