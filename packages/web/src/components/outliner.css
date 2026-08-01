@@ -1,0 +1,280 @@
+/**
+ * creo-ui — Outliner (階層リスト / capture-first)
+ *
+ * List<List<Item>> を任意の深さで畳める outliner。 1 行 = テキスト + 右端 slot。
+ * 「思い立った時に足せる」ことを主目的にしており、 行の追加・インデントは
+ * keyboard grammar (SolidJS primitive `CUOutliner` 側) が担う。
+ *
+ * DOM は **flat** (入れ子の ul ではなく、 深さを `--outliner-depth` で表現する)。
+ * 理由は 2 つ:
+ *   - keyboard 操作 (↑↓ / ⌥↑⌥↓ / Tab) は「見えている行の並び」を 1 次元で
+ *     辿れるほうが素直で、 入れ子 DOM だと index 計算が壊れやすい
+ *   - a11y は `role="tree"` + `aria-level` が flat 構造を正式に想定している
+ *
+ * 折りたたみは「子孫行を描画しない」で表現する (CSS では隠さない)。 flat DOM では
+ * 子孫が兄弟なので CSS 単独では畳めないため、 出し分けは consumer / primitive 側の責務。
+ *
+ * Spec: docs/components/outliner.md
+ * Token: creo-ui/tokens.css (必須)
+ */
+
+.creo-outliner {
+  /* 1 段あたりのインデント幅。 行の階層が深くなるほど左に積む単位 */
+  --outliner-indent: var(--spacing-l);
+  /* 行の左右 padding。 guide 線の原点計算にも使うので変数で持つ */
+  --outliner-pad-x: calc(var(--spacing-s) * var(--density-padding-scale, 1));
+
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text-primary);
+  font-size: var(--typography-size-m);
+  line-height: var(--typography-line-height-normal);
+}
+
+/* ---------- Row ---------- */
+
+/* 行は最初から「自立した box」として組む。 plain variant では背景を持たないが、
+   padding / radius / flex 構造は card variant と共通なので、 見た目を card に
+   拡張しても DOM も layout も変えずに済む。 */
+.creo-outliner-row {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+  /* 深さ = padding-left。 --outliner-depth は consumer / primitive が inline style で渡す
+     (例: style="--outliner-depth: 2")。 未指定なら 0 段として振る舞う。 */
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1)) var(--outliner-pad-x);
+  padding-left: calc(var(--outliner-pad-x) + var(--outliner-depth, 0) * var(--outliner-indent));
+  border: 1px solid transparent;
+  border-radius: var(--radius-xs);
+  min-width: 0;
+  transition: background-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing), border-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing);
+}
+
+.creo-outliner-row:hover {
+  background-color: var(--surface-veil-1);
+}
+
+/* press = veil-2 (_elevation.css の press 語彙)。 flat target なので沈み込みではなく
+   veil をもう一段上げる。 */
+.creo-outliner-row:active {
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
+/* 選択中の行 — brand ではなく veil で示す (outliner は行数が多く、
+   brand 色で塗ると画面が騒がしくなるため)。 */
+.creo-outliner-row[data-selected] {
+  background-color: var(--surface-veil-2);
+}
+
+/* ---------- Twisty (折りたたみ) ---------- */
+
+.creo-outliner-twisty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--typography-icon-xs);
+  height: var(--typography-icon-xs);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  font-size: var(--typography-size-s);
+  line-height: 1;
+  transition: transform var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing);
+}
+
+.creo-outliner-twisty:hover {
+  color: var(--color-text-secondary);
+}
+
+/* 開いている = 下向き。 畳んだら右向きに戻す (accordion の chevron と回転方向を揃える) */
+.creo-outliner-twisty {
+  transform: rotate(90deg);
+}
+
+.creo-outliner-row[data-collapsed] .creo-outliner-twisty {
+  transform: rotate(0deg);
+}
+
+/* 子を持たない行では twisty の場所だけ空けて、 bullet の縦位置を揃える
+   (行ごとに bullet の x がずれると outline の縦線が読めなくなる)。 */
+.creo-outliner-twisty[data-placeholder] {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ---------- Bullet ---------- */
+
+.creo-outliner-bullet {
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+  font-size: var(--typography-size-s);
+  line-height: 1;
+  user-select: none;
+}
+
+/* 畳んでいる行の bullet は「中身がある」ことを示すため塗りを強くする
+   (Workflowy 系の慣習 — 畳まれた枝を見失わないための唯一の手がかり)。 */
+.creo-outliner-row[data-collapsed] .creo-outliner-bullet {
+  color: var(--color-text-secondary);
+  background-color: var(--surface-veil-3);
+  border-radius: var(--radius-full);
+  padding: 0 var(--spacing-xs);
+}
+
+/* ---------- Text ---------- */
+
+/* input を「ただの文字」に見せる。 outliner は行を直接叩いて書けることが
+   体験の中心なので、 編集開始に mode 切替 (ダブルクリック等) を挟まない。 */
+.creo-outliner-text {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+.creo-outliner-text::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+/* 完了した行 (consumer が data-done を付ける) */
+.creo-outliner-row[data-done] .creo-outliner-text {
+  color: var(--color-text-tertiary);
+  text-decoration: line-through;
+}
+
+/* ---------- Meta (右端 slot) ---------- */
+
+.creo-outliner-meta {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding-left: var(--spacing-s);
+  color: var(--color-text-tertiary);
+  font-size: var(--typography-size-s);
+  white-space: nowrap;
+}
+
+/* ---------- Add affordance ---------- */
+
+/* 「思い立ったら足す」入口。 行と同じ左 padding に乗せて、 押した位置に
+   そのまま行が生えるように見せる。 */
+.creo-outliner-add {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1)) var(--outliner-pad-x);
+  padding-left: calc(var(--outliner-pad-x) + var(--outliner-depth, 0) * var(--outliner-indent));
+  border: none;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--color-text-tertiary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--motion-mapping-hover-duration)
+    var(--motion-mapping-hover-easing);
+}
+
+.creo-outliner-add:hover {
+  background-color: var(--surface-veil-1);
+  color: var(--color-text-secondary);
+}
+
+.creo-outliner-add:active {
+  background-color: var(--surface-veil-2);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
+/* ---------- Indent guides ---------- */
+
+/* 深い階層で「どの枝の子か」を読めるようにする縦線。 flat DOM なので
+   repeating-linear-gradient で 1 段ごとに 1 本描く (要素を足さずに済む)。
+   opt-in — 浅い outline では線が邪魔になるため。 */
+.creo-outliner[data-guides] .creo-outliner-row,
+.creo-outliner[data-guides] .creo-outliner-add {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--surface-veil-2) 0 1px,
+    transparent 1px var(--outliner-indent)
+  );
+  background-repeat: no-repeat;
+  /* 自分の深さの分だけ描く (深さ 0 の行には線を出さない) */
+  background-size: calc(var(--outliner-depth, 0) * var(--outliner-indent)) 100%;
+  background-position: var(--outliner-pad-x) 0;
+}
+
+/* ---------- Card variant ---------- */
+
+/* Item を「カードっぽく」見せる。 plain との差は面と余白だけで、 DOM も
+   flex 構造も共通 (row を最初から自立した box として組んでいるため)。 */
+.creo-outliner[data-variant="card"] {
+  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+}
+
+.creo-outliner[data-variant="card"] .creo-outliner-row {
+  background-color: var(--color-surface-surface);
+  border-color: var(--color-surface-border);
+  border-radius: var(--radius-s);
+  padding-top: calc(var(--spacing-s) * var(--density-padding-scale, 1));
+  padding-bottom: calc(var(--spacing-s) * var(--density-padding-scale, 1));
+  box-shadow: var(--elevation-1);
+}
+
+.creo-outliner[data-variant="card"] .creo-outliner-row:hover {
+  border-color: var(--color-brand-primary);
+}
+
+/* card では「面が持ち上がっている」ので、 press は veil ではなく elevation を落として
+   沈ませる (_elevation.css の raised control の press 語彙に合わせる)。 */
+.creo-outliner[data-variant="card"] .creo-outliner-row:active {
+  background-color: var(--color-surface-surface);
+  box-shadow: var(--elevation-0);
+  transform: translateY(1px);
+  transition-duration: var(--motion-mapping-press-duration);
+}
+
+.creo-outliner[data-variant="card"] .creo-outliner-row[data-selected] {
+  border-color: var(--color-brand-primary);
+  background-color: var(--color-brand-primary-subtle);
+}
+
+/* card は面が立っているので guide 線は引かない (二重の境界で読みにくくなる) */
+.creo-outliner[data-variant="card"][data-guides] .creo-outliner-row {
+  background-image: none;
+}
+
+/* ---------- Focus ---------- */
+
+/* _focus.css の roster (component-agnostic articulate) と同じ policy を、
+   outliner の interactive 要素にも当てる。 */
+.creo-outliner-text:focus-visible,
+.creo-outliner-twisty:focus-visible,
+.creo-outliner-add:focus-visible {
+  outline: var(--focus-ring-width) var(--focus-ring-style) var(--color-focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: 0 0 0 var(--focus-ring-halo-width) var(--color-focus-ring-halo);
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .creo-outliner-row,
+  .creo-outliner-twisty,
+  .creo-outliner-add {
+    transition: none;
+  }
+
+  .creo-outliner[data-variant="card"] .creo-outliner-row:active {
+    transform: none;
+  }
+}

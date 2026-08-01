@@ -462,6 +462,12 @@ const COMPONENTS: readonly ComponentEntry[] = [
     detail: true,
   },
   {
+    name: 'Outliner',
+    slug: 'outliner',
+    desc: '階層リスト (List<List<Item>>) — keyboard で足す / 畳む、 plain と card',
+    detail: true,
+  },
+  {
     name: 'Accordion',
     slug: 'accordion',
     desc: 'Native <details> / <summary> based — bordered / subtle、 exclusive (name attr)',
