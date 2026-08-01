@@ -5,6 +5,30 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## v0.28.0 (2026-08-02) — Outliner (階層リスト)
+
+> **web `0.28.0`** を release。rust `0.8.0` / editor-host `0.6.0` / layout `0.3.0` / icons-web `0.0.1` は据え置き (src 実変更なし)。swift は publish 経路なし。
+
+### Outliner — `List<List<Item>>` の階層リスト (#121)
+
+思いつきを **その場で書き留めて、後から構造を与える** ための capture-first component。アイデア出し / タスク分解 / 議事メモのように「先に構造を決められない」情報に向く。行の追加・インデント・並べ替えは全て keyboard で完結し、編集開始の mode 切替 (ダブルクリック等) を挟まない — 行を叩けばそのまま書ける。
+
+- **CSS-only 層** (`.creo-outliner*`): 1 行 = テキスト + 右端 slot。深さは `--outliner-depth`、`data-variant` で `plain` ↔ `card`、`data-guides` でインデントの縦ガイド線
+- **SolidJS primitive** (`CUOutliner`、`@chronista-club/creo-ui/controls`): keyboard grammar (`Enter` / `Tab` / `Shift+Tab` / `↑↓` / `⌥↑⌥↓` / `Backspace` / 折りたたみ) 内蔵、controlled + uncontrolled 両対応
+- **木の操作は純関数として別 export** (`indent` / `outdent` / `moveUp` / `insertSiblingAfter` 等)。すべて immutable で、操作が成立しないときは同一参照を返す — 呼び出し側が `next === prev` で「何も起きなかった」を判定できる
+
+設計上の判断 (詳細は [`docs/components/outliner.md`](https://github.com/chronista-club/creo-ui/blob/main/docs/components/outliner.md)):
+
+- **DOM は flat + `role="tree"` + `aria-level`** — 入れ子 `ul` にしないのは ① keyboard の index 計算が壊れにくい ② `aria-level` が flat 構造を正式に想定しているため。代償として折りたたみは CSS 単独では書けず「子孫を描画しない」で表現する
+- **row を最初から自立した box として組む** — Item の card 見た目への拡張に備え、plain と card で DOM も flex 構造も共通にした
+- outdent は後続の兄弟を連れ出さない / 子を持つ行は `Backspace` で消さない / indent 先が畳まれていたら開く / plain の選択色に brand を使わない
+
+### infra / docs (出荷物には影響なし)
+
+- **Support Tier** を一級コンセプトとして設計 — [`docs/design/support-tiers.md`](https://github.com/chronista-club/creo-ui/blob/main/docs/design/support-tiers.md)。Tier 1 = Web (SolidJS) / Apple / Rust、**Tier 2 = Svelte** (正式サポート、CSS 層 public API を土台にした薄い wrapper を実消費者駆動で提供) の owner 裁定を明文化 (#115〜#117)
+- web README に「安定性 (public API)」節を新設 — `components.css` の class / data 属性 / CSS variable が public API であることを正式化 (Tier 2 wrapper が乗る土台)
+- **demo stage の常設化** — `http://demo.creo-ui/` で常時アクセス、vite 起動中は同じ名前が開発中の姿を映し、止めれば常駐 demo へ自動 rewire (#113/#114/#118/#119/#120)
+
 ## v0.27.1 (2026-07-31) — npm 導線根治 + rust 0.8.0 (Rgb alpha) + swift theme/typography
 
 > **web `0.27.1`** / **rust `0.8.0`** を release。editor-host `0.6.0` / layout `0.3.0` / icons-web `0.0.1` は src 実変更なしのため据え置き (README の install 行修正は次の実変更出荷に同乗)。swift は publish 経路なし (SPM git/path 参照) — 本 promote で CreoTheme / `.creoText()` が main に載る。
