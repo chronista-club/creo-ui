@@ -21,5 +21,10 @@ export default defineConfig({
     host: true,
     port: 5173,
     strictPort: false,
+    // demo stage (container の Caddy) から proxy されると Host が demo.creo-ui 等になり、
+    // vite の DNS rebinding 防御が 403 を返す。stage の dev passthrough
+    // (apps/site/Caddyfile 参照) を通すために許可する。先頭ドットは subdomain 込みの
+    // 許可なので、*.creo-ui の wildcard DNS で名前を増やしても追記が要らない。
+    allowedHosts: ['.creo-ui', 'creo-ui.demo', 'host.containers.internal'],
   },
 })
