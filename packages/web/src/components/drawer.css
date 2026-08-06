@@ -169,9 +169,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: calc(var(--spacing-s) * var(--density-gap-scale, 1));
-  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
-    calc(var(--spacing-m) * var(--density-padding-scale, 1));
+  gap: calc(var(--_drawer-header-gap, var(--spacing-s)) * var(--density-gap-scale, 1));
+  padding: calc(var(--_drawer-header-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_drawer-header-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border);
   flex-shrink: 0;
 }
@@ -185,7 +185,7 @@
 }
 
 .creo-drawer-body {
-  padding: calc(var(--spacing-m) * var(--density-padding-scale, 1));
+  padding: calc(var(--_drawer-body-pad, var(--spacing-m)) * var(--density-padding-scale, 1));
   overflow-y: auto;
   flex: 1;
   min-height: 0;
@@ -198,9 +198,9 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
-  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
-    calc(var(--spacing-m) * var(--density-padding-scale, 1));
+  gap: calc(var(--_drawer-footer-gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
+  padding: calc(var(--_drawer-footer-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_drawer-footer-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
   border-top: 1px solid var(--color-surface-border);
   flex-shrink: 0;
 }

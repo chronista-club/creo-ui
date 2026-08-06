@@ -167,6 +167,28 @@ creoEditor.autoDiscover({ prefixes: ['--color-'] }) // 色だけ
 
 明示 `bind()` なしで既存 token が全部触れるようになる。
 
+### F2c. 選択駆動の component field — クリックしたものが編集できる
+
+**default で有効**です。Editor Mode 中に creo-ui component をクリックすると、
+その要素に効いている private tweak var (`--_btn-pad-x` 等) だけが panel に出ます。
+`data-editor-fields` の事前仕込みは要りません。
+
+```tsx
+// 何も書かなくてよい。切りたいときだけ opt-out する
+<EditorHostProvider config={{ discoverComponents: false }}>
+```
+
+引き当ては CSSOM の selectorText を `el.matches()` で逆引きする方式なので、
+var 名と class 名がズレている component (`--_eb-*` ↔ `.creo-error-boundary`) でも
+マッピング表なしで正しく解決されます。`.creo-btn--sm` のような variant 固有ノブは、
+その modifier が付いた要素を選んだときだけ現れます。
+
+index の構築は初回選択まで遅延し、ノブの register は **click のみ** (hover では
+何も起きません)。マウスを動かしただけで panel が増えていくことはありません。
+
+設計の詳細は [docs/design/editor-mode.md](../../docs/design/editor-mode.md) の
+「選択駆動の component field 解決 (F2c)」を参照してください。
+
 ### F3. Export — 現 state を patch として書き出し
 
 ```js
@@ -275,6 +297,7 @@ host.mcp.setValue('tokens.spacing.m', 24)  // 外部から書換、chain が走�
   shortcut: { ctrl: true, shift: true, key: 'e' },
   localStorageNamespace: 'my-app',
   initialMode: 'off',
+  discoverComponents: true,  // F2c、default true。選択した component のノブを出す
 }}>
   {children}
 </EditorHostProvider>
@@ -353,6 +376,10 @@ src/
 ├── host.ts               internal: createEditorHost() core state
 ├── host.test.ts          19 cases (core)
 ├── selection.ts          internal: DOM hover/click + ResizeObserver
+├── selector-utils.ts     ⭐ F2c: selectorText ↔ DOM の突き合わせ (pure)
+├── selector-utils.test.ts 20 cases
+├── component-fields.ts   ⭐ F2c: 逆引き index + 選択時 lazy register
+├── component-fields.test.ts 11 cases
 ├── shortcut.ts           internal: Ctrl+Shift+E handler
 ├── provider.tsx          <EditorHostProvider> + useEditorHost()
 ├── hooks.ts              public hooks (useEditorMode / Selectable 等)

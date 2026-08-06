@@ -20,7 +20,7 @@ export const messages = {
     label: { ja: 'Editor Mode', en: 'Editor Mode' },
     on: { ja: 'ON', en: 'ON' },
     off: { ja: 'OFF', en: 'OFF' },
-    clickToSelect: { ja: '要素をクリックで選択', en: 'Click an element to select' },
+    clickToSelect: { ja: 'component をクリックで選択', en: 'Click a component to select' },
     selectedPrefix: { ja: '選択中: ', en: 'Selected: ' },
     escapeToExit: { ja: '終了', en: 'exit' },
     escapeToDeselect: { ja: '選択解除', en: 'deselect' },
@@ -43,6 +43,10 @@ export const messages = {
       ja: 'この選択に紐付く field はありません。',
       en: 'No fields bound to the current selection.',
     },
+    noKnobsForComponent: {
+      ja: 'この component にはまだ調整ノブがありません (CSS 側に --_ tweak var が未定義)。',
+      en: 'This component has no knobs yet (no --_ tweak vars declared in its CSS).',
+    },
     showAllFields: { ja: '全 tool field を表示', en: 'Show all tool fields' },
     // 3-scope sections (D-13)
     scopeInstance: { ja: 'App state', en: 'App state' },
@@ -51,6 +55,7 @@ export const messages = {
   } satisfies Localized<
     | 'heading'
     | 'noFieldsForSelection'
+    | 'noKnobsForComponent'
     | 'showAllFields'
     | 'scopeInstance'
     | 'scopeComponent'

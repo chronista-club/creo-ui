@@ -7,6 +7,8 @@
  * Token: creo-ui/tokens.css (必須)
  */
 
+/* --_accordion-* は Editor Mode / demo 用の private tweak var (public API ではない)。
+   fallback が SSOT 値。override は editor / playground が scope 内で行う。 */
 .creo-accordion {
   display: block;
   margin-bottom: var(--spacing-s);
@@ -17,7 +19,7 @@
 .creo-accordion:not([data-variant]) {
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-s);
+  border-radius: var(--_accordion-radius, var(--radius-s));
   padding: 0;
   overflow: hidden;
   /* elevation 1 (resting)。 stack した各 disclosure が page から静かに持ち上がる。
@@ -28,7 +30,7 @@
 .creo-accordion[data-variant="subtle"] {
   background-color: var(--surface-veil-1);
   border: none;
-  border-radius: var(--radius-s);
+  border-radius: var(--_accordion-radius, var(--radius-s));
 }
 
 /* ---------- Summary (clickable header) ---------- */
@@ -36,11 +38,14 @@
 .creo-accordion-summary {
   display: flex;
   align-items: center;
-  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+  gap: calc(var(--_accordion-summary-gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
   /* tight padding: dashboard 系で 5+ stack した時の縦窮屈さを抑える。
      min-height (target-tap=44px) は desktop では過剰なので削除、 content 高さに従う。 */
-  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1))
-    calc(var(--spacing-s) * var(--density-padding-scale, 1));
+  padding: calc(
+      var(--_accordion-summary-pad-y, var(--spacing-xs)) *
+      var(--density-padding-scale, 1)
+    )
+    calc(var(--_accordion-summary-pad-x, var(--spacing-s)) * var(--density-padding-scale, 1));
   cursor: pointer;
   user-select: none;
   list-style: none; /* default chevron を消す */
@@ -103,9 +108,12 @@
 /* ---------- Content (expanded body) ---------- */
 
 .creo-accordion-content {
-  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
-    calc(var(--spacing-m) * var(--density-padding-scale, 1))
-    calc(var(--spacing-m) * var(--density-padding-scale, 1));
+  padding: calc(
+      var(--_accordion-content-pad-top, var(--spacing-s)) *
+      var(--density-padding-scale, 1)
+    )
+    calc(var(--_accordion-content-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1))
+    calc(var(--_accordion-content-pad-bottom, var(--spacing-m)) * var(--density-padding-scale, 1));
   font-size: var(--typography-size-m);
   color: var(--color-text-primary);
   line-height: var(--typography-line-height-normal);

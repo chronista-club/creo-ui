@@ -9,8 +9,8 @@
   position: fixed;
   display: flex;
   flex-direction: column;
-  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
-  padding: calc(var(--spacing-m) * var(--density-padding-scale, 1));
+  gap: calc(var(--_toast-region-gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
+  padding: calc(var(--_toast-region-pad, var(--spacing-m)) * var(--density-padding-scale, 1));
   pointer-events: none;
   z-index: 1000;
   max-width: min(420px, calc(100vw - var(--spacing-l)));
@@ -51,12 +51,12 @@
   pointer-events: auto;
   display: flex;
   align-items: flex-start;
-  gap: calc(var(--spacing-s) * var(--density-gap-scale, 1));
-  padding: calc(var(--spacing-s) * var(--density-padding-scale, 1))
-    calc(var(--spacing-m) * var(--density-padding-scale, 1));
+  gap: calc(var(--_toast-gap, var(--spacing-s)) * var(--density-gap-scale, 1));
+  padding: calc(var(--_toast-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_toast-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
+  border-radius: var(--_toast-radius, var(--radius-m));
   /* elevation 3 (overlay tier)。 toast は viewport に float する最上位通知なので
      旧 --shadow-m から overlay depth へ格上げ。 border-light + per-theme drop。 */
   box-shadow: var(--elevation-3);

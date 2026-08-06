@@ -290,6 +290,59 @@ panel の scope 3 分割表示 (Phase B) は 2026-07-12 実装済み — RIGHT r
 (`isSliderFriendly`)。instance scope の data-attribute discovery (selector から
 variant 候補を列挙) は将来の設計課題。
 
+**tweak var は「使用箇所に fallback」で書く (pattern B) こと**。base rule 側で
+`.creo-card { --_card-pad: var(--spacing-m); padding: calc(var(--_card-pad) * ...) }`
+と宣言する pattern A は 2 重に成立しない — (a) fallback が無いので F2b/F2c の
+scan に載らない、(b) custom property は **要素自身の宣言が継承より強い**ため
+`:root` への書き込みが届かない。variant 側の `--_card-pad: var(--spacing-s)` は
+そのまま宣言してよい (その variant だけ editor から外れる、badge と同じ挙動)。
+
+### 選択駆動の component field 解決 (F2c)
+
+F2b までは「mount 時に画面上の tweak var を全部 register する」eager 方式で、
+2 つの弱点があった:
+
+1. **panel が渋滞する** — 画面に居る component 全部のノブが一度に並ぶ
+2. **値が焼き付く** — `host.register()` は登録時に初期値を `:root` へ書くので、
+   register した数だけ `<html>` の inline style に解決済み値が固定される
+
+そして何より、**選択 (`data-editor-fields`) は手で仕込まないと機能しなかった**。
+
+F2c はこれを反転させる。mount 時は **index を作るだけ** (DOM 書き込みゼロ、
+index 構築も初回選択まで遅延)、選択された要素に `el.matches()` でヒットした
+knob だけを lazy に register する。**creo-ui component はそのままクリックすれば
+そのノブが出る**。config は `discoverComponents` (**default: true**)。
+
+逆引きの根拠は CSSOM 側にある — `scanTweakVars` は各 var について「どの rule の
+selector で使われているか」を既に集めている (F2b の presence filter 用)。これを
+`el.matches(selector)` で引き直すと:
+
+- **命名規約が要らない** — `--_eb-*` ↔ `.creo-error-boundary`、`--_seg-opt-*` ↔
+  `.creo-segmented` のような略記のズレをマッピング表なしで吸収する
+- **variant 固有ノブが正しく出る** — `.creo-btn--sm` のノブは、その modifier が
+  付いた要素を選んだときだけ現れる
+- **panel の group 名も selector 由来**にできる (`--_eb-pad-x` の group は `eb`
+  ではなく `error-boundary`)。field id は永続化 key なので var 名由来のまま保つ
+
+実装上の要点 (`selector-utils.ts` / `component-fields.ts`):
+
+- **state 疑似は剥がす** — `.creo-btn:hover` をそのまま `matches()` に渡すと
+  「今 hover 中でなければ」false になり、hover 時だけ使うノブを永久に拾えない。
+  逆に `:not()` / `:nth-child()` / `[data-variant="x"]` は **残す** (その variant
+  が付いた要素にだけ出るのが正しい)
+- **comma list は part 単位で扱う** — `.creo-checkbox, .creo-radio` を 1 本の
+  文字列として「最後の `.creo-*`」で読むと radio が代表になってしまう
+- **subject の class 名で候補を索引化する** — mouseover ごとに全 knob へ
+  `matches()` を撃つと DOM 階層 × knob 数で膨らむので、`.creo-btn` の要素なら
+  btn 配下の数個だけを試す。class で絞れない selector は総当たり側に置いて
+  取りこぼしを作らない
+- **register は click のみ** — hover は id を数えるだけ (副作用なし)。マウスを
+  動かしただけでノブが増えていくのを防ぐ
+
+選択対象は「明示 bind (`data-editor-fields`) > 逆引きヒット > creo-ui component
+ではあるがノブ無し」の優先順で祖先方向へ辿る。最後の fallback があるので、
+ノブ未整備の component でも「何を選んだか」は panel に出る。
+
 ### RIGHT 領域の並び順
 
 複数 source から同 semantic の fields が集まったときの順序:
@@ -469,7 +522,10 @@ Claude: (tokens リポジトリに PR を作成)
 
 以下は Phase 2 着手時に詰める:
 
-1. **Selection の表現** — CSS selector / component id / DOM element reference どれを primary に?
+1. ~~**Selection の表現** — CSS selector / component id / DOM element reference どれを primary に?~~
+   → 2026-08-04 の F2c で決着。primary は **DOM element** (hover/click で確定) とし、
+   そこから CSS selector を逆引きして field を解決、表示名だけ component id
+   (`.creo-btn`) を使う。3 つのうち 1 つを選ぶのではなく役割で分けた。
 2. **Field id の階層的 namespace** — dot notation (`memory.priority`) vs URI 風 (`editor:///memory/priority`)
 3. **Persistence の per-project 解決** — SurrealDB (creo-memories) 紐付けをどう protocol 化?
 4. **Region が狭い画面での挙動** — モバイルや狭い window では bottom sheet 形式に fallback?
@@ -516,3 +572,13 @@ Claude: (tokens リポジトリに PR を作成)
   永続化 (`{namespace}:layer:panel-pos`、EditorHost.namespace を新規 expose)。
   被り回避 `--editor-mode-dock-top` / 幅 `--editor-mode-dock-width` を導入。
   team-b review で drag listener leak / 画面外クランプ不発を修正
+- 2026-08-04: **F2c 選択駆動の component field 解決** — `data-editor-fields` の
+  事前仕込み無しに creo-ui component をクリックするだけでノブが出るようにした
+  (`selector-utils.ts` + `component-fields.ts`、config `discoverComponents`
+  default true)。CSSOM の selectorText を `el.matches()` で逆引きするので
+  命名規約に依存せず、`--_eb-*` ↔ `.creo-error-boundary` の略記ズレも吸収する。
+  panel の group / section title も selector 由来の component 名に。あわせて
+  web の全 component CSS に tweak var を整備 (**48 component / 93 knob**、
+  従来は 14 file のみ)。`card` / `stack` / `grid` / `table` は base rule 側で
+  `--_x: ...` を宣言する pattern A だったため `:root` override が届いておらず、
+  使用箇所 fallback (pattern B) へ移行 (見た目は不変)

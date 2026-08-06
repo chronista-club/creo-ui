@@ -19,8 +19,8 @@
 .creo-divider:not([data-orientation]),
 .creo-divider[data-orientation="horizontal"] {
   width: 100%;
-  height: 1px;
-  margin: var(--spacing-m) 0;
+  height: var(--_divider-thickness, 1px);
+  margin: var(--_divider-spacing, var(--spacing-m)) 0;
 }
 
 .creo-divider[data-orientation="horizontal"][data-thickness="thick"] {
