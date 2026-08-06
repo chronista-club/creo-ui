@@ -8,6 +8,7 @@
 import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
 import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
+import { createComponentFieldResolver } from './component-fields'
 import { buildConsoleApi, installConsoleApi } from './console'
 import { installCrossTabSync } from './cross-tab'
 import { exportSnapshot } from './export'
@@ -45,7 +46,14 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     const uninstallers: Array<() => void> = []
 
     uninstallers.push(installShortcut({ host, shortcut: props.config?.shortcut }))
-    uninstallers.push(installSelectionHandlers({ host }))
+
+    // F2c: 選択駆動の component field 解決 (default ON)。index の構築は初回選択まで
+    // 遅延するので、ここでの生成コストは実質ゼロ。
+    const resolver =
+      props.config?.discoverComponents === false
+        ? undefined
+        : createComponentFieldResolver({ host, owner })
+    uninstallers.push(installSelectionHandlers({ host, resolver }))
 
     // F4: URL sync (opt-in via config.urlSync)
     if (props.config?.urlSync) {

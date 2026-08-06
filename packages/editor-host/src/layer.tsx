@@ -21,6 +21,7 @@ import { FieldEditor } from './fields'
 import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
 import { useEditorHost } from './provider'
+import { componentDisplayName } from './selector-utils'
 import { ThemeEditor } from './theme-editor'
 import type { EditorField, EditorScope } from './types'
 
@@ -334,6 +335,20 @@ export function EditorLayer(): JSX.Element {
   const scopeFields = (scope: EditorScope): EditorField[] =>
     visibleToolFields().filter((f: EditorField) => (f.scope ?? 'instance') === scope)
 
+  // F2c: component を選んでいる間は section title をその component 名にする。
+  // 「画面上の component」(全体を眺める既定) と「.creo-btn」(1 個を弄っている) の
+  // どちらの状態に居るかが title だけで判る。
+  const componentSectionTitle = (): string => {
+    const id = selection()?.componentId
+    return id ? componentDisplayName(id) : t(messages.toolPanel.scopeComponent)
+  }
+
+  /** 選択はできたがノブが無いときの案内。component かどうかで文面を変える */
+  const emptyMessage = (): string =>
+    selection()?.componentId
+      ? t(messages.toolPanel.noKnobsForComponent)
+      : t(messages.toolPanel.noFieldsForSelection)
+
   // ---- ドラッグ移動 (位置は localStorage 永続化) ----
   // pos = null なら右上 default 配置、掴んで動かすと {x,y} (viewport 座標) に切替。
   let panelRef: HTMLDivElement | undefined
@@ -493,7 +508,7 @@ export function EditorLayer(): JSX.Element {
             {/* tool fields を 3-scope で分割 (instance → component → token) */}
             <Show
               when={visibleToolFields().length > 0}
-              fallback={<p style={emptyHintStyle}>{t(messages.toolPanel.noFieldsForSelection)}</p>}
+              fallback={<p style={emptyHintStyle}>{emptyMessage()}</p>}
             >
               <ScopeSection
                 title={t(messages.toolPanel.scopeInstance)}
@@ -501,7 +516,7 @@ export function EditorLayer(): JSX.Element {
                 fields={scopeFields('instance')}
               />
               <ScopeSection
-                title={t(messages.toolPanel.scopeComponent)}
+                title={componentSectionTitle()}
                 accent="var(--color-brand-primary)"
                 fields={scopeFields('component')}
               />

@@ -12,9 +12,9 @@
   display: flex;
   flex-direction: column;
   /* [data-gap] variant は --_stack-gap の差し替えのみ。 gap の宣言 (density calc 込み)
-     はここ 1 箇所 (button.css と同 pattern)。 */
-  --_stack-gap: var(--spacing-m);
-  gap: calc(var(--_stack-gap) * var(--density-gap-scale, 1));
+     はここ 1 箇所 (button.css と同 pattern)。既定値は使用箇所の fallback で与える
+     (base rule で宣言すると Editor Mode の :root override が効かなくなる)。 */
+  gap: calc(var(--_stack-gap, var(--spacing-m)) * var(--density-gap-scale, 1));
 }
 
 .creo-stack[data-direction="horizontal"] {

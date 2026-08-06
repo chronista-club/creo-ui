@@ -11,9 +11,9 @@
 .creo-grid {
   display: grid;
   /* [data-gap] variant は --_grid-gap の差し替えのみ。 gap の宣言 (density calc 込み)
-     はここ 1 箇所 (button.css と同 pattern)。 */
-  --_grid-gap: var(--spacing-m);
-  gap: calc(var(--_grid-gap) * var(--density-gap-scale, 1));
+     はここ 1 箇所 (button.css と同 pattern)。既定値は使用箇所の fallback で与える
+     (base rule で宣言すると Editor Mode の :root override が効かなくなる)。 */
+  gap: calc(var(--_grid-gap, var(--spacing-m)) * var(--density-gap-scale, 1));
   /* default 12 column (web standard) */
   grid-template-columns: repeat(12, 1fr);
 }
