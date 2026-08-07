@@ -19,11 +19,11 @@
   bottom: calc(100% + var(--spacing-xs));
   transform: translateX(-50%) translateY(4px);
 
-  padding: calc(var(--_tooltip-pad-y, var(--spacing-xs)) * var(--density-padding-scale, 1))
-    calc(var(--_tooltip-pad-x, var(--spacing-s)) * var(--density-padding-scale, 1));
+  padding: calc(var(--_tooltip__pad-y, var(--spacing-xs)) * var(--density-padding-scale, 1))
+    calc(var(--_tooltip__pad-x, var(--spacing-s)) * var(--density-padding-scale, 1));
   background-color: var(--color-surface-bg-emphasis);
   color: var(--color-text-primary);
-  border-radius: var(--_tooltip-radius, var(--radius-xs));
+  border-radius: var(--_tooltip__radius, var(--radius-xs));
   /* elevation 3 の最小面。 tooltip は z-stack 最上位 (hover で最前面) なので
      overlay tier の depth を纏うが、 面積が最小なので語彙の中で最も控えめに効く。 */
   box-shadow: var(--elevation-3);

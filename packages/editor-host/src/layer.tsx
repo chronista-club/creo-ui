@@ -16,12 +16,12 @@
 import { For, Show, createSignal, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Portal } from 'solid-js/web'
+import { componentDisplayName } from './component-id'
 import { ExportBar } from './export-bar'
 import { FieldEditor } from './fields'
 import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
 import { useEditorHost } from './provider'
-import { componentDisplayName } from './selector-utils'
 import { ThemeEditor } from './theme-editor'
 import type { EditorField, EditorScope } from './types'
 

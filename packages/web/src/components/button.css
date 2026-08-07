@@ -25,15 +25,15 @@
      padding / min-height の宣言 (= density calc の場所) はここ 1 箇所 —
      variant 側に素の padding を書くと density scale が剥がれる (実際に起きた事故、
      s/m/l 指定時に density が無効化されていた) ので、構造的に防ぐ。 */
-  --_btn-size-min-h: var(--layout-target-tap);
-  --_btn-size-pad-y: var(--spacing-s);
-  --_btn-size-pad-x: var(--spacing-m);
+  --_btn__size-min-h: var(--layout-target-tap);
+  --_btn__size-pad-y: var(--spacing-s);
+  --_btn__size-pad-x: var(--spacing-m);
 
-  min-height: calc(var(--_btn-size-min-h) * var(--density-min-height-scale, 1));
-  /* --_btn-pad-{x,y} は consumer / Editor Mode 用の private tweak var (public API では
-     ない)。 未設定なら size 別 default (--_btn-size-pad-*) が効く。 */
-  padding: calc(var(--_btn-pad-y, var(--_btn-size-pad-y)) * var(--density-padding-scale, 1))
-    calc(var(--_btn-pad-x, var(--_btn-size-pad-x)) * var(--density-padding-scale, 1));
+  min-height: calc(var(--_btn__size-min-h) * var(--density-min-height-scale, 1));
+  /* --_btn__pad-{x,y} は consumer / Editor Mode 用の private tweak var (public API では
+     ない)。 未設定なら size 別 default (--_btn__size-pad-*) が効く。 */
+  padding: calc(var(--_btn__pad-y, var(--_btn__size-pad-y)) * var(--density-padding-scale, 1))
+    calc(var(--_btn__pad-x, var(--_btn__size-pad-x)) * var(--density-padding-scale, 1));
 
   /* Typography */
   font-family: inherit;
@@ -43,16 +43,16 @@
   text-decoration: none;
   white-space: nowrap;
 
-  /* Shape — 基本両サイドは半円 (pill)。--_btn-radius は Editor Mode / demo 用の
+  /* Shape — 基本両サイドは半円 (pill)。--_btn__radius は Editor Mode / demo 用の
      private tweak var で、固定 px に override したいときだけ設定する。 */
   border: 1px solid transparent;
-  border-radius: var(--_btn-radius, var(--radius-full));
+  border-radius: var(--_btn__radius, var(--radius-full));
 
   /* loading spinner の絶対配置基準 + spinner 色 (foreground)。
      primary / danger は solid fill 上の auto on-color (--on-fill-*) がデフォルト、
-     secondary / outline / ghost は variant 側で --_btn-fg を text-primary に上書き。 */
+     secondary / outline / ghost は variant 側で --_btn__fg を text-primary に上書き。 */
   position: relative;
-  --_btn-fg: var(--on-fill-brand);
+  --_btn__fg: var(--on-fill-brand);
 
   /* Default interaction。 filter は brand glow (--elevation-glow-brand-filter-*) 用で、
      _focus.css の :focus-visible box-shadow halo と別チャンネルなので policy を侵さない。 */
@@ -107,7 +107,7 @@
   background-color: var(--surface-veil-2);
   border-color: transparent;
   color: var(--color-text-primary);
-  --_btn-fg: var(--color-text-primary);
+  --_btn__fg: var(--color-text-primary);
 }
 /* hover = veil ladder を一段 (2→3)。 dark でも light でも「濃くなる」方向に揃う。 */
 .creo-btn[data-variant="secondary"]:hover:not(:disabled) {
@@ -123,7 +123,7 @@
   background-color: transparent;
   border-color: transparent;
   color: var(--color-text-primary);
-  --_btn-fg: var(--color-text-primary);
+  --_btn__fg: var(--color-text-primary);
 }
 .creo-btn[data-variant="ghost"]:hover:not(:disabled) {
   background-color: var(--surface-veil-1);
@@ -140,7 +140,7 @@
   background-color: transparent;
   border-color: var(--color-surface-border);
   color: var(--color-text-primary);
-  --_btn-fg: var(--color-text-primary);
+  --_btn__fg: var(--color-text-primary);
 }
 .creo-btn[data-variant="outline"]:hover:not(:disabled) {
   background-color: var(--surface-veil-1);
@@ -160,7 +160,7 @@
   background-color: var(--color-semantic-error);
   border-color: var(--color-semantic-error);
   color: var(--on-fill-danger);
-  --_btn-fg: var(--on-fill-danger);
+  --_btn__fg: var(--on-fill-danger);
   filter: drop-shadow(0 1px 6px color-mix(in oklch, var(--color-semantic-error) 28%, transparent));
 }
 .creo-btn[data-variant="danger"]:hover:not(:disabled) {
@@ -177,27 +177,27 @@
 
 /* ---------- Sizes ---------- */
 
-/* size variant は --_btn-size-* の差し替えのみ。 padding / min-height の宣言は base の
+/* size variant は --_btn__size-* の差し替えのみ。 padding / min-height の宣言は base の
    1 箇所 (density calc 込み) に集約されているので、ここに素の padding を書かないこと。 */
 .creo-btn[data-size="s"] {
-  --_btn-size-min-h: var(--layout-target-focus);
-  --_btn-size-pad-y: var(--spacing-xs);
-  --_btn-size-pad-x: var(--spacing-s);
+  --_btn__size-min-h: var(--layout-target-focus);
+  --_btn__size-pad-y: var(--spacing-xs);
+  --_btn__size-pad-x: var(--spacing-s);
   font-size: var(--typography-size-s);
 }
 
 /* data-size="m" は base と同じ、明示しなくても OK だが editor-mode 親和で一応ルール定義 */
 .creo-btn[data-size="m"] {
-  --_btn-size-min-h: var(--layout-target-tap);
-  --_btn-size-pad-y: var(--spacing-s);
-  --_btn-size-pad-x: var(--spacing-m);
+  --_btn__size-min-h: var(--layout-target-tap);
+  --_btn__size-pad-y: var(--spacing-s);
+  --_btn__size-pad-x: var(--spacing-m);
   font-size: var(--typography-size-m);
 }
 
 .creo-btn[data-size="l"] {
-  --_btn-size-min-h: calc(var(--layout-target-tap) * 1.15);
-  --_btn-size-pad-y: var(--spacing-m);
-  --_btn-size-pad-x: var(--spacing-l);
+  --_btn__size-min-h: calc(var(--layout-target-tap) * 1.15);
+  --_btn__size-pad-y: var(--spacing-m);
+  --_btn__size-pad-x: var(--spacing-l);
   font-size: var(--typography-size-l);
 }
 
@@ -213,7 +213,7 @@
 }
 
 /* ---------- State: loading ---------- */
-/* label を隠して spinner (::after) を中央に被せる。spinner 色は variant の --_btn-fg。
+/* label を隠して spinner (::after) を中央に被せる。spinner 色は variant の --_btn__fg。
    loading 中は :disabled / aria-disabled も付くので opacity が下がるが、 spinner は
    不透明に出したいので opacity を base に戻す。 */
 
@@ -230,8 +230,8 @@
   margin: auto;
   width: 1.1em;
   height: 1.1em;
-  border: 2px solid color-mix(in oklch, var(--_btn-fg) 30%, transparent);
-  border-top-color: var(--_btn-fg);
+  border: 2px solid color-mix(in oklch, var(--_btn__fg) 30%, transparent);
+  border-top-color: var(--_btn__fg);
   border-radius: var(--radius-full);
   animation: creoSpinnerRotate 900ms linear infinite;
 }

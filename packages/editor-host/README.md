@@ -170,7 +170,7 @@ creoEditor.autoDiscover({ prefixes: ['--color-'] }) // 色だけ
 ### F2c. 選択駆動の component field — クリックしたものが編集できる
 
 **default で有効**です。Editor Mode 中に creo-ui component をクリックすると、
-その要素に効いている private tweak var (`--_btn-pad-x` 等) だけが panel に出ます。
+その要素に効いている private tweak var (`--_btn__pad-x` 等) だけが panel に出ます。
 `data-editor-fields` の事前仕込みは要りません。
 
 ```tsx
@@ -178,10 +178,17 @@ creoEditor.autoDiscover({ prefixes: ['--color-'] }) // 色だけ
 <EditorHostProvider config={{ discoverComponents: false }}>
 ```
 
-引き当ては CSSOM の selectorText を `el.matches()` で逆引きする方式なので、
-var 名と class 名がズレている component (`--_eb-*` ↔ `.creo-error-boundary`) でも
-マッピング表なしで正しく解決されます。`.creo-btn--sm` のような variant 固有ノブは、
-その modifier が付いた要素を選んだときだけ現れます。
+引き当ての根拠は tweak var の命名規約 1 本です。
+
+```
+--_error-boundary__pad-x  →  component: error-boundary  /  knob: pad-x
+                             selector : .creo-error-boundary
+```
+
+`<component>` は実在する `.creo-<component>` class そのものなので、抽出は `__` で
+split するだけで終わります。CSSOM から読むのは fallback だけで `selectorText` は
+見ないため、`@media` や state 疑似といった selector 解析の落とし穴がありません。
+規約は CI (`bun run check:tweak-vars`) が守ります。
 
 index の構築は初回選択まで遅延し、ノブの register は **click のみ** (hover では
 何も起きません)。マウスを動かしただけで panel が増えていくことはありません。
@@ -376,8 +383,8 @@ src/
 ├── host.ts               internal: createEditorHost() core state
 ├── host.test.ts          19 cases (core)
 ├── selection.ts          internal: DOM hover/click + ResizeObserver
-├── selector-utils.ts     ⭐ F2c: selectorText ↔ DOM の突き合わせ (pure)
-├── selector-utils.test.ts 20 cases
+├── component-id.ts       ⭐ F2c: --_<component>__<knob> の split + class 抽出 (pure)
+├── component-id.test.ts  14 cases
 ├── component-fields.ts   ⭐ F2c: 逆引き index + 選択時 lazy register
 ├── component-fields.test.ts 11 cases
 ├── shortcut.ts           internal: Ctrl+Shift+E handler

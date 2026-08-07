@@ -6,7 +6,7 @@
  */
 
 .creo-table {
-  /* cell padding の size 別の素の値。 [data-size] variant は --_table-cell-pad-* だけを
+  /* cell padding の size 別の素の値。 [data-size] variant は --_table-cell__pad-* だけを
      差し替え、cell 側の padding 宣言 (density calc 込み) は 1 箇所に集約する
      (button.css と同 pattern)。variant を .creo-table 側に置けるのは custom property の
      継承で cell に届くため。既定値は **cell 側の使用箇所の fallback** で与える —
@@ -19,7 +19,7 @@
   color: var(--color-text-primary);
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--_table-radius, var(--radius-m));
+  border-radius: var(--_table__radius, var(--radius-m));
   /* elevation 1 (resting)。 data surface を page bg から静かに持ち上げる。
      glow は使わない (静かな面、 rubric の resting 段)。 */
   box-shadow: var(--elevation-1);
@@ -39,8 +39,8 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   text-align: left;
-  padding: calc(var(--_table-cell-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
-    calc(var(--_table-cell-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
+  padding: calc(var(--_table-cell__pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_table-cell__pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border);
 }
 
@@ -53,8 +53,8 @@
 /* ---------- Body cells ---------- */
 
 .creo-table-cell {
-  padding: calc(var(--_table-cell-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
-    calc(var(--_table-cell-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
+  padding: calc(var(--_table-cell__pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_table-cell__pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border-subtle, var(--color-surface-border));
   vertical-align: middle;
   /* th (行 header) の browser default (center + bold) を打ち消し、 td と同じ声に揃える。
@@ -83,17 +83,17 @@
 
 /* ---------- Sizes ---------- */
 
-/* size variant は --_table-cell-pad-* の差し替えのみ (cell 側の density calc を剥がさない)。 */
+/* size variant は --_table-cell__pad-* の差し替えのみ (cell 側の density calc を剥がさない)。 */
 .creo-table[data-size="s"] {
-  --_table-cell-pad-y: var(--spacing-xs);
-  --_table-cell-pad-x: var(--spacing-s);
+  --_table-cell__pad-y: var(--spacing-xs);
+  --_table-cell__pad-x: var(--spacing-s);
 }
 .creo-table[data-size="s"] .creo-table-cell {
   font-size: var(--typography-size-s);
 }
 .creo-table[data-size="l"] {
-  --_table-cell-pad-y: var(--spacing-m);
-  --_table-cell-pad-x: var(--spacing-l);
+  --_table-cell__pad-y: var(--spacing-m);
+  --_table-cell__pad-x: var(--spacing-l);
 }
 .creo-table[data-size="l"] .creo-table-cell {
   font-size: var(--typography-size-l);

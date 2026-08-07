@@ -105,23 +105,24 @@ export {
   createComponentFieldResolver,
   matchKnobs,
   toComponentKnobs,
+  type ComponentEntry,
   type ComponentFieldResolver,
   type ComponentFieldResolverOptions,
   type ComponentKnob,
+  type ComponentSelection,
   type KnobIndex,
 } from './component-fields'
 export {
   COMPONENT_CLASS_PREFIX,
+  TWEAK_SEPARATOR,
   componentClassIdsOf,
   componentDisplayName,
-  componentIdFromSelector,
-  componentIdFromSelectors,
   componentIdOfElement,
-  matchesSelector,
-  normalizeSelectorForMatch,
-  splitSelectorList,
-  subjectComponentIds,
-} from './selector-utils'
+  componentSelector,
+  knobLabel,
+  parseTweakVarName,
+  type TweakVarName,
+} from './component-id'
 
 // F3: Export
 export { exportSnapshot, type ExportFormat, type ExportOptions } from './export'

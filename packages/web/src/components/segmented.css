@@ -12,9 +12,6 @@
 .creo-segmented {
   /* option の size 別の素の値。 [data-size] variant はこの 3 変数だけを差し替え、
      option 側の宣言 (density calc 込み) は 1 箇所に集約 (button.css と同 pattern)。 */
-  --_seg-opt-pad-y: var(--spacing-xs);
-  --_seg-opt-pad-x: var(--spacing-m);
-  --_seg-opt-min-h: var(--layout-target-focus);
 
   display: inline-flex;
   align-items: stretch;
@@ -40,9 +37,15 @@
   appearance: none;
   background: transparent;
   border: none;
-  padding: calc(var(--_seg-opt-pad-y) * var(--density-padding-scale, 1))
-    calc(var(--_seg-opt-pad-x) * var(--density-padding-scale, 1));
-  min-height: calc(var(--_seg-opt-min-h) * var(--density-min-height-scale, 1));
+  padding: calc(
+      var(--_segmented-option__pad-y, var(--spacing-xs)) *
+      var(--density-padding-scale, 1)
+    )
+    calc(var(--_segmented-option__pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
+  min-height: calc(
+    var(--_segmented-option__min-h, var(--layout-target-focus)) *
+    var(--density-min-height-scale, 1)
+  );
 
   display: inline-flex;
   align-items: center;
@@ -111,19 +114,19 @@
 
 /* ---------- Sizes ---------- */
 
-/* size variant は --_seg-opt-* の差し替えのみ (option 側の density calc を剥がさない)。 */
+/* size variant は --_segmented-option__* の差し替えのみ (option 側の density calc を剥がさない)。 */
 .creo-segmented[data-size="s"] {
-  --_seg-opt-min-h: 24px;
-  --_seg-opt-pad-y: 2px;
-  --_seg-opt-pad-x: var(--spacing-s);
+  --_segmented-option__min-h: 24px;
+  --_segmented-option__pad-y: 2px;
+  --_segmented-option__pad-x: var(--spacing-s);
 }
 .creo-segmented[data-size="s"] .creo-segmented-option {
   font-size: var(--typography-size-s);
 }
 .creo-segmented[data-size="l"] {
-  --_seg-opt-min-h: var(--layout-target-tap);
-  --_seg-opt-pad-y: var(--spacing-s);
-  --_seg-opt-pad-x: var(--spacing-l);
+  --_segmented-option__min-h: var(--layout-target-tap);
+  --_segmented-option__pad-y: var(--spacing-s);
+  --_segmented-option__pad-x: var(--spacing-l);
 }
 .creo-segmented[data-size="l"] .creo-segmented-option {
   font-size: var(--typography-size-l);
