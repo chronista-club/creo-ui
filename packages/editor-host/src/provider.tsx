@@ -8,7 +8,7 @@
 import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
 import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
-import { createComponentFieldResolver } from './component-fields'
+import { type ComponentFieldResolver, createComponentFieldResolver } from './component-fields'
 import { buildConsoleApi, installConsoleApi } from './console'
 import { installCrossTabSync } from './cross-tab'
 import { exportSnapshot } from './export'
@@ -19,6 +19,17 @@ import type { EditorHost, EditorHostConfig } from './types'
 import { installUrlSync, shareUrl } from './url-sync'
 
 const EditorHostContext = createContext<EditorHost>()
+
+/** F2c resolver。`discoverComponents: false` のときは undefined */
+const ComponentResolverContext = createContext<ComponentFieldResolver | undefined>()
+
+/**
+ * component field resolver を取得。`discoverComponents: false` なら undefined。
+ * `<EditorLayer>` の discovery section が component 一覧を引くのに使う。
+ */
+export function useComponentResolver(): ComponentFieldResolver | undefined {
+  return useContext(ComponentResolverContext)
+}
 
 /**
  * dev 環境の runtime 近似。library build では `import.meta.env.DEV` が build 時に
@@ -41,18 +52,20 @@ export interface EditorHostProviderProps {
 export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>): JSX.Element {
   const host = props.host ?? createEditorHost(props.config ?? {})
 
+  // F2c: component field resolver。selection handler と <EditorLayer> の discovery
+  // が同じ index を共有する必要があるので、component 本体で作って context で配る。
+  // index の構築は初回アクセスまで遅延するので、ここでの生成コストは実質ゼロ。
+  const ownerAtSetup = getOwner()
+  const resolver =
+    props.config?.discoverComponents === false
+      ? undefined
+      : createComponentFieldResolver({ host, owner: ownerAtSetup })
+
   onMount(() => {
     const owner = getOwner()
     const uninstallers: Array<() => void> = []
 
     uninstallers.push(installShortcut({ host, shortcut: props.config?.shortcut }))
-
-    // F2c: 選択駆動の component field 解決 (default ON)。index の構築は初回選択まで
-    // 遅延するので、ここでの生成コストは実質ゼロ。
-    const resolver =
-      props.config?.discoverComponents === false
-        ? undefined
-        : createComponentFieldResolver({ host, owner })
     uninstallers.push(installSelectionHandlers({ host, resolver }))
 
     // F4: URL sync (opt-in via config.urlSync)
@@ -103,7 +116,13 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     })
   })
 
-  return <EditorHostContext.Provider value={host}>{props.children}</EditorHostContext.Provider>
+  return (
+    <EditorHostContext.Provider value={host}>
+      <ComponentResolverContext.Provider value={resolver}>
+        {props.children}
+      </ComponentResolverContext.Provider>
+    </EditorHostContext.Provider>
+  )
 }
 
 /**

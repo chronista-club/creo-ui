@@ -291,12 +291,13 @@ Mode ON で該当要素を選ぶと、LEFT に "Original content"、RIGHT に "P
 | component-type | 当該 component の全 instance | `:root` の `--_badge__*` | tweak var 規約 (F2b / F2c) |
 | instance | 選択中の 1 要素 | signal / app state | 手動 bind |
 
-panel の scope 3 分割表示 (Phase B) は 2026-07-12 実装済み — RIGHT region が
-「App state (instance) → 画面上の component → Tokens (折りたたみ)」の順に、
-射程の狭い順で section 表示する。空 section は非表示。radius.full = 9999px の
-ような **sentinel 値 (px で 512 超) は 0-128px へ丸める** (`sliderSpecFor`。
-2026-08-06 まで除外していたが、button の丸みが panel から消えるため方針変更)。
-instance scope の data-attribute discovery は将来の設計課題。
+radius.full = 9999px のような **sentinel 値 (px で 512 超) は 0-128px へ丸める**
+(`sliderSpecFor`。2026-08-06 まで除外していたが、button の丸みが panel から
+消えるため方針変更)。instance scope の data-attribute discovery は将来の設計課題。
+
+panel の scope 3 分割表示 (2026-07-12 の Phase B) は **2026-08-06 に一旦撤去**した。
+「選ぶ前に全部並んでいる」構造がそもそも渋滞の原因だったので、panel を白紙に戻して
+Discovery から積み直す (次節)。
 
 **tweak var は「使用箇所に fallback」で書く (pattern B) こと**。base rule 側で
 `.creo-card { --_card__pad: var(--spacing-m); padding: calc(var(--_card__pad) * ...) }`
@@ -353,6 +354,27 @@ component ↔ class が 1:1 なので DOM 側も軽い:
 選択対象は「明示 bind (`data-editor-fields`) > class 由来のノブ > creo-ui component
 ではあるがノブ無し」の優先順で祖先方向へ辿る。最後の fallback があるので、
 ノブ未整備の component でも「何を選んだか」は panel に出る。
+
+### Panel の作り直し — Discovery から積む (2026-08-06〜)
+
+規約ベースになったことで **panel に component 一覧を出せる**ようになった。
+これを受けて panel を白紙に戻し、段階的に組み直している。
+
+旧 panel は「Mode を ON にした瞬間に、触れるもの全部が並んでいる」構造だった。
+scope で 3 分割しても、選ぶ前から候補が全部見えている点は変わらず、渋滞の
+根本原因はそこにあった。**選んでから出す**へ反転する。
+
+現在の panel は **Discovery section 1 つだけ**:
+
+- `resolver.components()` が「今のページに居る component」を列挙する
+  (index の keys × `document.querySelector('.creo-<id>')` の presence 判定)
+- 1 つ選ぶと `selectComponent(id)` が代表要素を引き当て、その要素で fallback を
+  解決してノブを register し、対象に outline を出して視界へ寄せる
+- 画面に無い component は既定で出さない — ノブを回しても変化が見えないため
+
+旧 panel の 3-scope field 一覧 / ThemeEditor / ExportBar は **外してある**
+(`theme-editor.tsx` / `export-bar.tsx` はファイルとしては残置)。
+次段は「選んだ component のノブを出す section」。
 
 **トレードオフ**: 規約ベースは variant 固有ノブ (`.creo-btn--sm` を選んだときだけ
 出るノブ) を表現できない。selector 逆引きなら可能だったが、現状 variant 側は
