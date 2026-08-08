@@ -10,11 +10,19 @@
  * Mode OFF では `visibility: hidden`。Mode ON で floating panel 1 枚 +
  * selection outline を描画する (D-6 非侵襲 — Content の layout は一切変えない)。
  *
- * ## 現在の構成
+ * ## 現在の構成 — Discovery tree + drill-in
  *
- * panel は **Discovery section 1 つだけ**。「このページに居る creo-ui component を
- * 並べ、1 つ選ぶ」が今できることの全部。選ぶと対象に outline が付き、その component
- * のノブが host に register される (値を回す UI は次段)。
+ * panel は 2 view を selection state で切り替える:
+ *
+ * - **tree view** (選択なし): ページの実 DOM から作った creo component の
+ *   instance ツリー (Outliner 的)。非 creo 要素は素通し、同 component の
+ *   sibling は `×N` に畳む
+ * - **detail view** (選択あり): 選んだ component のノブが並ぶ。← で tree へ戻る
+ *
+ * ツリーはナビゲーションで、編集は component scope のまま (`:root` 書き込み =
+ * 全 instance に効く)。選んだ instance は outline の対象と fallback 解決の
+ * 基準要素として使う。ページ上の要素クリックも同じ selection state に載るので、
+ * どちらの入口から入っても detail view に着地する。
  *
  * 旧 panel が持っていた 3-scope field 一覧 / ThemeEditor / ExportBar は **一旦外した**
  * (`theme-editor.tsx` / `export-bar.tsx` は残置)。段階的に組み直す。
@@ -22,10 +30,12 @@
 import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Portal } from 'solid-js/web'
-import type { ComponentEntry } from './component-fields'
+import type { ComponentTreeNode } from './component-tree'
+import { FieldEditor } from './fields'
 import { useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
 import { useComponentResolver, useEditorHost } from './provider'
+import type { EditorField } from './types'
 
 // ---------- Styles ----------
 
@@ -130,37 +140,54 @@ const sectionTitleStyle: JSX.CSSProperties = {
   color: 'var(--color-brand-primary)',
 }
 
-const countStyle: JSX.CSSProperties = {
-  'margin-left': 'auto',
-  'font-weight': '400',
-  color: 'var(--color-text-tertiary)',
-}
-
 const listStyle: JSX.CSSProperties = {
   display: 'flex',
   'flex-direction': 'column',
-  gap: '2px',
+  gap: '1px',
   margin: '0',
   padding: '0',
   'list-style': 'none',
 }
 
-const itemStyle = (active: boolean): JSX.CSSProperties => ({
+const rowStyle = (depth: number): JSX.CSSProperties => ({
   display: 'flex',
   'align-items': 'center',
-  gap: '8px',
-  width: '100%',
-  padding: '5px 8px',
-  background: active ? 'var(--color-brand-primary-subtle)' : 'transparent',
-  border: '1px solid',
-  'border-color': active ? 'var(--color-brand-primary)' : 'transparent',
-  'border-radius': '5px',
+  gap: '2px',
+  'padding-left': `${depth * 12}px`,
+})
+
+const twistyStyle: JSX.CSSProperties = {
+  width: '14px',
+  padding: '0',
+  background: 'none',
+  border: 'none',
+  'font-size': '10px',
+  color: 'var(--color-text-tertiary)',
+  cursor: 'pointer',
+  'flex-shrink': '0',
+}
+
+const rowLabelStyle: JSX.CSSProperties = {
+  display: 'flex',
+  'align-items': 'center',
+  gap: '6px',
+  flex: '1',
+  'min-width': '0',
+  padding: '3px 6px',
+  background: 'transparent',
+  border: 'none',
+  'border-radius': '4px',
   'font-family': 'var(--typography-family-mono, monospace)',
   'font-size': '11px',
   'text-align': 'left',
-  color: active ? 'var(--text-brand-readable)' : 'var(--color-text-primary)',
+  color: 'var(--color-text-primary)',
   cursor: 'pointer',
-})
+}
+
+const countBadgeStyle: JSX.CSSProperties = {
+  'font-size': '10px',
+  color: 'var(--color-text-tertiary)',
+}
 
 const knobCountStyle: JSX.CSSProperties = {
   'margin-left': 'auto',
@@ -174,6 +201,88 @@ const emptyHintStyle: JSX.CSSProperties = {
   color: 'var(--color-text-tertiary)',
   'font-style': 'italic',
   margin: '0',
+}
+
+const backButtonStyle: JSX.CSSProperties = {
+  display: 'inline-flex',
+  'align-items': 'center',
+  gap: '4px',
+  padding: '2px 8px',
+  background: 'transparent',
+  border: '1px solid var(--editor-mode-region-border)',
+  'border-radius': '4px',
+  'font-size': '10px',
+  color: 'var(--color-text-secondary)',
+  cursor: 'pointer',
+  'flex-shrink': '0',
+}
+
+const detailTitleStyle: JSX.CSSProperties = {
+  'font-family': 'var(--typography-family-mono, monospace)',
+  'font-size': '11px',
+  'font-weight': '700',
+  color: 'var(--color-brand-primary)',
+  'white-space': 'nowrap',
+  overflow: 'hidden',
+  'text-overflow': 'ellipsis',
+}
+
+// ---------- Discovery tree ----------
+
+function TreeRow(props: {
+  node: ComponentTreeNode
+  depth: number
+  onPick: (node: ComponentTreeNode) => void
+  pickHint: string
+}): JSX.Element {
+  const [open, setOpen] = createSignal(true)
+  return (
+    <li>
+      <div style={rowStyle(props.depth)}>
+        <Show
+          when={props.node.children.length > 0}
+          fallback={<span style={{ width: '14px', 'flex-shrink': '0' }} />}
+        >
+          <button
+            type="button"
+            style={twistyStyle}
+            onClick={() => setOpen(!open())}
+            aria-label={open() ? 'collapse' : 'expand'}
+          >
+            {open() ? '▾' : '▸'}
+          </button>
+        </Show>
+        <button
+          type="button"
+          style={rowLabelStyle}
+          onClick={() => props.onPick(props.node)}
+          title={props.pickHint}
+        >
+          {props.node.label}
+          <Show when={props.node.count > 1}>
+            <span style={countBadgeStyle}>×{props.node.count}</span>
+          </Show>
+          <Show when={props.node.knobCount > 0}>
+            <span style={knobCountStyle}>{props.node.knobCount}</span>
+          </Show>
+        </button>
+      </div>
+      <Show when={open() && props.node.children.length > 0}>
+        <ul style={listStyle}>
+          <For each={props.node.children}>
+            {(child) => (
+              <TreeRow
+                node={child}
+                depth={props.depth + 1}
+                onPick={props.onPick}
+                pickHint={props.pickHint}
+              />
+            )}
+          </For>
+        </ul>
+      </Show>
+    </li>
+  )
 }
 
 // ---------- Outline (selection) ----------
@@ -207,18 +316,18 @@ export function EditorLayer(): JSX.Element {
   const resolver = useComponentResolver()
   const t = useT()
 
-  // ---- Discovery: このページに居る component ----
+  // ---- Discovery: ページの実 DOM から作る component ツリー ----
   //
-  // resolver.components() は副作用なしで、毎回 DOM presence を引き直す。
-  // signal に積んで「Mode ON になったとき」と「選択したとき」に取り直す —
-  // SPA の route 遷移で顔ぶれが変わるので、開いた瞬間の一覧を固定しない。
-  const [entries, setEntries] = createSignal<ComponentEntry[]>([])
+  // resolver.tree() は副作用なしで、呼ぶたびに DOM を歩き直す。
+  // 「Mode ON」と「detail から戻った」タイミングで取り直す — SPA の route 遷移や
+  // 編集中の DOM 変化で顔ぶれが変わるので、開いた瞬間のツリーを固定しない。
+  const [tree, setTree] = createSignal<ComponentTreeNode[]>([])
   const refresh = (): void => {
-    setEntries(resolver ? resolver.components() : [])
+    setTree(resolver ? resolver.tree() : [])
   }
 
   createEffect(() => {
-    if (mode() === 'on') refresh()
+    if (mode() === 'on' && !selection()) refresh()
   })
 
   /** 選択中の代表要素。outline の rect 追従に使う */
@@ -230,21 +339,37 @@ export function EditorLayer(): JSX.Element {
     host.select({ ...sel, rect: pickedEl.getBoundingClientRect() })
   }
 
-  const pick = (entry: ComponentEntry): void => {
+  const pick = (node: ComponentTreeNode): void => {
     if (!resolver) return
-    const picked = resolver.selectComponent(entry.id)
-    if (!picked) return
-    pickedEl = picked.element
-    const rect = picked.element?.getBoundingClientRect() ?? new DOMRect()
+    // その instance の class からノブを引き、fallback もその instance で解決する
+    const fieldIds = resolver.register(resolver.match(node.element), node.element)
+    pickedEl = node.element
     host.select({
-      targetId: entry.label,
-      componentId: picked.componentId,
-      fieldIds: picked.fieldIds,
-      rect,
+      targetId: node.label,
+      componentId: node.componentId,
+      fieldIds,
+      rect: node.element.getBoundingClientRect(),
     })
-    // 画面外の component を選んだときに「どこにあるか」が判らないので寄せる。
+    // 画面外の instance を選んだときに「どこにあるか」が判らないので寄せる。
     // 明示的な選択操作に対する応答なので D-6 の非侵襲には抵触しない。
-    picked.element?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+    node.element.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  }
+
+  // ---- Detail: 選択中 component のノブ ----
+
+  const detailFields = (): EditorField[] => {
+    const sel = selection()
+    if (!sel) return []
+    const idSet = new Set(sel.fieldIds)
+    return host
+      .fields()
+      .filter((f: EditorField) => idSet.has(f.id))
+      .sort((a: EditorField, b: EditorField) => (a.order ?? 0) - (b.order ?? 0))
+  }
+
+  const back = (): void => {
+    pickedEl = null
+    host.clearSelection()
   }
 
   // scroll / resize で outline がズレないよう rect を引き直す
@@ -376,41 +501,58 @@ export function EditorLayer(): JSX.Element {
               </div>
             </header>
 
-            <section style={sectionStyle}>
-              <div style={sectionTitleStyle}>
-                <span style={dotStyle('var(--color-brand-primary)')} />
-                {t(messages.discovery.title)}
-                <span style={countStyle}>{entries().length}</span>
-              </div>
-
-              <Show
-                when={resolver}
-                fallback={<p style={emptyHintStyle}>{t(messages.discovery.disabled)}</p>}
-              >
-                <Show
-                  when={entries().length > 0}
-                  fallback={<p style={emptyHintStyle}>{t(messages.discovery.empty)}</p>}
-                >
-                  <ul style={listStyle}>
-                    <For each={entries()}>
-                      {(entry) => (
-                        <li>
-                          <button
-                            type="button"
-                            style={itemStyle(selection()?.componentId === entry.id)}
-                            onClick={() => pick(entry)}
-                            title={t(messages.discovery.pickHint)}
-                          >
-                            {entry.label}
-                            <span style={knobCountStyle}>{entry.knobCount}</span>
-                          </button>
-                        </li>
-                      )}
-                    </For>
-                  </ul>
-                </Show>
-              </Show>
-            </section>
+            <Show
+              when={selection()}
+              fallback={
+                <section style={sectionStyle}>
+                  <div style={sectionTitleStyle}>
+                    <span style={dotStyle('var(--color-brand-primary)')} />
+                    {t(messages.discovery.title)}
+                  </div>
+                  <Show
+                    when={resolver}
+                    fallback={<p style={emptyHintStyle}>{t(messages.discovery.disabled)}</p>}
+                  >
+                    <Show
+                      when={tree().length > 0}
+                      fallback={<p style={emptyHintStyle}>{t(messages.discovery.empty)}</p>}
+                    >
+                      <ul style={listStyle}>
+                        <For each={tree()}>
+                          {(node) => (
+                            <TreeRow
+                              node={node}
+                              depth={0}
+                              onPick={pick}
+                              pickHint={t(messages.discovery.pickHint)}
+                            />
+                          )}
+                        </For>
+                      </ul>
+                    </Show>
+                  </Show>
+                </section>
+              }
+            >
+              {(sel) => (
+                <section style={sectionStyle}>
+                  <div style={{ display: 'flex', 'align-items': 'center', gap: '8px' }}>
+                    <button type="button" style={backButtonStyle} onClick={back}>
+                      ← {t(messages.discovery.back)}
+                    </button>
+                    <span style={detailTitleStyle}>{sel().targetId}</span>
+                  </div>
+                  <Show
+                    when={detailFields().length > 0}
+                    fallback={
+                      <p style={emptyHintStyle}>{t(messages.toolPanel.noKnobsForComponent)}</p>
+                    }
+                  >
+                    <For each={detailFields()}>{(field) => <FieldEditor field={field} />}</For>
+                  </Show>
+                </section>
+              )}
+            </Show>
           </div>
         </Show>
       </div>

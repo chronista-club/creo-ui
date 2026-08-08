@@ -364,17 +364,24 @@ component ↔ class が 1:1 なので DOM 側も軽い:
 scope で 3 分割しても、選ぶ前から候補が全部見えている点は変わらず、渋滞の
 根本原因はそこにあった。**選んでから出す**へ反転する。
 
-現在の panel は **Discovery section 1 つだけ**:
+Discovery の形は 2026-08-09 の設計議論で確定 — **DOM ツリー (Outliner 的) ×
+drill-in**。panel は 2 view を selection state で切り替える:
 
-- `resolver.components()` が「今のページに居る component」を列挙する
-  (index の keys × `document.querySelector('.creo-<id>')` の presence 判定)
-- 1 つ選ぶと `selectComponent(id)` が代表要素を引き当て、その要素で fallback を
-  解決してノブを register し、対象に outline を出して視界へ寄せる
-- 画面に無い component は既定で出さない — ノブを回しても変化が見えないため
+- **tree view** (選択なし): ページの実 DOM から作った creo component の
+  instance ツリー (`component-tree.ts` / `resolver.tree()`)。非 creo 要素は
+  素通しして子を引き上げ、同 component の sibling は `×N` に畳む
+  (Outliner の row 等で行が爆発するため。代表 = 最初の instance)。
+  sub-part の親子関係は DOM の入れ子として自然に出る
+- **detail view** (選択あり): ← 戻る + component 名 + ノブ (FieldEditor)。
+  300px の panel 幅を全部ノブに使う
+
+**ツリーはナビゲーション、編集は component scope のまま** (D-13)。選んだ
+instance は outline の対象と fallback 解決の基準要素として使うだけで、
+書き込み先は `:root` (全 instance に効く)。ページ上の要素クリックも同じ
+selection state に載るので、どちらの入口からでも detail view に着地する。
 
 旧 panel の 3-scope field 一覧 / ThemeEditor / ExportBar は **外してある**
 (`theme-editor.tsx` / `export-bar.tsx` はファイルとしては残置)。
-次段は「選んだ component のノブを出す section」。
 
 **トレードオフ**: 規約ベースは variant 固有ノブ (`.creo-btn--sm` を選んだときだけ
 出るノブ) を表現できない。selector 逆引きなら可能だったが、現状 variant 側は

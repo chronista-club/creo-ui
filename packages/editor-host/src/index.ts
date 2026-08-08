@@ -112,6 +112,7 @@ export {
   type ComponentSelection,
   type KnobIndex,
 } from './component-fields'
+export { buildComponentTree, type ComponentTreeNode } from './component-tree'
 export {
   COMPONENT_CLASS_PREFIX,
   TWEAK_SEPARATOR,

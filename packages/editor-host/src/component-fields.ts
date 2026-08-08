@@ -37,6 +37,7 @@ import {
   knobLabel,
   parseTweakVarName,
 } from './component-id'
+import { type ComponentTreeNode, buildComponentTree } from './component-tree'
 import type { EditorHost, EditorSemantic } from './types'
 
 /** panel のノブ 1 個 */
@@ -98,6 +99,11 @@ export interface ComponentFieldResolverOptions {
 }
 
 export interface ComponentFieldResolver {
+  /**
+   * ページの実 DOM から creo component の instance ツリーを作る (副作用なし)。
+   * Discovery panel の表示用 (`component-tree.ts`)。
+   */
+  tree(): ComponentTreeNode[]
   /**
    * 逆引き index に載っている component を列挙する (副作用なし)。
    * default は **現 DOM に居るものだけ** — 画面に無い component のノブを回しても
@@ -271,6 +277,10 @@ export function createComponentFieldResolver(
   }
 
   return {
+    tree: () => {
+      if (typeof document === 'undefined') return []
+      return buildComponentTree(document.body, ensureIndex())
+    },
     components,
     selectComponent,
     match: (el) => matchKnobs(el, ensureIndex()),

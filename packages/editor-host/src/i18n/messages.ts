@@ -48,7 +48,8 @@ export const messages = {
       en: 'Component discovery is disabled (discoverComponents: false).',
     },
     pickHint: { ja: '選択してノブを出す', en: 'Select to load its knobs' },
-  } satisfies Localized<'title' | 'empty' | 'disabled' | 'pickHint'>,
+    back: { ja: '戻る', en: 'Back' },
+  } satisfies Localized<'title' | 'empty' | 'disabled' | 'pickHint' | 'back'>,
 
   /** RIGHT region: ツール panel */
   toolPanel: {
