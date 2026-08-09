@@ -30,9 +30,10 @@
 import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Portal } from 'solid-js/web'
+import { componentDisplayName, componentIdOfElement, componentSelector } from './component-id'
 import type { ComponentTreeNode } from './component-tree'
 import { FieldEditor } from './fields'
-import { useEditorMode, useEditorSelection } from './hooks'
+import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
 import { useComponentResolver, useEditorHost } from './provider'
 import type { EditorField } from './types'
@@ -227,12 +228,30 @@ const detailTitleStyle: JSX.CSSProperties = {
   'text-overflow': 'ellipsis',
 }
 
+const breadcrumbRowStyle: JSX.CSSProperties = {
+  display: 'flex',
+  'flex-wrap': 'wrap',
+  gap: '4px',
+}
+
+const breadcrumbItemStyle: JSX.CSSProperties = {
+  padding: '1px 6px',
+  background: 'transparent',
+  border: '1px solid var(--editor-mode-region-border)',
+  'border-radius': '999px',
+  'font-family': 'var(--typography-family-mono, monospace)',
+  'font-size': '10px',
+  color: 'var(--color-text-secondary)',
+  cursor: 'pointer',
+}
+
 // ---------- Discovery tree ----------
 
 function TreeRow(props: {
   node: ComponentTreeNode
   depth: number
   onPick: (node: ComponentTreeNode) => void
+  onHover: (node: ComponentTreeNode | null) => void
   pickHint: string
 }): JSX.Element {
   const [open, setOpen] = createSignal(true)
@@ -256,6 +275,8 @@ function TreeRow(props: {
           type="button"
           style={rowLabelStyle}
           onClick={() => props.onPick(props.node)}
+          onMouseEnter={() => props.onHover(props.node)}
+          onFocus={() => props.onHover(props.node)}
           title={props.pickHint}
         >
           {props.node.label}
@@ -275,6 +296,7 @@ function TreeRow(props: {
                 node={child}
                 depth={props.depth + 1}
                 onPick={props.onPick}
+                onHover={props.onHover}
                 pickHint={props.pickHint}
               />
             )}
@@ -285,9 +307,21 @@ function TreeRow(props: {
   )
 }
 
-// ---------- Outline (selection) ----------
+// ---------- Outline (selection / siblings / hover) ----------
 
-function Outline(props: { rect: DOMRect }): JSX.Element {
+/**
+ * 選択の実体は class なので、outline は 3 段で「効果範囲」を正直に見せる:
+ * - active:  選択のアンカー instance (fallback 解決の基準。強い枠)
+ * - sibling: 同 class の他 instance (ノブを回すとここも変わる。淡い枠)
+ * - hover:   クリック/選択前のプレビュー (中間)
+ */
+function Outline(props: { rect: DOMRect; kind: 'active' | 'sibling' | 'hover' }): JSX.Element {
+  const border = (): string =>
+    props.kind === 'active'
+      ? 'var(--editor-mode-selection-outline-width) solid var(--editor-mode-selection-outline-active)'
+      : props.kind === 'hover'
+        ? 'var(--editor-mode-selection-outline-width) solid var(--editor-mode-selection-outline-hover)'
+        : '1px dashed var(--editor-mode-selection-outline-hover)'
   return (
     <div
       style={{
@@ -297,8 +331,8 @@ function Outline(props: { rect: DOMRect }): JSX.Element {
         width: `${props.rect.width + 4}px`,
         height: `${props.rect.height + 4}px`,
         'pointer-events': 'none',
-        border:
-          'var(--editor-mode-selection-outline-width) solid var(--editor-mode-selection-outline-active)',
+        border: border(),
+        opacity: props.kind === 'sibling' ? '0.55' : '1',
         'border-radius': '6px',
         'box-sizing': 'border-box',
         transition: 'all 80ms ease',
@@ -307,12 +341,51 @@ function Outline(props: { rect: DOMRect }): JSX.Element {
   )
 }
 
+/** hover / 選択対象の class 名を rect の上に浮かべる小ラベル */
+function OutlineLabel(props: { rect: DOMRect; text: string }): JSX.Element {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: `${Math.max(2, props.rect.left - 2)}px`,
+        top: `${Math.max(2, props.rect.top - 20)}px`,
+        padding: '1px 6px',
+        background: 'var(--editor-mode-selection-outline-active)',
+        color: 'var(--color-surface-bg, #fff)',
+        'font-family': 'var(--typography-family-mono, monospace)',
+        'font-size': '10px',
+        'border-radius': '3px',
+        'pointer-events': 'none',
+        'white-space': 'nowrap',
+      }}
+    >
+      {props.text}
+    </div>
+  )
+}
+
+/** element の祖先から creo component を集める (近い順)。breadcrumb 用 */
+function ancestorComponents(el: Element): { componentId: string; element: Element }[] {
+  const out: { componentId: string; element: Element }[] = []
+  let cur = el.parentElement
+  while (cur) {
+    const componentId = componentIdOfElement(cur)
+    if (componentId) out.push({ componentId, element: cur })
+    cur = cur.parentElement
+  }
+  return out
+}
+
+/** 同 class の instance 数上限 — table-cell 等で outline が描画負荷にならないように */
+const SIBLING_OUTLINE_MAX = 80
+
 // ---------- EditorLayer ----------
 
 export function EditorLayer(): JSX.Element {
   const host = useEditorHost()
   const mode = useEditorMode()
   const selection = useEditorSelection()
+  const hover = useEditorHover()
   const resolver = useComponentResolver()
   const t = useT()
 
@@ -330,32 +403,80 @@ export function EditorLayer(): JSX.Element {
     if (mode() === 'on' && !selection()) refresh()
   })
 
-  /** 選択中の代表要素。outline の rect 追従に使う */
-  let pickedEl: Element | null = null
-
   const syncRect = (): void => {
     const sel = host.selection()
-    if (!sel || !pickedEl) return
-    host.select({ ...sel, rect: pickedEl.getBoundingClientRect() })
+    if (!sel?.element) return
+    host.select({ ...sel, rect: sel.element.getBoundingClientRect() })
   }
 
-  const pick = (node: ComponentTreeNode): void => {
+  /** 要素を選択の実体として確定する共通経路 (tree pick / breadcrumb / ページ click 後段) */
+  const selectElement = (element: Element, componentId: string): void => {
     if (!resolver) return
     // その instance の class からノブを引き、fallback もその instance で解決する
-    const fieldIds = resolver.register(resolver.match(node.element), node.element)
-    pickedEl = node.element
+    const fieldIds = resolver.register(resolver.match(element), element)
     host.select({
-      targetId: node.label,
-      componentId: node.componentId,
+      targetId: componentDisplayName(componentId),
+      componentId,
       fieldIds,
-      rect: node.element.getBoundingClientRect(),
+      element,
+      rect: element.getBoundingClientRect(),
     })
     // 画面外の instance を選んだときに「どこにあるか」が判らないので寄せる。
     // 明示的な選択操作に対する応答なので D-6 の非侵襲には抵触しない。
-    node.element.scrollIntoView({ block: 'center', behavior: 'smooth' })
+    element.scrollIntoView({ block: 'center', behavior: 'smooth' })
   }
 
-  // ---- Detail: 選択中 component のノブ ----
+  const pick = (node: ComponentTreeNode): void => {
+    selectElement(node.element, node.componentId)
+  }
+
+  /** tree の行 hover → ページ上の該当 instance に outline (双方向 hover の tree 側) */
+  const hoverNode = (node: ComponentTreeNode | null): void => {
+    if (!node) {
+      host.setHover(null)
+      return
+    }
+    host.setHover({
+      targetId: node.label,
+      fieldIds: [],
+      componentId: node.componentId,
+      element: node.element,
+      rect: node.element.getBoundingClientRect(),
+    })
+  }
+
+  // ---- Hybrid outline: 選択の実体は class なので、同 class の全 instance を淡く囲う ----
+  //
+  // 「囲っていないものが変わった」驚きを防ぐ (編集は component scope = 全 instance)。
+  // rect は scroll / resize / 選択変更で引き直す。
+  const [siblingRects, setSiblingRects] = createSignal<DOMRect[]>([])
+
+  const syncSiblings = (): void => {
+    const sel = host.selection()
+    if (!sel?.componentId || typeof document === 'undefined') {
+      setSiblingRects([])
+      return
+    }
+    try {
+      const all = document.querySelectorAll(componentSelector(sel.componentId))
+      const rects: DOMRect[] = []
+      for (const el of Array.from(all).slice(0, SIBLING_OUTLINE_MAX)) {
+        if (el === sel.element) continue // アンカーは active outline が担当
+        rects.push(el.getBoundingClientRect())
+      }
+      setSiblingRects(rects)
+    } catch {
+      setSiblingRects([])
+    }
+  }
+
+  createEffect(() => {
+    // 選択 (componentId) が変わったら sibling を引き直す
+    void selection()?.componentId
+    syncSiblings()
+  })
+
+  // ---- Detail: 選択中 component のノブ + 祖先への梯子 ----
 
   const detailFields = (): EditorField[] => {
     const sel = selection()
@@ -367,19 +488,28 @@ export function EditorLayer(): JSX.Element {
       .sort((a: EditorField, b: EditorField) => (a.order ?? 0) - (b.order ?? 0))
   }
 
+  /** 選択アンカーの祖先 creo component (近い順)。detail の breadcrumb に出す */
+  const ancestors = (): { componentId: string; element: Element }[] => {
+    const el = selection()?.element
+    return el ? ancestorComponents(el) : []
+  }
+
   const back = (): void => {
-    pickedEl = null
     host.clearSelection()
   }
 
-  // scroll / resize で outline がズレないよう rect を引き直す
+  // scroll / resize で outline がズレないよう rect を引き直す (anchor + siblings)
+  const syncAll = (): void => {
+    syncRect()
+    syncSiblings()
+  }
   createEffect(() => {
     if (mode() !== 'on') return
-    window.addEventListener('scroll', syncRect, true)
-    window.addEventListener('resize', syncRect)
+    window.addEventListener('scroll', syncAll, true)
+    window.addEventListener('resize', syncAll)
     onCleanup(() => {
-      window.removeEventListener('scroll', syncRect, true)
-      window.removeEventListener('resize', syncRect)
+      window.removeEventListener('scroll', syncAll, true)
+      window.removeEventListener('resize', syncAll)
     })
   })
 
@@ -476,7 +606,26 @@ export function EditorLayer(): JSX.Element {
     <Portal>
       <div data-editor-layer style={layerRootStyle(mode() === 'on')}>
         <Show when={mode() === 'on'}>
-          <Show when={selection()}>{(s) => <Outline rect={s().rect} />}</Show>
+          {/* 同 class の他 instance (淡)。「ノブを回すとここも変わる」の可視化 */}
+          <For each={siblingRects()}>{(r) => <Outline rect={r} kind="sibling" />}</For>
+          {/* 選択アンカー (強) + class 名ラベル */}
+          <Show when={selection()}>
+            {(s) => (
+              <>
+                <Outline rect={s().rect} kind="active" />
+                <OutlineLabel rect={s().rect} text={s().targetId} />
+              </>
+            )}
+          </Show>
+          {/* hover プレビュー (選択前のみ)。何が選ばれるかを click 前に見せる */}
+          <Show when={!selection() && hover()}>
+            {(h) => (
+              <>
+                <Outline rect={h().rect} kind="hover" />
+                <OutlineLabel rect={h().rect} text={h().targetId} />
+              </>
+            )}
+          </Show>
 
           <div
             ref={(el) => {
@@ -495,8 +644,11 @@ export function EditorLayer(): JSX.Element {
                 </span>
               </div>
               <div style={panelHintStyle}>
-                <kbd style={kbdInlineStyle}>Esc</kbd> {t(messages.editorMode.escapeToExit)} ·{' '}
-                <kbd style={kbdInlineStyle}>Ctrl+Shift+E</kbd>{' '}
+                <kbd style={kbdInlineStyle}>Esc</kbd>{' '}
+                {selection()
+                  ? t(messages.editorMode.escapeToDeselect)
+                  : t(messages.editorMode.escapeToExit)}{' '}
+                · <kbd style={kbdInlineStyle}>Ctrl+Shift+E</kbd>{' '}
                 {t(messages.editorMode.toggleShortcut)}
               </div>
             </header>
@@ -517,13 +669,14 @@ export function EditorLayer(): JSX.Element {
                       when={tree().length > 0}
                       fallback={<p style={emptyHintStyle}>{t(messages.discovery.empty)}</p>}
                     >
-                      <ul style={listStyle}>
+                      <ul style={listStyle} onMouseLeave={() => hoverNode(null)}>
                         <For each={tree()}>
                           {(node) => (
                             <TreeRow
                               node={node}
                               depth={0}
                               onPick={pick}
+                              onHover={hoverNode}
                               pickHint={t(messages.discovery.pickHint)}
                             />
                           )}
@@ -542,6 +695,22 @@ export function EditorLayer(): JSX.Element {
                     </button>
                     <span style={detailTitleStyle}>{sel().targetId}</span>
                   </div>
+                  {/* 祖先への梯子 — 入れ子の内側を選んだとき、親 component へ 1 click で上がる */}
+                  <Show when={ancestors().length > 0}>
+                    <div style={breadcrumbRowStyle}>
+                      <For each={ancestors()}>
+                        {(a) => (
+                          <button
+                            type="button"
+                            style={breadcrumbItemStyle}
+                            onClick={() => selectElement(a.element, a.componentId)}
+                          >
+                            ↑ {a.componentId}
+                          </button>
+                        )}
+                      </For>
+                    </div>
+                  </Show>
                   <Show
                     when={detailFields().length > 0}
                     fallback={

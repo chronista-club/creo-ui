@@ -380,6 +380,32 @@ instance は outline の対象と fallback 解決の基準要素として使う�
 書き込み先は `:root` (全 instance に効く)。ページ上の要素クリックも同じ
 selection state に載るので、どちらの入口からでも detail view に着地する。
 
+選択の意味論は 2026-08-09 の設計議論で確定した。北極星は **「開発中に気に
+なった箇所を、その場で即調整できる」** — 気づく → 指す → 回す、の摩擦最小化:
+
+- **選択の実体は class** (`--_<component>__` の component = `.creo-<component>`)。
+  instance はアンカーで、「どの個体を基準に fallback を読んだか」「outline と
+  scroll の行き先」にだけ使う
+- **outline はハイブリッド** — アンカー instance は強い枠、同 class の他 instance
+  は淡い破線 (上限 80)。編集は component scope (全 instance に効く) なので、
+  囲い方が効果範囲とズレると「囲っていないものが変わった」驚きが起きる。
+  それを構造的に防ぐ
+- **入れ子は最内 + 祖先への梯子** — クリックは指したもの (最内の creo component)
+  を選び、detail header の breadcrumb (`↑ card-header ↑ card`) で親へ 1 click で
+  上がれる
+- **hover は双方向** — tree の行 hover でページ上の該当 instance に outline、
+  ページ hover で outline + class 名ラベル。Discovery の「この行は画面のどれ？」
+  「クリックしたら何が選ばれる？」を両側から解く
+- **Esc は 2 段** — 選択中は解除 (detail → tree)、未選択なら Mode OFF
+
+編集の射程は **ノブ + 脱出ハッチ** で確定 (未実装、次段):
+宣言済み tweak var のノブが「良い経路」(型付き slider / SSOT fallback / density
+連動を保つ)。加えて detail に「他の property」を置き、class の実 CSS 宣言を
+一覧 → 任意の property を注入 stylesheet の `.creo-<component>` override rule で
+上書きできるようにする。class 単位 = component scope の原則と一貫し、export も
+「component CSS への変更提案」として成立する。ただし `calc(var × density)` の
+式ごと上書きになるため、構造を保った編集はあくまでノブ側。
+
 旧 panel の 3-scope field 一覧 / ThemeEditor / ExportBar は **外してある**
 (`theme-editor.tsx` / `export-bar.tsx` はファイルとしては残置)。
 

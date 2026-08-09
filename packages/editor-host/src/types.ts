@@ -66,6 +66,12 @@ export interface SelectionInfo {
    * 逆引き経路で解決される。明示 bind だけの要素では undefined。
    */
   componentId?: string
+  /**
+   * 選択のアンカー要素。選択の実体は class (component) で、element は
+   * 「どの instance を基準に見ているか」— outline の強調・rect 追従・
+   * 祖先 breadcrumb の起点に使う。
+   */
+  element?: Element
   /** 描画用の bounding rect (ResizeObserver / scroll / resize で更新) */
   rect: DOMRect
 }

@@ -179,6 +179,7 @@ export function installSelectionHandlers(opts: SelectionHandlersOptions): () => 
       targetId: selectableIdOf(found),
       fieldIds: previewFieldIds(found),
       componentId: found.componentId ?? undefined,
+      element: found.element,
       rect: found.element.getBoundingClientRect(),
     })
   }
@@ -201,6 +202,7 @@ export function installSelectionHandlers(opts: SelectionHandlersOptions): () => 
       targetId: selectableIdOf(found),
       fieldIds: commitFieldIds(found),
       componentId: found.componentId ?? undefined,
+      element: found.element,
       rect: found.element.getBoundingClientRect(),
     })
     updateObserved(found.element)
