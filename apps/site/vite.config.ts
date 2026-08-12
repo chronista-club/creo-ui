@@ -5,7 +5,7 @@ import { creoAgentBridge } from './vite-plugins/creo-agent-bridge'
 
 // HTTPS is enabled so that visionOS Safari (and iOS Safari) accepts
 // `navigator.mediaDevices.getUserMedia()` over LAN IP — non-localhost http is not
-// a secure context. Self-signed cert: visit `https://<lan-ip>:5173/` once on the
+// a secure context. Self-signed cert: visit `https://<lan-ip>:13600/` once on the
 // device and tap "Visit Website" on the warning to trust it for the session.
 // CREO_SITE_HTTP=1 で http に fallback (localhost での browser automation / screenshot 用 —
 // Chrome は自己署名 interstitial への automation attach を拒否するため)。
@@ -19,8 +19,12 @@ export default defineConfig({
   plugins: useHttps ? [solid(), basicSsl(), creoAgentBridge()] : [solid(), creoAgentBridge()],
   server: {
     host: true,
-    port: 5173,
-    strictPort: false,
+    // ポート採番 SSOT ([[creo-port-ssot]] @ creo-memories) の creo-ui block
+    // = 13600-13699。base (13600) = dev、base+10 (13610) = 常駐コンテナ。
+    // strictPort: 塞がっていたら fail させる — 隣へ流れると demo の dev passthrough
+    // (Caddyfile の upstream 13600 固定) が静かに外れ、他プロジェクトの帯を侵食する。
+    port: 13600,
+    strictPort: true,
     // demo stage (container の Caddy) から proxy されると Host が demo.creo-ui 等になり、
     // vite の DNS rebinding 防御が 403 を返す。stage の dev passthrough
     // (apps/site/Caddyfile 参照) を通すために許可する。先頭ドットは subdomain 込みの

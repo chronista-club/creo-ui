@@ -53,7 +53,7 @@ bun test packages/editor-host/src/host.test.ts  # editor-host core state のテ�
 
 # demo stage (local Mac で apps/site を podman 常設配信)
 bun run site:build     # build:web + build:packages + apps/site を順にビルド → apps/site/dist
-bun run site:up        # site:build → image build → 起動 (http://demo.creo-ui/ or http://localhost:8080/creo-ui/)
+bun run site:up        # site:build → image build → 起動 (http://demo.creo-ui/ or http://localhost:13610/creo-ui/)
 bun run site:down      # 停止・削除
 # 常設: restart=always + host の dnsmasq (*.demo → 127.0.0.1) + podman machine 自動起動
 # LaunchAgent。構成の詳細は compose.yml のコメント参照

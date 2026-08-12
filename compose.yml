@@ -7,7 +7,10 @@
 # アクセス: http://demo.creo-ui/ (dnsmasq で *.creo-ui → 127.0.0.1、host :80 に bind。
 #           project 単位 TLD — /etc/resolver/creo-ui と対、project 追加時は sudo で resolver 追加)
 #           http://creo-ui.demo/ (汎用 *.demo wildcard — 新プロジェクトは追加設定ゼロでこちら)
-#           http://localhost:8080/creo-ui/ (従来経路、互換で維持)
+#           http://localhost:13610/creo-ui/ (port 直、[[creo-port-ssot]] の creo-ui block
+#           13600-13699。base=13600 が vite dev / base+10=13610 が本常駐コンテナ。
+#           旧 8080 は 2026-08-12 に 13610 へ移行 — ポート番号でプロジェクトを識別する台帳ルール)
+#           なお :80 は fleetstage との共有 edge (相談 2026-08-11) 稼働後にここから外す予定
 #
 # 常設の仕組み (2026-07-31):
 #   - restart: always — podman machine (VM) の boot 時に podman-restart.service が
@@ -16,7 +19,7 @@
 #     (~/Library/LaunchAgents/club.chronista.podman-machine.plist) が担う
 #   - :80 は wildcard bind (`80:80`)。macOS の low port 非特権 bind は wildcard
 #     (0.0.0.0) に限り許可され、`127.0.0.1:80:80` の指定 bind は root が要るため
-#     起動に失敗する (2026-07-31 実測)。従来の 8080 も gvproxy が `*:8080` で
+#     起動に失敗する (2026-07-31 実測)。13610 も gvproxy が `*:13610` で
 #     wildcard 公開なので露出姿勢は同等 (内容は公開 docs site と同一)
 #   - low port の壁は VM 内にもある (2026-07-31 実測): rootless podman が Linux の
 #     ip_unprivileged_port_start=1024 で :80 を弾く。podman machine 内に
@@ -42,5 +45,5 @@ services:
       dockerfile: Containerfile
     ports:
       - '80:80'
-      - '8080:80'
+      - '13610:80'
     restart: always

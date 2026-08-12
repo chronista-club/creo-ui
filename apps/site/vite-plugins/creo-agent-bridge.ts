@@ -6,11 +6,11 @@ import type { Plugin } from 'vite'
 // 手元の Claude (curl) → dev server → Vite HMR ws → ブラウザの window.creoEditor / CSS var。
 //
 //   # (A) live op を creoEditor に流す (片方向):
-//   curl -X POST http://localhost:5173/_creo/agent/cmd \
+//   curl -X POST http://localhost:13600/_creo/agent/cmd \
 //     -d '{"op":"picker","args":["--color-brand-primary","#ff5500"]}'
 //
 //   # (B) CSS var を live 反映 + tokens/*.json に永続化 (push + persist を 1 コマンド):
-//   curl -X POST http://localhost:5173/_creo/agent/set \
+//   curl -X POST http://localhost:13600/_creo/agent/set \
 //     -d '{"var":"--spacing-m","value":"20px"}'
 //
 // MVP transport = Vite HMR WebSocket を相乗り。将来 creo wire / unison に載せ替えるときは
