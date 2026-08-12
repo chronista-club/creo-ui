@@ -488,6 +488,13 @@ export function EditorLayer(): JSX.Element {
       .sort((a: EditorField, b: EditorField) => (a.order ?? 0) - (b.order ?? 0))
   }
 
+  /** TOP semantic の framework knob (typography.scale 等)。両 view で常時見せる */
+  const globalFields = (): EditorField[] =>
+    host
+      .fields()
+      .filter((f: EditorField) => f.semantic === 'global')
+      .sort((a: EditorField, b: EditorField) => (a.order ?? 0) - (b.order ?? 0))
+
   /** 選択アンカーの祖先 creo component (近い順)。detail の breadcrumb に出す */
   const ancestors = (): { componentId: string; element: Element }[] => {
     const el = selection()?.element
@@ -652,6 +659,13 @@ export function EditorLayer(): JSX.Element {
                 {t(messages.editorMode.toggleShortcut)}
               </div>
             </header>
+
+            {/* Global fields (TOP semantic) — typography.scale 等、常時見える framework knob */}
+            <Show when={globalFields().length > 0}>
+              <section style={sectionStyle}>
+                <For each={globalFields()}>{(field) => <FieldEditor field={field} />}</For>
+              </section>
+            </Show>
 
             <Show
               when={selection()}

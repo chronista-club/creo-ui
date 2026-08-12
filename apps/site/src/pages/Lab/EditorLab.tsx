@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   color,
@@ -47,18 +45,11 @@ export default function EditorLab() {
       <section>
         <h2 class="docs-section-title">Live demo</h2>
         <div class="docs-playground-frame">
-          <EditorHostProvider
-            config={{
-              localStorageNamespace: 'creo-ui-docs.playground',
-            }}
-          >
-            <PlaygroundDemo />
-            <EditorLayer />
-          </EditorHostProvider>
+          <PlaygroundDemo />
         </div>
         <p class="docs-page-helper">
-          Playground は scope 局所化されているため、 Editor Mode 効果はこの section 内のみ。 docs
-          site の他 page には影響しない (provider context の境界)。
+          Editor host は site 全体で 1 つ (App root の provider)。 この page の bind() も同じ host
+          に載る。 docs site の他 page には影響しない (provider context の境界)。
         </p>
       </section>
 
@@ -66,8 +57,6 @@ export default function EditorLab() {
         <h2 class="docs-section-title">この component の構成</h2>
         <pre class="docs-code">
           <code>{`import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   number,
   cssVarNumberTarget,

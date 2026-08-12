@@ -1,6 +1,20 @@
+import { EditorHostProvider, EditorLayer } from '@chronista-club/creo-ui-editor-host'
 import { Navigate, Route, Router } from '@solidjs/router'
 import { lazy } from 'solid-js'
+import type { JSX } from 'solid-js'
 import Layout from './layout/Layout'
+
+// Editor Mode は site 全体で 1 host (一本化 2026-08-13)。どのページでも
+// Ctrl+Shift+E で ON になり、Discovery がそのページの component を映す。
+// Portal (EditorLayer) は body 直下に mount されるので Layout の外に置く。
+function Root(props: { children?: JSX.Element }) {
+  return (
+    <EditorHostProvider config={{ localStorageNamespace: 'creo-ui-site' }}>
+      <Layout>{props.children}</Layout>
+      <EditorLayer />
+    </EditorHostProvider>
+  )
+}
 
 const Home = lazy(() => import('./pages/Home'))
 const Stub = lazy(() => import('./pages/Stub'))
@@ -79,7 +93,7 @@ const GettingStarted = lazy(() => import('./pages/GettingStarted'))
 export default function App() {
   return (
     // base: doc.anycreative.tech の hub 配下 /creo-ui/ で配信 (vite.config.ts の base と対)
-    <Router base="/creo-ui" root={Layout}>
+    <Router base="/creo-ui" root={Root}>
       <Route path="/" component={Home} />
       <Route path="/getting-started" component={GettingStarted} />
       <Route path="/foundations" component={Principles} />

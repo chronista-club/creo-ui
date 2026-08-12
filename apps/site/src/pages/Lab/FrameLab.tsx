@@ -36,10 +36,7 @@ export default function FrameLab() {
           パネルの slider (消失点 X / 水平線 Y / perspective) で精密調整できる (双方向 sync)。 →{' '}
           <A href="/concepts/frame-system">F-4 視線の概念</A> も参照。
         </p>
-        <GazeLivePreview
-          namespace="creo-ui-docs.playground-gaze"
-          shortcut={{ ctrl: true, shift: true, key: 'g' }}
-        />
+        <GazeLivePreview />
       </section>
 
       <section>
