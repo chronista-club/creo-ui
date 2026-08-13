@@ -80,27 +80,43 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   // 対象外 (layout 密度は density mode の管轄)。persistence: localStorage —
   // 老眼設定のような「その人の既定」を reload 越しに保つ。
   //
-  // typography.size.*: Size scale の梯子ノブ (xs–xl)。「default が小さい」等を
-  // Editor で体感調整し、決まった値を tokens/ の SSOT へ焼くための一時ノブなので
-  // persistence は敢えて無し。書き込みは calc(<px> * var(--typography-scale, 1)) —
-  // 素の px を inline に書くと emit の calc を潰して scale スライダーが死ぬため、
-  // 梯子 × 倍率が両立する形で :root へ書く。initial は tokens/typography/size.json
-  // の SSOT 値と揃える (このノブ自体がその改定のための道具)。
-  const sizePxApply =
-    (cssVar: string) =>
-    (v: number): void => {
+  // 梯子ノブ (typography.size.* / radius.*): token の 5 段梯子を Editor で体感調整し、
+  // 決まった値を tokens/ の SSOT へ焼くための一時ノブなので persistence は敢えて無し。
+  // initial は各 SSOT 値と揃える (このノブ自体がその改定のための道具)。
+  //
+  // 書き込みは lazy — register 時の initial 適用では :root に書かない。ノブを
+  // 触っていないのに inline 値で token の emit (rem / calc) を潰すと、browser の
+  // font 設定追従 (rem) が provider の mount だけで死ぬため。動かして初めて書く。
+  const lazyVarApply = (cssVar: string, format: (v: number) => string) => {
+    let first = true
+    return (v: number): void => {
+      if (first) {
+        // host.register() が initial を 1 度だけ適用する — それは skip
+        first = false
+        return
+      }
       if (typeof document === 'undefined') return
-      document.documentElement.style.setProperty(
-        cssVar,
-        `calc(${v}px * var(--typography-scale, 1))`,
-      )
+      document.documentElement.style.setProperty(cssVar, format(v))
     }
+  }
+  // typography は calc(<px> * var(--typography-scale, 1)) — 素の px だと emit の
+  // calc を潰して scale スライダーが死ぬため、梯子 × 倍率が両立する形で書く
+  const typographyPx = (v: number): string => `calc(${v}px * var(--typography-scale, 1))`
+  const plainPx = (v: number): string => `${v}px`
+
   const SIZE_LADDER = [
     ['xs', 13],
     ['s', 15],
     ['m', 17],
     ['l', 18.5],
     ['xl', 20.5],
+  ] as const
+  const RADIUS_LADDER = [
+    ['xs', 4],
+    ['s', 8],
+    ['m', 15],
+    ['l', 22],
+    ['xl', 28],
   ] as const
   const frameworkFields: EditorField[] = [
     {
@@ -128,7 +144,23 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         initial: px,
         constraints: { min: 8, max: 32, step: 0.5, unit: 'px' },
         role: 'user',
-        apply: sizePxApply(`--typography-size-${tier}`),
+        apply: lazyVarApply(`--typography-size-${tier}`, typographyPx),
+      }),
+    ),
+    // radius の 5 段梯子。none (0) / full (9999 sentinel) は対象外
+    ...RADIUS_LADDER.map(
+      ([tier, px], i): EditorField => ({
+        id: `radius.${tier}`,
+        label: `radius.${tier}`,
+        type: 'number',
+        semantic: 'global',
+        scope: 'token',
+        group: 'Radius scale',
+        order: 20 + i,
+        initial: px,
+        constraints: { min: 0, max: 48, step: 0.5, unit: 'px' },
+        role: 'user',
+        apply: lazyVarApply(`--radius-${tier}`, plainPx),
       }),
     ),
   ]

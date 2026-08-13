@@ -127,11 +127,41 @@ const RUBRIC: readonly RubricItem[] = [
 
 const RADII: readonly DimensionToken[] = [
   { name: 'radius.none', cssVar: '--radius-none', value: '0px', hint: 'Explicit reset (special)' },
-  { name: 'radius.xs', cssVar: '--radius-xs', value: '4px', hint: 'Chip / Tag' },
-  { name: 'radius.s', cssVar: '--radius-s', value: '8px', hint: 'Button / Input' },
-  { name: 'radius.m', cssVar: '--radius-m', value: '15px', hint: 'Card / Popover (default)' },
-  { name: 'radius.l', cssVar: '--radius-l', value: '22px', hint: 'Modal / Drawer' },
-  { name: 'radius.xl', cssVar: '--radius-xl', value: '28px', hint: 'Hero surface' },
+  {
+    name: 'radius.xs',
+    editorField: 'radius.xs',
+    cssVar: '--radius-xs',
+    value: '4px',
+    hint: 'Chip / Tag',
+  },
+  {
+    name: 'radius.s',
+    editorField: 'radius.s',
+    cssVar: '--radius-s',
+    value: '8px',
+    hint: 'Button / Input',
+  },
+  {
+    name: 'radius.m',
+    editorField: 'radius.m',
+    cssVar: '--radius-m',
+    value: '15px',
+    hint: 'Card / Popover (default)',
+  },
+  {
+    name: 'radius.l',
+    editorField: 'radius.l',
+    cssVar: '--radius-l',
+    value: '22px',
+    hint: 'Modal / Drawer',
+  },
+  {
+    name: 'radius.xl',
+    editorField: 'radius.xl',
+    cssVar: '--radius-xl',
+    value: '28px',
+    hint: 'Hero surface',
+  },
   {
     name: 'radius.full',
     cssVar: '--radius-full',
@@ -220,7 +250,7 @@ export default function Radius() {
 
       <section>
         <h2 class="docs-section-title">Live tokens</h2>
-        <DimensionScale tokens={RADII} type="radius" />
+        <DimensionScale tokens={RADII} type="radius" card />
       </section>
 
       <section>
