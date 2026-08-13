@@ -30,7 +30,7 @@
   align-items: center;
   justify-content: center;
   font-family: inherit;
-  font-size: var(--_ui-icon-size, var(--typography-icon-s));
+  font-size: var(--_ui-icon__size, var(--typography-icon-s));
   line-height: 1;
   color: currentColor;
   user-select: none;

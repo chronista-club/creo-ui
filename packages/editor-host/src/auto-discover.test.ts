@@ -123,12 +123,15 @@ describe('tweakVarToId / tweakPlacement', () => {
     expect(tweakVarToId('--_badge-pad-x')).toBe('badge.pad.x')
     expect(tweakVarToId('--_button-radius')).toBe('button.radius')
   })
-  test('placement: 先頭 segment が group、残りが label', () => {
-    expect(tweakPlacement('--_badge-pad-x')).toEqual({ group: 'badge', label: 'Pad X' })
-    expect(tweakPlacement('--_button-radius')).toEqual({ group: 'button', label: 'Radius' })
+  test('placement: __ の左が group、右が label', () => {
+    expect(tweakPlacement('--_badge__pad-x')).toEqual({ group: 'badge', label: 'Pad X' })
+    expect(tweakPlacement('--_error-boundary__pad-x')).toEqual({
+      group: 'error-boundary',
+      label: 'Pad X',
+    })
   })
-  test('placement: segment 1 個だけなら group 名がそのまま label', () => {
-    expect(tweakPlacement('--_gap')).toEqual({ group: 'gap', label: 'Gap' })
+  test('placement: 規約外の名前は捨てずに group 無しで置く', () => {
+    expect(tweakPlacement('--_gap')).toEqual({ group: 'tweak', label: 'gap' })
   })
 })
 

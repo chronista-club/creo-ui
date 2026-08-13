@@ -23,11 +23,9 @@
      consumer は CSS scope (例: `.creo-header { --spacing-m: 14px }`) で override 可、
      これにより `.creo-header` 内の var(--spacing-m) は scope 値を pick up
      (= Project の Size Stepper / HEADER namespace から CSS variable を inject する経路)。
-     --_hdr-pad-* は variant (marketing) が差し替える。 density calc はここ 1 箇所。 */
-  --_hdr-pad-y: var(--spacing-s);
-  --_hdr-pad-x: var(--spacing-m);
-  padding: calc(var(--_hdr-pad-y) * var(--density-padding-scale, 1))
-    calc(var(--_hdr-pad-x) * var(--density-padding-scale, 1));
+     --_header__pad-* は variant (marketing) が差し替える。 density calc はここ 1 箇所。 */
+  padding: calc(var(--_header__pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_header__pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
   background-color: var(--color-surface-surface);
   color: var(--color-text-primary);
   border-bottom: 1px solid var(--color-surface-border);
@@ -39,8 +37,8 @@
 /* ---------- Variants ---------- */
 
 .creo-header[data-variant="marketing"] {
-  --_hdr-pad-y: var(--spacing-m);
-  --_hdr-pad-x: var(--spacing-xl);
+  --_header__pad-y: var(--spacing-m);
+  --_header__pad-x: var(--spacing-xl);
   min-height: calc(72px * var(--density-min-height-scale, 1));
   background-color: var(--color-surface-bg-base);
 }

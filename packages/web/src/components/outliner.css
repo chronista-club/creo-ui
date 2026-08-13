@@ -39,14 +39,14 @@
 .creo-outliner-row {
   display: flex;
   align-items: center;
-  gap: calc(var(--_outliner-row-gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
+  gap: calc(var(--_outliner-row__gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
   /* 深さ = padding-left。 --outliner-depth は consumer / primitive が inline style で渡す
      (例: style="--outliner-depth: 2")。 未指定なら 0 段として振る舞う。 */
-  padding: calc(var(--_outliner-row-pad-y, var(--spacing-xs)) * var(--density-padding-scale, 1))
+  padding: calc(var(--_outliner-row__pad-y, var(--spacing-xs)) * var(--density-padding-scale, 1))
     var(--outliner-pad-x);
   padding-left: calc(var(--outliner-pad-x) + var(--outliner-depth, 0) * var(--outliner-indent));
   border: 1px solid transparent;
-  border-radius: var(--_outliner-row-radius, var(--radius-xs));
+  border-radius: var(--_outliner-row__radius, var(--radius-xs));
   min-width: 0;
   transition: background-color var(--motion-mapping-hover-duration)
     var(--motion-mapping-hover-easing), border-color var(--motion-mapping-hover-duration)

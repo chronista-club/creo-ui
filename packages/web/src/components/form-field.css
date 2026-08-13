@@ -10,7 +10,7 @@
 
 .creo-form-field {
   display: grid;
-  gap: calc(var(--_form-field-gap, var(--spacing-xs)) * var(--density-gap-scale, 1));
+  gap: calc(var(--_form-field__gap, var(--spacing-xs)) * var(--density-gap-scale, 1));
 }
 
 .creo-form-field-label {

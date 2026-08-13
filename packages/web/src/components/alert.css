@@ -5,15 +5,15 @@
  * Token: creo-ui/tokens.css (必須)
  */
 
-/* --_alert-* は Editor Mode / demo 用の private tweak var (public API ではない)。
+/* --_alert__* は Editor Mode / demo 用の private tweak var (public API ではない)。
    fallback が SSOT 値。override は editor / playground が scope 内で行う。 */
 .creo-alert {
   display: flex;
   align-items: flex-start;
-  gap: calc(var(--_alert-gap, var(--spacing-s)) * var(--density-gap-scale, 1));
-  padding: calc(var(--_alert-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
-    calc(var(--_alert-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
-  border-radius: var(--_alert-radius, var(--radius-m));
+  gap: calc(var(--_alert__gap, var(--spacing-s)) * var(--density-gap-scale, 1));
+  padding: calc(var(--_alert__pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_alert__pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
+  border-radius: var(--_alert__radius, var(--radius-m));
   border: 1px solid transparent;
   color: var(--color-text-primary);
   font-size: var(--typography-size-m);

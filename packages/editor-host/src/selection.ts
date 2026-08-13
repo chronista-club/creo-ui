@@ -8,9 +8,9 @@
  * ## 選択対象の決め方 (F2c で 2 経路に)
  *
  *  1. **明示 bind** — `data-editor-fields="id1,id2"` を持つ要素 (従来からの経路)
- *  2. **逆引き** — `resolver` が渡されていれば、CSSOM の tweak var から
- *     `el.matches()` でヒットした knob を持つ要素。**事前の仕込みが要らない**ので、
- *     creo-ui component はそのままクリックするだけで編集できる
+ *  2. **class 由来** — `resolver` が渡されていれば、要素の `creo-*` class から
+ *     その component のノブを引く。**事前の仕込みが要らない**ので、creo-ui
+ *     component はそのままクリックするだけで編集できる
  *
  * 祖先方向へ辿り、1 が見つかればそれを優先。無ければ knob を持つ最も内側の要素。
  * どちらも無い場合は「creo-ui component ではあるがノブが無い」要素を fallback に
@@ -19,7 +19,7 @@
  * 依存: document / window / ResizeObserver (browser のみ)。
  */
 import type { ComponentFieldResolver, ComponentKnob } from './component-fields'
-import { componentDisplayName } from './selector-utils'
+import { componentDisplayName } from './component-id'
 import type { EditorHost } from './types'
 
 export interface SelectionHandlersOptions {
@@ -92,7 +92,7 @@ export function installSelectionHandlers(opts: SelectionHandlersOptions): () => 
             element: cur as HTMLElement,
             explicitIds: null,
             knobs,
-            componentId: resolver.componentIdOf(cur, knobs),
+            componentId: resolver.componentIdOf(cur),
           }
         }
         // ノブが無くても creo-ui component なら「選べる」— さらに外側にノブを持つ

@@ -18,7 +18,7 @@
      --shadow-l と違い 8 theme の shadow tint に追従する。 */
   background-color: var(--color-surface-surface);
   color: var(--color-text-primary);
-  border-radius: var(--_dialog-radius, var(--radius-l));
+  border-radius: var(--_dialog__radius, var(--radius-l));
   box-shadow: var(--elevation-3);
 
   /* Width */
@@ -72,9 +72,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: calc(var(--_dialog-header-gap, var(--spacing-s)) * var(--density-gap-scale, 1));
-  padding: calc(var(--_dialog-header-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
-    calc(var(--_dialog-header-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
+  gap: calc(var(--_dialog-header__gap, var(--spacing-s)) * var(--density-gap-scale, 1));
+  padding: calc(var(--_dialog-header__pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_dialog-header__pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
   border-bottom: 1px solid var(--color-surface-border);
 }
 
@@ -91,7 +91,7 @@
 }
 
 .creo-dialog-body {
-  padding: calc(var(--_dialog-body-pad, var(--spacing-m)) * var(--density-padding-scale, 1));
+  padding: calc(var(--_dialog-body__pad, var(--spacing-m)) * var(--density-padding-scale, 1));
   overflow-y: auto;
   max-height: 60vh;
 }
@@ -104,9 +104,9 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: calc(var(--_dialog-footer-gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
-  padding: calc(var(--_dialog-footer-pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
-    calc(var(--_dialog-footer-pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
+  gap: calc(var(--_dialog-footer__gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
+  padding: calc(var(--_dialog-footer__pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_dialog-footer__pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
   border-top: 1px solid var(--color-surface-border);
 }
 

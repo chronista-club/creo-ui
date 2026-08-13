@@ -10,10 +10,10 @@
 
 .creo-grid {
   display: grid;
-  /* [data-gap] variant は --_grid-gap の差し替えのみ。 gap の宣言 (density calc 込み)
+  /* [data-gap] variant は --_grid__gap の差し替えのみ。 gap の宣言 (density calc 込み)
      はここ 1 箇所 (button.css と同 pattern)。既定値は使用箇所の fallback で与える
      (base rule で宣言すると Editor Mode の :root override が効かなくなる)。 */
-  gap: calc(var(--_grid-gap, var(--spacing-m)) * var(--density-gap-scale, 1));
+  gap: calc(var(--_grid__gap, var(--spacing-m)) * var(--density-gap-scale, 1));
   /* default 12 column (web standard) */
   grid-template-columns: repeat(12, 1fr);
 }
@@ -42,19 +42,19 @@
 /* ---------- Gap (token-driven、 5-step rule) ---------- */
 
 .creo-grid[data-gap="xs"] {
-  --_grid-gap: var(--spacing-xs);
+  --_grid__gap: var(--spacing-xs);
 }
 .creo-grid[data-gap="s"] {
-  --_grid-gap: var(--spacing-s);
+  --_grid__gap: var(--spacing-s);
 }
 .creo-grid[data-gap="m"] {
-  --_grid-gap: var(--spacing-m);
+  --_grid__gap: var(--spacing-m);
 }
 .creo-grid[data-gap="l"] {
-  --_grid-gap: var(--spacing-l);
+  --_grid__gap: var(--spacing-l);
 }
 .creo-grid[data-gap="xl"] {
-  --_grid-gap: var(--spacing-xl);
+  --_grid__gap: var(--spacing-xl);
 }
 
 /* ---------- Auto-fit (responsive、 min-column-width 基準、 5 tier xs/s/m/l/xl) ---------- */

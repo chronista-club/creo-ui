@@ -32,23 +32,20 @@
 
 /* ---------- Tab button (base) ---------- */
 
-/* tab の size 別の素の値。 [data-size] variant はこの 3 変数だけを差し替え、
-   tab 側の宣言 (density calc 込み) は 1 箇所に集約 (button.css と同 pattern)。
-   root (.creo-tabs) に置くのは variant selector が .creo-tabs[data-size] のため —
-   custom property 継承で tab に届く (table.css と同じ理由)。 */
-.creo-tabs {
-  --_tab-pad-y: var(--spacing-s);
-  --_tab-pad-x: var(--spacing-m);
-  --_tab-min-h: var(--layout-target-tap);
-}
-
+/* tab 側の宣言 (density calc 込み) は 1 箇所に集約 (button.css と同 pattern)。
+   既定値は使用箇所の fallback で与える — .creo-tabs 側で宣言すると要素の値が確定し、
+   Editor Mode の :root override が届かなくなる。[data-size] variant は .creo-tabs に
+   置いたままでよい (custom property 継承で tab に届く)。 */
 .creo-tabs-tab {
   appearance: none;
   background: transparent;
   border: none;
-  padding: calc(var(--_tab-pad-y) * var(--density-padding-scale, 1))
-    calc(var(--_tab-pad-x) * var(--density-padding-scale, 1));
-  min-height: calc(var(--_tab-min-h) * var(--density-min-height-scale, 1));
+  padding: calc(var(--_tabs-tab__pad-y, var(--spacing-s)) * var(--density-padding-scale, 1))
+    calc(var(--_tabs-tab__pad-x, var(--spacing-m)) * var(--density-padding-scale, 1));
+  min-height: calc(
+    var(--_tabs-tab__min-h, var(--layout-target-tap)) *
+    var(--density-min-height-scale, 1)
+  );
 
   font-family: inherit;
   font-size: var(--typography-size-m);
@@ -115,19 +112,19 @@
 
 /* ---------- Sizes ---------- */
 
-/* size variant は --_tab-* の差し替えのみ (tab 側の density calc を剥がさない)。 */
+/* size variant は --_tabs-tab__* の差し替えのみ (tab 側の density calc を剥がさない)。 */
 .creo-tabs[data-size="s"] {
-  --_tab-min-h: var(--layout-target-focus);
-  --_tab-pad-y: var(--spacing-xs);
-  --_tab-pad-x: var(--spacing-s);
+  --_tabs-tab__min-h: var(--layout-target-focus);
+  --_tabs-tab__pad-y: var(--spacing-xs);
+  --_tabs-tab__pad-x: var(--spacing-s);
 }
 .creo-tabs[data-size="s"] .creo-tabs-tab {
   font-size: var(--typography-size-s);
 }
 .creo-tabs[data-size="l"] {
-  --_tab-min-h: calc(var(--layout-target-tap) * 1.15);
-  --_tab-pad-y: var(--spacing-m);
-  --_tab-pad-x: var(--spacing-l);
+  --_tabs-tab__min-h: calc(var(--layout-target-tap) * 1.15);
+  --_tabs-tab__pad-y: var(--spacing-m);
+  --_tabs-tab__pad-x: var(--spacing-l);
 }
 .creo-tabs[data-size="l"] .creo-tabs-tab {
   font-size: var(--typography-size-l);

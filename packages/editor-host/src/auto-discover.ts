@@ -13,8 +13,8 @@
  */
 import { type Owner, runWithOwner } from 'solid-js'
 import { type Binder, bind } from './binder'
+import { componentSelector, knobLabel, parseTweakVarName } from './component-id'
 import { color, number } from './control'
-import { componentIdFromSelectors } from './selector-utils'
 import { cssVarNumberTarget, cssVarTarget } from './target'
 import type { EditorHost, EditorScope, EditorSemantic } from './types'
 
@@ -48,8 +48,6 @@ export interface DiscoveredVar {
   kind: 'color' | 'number' | 'unknown'
   numericValue?: number
   unit?: string
-  /** tweak var (F2b) の使用 rule の selector 群 — DOM presence 判定に使う */
-  selectors?: string[]
 }
 
 /** :root の computed style から prefix match の CSS var を列挙 */
@@ -303,31 +301,19 @@ export function tweakVarToId(cssVar: string, prefix = TWEAK_PREFIX): string {
 }
 
 /**
- * '--_badge-pad-x' → { group: 'badge', label: 'Pad X' }
+ * '--_badge__pad-x' → { group: 'badge', label: 'Pad X' }
  *
- * group は **selector 由来を優先**する。`--_eb-pad-x` は `.creo-error-boundary`
- * のルールで使われているので group は `error-boundary` になり、var 名の略記
- * (eb / es / pgn / seg) が panel に漏れない。selector が取れないときだけ var 名の
- * 第 1 segment に fallback する。
+ * 命名規約 `--_<component>__<knob>` を split するだけ (`component-id.ts`)。
+ * 規約に合わない名前 (consumer 側の独自 var 等) は var 名全体を label にして
+ * group 無しで置く — 捨てるより見えたほうがよい。
  */
 export function tweakPlacement(
   cssVar: string,
   prefix = TWEAK_PREFIX,
-  selectors?: readonly string[],
 ): { group: string; label: string } {
-  const segments = cssVar.slice(prefix.length).split('-')
-  const fromSelector = selectors ? componentIdFromSelectors(selectors) : null
-  const group = fromSelector ?? segments[0] ?? 'tweak'
-  const rest = segments.slice(1)
-  const label = (rest.length > 0 ? rest : segments)
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ')
-  return { group, label }
-}
-
-interface TweakSeenEntry {
-  fallback: string
-  selectors: Set<string>
+  const parsed = parseTweakVarName(cssVar, prefix)
+  if (!parsed) return { group: 'tweak', label: cssVar.slice(prefix.length) }
+  return { group: parsed.component, label: knobLabel(parsed.knob) }
 }
 
 /** slider ノブとして意味を成す px の上限。radius.full = 9999px のような
@@ -364,29 +350,21 @@ export function sliderSpecFor(
   return { ...heuristicRange(numericValue), initial: numericValue }
 }
 
-function collectTweakRefs(
-  rules: CSSRuleList,
-  prefix: string,
-  seen: Map<string, TweakSeenEntry>,
-): void {
+/**
+ * cssVar → fallback を集める。selectorText は **見ない** — どの component の
+ * ノブかは var 名の規約 (`--_<component>__<knob>`) で決まるため
+ * (`component-id.ts` 参照)。
+ */
+function collectTweakRefs(rules: CSSRuleList, prefix: string, seen: Map<string, string>): void {
   for (const rule of Array.from(rules)) {
     // media / supports / layer / CSS nesting は再帰
     const nested = (rule as { cssRules?: CSSRuleList }).cssRules
     if (nested && nested.length > 0) collectTweakRefs(nested, prefix, seen)
     const cssText = rule.cssText
     if (!cssText || !cssText.includes(`var(${prefix}`)) continue
-    const selector = (rule as { selectorText?: string }).selectorText
     for (const ref of parseTweakVarRefs(cssText, prefix)) {
-      const entry = seen.get(ref.cssVar)
-      if (entry) {
-        if (selector) entry.selectors.add(selector)
-      } else {
-        // 最初に見つかった fallback を SSOT とみなす (使用箇所 = 宣言)
-        seen.set(ref.cssVar, {
-          fallback: ref.fallback,
-          selectors: new Set(selector ? [selector] : []),
-        })
-      }
+      // 最初に見つかった fallback を SSOT とみなす (使用箇所 = 宣言)
+      if (!seen.has(ref.cssVar)) seen.set(ref.cssVar, ref.fallback)
     }
   }
 }
@@ -394,10 +372,8 @@ function collectTweakRefs(
 /** 未解決の tweak var 参照 (fallback は生の CSS 文字列のまま) */
 export interface RawTweakVar {
   cssVar: string
-  /** 使用箇所に書かれた fallback 式 ('var(--spacing-s)' / '2px' / 'var(--_btn-size-pad-y)') */
+  /** 使用箇所に書かれた fallback 式 ('var(--spacing-s)' / '2px' / 'var(--_btn__size-pad-y)') */
   fallback: string
-  /** その var を使っている rule の selectorText 群 */
-  selectors: string[]
 }
 
 /**
@@ -409,7 +385,7 @@ export interface RawTweakVar {
  */
 export function scanRawTweakVars(prefix = TWEAK_PREFIX): RawTweakVar[] {
   if (typeof document === 'undefined' || typeof getComputedStyle === 'undefined') return []
-  const seen = new Map<string, TweakSeenEntry>()
+  const seen = new Map<string, string>()
   for (const sheet of Array.from(document.styleSheets)) {
     let rules: CSSRuleList
     try {
@@ -419,11 +395,7 @@ export function scanRawTweakVars(prefix = TWEAK_PREFIX): RawTweakVar[] {
     }
     collectTweakRefs(rules, prefix, seen)
   }
-  return [...seen].map(([cssVar, entry]) => ({
-    cssVar,
-    fallback: entry.fallback,
-    selectors: Array.from(entry.selectors),
-  }))
+  return [...seen].map(([cssVar, fallback]) => ({ cssVar, fallback }))
 }
 
 /**
@@ -432,43 +404,42 @@ export function scanRawTweakVars(prefix = TWEAK_PREFIX): RawTweakVar[] {
  */
 export function resolveTweakVar(
   raw: RawTweakVar,
+  id: string,
   scope?: Element,
   prefix = TWEAK_PREFIX,
 ): DiscoveredVar | null {
   const resolved = resolveFallback(raw.fallback, 0, scope)
   if (!resolved) return null
-  return {
-    ...inferType(raw.cssVar, resolved),
-    id: tweakVarToId(raw.cssVar, prefix),
-    selectors: raw.selectors,
-  }
+  return { ...inferType(raw.cssVar, resolved), id: id || tweakVarToId(raw.cssVar, prefix) }
 }
 
 /** document.styleSheets から tweak var を列挙 (`:root` で fallback 解決 + type 推論込み) */
 export function scanTweakVars(prefix = TWEAK_PREFIX): DiscoveredVar[] {
   const discovered: DiscoveredVar[] = []
   for (const raw of scanRawTweakVars(prefix)) {
-    const info = resolveTweakVar(raw, undefined, prefix)
+    const info = resolveTweakVar(raw, tweakVarToId(raw.cssVar, prefix), undefined, prefix)
     if (info) discovered.push(info)
   }
   return discovered
 }
 
-/** selector のどれかが現 DOM に存在するか (不正 selector は fail-open) */
-function anySelectorPresent(selectors: readonly string[]): boolean {
+/**
+ * その component が現 DOM に居るか。命名規約のおかげで `.creo-<component>` を
+ * 引くだけで済む (selector 群を舐める必要が無い)。規約外の var は fail-open。
+ */
+function isComponentPresent(cssVar: string, prefix: string): boolean {
   if (typeof document === 'undefined') return true
-  for (const sel of selectors) {
-    try {
-      if (document.querySelector(sel)) return true
-    } catch {
-      return true
-    }
+  const parsed = parseTweakVarName(cssVar, prefix)
+  if (!parsed) return true
+  try {
+    return document.querySelector(componentSelector(parsed.component)) !== null
+  } catch {
+    return true
   }
-  return false
 }
 
 /**
- * CSSOM の tweak var (`--_component-knob`) を scan して自動 bind する。
+ * CSSOM の tweak var (`--_<component>__<knob>`) を scan して自動 bind する (F2b、eager)。
  * group = component 名で panel に固まって表示される。
  */
 export function autoDiscoverTweaks(
@@ -484,17 +455,13 @@ export function autoDiscoverTweaks(
 
   // presence filter: 画面に居ない component のノブは panel に出さない
   const discovered = scanTweakVars(prefix).filter(
-    (d) =>
-      !requirePresence ||
-      !d.selectors ||
-      d.selectors.length === 0 ||
-      anySelectorPresent(d.selectors),
+    (d) => !requirePresence || isComponentPresent(d.cssVar, prefix),
   )
   const binders: Binder[] = []
 
   discovered.forEach((d, index) => {
     if (skipExisting && host.getField(d.id)) return
-    const { group, label } = tweakPlacement(d.cssVar, prefix, d.selectors)
+    const { group, label } = tweakPlacement(d.cssVar, prefix)
     const b = bindDiscoveredVar(host, owner, d, {
       label,
       group,

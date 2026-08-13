@@ -1,5 +1,5 @@
 /**
- * @chronista-club/creo-ui-editor-host — 選択駆動の component field 解決 (F2c)
+ * @chronista-club/creo-ui-editor-host — component 単位の field 解決 (F2c)
  *
  * ## 何を解くか
  *
@@ -10,17 +10,17 @@
  *  2. **値が焼き付く** — `host.register()` は登録時に初期値を `:root` へ書くので、
  *     register した分だけ `<html>` の inline style に解決済み値が固定される
  *
- * F2c は逆にする。mount 時は **index を作るだけ** (DOM 書き込みゼロ)、
- * 選択された要素に `el.matches()` でヒットした knob だけを lazy に register する。
- * これで「先に仕込んでおく」必要が消え、**creo-ui component をクリックすれば
- * その component のノブが出る**。
+ * そして何より、選択は `data-editor-fields` を手で仕込んだ要素にしか効かなかった。
  *
- * ## なぜ selector 逆引きか
+ * F2c は **命名規約 `--_<component>__<knob>` を唯一の根拠**にする。var 名を `__` で
+ * split すれば component が確定するので、
  *
- * class 名から `--_<name>-*` を引く規約ベースだと、`--_eb-*` ↔ `.creo-error-boundary`、
- * `--_seg-opt-*` ↔ `.creo-segmented` のような略記のズレでマッピング表が必要になる。
- * CSSOM は「その var がどの selector の rule で使われているか」を既に知っているので、
- * `el.matches(selector)` で引けば **実際に効いている var だけ**が命名に依らず出る。
+ *  - panel に「今のページに居る component」の一覧を出せる (picker)
+ *  - id を選ぶ / 要素をクリックする、どちらからでも同じ経路で解決できる
+ *  - 選ばれた component のノブ **だけ** を lazy に register できる
+ *
+ * component ↔ class は 1:1 (`btn` ↔ `.creo-btn`) なので、DOM 側の判定も
+ * `el.classList` を見るだけで済む — `el.matches()` も selectorText の解析も要らない。
  */
 import type { Owner } from 'solid-js'
 import {
@@ -28,56 +28,61 @@ import {
   bindDiscoveredVar,
   resolveTweakVar,
   scanRawTweakVars,
-  tweakPlacement,
-  tweakVarToId,
 } from './auto-discover'
 import {
   componentClassIdsOf,
-  componentIdFromSelectors,
+  componentDisplayName,
   componentIdOfElement,
-  matchesSelector,
-  normalizeSelectorForMatch,
-  subjectComponentIds,
-} from './selector-utils'
+  componentSelector,
+  knobLabel,
+  parseTweakVarName,
+} from './component-id'
 import type { EditorHost, EditorSemantic } from './types'
 
-/** 逆引き index の 1 entry (tweak var 1 個 = panel のノブ 1 個) */
+/** panel のノブ 1 個 */
 export interface ComponentKnob {
-  /** field id ('btn.pad.x') — 永続化 key でもあるので cssVar 由来のまま保つ */
+  /** field id ('btn.pad.x') — 永続化 key でもある */
   readonly id: string
-  /** '--_btn-pad-x' */
+  /** '--_btn__pad-x' */
   readonly cssVar: string
-  /** panel の group 表示名。selector 由来 ('.creo-error-boundary' → 'error-boundary') */
-  readonly component: string | null
-  /** panel の field 表示名 ('Pad X') */
+  /** 所属 component id ('btn' / 'error-boundary') */
+  readonly component: string
+  /** panel の表示名 ('Pad X') */
   readonly label: string
-  /** `el.matches()` に渡せる形へ正規化済みの selector 群 */
-  readonly matchers: readonly string[]
   /**
-   * matcher の subject が creo class のとき、その id 群。null なら class では
-   * 絞れない (逆引きで常に総当たり対象)。候補の事前絞り込みに使う。
-   */
-  readonly subjects: string[] | null
-  /**
-   * 未解決の元データ。fallback の解決は **選択された要素に対して** 行う必要が
-   * あるので (`--_btn-pad-y` の fallback `var(--_btn-size-pad-y)` は `.creo-btn`
-   * 上でしか読めない)、index 構築時点では生の文字列のまま持つ。
+   * 未解決の元データ。fallback の解決は **対象要素に対して** 行う必要がある
+   * (`--_btn__pad-y` の fallback `var(--_btn__size-pad-y)` は `.creo-btn` 上でしか
+   * 読めない)、index 構築時点では生の文字列のまま持つ。
    */
   readonly source: RawTweakVar
 }
 
-/**
- * 逆引き index。mouseover ごとに全 knob へ `el.matches()` を撃つと DOM 階層 ×
- * knob 数で膨らむので、**subject の class 名で候補を先に絞る**。
- * `.creo-btn` の要素なら btn 配下の数個だけを試せばよい。
- */
+/** component id → その component のノブ。規約 split で作るので曖昧さが無い */
 export interface KnobIndex {
-  /** component id → その id を subject に持つ knob */
   readonly byComponent: Map<string, ComponentKnob[]>
-  /** class で絞れない knob (総当たり対象。通常は空) */
-  readonly unindexed: ComponentKnob[]
   /** 宣言順の全 knob (order 決定に使う) */
   readonly all: ComponentKnob[]
+}
+
+/** panel の component picker に出す 1 行分 */
+export interface ComponentEntry {
+  /** component id ('btn' / 'error-boundary') */
+  readonly id: string
+  /** panel 表示名 ('.creo-btn') */
+  readonly label: string
+  /** その component が持つノブの数 */
+  readonly knobCount: number
+  /** 現 DOM にその component が居るか */
+  readonly present: boolean
+}
+
+/** component を選んだ結果。panel から `host.select()` に渡せる形 */
+export interface ComponentSelection {
+  readonly componentId: string
+  /** register 済みの field id */
+  readonly fieldIds: string[]
+  /** 代表要素 (画面に居れば outline を出せる)。居なければ null */
+  readonly element: Element | null
 }
 
 export interface ComponentFieldResolverOptions {
@@ -93,87 +98,77 @@ export interface ComponentFieldResolverOptions {
 }
 
 export interface ComponentFieldResolver {
-  /** el に効く knob を返す (副作用なし — hover の逐次呼び出しでも安全) */
-  match(el: Element): ComponentKnob[]
   /**
-   * knob を host に register し、field になった id を返す。
-   * `scope` に選択要素を渡すと fallback をその要素の computed style で解決する。
+   * 逆引き index に載っている component を列挙する (副作用なし)。
+   * default は **現 DOM に居るものだけ** — 画面に無い component のノブを回しても
+   * 変化が見えないので、既定では picker に出さない。
    */
+  components(opts?: { presentOnly?: boolean }): ComponentEntry[]
+  /**
+   * component id を指定して選択する (panel の picker 用)。
+   * 画面上の代表要素を 1 つ引き当て、その要素で fallback を解決して register する。
+   */
+  selectComponent(id: string): ComponentSelection | null
+  /** el が属する component のノブを返す (副作用なし — hover でも安全) */
+  match(el: Element): ComponentKnob[]
+  /** knob を host に register し、field になった id を返す */
   register(knobs: readonly ComponentKnob[], scope?: Element): string[]
-  /** el の component 名。class 由来 → match した selector 由来 の順で決める */
-  componentIdOf(el: Element, matched?: readonly ComponentKnob[]): string | null
-  /** 逆引き index を今すぐ構築する (通常は初回 match で lazy に構築される) */
+  /** el の component id (class 由来) */
+  componentIdOf(el: Element): string | null
+  /** index を今すぐ構築する (通常は初回アクセスで lazy に構築される) */
   warm(): void
   /** index 内の knob 一覧 (debug / console REPL 用) */
   knobs(): readonly ComponentKnob[]
 }
 
-/** `scanRawTweakVars` の結果を逆引き可能な knob へ変換する (pure、解決はしない) */
+/** '--_btn__pad-x' → 'btn.pad.x' (field id は dot notation で揃える) */
+function knobFieldId(component: string, knob: string): string {
+  return `${component}.${knob}`.replace(/-/g, '.')
+}
+
+/** raw な tweak var 参照を、規約 split で component 付きの knob へ変換する (pure) */
 export function toComponentKnobs(
   discovered: readonly RawTweakVar[],
   prefix = '--_',
 ): ComponentKnob[] {
   const knobs: ComponentKnob[] = []
   for (const d of discovered) {
-    const selectors = d.selectors ?? []
-    // selector が 1 つも取れない var (@media 直下の宣言等) は逆引きできない。
-    // eager 経路 (F2b) では拾えるので、ここで落としても情報は失われない。
-    const matchers = selectors.map(normalizeSelectorForMatch).filter((s): s is string => s !== null)
-    if (matchers.length === 0) continue
-    const { group, label } = tweakPlacement(d.cssVar, prefix, selectors)
-    // subject が 1 つでも絞れなければ knob 全体を総当たり側へ (取りこぼしを作らない)
-    let subjects: string[] | null = []
-    for (const m of matchers) {
-      const ids = subjectComponentIds(m)
-      if (!ids) {
-        subjects = null
-        break
-      }
-      subjects.push(...ids)
-    }
+    const parsed = parseTweakVarName(d.cssVar, prefix)
+    // 規約に合わない var は無視する (CI が弾いているので通常は起きない)
+    if (!parsed) continue
     knobs.push({
-      id: tweakVarToId(d.cssVar, prefix),
+      id: knobFieldId(parsed.component, parsed.knob),
       cssVar: d.cssVar,
-      component: componentIdFromSelectors(selectors) ?? group,
-      label,
-      matchers,
-      subjects,
+      component: parsed.component,
+      label: knobLabel(parsed.knob),
       source: d,
     })
   }
   return knobs
 }
 
-/** knob 配列を subject class で索引化する (pure) */
+/** knob 配列を component id で索引化する (pure) */
 export function buildKnobIndex(knobs: readonly ComponentKnob[]): KnobIndex {
   const byComponent = new Map<string, ComponentKnob[]>()
-  const unindexed: ComponentKnob[] = []
   for (const knob of knobs) {
-    if (!knob.subjects || knob.subjects.length === 0) {
-      unindexed.push(knob)
-      continue
-    }
-    for (const id of new Set(knob.subjects)) {
-      const list = byComponent.get(id)
-      if (list) list.push(knob)
-      else byComponent.set(id, [knob])
-    }
+    const list = byComponent.get(knob.component)
+    if (list) list.push(knob)
+    else byComponent.set(knob.component, [knob])
   }
-  return { byComponent, unindexed, all: [...knobs] }
+  return { byComponent, all: [...knobs] }
 }
 
-/** el にヒットする knob を返す (pure — index を引数で受ける) */
+/**
+ * el に効く knob を返す (pure)。
+ * el が持つ `creo-*` class を index に引くだけ — selector 照合は要らない。
+ */
 export function matchKnobs(el: Element, index: KnobIndex): ComponentKnob[] {
-  const candidates = new Set<ComponentKnob>(index.unindexed)
+  const out: ComponentKnob[] = []
   for (const id of componentClassIdsOf(el)) {
     const list = index.byComponent.get(id)
-    if (list) for (const k of list) candidates.add(k)
+    if (list) out.push(...list)
   }
-  if (candidates.size === 0) return []
-  // 宣言順を保って返す (panel の並びが CSS の記述順と一致する)
-  return index.all.filter(
-    (k) => candidates.has(k) && k.matchers.some((m) => matchesSelector(el, m)),
-  )
+  return out
 }
 
 export function createComponentFieldResolver(
@@ -187,7 +182,7 @@ export function createComponentFieldResolver(
   let index: KnobIndex | null = null
   /** index 構築時の stylesheet 数。dev の HMR で増減したら作り直す */
   let indexedSheetCount = -1
-  /** register 済み field id。host.getField でも判るが、bind 失敗分も覚えて再試行を防ぐ */
+  /** register 済み field id (bind 失敗分も覚えて再試行を防ぐ) */
   const registered = new Set<string>()
 
   const sheetCount = (): number =>
@@ -202,22 +197,39 @@ export function createComponentFieldResolver(
     } catch (e) {
       // cross-origin stylesheet 等で scan が転んでも Content を巻き込まない (D-6)
       console.warn('[editor-host] component field scan failed:', e)
-      index = { byComponent: new Map(), unindexed: [], all: [] }
+      index = { byComponent: new Map(), all: [] }
     }
     indexedSheetCount = count
     return index
   }
 
-  function match(el: Element): ComponentKnob[] {
-    return matchKnobs(el, ensureIndex())
+  /** component が現 DOM に居るか (class を引くだけ) */
+  function findRepresentative(componentId: string): Element | null {
+    if (typeof document === 'undefined') return null
+    try {
+      return document.querySelector(componentSelector(componentId))
+    } catch {
+      return null
+    }
+  }
+
+  function components(opts?: { presentOnly?: boolean }): ComponentEntry[] {
+    const presentOnly = opts?.presentOnly ?? true
+    const entries: ComponentEntry[] = []
+    for (const [id, knobs] of ensureIndex().byComponent) {
+      const present = findRepresentative(id) !== null
+      if (presentOnly && !present) continue
+      entries.push({ id, label: componentDisplayName(id), knobCount: knobs.length, present })
+    }
+    return entries.sort((a, b) => a.id.localeCompare(b.id))
   }
 
   /**
-   * knob を host に register し、**実際に field になった** id だけを返す。
+   * knob を register し、**実際に field になった** id だけを返す。
    *
-   * fallback の解決は `scope` (= 選択された要素) に対して行う。`--_btn-pad-y` の
-   * fallback である `var(--_btn-size-pad-y)` は `.creo-btn` 上でしか読めないので、
-   * ここを `:root` でやると btn のノブが丸ごと消える。
+   * fallback の解決は `scope` (= 対象要素) に対して行う。`--_btn__pad-y` の fallback
+   * `var(--_btn__size-pad-y)` は `.creo-btn` 上でしか読めないので、ここを `:root` で
+   * やると btn のノブが丸ごと消える。
    */
   function register(knobs: readonly ComponentKnob[], scope?: Element): string[] {
     const ids: string[] = []
@@ -233,11 +245,11 @@ export function createComponentFieldResolver(
         ids.push(knob.id) // 他経路 (F2 / F2b / 手動 bind) が先に登録済み
         continue
       }
-      const resolved = resolveTweakVar(knob.source, scope, prefix)
+      const resolved = resolveTweakVar(knob.source, knob.id, scope, prefix)
       if (!resolved) continue // fallback が解決できない = ノブにできない
       const binder = bindDiscoveredVar(host, owner, resolved, {
         label: knob.label,
-        group: knob.component ?? undefined,
+        group: knob.component,
         semantic,
         // index 内の位置を order にすると、同 component のノブが宣言順に並ぶ
         order: orderStart + all.indexOf(knob),
@@ -249,17 +261,21 @@ export function createComponentFieldResolver(
     return ids
   }
 
-  function componentIdOf(el: Element, matched?: readonly ComponentKnob[]): string | null {
-    const fromClass = componentIdOfElement(el)
-    if (fromClass) return fromClass
-    if (!matched || matched.length === 0) return null
-    return componentIdFromSelectors(matched.flatMap((k) => k.source.selectors ?? []))
+  function selectComponent(id: string): ComponentSelection | null {
+    const knobs = ensureIndex().byComponent.get(id)
+    if (!knobs || knobs.length === 0) return null
+    const element = findRepresentative(id)
+    // 画面に居ればその要素で解決する (variant 込みの実値が取れる)。
+    // 居なければ :root 基準 — token 由来の fallback だけは解決できる
+    return { componentId: id, fieldIds: register(knobs, element ?? undefined), element }
   }
 
   return {
-    match,
+    components,
+    selectComponent,
+    match: (el) => matchKnobs(el, ensureIndex()),
     register,
-    componentIdOf,
+    componentIdOf: componentIdOfElement,
     warm: () => {
       ensureIndex()
     },

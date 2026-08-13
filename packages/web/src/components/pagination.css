@@ -34,21 +34,24 @@
 
 /* ---------- Item (button) ---------- */
 
-/* item の size 別の素の値。 [data-size] variant はこの 3 変数だけを差し替え、
-   item 側の宣言 (density calc 込み) は 1 箇所に集約 (button.css と同 pattern)。
-   root に置くのは variant selector が .creo-pagination[data-size] のため。 */
-.creo-pagination {
-  --_pgn-item-min: var(--layout-target-focus);
-  --_pgn-item-pad-x: var(--spacing-xs);
-}
-
+/* item 側の宣言 (density calc 込み) は 1 箇所に集約 (button.css と同 pattern)。
+   既定値は使用箇所の fallback で与える — .creo-pagination 側で宣言すると要素の値が
+   確定し、Editor Mode の :root override が届かなくなる。[data-size] variant は
+   .creo-pagination に置いたままでよい (custom property 継承で item に届く)。 */
 .creo-pagination-item {
   appearance: none;
   background: transparent;
   border: 1px solid transparent;
-  min-width: calc(var(--_pgn-item-min) * var(--density-min-height-scale, 1));
-  min-height: calc(var(--_pgn-item-min) * var(--density-min-height-scale, 1));
-  padding: 0 calc(var(--_pgn-item-pad-x) * var(--density-padding-scale, 1));
+  min-width: calc(
+    var(--_pagination-item__min, var(--layout-target-focus)) *
+    var(--density-min-height-scale, 1)
+  );
+  min-height: calc(
+    var(--_pagination-item__min, var(--layout-target-focus)) *
+    var(--density-min-height-scale, 1)
+  );
+  padding: 0
+    calc(var(--_pagination-item__pad-x, var(--spacing-xs)) * var(--density-padding-scale, 1));
   border-radius: var(--radius-s);
 
   display: inline-flex;
@@ -102,10 +105,10 @@
 
 /* ---------- Sizes ---------- */
 
-/* size variant は --_pgn-item-* の差し替えのみ (item 側の density calc を剥がさない)。 */
+/* size variant は --_pagination-item__* の差し替えのみ (item 側の density calc を剥がさない)。 */
 .creo-pagination[data-size="s"] {
-  --_pgn-item-min: 24px;
-  --_pgn-item-pad-x: 6px;
+  --_pagination-item__min: 24px;
+  --_pagination-item__pad-x: 6px;
 }
 .creo-pagination[data-size="s"] .creo-pagination-item {
   font-size: var(--typography-size-s);
@@ -113,8 +116,8 @@
 }
 
 .creo-pagination[data-size="l"] {
-  --_pgn-item-min: var(--layout-target-tap);
-  --_pgn-item-pad-x: var(--spacing-s);
+  --_pagination-item__min: var(--layout-target-tap);
+  --_pagination-item__pad-x: var(--spacing-s);
 }
 .creo-pagination[data-size="l"] .creo-pagination-item {
   font-size: var(--typography-size-l);

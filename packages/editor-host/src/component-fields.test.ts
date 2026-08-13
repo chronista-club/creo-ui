@@ -1,127 +1,83 @@
 /**
  * bun test packages/editor-host/src/component-fields.test.ts
  *
- * F2c の pure 部分 (index 構築 + 逆引き)。register / bind は SolidJS owner と
- * DOM が要るので host.test.ts 側の責務。
+ * F2c の pure 部分 (規約 split による index 構築 + class 由来の照合)。
+ * register / bind は SolidJS owner と DOM が要るので対象外。
  */
 import { describe, expect, test } from 'bun:test'
 import type { RawTweakVar } from './auto-discover'
 import { buildKnobIndex, matchKnobs, toComponentKnobs } from './component-fields'
 
-/**
- * `scanRawTweakVars` が返す形の最小モック。fallback は未解決のまま持つ
- * (解決は選択要素に対して register 時に行うため)。
- */
-function discovered(cssVar: string, _id: string, selectors: string[] = []): RawTweakVar {
-  return { cssVar, fallback: '8px', selectors }
+/** `scanRawTweakVars` が返す形の最小モック (fallback は未解決のまま) */
+function raw(cssVar: string, fallback = '8px'): RawTweakVar {
+  return { cssVar, fallback }
 }
 
-/**
- * Element 代役。渡した class から classList を作り、`.creo-x` 形の selector に
- * 一致するかを判定する (index の絞り込みと matches の両方が効くように)。
- */
+/** classList だけを持つ Element 代役 (bun test には DOM が無い) */
 function elWith(...classes: string[]): Element {
-  return {
-    classList: classes,
-    matches: (sel: string) =>
-      sel.split(',').some((part) => {
-        const cls = part.trim().replace(/^\./, '')
-        return classes.includes(cls)
-      }),
-  } as unknown as Element
+  return { classList: classes } as unknown as Element
 }
 
 describe('toComponentKnobs', () => {
-  test('component 名は var 名の略記ではなく selector 由来になる', () => {
-    const [knob] = toComponentKnobs([
-      discovered('--_eb-pad-x', 'eb.pad.x', ['.creo-error-boundary']),
-    ])
+  test('--_<component>__<knob> を split して component と label を決める', () => {
+    const [knob] = toComponentKnobs([raw('--_error-boundary__pad-x')])
     expect(knob.component).toBe('error-boundary')
-    // field id は永続化 key なので var 名由来のまま変えない
-    expect(knob.id).toBe('eb.pad.x')
     expect(knob.label).toBe('Pad X')
+    expect(knob.id).toBe('error.boundary.pad.x')
   })
 
-  test('matcher は state 疑似を剥がした形になる', () => {
-    const [knob] = toComponentKnobs([
-      discovered('--_btn-fg', 'btn.fg', ['.creo-btn:hover', '.creo-btn:focus-visible']),
-    ])
-    expect(knob.matchers).toEqual(['.creo-btn', '.creo-btn'])
+  test('component 名にハイフンが何個あっても境界は __ で決まる', () => {
+    // 区切りが無いと accordion / accordion-content のどちらか決められない
+    const [knob] = toComponentKnobs([raw('--_accordion-content__pad-top')])
+    expect(knob.component).toBe('accordion-content')
+    expect(knob.label).toBe('Pad Top')
   })
 
-  test('selector を持たない var は index から落ちる (逆引き不能なので)', () => {
-    expect(toComponentKnobs([discovered('--_x-y', 'x.y')])).toHaveLength(0)
-    expect(toComponentKnobs([discovered('--_x-y', 'x.y', [])])).toHaveLength(0)
+  test('knob 側のハイフンは label に展開される', () => {
+    const [knob] = toComponentKnobs([raw('--_btn__size-min-h')])
+    expect(knob.component).toBe('btn')
+    expect(knob.label).toBe('Size Min H')
   })
 
-  test('creo- class が無い selector でも var 名 fallback で group が付く', () => {
-    const [knob] = toComponentKnobs([discovered('--_misc-gap', 'misc.gap', ['main > section'])])
-    expect(knob.component).toBe('misc')
+  test('規約に合わない var は index に載せない', () => {
+    expect(toComponentKnobs([raw('--_no-separator-here')])).toHaveLength(0)
+    expect(toComponentKnobs([raw('--_a__b__c')])).toHaveLength(0)
+    expect(toComponentKnobs([raw('--_btn__')])).toHaveLength(0)
   })
 })
 
 describe('buildKnobIndex', () => {
-  test('subject の class 名で索引化する', () => {
+  test('component id で索引化する', () => {
     const index = buildKnobIndex(
-      toComponentKnobs([
-        discovered('--_btn-pad-x', 'btn.pad.x', ['.creo-btn']),
-        discovered('--_card-pad', 'card.pad', ['.creo-card']),
-      ]),
+      toComponentKnobs([raw('--_btn__pad-x'), raw('--_btn__radius'), raw('--_card__pad')]),
     )
     expect([...index.byComponent.keys()].sort()).toEqual(['btn', 'card'])
-    expect(index.unindexed).toHaveLength(0)
-  })
-
-  test('comma list は両方の subject に登録する', () => {
-    const index = buildKnobIndex(
-      toComponentKnobs([
-        discovered('--_checkbox-gap', 'checkbox.gap', ['.creo-checkbox, .creo-radio']),
-      ]),
-    )
-    expect([...index.byComponent.keys()].sort()).toEqual(['checkbox', 'radio'])
-  })
-
-  test('class で絞れない selector は総当たり側に置く (取りこぼさない)', () => {
-    const index = buildKnobIndex(
-      toComponentKnobs([discovered('--_misc-gap', 'misc.gap', ['main > section'])]),
-    )
-    expect(index.byComponent.size).toBe(0)
-    expect(index.unindexed).toHaveLength(1)
+    expect(index.byComponent.get('btn')).toHaveLength(2)
   })
 })
 
 describe('matchKnobs', () => {
   const index = buildKnobIndex(
-    toComponentKnobs([
-      discovered('--_btn-pad-x', 'btn.pad.x', ['.creo-btn']),
-      discovered('--_btn-size-pad-x', 'btn.size.pad.x', ['.creo-btn--sm']),
-      discovered('--_card-pad', 'card.pad', ['.creo-card']),
-    ]),
+    toComponentKnobs([raw('--_btn__pad-x'), raw('--_card__pad'), raw('--_card-header__pad-y')]),
   )
 
-  test('要素に効くノブだけを返す', () => {
+  test('要素の creo- class からノブを引く (selector 照合は不要)', () => {
     expect(matchKnobs(elWith('creo-btn'), index).map((k) => k.id)).toEqual(['btn.pad.x'])
   })
 
-  test('modifier が付いていれば variant 固有ノブも出る', () => {
-    const ids = matchKnobs(elWith('creo-btn', 'creo-btn--sm'), index).map((k) => k.id)
-    expect(ids).toEqual(['btn.pad.x', 'btn.size.pad.x'])
+  test('modifier は落として base component として引く', () => {
+    expect(matchKnobs(elWith('creo-btn', 'creo-btn--primary'), index).map((k) => k.id)).toEqual([
+      'btn.pad.x',
+    ])
   })
 
-  test('無関係な要素では空', () => {
-    expect(matchKnobs(elWith('creo-alert'), index)).toHaveLength(0)
+  test('sub-part は独立した component として引かれる', () => {
+    expect(matchKnobs(elWith('creo-card-header'), index).map((k) => k.id)).toEqual([
+      'card.header.pad.y',
+    ])
   })
 
-  test('creo- class を持たない要素では matches を 1 度も呼ばない (絞り込みが効く)', () => {
-    let calls = 0
-    const plain = {
-      classList: ['docs-main'],
-      matches: () => {
-        calls++
-        return true
-      },
-    } as unknown as Element
-    expect(matchKnobs(plain, index)).toHaveLength(0)
-    expect(calls).toBe(0)
+  test('creo- class を持たない要素では空', () => {
+    expect(matchKnobs(elWith('docs-main'), index)).toHaveLength(0)
   })
 })
