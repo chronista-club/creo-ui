@@ -4,12 +4,12 @@
 # (vite.config.ts / App.tsx の Router base と対)。stage でも同じ prefix 配下で配信する。
 #
 # dev passthrough (2026-08-01):
-#   常駐 demo は上げたまま、Mac 上で vite dev server (:5173) を起動している間だけ
+#   常駐 demo は上げたまま、Mac 上で vite dev server (:13600) を起動している間だけ
 #   http://demo.creo-ui/ が「開発中の姿」を HMR 付きで映す。vite を止めれば常駐 demo
 #   (静的 dist) へ自動で rewire する。切替は vite の起動・停止だけ、手動操作は要らない。
 #
 #   仕組み: upstream を 2 つ並べて `lb_policy first` で「生きている先頭」を選ぶ。
-#     1) host.containers.internal:5173 = Mac の vite dev server
+#     1) host.containers.internal:13600 = Mac の vite dev server (port は [[creo-port-ssot]] の creo-ui block)
 #     2) 127.0.0.1:8081 = container 内の静的 server (下の site block、常駐 demo の実体)
 #   vite が落ちていれば 1) は fail_duration の間 skip され 2) が使われる。
 #   handle_errors による fallback も試したが、deep link で 502/503 が漏れて不安定だった
@@ -32,7 +32,7 @@
 	# も /creo-ui/ 配下で待っているので prefix ごと渡す。
 	handle /creo-ui/* {
 		reverse_proxy {
-			to host.containers.internal:5173 127.0.0.1:8081
+			to host.containers.internal:13600 127.0.0.1:8081
 			lb_policy first
 			# 先頭が死んでいたら同一 request 内で次の upstream へ回す (最初の 1 発も落とさない)
 			lb_try_duration 2s
@@ -48,7 +48,7 @@
 	}
 }
 
-# 常駐 demo の実体 — container 内部だけに開く静的 server (compose は 80/8080 のみ publish)。
+# 常駐 demo の実体 — container 内部だけに開く静的 server (compose は 80/13610 のみ publish)。
 # SolidJS Router は history mode のため、未知 path は index.html にフォールバックさせる
 # (これが無いと /creo-ui/components/button 等を直接 reload した時に 404 になる)。
 :8081 {

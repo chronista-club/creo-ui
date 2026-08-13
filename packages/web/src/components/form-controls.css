@@ -13,7 +13,7 @@
 .creo-radio {
   display: inline-flex;
   align-items: center;
-  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+  gap: calc(var(--_checkbox__gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
   font-size: var(--typography-size-m);
   line-height: 1.4;
   color: var(--color-text-primary);
@@ -46,7 +46,7 @@
 .creo-switch {
   display: inline-flex;
   align-items: center;
-  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
+  gap: calc(var(--_switch__gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
   font-size: var(--typography-size-m);
   line-height: 1.4;
   color: var(--color-text-primary);
@@ -70,8 +70,8 @@
 .creo-switch-track {
   display: inline-block;
   position: relative;
-  width: 44px;
-  height: 24px;
+  width: var(--_switch-track__w, 44px);
+  height: var(--_switch-track__h, 24px);
   background-color: var(--surface-veil-1);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-full);
@@ -85,8 +85,8 @@
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 18px;
-  height: 18px;
+  width: var(--_switch-thumb__size, 18px);
+  height: var(--_switch-thumb__size, 18px);
   background-color: var(--color-surface-surface);
   border-radius: var(--radius-full);
   /* elevation 1: 上端に border-light、 下に drop shadow で摘みが浮く。 */

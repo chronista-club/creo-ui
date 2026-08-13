@@ -1,7 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
-  type EditorShortcut,
   bind,
   cssVarNumberTarget,
   number,
@@ -37,27 +34,18 @@ function gazePct(value: number | string | undefined): number {
   return Number.isFinite(n) ? n : 50
 }
 
-export interface GazeLivePreviewProps {
-  /** editor-host の localStorage 名前空間 (page 内で一意に) */
-  namespace: string
-  /**
-   * Mode toggle の shortcut。同一 page に複数 EditorHostProvider があるときは
-   * 衝突回避のため別 combo を渡す (default: Ctrl+Shift+E)。
-   */
-  shortcut?: EditorShortcut
-}
-
-export default function GazeLivePreview(props: GazeLivePreviewProps) {
+/**
+ * global EditorHostProvider (App root) の配下で動く。bind() は context 経由で
+ * site 共通 host に register されるため、local provider は持たない (一本化 2026-08-13)。
+ */
+export default function GazeLivePreview() {
   return (
-    <EditorHostProvider
-      config={{ localStorageNamespace: props.namespace, shortcut: props.shortcut }}
-    >
+    <>
       <FrameProvider frames={[GAZE_FRAME]} class="docs-horizon">
         <GazeScene />
       </FrameProvider>
       <EditorModeToggle />
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

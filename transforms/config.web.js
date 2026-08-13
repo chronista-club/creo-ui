@@ -60,9 +60,20 @@ const pxToRem = (value) => {
 }
 
 /**
+ * typography の font size 系 (size / display / icon) か。
+ * これらは emit 時に `--typography-scale` (default 1) の乗算を焼き込み、
+ * **1 変数で文字だけを全体伸縮**できるようにする (spacing / radius は対象外 —
+ * layout 密度は density mode の管轄)。title / body は size / display への
+ * alias (`var(--...)` 参照) なので自動で追従する。
+ */
+const isTypographyFontSize = (token) =>
+  token.path[0] === 'typography' && ['size', 'display', 'icon'].includes(token.path[1])
+
+/**
  * token.$value から CSS 値を render する。
  *   1. DTCG alias (`{path}`) → `var(--...)` 参照として emit
  *   2. dimension 型の px 値 → rem に変換 (pxToRem)
+ *      + typography font size 系は `calc(<rem> * var(--typography-scale, 1))`
  *   3. それ以外 → 値をそのまま
  */
 const renderValue = (token) => {
@@ -75,7 +86,10 @@ const renderValue = (token) => {
   const type = token.$type ?? token.type
   if (type === 'dimension') {
     const rem = pxToRem(value)
-    if (rem !== null) return rem
+    if (rem !== null) {
+      if (isTypographyFontSize(token)) return `calc(${rem} * var(--typography-scale, 1))`
+      return rem
+    }
   }
   return value
 }

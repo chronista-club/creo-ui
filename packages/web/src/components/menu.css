@@ -12,11 +12,11 @@
   /* popover 指定時は browser が position fixed + top-layer に配置するので、
      ここは box-style のみを指定。placement (position) は consumer 側 JS or
      data-placement + anchor positioning (browser 対応進行中) で後付け。 */
-  min-width: 180px;
-  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1));
+  min-width: var(--_menu__min-w, 180px);
+  padding: calc(var(--_menu__pad, var(--spacing-xs)) * var(--density-padding-scale, 1));
   background-color: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
-  border-radius: var(--radius-m);
+  border-radius: var(--_menu__radius, var(--radius-m));
   /* elevation 2 (raised tier)。 rubric 上 dropdown / menu は raised = card:hover と
      同段で、 dialog / drawer / popover (overlay 3) より一段軽い浮きに置く
      (transparent backdrop で content を dim しない dropdown の性格に合わせる)。 */
@@ -44,10 +44,13 @@
   width: 100%;
   display: flex;
   align-items: center;
-  gap: calc(var(--layout-gap-tight) * var(--density-gap-scale, 1));
-  padding: calc(var(--spacing-xs) * var(--density-padding-scale, 1))
-    calc(var(--spacing-s) * var(--density-padding-scale, 1));
-  min-height: calc(var(--layout-target-focus) * var(--density-min-height-scale, 1));
+  gap: calc(var(--_menu-item__gap, var(--layout-gap-tight)) * var(--density-gap-scale, 1));
+  padding: calc(var(--_menu-item__pad-y, var(--spacing-xs)) * var(--density-padding-scale, 1))
+    calc(var(--_menu-item__pad-x, var(--spacing-s)) * var(--density-padding-scale, 1));
+  min-height: calc(
+    var(--_menu-item__min-h, var(--layout-target-focus)) *
+    var(--density-min-height-scale, 1)
+  );
 
   font-family: inherit;
   font-size: var(--typography-size-m);
@@ -55,7 +58,7 @@
   text-align: left;
   text-decoration: none;
   cursor: pointer;
-  border-radius: var(--radius-xs);
+  border-radius: var(--_menu-item__radius, var(--radius-xs));
 
   transition: background-color var(--motion-mapping-hover-duration)
     var(--motion-mapping-hover-easing), color var(--motion-mapping-hover-duration)

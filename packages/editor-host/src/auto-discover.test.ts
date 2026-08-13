@@ -2,7 +2,7 @@
  * bun test packages/editor-host/src/auto-discover.test.ts
  */
 import { describe, expect, test } from 'bun:test'
-import { __test__ } from './auto-discover'
+import { __test__, sliderSpecFor } from './auto-discover'
 
 const { inferType, cssVarToId, heuristicRange } = __test__
 
@@ -123,12 +123,15 @@ describe('tweakVarToId / tweakPlacement', () => {
     expect(tweakVarToId('--_badge-pad-x')).toBe('badge.pad.x')
     expect(tweakVarToId('--_button-radius')).toBe('button.radius')
   })
-  test('placement: 先頭 segment が group、残りが label', () => {
-    expect(tweakPlacement('--_badge-pad-x')).toEqual({ group: 'badge', label: 'Pad X' })
-    expect(tweakPlacement('--_button-radius')).toEqual({ group: 'button', label: 'Radius' })
+  test('placement: __ の左が group、右が label', () => {
+    expect(tweakPlacement('--_badge__pad-x')).toEqual({ group: 'badge', label: 'Pad X' })
+    expect(tweakPlacement('--_error-boundary__pad-x')).toEqual({
+      group: 'error-boundary',
+      label: 'Pad X',
+    })
   })
-  test('placement: segment 1 個だけなら group 名がそのまま label', () => {
-    expect(tweakPlacement('--_gap')).toEqual({ group: 'gap', label: 'Gap' })
+  test('placement: 規約外の名前は捨てずに group 無しで置く', () => {
+    expect(tweakPlacement('--_gap')).toEqual({ group: 'tweak', label: 'gap' })
   })
 })
 
@@ -138,12 +141,29 @@ describe('isSliderFriendly', () => {
     expect(isSliderFriendly(8, 'px')).toBe(true)
     expect(isSliderFriendly(512, 'px')).toBe(true)
   })
-  test('radius.full 等の sentinel (512px 超) は除外', () => {
+  test('radius.full 等の sentinel (512px 超) を検出', () => {
     expect(isSliderFriendly(513, 'px')).toBe(false)
     expect(isSliderFriendly(9999, 'px')).toBe(false)
   })
   test('px 以外の unit は制限しない', () => {
     expect(isSliderFriendly(9999, 'ms')).toBe(true)
     expect(isSliderFriendly(2, 'rem')).toBe(true)
+  })
+})
+
+describe('sliderSpecFor', () => {
+  test('通常値は heuristic range + 素の初期値', () => {
+    expect(sliderSpecFor(8, 'px')).toEqual({ min: 0, max: 21, step: 0.5, initial: 8 })
+  })
+
+  test('sentinel (radius.full = 9999px) は捨てずに操作可能な range へ丸める', () => {
+    // 以前はここで knob ごと落としていたため、button の丸みが panel から消えていた。
+    // CSS は border-radius を短辺の半分に clamp するので、pill 用途では 128px と
+    // 9999px の見た目は同一 — 初期値を丸めても表示は変わらない
+    expect(sliderSpecFor(9999, 'px')).toEqual({ min: 0, max: 128, step: 1, initial: 128 })
+  })
+
+  test('px 以外の大きな値は sentinel 扱いしない', () => {
+    expect(sliderSpecFor(9999, 'ms').initial).toBe(9999)
   })
 })

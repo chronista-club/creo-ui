@@ -53,7 +53,7 @@ bun test packages/editor-host/src/host.test.ts  # editor-host core state のテ�
 
 # demo stage (local Mac で apps/site を podman 常設配信)
 bun run site:build     # build:web + build:packages + apps/site を順にビルド → apps/site/dist
-bun run site:up        # site:build → image build → 起動 (http://demo.creo-ui/ or http://localhost:8080/creo-ui/)
+bun run site:up        # site:build → image build → 起動 (http://demo.creo-ui/ or http://localhost:13610/creo-ui/)
 bun run site:down      # 停止・削除
 # 常設: restart=always + host の dnsmasq (*.demo → 127.0.0.1) + podman machine 自動起動
 # LaunchAgent。構成の詳細は compose.yml のコメント参照
@@ -100,7 +100,7 @@ Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
 | Platform | 命名 | Color | Dimension | FontWeight/Number | その他 |
 |----------|------|-------|-----------|-------------------|--------|
 | Swift | camelCase (`colorBrandPrimary`) | `Color(red: ...)` in `extension Color` | `CGFloat` in `enum CreoUITokens` | `Double` in `CreoUITokens` | `String` in `CreoUITokens` |
-| Rust | SCREAMING_SNAKE (`COLOR_BRAND_PRIMARY`) | `Rgb { r, g, b, a }` (u8 構造体、straight alpha) | `f32` (px) | `f32` | `&'static str` |
+| Rust | SCREAMING_SNAKE (`COLOR_BRAND_PRIMARY`) | `Rgb { r, g, b, a }` (u8 構造体、straight alpha) | `f32` (**論理 px** — 生描画は `Scale` で物理へ) | `f32` | `&'static str` |
 
 - Rust の generated は `include!()` で `src/lib.rs` の `pub mod tokens` に取り込まれる設計 (`CREO-86` で確立)。したがって custom format には inner attribute (`#![...]`) や inner doc (`//!`) を入れてはいけない — `include!` 先はモジュールの途中なので parse error になる。この制約は `transforms/config.rust.js` のコメントにも明記されている。
 - Rust ident は先頭が数字だと invalid なので `sanitizeIdent` で `_` prefix。Swift も同様。

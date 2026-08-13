@@ -632,6 +632,12 @@ a:hover {
   grid-template-columns: 200px 60px 1fr;
   align-items: center;
   gap: var(--spacing-m);
+}
+
+/* size-row は creo-card 化済み — padding / surface は card の管轄。
+   未 card 化の weight / semantic 行は従来の縦 padding を維持する */
+.docs-typo-weight-row,
+.docs-typo-semantic-row {
   padding: var(--spacing-xs) 0;
 }
 

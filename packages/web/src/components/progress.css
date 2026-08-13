@@ -12,9 +12,9 @@
 .creo-progress {
   display: block;
   width: 100%;
-  height: 8px;
+  height: var(--_progress__h, 8px);
   background-color: var(--surface-veil-1);
-  border-radius: var(--radius-full);
+  border-radius: var(--_progress__radius, var(--radius-full));
   overflow: hidden;
 }
 
@@ -73,9 +73,9 @@
 
 .creo-spinner {
   display: inline-block;
-  width: 24px;
-  height: 24px;
-  border: 2px solid var(--surface-veil-1);
+  width: var(--_spinner__size, 24px);
+  height: var(--_spinner__size, 24px);
+  border: var(--_spinner__stroke, 2px) solid var(--surface-veil-1);
   border-top-color: var(--fill-brand);
   border-radius: var(--radius-full);
   animation: creoSpinnerRotate 900ms linear infinite;

@@ -29,13 +29,10 @@
 
   /* size 別の素の値。 [data-size] variant はこの 3 変数だけを差し替え、
      gap / padding の宣言 (density calc 込み) はここ 1 箇所 (button.css と同 pattern)。 */
-  --_eb-gap: var(--spacing-s);
-  --_eb-pad-y: var(--spacing-xl);
-  --_eb-pad-x: var(--spacing-xl);
 
-  gap: calc(var(--_eb-gap) * var(--density-gap-scale, 1));
-  padding: calc(var(--_eb-pad-y) * var(--density-padding-scale, 1))
-    calc(var(--_eb-pad-x) * var(--density-padding-scale, 1));
+  gap: calc(var(--_error-boundary__gap, var(--spacing-s)) * var(--density-gap-scale, 1));
+  padding: calc(var(--_error-boundary__pad-y, var(--spacing-xl)) * var(--density-padding-scale, 1))
+    calc(var(--_error-boundary__pad-x, var(--spacing-xl)) * var(--density-padding-scale, 1));
   color: var(--color-text-primary);
 
   /* Dual layer bg: semantic error subtle (主) + brand primary subtle (whisper)。
@@ -52,18 +49,18 @@
 
 /* ---------- Sizes ---------- */
 
-/* size variant は --_eb-* の差し替えのみ (base 側の density calc を剥がさない)。 */
+/* size variant は --_error-boundary__* の差し替えのみ (base 側の density calc を剥がさない)。 */
 .creo-error-boundary[data-size="s"] {
-  --_eb-pad-y: var(--spacing-m);
-  --_eb-pad-x: var(--spacing-m);
-  --_eb-gap: var(--spacing-xs);
+  --_error-boundary__pad-y: var(--spacing-m);
+  --_error-boundary__pad-x: var(--spacing-m);
+  --_error-boundary__gap: var(--spacing-xs);
   border-radius: var(--radius-m);
 }
 
 .creo-error-boundary[data-size="l"] {
-  --_eb-pad-y: calc(var(--spacing-xl) * 1.5);
-  --_eb-pad-x: var(--spacing-xl);
-  --_eb-gap: var(--spacing-m);
+  --_error-boundary__pad-y: calc(var(--spacing-xl) * 1.5);
+  --_error-boundary__pad-x: var(--spacing-xl);
+  --_error-boundary__gap: var(--spacing-m);
 }
 
 /* ---------- Icon ---------- */

@@ -34,7 +34,7 @@
 | D-10 | AI agent access | 同 protocol を MCP 経由で (enter/select/set/subscribe/exit) |
 | D-11 | protocol owner | **creo-ui** (schema + TS 型 + JSON schema)、実装は consumer 側 |
 | D-12 | 段階 | Phase 1 = 設計 memo + editor-mode tokens / Phase 2 = Web 実装・MCP / Phase 3+ = Swift 実装、theme 切替 |
-| D-13 | Component tweak 規約 | component CSS の `--_<component>-<knob>` + fallback (= SSOT 値) を editor が CSSOM から自動発見 (F2b)。manifest / 手動 bind 不要 — **D-6 のデータ版非侵襲** (component は editor のために 1 行も書かない) |
+| D-13 | Component tweak 規約 | component CSS の `--_<component>__<knob>` + fallback (= SSOT 値) を editor が CSSOM から自動発見。`<component>` は実在する `.creo-<component>` class そのもの (id は新設しない)、`__` が境界。manifest / 手動 bind 不要 — **D-6 のデータ版非侵襲** (component は editor のために 1 行も書かない)。規約は CI (`check:tweak-vars`) が守る |
 
 ---
 
@@ -257,38 +257,162 @@ Mode ON で該当要素を選ぶと、LEFT に "Original content"、RIGHT に "P
 
 ```css
 .creo-badge {
-  padding: var(--_badge-pad-y, 2px) var(--_badge-pad-x, var(--spacing-s));
-  border-radius: var(--_badge-radius, var(--radius-full));
+  padding: var(--_badge__pad-y, 2px) var(--_badge__pad-x, var(--spacing-s));
+  border-radius: var(--_badge__radius, var(--radius-full));
 }
 ```
 
-規約は 1 個だけ — **`--_<component>-<knob>` + fallback (= SSOT 初期値)**:
+規約は 1 個だけ — **`--_<component>__<knob>` + fallback (= SSOT 初期値)**:
 
 - `--_` prefix は private の印 (public API ではない、theme 契約に含まれない)
-- **fallback を持つ使用箇所だけ**がノブになる。`--_btn-fg` のような fallback 無し
+- **`<component>` は実在する `.creo-<component>` class そのもの**。creo-ui の
+  component には既に id がある — class がそれで、新設しない
+- **`__` が component と knob の境界**。ハイフンだけだと
+  `--_accordion-content-pad-x` を `accordion` と読むか `accordion-content` と
+  読むかが原理的に決まらない。最長一致は「今たまたま当たっている」だけで、
+  `.creo-btn-pad` のような class が増えた瞬間に解釈が静かに変わる
+- **fallback を持つ使用箇所だけ**がノブになる。`--_btn__fg` のような fallback 無し
   内部 var (variant が値を流すだけ) は対象外
-- editor-host (F2b) が `document.styleSheets` を scan → fallback を computed 値まで
-  解決 → 型推論 (number → slider / color → picker) → 自動 bind。
-  rule の `selectorText` で DOM presence を判定し、**画面に居る component の
-  ノブだけ** panel に出す
+- editor-host が `document.styleSheets` を scan → fallback を computed 値まで
+  解決 → 型推論 (number → slider / color → picker) → 自動 bind
 - 書き込み先は `:root` — **component-type scope** (当該 component の全 instance
-  に効く)。consumer 側: `config.discoverTweaks: true` (provider) または
-  `creoEditor.discoverTweaks()` (REPL)
+  に効く)。consumer 側: `config.discoverComponents` (F2c、default true) または
+  `config.discoverTweaks: true` (F2b eager) / `creoEditor.discoverTweaks()` (REPL)
+
+規約は **CI が守る** (`scripts/check-tweak-vars.mjs` / `bun run check:tweak-vars`)。
+`__` の欠落と、対応する `.creo-*` が存在しない component 名を弾く。命名規約は
+検査が無いと数ヶ月で腐るので、抽出をそれに依存させるならセットで入れる。
 
 編集の 3-scope model (2026-07-12 の設計議論で確定):
 
 | scope | 動く範囲 | 書き込み先 | field source |
 |---|---|---|---|
 | token | design system 全体 | `:root` の `--spacing-s` 等 | autoDiscover (F2) |
-| component-type | 当該 component の全 instance | `:root` の `--_badge-*` | tweak var 規約 (F2b) |
+| component-type | 当該 component の全 instance | `:root` の `--_badge__*` | tweak var 規約 (F2b / F2c) |
 | instance | 選択中の 1 要素 | signal / app state | 手動 bind |
 
-panel の scope 3 分割表示 (Phase B) は 2026-07-12 実装済み — RIGHT region が
-「App state (instance) → 画面上の component → Tokens (折りたたみ)」の順に、
-射程の狭い順で section 表示する。空 section は非表示。radius.full = 9999px の
-ような **sentinel 値 (px で 512 超) は slider ノブから除外**する
-(`isSliderFriendly`)。instance scope の data-attribute discovery (selector から
-variant 候補を列挙) は将来の設計課題。
+radius.full = 9999px のような **sentinel 値 (px で 512 超) は 0-128px へ丸める**
+(`sliderSpecFor`。2026-08-06 まで除外していたが、button の丸みが panel から
+消えるため方針変更)。instance scope の data-attribute discovery は将来の設計課題。
+
+panel の scope 3 分割表示 (2026-07-12 の Phase B) は **2026-08-06 に一旦撤去**した。
+「選ぶ前に全部並んでいる」構造がそもそも渋滞の原因だったので、panel を白紙に戻して
+Discovery から積み直す (次節)。
+
+**tweak var は「使用箇所に fallback」で書く (pattern B) こと**。base rule 側で
+`.creo-card { --_card__pad: var(--spacing-m); padding: calc(var(--_card__pad) * ...) }`
+と宣言する pattern A は 2 重に成立しない — (a) fallback が無いので scan に
+載らない、(b) custom property は **要素自身の宣言が継承より強い**ため
+`:root` への書き込みが届かない。variant 側の `--_card__pad: var(--spacing-s)` は
+そのまま宣言してよい (その variant だけ editor から外れる、badge と同じ挙動)。
+
+### 選択駆動の component field 解決 (F2c)
+
+F2b までは「mount 時に画面上の tweak var を全部 register する」eager 方式で、
+2 つの弱点があった:
+
+1. **panel が渋滞する** — 画面に居る component 全部のノブが一度に並ぶ
+2. **値が焼き付く** — `host.register()` は登録時に初期値を `:root` へ書くので、
+   register した数だけ `<html>` の inline style に解決済み値が固定される
+
+そして何より、**選択 (`data-editor-fields`) は手で仕込まないと機能しなかった**。
+
+F2c はこれを反転させ、**命名規約 `--_<component>__<knob>` を唯一の根拠**にする。
+mount 時は **index を作るだけ** (DOM 書き込みゼロ、index 構築も初回アクセスまで遅延)、
+選ばれた component のノブ **だけ** を lazy に register する。
+config は `discoverComponents` (**default: true**)。
+
+抽出は **var 名を `__` で split するだけ**で終わる:
+
+```
+--_error-boundary__pad-x  →  component: error-boundary  /  knob: pad-x
+                             selector : .creo-error-boundary
+```
+
+CSSOM から読むのは fallback だけで、**`selectorText` は見ない**。これで
+`@media` / `:is()` / state 疑似 / cross-origin stylesheet といった selector 解析の
+落とし穴が最初から存在しない (実際、selector 逆引きで実装した初版では
+`focus` が `focus-visible` を食う・comma list の subject 取り違え・fallback の
+解決先違い、と 3 種のバグを踏んだ)。
+
+component ↔ class が 1:1 なので DOM 側も軽い:
+
+- **要素 → ノブ** は `el.classList` を index に引くだけ。`el.matches()` は不要
+- **component → 画面に居るか** は `document.querySelector('.creo-<id>')` 1 回
+- **panel に component 一覧を出せる** — index の keys がそのまま候補になる
+
+実装上の要点 (`component-id.ts` / `component-fields.ts`):
+
+- **fallback は対象要素の computed style で解決する** — `--_btn__pad-y` の fallback
+  `var(--_btn__size-pad-y)` は `.creo-btn` 上にしか無く、`:root` では解決できない。
+  ここを `:root` でやると btn のノブが丸ごと消える
+- **sentinel は捨てずに丸める** — `var(--radius-full)` = 9999px を除外すると
+  button の丸みという最も触りたいノブが消える。0–128px へ丸める (CSS は radius を
+  短辺の半分に clamp するので pill 用途では見た目不変)
+- **register は選択時のみ** — 一覧の列挙や hover は副作用なし
+
+選択対象は「明示 bind (`data-editor-fields`) > class 由来のノブ > creo-ui component
+ではあるがノブ無し」の優先順で祖先方向へ辿る。最後の fallback があるので、
+ノブ未整備の component でも「何を選んだか」は panel に出る。
+
+### Panel の作り直し — Discovery から積む (2026-08-06〜)
+
+規約ベースになったことで **panel に component 一覧を出せる**ようになった。
+これを受けて panel を白紙に戻し、段階的に組み直している。
+
+旧 panel は「Mode を ON にした瞬間に、触れるもの全部が並んでいる」構造だった。
+scope で 3 分割しても、選ぶ前から候補が全部見えている点は変わらず、渋滞の
+根本原因はそこにあった。**選んでから出す**へ反転する。
+
+Discovery の形は 2026-08-09 の設計議論で確定 — **DOM ツリー (Outliner 的) ×
+drill-in**。panel は 2 view を selection state で切り替える:
+
+- **tree view** (選択なし): ページの実 DOM から作った creo component の
+  instance ツリー (`component-tree.ts` / `resolver.tree()`)。非 creo 要素は
+  素通しして子を引き上げ、同 component の sibling は `×N` に畳む
+  (Outliner の row 等で行が爆発するため。代表 = 最初の instance)。
+  sub-part の親子関係は DOM の入れ子として自然に出る
+- **detail view** (選択あり): ← 戻る + component 名 + ノブ (FieldEditor)。
+  300px の panel 幅を全部ノブに使う
+
+**ツリーはナビゲーション、編集は component scope のまま** (D-13)。選んだ
+instance は outline の対象と fallback 解決の基準要素として使うだけで、
+書き込み先は `:root` (全 instance に効く)。ページ上の要素クリックも同じ
+selection state に載るので、どちらの入口からでも detail view に着地する。
+
+選択の意味論は 2026-08-09 の設計議論で確定した。北極星は **「開発中に気に
+なった箇所を、その場で即調整できる」** — 気づく → 指す → 回す、の摩擦最小化:
+
+- **選択の実体は class** (`--_<component>__` の component = `.creo-<component>`)。
+  instance はアンカーで、「どの個体を基準に fallback を読んだか」「outline と
+  scroll の行き先」にだけ使う
+- **outline はハイブリッド** — アンカー instance は強い枠、同 class の他 instance
+  は淡い破線 (上限 80)。編集は component scope (全 instance に効く) なので、
+  囲い方が効果範囲とズレると「囲っていないものが変わった」驚きが起きる。
+  それを構造的に防ぐ
+- **入れ子は最内 + 祖先への梯子** — クリックは指したもの (最内の creo component)
+  を選び、detail header の breadcrumb (`↑ card-header ↑ card`) で親へ 1 click で
+  上がれる
+- **hover は双方向** — tree の行 hover でページ上の該当 instance に outline、
+  ページ hover で outline + class 名ラベル。Discovery の「この行は画面のどれ？」
+  「クリックしたら何が選ばれる？」を両側から解く
+- **Esc は 2 段** — 選択中は解除 (detail → tree)、未選択なら Mode OFF
+
+編集の射程は **ノブ + 脱出ハッチ** で確定 (未実装、次段):
+宣言済み tweak var のノブが「良い経路」(型付き slider / SSOT fallback / density
+連動を保つ)。加えて detail に「他の property」を置き、class の実 CSS 宣言を
+一覧 → 任意の property を注入 stylesheet の `.creo-<component>` override rule で
+上書きできるようにする。class 単位 = component scope の原則と一貫し、export も
+「component CSS への変更提案」として成立する。ただし `calc(var × density)` の
+式ごと上書きになるため、構造を保った編集はあくまでノブ側。
+
+旧 panel の 3-scope field 一覧 / ThemeEditor / ExportBar は **外してある**
+(`theme-editor.tsx` / `export-bar.tsx` はファイルとしては残置)。
+
+**トレードオフ**: 規約ベースは variant 固有ノブ (`.creo-btn--sm` を選んだときだけ
+出るノブ) を表現できない。selector 逆引きなら可能だったが、現状 variant 側は
+fallback 無しの宣言しか持たない = ノブではないので実害は無い。必要になったら
+knob 名側に variant を持たせる (`--_btn__sm-pad-x`) 拡張で足りる。
 
 ### RIGHT 領域の並び順
 
@@ -469,7 +593,10 @@ Claude: (tokens リポジトリに PR を作成)
 
 以下は Phase 2 着手時に詰める:
 
-1. **Selection の表現** — CSS selector / component id / DOM element reference どれを primary に?
+1. ~~**Selection の表現** — CSS selector / component id / DOM element reference どれを primary に?~~
+   → 2026-08-04 の F2c で決着。primary は **DOM element** (hover/click で確定) とし、
+   そこから CSS selector を逆引きして field を解決、表示名だけ component id
+   (`.creo-btn`) を使う。3 つのうち 1 つを選ぶのではなく役割で分けた。
 2. **Field id の階層的 namespace** — dot notation (`memory.priority`) vs URI 風 (`editor:///memory/priority`)
 3. **Persistence の per-project 解決** — SurrealDB (creo-memories) 紐付けをどう protocol 化?
 4. **Region が狭い画面での挙動** — モバイルや狭い window では bottom sheet 形式に fallback?
@@ -516,3 +643,29 @@ Claude: (tokens リポジトリに PR を作成)
   永続化 (`{namespace}:layer:panel-pos`、EditorHost.namespace を新規 expose)。
   被り回避 `--editor-mode-dock-top` / 幅 `--editor-mode-dock-width` を導入。
   team-b review で drag listener leak / 画面外クランプ不発を修正
+- 2026-08-04: **F2c 選択駆動の component field 解決** — `data-editor-fields` の
+  事前仕込み無しに creo-ui component をクリックするだけでノブが出るようにした
+  (`selector-utils.ts` + `component-fields.ts`、config `discoverComponents`
+  default true)。CSSOM の selectorText を `el.matches()` で逆引きするので
+  命名規約に依存せず、`--_eb-*` ↔ `.creo-error-boundary` の略記ズレも吸収する。
+  panel の group / section title も selector 由来の component 名に。あわせて
+  web の全 component CSS に tweak var を整備 (**48 component / 93 knob**、
+  従来は 14 file のみ)。`card` / `stack` / `grid` / `table` は base rule 側で
+  `--_x: ...` を宣言する pattern A だったため `:root` override が届いておらず、
+  使用箇所 fallback (pattern B) へ移行 (見た目は不変)
+- 2026-08-06: **F2c を命名規約ベースへ転換** — selector 逆引き
+  (`selector-utils.ts`) を廃し、tweak var の命名規約
+  **`--_<component>__<knob>`** を唯一の根拠にした (`component-id.ts`)。
+  creo-ui の component には既に id がある — class `.creo-<id>` がそれで、
+  `<component>` はそれと一致することを CI (`check:tweak-vars`) が保証する。
+  抽出は `__` の split 1 回で終わり、CSSOM から読むのは fallback だけになった
+  (`selectorText` を見ないので `@media` / `:is()` / state 疑似 / cross-origin
+  stylesheet の解析が不要)。逆引き実装で踏んだ 3 バグ (`focus` が
+  `focus-visible` を食う / comma list の subject 取り違え / fallback の解決先が
+  `:root` 固定) は、いずれも構造的に発生しなくなった。
+  あわせて `empty-state` / `error-boundary` / `header` / `tabs-tab` /
+  `pagination-item` / `segmented-option` / `select-input` の pattern A 残りを
+  pattern B へ移行し、略記 (`es` / `eb` / `hdr` / `pgn` / `seg-opt`) を class 名に
+  統一 (**55 component / 111 knob**)。sentinel (radius.full = 9999px) は除外を
+  やめ 0-128px へ丸める方針に変更 — 除外したままだと button の丸みという最も
+  触りたいノブが panel から消えるため

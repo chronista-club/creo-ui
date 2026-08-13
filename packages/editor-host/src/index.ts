@@ -39,7 +39,7 @@ export type { Binder, Placement, BindOptions } from './binder'
 export { bind } from './binder'
 
 // ---------- Provider + hooks ----------
-export { EditorHostProvider, useEditorHost } from './provider'
+export { EditorHostProvider, useComponentResolver, useEditorHost } from './provider'
 export { useEditorMode, useEditorSelection, useEditorHover, useEditorSelectable } from './hooks'
 
 // ---------- Public semantic types ----------
@@ -82,14 +82,48 @@ export type { ConsoleApi } from './console'
 export {
   autoDiscover,
   autoDiscoverTweaks,
+  bindDiscoveredVar,
   parseTweakVarRefs,
+  resolveTweakVar,
   scanCssVars,
+  scanRawTweakVars,
   scanTweakVars,
+  sliderSpecFor,
+  tweakPlacement,
+  tweakVarToId,
   type AutoDiscoverOptions,
+  type DiscoveredPlacement,
   type DiscoveredVar,
+  type RawTweakVar,
   type TweakDiscoverOptions,
   type TweakVarRef,
 } from './auto-discover'
+
+// F2c: 選択駆動の component field 解決 (data-editor-fields の事前仕込みが不要)
+export {
+  buildKnobIndex,
+  createComponentFieldResolver,
+  matchKnobs,
+  toComponentKnobs,
+  type ComponentEntry,
+  type ComponentFieldResolver,
+  type ComponentFieldResolverOptions,
+  type ComponentKnob,
+  type ComponentSelection,
+  type KnobIndex,
+} from './component-fields'
+export { buildComponentTree, type ComponentTreeNode } from './component-tree'
+export {
+  COMPONENT_CLASS_PREFIX,
+  TWEAK_SEPARATOR,
+  componentClassIdsOf,
+  componentDisplayName,
+  componentIdOfElement,
+  componentSelector,
+  knobLabel,
+  parseTweakVarName,
+  type TweakVarName,
+} from './component-id'
 
 // F3: Export
 export { exportSnapshot, type ExportFormat, type ExportOptions } from './export'

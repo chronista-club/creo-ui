@@ -334,15 +334,15 @@ pub const MOTION_MAPPING_PROGRESS_INDETERMINATE_EASING: &str = "linear";
 /// No rounding — explicit reset (special, outside 5 tier rule)
 pub const RADIUS_NONE: f32 = 0_f32;
 /// Extra-small radius — minimal rounding (chips, tags)
-pub const RADIUS_XS: f32 = 4_f32;
+pub const RADIUS_XS: f32 = 3.5_f32;
 /// Small radius — subtle rounding (inputs, small surfaces)
-pub const RADIUS_S: f32 = 8_f32;
+pub const RADIUS_S: f32 = 4_f32;
 /// Medium radius — cards, popovers (soft friendly feel)
-pub const RADIUS_M: f32 = 15_f32;
+pub const RADIUS_M: f32 = 8_f32;
 /// Large radius — modals, larger surfaces
-pub const RADIUS_L: f32 = 22_f32;
+pub const RADIUS_L: f32 = 17.5_f32;
 /// Extra-large radius — hero surfaces
-pub const RADIUS_XL: f32 = 28_f32;
+pub const RADIUS_XL: f32 = 21.5_f32;
 /// Fully rounded — pill shapes and circles (special, outside 5 tier rule)
 pub const RADIUS_FULL: f32 = 9999_f32;
 /// No shadow
@@ -366,15 +366,15 @@ pub const SPACING_L: f32 = 24_f32;
 /// Extra-large spacing — 32px
 pub const SPACING_XL: f32 = 32_f32;
 /// Lead body — opening paragraph / intro (larger, invites reading)
-pub const TYPOGRAPHY_BODY_LEAD: f32 = 20_f32;
+pub const TYPOGRAPHY_BODY_LEAD: f32 = 20.5_f32;
 /// Default body — regular paragraph text (最もよく使う)
-pub const TYPOGRAPHY_BODY_DEFAULT: f32 = 16_f32;
+pub const TYPOGRAPHY_BODY_DEFAULT: f32 = 17_f32;
 /// Emphasis body — default size with stronger weight (意味的な強調、size は default と同じ)
-pub const TYPOGRAPHY_BODY_EMPHASIS: f32 = 16_f32;
+pub const TYPOGRAPHY_BODY_EMPHASIS: f32 = 17_f32;
 /// Helper text — form helper, status message, secondary info
-pub const TYPOGRAPHY_BODY_HELPER: f32 = 14_f32;
+pub const TYPOGRAPHY_BODY_HELPER: f32 = 15_f32;
 /// Caption — image caption, footnote, meta info (smallest readable body)
-pub const TYPOGRAPHY_BODY_CAPTION: f32 = 12_f32;
+pub const TYPOGRAPHY_BODY_CAPTION: f32 = 13_f32;
 /// Display xs — smallest heading (h4 / section title / card title)
 pub const TYPOGRAPHY_DISPLAY_XS: f32 = 24_f32;
 /// Display s — standard heading (h3 / article title / section headline)
@@ -404,15 +404,15 @@ pub const TYPOGRAPHY_LINE_HEIGHT_NORMAL: f32 = 1.5_f32;
 /// Relaxed line-height — long-form text, CJK languages
 pub const TYPOGRAPHY_LINE_HEIGHT_RELAXED: f32 = 1.75_f32;
 /// Caption / meta text
-pub const TYPOGRAPHY_SIZE_XS: f32 = 12_f32;
+pub const TYPOGRAPHY_SIZE_XS: f32 = 13_f32;
 /// Small body / helper text
-pub const TYPOGRAPHY_SIZE_S: f32 = 14_f32;
+pub const TYPOGRAPHY_SIZE_S: f32 = 15_f32;
 /// Default body text
-pub const TYPOGRAPHY_SIZE_M: f32 = 16_f32;
+pub const TYPOGRAPHY_SIZE_M: f32 = 17_f32;
 /// Large body / subheading
-pub const TYPOGRAPHY_SIZE_L: f32 = 18_f32;
+pub const TYPOGRAPHY_SIZE_L: f32 = 18.5_f32;
 /// Largest body / small heading (h4)
-pub const TYPOGRAPHY_SIZE_XL: f32 = 20_f32;
+pub const TYPOGRAPHY_SIZE_XL: f32 = 20.5_f32;
 /// Hero title — landing page mega headline (promotional / marketing)
 pub const TYPOGRAPHY_TITLE_HERO: f32 = 72_f32;
 /// Page title — h1 (article title, app screen heading)
@@ -422,7 +422,7 @@ pub const TYPOGRAPHY_TITLE_SECTION: f32 = 32_f32;
 /// Subsection title — h3 (nested group within a section)
 pub const TYPOGRAPHY_TITLE_SUBSECTION: f32 = 24_f32;
 /// Card title — h4 (inline block title, table header, menu label)
-pub const TYPOGRAPHY_TITLE_CARD: f32 = 20_f32;
+pub const TYPOGRAPHY_TITLE_CARD: f32 = 20.5_f32;
 /// Regular body weight
 pub const TYPOGRAPHY_WEIGHT_REGULAR: f32 = 400_f32;
 /// Medium emphasis

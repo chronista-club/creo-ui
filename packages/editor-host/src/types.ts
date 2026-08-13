@@ -57,10 +57,21 @@ export interface EditorField<T = any> {
 // ---------- Selection ----------
 
 export interface SelectionInfo {
-  /** 選択中の要素識別子 (data-editor-selectable-id / data-editor-fields 文字列 / 独自 id) */
+  /** 選択中の要素識別子 (data-editor-selectable-id / .creo-* class / 独自 id) */
   targetId: string
   /** 要素に bind されている field id 一覧 */
   fieldIds: string[]
+  /**
+   * creo-ui component 名 (`.creo-error-boundary` → 'error-boundary')。F2c の
+   * 逆引き経路で解決される。明示 bind だけの要素では undefined。
+   */
+  componentId?: string
+  /**
+   * 選択のアンカー要素。選択の実体は class (component) で、element は
+   * 「どの instance を基準に見ているか」— outline の強調・rect 追従・
+   * 祖先 breadcrumb の起点に使う。
+   */
+  element?: Element
   /** 描画用の bounding rect (ResizeObserver / scroll / resize で更新) */
   rect: DOMRect
 }
@@ -139,8 +150,35 @@ export interface EditorHostConfig {
    * 自動 bind する (F2b)。component CSS 側の規約
    * `var(--_badge-pad-x, <SSOT fallback>)` だけで panel にノブが生える。
    * default: false。
+   *
+   * 注意: これは **eager** 経路 — 画面に居る component のノブを mount 時に
+   * まとめて register するので、その分の初期値が `:root` に書き込まれる。
+   * 「選んだ component のノブだけ出す」なら `discoverComponents` (F2c) を使う。
    */
   discoverTweaks?: boolean
+
+  /**
+   * Discovery / 選択の対象を、この要素の内側に限定する (default: document.body 全体)。
+   *
+   * app 側の chrome (site の Header / Sidebar 等) が creo-ui component で出来て
+   * いると Discovery のツリーに混ざり、クリック選択も chrome を食ってしまう。
+   * content root を渡すと「編集対象は Main だけ」になり、root の外のクリックは
+   * Content にそのまま通る (chrome は Editor Mode 中も普通に操作できる)。
+   *
+   * selector 文字列 or 要素 getter。指定したのに要素が見つからないときは
+   * **何も出さない** (fail-closed — 意図が満たせない状態で拾い集めない)。
+   */
+  selectionRoot?: string | (() => Element | null)
+
+  /**
+   * 選択駆動の component field 解決 (F2c)。**default: true**。
+   *
+   * CSSOM の tweak var を index 化し、Editor Mode 中に creo-ui component を
+   * クリックすると `el.matches()` の逆引きでヒットしたノブだけを lazy に
+   * register する。`data-editor-fields` の事前仕込みが不要になる。
+   * index 構築は初回選択時まで遅延され、mount 時の DOM 書き込みはゼロ。
+   */
+  discoverComponents?: boolean
 
   /**
    * BroadcastChannel で複数 tab 間の values を同期する。

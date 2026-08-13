@@ -18,32 +18,32 @@ const SIZES: readonly ScaleEntry[] = [
   {
     name: 'typography.size.xs',
     cssVar: '--typography-size-xs',
-    value: '12px',
+    value: '13px',
     use: 'caption / meta',
   },
   {
     name: 'typography.size.s',
     cssVar: '--typography-size-s',
-    value: '14px',
+    value: '15px',
     use: 'small body / helper text',
   },
   {
     name: 'typography.size.m',
     cssVar: '--typography-size-m',
-    value: '16px',
+    value: '17px',
     use: 'default body text',
     def: true,
   },
   {
     name: 'typography.size.l',
     cssVar: '--typography-size-l',
-    value: '18px',
+    value: '18.5px',
     use: 'large body / subheading',
   },
   {
     name: 'typography.size.xl',
     cssVar: '--typography-size-xl',
-    value: '20px',
+    value: '20.5px',
     use: 'largest body / small heading (h4)',
   },
 ] as const
@@ -189,12 +189,14 @@ export default function Typography() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Typography</h1>
         <p class="docs-page-lead">
-          <strong>2 軸構造</strong>: <strong>単一 root font stack</strong> (Gen Interface JP + UDEV
-          Gothic 35NF)、 <strong>5 tier dimension scale</strong> (size / display / icon を xs / s /
-          m / l / xl)、 <strong>Role-based semantic</strong> (title / body の意味的 alias)。 2026-07
-          の font 一本化 directive で mode 別 family (app / read / editor / terminal) や mono /
-          display / icon の variant は全廃され、 family token は{' '}
-          <code>--typography-family-sans</code> 1 本に集約された。
+          <strong>3 層構成</strong>: <strong>単一 root font stack</strong> (Gen Interface JP + UDEV
+          Gothic 35NF、 family token は <code>--typography-family-sans</code> 1 本)、{' '}
+          <strong>5 tier dimension scale</strong> (size = 本文 / display = 見出し / icon、 各 xs–
+          xl)、 <strong>role-based semantic</strong> (title / body の意味的 alias)。 値は{' '}
+          <strong>論理 px</strong> を SSOT とし、 「同じ数字 = 同じ見た目の大きさ」 を platform
+          native の単位で守る — Web へは <strong>rem</strong> で emit (browser の font 設定に追従)、
+          SwiftUI へは <strong>pt</strong>、 Rust へは論理 px のまま (生描画は <code>Scale</code>{' '}
+          で物理 px 化)。 表中の px 表記は論理値。
         </p>
       </header>
 
@@ -236,13 +238,21 @@ export default function Typography() {
       <section>
         <h2 class="docs-section-title">Size scale — body text (5 tier)</h2>
         <p class="docs-page-helper">
-          通常本文の dimension。 中央 (<code>m</code> = 16px) が default、 5 tier convention (原則
+          通常本文の dimension。 中央 (<code>m</code> = 17px) が default、 5 tier convention (原則
           01) に従う。 heading 系は <strong>display</strong> 別軸を使用 (下記)。
         </p>
         <div class="docs-typo-sizes">
           <For each={SIZES}>
             {(s) => (
-              <div class="docs-typo-size-row">
+              /* creo-card 化 + Editor bind: Mode ON でこの行をクリックすると
+                 当該 size token のノブが開く (data-editor-fields は provider が
+                 register する framework field id と対) */
+              <article
+                class="creo-card docs-typo-size-row"
+                data-padding="s"
+                data-editor-fields={s.name}
+                data-editor-selectable-id={s.name}
+              >
                 <code class="docs-typo-size-name">{s.name}</code>
                 <span class="docs-typo-size-value">
                   {s.value}
@@ -251,7 +261,7 @@ export default function Typography() {
                 <span class="docs-typo-size-sample" style={{ 'font-size': `var(${s.cssVar})` }}>
                   creo-ui — {s.use}
                 </span>
-              </div>
+              </article>
             )}
           </For>
         </div>

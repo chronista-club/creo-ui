@@ -44,7 +44,7 @@ document.documentElement.dataset.theme = 'mint-dark'  // optional、 default は
 |---|---|---|
 | `spacing.*` | `xs / s / m / l / xl` (4/8/18/24/32 px) | sibling 間 gap、 card 内側 padding |
 | `margin.*` | `xs / s / m / l / xl` (8/16/18/40/64 px) | block 間 rhythm、 section break |
-| `radius.*` | `none / xs / s / m / l / xl / full` | 4/8/15/22/28 px + special |
+| `radius.*` | `none / xs / s / m / l / xl / full` | 3.5/4/8/17.5/21.5 px + special |
 | `shadow.*` | `none / s / m / l / xl` | elevation (cards / popovers / modals) |
 | `typography.size.*` | `xs / s / m / l / xl` (12/14/16/18/20 px) | body text |
 | `typography.display.*` | `xs / s / m / l / xl` (24/32/44/56/72 px) | hero / heading |

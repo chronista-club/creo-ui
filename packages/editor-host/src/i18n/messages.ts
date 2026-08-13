@@ -20,7 +20,7 @@ export const messages = {
     label: { ja: 'Editor Mode', en: 'Editor Mode' },
     on: { ja: 'ON', en: 'ON' },
     off: { ja: 'OFF', en: 'OFF' },
-    clickToSelect: { ja: '要素をクリックで選択', en: 'Click an element to select' },
+    clickToSelect: { ja: 'component をクリックで選択', en: 'Click a component to select' },
     selectedPrefix: { ja: '選択中: ', en: 'Selected: ' },
     escapeToExit: { ja: '終了', en: 'exit' },
     escapeToDeselect: { ja: '選択解除', en: 'deselect' },
@@ -36,12 +36,31 @@ export const messages = {
     | 'toggleShortcut'
   >,
 
+  /** Discovery section — このページに居る creo-ui component を並べて選ぶ */
+  discovery: {
+    title: { ja: 'このページの component', en: 'Components on this page' },
+    empty: {
+      ja: 'creo-ui component が見つかりません。',
+      en: 'No creo-ui components found on this page.',
+    },
+    disabled: {
+      ja: 'component discovery は無効です (discoverComponents: false)。',
+      en: 'Component discovery is disabled (discoverComponents: false).',
+    },
+    pickHint: { ja: '選択してノブを出す', en: 'Select to load its knobs' },
+    back: { ja: '戻る', en: 'Back' },
+  } satisfies Localized<'title' | 'empty' | 'disabled' | 'pickHint' | 'back'>,
+
   /** RIGHT region: ツール panel */
   toolPanel: {
     heading: { ja: '▶ ツール', en: '▶ Tools' },
     noFieldsForSelection: {
       ja: 'この選択に紐付く field はありません。',
       en: 'No fields bound to the current selection.',
+    },
+    noKnobsForComponent: {
+      ja: 'この component にはまだ調整ノブがありません (CSS 側に --_ tweak var が未定義)。',
+      en: 'This component has no knobs yet (no --_ tweak vars declared in its CSS).',
     },
     showAllFields: { ja: '全 tool field を表示', en: 'Show all tool fields' },
     // 3-scope sections (D-13)
@@ -51,6 +70,7 @@ export const messages = {
   } satisfies Localized<
     | 'heading'
     | 'noFieldsForSelection'
+    | 'noKnobsForComponent'
     | 'showAllFields'
     | 'scopeInstance'
     | 'scopeComponent'

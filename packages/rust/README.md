@@ -32,7 +32,7 @@ fn main() {
     let scrim = tokens::COLOR_SURFACE_SCRIM;
     assert_eq!(scrim.a, 102); // 40% scrim (旧版は alpha が落ちて不透明だった)
 
-    // Dimension は f32 (px 単位)
+    // Dimension は f32 (論理 px — 下の「dimension token は論理 px」節を参照)
     let md = tokens::SPACING_M;
     assert_eq!(md, 18.0_f32);
 
@@ -41,6 +41,37 @@ fn main() {
     println!("sans = {}", font);
 }
 ```
+
+### dimension token は「論理 px」— 生描画では `Scale` を掛ける
+
+dimension 系 token (`SPACING_*` / `TYPOGRAPHY_*` / `RADIUS_*` 等) の f32 は **論理 px**
+です。CSS px / SwiftUI pt と同じ土俵の値で、「同じ数字なら 3 platform で同じ見た目の
+大きさになる」が既定の契約です。論理 → 物理の変換は platform ごとに担当が違います:
+
+| platform | 変換の担当 |
+|---|---|
+| Web | browser (creo-ui は rem で emit、user のフォント設定にも追従) |
+| SwiftUI | OS (pt をそのまま渡せばよい) |
+| **Rust 生描画 (wgpu / glyphon 等)** | **consumer — `Scale` を掛ける** |
+
+wgpu の surface は物理ピクセルなので、token 値を素で渡すと Retina (2x) で見た目が
+半分になります。window の scale factor から `Scale` を作り、描画直前に通してください:
+
+```rust
+use creo_ui::{tokens, Scale};
+
+// winit: window.scale_factor() / AppKit: NSView.backingScaleFactor
+let scale = Scale::new(2.0);
+
+let font_px = scale.px(tokens::TYPOGRAPHY_SIZE_M); // 16 論理 px → 32 物理 px
+let pad_px  = scale.px(tokens::SPACING_M);         // 18 論理 px → 36 物理 px
+```
+
+文字だけでなく padding や配置座標など **layout 値も論理で組んで同じ `Scale` を通す**
+のが崩れないコツです (文字だけ掛けると余白との釣り合いが壊れます)。glyphon は
+`TextArea.scale` に factor を渡す経路もあります。`Scale` に `Default` が無いのは
+意図的です — 「黙って 1.0」は掛け忘れ (= Retina で半分サイズ) をそのまま既定化
+してしまうため、factor は常に明示します。
 
 ### ratatui / image 等との連携
 

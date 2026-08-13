@@ -13,8 +13,8 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  padding-left: var(--spacing-m);
-  padding-right: var(--spacing-m);
+  padding-left: var(--_container__pad-x, var(--spacing-m));
+  padding-right: var(--_container__pad-x, var(--spacing-m));
   /* default m max-width = reading-friendly */
   max-width: var(--layout-container-m);
 }

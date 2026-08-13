@@ -11,10 +11,10 @@
 .creo-stack {
   display: flex;
   flex-direction: column;
-  /* [data-gap] variant は --_stack-gap の差し替えのみ。 gap の宣言 (density calc 込み)
-     はここ 1 箇所 (button.css と同 pattern)。 */
-  --_stack-gap: var(--spacing-m);
-  gap: calc(var(--_stack-gap) * var(--density-gap-scale, 1));
+  /* [data-gap] variant は --_stack__gap の差し替えのみ。 gap の宣言 (density calc 込み)
+     はここ 1 箇所 (button.css と同 pattern)。既定値は使用箇所の fallback で与える
+     (base rule で宣言すると Editor Mode の :root override が効かなくなる)。 */
+  gap: calc(var(--_stack__gap, var(--spacing-m)) * var(--density-gap-scale, 1));
 }
 
 .creo-stack[data-direction="horizontal"] {
@@ -24,19 +24,19 @@
 /* ---------- Gap (token-driven、 5-step rule) ---------- */
 
 .creo-stack[data-gap="xs"] {
-  --_stack-gap: var(--spacing-xs);
+  --_stack__gap: var(--spacing-xs);
 }
 .creo-stack[data-gap="s"] {
-  --_stack-gap: var(--spacing-s);
+  --_stack__gap: var(--spacing-s);
 }
 .creo-stack[data-gap="m"] {
-  --_stack-gap: var(--spacing-m);
+  --_stack__gap: var(--spacing-m);
 }
 .creo-stack[data-gap="l"] {
-  --_stack-gap: var(--spacing-l);
+  --_stack__gap: var(--spacing-l);
 }
 .creo-stack[data-gap="xl"] {
-  --_stack-gap: var(--spacing-xl);
+  --_stack__gap: var(--spacing-xl);
 }
 
 /* ---------- Align (cross-axis) ---------- */
