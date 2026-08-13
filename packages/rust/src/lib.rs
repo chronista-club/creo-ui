@@ -51,8 +51,8 @@ pub mod tokens {
 /// use creo_ui::{tokens, Scale};
 ///
 /// let scale = Scale::new(2.0); // 例: Retina。実際は window.scale_factor() 等から
-/// let font_px = scale.px(tokens::TYPOGRAPHY_SIZE_M); // 16 論理 px → 32 物理 px
-/// assert_eq!(font_px, 32.0);
+/// let font_px = scale.px(tokens::TYPOGRAPHY_SIZE_M); // 論理 px → 物理 px (2 倍)
+/// assert_eq!(font_px, tokens::TYPOGRAPHY_SIZE_M * 2.0);
 /// ```
 ///
 /// glyphon なら `TextArea.scale` にそのまま factor を渡す手もある。padding や
@@ -160,10 +160,11 @@ mod tests {
 
     #[test]
     fn scale_doubles_on_retina() {
-        // MacBook Air (2x) で 16 論理 px の本文が 32 物理 px で描かれる。
-        // これを掛け忘れると「見た目半分」(ladyland cortex-gpu で実際に起きた)
+        // MacBook Air (2x) で論理 px の本文が 2 倍の物理 px で描かれる。
+        // これを掛け忘れると「見た目半分」(ladyland cortex-gpu で実際に起きた)。
+        // token の具体値には依存させない — 梯子は Editor 実測で改定されうる
         let retina = Scale::new(2.0);
-        assert_eq!(retina.px(tokens::TYPOGRAPHY_SIZE_M), 32.0);
-        assert_eq!(retina.px(tokens::SPACING_M), 36.0);
+        assert_eq!(retina.px(10.0), 20.0);
+        assert_eq!(retina.px(tokens::TYPOGRAPHY_SIZE_M), tokens::TYPOGRAPHY_SIZE_M * 2.0);
     }
 }
