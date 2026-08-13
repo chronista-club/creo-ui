@@ -242,7 +242,15 @@ export default function Typography() {
         <div class="docs-typo-sizes">
           <For each={SIZES}>
             {(s) => (
-              <div class="docs-typo-size-row">
+              /* creo-card 化 + Editor bind: Mode ON でこの行をクリックすると
+                 当該 size token のノブが開く (data-editor-fields は provider が
+                 register する framework field id と対) */
+              <article
+                class="creo-card docs-typo-size-row"
+                data-padding="s"
+                data-editor-fields={s.name}
+                data-editor-selectable-id={s.name}
+              >
                 <code class="docs-typo-size-name">{s.name}</code>
                 <span class="docs-typo-size-value">
                   {s.value}
@@ -251,7 +259,7 @@ export default function Typography() {
                 <span class="docs-typo-size-sample" style={{ 'font-size': `var(${s.cssVar})` }}>
                   creo-ui — {s.use}
                 </span>
-              </div>
+              </article>
             )}
           </For>
         </div>

@@ -245,6 +245,47 @@ const breadcrumbItemStyle: JSX.CSSProperties = {
   cursor: 'pointer',
 }
 
+// ---------- Global group (Size scale 等、global section 内の折りたたみ) ----------
+
+const groupToggleStyle: JSX.CSSProperties = {
+  display: 'flex',
+  'align-items': 'center',
+  gap: '4px',
+  padding: '0',
+  background: 'none',
+  border: 'none',
+  'font-size': '10px',
+  'font-weight': '700',
+  'letter-spacing': '0.08em',
+  'text-transform': 'uppercase',
+  'text-align': 'left',
+  color: 'var(--color-text-tertiary)',
+  cursor: 'pointer',
+}
+
+function GlobalGroup(props: {
+  title: string
+  defaultOpen?: boolean
+  children: JSX.Element
+}): JSX.Element {
+  const [open, setOpen] = createSignal(props.defaultOpen ?? false)
+  return (
+    <div>
+      <button type="button" style={groupToggleStyle} onClick={() => setOpen(!open())}>
+        <span>{open() ? '▾' : '▸'}</span>
+        {props.title}
+      </button>
+      <Show when={open()}>
+        <div
+          style={{ display: 'flex', 'flex-direction': 'column', gap: '6px', 'margin-top': '6px' }}
+        >
+          {props.children}
+        </div>
+      </Show>
+    </div>
+  )
+}
+
 // ---------- Discovery tree ----------
 
 function TreeRow(props: {
@@ -495,6 +536,21 @@ export function EditorLayer(): JSX.Element {
       .filter((f: EditorField) => f.semantic === 'global')
       .sort((a: EditorField, b: EditorField) => (a.order ?? 0) - (b.order ?? 0))
 
+  /** group 無しの global field (常時展開) */
+  const globalUngrouped = (): EditorField[] => globalFields().filter((f: EditorField) => !f.group)
+
+  /** group 付き global field (Size scale 等、折りたたみ単位)。挿入順を保つ */
+  const globalGroups = (): [string, EditorField[]][] => {
+    const m = new Map<string, EditorField[]>()
+    for (const f of globalFields()) {
+      if (!f.group) continue
+      const list = m.get(f.group)
+      if (list) list.push(f)
+      else m.set(f.group, [f])
+    }
+    return [...m.entries()]
+  }
+
   /** 選択アンカーの祖先 creo component (近い順)。detail の breadcrumb に出す */
   const ancestors = (): { componentId: string; element: Element }[] => {
     const el = selection()?.element
@@ -663,7 +719,14 @@ export function EditorLayer(): JSX.Element {
             {/* Global fields (TOP semantic) — typography.scale 等、常時見える framework knob */}
             <Show when={globalFields().length > 0}>
               <section style={sectionStyle}>
-                <For each={globalFields()}>{(field) => <FieldEditor field={field} />}</For>
+                <For each={globalUngrouped()}>{(field) => <FieldEditor field={field} />}</For>
+                <For each={globalGroups()}>
+                  {([title, fields]) => (
+                    <GlobalGroup title={title} defaultOpen>
+                      <For each={fields}>{(field) => <FieldEditor field={field} />}</For>
+                    </GlobalGroup>
+                  )}
+                </For>
               </section>
             </Show>
 

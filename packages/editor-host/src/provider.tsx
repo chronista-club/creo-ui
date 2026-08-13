@@ -15,7 +15,7 @@ import { exportSnapshot } from './export'
 import { createEditorHost } from './host'
 import { installSelectionHandlers } from './selection'
 import { installShortcut } from './shortcut'
-import type { EditorHost, EditorHostConfig } from './types'
+import type { EditorField, EditorHost, EditorHostConfig } from './types'
 import { installUrlSync, shareUrl } from './url-sync'
 
 const EditorHostContext = createContext<EditorHost>()
@@ -72,25 +72,67 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       ? undefined
       : createComponentFieldResolver({ host, owner: ownerAtSetup, root: selectionRoot })
 
-  // framework 標準の global field (D-5)。typography.scale は「文字だけの全体伸縮」—
-  // web の token emit が `calc(<rem> * var(--typography-scale, 1))` を焼き込んで
-  // いるので、この 1 変数で size / display / icon (+ title / body alias) が追従する。
-  // spacing / radius は対象外 (layout 密度は density mode の管轄)。
-  // persistence: localStorage — 老眼設定のような「その人の既定」を reload 越しに保つ。
-  const unregisterFramework = host.register([
+  // --- framework 標準の global fields (D-5) ---
+  //
+  // typography.scale: 「文字だけの全体伸縮」。web の token emit が
+  // `calc(<rem> * var(--typography-scale, 1))` を焼き込んでいるので、この 1 変数で
+  // size / display / icon (+ title / body alias) が追従する。spacing / radius は
+  // 対象外 (layout 密度は density mode の管轄)。persistence: localStorage —
+  // 老眼設定のような「その人の既定」を reload 越しに保つ。
+  //
+  // typography.size.*: Size scale の梯子ノブ (xs–xl)。「default が小さい」等を
+  // Editor で体感調整し、決まった値を tokens/ の SSOT へ焼くための一時ノブなので
+  // persistence は敢えて無し。書き込みは calc(<px> * var(--typography-scale, 1)) —
+  // 素の px を inline に書くと emit の calc を潰して scale スライダーが死ぬため、
+  // 梯子 × 倍率が両立する形で :root へ書く。initial は tokens/typography/size.json
+  // の SSOT 値と揃える (このノブ自体がその改定のための道具)。
+  const sizePxApply =
+    (cssVar: string) =>
+    (v: number): void => {
+      if (typeof document === 'undefined') return
+      document.documentElement.style.setProperty(
+        cssVar,
+        `calc(${v}px * var(--typography-scale, 1))`,
+      )
+    }
+  const SIZE_LADDER = [
+    ['xs', 12],
+    ['s', 14],
+    ['m', 16],
+    ['l', 18],
+    ['xl', 20],
+  ] as const
+  const frameworkFields: EditorField[] = [
     {
       id: 'typography.scale',
       label: 'Typography scale',
       type: 'number',
       semantic: 'global',
       scope: 'token',
+      order: 0,
       initial: 1,
       constraints: { min: 1, max: 2, step: 0.05 },
       role: 'user',
       persistence: 'localStorage',
       cssVar: '--typography-scale',
     },
-  ])
+    ...SIZE_LADDER.map(
+      ([tier, px], i): EditorField => ({
+        id: `typography.size.${tier}`,
+        label: `size.${tier}`,
+        type: 'number',
+        semantic: 'global',
+        scope: 'token',
+        group: 'Size scale',
+        order: 10 + i,
+        initial: px,
+        constraints: { min: 8, max: 32, step: 0.5, unit: 'px' },
+        role: 'user',
+        apply: sizePxApply(`--typography-size-${tier}`),
+      }),
+    ),
+  ]
+  const unregisterFramework = host.register(frameworkFields)
   onCleanup(unregisterFramework)
 
   onMount(() => {
