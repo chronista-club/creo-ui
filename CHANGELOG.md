@@ -5,6 +5,50 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## v0.29.0 (2026-08-13) — Editor Discovery + 実測 token 改定
+
+> **web `0.29.0`** / **editor-host `0.7.0`** / **rust `0.9.0`** を release。layout `0.3.0` / icons-web `0.0.1` は src 実変更なしのため据え置き。swift は publish 経路なし (SPM git 参照) — 本 promote で新 token 値と `Scale` 相当の契約記述が main に載る。
+
+> **⚠️ 視覚変更を含む**: typography.size と radius の既定値を改定した (下記)。consumer は upgrade するだけで本文サイズと角丸が変わる。
+
+### token 改定 — Editor 実測による新既定 (#130)
+
+owner が Editor Mode の梯子ノブで実ページ・実 font (Gen Interface JP)・実ディスプレイ (MacBook Air) 上で体感調整した値を、そのまま新既定として採用した。「気になる → Editor で指して回す → SSOT に焼く → 3 platform に配る」の一気通貫の初回実走。
+
+| token | 旧 | 新 |
+|---|---|---|
+| **typography.size** (xs–xl) | 12 / 14 / 16 / 18 / 20 px | **13 / 15 / 17 / 18.5 / 20.5 px** (m=17 は Apple HIG body と一致) |
+| **radius** (xs–xl) | 4 / 8 / 15 / 22 / 28 px | **3.5 / 4 / 8 / 17.5 / 21.5 px** (シャープ寄り、card 系の印象が変わる) |
+
+title / body の semantic alias、component の使用箇所は token 参照なので自動追従。`radius.none` / `radius.full`、display / icon scale は据え置き。**migration**: 旧値に依存した見た目を保ちたい consumer は、自 app の `:root` で該当 `--typography-size-*` / `--radius-*` を旧値に上書きする (token 名は不変)。
+
+### editor-host 0.7.0 — Discovery panel と選択の意味論 (#126, #127, #130)
+
+**breaking (default 挙動の変更)**: `discoverComponents` が **default true** — Editor Mode 中に creo-ui component がクリック選択可能になる。切る場合は `discoverComponents: false`。panel は旧 3-scope 一覧を廃し Discovery ツリーへ刷新した。
+
+- **Discovery ツリー + drill-in**: ページの実 DOM から component の instance ツリーを構築し、選ぶとその component のノブが開く。ページ上の要素クリックも同じ selection に載る
+- **選択の実体は class、instance はアンカー**: ハイブリッド outline (選択強枠 + 同 class 全 instance に淡枠) で「囲っていないものが変わった」驚きを防ぐ。入れ子は最内 + 祖先 breadcrumb、hover は双方向、Esc 2 段
+- **命名規約 `--_<component>__<knob>`** (#127): `<component>` は実在する `.creo-<component>` class そのもの。抽出は split 1 回で、selectorText 解析 (state 疑似 / comma list の罠) が消えた。規約は CI (`check:tweak-vars`) が守る
+- **global knobs**: `typography.scale` (1 変数で文字だけ全体伸縮、emit に `calc(<rem> * var(--typography-scale, 1))` を焼き込み、localStorage 永続 — 老眼対応)、Size / Radius scale の梯子ノブ (lazy 書き込み — 触るまで emit を潰さない)
+- **`selectionRoot`** (config): Discovery / 選択を content root に限定。chrome (header 等) は選択に食われず操作可能
+- site は App root の global provider に一本化 (全ページで Ctrl+Shift+E)
+
+### web 0.29.0 — tweak var の全 component 整備 (#126, #127)
+
+- private tweak var を **55 component / 111 knob** に整備 (従来 14 file のみ)。命名は `--_<component>__<knob>` 規約に統一、略記 6 系統 (`--_eb-*` 等) を class 名へ改名
+- **pattern A → B 移行**: base rule 側で `--_x: ...` を宣言していた 11 component (card / stack / grid / table / empty-state / error-boundary / header / tabs / pagination / segmented / select 一部) は `:root` override が届かず Editor から動かせなかった。使用箇所 fallback へ移行 (**見た目は不変**、variant 宣言は維持)
+- 注意: `--_*` は private (public API ではない) だが、**旧 var 名を直接参照していた consumer が居れば改名の影響を受ける** (`--_badge-pad-x` → `--_badge__pad-x` 等)
+
+### rust 0.9.0 — 論理 px 契約と `Scale` (#129)
+
+- dimension token は **論理 px** (CSS px / SwiftUI pt と同じ土俵) であることを契約として明文化。wgpu / glyphon 等の生描画では新設の **`Scale`** を掛けて物理 px 化する (`Scale::new(window.scale_factor()).px(tokens::TYPOGRAPHY_SIZE_M)`)。掛け忘れると Retina で見た目が半分になる実害 (ladyland) への根治
+- `Scale` に `Default` は意図的に無い — 「黙って 1.0」は掛け忘れ bug の既定化になるため
+- generated token 値は上記改定に追従
+
+### infra (出荷物には影響なし)
+
+- ポート採番を台帳 block `13600-13699` へ (#128): dev vite = 13600 (strictPort)、常駐 demo = 13610。旧 5173 / 8080 は retire
+
 ## v0.28.0 (2026-08-02) — Outliner (階層リスト)
 
 > **web `0.28.0`** を release。rust `0.8.0` / editor-host `0.6.0` / layout `0.3.0` / icons-web `0.0.1` は据え置き (src 実変更なし)。swift は publish 経路なし。
