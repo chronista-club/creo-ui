@@ -334,15 +334,15 @@ pub const MOTION_MAPPING_PROGRESS_INDETERMINATE_EASING: &str = "linear";
 /// No rounding — explicit reset (special, outside 5 tier rule)
 pub const RADIUS_NONE: f32 = 0_f32;
 /// Extra-small radius — minimal rounding (chips, tags)
-pub const RADIUS_XS: f32 = 4_f32;
+pub const RADIUS_XS: f32 = 3.5_f32;
 /// Small radius — subtle rounding (inputs, small surfaces)
-pub const RADIUS_S: f32 = 8_f32;
+pub const RADIUS_S: f32 = 4_f32;
 /// Medium radius — cards, popovers (soft friendly feel)
-pub const RADIUS_M: f32 = 15_f32;
+pub const RADIUS_M: f32 = 8_f32;
 /// Large radius — modals, larger surfaces
-pub const RADIUS_L: f32 = 22_f32;
+pub const RADIUS_L: f32 = 17.5_f32;
 /// Extra-large radius — hero surfaces
-pub const RADIUS_XL: f32 = 28_f32;
+pub const RADIUS_XL: f32 = 21.5_f32;
 /// Fully rounded — pill shapes and circles (special, outside 5 tier rule)
 pub const RADIUS_FULL: f32 = 9999_f32;
 /// No shadow

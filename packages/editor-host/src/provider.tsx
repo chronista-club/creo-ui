@@ -112,11 +112,11 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     ['xl', 20.5],
   ] as const
   const RADIUS_LADDER = [
-    ['xs', 4],
-    ['s', 8],
-    ['m', 15],
-    ['l', 22],
-    ['xl', 28],
+    ['xs', 3.5],
+    ['s', 4],
+    ['m', 8],
+    ['l', 17.5],
+    ['xl', 21.5],
   ] as const
   const frameworkFields: EditorField[] = [
     {

@@ -131,35 +131,35 @@ const RADII: readonly DimensionToken[] = [
     name: 'radius.xs',
     editorField: 'radius.xs',
     cssVar: '--radius-xs',
-    value: '4px',
+    value: '3.5px',
     hint: 'Chip / Tag',
   },
   {
     name: 'radius.s',
     editorField: 'radius.s',
     cssVar: '--radius-s',
-    value: '8px',
+    value: '4px',
     hint: 'Button / Input',
   },
   {
     name: 'radius.m',
     editorField: 'radius.m',
     cssVar: '--radius-m',
-    value: '15px',
+    value: '8px',
     hint: 'Card / Popover (default)',
   },
   {
     name: 'radius.l',
     editorField: 'radius.l',
     cssVar: '--radius-l',
-    value: '22px',
+    value: '17.5px',
     hint: 'Modal / Drawer',
   },
   {
     name: 'radius.xl',
     editorField: 'radius.xl',
     cssVar: '--radius-xl',
-    value: '28px',
+    value: '21.5px',
     hint: 'Hero surface',
   },
   {
@@ -257,7 +257,7 @@ export default function Radius() {
         <h2 class="docs-section-title">使い方</h2>
         <pre class="docs-code">
           <code>{`/* CSS */
-.card { border-radius: var(--radius-m); }      /* 15px、 friendly container */
+.card { border-radius: var(--radius-m); }      /* 8px、 friendly container */
 .avatar { border-radius: var(--radius-full); } /* pill / circle */
 
 /* concentric helper (@chronista-club/creo-ui-editor-host) */

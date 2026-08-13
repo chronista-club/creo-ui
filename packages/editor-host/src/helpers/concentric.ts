@@ -8,14 +8,14 @@
  * @example
  * ```tsx
  * <article style={{
- *   'border-radius': 'var(--radius-m)',    // 15px
+ *   'border-radius': 'var(--radius-m)',    // 8px
  *   padding: 'var(--spacing-m)',            // 18px
  * }}>
  *   <button style={{
  *     'border-radius': concentric('var(--radius-m)', 'var(--spacing-m)')
  *     // → 'calc(var(--radius-m) - var(--spacing-m))'
- *     // 実効値: 15px - 18px ... この場合は 0 以下になるので負数防止は consumer 判断、
- *     // 親 radius > padding になるよう設計するのが正しい (例: radius.l=22, spacing.s=8 → 14px)
+ *     // 実効値: 8px - 18px ... この場合は 0 以下になるので負数防止は consumer 判断、
+ *     // 親 radius > padding になるよう設計するのが正しい (例: radius.l=17.5, spacing.s=8 → 9.5px)
  *   }}>Click</button>
  * </article>
  * ```

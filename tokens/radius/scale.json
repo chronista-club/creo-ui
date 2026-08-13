@@ -6,27 +6,27 @@
       "$description": "No rounding — explicit reset (special, outside 5 tier rule)"
     },
     "xs": {
-      "$value": "4px",
+      "$value": "3.5px",
       "$type": "dimension",
       "$description": "Extra-small radius — minimal rounding (chips, tags)"
     },
     "s": {
-      "$value": "8px",
+      "$value": "4px",
       "$type": "dimension",
       "$description": "Small radius — subtle rounding (inputs, small surfaces)"
     },
     "m": {
-      "$value": "15px",
+      "$value": "8px",
       "$type": "dimension",
       "$description": "Medium radius — cards, popovers (soft friendly feel)"
     },
     "l": {
-      "$value": "22px",
+      "$value": "17.5px",
       "$type": "dimension",
       "$description": "Large radius — modals, larger surfaces"
     },
     "xl": {
-      "$value": "28px",
+      "$value": "21.5px",
       "$type": "dimension",
       "$description": "Extra-large radius — hero surfaces"
     },
