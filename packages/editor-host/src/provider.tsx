@@ -96,11 +96,11 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       )
     }
   const SIZE_LADDER = [
-    ['xs', 12],
-    ['s', 14],
-    ['m', 16],
-    ['l', 18],
-    ['xl', 20],
+    ['xs', 13],
+    ['s', 15],
+    ['m', 17],
+    ['l', 18.5],
+    ['xl', 20.5],
   ] as const
   const frameworkFields: EditorField[] = [
     {

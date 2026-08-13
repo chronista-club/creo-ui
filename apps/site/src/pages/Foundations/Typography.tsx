@@ -18,32 +18,32 @@ const SIZES: readonly ScaleEntry[] = [
   {
     name: 'typography.size.xs',
     cssVar: '--typography-size-xs',
-    value: '12px',
+    value: '13px',
     use: 'caption / meta',
   },
   {
     name: 'typography.size.s',
     cssVar: '--typography-size-s',
-    value: '14px',
+    value: '15px',
     use: 'small body / helper text',
   },
   {
     name: 'typography.size.m',
     cssVar: '--typography-size-m',
-    value: '16px',
+    value: '17px',
     use: 'default body text',
     def: true,
   },
   {
     name: 'typography.size.l',
     cssVar: '--typography-size-l',
-    value: '18px',
+    value: '18.5px',
     use: 'large body / subheading',
   },
   {
     name: 'typography.size.xl',
     cssVar: '--typography-size-xl',
-    value: '20px',
+    value: '20.5px',
     use: 'largest body / small heading (h4)',
   },
 ] as const
@@ -236,7 +236,7 @@ export default function Typography() {
       <section>
         <h2 class="docs-section-title">Size scale — body text (5 tier)</h2>
         <p class="docs-page-helper">
-          通常本文の dimension。 中央 (<code>m</code> = 16px) が default、 5 tier convention (原則
+          通常本文の dimension。 中央 (<code>m</code> = 17px) が default、 5 tier convention (原則
           01) に従う。 heading 系は <strong>display</strong> 別軸を使用 (下記)。
         </p>
         <div class="docs-typo-sizes">

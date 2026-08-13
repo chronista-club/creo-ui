@@ -2,27 +2,27 @@
   "typography": {
     "size": {
       "xs": {
-        "$value": "12px",
+        "$value": "13px",
         "$type": "dimension",
         "$description": "Caption / meta text"
       },
       "s": {
-        "$value": "14px",
+        "$value": "15px",
         "$type": "dimension",
         "$description": "Small body / helper text"
       },
       "m": {
-        "$value": "16px",
+        "$value": "17px",
         "$type": "dimension",
         "$description": "Default body text"
       },
       "l": {
-        "$value": "18px",
+        "$value": "18.5px",
         "$type": "dimension",
         "$description": "Large body / subheading"
       },
       "xl": {
-        "$value": "20px",
+        "$value": "20.5px",
         "$type": "dimension",
         "$description": "Largest body / small heading (h4)"
       }
