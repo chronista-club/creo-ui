@@ -158,6 +158,19 @@ export interface EditorHostConfig {
   discoverTweaks?: boolean
 
   /**
+   * Discovery / 選択の対象を、この要素の内側に限定する (default: document.body 全体)。
+   *
+   * app 側の chrome (site の Header / Sidebar 等) が creo-ui component で出来て
+   * いると Discovery のツリーに混ざり、クリック選択も chrome を食ってしまう。
+   * content root を渡すと「編集対象は Main だけ」になり、root の外のクリックは
+   * Content にそのまま通る (chrome は Editor Mode 中も普通に操作できる)。
+   *
+   * selector 文字列 or 要素 getter。指定したのに要素が見つからないときは
+   * **何も出さない** (fail-closed — 意図が満たせない状態で拾い集めない)。
+   */
+  selectionRoot?: string | (() => Element | null)
+
+  /**
    * 選択駆動の component field 解決 (F2c)。**default: true**。
    *
    * CSSOM の tweak var を index 化し、Editor Mode 中に creo-ui component を

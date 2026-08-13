@@ -56,10 +56,21 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   // が同じ index を共有する必要があるので、component 本体で作って context で配る。
   // index の構築は初回アクセスまで遅延するので、ここでの生成コストは実質ゼロ。
   const ownerAtSetup = getOwner()
+
+  // 選択 / Discovery の scope (config.selectionRoot)。selector は評価を遅延させる
+  // (route 遷移で要素が差し替わっても毎回引き直す)
+  const selectionRoot = (): Element | null => {
+    if (typeof document === 'undefined') return null
+    const cfg = props.config?.selectionRoot
+    if (!cfg) return document.body
+    if (typeof cfg === 'string') return document.querySelector(cfg)
+    return cfg()
+  }
+
   const resolver =
     props.config?.discoverComponents === false
       ? undefined
-      : createComponentFieldResolver({ host, owner: ownerAtSetup })
+      : createComponentFieldResolver({ host, owner: ownerAtSetup, root: selectionRoot })
 
   // framework 標準の global field (D-5)。typography.scale は「文字だけの全体伸縮」—
   // web の token emit が `calc(<rem> * var(--typography-scale, 1))` を焼き込んで
@@ -87,7 +98,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     const uninstallers: Array<() => void> = []
 
     uninstallers.push(installShortcut({ host, shortcut: props.config?.shortcut }))
-    uninstallers.push(installSelectionHandlers({ host, resolver }))
+    uninstallers.push(installSelectionHandlers({ host, resolver, root: selectionRoot }))
 
     // F4: URL sync (opt-in via config.urlSync)
     if (props.config?.urlSync) {

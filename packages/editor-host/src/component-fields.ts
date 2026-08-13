@@ -90,6 +90,11 @@ export interface ComponentFieldResolverOptions {
   host: EditorHost
   /** provider の getOwner()。lazy register 時の SolidJS context を維持する */
   owner: Owner | null
+  /**
+   * Discovery / presence 判定の scope (config.selectionRoot 由来)。
+   * 省略時は document.body。null を返すと fail-closed (何も出さない)。
+   */
+  root?: () => Element | null
   /** tweak var の prefix (default: '--_') */
   prefix?: string
   /** 配置 (default: 'tool') */
@@ -209,11 +214,18 @@ export function createComponentFieldResolver(
     return index
   }
 
-  /** component が現 DOM に居るか (class を引くだけ) */
-  function findRepresentative(componentId: string): Element | null {
+  /** Discovery / presence の scope。config.selectionRoot が無ければ body 全体 */
+  function scopeRoot(): Element | null {
     if (typeof document === 'undefined') return null
+    return opts.root ? opts.root() : document.body
+  }
+
+  /** component が scope 内の DOM に居るか (class を引くだけ) */
+  function findRepresentative(componentId: string): Element | null {
+    const root = scopeRoot()
+    if (!root) return null
     try {
-      return document.querySelector(componentSelector(componentId))
+      return root.querySelector(componentSelector(componentId))
     } catch {
       return null
     }
@@ -278,8 +290,9 @@ export function createComponentFieldResolver(
 
   return {
     tree: () => {
-      if (typeof document === 'undefined') return []
-      return buildComponentTree(document.body, ensureIndex())
+      const root = scopeRoot()
+      if (!root) return []
+      return buildComponentTree(root, ensureIndex())
     },
     components,
     selectComponent,

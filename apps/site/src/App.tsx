@@ -9,7 +9,14 @@ import Layout from './layout/Layout'
 // Portal (EditorLayer) は body 直下に mount されるので Layout の外に置く。
 function Root(props: { children?: JSX.Element }) {
   return (
-    <EditorHostProvider config={{ localStorageNamespace: 'creo-ui-site' }}>
+    <EditorHostProvider
+      config={{
+        localStorageNamespace: 'creo-ui-site',
+        // Discovery / 選択は記事本文 (Main) の中だけ。site chrome (Header /
+        // Sidebar / ThemeSwitcher) は creo component でも編集対象にしない
+        selectionRoot: '.docs-article',
+      }}
+    >
       <Layout>{props.children}</Layout>
       <EditorLayer />
     </EditorHostProvider>

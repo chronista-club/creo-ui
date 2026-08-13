@@ -26,6 +26,11 @@ export interface SelectionHandlersOptions {
   host: EditorHost
   /** F2c: data-editor-fields 無しでも component を選択可能にする逆引き resolver */
   resolver?: ComponentFieldResolver
+  /**
+   * 選択の scope (config.selectionRoot 由来)。省略時は document.body。
+   * root の外は選択対象にせず、click も奪わない (chrome は普通に操作できる)。
+   */
+  root?: () => Element | null
 }
 
 interface Found {
@@ -47,6 +52,9 @@ export function installSelectionHandlers(opts: SelectionHandlersOptions): () => 
   }
 
   const { host, resolver } = opts
+
+  /** 選択の scope。config.selectionRoot 未指定なら body 全体 */
+  const scopeRoot = (): Element | null => (opts.root ? opts.root() : document.body)
 
   let observedElement: Element | null = null
   const resizeObserver =
@@ -71,10 +79,15 @@ export function installSelectionHandlers(opts: SelectionHandlersOptions): () => 
    * 明示 bind > 逆引きヒット > component ではあるがノブ無し、の優先順。
    */
   function findSelectable(el: Element | null): Found | null {
+    // root の外は選択対象にしない (fail-closed: root 指定があるのに見つからない
+    // ときも null)。祖先 walk も root で止め、chrome 側の creo component を拾わない
+    const root = scopeRoot()
+    if (!root || !el || !root.contains(el)) return null
+
     let cur: Element | null = el
     let emptyComponent: Found | null = null
 
-    while (cur) {
+    while (cur && cur !== root.parentElement) {
       const explicitIds = parseFieldIds(cur)
       if (explicitIds) {
         return {
