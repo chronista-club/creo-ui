@@ -189,12 +189,14 @@ export default function Typography() {
         <p class="docs-page-eyebrow">Foundations</p>
         <h1>Typography</h1>
         <p class="docs-page-lead">
-          <strong>2 軸構造</strong>: <strong>単一 root font stack</strong> (Gen Interface JP + UDEV
-          Gothic 35NF)、 <strong>5 tier dimension scale</strong> (size / display / icon を xs / s /
-          m / l / xl)、 <strong>Role-based semantic</strong> (title / body の意味的 alias)。 2026-07
-          の font 一本化 directive で mode 別 family (app / read / editor / terminal) や mono /
-          display / icon の variant は全廃され、 family token は{' '}
-          <code>--typography-family-sans</code> 1 本に集約された。
+          <strong>3 層構成</strong>: <strong>単一 root font stack</strong> (Gen Interface JP + UDEV
+          Gothic 35NF、 family token は <code>--typography-family-sans</code> 1 本)、{' '}
+          <strong>5 tier dimension scale</strong> (size = 本文 / display = 見出し / icon、 各 xs–
+          xl)、 <strong>role-based semantic</strong> (title / body の意味的 alias)。 値は{' '}
+          <strong>論理 px</strong> を SSOT とし、 「同じ数字 = 同じ見た目の大きさ」 を platform
+          native の単位で守る — Web へは <strong>rem</strong> で emit (browser の font 設定に追従)、
+          SwiftUI へは <strong>pt</strong>、 Rust へは論理 px のまま (生描画は <code>Scale</code>{' '}
+          で物理 px 化)。 表中の px 表記は論理値。
         </p>
       </header>
 
