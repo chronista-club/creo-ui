@@ -37,6 +37,7 @@ import {
   knobLabel,
   parseTweakVarName,
 } from './component-id'
+import { type ComponentTreeNode, buildComponentTree } from './component-tree'
 import type { EditorHost, EditorSemantic } from './types'
 
 /** panel のノブ 1 個 */
@@ -89,6 +90,11 @@ export interface ComponentFieldResolverOptions {
   host: EditorHost
   /** provider の getOwner()。lazy register 時の SolidJS context を維持する */
   owner: Owner | null
+  /**
+   * Discovery / presence 判定の scope (config.selectionRoot 由来)。
+   * 省略時は document.body。null を返すと fail-closed (何も出さない)。
+   */
+  root?: () => Element | null
   /** tweak var の prefix (default: '--_') */
   prefix?: string
   /** 配置 (default: 'tool') */
@@ -98,6 +104,11 @@ export interface ComponentFieldResolverOptions {
 }
 
 export interface ComponentFieldResolver {
+  /**
+   * ページの実 DOM から creo component の instance ツリーを作る (副作用なし)。
+   * Discovery panel の表示用 (`component-tree.ts`)。
+   */
+  tree(): ComponentTreeNode[]
   /**
    * 逆引き index に載っている component を列挙する (副作用なし)。
    * default は **現 DOM に居るものだけ** — 画面に無い component のノブを回しても
@@ -203,11 +214,18 @@ export function createComponentFieldResolver(
     return index
   }
 
-  /** component が現 DOM に居るか (class を引くだけ) */
-  function findRepresentative(componentId: string): Element | null {
+  /** Discovery / presence の scope。config.selectionRoot が無ければ body 全体 */
+  function scopeRoot(): Element | null {
     if (typeof document === 'undefined') return null
+    return opts.root ? opts.root() : document.body
+  }
+
+  /** component が scope 内の DOM に居るか (class を引くだけ) */
+  function findRepresentative(componentId: string): Element | null {
+    const root = scopeRoot()
+    if (!root) return null
     try {
-      return document.querySelector(componentSelector(componentId))
+      return root.querySelector(componentSelector(componentId))
     } catch {
       return null
     }
@@ -271,6 +289,11 @@ export function createComponentFieldResolver(
   }
 
   return {
+    tree: () => {
+      const root = scopeRoot()
+      if (!root) return []
+      return buildComponentTree(root, ensureIndex())
+    },
     components,
     selectComponent,
     match: (el) => matchKnobs(el, ensureIndex()),

@@ -291,12 +291,13 @@ Mode ON で該当要素を選ぶと、LEFT に "Original content"、RIGHT に "P
 | component-type | 当該 component の全 instance | `:root` の `--_badge__*` | tweak var 規約 (F2b / F2c) |
 | instance | 選択中の 1 要素 | signal / app state | 手動 bind |
 
-panel の scope 3 分割表示 (Phase B) は 2026-07-12 実装済み — RIGHT region が
-「App state (instance) → 画面上の component → Tokens (折りたたみ)」の順に、
-射程の狭い順で section 表示する。空 section は非表示。radius.full = 9999px の
-ような **sentinel 値 (px で 512 超) は 0-128px へ丸める** (`sliderSpecFor`。
-2026-08-06 まで除外していたが、button の丸みが panel から消えるため方針変更)。
-instance scope の data-attribute discovery は将来の設計課題。
+radius.full = 9999px のような **sentinel 値 (px で 512 超) は 0-128px へ丸める**
+(`sliderSpecFor`。2026-08-06 まで除外していたが、button の丸みが panel から
+消えるため方針変更)。instance scope の data-attribute discovery は将来の設計課題。
+
+panel の scope 3 分割表示 (2026-07-12 の Phase B) は **2026-08-06 に一旦撤去**した。
+「選ぶ前に全部並んでいる」構造がそもそも渋滞の原因だったので、panel を白紙に戻して
+Discovery から積み直す (次節)。
 
 **tweak var は「使用箇所に fallback」で書く (pattern B) こと**。base rule 側で
 `.creo-card { --_card__pad: var(--spacing-m); padding: calc(var(--_card__pad) * ...) }`
@@ -353,6 +354,60 @@ component ↔ class が 1:1 なので DOM 側も軽い:
 選択対象は「明示 bind (`data-editor-fields`) > class 由来のノブ > creo-ui component
 ではあるがノブ無し」の優先順で祖先方向へ辿る。最後の fallback があるので、
 ノブ未整備の component でも「何を選んだか」は panel に出る。
+
+### Panel の作り直し — Discovery から積む (2026-08-06〜)
+
+規約ベースになったことで **panel に component 一覧を出せる**ようになった。
+これを受けて panel を白紙に戻し、段階的に組み直している。
+
+旧 panel は「Mode を ON にした瞬間に、触れるもの全部が並んでいる」構造だった。
+scope で 3 分割しても、選ぶ前から候補が全部見えている点は変わらず、渋滞の
+根本原因はそこにあった。**選んでから出す**へ反転する。
+
+Discovery の形は 2026-08-09 の設計議論で確定 — **DOM ツリー (Outliner 的) ×
+drill-in**。panel は 2 view を selection state で切り替える:
+
+- **tree view** (選択なし): ページの実 DOM から作った creo component の
+  instance ツリー (`component-tree.ts` / `resolver.tree()`)。非 creo 要素は
+  素通しして子を引き上げ、同 component の sibling は `×N` に畳む
+  (Outliner の row 等で行が爆発するため。代表 = 最初の instance)。
+  sub-part の親子関係は DOM の入れ子として自然に出る
+- **detail view** (選択あり): ← 戻る + component 名 + ノブ (FieldEditor)。
+  300px の panel 幅を全部ノブに使う
+
+**ツリーはナビゲーション、編集は component scope のまま** (D-13)。選んだ
+instance は outline の対象と fallback 解決の基準要素として使うだけで、
+書き込み先は `:root` (全 instance に効く)。ページ上の要素クリックも同じ
+selection state に載るので、どちらの入口からでも detail view に着地する。
+
+選択の意味論は 2026-08-09 の設計議論で確定した。北極星は **「開発中に気に
+なった箇所を、その場で即調整できる」** — 気づく → 指す → 回す、の摩擦最小化:
+
+- **選択の実体は class** (`--_<component>__` の component = `.creo-<component>`)。
+  instance はアンカーで、「どの個体を基準に fallback を読んだか」「outline と
+  scroll の行き先」にだけ使う
+- **outline はハイブリッド** — アンカー instance は強い枠、同 class の他 instance
+  は淡い破線 (上限 80)。編集は component scope (全 instance に効く) なので、
+  囲い方が効果範囲とズレると「囲っていないものが変わった」驚きが起きる。
+  それを構造的に防ぐ
+- **入れ子は最内 + 祖先への梯子** — クリックは指したもの (最内の creo component)
+  を選び、detail header の breadcrumb (`↑ card-header ↑ card`) で親へ 1 click で
+  上がれる
+- **hover は双方向** — tree の行 hover でページ上の該当 instance に outline、
+  ページ hover で outline + class 名ラベル。Discovery の「この行は画面のどれ？」
+  「クリックしたら何が選ばれる？」を両側から解く
+- **Esc は 2 段** — 選択中は解除 (detail → tree)、未選択なら Mode OFF
+
+編集の射程は **ノブ + 脱出ハッチ** で確定 (未実装、次段):
+宣言済み tweak var のノブが「良い経路」(型付き slider / SSOT fallback / density
+連動を保つ)。加えて detail に「他の property」を置き、class の実 CSS 宣言を
+一覧 → 任意の property を注入 stylesheet の `.creo-<component>` override rule で
+上書きできるようにする。class 単位 = component scope の原則と一貫し、export も
+「component CSS への変更提案」として成立する。ただし `calc(var × density)` の
+式ごと上書きになるため、構造を保った編集はあくまでノブ側。
+
+旧 panel の 3-scope field 一覧 / ThemeEditor / ExportBar は **外してある**
+(`theme-editor.tsx` / `export-bar.tsx` はファイルとしては残置)。
 
 **トレードオフ**: 規約ベースは variant 固有ノブ (`.creo-btn--sm` を選んだときだけ
 出るノブ) を表現できない。selector 逆引きなら可能だったが、現状 variant 側は

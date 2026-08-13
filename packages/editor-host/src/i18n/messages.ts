@@ -36,6 +36,21 @@ export const messages = {
     | 'toggleShortcut'
   >,
 
+  /** Discovery section — このページに居る creo-ui component を並べて選ぶ */
+  discovery: {
+    title: { ja: 'このページの component', en: 'Components on this page' },
+    empty: {
+      ja: 'creo-ui component が見つかりません。',
+      en: 'No creo-ui components found on this page.',
+    },
+    disabled: {
+      ja: 'component discovery は無効です (discoverComponents: false)。',
+      en: 'Component discovery is disabled (discoverComponents: false).',
+    },
+    pickHint: { ja: '選択してノブを出す', en: 'Select to load its knobs' },
+    back: { ja: '戻る', en: 'Back' },
+  } satisfies Localized<'title' | 'empty' | 'disabled' | 'pickHint' | 'back'>,
+
   /** RIGHT region: ツール panel */
   toolPanel: {
     heading: { ja: '▶ ツール', en: '▶ Tools' },

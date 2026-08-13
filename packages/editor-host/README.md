@@ -118,7 +118,12 @@ function Main() {
 }
 ```
 
-`Ctrl+Shift+E` で Editor Mode ON、TOP に `theme` select、LEFT に ThemeEditor (active theme の swatch)、RIGHT に `spacing` slider と `bg` color picker が自動で現れる。
+`Ctrl+Shift+E` で Editor Mode ON。
+
+> **Note (2026-08-06〜)**: panel は現在 **Discovery section 1 つだけ**に作り直し中です。
+> 「このページに居る creo-ui component を並べ、1 つ選ぶ」までが動きます。上の例のような
+> `bind()` した field を panel に描く section は次段で組み直します
+> (`bind()` 自体と host への register は従来どおり動作します)。
 
 ## Live design surface (F1-F5)
 
@@ -190,8 +195,12 @@ split するだけで終わります。CSSOM から読むのは fallback だけ�
 見ないため、`@media` や state 疑似といった selector 解析の落とし穴がありません。
 規約は CI (`bun run check:tweak-vars`) が守ります。
 
-index の構築は初回選択まで遅延し、ノブの register は **click のみ** (hover では
-何も起きません)。マウスを動かしただけで panel が増えていくことはありません。
+index の構築は初回アクセスまで遅延し、ノブの register は **選択したときだけ**です
+(hover や一覧の列挙では何も起きません)。
+
+panel の Discovery section には「今のページに居る component」が並びます。1 つ選ぶと
+代表要素を引き当ててノブを register し、対象に outline を出して視界へ寄せます。
+画面に無い component は既定で出しません — ノブを回しても変化が見えないためです。
 
 設計の詳細は [docs/design/editor-mode.md](../../docs/design/editor-mode.md) の
 「選択駆動の component field 解決 (F2c)」を参照してください。

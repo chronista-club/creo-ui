@@ -7,6 +7,11 @@ export interface DimensionToken {
   value: string
   /** Optional usage hint */
   hint?: string
+  /**
+   * Editor Mode の field id (provider の framework field と対)。指定すると
+   * この行が Mode ON で選択可能になり、クリックで当該 token のノブが開く。
+   */
+  editorField?: string
 }
 
 /**
@@ -17,12 +22,19 @@ export interface DimensionToken {
 export function DimensionScale(props: {
   tokens: readonly DimensionToken[]
   type: 'spacing' | 'radius'
+  /** 行を creo-card 化する (Editor Mode の Discovery / 選択と噛み合う見た目) */
+  card?: boolean
 }): JSX.Element {
   return (
     <div class="docs-dim-scale">
       <For each={props.tokens}>
         {(t) => (
-          <div class="docs-dim-row">
+          <div
+            class={props.card ? 'creo-card docs-dim-row' : 'docs-dim-row'}
+            data-padding={props.card ? 's' : undefined}
+            data-editor-fields={t.editorField}
+            data-editor-selectable-id={t.editorField ? t.name : undefined}
+          >
             <code class="docs-dim-name">{t.name}</code>
             <div class="docs-dim-visual-wrap">
               {props.type === 'spacing' ? (

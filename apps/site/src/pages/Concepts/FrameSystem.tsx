@@ -135,7 +135,7 @@ const { gaze, setGaze } = useFrame()
 setGaze({ x: '35%', y: '30%' })   // horizon を上げて見下ろす
 setGaze(undefined)                // Frame.gaze に戻す`}</code>
         </pre>
-        <GazeLivePreview namespace="creo-ui-docs.gaze-editor" />
+        <GazeLivePreview />
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か鉛筆 toggle で Editor Mode ON →
           inspector パネルの slider で 消失点 X / 水平線 Y / perspective を精密調整できる (stage

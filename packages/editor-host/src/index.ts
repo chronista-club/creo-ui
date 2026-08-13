@@ -39,7 +39,7 @@ export type { Binder, Placement, BindOptions } from './binder'
 export { bind } from './binder'
 
 // ---------- Provider + hooks ----------
-export { EditorHostProvider, useEditorHost } from './provider'
+export { EditorHostProvider, useComponentResolver, useEditorHost } from './provider'
 export { useEditorMode, useEditorSelection, useEditorHover, useEditorSelectable } from './hooks'
 
 // ---------- Public semantic types ----------
@@ -112,6 +112,7 @@ export {
   type ComponentSelection,
   type KnobIndex,
 } from './component-fields'
+export { buildComponentTree, type ComponentTreeNode } from './component-tree'
 export {
   COMPONENT_CLASS_PREFIX,
   TWEAK_SEPARATOR,

@@ -66,6 +66,12 @@ export interface SelectionInfo {
    * 逆引き経路で解決される。明示 bind だけの要素では undefined。
    */
   componentId?: string
+  /**
+   * 選択のアンカー要素。選択の実体は class (component) で、element は
+   * 「どの instance を基準に見ているか」— outline の強調・rect 追従・
+   * 祖先 breadcrumb の起点に使う。
+   */
+  element?: Element
   /** 描画用の bounding rect (ResizeObserver / scroll / resize で更新) */
   rect: DOMRect
 }
@@ -150,6 +156,19 @@ export interface EditorHostConfig {
    * 「選んだ component のノブだけ出す」なら `discoverComponents` (F2c) を使う。
    */
   discoverTweaks?: boolean
+
+  /**
+   * Discovery / 選択の対象を、この要素の内側に限定する (default: document.body 全体)。
+   *
+   * app 側の chrome (site の Header / Sidebar 等) が creo-ui component で出来て
+   * いると Discovery のツリーに混ざり、クリック選択も chrome を食ってしまう。
+   * content root を渡すと「編集対象は Main だけ」になり、root の外のクリックは
+   * Content にそのまま通る (chrome は Editor Mode 中も普通に操作できる)。
+   *
+   * selector 文字列 or 要素 getter。指定したのに要素が見つからないときは
+   * **何も出さない** (fail-closed — 意図が満たせない状態で拾い集めない)。
+   */
+  selectionRoot?: string | (() => Element | null)
 
   /**
    * 選択駆動の component field 解決 (F2c)。**default: true**。
