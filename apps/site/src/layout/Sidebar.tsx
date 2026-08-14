@@ -102,24 +102,21 @@ const NAV: readonly NavGroup[] = [
 
 export default function Sidebar() {
   return (
-    <aside class="docs-sidebar" aria-label="documentation">
+    <aside class="creo-sidenav docs-sidebar" aria-label="documentation">
       <nav>
         <For each={NAV}>
           {(group) => (
-            <section class="docs-sidebar-group">
-              <h2 class="docs-sidebar-title">{group.title}</h2>
-              <ul class="docs-sidebar-list">
+            <section class="creo-sidenav-group">
+              <h2 class="creo-sidenav-title">{group.title}</h2>
+              <ul class="creo-sidenav-list">
                 <For each={group.items}>
                   {(item) => (
                     <li>
-                      <A
-                        class="docs-sidebar-link"
-                        href={item.href}
-                        end={item.href === '/'}
-                        activeClass="is-active"
-                      >
+                      {/* 現在地は <A> が自動で付ける aria-current="page" を
+                          .creo-sidenav-link 側 CSS が拾う (独自 active class 廃止) */}
+                      <A class="creo-sidenav-link" href={item.href} end={item.href === '/'}>
                         <span>{item.label}</span>
-                        {item.tag && <span class="docs-sidebar-tag">{item.tag}</span>}
+                        {item.tag && <span class="creo-sidenav-tag">{item.tag}</span>}
                       </A>
                     </li>
                   )}

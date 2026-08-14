@@ -130,60 +130,8 @@ a:hover {
   border-inline-end: 1px solid var(--color-surface-border);
 }
 
-.docs-sidebar-group + .docs-sidebar-group {
-  margin-top: var(--spacing-l);
-}
-
-.docs-sidebar-title {
-  margin: 0 0 var(--spacing-xs) 0;
-  font-size: var(--typography-size-xs);
-  font-weight: var(--typography-weight-bold);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--color-text-tertiary);
-  padding-inline-start: var(--spacing-s);
-}
-
-.docs-sidebar-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.docs-sidebar-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px var(--spacing-s);
-  margin: 1px 0;
-  font-size: var(--typography-size-s);
-  color: var(--color-text-secondary);
-  border-radius: var(--radius-s);
-  transition: color 120ms, background 120ms;
-}
-
-.docs-sidebar-link:hover {
-  color: var(--color-text-primary);
-  background: var(--color-surface-bg-subtle);
-  text-decoration: none;
-}
-
-.docs-sidebar-link.is-active {
-  color: var(--color-brand-primary);
-  background: color-mix(in oklab, var(--color-brand-primary) 12%, transparent);
-  font-weight: var(--typography-weight-medium);
-}
-
-.docs-sidebar-tag {
-  font-size: 10px;
-  font-family: var(--typography-family-sans);
-  padding: 1px 6px;
-  background: color-mix(in oklab, var(--color-semantic-success) 25%, transparent);
-  color: var(--color-semantic-success);
-  border-radius: var(--radius-full);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
+/* group / title / list / link / tag は .creo-sidenav component 化 (sidenav.css) — 2026-08-14。
+   site 側は layout (.docs-sidebar) と kinetic 演出の上掛けのみ。 */
 
 /* ============================================================
    Main + article
@@ -2172,20 +2120,20 @@ kbd {
 }
 
 /* Sidebar — subtle z-depth (active forward, inactive back) */
-.docs-sidebar-link {
+.creo-sidenav-link {
   transition: color var(--motion-duration-fast), background var(--motion-duration-fast), transform
     200ms ease-out;
 }
 
-.docs-sidebar-link:hover {
+.creo-sidenav-link:hover {
   transform: translateZ(2px);
 }
 
-.docs-sidebar-link.is-active {
+.creo-sidenav-link[aria-current="page"] {
   transform: translateZ(6px);
 }
 
-.docs-sidebar-tag {
+.creo-sidenav-tag {
   transform: translateZ(2px);
 }
 
@@ -2232,10 +2180,10 @@ kbd {
   .docs-color-swatch:hover,
   .docs-theme-card,
   .docs-theme-card:hover,
-  .docs-sidebar-link,
-  .docs-sidebar-link:hover,
-  .docs-sidebar-link.is-active,
-  .docs-sidebar-tag,
+  .creo-sidenav-link,
+  .creo-sidenav-link:hover,
+  .creo-sidenav-link[aria-current="page"],
+  .creo-sidenav-tag,
   .docs-principle,
   .docs-principle:hover,
   .docs-region-diagram,
@@ -2572,51 +2520,20 @@ kbd {
   display: none;
 }
 
-/* ---- Sidebar — group rail + 現在地 indicator + hover 質感 ---- */
+/* ---- Sidebar — component (.creo-sidenav) への site 上掛け ----
+   rail / indicator の構造は sidenav.css へ移動。ここは glow (--face-glow-brand は
+   site ローカル変数) と hover ring の質感だけを重ねる。 */
 
-.docs-sidebar-group {
-  position: relative;
-}
-
-.docs-sidebar-title {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-}
-
-/* section label 前に短い brand rail (視覚階層) */
-.docs-sidebar-title::before {
-  content: "";
-  width: 10px;
-  height: 2px;
-  border-radius: var(--radius-full);
-  background: color-mix(in oklch, var(--color-brand-primary) 60%, transparent);
-  flex-shrink: 0;
-}
-
-.docs-sidebar-link {
-  position: relative;
-}
-
-/* 現在地 indicator — 左端の光る bar */
-.docs-sidebar-link.is-active::before {
-  content: "";
-  position: absolute;
-  inset-inline-start: -1px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 60%;
-  border-radius: var(--radius-full);
-  background: var(--color-brand-primary);
+/* 現在地 indicator を光らせる */
+.creo-sidenav-link[aria-current="page"]::before {
   box-shadow: 0 0 8px -1px var(--face-glow-brand);
 }
 
-.docs-sidebar-link:hover {
+.creo-sidenav-link:hover {
   box-shadow: inset 0 0 0 1px var(--color-surface-border-subtle);
 }
 
-.docs-sidebar-tag {
+.creo-sidenav-tag {
   transition: transform var(--motion-duration-fast);
 }
 
