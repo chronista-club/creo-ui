@@ -139,7 +139,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       scope: 'token',
       order: 0,
       initial: 1,
-      constraints: { min: 0.8, max: 1.2, step: 0.05 },
+      constraints: { min: 0.8, max: 1.2, step: 0.01 },
       role: 'user',
       persistence: 'localStorage',
       cssVar: '--typography-scale',
