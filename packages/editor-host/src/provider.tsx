@@ -119,6 +119,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   // typography は calc(<px> * var(--typography-scale, 1)) — 素の px だと emit の
   // calc を潰して scale スライダーが死ぬため、梯子 × 倍率が両立する形で書く
   const typographyPx = (v: number): string => `calc(${v}px * var(--typography-scale, 1))`
+  const plainPx = (v: number): string => `${v}px`
   // brand color (hue / chroma) — 実体は brand-color.ts。8 var を OKLCH のまま回す
   const brandColor = createBrandColorControl()
 
@@ -190,6 +191,23 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       role: 'user',
       persistence: 'localStorage',
       apply: (v) => brandColor.setChromaScale(v),
+    },
+    // layout.gap.sibling — stacked 要素間の既定 gap。SSOT は {spacing.m} alias
+    // (1.125rem = 18px @16px)。initial はその実値。既定のままなら emit の alias
+    // (rem 追従) を保ち、動かしたら inline px で上書き (varApplyUnlessDefault)
+    {
+      id: 'layout.gap.sibling',
+      label: 'layout.gap.sibling',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 30,
+      initial: 18,
+      constraints: { min: 0, max: 48, step: 0.5, unit: 'px' },
+      role: 'user',
+      persistence: 'localStorage',
+      apply: varApplyUnlessDefault('--layout-gap-sibling', plainPx, 18),
     },
   ]
   const unregisterFramework = host.register(frameworkFields)
