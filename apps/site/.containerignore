@@ -1,0 +1,9 @@
+# demo image の build context は「配信物」だけに絞る (owner 指示 2026-08-14:
+# image はローカルで作成、キャッシュはできるだけ利かす)。
+# Containerfile が COPY するのは Caddyfile と dist/ のみ — src / node_modules /
+# vite 設定などを context に含めると、配信物が不変でも context 転送が毎回発生し、
+# 無関係なファイルの変更で層キャッシュの判定も濁る。
+*
+!Caddyfile
+!Containerfile
+!dist
