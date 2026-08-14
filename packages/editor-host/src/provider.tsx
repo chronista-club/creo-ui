@@ -152,7 +152,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         type: 'number',
         semantic: 'global',
         scope: 'token',
-        group: 'Global',
+        group: 'Font size',
         order: 10 + i,
         initial: px,
         constraints: { min: 8, max: 32, step: 0.5, unit: 'px' },
