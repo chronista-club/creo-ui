@@ -151,6 +151,14 @@ describe('isSliderFriendly', () => {
   })
 })
 
+describe('heuristicRange (rem/em)', () => {
+  test('1-10 帯の rem は step 0.1 (0.5rem = 8px 飛びを避ける)', () => {
+    expect(heuristicRange(1.5, 'rem').step).toBe(0.1)
+    expect(heuristicRange(1.5, 'em').step).toBe(0.1)
+    expect(heuristicRange(1.5, 'px').step).toBe(0.5)
+  })
+})
+
 describe('sliderSpecFor', () => {
   test('通常値は heuristic range + 素の初期値', () => {
     expect(sliderSpecFor(8, 'px')).toEqual({ min: 0, max: 21, step: 0.5, initial: 8 })
