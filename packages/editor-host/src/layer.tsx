@@ -883,20 +883,6 @@ export function EditorLayer(): JSX.Element {
               </div>
             </header>
 
-            {/* Global fields (TOP semantic) — typography.scale 等、常時見える framework knob */}
-            <Show when={globalFields().length > 0}>
-              <section style={sectionStyle}>
-                <For each={globalUngrouped()}>{(field) => <FieldEditor field={field} />}</For>
-                <For each={globalGroups()}>
-                  {([title, fields]) => (
-                    <GlobalGroup title={title}>
-                      <For each={fields}>{(field) => <FieldEditor field={field} />}</For>
-                    </GlobalGroup>
-                  )}
-                </For>
-              </section>
-            </Show>
-
             <Show
               when={selection()}
               fallback={
@@ -971,6 +957,20 @@ export function EditorLayer(): JSX.Element {
                   </Show>
                 </section>
               )}
+            </Show>
+
+            {/* Global fields (TOP semantic) — typography.scale 等、常時見える framework knob */}
+            <Show when={globalFields().length > 0}>
+              <section style={sectionStyle}>
+                <For each={globalUngrouped()}>{(field) => <FieldEditor field={field} />}</For>
+                <For each={globalGroups()}>
+                  {([title, fields]) => (
+                    <GlobalGroup title={title}>
+                      <For each={fields}>{(field) => <FieldEditor field={field} />}</For>
+                    </GlobalGroup>
+                  )}
+                </For>
+              </section>
             </Show>
           </div>
         </Show>

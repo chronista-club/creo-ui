@@ -8,6 +8,7 @@
 import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
 import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
+import { createBrandColorControl } from './brand-color'
 import { type ClassOverrides, createClassOverrides } from './class-overrides'
 import { type ComponentFieldResolver, createComponentFieldResolver } from './component-fields'
 import { buildConsoleApi, installConsoleApi } from './console'
@@ -97,14 +98,14 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   // 対象外 (layout 密度は density mode の管轄)。persistence: localStorage —
   // 老眼設定のような「その人の既定」を reload 越しに保つ。
   //
-  // 梯子ノブ (typography.size.* / radius.*): token の 5 段梯子を Editor で体感調整し、
+  // 調整ノブ (typography.size.* / color.brand.*): token の値を Editor で体感調整し、
   // 決まった値を tokens/ の SSOT へ焼くための一時ノブなので persistence は敢えて無し。
   // initial は各 SSOT 値と揃える (このノブ自体がその改定のための道具)。
   //
   // 書き込みは lazy — register 時の initial 適用では :root に書かない。ノブを
   // 触っていないのに inline 値で token の emit (rem / calc) を潰すと、browser の
   // font 設定追従 (rem) が provider の mount だけで死ぬため。動かして初めて書く。
-  const lazyVarApply = (cssVar: string, format: (v: number) => string) => {
+  const skipFirst = (fn: (v: number) => void) => {
     let first = true
     return (v: number): void => {
       if (first) {
@@ -112,14 +113,19 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         first = false
         return
       }
-      if (typeof document === 'undefined') return
-      document.documentElement.style.setProperty(cssVar, format(v))
+      fn(v)
     }
   }
+  const lazyVarApply = (cssVar: string, format: (v: number) => string) =>
+    skipFirst((v) => {
+      if (typeof document === 'undefined') return
+      document.documentElement.style.setProperty(cssVar, format(v))
+    })
   // typography は calc(<px> * var(--typography-scale, 1)) — 素の px だと emit の
   // calc を潰して scale スライダーが死ぬため、梯子 × 倍率が両立する形で書く
   const typographyPx = (v: number): string => `calc(${v}px * var(--typography-scale, 1))`
-  const plainPx = (v: number): string => `${v}px`
+  // brand color (hue / chroma) — 実体は brand-color.ts。8 var を OKLCH のまま回す
+  const brandColor = createBrandColorControl()
 
   const SIZE_LADDER = [
     ['xs', 13],
@@ -127,13 +133,6 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     ['m', 17],
     ['l', 18.5],
     ['xl', 20.5],
-  ] as const
-  const RADIUS_LADDER = [
-    ['xs', 3.5],
-    ['s', 4],
-    ['m', 8],
-    ['l', 17.5],
-    ['xl', 21.5],
   ] as const
   const frameworkFields: EditorField[] = [
     {
@@ -148,7 +147,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       role: 'user',
       persistence: 'localStorage',
       cssVar: '--typography-scale',
-      group: 'Typography',
+      group: 'Global',
     },
     ...SIZE_LADDER.map(
       ([tier, px], i): EditorField => ({
@@ -157,7 +156,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         type: 'number',
         semantic: 'global',
         scope: 'token',
-        group: 'Typography',
+        group: 'Global',
         order: 10 + i,
         initial: px,
         constraints: { min: 8, max: 32, step: 0.5, unit: 'px' },
@@ -165,22 +164,34 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         apply: lazyVarApply(`--typography-size-${tier}`, typographyPx),
       }),
     ),
-    // radius の 5 段梯子。none (0) / full (9999 sentinel) は対象外
-    ...RADIUS_LADDER.map(
-      ([tier, px], i): EditorField => ({
-        id: `radius.${tier}`,
-        label: `radius.${tier}`,
-        type: 'number',
-        semantic: 'global',
-        scope: 'token',
-        group: 'Radius',
-        order: 20 + i,
-        initial: px,
-        constraints: { min: 0, max: 48, step: 0.5, unit: 'px' },
-        role: 'user',
-        apply: lazyVarApply(`--radius-${tier}`, plainPx),
-      }),
-    ),
+    // brand color — hue は絶対値で見せて内部は差分適用 (brand-color.ts 参照)。
+    // initial は現 theme の primary hue (mint = 160)
+    {
+      id: 'color.brand.hue',
+      label: 'Brand hue',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 20,
+      initial: brandColor.baseHue,
+      constraints: { min: 0, max: 360, step: 1, unit: '°' },
+      role: 'user',
+      apply: skipFirst((v) => brandColor.setHue(v)),
+    },
+    {
+      id: 'color.brand.chroma',
+      label: 'Brand chroma ×',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 21,
+      initial: 1,
+      constraints: { min: 0, max: 2, step: 0.05 },
+      role: 'user',
+      apply: skipFirst((v) => brandColor.setChromaScale(v)),
+    },
   ]
   const unregisterFramework = host.register(frameworkFields)
   onCleanup(unregisterFramework)
