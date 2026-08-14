@@ -136,8 +136,8 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   // (hue/chroma の族ノブが相対調整なのに対し、こちらは絶対値の直接編集)。
   // initial は現 theme の computed 値。既定と同値なら removeProperty で theme
   // 切替追従を保ち、編集したときだけ inline で上書き — 数値ノブと同じ値ベース判定。
-  // persistence は無し: color editor に ↺ が無く、貼り付いた値を UI から
-  // 剥がせなくなるため (セッション限り、気に入ったら preset へ焼く)
+  // localStorage 永続 + ↺ (owner 要望 2026-08-14)。既定値で保存された色は
+  // 次回 load 時に v === initial で remove に落ちるので theme 追従も保たれる
   const surfaceTokenInitial = (cssVar: string): string =>
     typeof document === 'undefined'
       ? ''
@@ -154,6 +154,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       order: 40 + i,
       initial,
       role: 'user',
+      persistence: 'localStorage',
       apply: (v: string) => {
         if (typeof document === 'undefined') return
         const style = document.documentElement.style
