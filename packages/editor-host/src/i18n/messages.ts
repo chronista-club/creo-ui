@@ -49,7 +49,26 @@ export const messages = {
     },
     pickHint: { ja: '選択してノブを出す', en: 'Select to load its knobs' },
     back: { ja: '戻る', en: 'Back' },
-  } satisfies Localized<'title' | 'empty' | 'disabled' | 'pickHint' | 'back'>,
+    otherProps: { ja: '他の property…', en: 'Other properties…' },
+    otherPropsHint: {
+      ja: 'class 全体への上書き (式ごと置換 — density / scale 連動は切れる)',
+      en: 'Overrides the whole class (replaces expressions — detaches density / scale)',
+    },
+    addProperty: { ja: 'property: value で追加', en: 'Add as property: value' },
+    copyCss: { ja: 'CSS をコピー', en: 'Copy CSS' },
+    reset: { ja: '戻す', en: 'Reset' },
+  } satisfies Localized<
+    | 'title'
+    | 'empty'
+    | 'disabled'
+    | 'pickHint'
+    | 'back'
+    | 'otherProps'
+    | 'otherPropsHint'
+    | 'addProperty'
+    | 'copyCss'
+    | 'reset'
+  >,
 
   /** RIGHT region: ツール panel */
   toolPanel: {

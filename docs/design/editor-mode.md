@@ -398,13 +398,23 @@ selection state に載るので、どちらの入口からでも detail view に
   「クリックしたら何が選ばれる？」を両側から解く
 - **Esc は 2 段** — 選択中は解除 (detail → tree)、未選択なら Mode OFF
 
-編集の射程は **ノブ + 脱出ハッチ** で確定 (未実装、次段):
+編集の射程は **ノブ + 脱出ハッチ** の 2 経路 (脱出ハッチは 2026-08-14 実装):
 宣言済み tweak var のノブが「良い経路」(型付き slider / SSOT fallback / density
-連動を保つ)。加えて detail に「他の property」を置き、class の実 CSS 宣言を
-一覧 → 任意の property を注入 stylesheet の `.creo-<component>` override rule で
-上書きできるようにする。class 単位 = component scope の原則と一貫し、export も
-「component CSS への変更提案」として成立する。ただし `calc(var × density)` の
-式ごと上書きになるため、構造を保った編集はあくまでノブ側。
+連動を保つ)。加えて detail の「他の property…」(`class-overrides.ts` +
+`OtherPropsSection`) が class の base rule の実 CSS 宣言を CSSOM から一覧し、
+任意の property を注入 stylesheet の `.creo-<component>` override rule で
+上書きできる。base rule に無い property も `property: value` 形式で追加可能。
+class 単位 = component scope の原則と一貫し、export は「CSS をコピー」で
+rule block を取り出して component CSS への変更提案にする。
+
+制約 (意図的):
+- `calc(var × density)` の**式ごと上書き**になるため、構造を保った編集は
+  あくまでノブ側 — 「まずノブ、無ければハッチ」の順
+- 注入 rule は base rule と同 specificity の後勝ち。variant rule
+  (`[data-variant]` 等) が同じ property を張る場合はそちらが勝つ — base rule を
+  直接編集したのと同じ、正直な cascade
+- persistence は無し (梯子ノブと同じ調整セッション用)。provider が畳まれると
+  注入 stylesheet ごと破棄される
 
 旧 panel の 3-scope field 一覧 / ThemeEditor / ExportBar は **外してある**
 (`theme-editor.tsx` / `export-bar.tsx` はファイルとしては残置)。

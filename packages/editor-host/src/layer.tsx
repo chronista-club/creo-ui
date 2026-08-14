@@ -27,15 +27,16 @@
  * 旧 panel が持っていた 3-scope field 一覧 / ThemeEditor / ExportBar は **一旦外した**
  * (`theme-editor.tsx` / `export-bar.tsx` は残置)。段階的に組み直す。
  */
-import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
+import { For, Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Portal } from 'solid-js/web'
+import { readClassDeclarations } from './class-overrides'
 import { componentDisplayName, componentIdOfElement, componentSelector } from './component-id'
 import type { ComponentTreeNode } from './component-tree'
 import { FieldEditor } from './fields'
 import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
-import { useComponentResolver, useEditorHost } from './provider'
+import { useClassOverrides, useComponentResolver, useEditorHost } from './provider'
 import type { EditorField } from './types'
 
 // ---------- Styles ----------
@@ -243,6 +244,149 @@ const breadcrumbItemStyle: JSX.CSSProperties = {
   'font-size': '10px',
   color: 'var(--color-text-secondary)',
   cursor: 'pointer',
+}
+
+// ---------- 脱出ハッチ: 他の property (class override) ----------
+
+const propRowStyle: JSX.CSSProperties = {
+  display: 'grid',
+  'grid-template-columns': '1fr 1.2fr auto',
+  'align-items': 'center',
+  gap: '6px',
+}
+
+const propNameStyle = (edited: boolean): JSX.CSSProperties => ({
+  'font-family': 'var(--typography-family-mono, monospace)',
+  'font-size': '10px',
+  color: edited ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
+  'white-space': 'nowrap',
+  overflow: 'hidden',
+  'text-overflow': 'ellipsis',
+})
+
+const propInputStyle = (edited: boolean): JSX.CSSProperties => ({
+  width: '100%',
+  padding: '2px 6px',
+  background: 'var(--color-surface-bg-subtle)',
+  border: `1px solid ${edited ? 'var(--color-brand-primary)' : 'var(--editor-mode-region-border)'}`,
+  'border-radius': '4px',
+  'font-family': 'var(--typography-family-mono, monospace)',
+  'font-size': '10px',
+  color: 'var(--color-text-primary)',
+})
+
+const propResetStyle: JSX.CSSProperties = {
+  padding: '1px 5px',
+  background: 'transparent',
+  border: '1px solid var(--editor-mode-region-border)',
+  'border-radius': '4px',
+  'font-size': '9px',
+  color: 'var(--color-text-tertiary)',
+  cursor: 'pointer',
+  'flex-shrink': '0',
+}
+
+const hatchHintStyle: JSX.CSSProperties = {
+  margin: '0',
+  'font-size': '9px',
+  color: 'var(--color-text-tertiary)',
+}
+
+/**
+ * 脱出ハッチ — 選択中 component の base rule の宣言を並べ、任意の property を
+ * class 単位で上書きする。ノブに無いものへの第 2 経路 (まずノブ、無ければここ)。
+ */
+function OtherPropsSection(props: { componentId: string }): JSX.Element {
+  const overrides = useClassOverrides()
+  const t = useT()
+  const [copied, setCopied] = createSignal(false)
+
+  // base rule の宣言 (component が変わったら読み直す)
+  const declarations = createMemo(() => readClassDeclarations(props.componentId))
+  const componentOverrides = (): Record<string, string> =>
+    overrides?.overrides()[props.componentId] ?? {}
+
+  /** base 宣言 + override で追加された property (base に無いもの) を後ろに */
+  const rows = (): { property: string; base: string | null }[] => {
+    const base = declarations()
+    const known = new Set(base.map((d) => d.property))
+    const added = Object.keys(componentOverrides()).filter((p) => !known.has(p))
+    return [
+      ...base.map((d) => ({ property: d.property, base: d.value })),
+      ...added.map((p) => ({ property: p, base: null })),
+    ]
+  }
+
+  const currentValue = (property: string, base: string | null): string =>
+    componentOverrides()[property] ?? base ?? ''
+
+  const onAdd = (raw: string): void => {
+    const i = raw.indexOf(':')
+    if (i <= 0 || !overrides) return
+    const property = raw.slice(0, i).trim()
+    const value = raw.slice(i + 1).trim()
+    if (property && value) overrides.set(props.componentId, property, value)
+  }
+
+  const copyCss = (): void => {
+    const css = overrides?.cssFor(props.componentId)
+    if (!css || typeof navigator === 'undefined') return
+    navigator.clipboard?.writeText(css).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    })
+  }
+
+  return (
+    <GlobalGroup title={t(messages.discovery.otherProps)}>
+      <p style={hatchHintStyle}>{t(messages.discovery.otherPropsHint)}</p>
+      <For each={rows()}>
+        {(row) => {
+          const edited = (): boolean => row.property in componentOverrides()
+          return (
+            <div style={propRowStyle}>
+              <span style={propNameStyle(edited())} title={row.property}>
+                {row.property}
+              </span>
+              <input
+                type="text"
+                style={propInputStyle(edited())}
+                value={currentValue(row.property, row.base)}
+                onInput={(e) =>
+                  overrides?.set(props.componentId, row.property, e.currentTarget.value)
+                }
+              />
+              <Show when={edited()} fallback={<span style={{ width: '30px' }} />}>
+                <button
+                  type="button"
+                  style={propResetStyle}
+                  onClick={() => overrides?.remove(props.componentId, row.property)}
+                >
+                  {t(messages.discovery.reset)}
+                </button>
+              </Show>
+            </div>
+          )
+        }}
+      </For>
+      <input
+        type="text"
+        style={propInputStyle(false)}
+        placeholder={t(messages.discovery.addProperty)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onAdd(e.currentTarget.value)
+            e.currentTarget.value = ''
+          }
+        }}
+      />
+      <Show when={Object.keys(componentOverrides()).length > 0}>
+        <button type="button" style={propResetStyle} onClick={copyCss}>
+          {copied() ? t(messages.exportBar.copied) : t(messages.discovery.copyCss)}
+        </button>
+      </Show>
+    </GlobalGroup>
+  )
 }
 
 // ---------- Global group (Size scale 等、global section 内の折りたたみ) ----------
@@ -795,6 +939,10 @@ export function EditorLayer(): JSX.Element {
                     }
                   >
                     <For each={detailFields()}>{(field) => <FieldEditor field={field} />}</For>
+                  </Show>
+                  {/* 脱出ハッチ — ノブに無い property は class override で (まずノブ、無ければここ) */}
+                  <Show when={sel().componentId}>
+                    {(cid) => <OtherPropsSection componentId={cid()} />}
                   </Show>
                 </section>
               )}
