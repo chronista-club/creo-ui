@@ -1,13 +1,12 @@
 /**
- * @chronista-club/creo-ui-editor-host — global color knob (brand hue / chroma)
+ * @chronista-club/creo-ui-editor-host — global color knob (hue / chroma per var 族)
  *
- * theme の brand 系 8 var (--color-brand-{primary,secondary}{,-hover,-active,-subtle})
- * を OKLCH のまま一括で回す global ノブ (決まった値を theme preset へ焼くための
- * 道具。値の永続は field 側の persistence: 'localStorage' に乗る — 本 module は
- * storage を知らない)。
+ * theme の OKLCH var 族 (brand 系 8 var / surface 系 8 var) を一括で回す global
+ * ノブ (決まった値を theme preset へ焼くための道具。値の永続は field 側の
+ * persistence: 'localStorage' に乗る — 本 module は storage を知らない)。
  *
- * - **hue**: 絶対値スライダー → 「基準 (primary の h) との差分」を全 var に適用。
- *   contrast theme のように brand が複数 hue を持つ family でも相対関係が保たれる
+ * - **hue**: 絶対値スライダー → 「基準 var の h との差分」を族の全 var に適用。
+ *   contrast theme のように複数 hue を持つ family でも相対関係が保たれる
  * - **chroma**: 倍率 (×)。l (明度) は敢えて触らない — light/dark のコントラスト
  *   設計を壊さないため
  * - 書き込みは documentElement の inline style (theme rule より強い)。ノブが中立
@@ -32,6 +31,18 @@ export const BRAND_COLOR_VARS = [
   '--color-brand-secondary-hover',
   '--color-brand-secondary-active',
   '--color-brand-secondary-subtle',
+] as const
+
+/** surface 系 var (背景 / 面 / 罫線 / scrim)。scrim は alpha 付き — parse が対応 */
+export const SURFACE_COLOR_VARS = [
+  '--color-surface-bg-base',
+  '--color-surface-bg-subtle',
+  '--color-surface-bg-emphasis',
+  '--color-surface-surface',
+  '--color-surface-border',
+  '--color-surface-border-subtle',
+  '--color-surface-scrim',
+  '--color-surface-scrim-modal',
 ] as const
 
 const OKLCH_RE = /^oklch\(\s*(-?[\d.]+%?)\s+(-?[\d.]+)\s+(-?[\d.]+)(?:\s*\/\s*(-?[\d.]+%?))?\s*\)$/
@@ -62,8 +73,8 @@ export function adjustOklch(color: OklchColor, hueShift: number, chromaScale: nu
   return { ...color, h, c }
 }
 
-export interface BrandColorControl {
-  /** slider の initial に使う、現 theme の brand primary hue */
+export interface OklchColorControl {
+  /** slider の initial に使う、基準 var の現 theme hue */
   readonly baseHue: number
   setHue(absoluteHue: number): void
   setChromaScale(scale: number): void
@@ -72,10 +83,18 @@ export interface BrandColorControl {
 /** mint (default theme) の brand hue — SSR / 値が読めない環境の fallback */
 const FALLBACK_HUE = 160
 
-export function createBrandColorControl(): BrandColorControl {
+/**
+ * OKLCH var 族 1 組のノブ制御を作る。
+ * @param vars 回す var 名の族 (BRAND_COLOR_VARS / SURFACE_COLOR_VARS)
+ * @param baseVar hue スライダーの基準にする var (族の代表)
+ */
+export function createOklchColorControl(
+  vars: readonly string[],
+  baseVar: string,
+): OklchColorControl {
   let baseHue = FALLBACK_HUE
   if (typeof document !== 'undefined') {
-    const raw = getComputedStyle(document.documentElement).getPropertyValue('--color-brand-primary')
+    const raw = getComputedStyle(document.documentElement).getPropertyValue(baseVar)
     const parsed = parseOklch(raw)
     if (parsed) baseHue = parsed.h
   }
@@ -90,7 +109,7 @@ export function createBrandColorControl(): BrandColorControl {
   const capture = (): ReadonlyMap<string, OklchColor> => {
     const map = new Map<string, OklchColor>()
     const style = getComputedStyle(document.documentElement)
-    for (const name of BRAND_COLOR_VARS) {
+    for (const name of vars) {
       const parsed = parseOklch(style.getPropertyValue(name))
       if (parsed) map.set(name, parsed)
     }
@@ -101,7 +120,7 @@ export function createBrandColorControl(): BrandColorControl {
     if (typeof document === 'undefined') return
     const rootStyle = document.documentElement.style
     if (hueShift === 0 && chromaScale === 1) {
-      for (const name of BRAND_COLOR_VARS) rootStyle.removeProperty(name)
+      for (const name of vars) rootStyle.removeProperty(name)
       return
     }
     // stylesheet 未 load 等で空振りした capture は cache しない (次回また試す) —

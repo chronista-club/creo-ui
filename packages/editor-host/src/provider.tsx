@@ -8,7 +8,7 @@
 import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
 import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
-import { createBrandColorControl } from './brand-color'
+import { BRAND_COLOR_VARS, SURFACE_COLOR_VARS, createOklchColorControl } from './brand-color'
 import { type ClassOverrides, createClassOverrides } from './class-overrides'
 import { type ComponentFieldResolver, createComponentFieldResolver } from './component-fields'
 import { buildConsoleApi, installConsoleApi } from './console'
@@ -120,8 +120,10 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   // calc を潰して scale スライダーが死ぬため、梯子 × 倍率が両立する形で書く
   const typographyPx = (v: number): string => `calc(${v}px * var(--typography-scale, 1))`
   const plainPx = (v: number): string => `${v}px`
-  // brand color (hue / chroma) — 実体は brand-color.ts。8 var を OKLCH のまま回す
-  const brandColor = createBrandColorControl()
+  // brand / surface color (hue / chroma) — 実体は brand-color.ts。
+  // それぞれの var 族 8 本を OKLCH のまま回す
+  const brandColor = createOklchColorControl(BRAND_COLOR_VARS, '--color-brand-primary')
+  const surfaceColor = createOklchColorControl(SURFACE_COLOR_VARS, '--color-surface-surface')
 
   const SIZE_LADDER = [
     ['xs', 13],
@@ -191,6 +193,36 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       role: 'user',
       persistence: 'localStorage',
       apply: (v) => brandColor.setChromaScale(v),
+    },
+    // surface color — 背景 / 面 / 罫線 / scrim の 8 var。作法は brand と同じ
+    // (基準 = surface-surface の hue。mint-dark なら 260)
+    {
+      id: 'color.surface.hue',
+      label: 'Surface hue',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 22,
+      initial: surfaceColor.baseHue,
+      constraints: { min: 0, max: 360, step: 1, unit: '°' },
+      role: 'user',
+      persistence: 'localStorage',
+      apply: (v) => surfaceColor.setHue(v),
+    },
+    {
+      id: 'color.surface.chroma',
+      label: 'Surface chroma ×',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 23,
+      initial: 1,
+      constraints: { min: 0, max: 3, step: 0.05 },
+      role: 'user',
+      persistence: 'localStorage',
+      apply: (v) => surfaceColor.setChromaScale(v),
     },
     // layout.gap.sibling — stacked 要素間の既定 gap。SSOT は {spacing.m} alias
     // (1.125rem = 18px @16px)。initial はその実値。既定のままなら emit の alias
