@@ -6,6 +6,7 @@
  */
 import { For, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
+import { messages, useT } from './i18n'
 import {
   OKLCH_C_MAX,
   type Oklch,
@@ -46,6 +47,18 @@ const monoValueStyle: JSX.CSSProperties = {
   'font-family': 'var(--typography-family-sans)',
 }
 
+/** 値の右の ↺ — SSOT 既定値へ戻す。既定のままの間は visibility hidden で列幅を保つ */
+const resetButtonStyle: JSX.CSSProperties = {
+  border: 'none',
+  background: 'transparent',
+  color: 'var(--color-text-tertiary)',
+  'font-size': '13px',
+  'line-height': '1',
+  padding: '2px',
+  cursor: 'pointer',
+  'flex-shrink': '0',
+}
+
 const selectStyle: JSX.CSSProperties = {
   flex: '1',
   padding: '4px 6px',
@@ -79,6 +92,10 @@ function NumberEditor(props: {
   value: number
   onChange: (v: number) => void
 }): JSX.Element {
+  const t = useT()
+  const initial = (): number | undefined =>
+    typeof props.field.initial === 'number' ? props.field.initial : undefined
+  const atDefault = (): boolean => initial() === undefined || props.value === initial()
   return (
     <div style={rowStyle}>
       <input
@@ -94,6 +111,18 @@ function NumberEditor(props: {
         {props.value}
         {props.field.constraints?.unit ?? ''}
       </span>
+      <button
+        type="button"
+        title={t(messages.discovery.reset)}
+        aria-label={t(messages.discovery.reset)}
+        onClick={() => {
+          const v = initial()
+          if (v !== undefined) props.onChange(v)
+        }}
+        style={{ ...resetButtonStyle, visibility: atDefault() ? 'hidden' : 'visible' }}
+      >
+        ↺
+      </button>
     </div>
   )
 }
