@@ -410,14 +410,37 @@ const groupToggleStyle: JSX.CSSProperties = {
 function GlobalGroup(props: {
   title: string
   defaultOpen?: boolean
+  /** title の色 (Discovery 等の accent 用。省略時は tertiary) */
+  accent?: string
+  /** 右端の件数 badge (Discovery のツリー件数等) */
+  count?: number
   children: JSX.Element
 }): JSX.Element {
   const [open, setOpen] = createSignal(props.defaultOpen ?? false)
   return (
     <div>
-      <button type="button" style={groupToggleStyle} onClick={() => setOpen(!open())}>
+      <button
+        type="button"
+        style={{
+          ...groupToggleStyle,
+          width: '100%',
+          ...(props.accent ? { color: props.accent } : {}),
+        }}
+        onClick={() => setOpen(!open())}
+      >
         <span>{open() ? '▾' : '▸'}</span>
         {props.title}
+        <Show when={props.count !== undefined}>
+          <span
+            style={{
+              'margin-left': 'auto',
+              'font-weight': '400',
+              color: 'var(--color-text-tertiary)',
+            }}
+          >
+            {props.count}
+          </span>
+        </Show>
       </button>
       <Show when={open()}>
         <div
@@ -866,7 +889,7 @@ export function EditorLayer(): JSX.Element {
                 <For each={globalUngrouped()}>{(field) => <FieldEditor field={field} />}</For>
                 <For each={globalGroups()}>
                   {([title, fields]) => (
-                    <GlobalGroup title={title} defaultOpen>
+                    <GlobalGroup title={title}>
                       <For each={fields}>{(field) => <FieldEditor field={field} />}</For>
                     </GlobalGroup>
                   )}
@@ -878,33 +901,35 @@ export function EditorLayer(): JSX.Element {
               when={selection()}
               fallback={
                 <section style={sectionStyle}>
-                  <div style={sectionTitleStyle}>
-                    <span style={dotStyle('var(--color-brand-primary)')} />
-                    {t(messages.discovery.title)}
-                  </div>
-                  <Show
-                    when={resolver}
-                    fallback={<p style={emptyHintStyle}>{t(messages.discovery.disabled)}</p>}
+                  <GlobalGroup
+                    title={t(messages.discovery.title)}
+                    accent="var(--color-brand-primary)"
+                    count={tree().length}
                   >
                     <Show
-                      when={tree().length > 0}
-                      fallback={<p style={emptyHintStyle}>{t(messages.discovery.empty)}</p>}
+                      when={resolver}
+                      fallback={<p style={emptyHintStyle}>{t(messages.discovery.disabled)}</p>}
                     >
-                      <ul style={listStyle} onMouseLeave={() => hoverNode(null)}>
-                        <For each={tree()}>
-                          {(node) => (
-                            <TreeRow
-                              node={node}
-                              depth={0}
-                              onPick={pick}
-                              onHover={hoverNode}
-                              pickHint={t(messages.discovery.pickHint)}
-                            />
-                          )}
-                        </For>
-                      </ul>
+                      <Show
+                        when={tree().length > 0}
+                        fallback={<p style={emptyHintStyle}>{t(messages.discovery.empty)}</p>}
+                      >
+                        <ul style={listStyle} onMouseLeave={() => hoverNode(null)}>
+                          <For each={tree()}>
+                            {(node) => (
+                              <TreeRow
+                                node={node}
+                                depth={0}
+                                onPick={pick}
+                                onHover={hoverNode}
+                                pickHint={t(messages.discovery.pickHint)}
+                              />
+                            )}
+                          </For>
+                        </ul>
+                      </Show>
                     </Show>
-                  </Show>
+                  </GlobalGroup>
                 </section>
               }
             >

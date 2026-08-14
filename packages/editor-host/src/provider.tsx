@@ -148,6 +148,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       role: 'user',
       persistence: 'localStorage',
       cssVar: '--typography-scale',
+      group: 'Typography',
     },
     ...SIZE_LADDER.map(
       ([tier, px], i): EditorField => ({
@@ -156,7 +157,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         type: 'number',
         semantic: 'global',
         scope: 'token',
-        group: 'Size scale',
+        group: 'Typography',
         order: 10 + i,
         initial: px,
         constraints: { min: 8, max: 32, step: 0.5, unit: 'px' },
@@ -172,7 +173,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         type: 'number',
         semantic: 'global',
         scope: 'token',
-        group: 'Radius scale',
+        group: 'Radius',
         order: 20 + i,
         initial: px,
         constraints: { min: 0, max: 48, step: 0.5, unit: 'px' },
