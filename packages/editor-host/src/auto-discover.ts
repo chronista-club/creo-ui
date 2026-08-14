@@ -100,11 +100,14 @@ function cssVarToId(cssVar: string): string {
   return cssVar.replace(/^--/, '').replace(/-/g, '.')
 }
 
-function heuristicRange(value: number): { min: number; max: number; step: number } {
-  // 値 20 なら 0-40、値 1.5 なら 0-3 ... みたいな簡単 heuristic
+function heuristicRange(value: number, unit = 'px'): { min: number; max: number; step: number } {
+  // 値 20 なら 0-40、値 1.5 なら 0-3 ... みたいな簡単 heuristic。
+  // rem / em は 1 の重みが px の 16 倍なので step も細かく — 0.5rem 刻みだと
+  // 8px 飛びで slider にならない (owner 指摘 2026-08-14: btn pad-x 1.5rem)
+  const relative = unit === 'rem' || unit === 'em'
   const abs = Math.abs(value)
   if (abs < 1) return { min: 0, max: 2, step: 0.05 }
-  if (abs < 10) return { min: 0, max: value * 2 + 5, step: 0.5 }
+  if (abs < 10) return { min: 0, max: value * 2 + 5, step: relative ? 0.1 : 0.5 }
   if (abs < 100) return { min: 0, max: value * 2 + 20, step: 1 }
   return { min: 0, max: value * 2 + 100, step: 10 }
 }
@@ -151,7 +154,7 @@ export function bindDiscoveredVar(
     // radius.full (9999px) 等の sentinel は捨てずに操作可能な range へ丸める
     const { min, max, step, initial } = placement.skipSentinel
       ? sliderSpecFor(d.numericValue, unit)
-      : { ...heuristicRange(d.numericValue), initial: d.numericValue }
+      : { ...heuristicRange(d.numericValue, unit), initial: d.numericValue }
     return run(() =>
       bind<number>({
         host,
@@ -347,7 +350,7 @@ export function sliderSpecFor(
   if (!isSliderFriendly(numericValue, unit)) {
     return { min: 0, max: TWEAK_SENTINEL_CLAMP_PX, step: 1, initial: TWEAK_SENTINEL_CLAMP_PX }
   }
-  return { ...heuristicRange(numericValue), initial: numericValue }
+  return { ...heuristicRange(numericValue, unit), initial: numericValue }
 }
 
 /**
