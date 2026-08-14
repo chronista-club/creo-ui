@@ -10,15 +10,12 @@ import ThemeSwitcher from './ThemeSwitcher'
  * nav の active 表示は solid-router の <A> が自動で付ける aria-current="page" を
  * `.creo-header-nav a[aria-current="page"]` が拾う (独自 is-active class は廃止)。
  * site 側に残る chrome は高さの固定 (.docs-header、 sidebar / editor dock の
- * offset と同期) と logo mark の回転 (.docs-brand-logo) のみ。
+ * offset と同期) のみ。
  */
 export default function Header() {
   return (
     <header class="creo-header docs-header" data-variant="app" data-sticky="true">
       <A class="creo-header-logo" href="/">
-        <span class="docs-brand-logo" aria-hidden="true">
-          ◎
-        </span>
         Creo UI
         <span class="creo-badge" data-size="s">
           v{pkg.version}

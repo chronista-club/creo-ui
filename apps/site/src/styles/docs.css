@@ -110,12 +110,7 @@ a:hover {
   height: var(--docs-header-height);
 }
 
-/* logo mark (◎) — brand 色 + hover 回転は site の personality として維持
-   (回転 animation は後方の polish section 参照)。 */
-.docs-brand-logo {
-  color: var(--color-brand-primary);
-  font-size: 1.2em;
-}
+/* logo mark (◎) は 2026-08-14 に撤去 — brand はテキスト "Creo UI" のみ。 */
 
 /* theme switcher — .creo-select component (dogfood) に全委譲、 site 側 CSS なし。 */
 
@@ -2627,16 +2622,6 @@ kbd {
 
 /* ---- Header — nav / brand / theme switcher polish ---- */
 
-.docs-brand-logo {
-  transition: transform var(--motion-duration-normal) var(--motion-easing-spring), filter
-    var(--motion-duration-normal);
-}
-
-.creo-header-logo:hover .docs-brand-logo {
-  transform: rotate(90deg);
-  filter: drop-shadow(0 0 6px var(--face-glow-brand));
-}
-
 /* theme switcher の wrapper / arrow は .creo-select component 化に伴い削除。 */
 
 /* ============================================================
@@ -2679,8 +2664,7 @@ kbd {
   .docs-gallery-card,
   .docs-gallery-card:hover,
   .docs-hero-float--actions,
-  .docs-hero-float--badges,
-  .creo-header-logo:hover .docs-brand-logo {
+  .docs-hero-float--badges {
     transform: none !important;
     transition: none !important;
   }
