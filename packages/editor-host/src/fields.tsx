@@ -39,6 +39,24 @@ const rowStyle: JSX.CSSProperties = {
   'align-items': 'center',
 }
 
+/* number ノブの 1 ライナー行: name | slider (66% 固定) | 値 | ↺。
+   name は残り幅で ellipsis (全文は title tooltip)。gap を詰めて name に幅を返す */
+const numberRowStyle: JSX.CSSProperties = {
+  display: 'flex',
+  gap: '6px',
+  'align-items': 'center',
+}
+
+const labelEllipsisStyle: JSX.CSSProperties = {
+  flex: '1 1 0',
+  'min-width': '0',
+  overflow: 'hidden',
+  'text-overflow': 'ellipsis',
+  'white-space': 'nowrap',
+  'font-size': '11px',
+  color: 'var(--editor-mode-panel-field-label)',
+}
+
 const monoValueStyle: JSX.CSSProperties = {
   color: 'var(--editor-mode-panel-field-value)',
   'font-size': '11px',
@@ -97,7 +115,10 @@ function NumberEditor(props: {
     typeof props.field.initial === 'number' ? props.field.initial : undefined
   const atDefault = (): boolean => initial() === undefined || props.value === initial()
   return (
-    <div style={rowStyle}>
+    <div style={numberRowStyle}>
+      <span style={labelEllipsisStyle} title={props.field.label}>
+        {props.field.label}
+      </span>
       <input
         type="range"
         min={props.field.constraints?.min ?? 0}
@@ -105,9 +126,13 @@ function NumberEditor(props: {
         step={props.field.constraints?.step ?? 1}
         value={props.value}
         onInput={(e) => props.onChange(Number(e.currentTarget.value))}
-        style={{ flex: '1', 'accent-color': 'var(--editor-mode-axis-future)' }}
+        style={{
+          flex: '0 0 66%',
+          'min-width': '0',
+          'accent-color': 'var(--editor-mode-axis-future)',
+        }}
       />
-      <span style={monoValueStyle}>
+      <span style={{ ...monoValueStyle, 'min-width': '38px', 'font-size': '10px' }}>
         {props.value}
         {props.field.constraints?.unit ?? ''}
       </span>
@@ -385,7 +410,10 @@ export function FieldEditor(props: { field: EditorField }): JSX.Element {
 
   return (
     <div style={{ 'margin-bottom': 'var(--editor-mode-panel-field-gap)' }}>
-      <span style={labelBlockStyle}>{props.field.label}</span>
+      {/* number は 1 ライナー (label 行内 ellipsis)。他 type は従来の label 行 + editor */}
+      <Show when={props.field.type !== 'number'}>
+        <span style={labelBlockStyle}>{props.field.label}</span>
+      </Show>
       {(() => {
         switch (props.field.type) {
           case 'number':
