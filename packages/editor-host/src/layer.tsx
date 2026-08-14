@@ -414,9 +414,21 @@ function GlobalGroup(props: {
   accent?: string
   /** 右端の件数 badge (Discovery のツリー件数等) */
   count?: number
+  /** 制御 mode: 開閉 state を親が持つ (onToggle とセットで指定)。
+      この component は fields の変化や selection の往復で作り直されるので、
+      作り直しをまたいで残したい開閉 state は親 (panel) 側に置く */
+  open?: boolean
+  onToggle?: (open: boolean) => void
   children: JSX.Element
 }): JSX.Element {
-  const [open, setOpen] = createSignal(props.defaultOpen ?? false)
+  // 非制御時のみ使うローカル state (OtherProps 等、選択ごとに閉じ直してよい所)
+  const [localOpen, setLocalOpen] = createSignal(props.defaultOpen ?? false)
+  const open = (): boolean => (props.onToggle ? (props.open ?? false) : localOpen())
+  const toggle = (): void => {
+    const next = !open()
+    if (props.onToggle) props.onToggle(next)
+    else setLocalOpen(next)
+  }
   return (
     <div>
       <button
@@ -426,7 +438,7 @@ function GlobalGroup(props: {
           width: '100%',
           ...(props.accent ? { color: props.accent } : {}),
         }}
-        onClick={() => setOpen(!open())}
+        onClick={toggle}
       >
         <span>{open() ? '▾' : '▸'}</span>
         {props.title}
@@ -606,6 +618,19 @@ export function EditorLayer(): JSX.Element {
   const refresh = (): void => {
     setTree(resolver ? resolver.tree() : [])
   }
+
+  // アコーディオン開閉 state — group 名を key に panel 側で持つ。group の DOM は
+  // fields の register (= component 選択) や selection の往復で作り直されるため、
+  // group ローカルの state だと選択のたび勝手に閉じる。Mode ON の瞬間だけ全閉じに
+  // リセット (「開くたびコンパクトから」の既定は維持)
+  const [openGroups, setOpenGroups] = createSignal<Record<string, boolean>>({})
+  const groupOpen = (key: string): boolean => !!openGroups()[key]
+  const toggleGroup = (key: string, open: boolean): void => {
+    setOpenGroups((prev) => ({ ...prev, [key]: open }))
+  }
+  createEffect(() => {
+    if (mode() === 'on') setOpenGroups({})
+  })
 
   createEffect(() => {
     if (mode() === 'on' && !selection()) refresh()
@@ -891,6 +916,8 @@ export function EditorLayer(): JSX.Element {
                     title={t(messages.discovery.title)}
                     accent="var(--color-brand-primary)"
                     count={tree().length}
+                    open={groupOpen('discovery')}
+                    onToggle={(o) => toggleGroup('discovery', o)}
                   >
                     <Show
                       when={resolver}
@@ -965,7 +992,11 @@ export function EditorLayer(): JSX.Element {
                 <For each={globalUngrouped()}>{(field) => <FieldEditor field={field} />}</For>
                 <For each={globalGroups()}>
                   {([title, fields]) => (
-                    <GlobalGroup title={title}>
+                    <GlobalGroup
+                      title={title}
+                      open={groupOpen(title)}
+                      onToggle={(o) => toggleGroup(title, o)}
+                    >
                       <For each={fields}>{(field) => <FieldEditor field={field} />}</For>
                     </GlobalGroup>
                   )}
