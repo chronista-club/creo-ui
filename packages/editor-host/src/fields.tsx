@@ -22,13 +22,13 @@ import type { EditorField } from './types'
 
 const labelBlockStyle: JSX.CSSProperties = {
   display: 'block',
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--editor-mode-panel-field-label)',
   'margin-bottom': '4px',
 }
 
 const labelInlineStyle: JSX.CSSProperties = {
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--editor-mode-panel-field-label)',
   'white-space': 'nowrap',
 }
@@ -53,13 +53,13 @@ const labelEllipsisStyle: JSX.CSSProperties = {
   overflow: 'hidden',
   'text-overflow': 'ellipsis',
   'white-space': 'nowrap',
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--editor-mode-panel-field-label)',
 }
 
 const monoValueStyle: JSX.CSSProperties = {
   color: 'var(--editor-mode-panel-field-value)',
-  'font-size': '11px',
+  'font-size': '12px',
   'min-width': '52px',
   'text-align': 'right',
   'font-family': 'var(--typography-family-sans)',
@@ -70,7 +70,7 @@ const resetButtonStyle: JSX.CSSProperties = {
   border: 'none',
   background: 'transparent',
   color: 'var(--color-text-tertiary)',
-  'font-size': '13px',
+  'font-size': '14px',
   'line-height': '1',
   padding: '2px',
   cursor: 'pointer',
@@ -80,7 +80,7 @@ const resetButtonStyle: JSX.CSSProperties = {
 const selectStyle: JSX.CSSProperties = {
   flex: '1',
   padding: '4px 6px',
-  'font-size': '11px',
+  'font-size': '12px',
   'font-family': 'var(--typography-family-sans)',
   background: 'var(--color-surface-surface)',
   color: 'var(--color-text-primary)',
@@ -98,7 +98,7 @@ const readonlyTextStyle: JSX.CSSProperties = {
   border: '1px solid var(--editor-mode-region-border)',
   'border-radius': '4px',
   'font-family': 'var(--typography-family-sans)',
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--color-text-secondary)',
   'white-space': 'pre-wrap',
 }
@@ -132,7 +132,7 @@ function NumberEditor(props: {
           'accent-color': 'var(--editor-mode-axis-future)',
         }}
       />
-      <span style={{ ...monoValueStyle, 'min-width': '38px', 'font-size': '10px' }}>
+      <span style={{ ...monoValueStyle, 'min-width': '38px', 'font-size': '11px' }}>
         {props.value}
         {props.field.constraints?.unit ?? ''}
       </span>
@@ -256,7 +256,7 @@ const CHECKER_BG =
 const oklchChannelLabelStyle: JSX.CSSProperties = {
   width: '12px',
   'flex-shrink': '0',
-  'font-size': '10px',
+  'font-size': '11px',
   'font-weight': '700',
   color: 'var(--editor-mode-panel-field-label)',
 }
@@ -264,7 +264,7 @@ const oklchChannelLabelStyle: JSX.CSSProperties = {
 const oklchValueStyle: JSX.CSSProperties = {
   ...monoValueStyle,
   'min-width': '44px',
-  'font-size': '10px',
+  'font-size': '11px',
 }
 
 const CHANNELS: {
@@ -460,7 +460,7 @@ export function FieldEditorInline(props: { field: EditorField }): JSX.Element {
                 onChange={(e) => onChange(e.currentTarget.value)}
                 style={{
                   padding: '2px 6px',
-                  'font-size': '11px',
+                  'font-size': '12px',
                   'font-family': 'var(--typography-family-sans)',
                   background: 'var(--color-surface-surface)',
                   color: 'var(--color-text-primary)',
@@ -486,7 +486,7 @@ export function FieldEditorInline(props: { field: EditorField }): JSX.Element {
             return (
               <span
                 style={{
-                  'font-size': '11px',
+                  'font-size': '12px',
                   'font-family': 'var(--typography-family-sans)',
                   color: 'var(--editor-mode-panel-field-value)',
                 }}
