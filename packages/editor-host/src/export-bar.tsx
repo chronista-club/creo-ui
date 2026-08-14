@@ -134,7 +134,7 @@ const containerStyle: JSX.CSSProperties = {
   'align-items': 'center',
   gap: '8px',
   width: '100%',
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--color-text-secondary)',
 }
 
@@ -144,7 +144,7 @@ const labelStyle: JSX.CSSProperties = {
 }
 
 const selectStyle: JSX.CSSProperties = {
-  'font-size': '11px',
+  'font-size': '12px',
   padding: '2px 6px',
   'border-radius': 'var(--radius-xs)',
   border: '1px solid var(--color-surface-border)',
@@ -158,7 +158,7 @@ const buttonStyle = (
 ): JSX.CSSProperties => {
   const idle = variant === 'semantic' ? 'var(--color-semantic-info)' : 'var(--color-brand-primary)'
   return {
-    'font-size': '11px',
+    'font-size': '12px',
     padding: '4px 10px',
     'border-radius': 'var(--radius-xs)',
     border: '1px solid currentColor',

@@ -135,7 +135,7 @@ const sectionTitleStyle: JSX.CSSProperties = {
   display: 'flex',
   'align-items': 'center',
   gap: '6px',
-  'font-size': '10px',
+  'font-size': '11px',
   'font-weight': '700',
   'letter-spacing': '0.08em',
   'text-transform': 'uppercase',
@@ -163,7 +163,7 @@ const twistyStyle: JSX.CSSProperties = {
   padding: '0',
   background: 'none',
   border: 'none',
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-tertiary)',
   cursor: 'pointer',
   'flex-shrink': '0',
@@ -180,26 +180,26 @@ const rowLabelStyle: JSX.CSSProperties = {
   border: 'none',
   'border-radius': '4px',
   'font-family': 'var(--typography-family-mono, monospace)',
-  'font-size': '11px',
+  'font-size': '12px',
   'text-align': 'left',
   color: 'var(--color-text-primary)',
   cursor: 'pointer',
 }
 
 const countBadgeStyle: JSX.CSSProperties = {
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-tertiary)',
 }
 
 const knobCountStyle: JSX.CSSProperties = {
   'margin-left': 'auto',
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-tertiary)',
   'font-variant-numeric': 'tabular-nums',
 }
 
 const emptyHintStyle: JSX.CSSProperties = {
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--color-text-tertiary)',
   'font-style': 'italic',
   margin: '0',
@@ -213,7 +213,7 @@ const backButtonStyle: JSX.CSSProperties = {
   background: 'transparent',
   border: '1px solid var(--editor-mode-region-border)',
   'border-radius': '4px',
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-secondary)',
   cursor: 'pointer',
   'flex-shrink': '0',
@@ -221,7 +221,7 @@ const backButtonStyle: JSX.CSSProperties = {
 
 const detailTitleStyle: JSX.CSSProperties = {
   'font-family': 'var(--typography-family-mono, monospace)',
-  'font-size': '11px',
+  'font-size': '12px',
   'font-weight': '700',
   color: 'var(--color-brand-primary)',
   'white-space': 'nowrap',
@@ -241,7 +241,7 @@ const breadcrumbItemStyle: JSX.CSSProperties = {
   border: '1px solid var(--editor-mode-region-border)',
   'border-radius': '999px',
   'font-family': 'var(--typography-family-mono, monospace)',
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-secondary)',
   cursor: 'pointer',
 }
@@ -257,7 +257,7 @@ const propRowStyle: JSX.CSSProperties = {
 
 const propNameStyle = (edited: boolean): JSX.CSSProperties => ({
   'font-family': 'var(--typography-family-mono, monospace)',
-  'font-size': '10px',
+  'font-size': '11px',
   color: edited ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
   'white-space': 'nowrap',
   overflow: 'hidden',
@@ -271,7 +271,7 @@ const propInputStyle = (edited: boolean): JSX.CSSProperties => ({
   border: `1px solid ${edited ? 'var(--color-brand-primary)' : 'var(--editor-mode-region-border)'}`,
   'border-radius': '4px',
   'font-family': 'var(--typography-family-mono, monospace)',
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-primary)',
 })
 
@@ -398,7 +398,7 @@ const groupToggleStyle: JSX.CSSProperties = {
   padding: '0',
   background: 'none',
   border: 'none',
-  'font-size': '10px',
+  'font-size': '11px',
   'font-weight': '700',
   'letter-spacing': '0.08em',
   'text-transform': 'uppercase',
@@ -573,7 +573,7 @@ function OutlineLabel(props: { rect: DOMRect; text: string }): JSX.Element {
         background: 'var(--editor-mode-selection-outline-active)',
         color: 'var(--color-surface-bg, #fff)',
         'font-family': 'var(--typography-family-mono, monospace)',
-        'font-size': '10px',
+        'font-size': '11px',
         'border-radius': '3px',
         'pointer-events': 'none',
         'white-space': 'nowrap',
