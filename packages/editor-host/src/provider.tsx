@@ -8,6 +8,7 @@
 import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
 import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
+import { type ClassOverrides, createClassOverrides } from './class-overrides'
 import { type ComponentFieldResolver, createComponentFieldResolver } from './component-fields'
 import { buildConsoleApi, installConsoleApi } from './console'
 import { installCrossTabSync } from './cross-tab'
@@ -22,6 +23,17 @@ const EditorHostContext = createContext<EditorHost>()
 
 /** F2c resolver。`discoverComponents: false` のときは undefined */
 const ComponentResolverContext = createContext<ComponentFieldResolver | undefined>()
+
+/** 脱出ハッチ (class の任意 property override)。provider が 1 個生成して配る */
+const ClassOverridesContext = createContext<ClassOverrides>()
+
+/**
+ * class override 管理を取得。`<EditorLayer>` の「他の property」section が使う。
+ * provider 外では undefined。
+ */
+export function useClassOverrides(): ClassOverrides | undefined {
+  return useContext(ClassOverridesContext)
+}
 
 /**
  * component field resolver を取得。`discoverComponents: false` なら undefined。
@@ -71,6 +83,11 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     props.config?.discoverComponents === false
       ? undefined
       : createComponentFieldResolver({ host, owner: ownerAtSetup, root: selectionRoot })
+
+  // 脱出ハッチ (class override)。値はセッション限り — provider が畳まれたら
+  // 注入 stylesheet ごと破棄する (梯子ノブと同じ「調整セッション用」の哲学)
+  const classOverrides = createClassOverrides()
+  onCleanup(() => classOverrides.dispose())
 
   // --- framework 標準の global fields (D-5) ---
   //
@@ -225,7 +242,9 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   return (
     <EditorHostContext.Provider value={host}>
       <ComponentResolverContext.Provider value={resolver}>
-        {props.children}
+        <ClassOverridesContext.Provider value={classOverrides}>
+          {props.children}
+        </ClassOverridesContext.Provider>
       </ComponentResolverContext.Provider>
     </EditorHostContext.Provider>
   )
