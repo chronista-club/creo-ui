@@ -132,6 +132,37 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     ['l', 18.5],
     ['xl', 20.5],
   ] as const
+  // surface 個別 token — docs の Surface section の swatch を「1 本ずつ」いじる用
+  // (hue/chroma の族ノブが相対調整なのに対し、こちらは絶対値の直接編集)。
+  // initial は現 theme の computed 値。既定と同値なら removeProperty で theme
+  // 切替追従を保ち、編集したときだけ inline で上書き — 数値ノブと同じ値ベース判定。
+  // persistence は無し: color editor に ↺ が無く、貼り付いた値を UI から
+  // 剥がせなくなるため (セッション限り、気に入ったら preset へ焼く)
+  const surfaceTokenInitial = (cssVar: string): string =>
+    typeof document === 'undefined'
+      ? ''
+      : getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim()
+  const surfaceTokenFields: EditorField[] = SURFACE_COLOR_VARS.map((cssVar, i): EditorField => {
+    const initial = surfaceTokenInitial(cssVar)
+    return {
+      id: cssVar.replace(/^--/, '').replace(/-/g, '.'),
+      label: cssVar.replace('--color-surface-', ''),
+      type: 'color',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Surface',
+      order: 40 + i,
+      initial,
+      role: 'user',
+      apply: (v: string) => {
+        if (typeof document === 'undefined') return
+        const style = document.documentElement.style
+        if (!v || v === initial) style.removeProperty(cssVar)
+        else style.setProperty(cssVar, v)
+      },
+    }
+  })
+
   const frameworkFields: EditorField[] = [
     {
       id: 'typography.scale',
@@ -242,7 +273,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       apply: varApplyUnlessDefault('--layout-gap-sibling', plainPx, 18),
     },
   ]
-  const unregisterFramework = host.register(frameworkFields)
+  const unregisterFramework = host.register([...frameworkFields, ...surfaceTokenFields])
   onCleanup(unregisterFramework)
 
   onMount(() => {
