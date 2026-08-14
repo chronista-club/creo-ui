@@ -19,7 +19,7 @@ export default function Header() {
         <span class="docs-brand-logo" aria-hidden="true">
           ◎
         </span>
-        creo-ui
+        Creo UI
         <span class="creo-badge" data-size="s">
           v{pkg.version}
         </span>
