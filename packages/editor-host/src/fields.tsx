@@ -6,6 +6,7 @@
  */
 import { For, Show } from 'solid-js'
 import type { JSX } from 'solid-js'
+import { messages, useT } from './i18n'
 import {
   OKLCH_C_MAX,
   type Oklch,
@@ -21,13 +22,13 @@ import type { EditorField } from './types'
 
 const labelBlockStyle: JSX.CSSProperties = {
   display: 'block',
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--editor-mode-panel-field-label)',
   'margin-bottom': '4px',
 }
 
 const labelInlineStyle: JSX.CSSProperties = {
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--editor-mode-panel-field-label)',
   'white-space': 'nowrap',
 }
@@ -38,18 +39,48 @@ const rowStyle: JSX.CSSProperties = {
   'align-items': 'center',
 }
 
+/* number ノブの 1 ライナー行: name | slider (50% 固定) | 値 | ↺。
+   name は残り幅で ellipsis (全文は title tooltip)。gap を詰めて name に幅を返す */
+const numberRowStyle: JSX.CSSProperties = {
+  display: 'flex',
+  gap: '6px',
+  'align-items': 'center',
+}
+
+const labelEllipsisStyle: JSX.CSSProperties = {
+  flex: '1 1 0',
+  'min-width': '0',
+  overflow: 'hidden',
+  'text-overflow': 'ellipsis',
+  'white-space': 'nowrap',
+  'font-size': '12px',
+  color: 'var(--editor-mode-panel-field-label)',
+}
+
 const monoValueStyle: JSX.CSSProperties = {
   color: 'var(--editor-mode-panel-field-value)',
-  'font-size': '11px',
+  'font-size': '12px',
   'min-width': '52px',
   'text-align': 'right',
   'font-family': 'var(--typography-family-sans)',
 }
 
+/** 値の右の ↺ — SSOT 既定値へ戻す。既定のままの間は visibility hidden で列幅を保つ */
+const resetButtonStyle: JSX.CSSProperties = {
+  border: 'none',
+  background: 'transparent',
+  color: 'var(--color-text-tertiary)',
+  'font-size': '14px',
+  'line-height': '1',
+  padding: '2px',
+  cursor: 'pointer',
+  'flex-shrink': '0',
+}
+
 const selectStyle: JSX.CSSProperties = {
   flex: '1',
   padding: '4px 6px',
-  'font-size': '11px',
+  'font-size': '12px',
   'font-family': 'var(--typography-family-sans)',
   background: 'var(--color-surface-surface)',
   color: 'var(--color-text-primary)',
@@ -67,20 +98,42 @@ const readonlyTextStyle: JSX.CSSProperties = {
   border: '1px solid var(--editor-mode-region-border)',
   'border-radius': '4px',
   'font-family': 'var(--typography-family-sans)',
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--color-text-secondary)',
   'white-space': 'pre-wrap',
 }
 
 // ---------- Per-type editors ----------
 
+/** 値の右の ↺ — 既定値 (field.initial) へ戻す。既定のままは hidden で列幅を保つ */
+function ResetButton(props: { visible: boolean; onReset: () => void }): JSX.Element {
+  const t = useT()
+  return (
+    <button
+      type="button"
+      title={t(messages.discovery.reset)}
+      aria-label={t(messages.discovery.reset)}
+      onClick={() => props.onReset()}
+      style={{ ...resetButtonStyle, visibility: props.visible ? 'visible' : 'hidden' }}
+    >
+      ↺
+    </button>
+  )
+}
+
 function NumberEditor(props: {
   field: EditorField
   value: number
   onChange: (v: number) => void
 }): JSX.Element {
+  const initial = (): number | undefined =>
+    typeof props.field.initial === 'number' ? props.field.initial : undefined
+  const atDefault = (): boolean => initial() === undefined || props.value === initial()
   return (
-    <div style={rowStyle}>
+    <div style={numberRowStyle}>
+      <span style={labelEllipsisStyle} title={props.field.label}>
+        {props.field.label}
+      </span>
       <input
         type="range"
         min={props.field.constraints?.min ?? 0}
@@ -88,12 +141,23 @@ function NumberEditor(props: {
         step={props.field.constraints?.step ?? 1}
         value={props.value}
         onInput={(e) => props.onChange(Number(e.currentTarget.value))}
-        style={{ flex: '1', 'accent-color': 'var(--editor-mode-axis-future)' }}
+        style={{
+          flex: '0 0 50%',
+          'min-width': '0',
+          'accent-color': 'var(--editor-mode-axis-future)',
+        }}
       />
-      <span style={monoValueStyle}>
+      <span style={{ ...monoValueStyle, 'min-width': '38px', 'font-size': '11px' }}>
         {props.value}
         {props.field.constraints?.unit ?? ''}
       </span>
+      <ResetButton
+        visible={!atDefault()}
+        onReset={() => {
+          const v = initial()
+          if (v !== undefined) props.onChange(v)
+        }}
+      />
     </div>
   )
 }
@@ -105,10 +169,19 @@ function NumberEditor(props: {
 function ColorEditor(props: {
   value: string
   onChange: (v: string) => void
+  /** 既定値 (↺ の戻し先)。無指定なら reset を出さない */
+  initial?: string
 }): JSX.Element {
   return (
     <Show when={parseOklch(props.value)} fallback={<HexColorEditor {...props} />}>
-      {(parsed) => <OklchEditor parsed={parsed()} raw={props.value} onChange={props.onChange} />}
+      {(parsed) => (
+        <OklchEditor
+          parsed={parsed()}
+          raw={props.value}
+          onChange={props.onChange}
+          initial={props.initial}
+        />
+      )}
     </Show>
   )
 }
@@ -116,6 +189,7 @@ function ColorEditor(props: {
 function HexColorEditor(props: {
   value: string
   onChange: (v: string) => void
+  initial?: string
 }): JSX.Element {
   return (
     <div style={rowStyle}>
@@ -143,6 +217,12 @@ function HexColorEditor(props: {
       >
         {props.value}
       </span>
+      <Show when={props.initial !== undefined}>
+        <ResetButton
+          visible={props.value !== props.initial}
+          onReset={() => props.onChange(props.initial ?? '')}
+        />
+      </Show>
     </div>
   )
 }
@@ -202,7 +282,7 @@ const CHECKER_BG =
 const oklchChannelLabelStyle: JSX.CSSProperties = {
   width: '12px',
   'flex-shrink': '0',
-  'font-size': '10px',
+  'font-size': '11px',
   'font-weight': '700',
   color: 'var(--editor-mode-panel-field-label)',
 }
@@ -210,7 +290,7 @@ const oklchChannelLabelStyle: JSX.CSSProperties = {
 const oklchValueStyle: JSX.CSSProperties = {
   ...monoValueStyle,
   'min-width': '44px',
-  'font-size': '10px',
+  'font-size': '11px',
 }
 
 const CHANNELS: {
@@ -231,6 +311,7 @@ function OklchEditor(props: {
   parsed: Oklch
   raw: string
   onChange: (v: string) => void
+  initial?: string
 }): JSX.Element {
   ensureOklchStyle()
   const update = (channel: OklchChannel, value: number): void =>
@@ -253,6 +334,12 @@ function OklchEditor(props: {
         <span style={{ ...monoValueStyle, 'min-width': 'auto', flex: '1', 'text-align': 'left' }}>
           {props.raw}
         </span>
+        <Show when={props.initial !== undefined}>
+          <ResetButton
+            visible={props.raw !== props.initial}
+            onReset={() => props.onChange(props.initial ?? '')}
+          />
+        </Show>
       </div>
       <For each={CHANNELS}>
         {(ch) => (
@@ -356,7 +443,10 @@ export function FieldEditor(props: { field: EditorField }): JSX.Element {
 
   return (
     <div style={{ 'margin-bottom': 'var(--editor-mode-panel-field-gap)' }}>
-      <span style={labelBlockStyle}>{props.field.label}</span>
+      {/* number は 1 ライナー (label 行内 ellipsis)。他 type は従来の label 行 + editor */}
+      <Show when={props.field.type !== 'number'}>
+        <span style={labelBlockStyle}>{props.field.label}</span>
+      </Show>
       {(() => {
         switch (props.field.type) {
           case 'number':
@@ -364,7 +454,13 @@ export function FieldEditor(props: { field: EditorField }): JSX.Element {
               <NumberEditor field={props.field} value={value() as number} onChange={onChange} />
             )
           case 'color':
-            return <ColorEditor value={value() as string} onChange={onChange} />
+            return (
+              <ColorEditor
+                value={value() as string}
+                onChange={onChange}
+                initial={typeof props.field.initial === 'string' ? props.field.initial : undefined}
+              />
+            )
           case 'boolean':
             return <BooleanEditor value={value() as boolean} onChange={onChange} />
           case 'select':
@@ -403,7 +499,7 @@ export function FieldEditorInline(props: { field: EditorField }): JSX.Element {
                 onChange={(e) => onChange(e.currentTarget.value)}
                 style={{
                   padding: '2px 6px',
-                  'font-size': '11px',
+                  'font-size': '12px',
                   'font-family': 'var(--typography-family-sans)',
                   background: 'var(--color-surface-surface)',
                   color: 'var(--color-text-primary)',
@@ -429,7 +525,7 @@ export function FieldEditorInline(props: { field: EditorField }): JSX.Element {
             return (
               <span
                 style={{
-                  'font-size': '11px',
+                  'font-size': '12px',
                   'font-family': 'var(--typography-family-sans)',
                   color: 'var(--editor-mode-panel-field-value)',
                 }}

@@ -12,9 +12,10 @@ function Root(props: { children?: JSX.Element }) {
     <EditorHostProvider
       config={{
         localStorageNamespace: 'creo-ui-site',
-        // Discovery / 選択は記事本文 (Main) の中だけ。site chrome (Header /
-        // Sidebar / ThemeSwitcher) は creo component でも編集対象にしない
-        selectionRoot: '.docs-article',
+        // selectionRoot は指定しない (= body 全体)。site chrome (Header / Sidebar /
+        // ThemeSwitcher) も creo component なので Editor の編集対象に含める
+        // (owner 判断 2026-08-14)。Editor Mode ON 中の nav click は選択になる
+        // (selection.ts が preventDefault) — 移動したいときは Esc で OFF に
       }}
     >
       <Layout>{props.children}</Layout>

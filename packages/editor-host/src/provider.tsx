@@ -8,6 +8,8 @@
 import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import type { JSX, ParentProps } from 'solid-js'
 import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
+import { BRAND_COLOR_VARS, SURFACE_COLOR_VARS, createOklchColorControl } from './brand-color'
+import { type ClassOverrides, createClassOverrides } from './class-overrides'
 import { type ComponentFieldResolver, createComponentFieldResolver } from './component-fields'
 import { buildConsoleApi, installConsoleApi } from './console'
 import { installCrossTabSync } from './cross-tab'
@@ -22,6 +24,17 @@ const EditorHostContext = createContext<EditorHost>()
 
 /** F2c resolver。`discoverComponents: false` のときは undefined */
 const ComponentResolverContext = createContext<ComponentFieldResolver | undefined>()
+
+/** 脱出ハッチ (class の任意 property override)。provider が 1 個生成して配る */
+const ClassOverridesContext = createContext<ClassOverrides>()
+
+/**
+ * class override 管理を取得。`<EditorLayer>` の「他の property」section が使う。
+ * provider 外では undefined。
+ */
+export function useClassOverrides(): ClassOverrides | undefined {
+  return useContext(ClassOverridesContext)
+}
 
 /**
  * component field resolver を取得。`discoverComponents: false` なら undefined。
@@ -72,6 +85,11 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       ? undefined
       : createComponentFieldResolver({ host, owner: ownerAtSetup, root: selectionRoot })
 
+  // 脱出ハッチ (class override)。値はセッション限り — provider が畳まれたら
+  // 注入 stylesheet ごと破棄する (梯子ノブと同じ「調整セッション用」の哲学)
+  const classOverrides = createClassOverrides()
+  onCleanup(() => classOverrides.dispose())
+
   // --- framework 標準の global fields (D-5) ---
   //
   // typography.scale: 「文字だけの全体伸縮」。web の token emit が
@@ -80,29 +98,32 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   // 対象外 (layout 密度は density mode の管轄)。persistence: localStorage —
   // 老眼設定のような「その人の既定」を reload 越しに保つ。
   //
-  // 梯子ノブ (typography.size.* / radius.*): token の 5 段梯子を Editor で体感調整し、
-  // 決まった値を tokens/ の SSOT へ焼くための一時ノブなので persistence は敢えて無し。
-  // initial は各 SSOT 値と揃える (このノブ自体がその改定のための道具)。
+  // 調整ノブ (typography.size.* / color.brand.*): token の値を Editor で体感調整し、
+  // 決まった値を tokens/ の SSOT へ焼くためのノブ。initial は各 SSOT 値と揃える
+  // (このノブ自体がその改定のための道具)。値は localStorage に永続する (owner 要望
+  // 2026-08-14) — demo 上で回した値が reload / 再訪でもそのまま残る。
   //
-  // 書き込みは lazy — register 時の initial 適用では :root に書かない。ノブを
-  // 触っていないのに inline 値で token の emit (rem / calc) を潰すと、browser の
-  // font 設定追従 (rem) が provider の mount だけで死ぬため。動かして初めて書く。
-  const lazyVarApply = (cssVar: string, format: (v: number) => string) => {
-    let first = true
-    return (v: number): void => {
-      if (first) {
-        // host.register() が initial を 1 度だけ適用する — それは skip
-        first = false
-        return
-      }
+  // 書き込みは値ベースで判定する — SSOT 既定値なら removeProperty で token の
+  // emit (rem / calc) に返し、既定以外だけ inline で書く。register 時の適用
+  // (persisted or initial) がこの apply に乗るので、「未調整なら emit のまま
+  // (browser の font 設定追従が生きる) / 調整済みなら mount で復元」が 1 本の
+  // 条件で両立する。時間ベースの skip-first だと復元の一発まで捨ててしまう。
+  const varApplyUnlessDefault =
+    (cssVar: string, format: (v: number) => string, ssotDefault: number) =>
+    (v: number): void => {
       if (typeof document === 'undefined') return
-      document.documentElement.style.setProperty(cssVar, format(v))
+      const style = document.documentElement.style
+      if (v === ssotDefault) style.removeProperty(cssVar)
+      else style.setProperty(cssVar, format(v))
     }
-  }
   // typography は calc(<px> * var(--typography-scale, 1)) — 素の px だと emit の
   // calc を潰して scale スライダーが死ぬため、梯子 × 倍率が両立する形で書く
   const typographyPx = (v: number): string => `calc(${v}px * var(--typography-scale, 1))`
   const plainPx = (v: number): string => `${v}px`
+  // brand / surface color (hue / chroma) — 実体は brand-color.ts。
+  // それぞれの var 族 8 本を OKLCH のまま回す
+  const brandColor = createOklchColorControl(BRAND_COLOR_VARS, '--color-brand-primary')
+  const surfaceColor = createOklchColorControl(SURFACE_COLOR_VARS, '--color-surface-surface')
 
   const SIZE_LADDER = [
     ['xs', 13],
@@ -111,13 +132,38 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     ['l', 18.5],
     ['xl', 20.5],
   ] as const
-  const RADIUS_LADDER = [
-    ['xs', 3.5],
-    ['s', 4],
-    ['m', 8],
-    ['l', 17.5],
-    ['xl', 21.5],
-  ] as const
+  // surface 個別 token — docs の Surface section の swatch を「1 本ずつ」いじる用
+  // (hue/chroma の族ノブが相対調整なのに対し、こちらは絶対値の直接編集)。
+  // initial は現 theme の computed 値。既定と同値なら removeProperty で theme
+  // 切替追従を保ち、編集したときだけ inline で上書き — 数値ノブと同じ値ベース判定。
+  // localStorage 永続 + ↺ (owner 要望 2026-08-14)。既定値で保存された色は
+  // 次回 load 時に v === initial で remove に落ちるので theme 追従も保たれる
+  const surfaceTokenInitial = (cssVar: string): string =>
+    typeof document === 'undefined'
+      ? ''
+      : getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim()
+  const surfaceTokenFields: EditorField[] = SURFACE_COLOR_VARS.map((cssVar, i): EditorField => {
+    const initial = surfaceTokenInitial(cssVar)
+    return {
+      id: cssVar.replace(/^--/, '').replace(/-/g, '.'),
+      label: cssVar.replace('--color-surface-', ''),
+      type: 'color',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Surface',
+      order: 40 + i,
+      initial,
+      role: 'user',
+      persistence: 'localStorage',
+      apply: (v: string) => {
+        if (typeof document === 'undefined') return
+        const style = document.documentElement.style
+        if (!v || v === initial) style.removeProperty(cssVar)
+        else style.setProperty(cssVar, v)
+      },
+    }
+  })
+
   const frameworkFields: EditorField[] = [
     {
       id: 'typography.scale',
@@ -127,10 +173,11 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       scope: 'token',
       order: 0,
       initial: 1,
-      constraints: { min: 1, max: 2, step: 0.05 },
+      constraints: { min: 0.8, max: 1.2, step: 0.01 },
       role: 'user',
       persistence: 'localStorage',
       cssVar: '--typography-scale',
+      group: 'Global',
     },
     ...SIZE_LADDER.map(
       ([tier, px], i): EditorField => ({
@@ -139,32 +186,95 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         type: 'number',
         semantic: 'global',
         scope: 'token',
-        group: 'Size scale',
+        group: 'Font size',
         order: 10 + i,
         initial: px,
         constraints: { min: 8, max: 32, step: 0.5, unit: 'px' },
         role: 'user',
-        apply: lazyVarApply(`--typography-size-${tier}`, typographyPx),
+        persistence: 'localStorage',
+        apply: varApplyUnlessDefault(`--typography-size-${tier}`, typographyPx, px),
       }),
     ),
-    // radius の 5 段梯子。none (0) / full (9999 sentinel) は対象外
-    ...RADIUS_LADDER.map(
-      ([tier, px], i): EditorField => ({
-        id: `radius.${tier}`,
-        label: `radius.${tier}`,
-        type: 'number',
-        semantic: 'global',
-        scope: 'token',
-        group: 'Radius scale',
-        order: 20 + i,
-        initial: px,
-        constraints: { min: 0, max: 48, step: 0.5, unit: 'px' },
-        role: 'user',
-        apply: lazyVarApply(`--radius-${tier}`, plainPx),
-      }),
-    ),
+    // brand color — hue は絶対値で見せて内部は差分適用 (brand-color.ts 参照)。
+    // initial は現 theme の primary hue (mint = 160)
+    {
+      id: 'color.brand.hue',
+      label: 'Brand hue',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 20,
+      initial: brandColor.baseHue,
+      constraints: { min: 0, max: 360, step: 1, unit: '°' },
+      role: 'user',
+      persistence: 'localStorage',
+      // 中立 (baseHue / ×1) の扱いは brand-color.ts の writeAll が持つので素通し
+      apply: (v) => brandColor.setHue(v),
+    },
+    {
+      id: 'color.brand.chroma',
+      label: 'Brand chroma ×',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 21,
+      initial: 1,
+      constraints: { min: 0, max: 2, step: 0.05 },
+      role: 'user',
+      persistence: 'localStorage',
+      apply: (v) => brandColor.setChromaScale(v),
+    },
+    // surface color — 背景 / 面 / 罫線 / scrim の 8 var。作法は brand と同じ
+    // (基準 = surface-surface の hue。mint-dark なら 260)
+    {
+      id: 'color.surface.hue',
+      label: 'Surface hue',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 22,
+      initial: surfaceColor.baseHue,
+      constraints: { min: 0, max: 360, step: 1, unit: '°' },
+      role: 'user',
+      persistence: 'localStorage',
+      apply: (v) => surfaceColor.setHue(v),
+    },
+    {
+      id: 'color.surface.chroma',
+      label: 'Surface chroma ×',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 23,
+      initial: 1,
+      constraints: { min: 0, max: 3, step: 0.05 },
+      role: 'user',
+      persistence: 'localStorage',
+      apply: (v) => surfaceColor.setChromaScale(v),
+    },
+    // layout.gap.sibling — stacked 要素間の既定 gap。SSOT は {spacing.m} alias
+    // (1.125rem = 18px @16px)。initial はその実値。既定のままなら emit の alias
+    // (rem 追従) を保ち、動かしたら inline px で上書き (varApplyUnlessDefault)
+    {
+      id: 'layout.gap.sibling',
+      label: 'layout.gap.sibling',
+      type: 'number',
+      semantic: 'global',
+      scope: 'token',
+      group: 'Global',
+      order: 30,
+      initial: 18,
+      constraints: { min: 0, max: 48, step: 0.5, unit: 'px' },
+      role: 'user',
+      persistence: 'localStorage',
+      apply: varApplyUnlessDefault('--layout-gap-sibling', plainPx, 18),
+    },
   ]
-  const unregisterFramework = host.register(frameworkFields)
+  const unregisterFramework = host.register([...frameworkFields, ...surfaceTokenFields])
   onCleanup(unregisterFramework)
 
   onMount(() => {
@@ -225,7 +335,9 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   return (
     <EditorHostContext.Provider value={host}>
       <ComponentResolverContext.Provider value={resolver}>
-        {props.children}
+        <ClassOverridesContext.Provider value={classOverrides}>
+          {props.children}
+        </ClassOverridesContext.Provider>
       </ComponentResolverContext.Provider>
     </EditorHostContext.Provider>
   )

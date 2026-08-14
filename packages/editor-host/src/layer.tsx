@@ -27,15 +27,16 @@
  * 旧 panel が持っていた 3-scope field 一覧 / ThemeEditor / ExportBar は **一旦外した**
  * (`theme-editor.tsx` / `export-bar.tsx` は残置)。段階的に組み直す。
  */
-import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
+import { For, Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
 import type { JSX } from 'solid-js'
 import { Portal } from 'solid-js/web'
+import { readClassDeclarations } from './class-overrides'
 import { componentDisplayName, componentIdOfElement, componentSelector } from './component-id'
 import type { ComponentTreeNode } from './component-tree'
 import { FieldEditor } from './fields'
 import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
-import { useComponentResolver, useEditorHost } from './provider'
+import { useClassOverrides, useComponentResolver, useEditorHost } from './provider'
 import type { EditorField } from './types'
 
 // ---------- Styles ----------
@@ -134,7 +135,7 @@ const sectionTitleStyle: JSX.CSSProperties = {
   display: 'flex',
   'align-items': 'center',
   gap: '6px',
-  'font-size': '10px',
+  'font-size': '11px',
   'font-weight': '700',
   'letter-spacing': '0.08em',
   'text-transform': 'uppercase',
@@ -162,7 +163,7 @@ const twistyStyle: JSX.CSSProperties = {
   padding: '0',
   background: 'none',
   border: 'none',
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-tertiary)',
   cursor: 'pointer',
   'flex-shrink': '0',
@@ -179,26 +180,26 @@ const rowLabelStyle: JSX.CSSProperties = {
   border: 'none',
   'border-radius': '4px',
   'font-family': 'var(--typography-family-mono, monospace)',
-  'font-size': '11px',
+  'font-size': '12px',
   'text-align': 'left',
   color: 'var(--color-text-primary)',
   cursor: 'pointer',
 }
 
 const countBadgeStyle: JSX.CSSProperties = {
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-tertiary)',
 }
 
 const knobCountStyle: JSX.CSSProperties = {
   'margin-left': 'auto',
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-tertiary)',
   'font-variant-numeric': 'tabular-nums',
 }
 
 const emptyHintStyle: JSX.CSSProperties = {
-  'font-size': '11px',
+  'font-size': '12px',
   color: 'var(--color-text-tertiary)',
   'font-style': 'italic',
   margin: '0',
@@ -212,7 +213,7 @@ const backButtonStyle: JSX.CSSProperties = {
   background: 'transparent',
   border: '1px solid var(--editor-mode-region-border)',
   'border-radius': '4px',
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-secondary)',
   cursor: 'pointer',
   'flex-shrink': '0',
@@ -220,7 +221,7 @@ const backButtonStyle: JSX.CSSProperties = {
 
 const detailTitleStyle: JSX.CSSProperties = {
   'font-family': 'var(--typography-family-mono, monospace)',
-  'font-size': '11px',
+  'font-size': '12px',
   'font-weight': '700',
   color: 'var(--color-brand-primary)',
   'white-space': 'nowrap',
@@ -240,9 +241,152 @@ const breadcrumbItemStyle: JSX.CSSProperties = {
   border: '1px solid var(--editor-mode-region-border)',
   'border-radius': '999px',
   'font-family': 'var(--typography-family-mono, monospace)',
-  'font-size': '10px',
+  'font-size': '11px',
   color: 'var(--color-text-secondary)',
   cursor: 'pointer',
+}
+
+// ---------- 脱出ハッチ: 他の property (class override) ----------
+
+const propRowStyle: JSX.CSSProperties = {
+  display: 'grid',
+  'grid-template-columns': '1fr 1.2fr auto',
+  'align-items': 'center',
+  gap: '6px',
+}
+
+const propNameStyle = (edited: boolean): JSX.CSSProperties => ({
+  'font-family': 'var(--typography-family-mono, monospace)',
+  'font-size': '11px',
+  color: edited ? 'var(--color-brand-primary)' : 'var(--color-text-secondary)',
+  'white-space': 'nowrap',
+  overflow: 'hidden',
+  'text-overflow': 'ellipsis',
+})
+
+const propInputStyle = (edited: boolean): JSX.CSSProperties => ({
+  width: '100%',
+  padding: '2px 6px',
+  background: 'var(--color-surface-bg-subtle)',
+  border: `1px solid ${edited ? 'var(--color-brand-primary)' : 'var(--editor-mode-region-border)'}`,
+  'border-radius': '4px',
+  'font-family': 'var(--typography-family-mono, monospace)',
+  'font-size': '11px',
+  color: 'var(--color-text-primary)',
+})
+
+const propResetStyle: JSX.CSSProperties = {
+  padding: '1px 5px',
+  background: 'transparent',
+  border: '1px solid var(--editor-mode-region-border)',
+  'border-radius': '4px',
+  'font-size': '9px',
+  color: 'var(--color-text-tertiary)',
+  cursor: 'pointer',
+  'flex-shrink': '0',
+}
+
+const hatchHintStyle: JSX.CSSProperties = {
+  margin: '0',
+  'font-size': '9px',
+  color: 'var(--color-text-tertiary)',
+}
+
+/**
+ * 脱出ハッチ — 選択中 component の base rule の宣言を並べ、任意の property を
+ * class 単位で上書きする。ノブに無いものへの第 2 経路 (まずノブ、無ければここ)。
+ */
+function OtherPropsSection(props: { componentId: string }): JSX.Element {
+  const overrides = useClassOverrides()
+  const t = useT()
+  const [copied, setCopied] = createSignal(false)
+
+  // base rule の宣言 (component が変わったら読み直す)
+  const declarations = createMemo(() => readClassDeclarations(props.componentId))
+  const componentOverrides = (): Record<string, string> =>
+    overrides?.overrides()[props.componentId] ?? {}
+
+  /** base 宣言 + override で追加された property (base に無いもの) を後ろに */
+  const rows = (): { property: string; base: string | null }[] => {
+    const base = declarations()
+    const known = new Set(base.map((d) => d.property))
+    const added = Object.keys(componentOverrides()).filter((p) => !known.has(p))
+    return [
+      ...base.map((d) => ({ property: d.property, base: d.value })),
+      ...added.map((p) => ({ property: p, base: null })),
+    ]
+  }
+
+  const currentValue = (property: string, base: string | null): string =>
+    componentOverrides()[property] ?? base ?? ''
+
+  const onAdd = (raw: string): void => {
+    const i = raw.indexOf(':')
+    if (i <= 0 || !overrides) return
+    const property = raw.slice(0, i).trim()
+    const value = raw.slice(i + 1).trim()
+    if (property && value) overrides.set(props.componentId, property, value)
+  }
+
+  const copyCss = (): void => {
+    const css = overrides?.cssFor(props.componentId)
+    if (!css || typeof navigator === 'undefined') return
+    navigator.clipboard?.writeText(css).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    })
+  }
+
+  return (
+    <GlobalGroup title={t(messages.discovery.otherProps)}>
+      <p style={hatchHintStyle}>{t(messages.discovery.otherPropsHint)}</p>
+      <For each={rows()}>
+        {(row) => {
+          const edited = (): boolean => row.property in componentOverrides()
+          return (
+            <div style={propRowStyle}>
+              <span style={propNameStyle(edited())} title={row.property}>
+                {row.property}
+              </span>
+              <input
+                type="text"
+                style={propInputStyle(edited())}
+                value={currentValue(row.property, row.base)}
+                onInput={(e) =>
+                  overrides?.set(props.componentId, row.property, e.currentTarget.value)
+                }
+              />
+              <Show when={edited()} fallback={<span style={{ width: '30px' }} />}>
+                <button
+                  type="button"
+                  style={propResetStyle}
+                  onClick={() => overrides?.remove(props.componentId, row.property)}
+                >
+                  {t(messages.discovery.reset)}
+                </button>
+              </Show>
+            </div>
+          )
+        }}
+      </For>
+      <input
+        type="text"
+        style={propInputStyle(false)}
+        placeholder={t(messages.discovery.addProperty)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            onAdd(e.currentTarget.value)
+            e.currentTarget.value = ''
+          }
+        }}
+      />
+      <Show when={Object.keys(componentOverrides()).length > 0}>
+        <button type="button" style={propResetStyle} onClick={copyCss}>
+          {copied() ? t(messages.exportBar.copied) : t(messages.discovery.copyCss)}
+        </button>
+      </Show>
+    </GlobalGroup>
+  )
 }
 
 // ---------- Global group (Size scale 等、global section 内の折りたたみ) ----------
@@ -254,7 +398,7 @@ const groupToggleStyle: JSX.CSSProperties = {
   padding: '0',
   background: 'none',
   border: 'none',
-  'font-size': '10px',
+  'font-size': '11px',
   'font-weight': '700',
   'letter-spacing': '0.08em',
   'text-transform': 'uppercase',
@@ -266,14 +410,49 @@ const groupToggleStyle: JSX.CSSProperties = {
 function GlobalGroup(props: {
   title: string
   defaultOpen?: boolean
+  /** title の色 (Discovery 等の accent 用。省略時は tertiary) */
+  accent?: string
+  /** 右端の件数 badge (Discovery のツリー件数等) */
+  count?: number
+  /** 制御 mode: 開閉 state を親が持つ (onToggle とセットで指定)。
+      この component は fields の変化や selection の往復で作り直されるので、
+      作り直しをまたいで残したい開閉 state は親 (panel) 側に置く */
+  open?: boolean
+  onToggle?: (open: boolean) => void
   children: JSX.Element
 }): JSX.Element {
-  const [open, setOpen] = createSignal(props.defaultOpen ?? false)
+  // 非制御時のみ使うローカル state (OtherProps 等、選択ごとに閉じ直してよい所)
+  const [localOpen, setLocalOpen] = createSignal(props.defaultOpen ?? false)
+  const open = (): boolean => (props.onToggle ? (props.open ?? false) : localOpen())
+  const toggle = (): void => {
+    const next = !open()
+    if (props.onToggle) props.onToggle(next)
+    else setLocalOpen(next)
+  }
   return (
     <div>
-      <button type="button" style={groupToggleStyle} onClick={() => setOpen(!open())}>
+      <button
+        type="button"
+        style={{
+          ...groupToggleStyle,
+          width: '100%',
+          ...(props.accent ? { color: props.accent } : {}),
+        }}
+        onClick={toggle}
+      >
         <span>{open() ? '▾' : '▸'}</span>
         {props.title}
+        <Show when={props.count !== undefined}>
+          <span
+            style={{
+              'margin-left': 'auto',
+              'font-weight': '400',
+              color: 'var(--color-text-tertiary)',
+            }}
+          >
+            {props.count}
+          </span>
+        </Show>
       </button>
       <Show when={open()}>
         <div
@@ -394,7 +573,7 @@ function OutlineLabel(props: { rect: DOMRect; text: string }): JSX.Element {
         background: 'var(--editor-mode-selection-outline-active)',
         color: 'var(--color-surface-bg, #fff)',
         'font-family': 'var(--typography-family-mono, monospace)',
-        'font-size': '10px',
+        'font-size': '11px',
         'border-radius': '3px',
         'pointer-events': 'none',
         'white-space': 'nowrap',
@@ -439,6 +618,19 @@ export function EditorLayer(): JSX.Element {
   const refresh = (): void => {
     setTree(resolver ? resolver.tree() : [])
   }
+
+  // アコーディオン開閉 state — group 名を key に panel 側で持つ。group の DOM は
+  // fields の register (= component 選択) や selection の往復で作り直されるため、
+  // group ローカルの state だと選択のたび勝手に閉じる。Mode ON の瞬間だけ全閉じに
+  // リセット (「開くたびコンパクトから」の既定は維持)
+  const [openGroups, setOpenGroups] = createSignal<Record<string, boolean>>({})
+  const groupOpen = (key: string): boolean => !!openGroups()[key]
+  const toggleGroup = (key: string, open: boolean): void => {
+    setOpenGroups((prev) => ({ ...prev, [key]: open }))
+  }
+  createEffect(() => {
+    if (mode() === 'on') setOpenGroups({})
+  })
 
   createEffect(() => {
     if (mode() === 'on' && !selection()) refresh()
@@ -716,51 +908,41 @@ export function EditorLayer(): JSX.Element {
               </div>
             </header>
 
-            {/* Global fields (TOP semantic) — typography.scale 等、常時見える framework knob */}
-            <Show when={globalFields().length > 0}>
-              <section style={sectionStyle}>
-                <For each={globalUngrouped()}>{(field) => <FieldEditor field={field} />}</For>
-                <For each={globalGroups()}>
-                  {([title, fields]) => (
-                    <GlobalGroup title={title} defaultOpen>
-                      <For each={fields}>{(field) => <FieldEditor field={field} />}</For>
-                    </GlobalGroup>
-                  )}
-                </For>
-              </section>
-            </Show>
-
             <Show
               when={selection()}
               fallback={
                 <section style={sectionStyle}>
-                  <div style={sectionTitleStyle}>
-                    <span style={dotStyle('var(--color-brand-primary)')} />
-                    {t(messages.discovery.title)}
-                  </div>
-                  <Show
-                    when={resolver}
-                    fallback={<p style={emptyHintStyle}>{t(messages.discovery.disabled)}</p>}
+                  <GlobalGroup
+                    title={t(messages.discovery.title)}
+                    accent="var(--color-brand-primary)"
+                    count={tree().length}
+                    open={groupOpen('discovery')}
+                    onToggle={(o) => toggleGroup('discovery', o)}
                   >
                     <Show
-                      when={tree().length > 0}
-                      fallback={<p style={emptyHintStyle}>{t(messages.discovery.empty)}</p>}
+                      when={resolver}
+                      fallback={<p style={emptyHintStyle}>{t(messages.discovery.disabled)}</p>}
                     >
-                      <ul style={listStyle} onMouseLeave={() => hoverNode(null)}>
-                        <For each={tree()}>
-                          {(node) => (
-                            <TreeRow
-                              node={node}
-                              depth={0}
-                              onPick={pick}
-                              onHover={hoverNode}
-                              pickHint={t(messages.discovery.pickHint)}
-                            />
-                          )}
-                        </For>
-                      </ul>
+                      <Show
+                        when={tree().length > 0}
+                        fallback={<p style={emptyHintStyle}>{t(messages.discovery.empty)}</p>}
+                      >
+                        <ul style={listStyle} onMouseLeave={() => hoverNode(null)}>
+                          <For each={tree()}>
+                            {(node) => (
+                              <TreeRow
+                                node={node}
+                                depth={0}
+                                onPick={pick}
+                                onHover={hoverNode}
+                                pickHint={t(messages.discovery.pickHint)}
+                              />
+                            )}
+                          </For>
+                        </ul>
+                      </Show>
                     </Show>
-                  </Show>
+                  </GlobalGroup>
                 </section>
               }
             >
@@ -796,8 +978,30 @@ export function EditorLayer(): JSX.Element {
                   >
                     <For each={detailFields()}>{(field) => <FieldEditor field={field} />}</For>
                   </Show>
+                  {/* 脱出ハッチ — ノブに無い property は class override で (まずノブ、無ければここ) */}
+                  <Show when={sel().componentId}>
+                    {(cid) => <OtherPropsSection componentId={cid()} />}
+                  </Show>
                 </section>
               )}
+            </Show>
+
+            {/* Global fields (TOP semantic) — typography.scale 等、常時見える framework knob */}
+            <Show when={globalFields().length > 0}>
+              <section style={sectionStyle}>
+                <For each={globalUngrouped()}>{(field) => <FieldEditor field={field} />}</For>
+                <For each={globalGroups()}>
+                  {([title, fields]) => (
+                    <GlobalGroup
+                      title={title}
+                      open={groupOpen(title)}
+                      onToggle={(o) => toggleGroup(title, o)}
+                    >
+                      <For each={fields}>{(field) => <FieldEditor field={field} />}</For>
+                    </GlobalGroup>
+                  )}
+                </For>
+              </section>
             </Show>
           </div>
         </Show>

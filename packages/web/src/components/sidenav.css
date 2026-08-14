@@ -1,0 +1,112 @@
+/**
+ * creo-ui — Sidenav component
+ *
+ * `.creo-sidenav` base。Slot classes: `.creo-sidenav-group` / `.creo-sidenav-title` /
+ * `.creo-sidenav-list` / `.creo-sidenav-link` / `.creo-sidenav-tag`。
+ *
+ * 現在地は `aria-current="page"` を拾う (router が自動で付ける。header.css の nav と
+ * 同じ作法 — 独自 active class を持たない)。幅 / sticky / 高さ / 罫線は持たない —
+ * それは page layout の管轄で、consumer 側 (site なら .docs-sidebar) が決める。
+ *
+ * Token: creo-ui/tokens.css (必須)
+ *
+ * Usage:
+ *   <aside class="creo-sidenav">
+ *     <nav>
+ *       <section class="creo-sidenav-group">
+ *         <h2 class="creo-sidenav-title">Overview</h2>
+ *         <ul class="creo-sidenav-list">
+ *           <li><a class="creo-sidenav-link" aria-current="page">Home</a></li>
+ *         </ul>
+ *       </section>
+ *     </nav>
+ *   </aside>
+ */
+
+.creo-sidenav {
+  display: block;
+  font-family: var(--typography-family-sans);
+}
+
+.creo-sidenav-group + .creo-sidenav-group {
+  margin-top: calc(var(--_sidenav__group-gap, var(--spacing-l)) * var(--density-gap-scale, 1));
+}
+
+.creo-sidenav-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: var(--typography-size-xs);
+  font-weight: var(--typography-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+  padding-inline-start: var(--spacing-s);
+}
+
+/* section label 前の短い brand rail (視覚階層) */
+.creo-sidenav-title::before {
+  content: "";
+  width: 10px;
+  height: 2px;
+  border-radius: var(--radius-full);
+  background: color-mix(in oklch, var(--color-brand-primary) 60%, transparent);
+  flex-shrink: 0;
+}
+
+.creo-sidenav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.creo-sidenav-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--_sidenav__link-pad-y, 6px) * var(--density-padding-scale, 1))
+    calc(var(--_sidenav__link-pad-x, var(--spacing-s)) * var(--density-padding-scale, 1));
+  margin: 1px 0;
+  font-size: var(--typography-size-s);
+  color: var(--color-text-secondary);
+  border-radius: var(--_sidenav__link-radius, var(--radius-s));
+  transition: color var(--motion-duration-fast), background var(--motion-duration-fast);
+}
+
+.creo-sidenav-link:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-bg-subtle);
+  text-decoration: none;
+}
+
+.creo-sidenav-link[aria-current="page"] {
+  color: var(--color-brand-primary);
+  background: color-mix(in oklab, var(--color-brand-primary) 12%, transparent);
+  font-weight: var(--typography-weight-medium);
+}
+
+/* 現在地 indicator — 左端の bar */
+.creo-sidenav-link[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--_sidenav__indicator-width, 3px);
+  height: 60%;
+  border-radius: var(--radius-full);
+  background: var(--color-brand-primary);
+}
+
+.creo-sidenav-tag {
+  font-size: 10px;
+  font-family: var(--typography-family-sans);
+  padding: 1px 6px;
+  background: color-mix(in oklab, var(--color-semantic-success) 25%, transparent);
+  color: var(--color-semantic-success);
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}

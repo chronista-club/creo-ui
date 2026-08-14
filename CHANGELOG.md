@@ -5,6 +5,44 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## v0.30.0 (2026-08-14) — Editor が調整卓になった: 脱出ハッチ + color ノブ + 永続化
+
+> **web `0.30.0`** / **editor-host `0.8.0`** を release。rust `0.9.0` は generated 値の変化なし (republish 不要)、layout `0.3.0` / icons-web `0.0.1` も src 実変更なしのため据え置き。swift は publish 経路なし。
+
+### editor-host 0.8.0 — 脱出ハッチ / color ノブ / panel 刷新 / localStorage 永続 (#134–#153)
+
+**挙動変更**:
+
+- **調整ノブが localStorage 永続に** (#137, #153): size 梯子と color 系ノブの値が reload / 再訪をまたいで復元される (従来はセッション限り。`typography.scale` は従来から永続)。既定値に戻すと override が外れ、token emit (rem 追従) と theme 切替追従が復活する — 適用は「SSOT 既定値なら removeProperty」の値ベース判定
+- **radius 梯子ノブを撤去** (#136): v0.29.0 の SSOT 焼き込みで役目を終えた
+- **panel 構成を刷新** (#135, #136, #146): Discovery (ツリー件数 badge 付き) が最上段、以下 GLOBAL / FONT SIZE / SURFACE の accordion。**初期状態は一層目全閉じ**で、開くたびコンパクトから始まる。開閉 state は panel 側で保持し、component 選択やドリルインでは閉じない (#140)
+
+**新機能**:
+
+- **脱出ハッチ** (#134): 選択 component の base rule 宣言を CSSOM から列挙し、ノブに無い property を `.creo-<id>` rule として override 編集 (「まずノブ、無ければハッチ」)。specificity は base rule と同じ後勝ち — !important を使わない正直 cascade。copy-CSS export 付き、セッション限り
+- **color ノブ** (#136, #151, #152, #153):
+  - GLOBAL: **Brand hue / chroma ×**、**Surface hue / chroma ×** — OKLCH var 族 (brand 8 var / surface 8 var) を相対で一括調整。hue は基準 var との差分適用で族内の相対関係を保ち、l (明度) は触らない
+  - SURFACE: 個別 token 8 本 (bg-base 〜 scrim-modal) の絶対値編集 (L/C/H/A slider + ↺)
+- **layout.gap.sibling ノブ** (#145): stacked 要素間の既定 gap (0–48px)
+
+**UX**:
+
+- number ノブを 1 ライナー化 — name (ellipsis + tooltip) | slider (50% 固定で縦揃い) | 値 | ↺ (#141, #143, #144)
+- **↺ reset** を number / color 共通部品化 — 既定値と違うときだけ現れ、押すと SSOT 既定へ (#141, #153)
+- Typography scale は 0.8–1.2 / step 0.01 (#147, #148)、panel 本文の font size +1px (ヘッダ据え置き) (#149)
+- 自動発見ノブの range 推定を unit-aware に — rem/em の 1–10 帯は step 0.1 (0.5rem = 8px 飛びを解消) (#150)
+
+### web 0.30.0 — Sidenav component (#142)
+
+- 新 component **`.creo-sidenav`**: group / title (brand rail 付き) / list / link / tag。現在地は router が付ける `aria-current="page"` を CSS が拾う (header nav と同じ作法、独自 active class なし)。knob 5 本 (`--_sidenav__{group-gap,link-pad-y,link-pad-x,link-radius,indicator-width}`、pattern B + density calc)。幅 / sticky / 高さは page layout の管轄で component は持たない
+- 既存 component への変更なし — 追加のみで **breaking なし**
+
+### site (参考 — 出荷物ではない)
+
+- Editor の selectionRoot を body 全体へ — header / sidebar / theme switcher も Editor の編集対象に (#139)。sidebar は `.creo-sidenav` の初 consumer へ移行 (#142)
+- ヘッダ表記を Creo UI へ、logo mark (◎) 撤去 (#137, #138)
+- demo stage: `.containerignore` で build context を配信物だけに (#133)
+
 ## v0.29.0 (2026-08-13) — Editor Discovery + 実測 token 改定
 
 > **web `0.29.0`** / **editor-host `0.7.0`** / **rust `0.9.0`** を release。layout `0.3.0` / icons-web `0.0.1` は src 実変更なしのため据え置き。swift は publish 経路なし (SPM git 参照) — 本 promote で新 token 値と `Scale` 相当の契約記述が main に載る。
