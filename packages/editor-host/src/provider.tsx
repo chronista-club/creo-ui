@@ -99,28 +99,23 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   // 老眼設定のような「その人の既定」を reload 越しに保つ。
   //
   // 調整ノブ (typography.size.* / color.brand.*): token の値を Editor で体感調整し、
-  // 決まった値を tokens/ の SSOT へ焼くための一時ノブなので persistence は敢えて無し。
-  // initial は各 SSOT 値と揃える (このノブ自体がその改定のための道具)。
+  // 決まった値を tokens/ の SSOT へ焼くためのノブ。initial は各 SSOT 値と揃える
+  // (このノブ自体がその改定のための道具)。値は localStorage に永続する (owner 要望
+  // 2026-08-14) — demo 上で回した値が reload / 再訪でもそのまま残る。
   //
-  // 書き込みは lazy — register 時の initial 適用では :root に書かない。ノブを
-  // 触っていないのに inline 値で token の emit (rem / calc) を潰すと、browser の
-  // font 設定追従 (rem) が provider の mount だけで死ぬため。動かして初めて書く。
-  const skipFirst = (fn: (v: number) => void) => {
-    let first = true
-    return (v: number): void => {
-      if (first) {
-        // host.register() が initial を 1 度だけ適用する — それは skip
-        first = false
-        return
-      }
-      fn(v)
-    }
-  }
-  const lazyVarApply = (cssVar: string, format: (v: number) => string) =>
-    skipFirst((v) => {
+  // 書き込みは値ベースで判定する — SSOT 既定値なら removeProperty で token の
+  // emit (rem / calc) に返し、既定以外だけ inline で書く。register 時の適用
+  // (persisted or initial) がこの apply に乗るので、「未調整なら emit のまま
+  // (browser の font 設定追従が生きる) / 調整済みなら mount で復元」が 1 本の
+  // 条件で両立する。時間ベースの skip-first だと復元の一発まで捨ててしまう。
+  const varApplyUnlessDefault =
+    (cssVar: string, format: (v: number) => string, ssotDefault: number) =>
+    (v: number): void => {
       if (typeof document === 'undefined') return
-      document.documentElement.style.setProperty(cssVar, format(v))
-    })
+      const style = document.documentElement.style
+      if (v === ssotDefault) style.removeProperty(cssVar)
+      else style.setProperty(cssVar, format(v))
+    }
   // typography は calc(<px> * var(--typography-scale, 1)) — 素の px だと emit の
   // calc を潰して scale スライダーが死ぬため、梯子 × 倍率が両立する形で書く
   const typographyPx = (v: number): string => `calc(${v}px * var(--typography-scale, 1))`
@@ -161,7 +156,8 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
         initial: px,
         constraints: { min: 8, max: 32, step: 0.5, unit: 'px' },
         role: 'user',
-        apply: lazyVarApply(`--typography-size-${tier}`, typographyPx),
+        persistence: 'localStorage',
+        apply: varApplyUnlessDefault(`--typography-size-${tier}`, typographyPx, px),
       }),
     ),
     // brand color — hue は絶対値で見せて内部は差分適用 (brand-color.ts 参照)。
@@ -177,7 +173,9 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       initial: brandColor.baseHue,
       constraints: { min: 0, max: 360, step: 1, unit: '°' },
       role: 'user',
-      apply: skipFirst((v) => brandColor.setHue(v)),
+      persistence: 'localStorage',
+      // 中立 (baseHue / ×1) の扱いは brand-color.ts の writeAll が持つので素通し
+      apply: (v) => brandColor.setHue(v),
     },
     {
       id: 'color.brand.chroma',
@@ -190,7 +188,8 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       initial: 1,
       constraints: { min: 0, max: 2, step: 0.05 },
       role: 'user',
-      apply: skipFirst((v) => brandColor.setChromaScale(v)),
+      persistence: 'localStorage',
+      apply: (v) => brandColor.setChromaScale(v),
     },
   ]
   const unregisterFramework = host.register(frameworkFields)

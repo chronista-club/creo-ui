@@ -2,8 +2,9 @@
  * @chronista-club/creo-ui-editor-host — global color knob (brand hue / chroma)
  *
  * theme の brand 系 8 var (--color-brand-{primary,secondary}{,-hover,-active,-subtle})
- * を OKLCH のまま一括で回す session ノブ (persistence 無し — 梯子ノブと同じ、
- * 決まった値を theme preset へ焼くための道具)。
+ * を OKLCH のまま一括で回す global ノブ (決まった値を theme preset へ焼くための
+ * 道具。値の永続は field 側の persistence: 'localStorage' に乗る — 本 module は
+ * storage を知らない)。
  *
  * - **hue**: 絶対値スライダー → 「基準 (primary の h) との差分」を全 var に適用。
  *   contrast theme のように brand が複数 hue を持つ family でも相対関係が保たれる
@@ -79,9 +80,9 @@ export function createBrandColorControl(): BrandColorControl {
     if (parsed) baseHue = parsed.h
   }
 
-  // 基準色はノブを初めて動かした瞬間に capture (register 時に :root を触らないのは
-  // 梯子ノブの lazy 書き込みと同じ理由)。以降は capture 済みの値から毎回計算する —
-  // 上書き済み inline 値を再読みすると差分が二重に掛かるため
+  // 基準色はノブが初めて中立を離れた瞬間に capture (中立のうちは :root を触らない)。
+  // 以降は capture 済みの値から毎回計算する — 上書き済み inline 値を再読みすると
+  // 差分が二重に掛かるため
   let bases: ReadonlyMap<string, OklchColor> | null = null
   let hueShift = 0
   let chromaScale = 1
@@ -103,7 +104,9 @@ export function createBrandColorControl(): BrandColorControl {
       for (const name of BRAND_COLOR_VARS) rootStyle.removeProperty(name)
       return
     }
-    if (!bases) bases = capture()
+    // stylesheet 未 load 等で空振りした capture は cache しない (次回また試す) —
+    // localStorage 復元は register 直後 = load 競合しうるタイミングで走るため
+    if (!bases || bases.size === 0) bases = capture()
     for (const [name, color] of bases) {
       rootStyle.setProperty(name, formatOklch(adjustOklch(color, hueShift, chromaScale)))
     }
