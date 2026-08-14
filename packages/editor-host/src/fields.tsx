@@ -105,12 +105,27 @@ const readonlyTextStyle: JSX.CSSProperties = {
 
 // ---------- Per-type editors ----------
 
+/** 値の右の ↺ — 既定値 (field.initial) へ戻す。既定のままは hidden で列幅を保つ */
+function ResetButton(props: { visible: boolean; onReset: () => void }): JSX.Element {
+  const t = useT()
+  return (
+    <button
+      type="button"
+      title={t(messages.discovery.reset)}
+      aria-label={t(messages.discovery.reset)}
+      onClick={() => props.onReset()}
+      style={{ ...resetButtonStyle, visibility: props.visible ? 'visible' : 'hidden' }}
+    >
+      ↺
+    </button>
+  )
+}
+
 function NumberEditor(props: {
   field: EditorField
   value: number
   onChange: (v: number) => void
 }): JSX.Element {
-  const t = useT()
   const initial = (): number | undefined =>
     typeof props.field.initial === 'number' ? props.field.initial : undefined
   const atDefault = (): boolean => initial() === undefined || props.value === initial()
@@ -136,18 +151,13 @@ function NumberEditor(props: {
         {props.value}
         {props.field.constraints?.unit ?? ''}
       </span>
-      <button
-        type="button"
-        title={t(messages.discovery.reset)}
-        aria-label={t(messages.discovery.reset)}
-        onClick={() => {
+      <ResetButton
+        visible={!atDefault()}
+        onReset={() => {
           const v = initial()
           if (v !== undefined) props.onChange(v)
         }}
-        style={{ ...resetButtonStyle, visibility: atDefault() ? 'hidden' : 'visible' }}
-      >
-        ↺
-      </button>
+      />
     </div>
   )
 }
@@ -159,10 +169,19 @@ function NumberEditor(props: {
 function ColorEditor(props: {
   value: string
   onChange: (v: string) => void
+  /** 既定値 (↺ の戻し先)。無指定なら reset を出さない */
+  initial?: string
 }): JSX.Element {
   return (
     <Show when={parseOklch(props.value)} fallback={<HexColorEditor {...props} />}>
-      {(parsed) => <OklchEditor parsed={parsed()} raw={props.value} onChange={props.onChange} />}
+      {(parsed) => (
+        <OklchEditor
+          parsed={parsed()}
+          raw={props.value}
+          onChange={props.onChange}
+          initial={props.initial}
+        />
+      )}
     </Show>
   )
 }
@@ -170,6 +189,7 @@ function ColorEditor(props: {
 function HexColorEditor(props: {
   value: string
   onChange: (v: string) => void
+  initial?: string
 }): JSX.Element {
   return (
     <div style={rowStyle}>
@@ -197,6 +217,12 @@ function HexColorEditor(props: {
       >
         {props.value}
       </span>
+      <Show when={props.initial !== undefined}>
+        <ResetButton
+          visible={props.value !== props.initial}
+          onReset={() => props.onChange(props.initial ?? '')}
+        />
+      </Show>
     </div>
   )
 }
@@ -285,6 +311,7 @@ function OklchEditor(props: {
   parsed: Oklch
   raw: string
   onChange: (v: string) => void
+  initial?: string
 }): JSX.Element {
   ensureOklchStyle()
   const update = (channel: OklchChannel, value: number): void =>
@@ -307,6 +334,12 @@ function OklchEditor(props: {
         <span style={{ ...monoValueStyle, 'min-width': 'auto', flex: '1', 'text-align': 'left' }}>
           {props.raw}
         </span>
+        <Show when={props.initial !== undefined}>
+          <ResetButton
+            visible={props.raw !== props.initial}
+            onReset={() => props.onChange(props.initial ?? '')}
+          />
+        </Show>
       </div>
       <For each={CHANNELS}>
         {(ch) => (
@@ -421,7 +454,13 @@ export function FieldEditor(props: { field: EditorField }): JSX.Element {
               <NumberEditor field={props.field} value={value() as number} onChange={onChange} />
             )
           case 'color':
-            return <ColorEditor value={value() as string} onChange={onChange} />
+            return (
+              <ColorEditor
+                value={value() as string}
+                onChange={onChange}
+                initial={typeof props.field.initial === 'string' ? props.field.initial : undefined}
+              />
+            )
           case 'boolean':
             return <BooleanEditor value={value() as boolean} onChange={onChange} />
           case 'select':
