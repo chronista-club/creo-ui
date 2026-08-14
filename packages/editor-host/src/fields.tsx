@@ -39,7 +39,7 @@ const rowStyle: JSX.CSSProperties = {
   'align-items': 'center',
 }
 
-/* number ノブの 1 ライナー行: name | slider (66% 固定) | 値 | ↺。
+/* number ノブの 1 ライナー行: name | slider (50% 固定) | 値 | ↺。
    name は残り幅で ellipsis (全文は title tooltip)。gap を詰めて name に幅を返す */
 const numberRowStyle: JSX.CSSProperties = {
   display: 'flex',
@@ -127,7 +127,7 @@ function NumberEditor(props: {
         value={props.value}
         onInput={(e) => props.onChange(Number(e.currentTarget.value))}
         style={{
-          flex: '0 0 66%',
+          flex: '0 0 50%',
           'min-width': '0',
           'accent-color': 'var(--editor-mode-axis-future)',
         }}
