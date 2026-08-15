@@ -5,6 +5,12 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## editor-host v0.8.1 (2026-08-14) — Font size group を Global へ統合
+
+> **editor-host `0.8.1`** のみを release (patch)。web 0.30.0 ほか他 package は据え置き。
+
+- panel の Font size group を Global へ統合 (#156、VP 経由の mako 依頼)。Global accordion = Typography scale → size.xs〜xl → Brand/Surface hue・chroma → layout.gap.sibling の 11 項目。Font size accordion は消滅
+
 ## v0.30.0 (2026-08-14) — Editor が調整卓になった: 脱出ハッチ + color ノブ + 永続化
 
 > **web `0.30.0`** / **editor-host `0.8.0`** を release。rust `0.9.0` は generated 値の変化なし (republish 不要)、layout `0.3.0` / icons-web `0.0.1` も src 実変更なしのため据え置き。swift は publish 経路なし。
