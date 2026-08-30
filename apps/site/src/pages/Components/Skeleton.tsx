@@ -67,7 +67,10 @@ export default function Skeleton() {
         <div class="docs-component-preview">
           <SkeletonLivePreview />
           <div class="docs-preview-row-label">Shapes</div>
-          <div class="docs-preview-stack" style={{ width: '320px', gap: 'var(--spacing-s)' }}>
+          <div
+            class="creo-col creo-gap-s docs-preview-stack"
+            style={{ width: '320px', gap: 'var(--spacing-s)' }}
+          >
             <span class="creo-skeleton" data-shape="text" data-size="l" />
             <span class="creo-skeleton" data-shape="text" />
             <span class="creo-skeleton" data-shape="text" data-size="s" />

@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer class="docs-footer">
-      <div class="docs-footer-links">
+      <div class="creo-row creo-gap-m docs-footer-links">
         <a
           href="https://github.com/chronista-club/creo-ui"
           target="_blank"
@@ -24,7 +24,7 @@ export default function Footer() {
           npm
         </a>
       </div>
-      <div class="docs-footer-meta">
+      <div class="creo-row creo-gap-xs docs-footer-meta">
         <span>Apache-2.0</span>
         <span aria-hidden="true">·</span>
         <span>Made by Chronista Club</span>

@@ -573,7 +573,7 @@ export default function ComponentsIndex() {
                   <div class="docs-gallery-specimen">{c.render()}</div>
                 </div>
                 <div class="docs-gallery-meta">
-                  <div class="docs-gallery-meta-head">
+                  <div class="creo-row creo-center creo-between docs-gallery-meta-head">
                     <span class="docs-gallery-name">{c.name}</span>
                     <span class="docs-gallery-arrow" aria-hidden="true">
                       →
