@@ -156,6 +156,13 @@ JavaScript Compiler API (this happens with TypeScript 7+)
 tooling には 6 系の JS API を渡すという Microsoft 公式の移行手段。`vite-plugin-dts` を使う
 7 package と root に入れてある。**型生成する package を新設したら、これも一緒に入れること。**
 
+**性格: 移行期の依存であり、恒久ではない。** 週間 DL は 449 万 (2026-08 時点) で
+`vite-plugin-dts` の 414 万とほぼ同規模 — TS 7 へ移行した consumer の多くが同じ構成を取って
+いる。ただし本 package は「6 系の JS API」を切り出したもので、TypeScript 本体と共に進化する
+ものではない (2026-04 の初版から 6.0.2 まで修正のみ)。**本来の解決は tooling 側が TS 7 の
+新インターフェースへ対応すること**であり、`unplugin-dts` が対応した時点でこの併置は外せる。
+依存を次に見直すとき、まずここが不要になっていないか確認する。
+
 ### 生成物を検証する手順 (次に依存を上げるとき)
 
 `packages/web/dist` は gitignore なので、**更新前に baseline を取らないと「変わっていないこと」を
