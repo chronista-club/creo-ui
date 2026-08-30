@@ -65,7 +65,7 @@ export default function Select() {
         <h2 class="docs-section-title">Live preview</h2>
         <div class="docs-component-preview">
           <div class="docs-preview-row-label">Sizes (s / m / l)</div>
-          <div class="creo-row creo-center creo-gap-m docs-preview-row">
+          <div class="cu-row cu-center cu-gap-m docs-preview-row">
             <span class="creo-select" data-size="s">
               <select class="creo-select-input" aria-label="Theme (small)">
                 {THEME_OPTIONS.map((t) => (
@@ -90,7 +90,7 @@ export default function Select() {
           </div>
 
           <div class="docs-preview-row-label">Filled variant</div>
-          <div class="creo-row creo-center creo-gap-m docs-preview-row">
+          <div class="cu-row cu-center cu-gap-m docs-preview-row">
             <span class="creo-select" data-variant="filled">
               <select class="creo-select-input" aria-label="Sort order">
                 <option>Newest first</option>
@@ -122,7 +122,7 @@ export default function Select() {
           </div>
 
           <div class="docs-preview-row-label">States (error / disabled)</div>
-          <div class="creo-row creo-center creo-gap-m docs-preview-row">
+          <div class="cu-row cu-center cu-gap-m docs-preview-row">
             <span class="creo-select" data-state="error">
               <select class="creo-select-input" aria-invalid="true" aria-label="Region (error)">
                 <option>— 選択してください —</option>

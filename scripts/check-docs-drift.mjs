@@ -62,7 +62,7 @@ const componentCss = readdirSync(componentCssDir)
 const allCss = [
   componentCss,
   readFileSync(distCss, 'utf-8'),
-  // utility 層 (.creo-row / .creo-gap-* 等)。 component とは別系統で
+  // utility 層 (.cu-row / .creo-gap-* 等)。 component とは別系統で
   // components/ の外に置いてあるため個別に読む (docs/design/utility-layer.md)
   readFileSync(path.join(ROOT, 'packages/web/src/utilities.css'), 'utf-8'),
   readFileSync(path.join(ROOT, 'apps/site/src/styles/docs.css'), 'utf-8'),
