@@ -7,9 +7,9 @@
 
 import { describe, expect, it } from 'bun:test'
 import {
+  buildTransformString,
   DEFAULT_GAZE,
   DEFAULT_PLACEMENT,
-  buildTransformString,
   formatGaze,
   formatLength,
   formatPerspective,

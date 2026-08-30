@@ -6,7 +6,7 @@
  */
 
 import { type MdNode, parse } from 'creo-views/md'
-import { type Component, type JSX, Show, createResource } from 'solid-js'
+import { type Component, createResource, type JSX, Show } from 'solid-js'
 import { renderNode } from './render'
 
 export interface CreoMarkdownProps {

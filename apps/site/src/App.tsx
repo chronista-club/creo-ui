@@ -1,7 +1,7 @@
 import { EditorHostProvider, EditorLayer } from '@chronista-club/creo-ui-editor-host'
 import { Navigate, Route, Router } from '@solidjs/router'
-import { lazy } from 'solid-js'
 import type { JSX } from 'solid-js'
+import { lazy } from 'solid-js'
 import Layout from './layout/Layout'
 
 // Editor Mode は site 全体で 1 host (一本化 2026-08-13)。どのページでも

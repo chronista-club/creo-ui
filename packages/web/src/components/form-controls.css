@@ -75,9 +75,9 @@
   background-color: var(--surface-veil-1);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-full);
-  transition: background-color var(--motion-mapping-toggle-duration)
-    var(--motion-mapping-toggle-easing), border-color var(--motion-mapping-toggle-duration)
-    var(--motion-mapping-toggle-easing);
+  transition:
+    background-color var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing),
+    border-color var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing);
   flex-shrink: 0;
 }
 

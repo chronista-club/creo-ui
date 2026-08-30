@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.11/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,7 +7,14 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "ignore": ["node_modules", "dist", "packages/*/dist", ".github", "*.md"]
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/packages/**/*/dist",
+      "!**/.github",
+      "!**/*.md"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -18,9 +25,19 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "correctness": {
         "useJsxKeyInIterable": "off"
+      },
+      "complexity": {
+        "noImportantStyles": "off"
+      },
+      "style": {
+        "noDescendingSpecificity": "off"
+      },
+      "a11y": {
+        "useAriaPropsSupportedByRole": "off",
+        "useFocusableInteractive": "off"
       }
     }
   },
@@ -40,7 +57,7 @@
   },
   "overrides": [
     {
-      "include": ["**/*.test.ts", "**/*.test.tsx"],
+      "includes": ["**/*.test.ts", "**/*.test.tsx"],
       "linter": {
         "rules": {
           "style": {
@@ -50,7 +67,7 @@
       }
     },
     {
-      "include": ["**/Components/Progress.tsx"],
+      "includes": ["**/Components/Progress.tsx"],
       "linter": {
         "rules": {
           "a11y": {
@@ -61,11 +78,21 @@
       }
     },
     {
-      "include": ["**/Components/Toast.tsx", "**/Components/Alert.tsx"],
+      "includes": ["**/Components/Toast.tsx", "**/Components/Alert.tsx"],
       "linter": {
         "rules": {
           "a11y": {
             "useSemanticElements": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.d.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
           }
         }
       }

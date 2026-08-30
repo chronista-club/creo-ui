@@ -16,7 +16,7 @@
  * 前提: packages/web/dist/ が build 済みであること (`bun run build:web`)。
  * 実行: `bun run check:drift` (repo root)。drift があれば exit 1。
  */
-import { existsSync, readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 
 const ROOT = path.resolve(import.meta.dir, '..')

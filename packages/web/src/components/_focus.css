@@ -21,27 +21,27 @@
  */
 
 :where(
-    .creo-btn,
-    .creo-input,
-    .creo-checkbox-input,
-    .creo-radio-input,
-    .creo-switch-input,
-    .creo-tabs-tab,
-    .creo-segmented-option input,
-    .creo-pagination-item,
-    .creo-breadcrumbs-link,
-    .creo-accordion-summary,
-    .creo-menu-item,
-    .creo-combobox-input,
-    .creo-select-input,
-    .creo-form-field-label,
-    .creo-alert-close,
-    .creo-toast-close,
-    .creo-drawer-close,
-    .creo-dialog-close,
-    .creo-popover-close,
-    a
-  ):focus-visible {
+  .creo-btn,
+  .creo-input,
+  .creo-checkbox-input,
+  .creo-radio-input,
+  .creo-switch-input,
+  .creo-tabs-tab,
+  .creo-segmented-option input,
+  .creo-pagination-item,
+  .creo-breadcrumbs-link,
+  .creo-accordion-summary,
+  .creo-menu-item,
+  .creo-combobox-input,
+  .creo-select-input,
+  .creo-form-field-label,
+  .creo-alert-close,
+  .creo-toast-close,
+  .creo-drawer-close,
+  .creo-dialog-close,
+  .creo-popover-close,
+  a
+):focus-visible {
   outline: var(--focus-ring-width) var(--focus-ring-style) var(--color-focus-ring-color);
   outline-offset: var(--focus-ring-offset);
   box-shadow: 0 0 0 var(--focus-ring-halo-width) var(--color-focus-ring-halo);
@@ -58,21 +58,21 @@ button[popovertarget]:focus-visible {
 /* Reduced-motion: ring 自体は表示 (a11y 最優先)、 transition 無効化のみ */
 @media (prefers-reduced-motion: reduce) {
   :where(
-      .creo-btn,
-      .creo-input,
-      .creo-checkbox-input,
-      .creo-radio-input,
-      .creo-switch-input,
-      .creo-tabs-tab,
-      .creo-segmented-option input,
-      .creo-pagination-item,
-      .creo-breadcrumbs-link,
-      .creo-accordion-summary,
-      .creo-menu-item,
-      .creo-combobox-input,
-      .creo-form-field-label,
-      a
-    ):focus-visible {
+    .creo-btn,
+    .creo-input,
+    .creo-checkbox-input,
+    .creo-radio-input,
+    .creo-switch-input,
+    .creo-tabs-tab,
+    .creo-segmented-option input,
+    .creo-pagination-item,
+    .creo-breadcrumbs-link,
+    .creo-accordion-summary,
+    .creo-menu-item,
+    .creo-combobox-input,
+    .creo-form-field-label,
+    a
+  ):focus-visible {
     transition: none;
   }
 }

@@ -1,8 +1,8 @@
 import { A } from '@solidjs/router'
 import { FrameProvider, useFrame } from 'creo-ui-frame'
-import { VisionProvider, type VisionSource, useGesture, useHandPinch } from 'creo-ui-vision'
+import { useGesture, useHandPinch, VisionProvider, type VisionSource } from 'creo-ui-vision'
 import { createMockSource } from 'creo-ui-vision/mock'
-import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
+import { createEffect, createSignal, For, onCleanup, Show } from 'solid-js'
 import { FrameStage } from './FrameStage'
 import { dashboardFrame, readingFrame } from './frames'
 

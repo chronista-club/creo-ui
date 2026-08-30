@@ -1,7 +1,7 @@
 import {
+  bind,
   EditorHostProvider,
   EditorLayer,
-  bind,
   select,
   signalTarget,
   string,

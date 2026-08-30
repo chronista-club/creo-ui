@@ -26,15 +26,21 @@
   letter-spacing: -0.02em;
   line-height: var(--typography-line-height-tight);
   /* Variable font 対応 (font-variation-settings、 non-variable fallback で無視) */
-  font-variation-settings: "wght" 700, "slnt" 0;
-  transition: letter-spacing var(--motion-mapping-frame-morph-duration)
-    var(--motion-mapping-frame-morph-easing), font-variation-settings
-    var(--motion-mapping-frame-morph-duration) var(--motion-mapping-frame-morph-easing);
+  font-variation-settings:
+    "wght" 700,
+    "slnt" 0;
+  transition:
+    letter-spacing var(--motion-mapping-frame-morph-duration)
+    var(--motion-mapping-frame-morph-easing),
+    font-variation-settings var(--motion-mapping-frame-morph-duration)
+    var(--motion-mapping-frame-morph-easing);
 }
 
 .creo-kinetic-hero:hover {
   letter-spacing: -0.01em; /* 詰めから少し開く */
-  font-variation-settings: "wght" 800, "slnt" -2;
+  font-variation-settings:
+    "wght" 800,
+    "slnt" -2;
 }
 
 /* ---------- Display gradient (hero text gradient effect) ---------- */
@@ -87,7 +93,9 @@
   .creo-kinetic-hero:hover {
     transition: none;
     letter-spacing: -0.02em;
-    font-variation-settings: "wght" 700, "slnt" 0;
+    font-variation-settings:
+      "wght" 700,
+      "slnt" 0;
   }
 
   .creo-kinetic-reveal {

@@ -6,10 +6,10 @@
  */
 import {
   type Accessor,
-  type JSX,
-  type Setter,
   createContext,
   createSignal,
+  type JSX,
+  type Setter,
   useContext,
 } from 'solid-js'
 import type { Locale } from './types'

@@ -112,7 +112,7 @@ describe('flip — basic invert + animate', () => {
     const { calls } = spyAnimate(el)
 
     // happy-dom default rect は 0 / 0 / 0 / 0、 prev も同じだと no-op
-    const prev = { left: 0, top: 0, width: 0, height: 0 } as DOMRect
+    const _prev = { left: 0, top: 0, width: 0, height: 0 } as DOMRect
     // width 0 は scale 計算で除算 guard が動くので、 ここでは width 持たせる
     const prevSame = { left: 0, top: 0, width: 100, height: 100 } as DOMRect
     Object.defineProperty(el, 'getBoundingClientRect', {

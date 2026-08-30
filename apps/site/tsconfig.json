@@ -12,7 +12,6 @@
     "noEmit": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "baseUrl": ".",
     "paths": {
       "@chronista-club/creo-ui-editor-host": ["../../packages/editor-host/src/index.ts"],
       "@chronista-club/creo-ui-layout": ["../../packages/layout/src/index.ts"],

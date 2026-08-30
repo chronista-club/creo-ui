@@ -24,8 +24,8 @@
  */
 import type { Owner } from 'solid-js'
 import {
-  type RawTweakVar,
   bindDiscoveredVar,
+  type RawTweakVar,
   resolveTweakVar,
   scanRawTweakVars,
 } from './auto-discover'
@@ -37,7 +37,7 @@ import {
   knobLabel,
   parseTweakVarName,
 } from './component-id'
-import { type ComponentTreeNode, buildComponentTree } from './component-tree'
+import { buildComponentTree, type ComponentTreeNode } from './component-tree'
 import type { EditorHost, EditorSemantic } from './types'
 
 /** panel のノブ 1 個 */

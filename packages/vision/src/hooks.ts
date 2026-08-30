@@ -5,8 +5,8 @@
  * `useHandPinch()` を呼ぶ方が宣言的で意図が明確。
  */
 
-import { onCleanup } from 'solid-js'
 import type { Accessor } from 'solid-js'
+import { onCleanup } from 'solid-js'
 import { useVision } from './provider'
 import type {
   FaceMesh,

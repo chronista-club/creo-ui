@@ -364,7 +364,7 @@ function collectTweakRefs(rules: CSSRuleList, prefix: string, seen: Map<string, 
     const nested = (rule as { cssRules?: CSSRuleList }).cssRules
     if (nested && nested.length > 0) collectTweakRefs(nested, prefix, seen)
     const cssText = rule.cssText
-    if (!cssText || !cssText.includes(`var(${prefix}`)) continue
+    if (!cssText?.includes(`var(${prefix}`)) continue
     for (const ref of parseTweakVarRefs(cssText, prefix)) {
       // 最初に見つかった fallback を SSOT とみなす (使用箇所 = 宣言)
       if (!seen.has(ref.cssVar)) seen.set(ref.cssVar, ref.fallback)

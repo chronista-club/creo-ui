@@ -27,7 +27,7 @@ import type {
 } from '@mediapipe/tasks-vision'
 import { matrixToEuler, normalizeVector } from './mediapipe-utils'
 import { requestCameraStream, stopCameraStream } from './permission'
-import { OneEuroFilter, Point3DSmoother, type SmoothingOptions, applyGain } from './smoothing'
+import { applyGain, OneEuroFilter, Point3DSmoother, type SmoothingOptions } from './smoothing'
 import type { VisionListener, VisionSource, VisionUpdate } from './source'
 import type { Point3D } from './types'
 import { isPinchActive, pinchCenter } from './utils'

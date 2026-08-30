@@ -1,5 +1,3 @@
-import { A } from '@solidjs/router'
-
 const REGION_TOKENS = [
   {
     name: 'editor-mode.region.top-height',
