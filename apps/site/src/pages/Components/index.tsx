@@ -129,18 +129,18 @@ const FEATURED: readonly FeaturedEntry[] = [
     render: () => (
       <div class="docs-gallery-cluster">
         <span class="creo-avatar" data-size="l">
-          <span class="creo-avatar-initials" aria-label="Mako">
+          <span class="creo-avatar-initials" role="img" aria-label="Mako">
             MK
           </span>
           <span class="creo-avatar-status" data-status="online" aria-hidden="true" />
         </span>
         <span class="creo-avatar" data-size="l">
-          <span class="creo-avatar-initials" aria-label="Claude">
+          <span class="creo-avatar-initials" role="img" aria-label="Claude">
             CL
           </span>
         </span>
         <span class="creo-avatar" data-shape="square" data-size="l">
-          <span class="creo-avatar-initials" aria-label="Akira">
+          <span class="creo-avatar-initials" role="img" aria-label="Akira">
             AK
           </span>
         </span>

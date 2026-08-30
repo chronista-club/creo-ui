@@ -64,6 +64,14 @@ export interface CUOutlinerProps
  * - DOM は flat + `role="tree"` / `aria-level`。 深さは inline の `--outliner-depth`
  *   で CSS に渡す (outliner.css 参照)。
  *
+ * 既知の a11y 課題 (2026-08-30、Biome 2 の useFocusableInteractive が検出):
+ *   `role="treeitem"` を持つ行 `<div>` は focusable でない。 実際に focus を受けるのは
+ *   行内の `<input>` で、 keyboard 操作 (Tab / 矢印 / Enter) もそこに実装されている。
+ *   **div に tabindex を足す修正は誤り** — Tab が行と input で 2 回止まり操作性が落ちる。
+ *   正しくは WAI-ARIA tree pattern に沿って role と focus の所在を一致させる必要があるが、
+ *   input の暗黙 role (textbox) と treeitem の両立は設計判断を伴うため別途扱う。
+ *   それまで biome.json で `a11y/useFocusableInteractive` を off にしている。
+ *
  * Usage:
  *   <CUOutliner defaultNodes={[{ id: '1', text: '思いついたこと' }]} onChange={save} />
  *   <CUOutliner nodes={nodes()} onChange={setNodes} variant="card" guides />
