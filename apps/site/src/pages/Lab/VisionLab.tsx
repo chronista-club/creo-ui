@@ -498,7 +498,7 @@ function CameraProbe() {
         playsinline
       />
       <Show when={trackSettings()}>
-        <div class="creo-col creo-gap-xs docs-camera-probe-stats">
+        <div class="cu-col cu-gap-xs docs-camera-probe-stats">
           <h4>Active video track</h4>
           <p class="docs-camera-probe-stat-line">
             <strong>label:</strong> <code>{trackLabel()}</code>
@@ -525,7 +525,7 @@ function CameraProbe() {
         </div>
       </Show>
       <Show when={devices()}>
-        <div class="creo-col creo-gap-xs docs-camera-probe-stats">
+        <div class="cu-col cu-gap-xs docs-camera-probe-stats">
           <h4>Available video inputs ({devices()?.length})</h4>
           <ul class="docs-bullet-list">
             <For each={devices()}>
@@ -539,7 +539,7 @@ function CameraProbe() {
         </div>
       </Show>
       <Show when={assetLoads()}>
-        <div class="creo-col creo-gap-xs docs-camera-probe-stats">
+        <div class="cu-col cu-gap-xs docs-camera-probe-stats">
           <h4>MediaPipe asset loads ({assetLoads()?.length})</h4>
           <Show when={assetLoads()?.length === 0}>
             <p class="docs-page-helper">

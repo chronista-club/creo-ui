@@ -86,7 +86,7 @@ radius は `.creo-rounded-m` となり、Tailwind の `rounded-md` と同じ抽�
 **In Scope (この SPEC で決めること)**
 
 - utility 層を持つか / 持たないか
-- 持つなら **語彙の方針** — 意味ベース (`.creo-gap-sibling`) か大きさベース (`.creo-gap-m`) か、併用か
+- 持つなら **語彙の方針** — 意味ベース (`.creo-gap-sibling`) か大きさベース (`.cu-gap-m`) か、併用か
 - 対象 property の範囲 — 実測から見て最小は `display:flex` 系 + `gap` + `padding` / `margin`
 - **radius / shadow に意味別名を足すか** (utility の前提として)
 
@@ -148,18 +148,18 @@ CSS に切り出すと class を新設し続けることになる。ここだけ
 ### 提供する class (7 種、trial)
 
 ```css
-.creo-row      { display: flex; }
-.creo-col      { display: flex; flex-direction: column; }
-.creo-center   { align-items: center; }
-.creo-between  { justify-content: space-between; }
+.cu-row      { display: flex; }
+.cu-col      { display: flex; flex-direction: column; }
+.cu-center   { align-items: center; }
+.cu-between  { justify-content: space-between; }
 .creo-gap-{xs,s,m,l,xl}  { gap: var(--spacing-{xs,s,m,l,xl}); }
 ```
 
 実測でこの 7 種が **flex 45 + align 48 + gap 33 = 126 箇所 / 235 (54%)** を埋める。
 
-- `.creo-row` / `.creo-col` は `display:flex` を含む。`flex` + `flex-col` の 2 class を
+- `.cu-row` / `.cu-col` は `display:flex` を含む。`flex` + `flex-col` の 2 class を
   書かせるより、方向まで含めて 1 class にする方が誤りが少ない
-- `.creo-center` は `align-items` のみ。`justify-content` は `.creo-between` で別に持つ
+- `.cu-center` は `align-items` のみ。`justify-content` は `.cu-between` で別に持つ
   (交差軸と主軸を混ぜない)
 - gap は **unit 語彙** (`xs..xl`)。semantic (`.creo-gap-sibling`) は必要になってから足す
 
@@ -174,9 +174,23 @@ export は `@chronista-club/creo-ui/utilities.css` を新設する (`package.jso
 **trial なので独立 import にする** — 使わない consumer に影響せず、撤回も容易。
 定着したら `components.css` への同梱 (= 既定で使える) を検討する。
 
+### prefix — component とは分ける (`cu-`)
+
+| 層 | prefix | 例 |
+|---|---|---|
+| component (まとまった UI) | `.creo-*` | `.creo-card` |
+| **utility (単一 property)** | **`.cu-*`** | `.cu-gap-m` |
+
+**不統一ではなく、粒度の違いを prefix で表している。** 同じ prefix で並ぶと層の違いが
+読み取れない。`CU` は既存規約 (SolidJS primitive の `CUButton` / `CUPageShell`、
+`controls/index.ts` の「CU* 規約」) を CSS 側へ持ち込んだもので、新しい略称ではない。
+
+`c-` は短すぎて consumer の既存 class と衝突しうるため採らない。
+utility は markup に書く頻度が高いので短さが効く (31 字 → 25 字)。
+
 ### 命名の考え方
 
-Tailwind の `flex items-center gap-4` に対して `.creo-row .creo-center .creo-gap-m`。
+Tailwind の `flex items-center gap-4` に対して `.cu-row .cu-center .cu-gap-m`。
 **数値ではなく creo-ui の 5 tier 語彙**を使う点が違い、token を変えれば追従する。
 
 `.creo-stack` は既存の shell component (`CUStack`) が使っているため避けた。
@@ -198,7 +212,7 @@ trial のため**独立 import**。使わない consumer には影響しない�
 ### 書き方
 
 ```html
-<div class="creo-row creo-center creo-gap-s">
+<div class="cu-row cu-center cu-gap-s">
   <span class="creo-badge">New</span>
   <span>並べるのは utility、 見た目は component</span>
 </div>
@@ -206,10 +220,10 @@ trial のため**独立 import**。使わない consumer には影響しない�
 
 | class | 効果 |
 |---|---|
-| `.creo-row` | `display: flex` |
-| `.creo-col` | `display: flex; flex-direction: column` |
-| `.creo-center` | `align-items: center` (交差軸) |
-| `.creo-between` | `justify-content: space-between` (主軸) |
+| `.cu-row` | `display: flex` |
+| `.cu-col` | `display: flex; flex-direction: column` |
+| `.cu-center` | `align-items: center` (交差軸) |
+| `.cu-between` | `justify-content: space-between` (主軸) |
 | `.creo-gap-{xs,s,m,l,xl}` | `gap: var(--spacing-*)` |
 
 ### utility が持たないものは CSS で書く
@@ -223,7 +237,7 @@ utility は「並べる」だけを持つ。余白・位置・寸法は従来ど
 }
 ```
 ```html
-<div class="creo-row creo-center creo-gap-m docs-preview-row">
+<div class="cu-row cu-center cu-gap-m docs-preview-row">
 ```
 
 これは creo-ui 公式 site での実適用例 (`apps/site/src/styles/docs.css`)。
@@ -234,7 +248,7 @@ utility は「並べる」だけを持つ。余白・位置・寸法は従来ど
 
 | 状況 | どうするか |
 |---|---|
-| 要素を横 / 縦に並べたい | utility (`.creo-row` / `.creo-col`) |
+| 要素を横 / 縦に並べたい | utility (`.cu-row` / `.cu-col`) |
 | 余白を付けたい | **CSS を書く** (`padding: var(--spacing-m)`)。同じ余白を繰り返すなら component 化の兆候 |
 | 特定の UI を作りたい | component (`.creo-card` 等)。無ければ component として足す |
 | `position` / `z-index` / 幅指定 | **素の CSS**。creo-ui は持たない |
@@ -243,8 +257,8 @@ utility は「並べる」だけを持つ。余白・位置・寸法は従来ど
 
 | 症状 | 原因と対処 |
 |---|---|
-| `.creo-gap-m` が効かない | `tokens.css` を読んでいるか確認 (`--spacing-m` が未定義だと `gap` が無効値になる) |
-| `.creo-center` で主軸が揃わない | `.creo-center` は `align-items` (交差軸) のみ。主軸は `.creo-between` か CSS で `justify-content` を書く |
+| `.cu-gap-m` が効かない | `tokens.css` を読んでいるか確認 (`--spacing-m` が未定義だと `gap` が無効値になる) |
+| `.cu-center` で主軸が揃わない | `.cu-center` は `align-items` (交差軸) のみ。主軸は `.cu-between` か CSS で `justify-content` を書く |
 | utility が `components.css` に無い | 別ファイル。`utilities.css` を import する (component と別系統であることを構造で示すため意図的に分けている) |
 
 ### trial の評価軸

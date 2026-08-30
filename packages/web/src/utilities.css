@@ -6,6 +6,18 @@
  *
  * 設計 SSOT: docs/design/utility-layer.md
  *
+ * ## prefix は `cu-` — component の `.creo-*` とは意図的に分ける
+ *
+ * **不統一ではなく、粒度の違いを prefix で表している。** `.creo-card` (まとまった UI) と
+ * `.cu-gap-m` (単一 property) が同じ prefix で並ぶと、 層の違いが読み取れない。
+ *
+ * `CU` は既存規約 — SolidJS primitive が `CUButton` / `CUPageShell` の形で使っており
+ * (`controls/index.ts` の「CU* 規約」)、 新しい略称を発明したわけではない。
+ * `c-` は短すぎて consumer の既存 class と衝突しうるため採らない。
+ *
+ * utility は component class より **markup に書く頻度が高い**ので、 短さが効く
+ * (`creo-row creo-center creo-gap-m` 31 字 → `cu-row cu-center cu-gap-m` 25 字)。
+ *
  * ## 範囲 — 「並べる」だけを持つ。「余白」は持たない
  *
  * `display:flex` / `align-items` / `gap` は **HTML の構造に対応する指定**で、 CSS に
@@ -20,7 +32,7 @@
  * ## 使い方
  *
  * ```html
- * <div class="creo-row creo-center creo-gap-s">
+ * <div class="cu-row cu-center cu-gap-s">
  *   <span class="creo-badge">New</span>
  *   <span>並べるのは utility、 見た目は component</span>
  * </div>
@@ -40,44 +52,44 @@
 
 /* ---------- 並び (主軸の方向) ---------- */
 
-.creo-row {
+.cu-row {
   display: flex;
 }
 
-.creo-col {
+.cu-col {
   display: flex;
   flex-direction: column;
 }
 
 /* ---------- 揃え ---------- */
 
-/* 交差軸の中央揃え。 主軸は .creo-between で別に指定する (軸を混ぜない) */
-.creo-center {
+/* 交差軸の中央揃え。 主軸は .cu-between で別に指定する (軸を混ぜない) */
+.cu-center {
   align-items: center;
 }
 
-.creo-between {
+.cu-between {
   justify-content: space-between;
 }
 
 /* ---------- 間隔 (5 tier) ---------- */
 
-.creo-gap-xs {
+.cu-gap-xs {
   gap: var(--spacing-xs);
 }
 
-.creo-gap-s {
+.cu-gap-s {
   gap: var(--spacing-s);
 }
 
-.creo-gap-m {
+.cu-gap-m {
   gap: var(--spacing-m);
 }
 
-.creo-gap-l {
+.cu-gap-l {
   gap: var(--spacing-l);
 }
 
-.creo-gap-xl {
+.cu-gap-xl {
   gap: var(--spacing-xl);
 }

@@ -76,7 +76,7 @@ export default function Toast() {
           <ToastLivePreview />
           <div class="docs-preview-row-label">5 variants (inline showcase、 真の portal は別)</div>
           <div
-            class="creo-col creo-gap-s docs-preview-stack"
+            class="cu-col cu-gap-s docs-preview-stack"
             style={{ 'max-width': '420px', gap: 'var(--spacing-s)' }}
           >
             <div class="creo-toast" data-variant="info" role="status">

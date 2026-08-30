@@ -1230,7 +1230,7 @@ a:hover {
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
 
-/* 並び (flex / center / gap) は utility (.creo-row .creo-center .creo-gap-m) に委譲。
+/* 並び (flex / center / gap) は utility (.cu-row .cu-center .cu-gap-m) に委譲。
    ここに残すのは utility が持たないと決めた指定だけ (utility 層の trial、 2026-08-30)。 */
 .docs-preview-row {
   flex-wrap: wrap;
