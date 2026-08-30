@@ -64,7 +64,14 @@ export interface MediaPipeSourceOptions {
 // jsDelivr serves @mediapipe/tasks-vision npm package's `wasm/` directory directly.
 // `storage.googleapis.com/mediapipe-tasks/wasm` was the old default but is now unreliable
 // (404 / 403 observed 2026-05). jsDelivr is the recommended CDN per MediaPipe docs.
-const DEFAULT_WASM_BASE = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10/wasm'
+//
+// **WASM は npm から読み込む JS と同じ版でなければならない。** 版が食い違うと
+// 型検査も build も通るのに **実行時だけ壊れる** (2026-08-30 の 0.10 → 1.0 更新で顕在化)。
+// tasks-vision は runtime に版を expose せず (`VERSION` export も `./package.json`
+// への exports も無い) 動的導出ができないため、 **ここを版の SSOT とし、
+// package.json との一致を CI で照合する** (scripts/check-mediapipe-version.mjs)。
+export const MEDIAPIPE_WASM_VERSION = '1.0.1'
+const DEFAULT_WASM_BASE = `https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@${MEDIAPIPE_WASM_VERSION}/wasm`
 const DEFAULT_HAND_MODEL =
   'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task'
 const DEFAULT_FACE_MODEL =
@@ -90,7 +97,6 @@ export async function createMediaPipeSource(
 ): Promise<VisionSource> {
   const camera = options.camera ?? 'user'
   const models = options.models ?? ['hand']
-  const wasmBase = options.wasmBase ?? DEFAULT_WASM_BASE
   const delegate = options.delegate ?? 'GPU'
   const coordSpace = options.coordSpace ?? (camera === 'user' ? 'user' : 'camera')
   const mirrorX = coordSpace === 'user'
@@ -113,6 +119,7 @@ export async function createMediaPipeSource(
   const tasksVision = await import('@mediapipe/tasks-vision')
   const { FilesetResolver, HandLandmarker, FaceLandmarker } = tasksVision
 
+  const wasmBase = options.wasmBase ?? DEFAULT_WASM_BASE
   const filesetResolver = await FilesetResolver.forVisionTasks(wasmBase)
 
   let handLandmarker: HandLandmarkerType | null = null

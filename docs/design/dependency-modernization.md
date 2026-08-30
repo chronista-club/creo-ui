@@ -1,6 +1,6 @@
 # 依存ライブラリの一括最新化 (2026-08)
 
-**Status**: 前半 完了 (MediaPipe = 後半 は未着手)
+**Status**: 前半・後半とも完了 (実機確認は owner 待ち)
 **Scope**: 全 package の devDependencies、`.github/workflows/*.yml`、`.mise.toml`、`tsconfig.json` 群、`vite.config.ts` 群
 **Related**: consumer feedback (creo-memories `mem_1CeYZRUDXaheY9uGqAM73N` §5)
 
@@ -79,7 +79,7 @@ creo-ui の開発依存 13 種のうち **6 つが major 遅れ**になってい
 | @vitejs/plugin-basic-ssl | 2.3.0 | 2.3.0 | apps/site | 変更なし |
 | bun | mise 管理 (1.3 pin) | **mise から外す** | — | brew 版 1.4.0 を使う。`.mise.toml` の `[tools]` を削除し、`[tasks.*]` は残す |
 | Node (`publish-*.yml` 4 本) | 20 (EOL) | **24** | CI | `npm publish` 認証用。build は bun |
-| @mediapipe/tasks-vision | ^0.10 | 1.0.1 | vision, site | **後半で対応** |
+| @mediapipe/tasks-vision | ^0.10 | **1.0.1** | vision, site | 後半で対応。peer は `^0.10.0 \|\| ^1.0.0` の両対応 (API 互換を確認済み) |
 
 ### 調査で判明している当たり判定
 
@@ -112,6 +112,32 @@ creo-ui の開発依存 13 種のうち **6 つが major 遅れ**になってい
 `vite-plugin-dts` 5.0.3 が Vite 8 で `.d.ts` を壊す場合、**dts だけ 4.5.4 に据え置く** (peer は `vite: ">=3"` なので組合せ自体は成立しうる)。それでも駄目なら Vite を 7 系に留める。**型が壊れた状態では出荷しない**ことを優先する。
 
 ---
+
+### 後半 — MediaPipe で判明したこと
+
+**使用 API は 1.0 でも互換だった。** `FilesetResolver` / `HandLandmarker` / `FaceLandmarker`
+の 3 つと `forVisionTasks` / `createFromOptions` のシグネチャは 0.10 と変わらず。
+そのため peer は `^0.10.0 || ^1.0.0` の**両対応**とし、0.10 のままの consumer を切らない。
+
+**本当の危険は WASM の版ずれだった。** `DEFAULT_WASM_BASE` が
+`@mediapipe/tasks-vision@0.10/wasm` と literal で固定されており、npm の JS だけ 1.0 に
+上げると **JS 1.x × WASM 0.10** の食い違いが起きる。これは:
+
+- 型検査を通る (URL はただの文字列)
+- build を通る (CDN は build 時に触られない)
+- baseline 比較も通る (生成物は変わらない)
+- **実行時、カメラを起動した瞬間だけ壊れる**
+
+本タスクで唯一、**機械的検証が原理的に効かない箇所**だった。
+
+**対処**: tasks-vision は runtime に版を expose しない (`VERSION` export も
+`./package.json` への exports も無い) ため動的導出はできない。代わりに
+`packages/vision/src/mediapipe.ts` の `MEDIAPIPE_WASM_VERSION` を**版の SSOT** とし、
+package.json の依存レンジとの整合を `scripts/check-mediapipe-version.mjs` が静的に照合する
+(CI 実行)。検査が実際に失敗を検出することは、版をわざとズラして確認済み。
+
+**残: 実機確認。** カメラを使う経路のため CI では検証できない。`/lab/vision` 系のページで
+hand / face の検出が動くことを owner が実機で確認する。
 
 ### Biome 2 で off にした規則と理由
 
@@ -189,6 +215,7 @@ git diff --stat packages/swift packages/rust     # 空であること
 |---|---|
 | build が `does not provide the JavaScript Compiler API` で落ちる | `@typescript/typescript6` の入れ忘れ。該当 package の devDependency に追加 |
 | `tsconfig.json(N,M): error TS5102: Option 'baseUrl' has been removed` | TS 7 で `baseUrl` は廃止。削除する。`paths` が `./` `../` 始まりの相対なら追加対応は不要 |
+| カメラを起動すると MediaPipe が読み込みに失敗する | WASM と JS の版ずれの可能性。`bun run check:mediapipe` で整合を確認。consumer 側で版を固定したい場合は `createMediaPipeSource({ wasmBase })` で明示できる |
 | root から `bun test` すると frame の DOM test が `document is not defined` で落ちる | **既存の性質で回帰ではない。** `packages/frame/bunfig.toml` の `preload` はその package を CWD にしたときのみ効く。`cd packages/frame && bun test` で 62 pass |
 | `.js` の chunk 名が変わった | Vite 8 の Rolldown 化で正常。`exports` map から参照される public entry が一致していれば問題ない |
 

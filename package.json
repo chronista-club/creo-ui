@@ -27,6 +27,7 @@
     "test:colors": "bun test transforms/color-utils.test.js",
     "test:transforms": "bun test transforms/",
     "check:drift": "bun scripts/check-docs-drift.mjs",
+    "check:mediapipe": "bun scripts/check-mediapipe-version.mjs",
     "check:tweak-vars": "bun scripts/check-tweak-vars.mjs",
     "fetch:design": "bun scripts/fetch-creo-ui-design.mjs",
     "diff:design": "bun scripts/diff-creo-ui-design.mjs"
