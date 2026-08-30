@@ -62,22 +62,22 @@ export default function Avatar() {
           <div class="docs-preview-row-label">Sizes (initials fallback)</div>
           <div class="docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-size="s">
-              <span class="creo-avatar-initials" aria-label="Mako">
+              <span class="creo-avatar-initials" role="img" aria-label="Mako">
                 M
               </span>
             </span>
             <span class="creo-avatar" data-size="m">
-              <span class="creo-avatar-initials" aria-label="Claude">
+              <span class="creo-avatar-initials" role="img" aria-label="Claude">
                 C
               </span>
             </span>
             <span class="creo-avatar" data-size="l">
-              <span class="creo-avatar-initials" aria-label="Akira">
+              <span class="creo-avatar-initials" role="img" aria-label="Akira">
                 A
               </span>
             </span>
             <span class="creo-avatar" data-size="xl">
-              <span class="creo-avatar-initials" aria-label="Yui">
+              <span class="creo-avatar-initials" role="img" aria-label="Yui">
                 Y
               </span>
             </span>
@@ -85,17 +85,17 @@ export default function Avatar() {
           <div class="docs-preview-row-label">Shape × Size</div>
           <div class="docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-shape="circle" data-size="l">
-              <span class="creo-avatar-initials" aria-label="Circle">
+              <span class="creo-avatar-initials" role="img" aria-label="Circle">
                 ●
               </span>
             </span>
             <span class="creo-avatar" data-shape="square" data-size="l">
-              <span class="creo-avatar-initials" aria-label="Square">
+              <span class="creo-avatar-initials" role="img" aria-label="Square">
                 ■
               </span>
             </span>
             <span class="creo-avatar" data-shape="square" data-size="xl">
-              <span class="creo-avatar-initials" aria-label="Square XL">
+              <span class="creo-avatar-initials" role="img" aria-label="Square XL">
                 ■
               </span>
             </span>
@@ -103,19 +103,19 @@ export default function Avatar() {
           <div class="docs-preview-row-label">With status dot</div>
           <div class="docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-size="l">
-              <span class="creo-avatar-initials" aria-label="Online">
+              <span class="creo-avatar-initials" role="img" aria-label="Online">
                 O
               </span>
               <span class="creo-avatar-status" data-status="online" aria-hidden="true" />
             </span>
             <span class="creo-avatar" data-size="l">
-              <span class="creo-avatar-initials" aria-label="Busy">
+              <span class="creo-avatar-initials" role="img" aria-label="Busy">
                 B
               </span>
               <span class="creo-avatar-status" data-status="busy" aria-hidden="true" />
             </span>
             <span class="creo-avatar" data-size="l">
-              <span class="creo-avatar-initials" aria-label="Offline">
+              <span class="creo-avatar-initials" role="img" aria-label="Offline">
                 F
               </span>
               <span class="creo-avatar-status" data-status="offline" aria-hidden="true" />
@@ -159,7 +159,7 @@ export default function Avatar() {
 
 <!-- Initials fallback -->
 <span class="creo-avatar">
-  <span class="creo-avatar-initials" aria-label="Mako">M</span>
+  <span class="creo-avatar-initials" role="img" aria-label="Mako">M</span>
 </span>
 
 <!-- With status dot (online) -->
@@ -227,9 +227,16 @@ function AvatarLivePreview() {
           class="creo-avatar"
           data-size={size()}
           data-shape={shape() === 'circle' ? undefined : shape()}
-          aria-label={`Avatar with initials ${initials()}`}
         >
-          <span class="creo-avatar-initials">{initials()}</span>
+          {/* 読み上げ名は role を持つ initials 側に置く — 素の <span> (.creo-avatar) に
+              aria-label を付けても暗黙 role が無く screen reader に無視されるため */}
+          <span
+            class="creo-avatar-initials"
+            role="img"
+            aria-label={`Avatar with initials ${initials()}`}
+          >
+            {initials()}
+          </span>
         </span>
       </div>
       <EditorModeToggle />

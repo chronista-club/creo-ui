@@ -59,7 +59,10 @@ Item の **status / count / tag** を視覚的 accent として pill 形状で�
 ## Accessibility
 
 - status を色だけで示さない (変種が色+文字両方なら OK)
-- count (数値) の badge は `aria-label` で文脈を補足 (例: `aria-label="3 件の未読通知"`)
+- count (数値) の badge に文脈を足すときは **`role="img"` + `aria-label`** を組で付ける
+  (例: `<span class="creo-badge" role="img" aria-label="3 件の未読通知">3</span>`)。
+  素の `<span>` は暗黙 role を持たないため、`aria-label` 単体では **screen reader に無視される**。
+  周囲の text で文脈が足りるなら aria を足さない方がよい (2026-08-30 修正)
 - inline badge は周囲 text と semantic が明確なら追加 aria 不要
 
 ## Related

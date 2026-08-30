@@ -36,7 +36,6 @@
         "noDescendingSpecificity": "off"
       },
       "a11y": {
-        "useAriaPropsSupportedByRole": "off",
         "useFocusableInteractive": "off"
       }
     }
