@@ -38,6 +38,9 @@
 
 ---
 
+| **D-14** | **調整ノブの書き込みは「値ベース」で判定する** — 現在値が SSOT 既定と同じなら `removeProperty`、既定以外のときだけ inline で書く。これで「未調整なら token emit (`rem` / `calc`) のまま = browser の font 設定追従が生きる」と「調整済みなら mount 時に復元される」が **1 本の条件で両立**する。時間ベースの判定 (register 時の初回適用だけ skip する) では、localStorage からの復元の一発まで捨ててしまい永続と両立しない (2026-08-14) |
+| **D-15** | **panel の開閉 state は panel 側が持つ** — accordion 個々が state を持つと、`host.fields()` の変化 (component 選択 = ノブの register) で group の DOM が作り直され、**選択のたび勝手に閉じる**。group 名を key にした表を panel が保持し、group には制御 props で渡す (2026-08-14) |
+
 ## 3. 4 方向 Semantic Layout
 
 ### 物理配置
@@ -417,7 +420,73 @@ rule block を取り出して component CSS への変更提案にする。
   注入 stylesheet ごと破棄される
 
 旧 panel の 3-scope field 一覧 / ThemeEditor / ExportBar は **外してある**
-(`theme-editor.tsx` / `export-bar.tsx` はファイルとしては残置)。
+(`theme-editor.tsx` / `export-bar.tsx` はファイルとして残置し export もしているが、
+`layer.tsx` からは描画しない)。
+
+#### panel の情報構造 (2026-08-14 確定)
+
+Mode を ON にした直後の初期表示は **アコーディオンの見出しだけ**:
+
+```
+● Editor Mode ON              ⠿
+Esc 終了 · Ctrl+Shift+E で切替
+─────────────────────────────
+▸ DISCOVERY                12     ← ツリー件数を畳んだまま出す
+▸ GLOBAL
+▸ SURFACE
+```
+
+- **Discovery が最上段。** 「選んでから出す」の入口なので先頭に置く。畳んだ状態でも
+  件数 badge でページ内の component 数が分かる
+- **一層目は既定で全閉じ。** 開くたびコンパクトな状態から始まる。**開閉は永続しない** —
+  「前回の状態」を復元すると、開き直したときに何が開いているか予測できないため
+- **開閉 state は panel が持つ** (D-15)。component を選んでもドリルインしても閉じない
+- component を選ぶと Discovery の位置が **detail view** に替わる (← 戻る + component 名 +
+  ノブ + 「他の property…」)。detail のノブは畳まない — 選択は意図の表明なので即座に出す
+
+#### global knobs (Global group)
+
+`provider.tsx` が framework 標準として register する。**すべて `localStorage` 永続 + ↺ reset**
+付きで、値ベース apply (D-14) に乗る。
+
+| id | 内容 | 範囲 |
+|---|---|---|
+| `typography.scale` | 文字だけの全体伸縮。token emit の `calc(<rem> * var(--typography-scale, 1))` に効く | 0.8–1.2 / step 0.01 |
+| `typography.size.{xs..xl}` | size 梯子 5 段。SSOT 値を initial に持つ | 8–32px |
+| `color.brand.{hue,chroma}` | brand 系 8 var を OKLCH のまま一括で回す | hue 0–360° / chroma ×0–2 |
+| `color.surface.{hue,chroma}` | surface 系 8 var を同上 | hue 0–360° / chroma ×0–3 |
+| `layout.gap.sibling` | stacked 要素間の既定 gap | 0–48px |
+
+**radius 梯子ノブは撤去した** (2026-08-14)。v0.29.0 で実測値を SSOT へ焼き込んで役目を終えたため。
+必要になれば同じ形で戻せる。
+
+#### 色ノブの設計 — 族を相対で回す / token を絶対で編む
+
+色は **2 段構え**にしてある。
+
+**族ノブ (Global)**: `--color-brand-*` 8 本 / `--color-surface-*` 8 本を 1 組として扱い、
+**hue は基準 var との差分**、**chroma は倍率**で全 var に適用する (`brand-color.ts` の
+`createOklchColorControl(vars, baseVar)`)。
+
+- 差分適用なので、contrast theme のように族内で複数 hue を持つ family でも**相対関係が保たれる**
+- **`l` (明度) は触らない** — light/dark のコントラスト設計を壊さないため
+- 中立 (差分 0 かつ倍率 1) に戻ると `removeProperty` して **theme 切替への追従が復活**する
+- 基準色は「初めて中立を離れた瞬間」に capture する。上書き済みの inline 値を読み直すと
+  差分が二重に掛かるため
+
+**個別 token (Surface group)**: surface 系 8 var を L/C/H/A slider で**絶対値編集**する。
+族ノブが相対調整なのに対し、こちらは 1 本ずつ直接いじる用。
+
+#### ノブ UI の作法
+
+- **number は 1 ライナー** — `name (ellipsis) | slider | 値 | ↺`。slider は **flex-basis 50% 固定**で、
+  どの行もトラックの左右端が縦に揃う (複数ノブの相対位置を比べられる)。name は残り幅で
+  ellipsis し、全文は `title` に出す
+- **↺ reset は number / color 共通部品** (`ResetButton`)。**既定値と異なるときだけ表示**され、
+  既定のままは `visibility: hidden` で列幅を保つ。「↺ が見えている = 既定から動かしてある」の
+  サインも兼ねる
+- **自動発見ノブの step は unit-aware** — `rem`/`em` の 1–10 帯は 0.1 刻み。px と同じ 0.5 だと
+  0.5rem = 8px 飛びになり slider として使えない (`auto-discover.ts` の `heuristicRange`)
 
 **トレードオフ**: 規約ベースは variant 固有ノブ (`.creo-btn--sm` を選んだときだけ
 出るノブ) を表現できない。selector 逆引きなら可能だったが、現状 variant 側は
@@ -527,6 +596,11 @@ Phase 1 で既に生成済み:
 
 ## 9. DevEditor (既存) の migration path
 
+> **Status (2026-08-30)**: **creo-ui 側からは着手しない。** CLAUDE.md / EH-4 の通り
+> `creo-memories/packages/creoui` の DevEditor は直接触らず、migration の是非と時期は
+> **creo-memories lead の判断**。以下は移行することになった場合の想定手順であり、
+> creo-ui 側の予定ではない。
+
 creo-memories/packages/creoui/src/components/DevEditor.tsx は現状 single instance で独自 `globalValues()` signal を持つ。Editor Mode protocol への移行は以下の段階で:
 
 ### Step 1: adapter 実装 (後方互換)
@@ -590,10 +664,10 @@ Claude: (tokens リポジトリに PR を作成)
 | Phase | 内容 | Status |
 |-------|------|--------|
 | **Phase 1** | 設計 memo (本 doc) + `tokens/editor-mode/*.json` + TS 型 d.ts (optional) | ✅ 完了 |
-| **Phase 2a** | `@chronista-club/creo-ui-editor-host` (SolidJS) で `EditorHost` runtime 実装 + 4 region layout | ✅ **Shipped** (`packages/editor-host/`、 19 tests pass、 docs site で dogfood) |
+| **Phase 2a** | `@chronista-club/creo-ui-editor-host` (SolidJS) で `EditorHost` runtime 実装 + 4 region layout | ✅ **Shipped** (`packages/editor-host/` v0.8.1、 167 tests pass、 docs site 全ページで dogfood) |
 | **Phase 2b** | MCP server 実装 (editor_mode_* tools)、Claude Code 連携 | 縮小 — `claude-in-chrome` + `window.creoEditor` console REPL で代替可能 (EH-5)、 専用 server 実装は不要 |
 | **Phase 2c** | DevEditor adapter → 段階的移行 | 未着手 (creo-memories lead 判断、 EH-4) |
-| **Phase 3a** | Theme 切替 (light / dark / high-contrast) を Editor Mode で prototyping | 部分着手 (`ThemeEditor` / 8 theme 切替 UI 同梱) |
+| **Phase 3a** | Theme 切替 (light / dark / high-contrast) を Editor Mode で prototyping | 方針変更 — `ThemeEditor` は panel から外した (export は残置)。theme の調整は **Global の色ノブ + Surface group** で行う (§6 参照、2026-08-14) |
 | **Phase 3b** | `CreoUI` (Swift) 側に `EditorHost` 実装 | 未着手 (consumer 側 or 将来別 package で) |
 | **Phase 4** | `creo-ui` (Rust / ratatui) 側に最小 Editor Mode (TUI 向け) | 未着手 (要否検討) |
 
@@ -611,6 +685,8 @@ Claude: (tokens リポジトリに PR を作成)
 3. **Persistence の per-project 解決** — SurrealDB (creo-memories) 紐付けをどう protocol 化?
 4. **Region が狭い画面での挙動** — モバイルや狭い window では bottom sheet 形式に fallback?
 5. **Field 型の拡張** — `vector2` (spacing の X/Y) / `gradient` / `shadow` 等の composite 型はいつ導入?
+   → `color` は 2026-08-14 に OKLCH editor (L/C/H/A slider + ↺) として実装済み (§6)。
+   残る composite 型は未着手
 6. **Cross-app field sharing** — 複数 app で同一 field id を共有する場合の syncing 戦略?
 7. **同一画面に複数 Selection** — multi-select 時の panel 表示ルール?
 
@@ -679,3 +755,29 @@ Claude: (tokens リポジトリに PR を作成)
   統一 (**55 component / 111 knob**)。sentinel (radius.full = 9999px) は除外を
   やめ 0-128px へ丸める方針に変更 — 除外したままだと button の丸みという最も
   触りたいノブが panel から消えるため
+
+### 2026-08-14 — panel の完成形 / 色ノブ / 永続化 (#135〜#157、editor-host 0.8.0〜0.8.1)
+
+Discovery から積み直していた panel が一区切りついた。**Discovery 最上段 + 一層目全閉じの
+アコーディオン**という情報構造が確定し (D-15)、Global に **色ノブ (brand / surface の hue・chroma)**
+と `layout.gap.sibling` が加わった。**radius 梯子は撤去** — v0.29.0 の焼き込みで役目を終えたため。
+
+大きいのは **調整ノブの localStorage 永続化**で、これに伴い書き込み判定を時間ベース
+(register の初回だけ skip) から**値ベース**へ変えた (D-14)。時間ベースのままでは復元の一発を
+捨ててしまい永続と両立しなかった。あわせて **↺ reset** を number / color 共通部品として入れ、
+「既定へ戻す」が UI から常に可能になった。
+
+`.creo-sidenav` を component 化 (#142) し、site の `selectionRoot` を body 全体へ広げた (#139)
+ことで、header / sidebar も Editor の対象になった。
+
+### 2026-08-30 — Living Documentation 回収
+
+本 doc が **#134 (脱出ハッチ) で停止**しており、上記 22 commit 分が未反映だった。
+editor-host が 7,300 行に育つ一方、その最新の姿を説明する文書が存在しない状態だったため回収した。
+あわせて stale を修正 — Phase 2a の test 数 (19 → 167)、Phase 3a の ThemeEditor 記述
+(panel からは外れている)、§9 DevEditor migration の主語 (creo-ui の予定ではなく
+creo-memories lead 判断 = EH-4)。
+
+**教訓**: 個々の依頼は「slider を 50% に」のような小タスクでも、**積み上がった差分は中規模を
+超える**。粒度は 1 回の作業量ではなく累積で測る必要がある。
+
