@@ -243,7 +243,7 @@ function AccordionLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* container は selection の ref と幅制約だけを持つ。 .creo-accordion は
             各 details 側 (= 1 disclosure) に付ける。 */}
         <div ref={selectable} style={{ width: '100%', 'max-width': '480px' }}>
@@ -283,7 +283,7 @@ function AccordionLivePreview() {
           </details>
         </div>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

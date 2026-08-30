@@ -172,7 +172,7 @@ function RealMediaPipeDemo() {
   return (
     <div class="docs-mediapipe-frame">
       <Show when={!enabled()}>
-        <div class="docs-mediapipe-prompt">
+        <div class="cu-col cu-gap-s docs-mediapipe-prompt">
           <h3 class="docs-mediapipe-prompt-title">Webcam を有効化</h3>
           <ul class="docs-bullet-list">
             <li>カメラへのアクセス許可を求めます (browser native dialog)</li>
@@ -460,7 +460,7 @@ function CameraProbe() {
 
   return (
     <div class="docs-camera-probe">
-      <div class="docs-camera-probe-controls">
+      <div class="cu-row cu-gap-s docs-camera-probe-controls">
         <button
           type="button"
           class="creo-btn"

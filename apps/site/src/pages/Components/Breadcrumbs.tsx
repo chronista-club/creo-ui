@@ -247,7 +247,7 @@ function BreadcrumbsLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <nav
           ref={selectable}
           class="creo-breadcrumbs"

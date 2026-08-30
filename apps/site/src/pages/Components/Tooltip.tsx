@@ -62,7 +62,7 @@ export default function Tooltip() {
         <div class="docs-component-preview">
           <TooltipLivePreview />
           <div class="docs-preview-row-label">Placements (hover / focus me)</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <span class="creo-tooltip">
               <button type="button" class="creo-btn" data-variant="secondary">
                 Top (default)
@@ -200,7 +200,7 @@ function TooltipLivePreview() {
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
       <div
-        class="docs-playground-stage"
+        class="cu-row cu-center docs-playground-stage"
         style={{ 'min-height': '120px', 'align-items': 'center', 'justify-content': 'center' }}
       >
         <span ref={selectable} class="creo-tooltip">

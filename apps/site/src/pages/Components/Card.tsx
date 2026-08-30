@@ -67,7 +67,7 @@ export default function Card() {
         <div class="docs-component-preview">
           <CardLivePreview />
           <div class="docs-preview-row-label">Variants</div>
-          <div class="docs-preview-grid docs-preview-grid--cards">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid docs-preview-grid--cards">
             <article class="creo-card" data-variant="default">
               <h4 style="margin: 0 0 8px 0; font-size: var(--typography-title-card); font-weight: var(--typography-weight-bold); line-height: var(--typography-line-height-tight);">
                 Default
@@ -94,7 +94,7 @@ export default function Card() {
             </article>
           </div>
           <div class="docs-preview-row-label">Paddings</div>
-          <div class="docs-preview-grid docs-preview-grid--cards">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid docs-preview-grid--cards">
             <article class="creo-card" data-padding="s">
               <code style="font-family: var(--typography-family-sans); font-size: var(--typography-size-xs);">
                 data-padding="s"
@@ -236,7 +236,7 @@ function CardLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <article
           ref={selectable}
           class="creo-card"

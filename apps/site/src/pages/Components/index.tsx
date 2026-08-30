@@ -26,7 +26,7 @@ const FEATURED: readonly FeaturedEntry[] = [
     slug: 'button',
     desc: 'Action trigger — 5 variants × 3 sizes',
     render: () => (
-      <div class="docs-gallery-cluster">
+      <div class="cu-row cu-gap-xs cu-center docs-gallery-cluster">
         <button type="button" class="creo-btn" data-variant="primary" data-size="s">
           Primary
         </button>
@@ -44,7 +44,7 @@ const FEATURED: readonly FeaturedEntry[] = [
     slug: 'badge',
     desc: 'Pill-shaped status / count / tag — 6 variants',
     render: () => (
-      <div class="docs-gallery-cluster">
+      <div class="cu-row cu-gap-xs cu-center docs-gallery-cluster">
         <span class="creo-badge" data-variant="brand">
           v0.24
         </span>
@@ -83,7 +83,7 @@ const FEATURED: readonly FeaturedEntry[] = [
     slug: 'switch',
     desc: 'Immediate toggle (settings / feature flag)',
     render: () => (
-      <div class="docs-gallery-stack">
+      <div class="cu-col cu-gap-s docs-gallery-stack">
         <label class="creo-switch">
           <input
             type="checkbox"
@@ -112,7 +112,7 @@ const FEATURED: readonly FeaturedEntry[] = [
     slug: 'progress',
     desc: 'Determinate + indeterminate bar + inline spinner',
     render: () => (
-      <div class="docs-gallery-stack docs-gallery-stack--wide">
+      <div class="cu-col cu-gap-s docs-gallery-stack docs-gallery-stack--wide">
         <div class="creo-progress">
           <div class="creo-progress-fill" style={{ width: '72%' }} />
         </div>
@@ -127,7 +127,7 @@ const FEATURED: readonly FeaturedEntry[] = [
     slug: 'avatar',
     desc: 'Visual identity — initials × 4 sizes × status',
     render: () => (
-      <div class="docs-gallery-cluster">
+      <div class="cu-row cu-gap-xs cu-center docs-gallery-cluster">
         <span class="creo-avatar" data-size="l">
           <span class="creo-avatar-initials" role="img" aria-label="Mako">
             MK
@@ -152,7 +152,7 @@ const FEATURED: readonly FeaturedEntry[] = [
     slug: 'input',
     desc: 'Text field — bordered / filled × 3 sizes × error',
     render: () => (
-      <div class="docs-gallery-stack docs-gallery-stack--wide">
+      <div class="cu-col cu-gap-s docs-gallery-stack docs-gallery-stack--wide">
         <input class="creo-input" type="text" value="mako@chronista.club" readonly />
         <input
           class="creo-input"
@@ -210,7 +210,7 @@ const FEATURED: readonly FeaturedEntry[] = [
     slug: 'checkbox',
     desc: 'Multi-select binary — accent-color brand tint',
     render: () => (
-      <div class="docs-gallery-stack">
+      <div class="cu-col cu-gap-s docs-gallery-stack">
         <label class="creo-checkbox">
           <input type="checkbox" class="creo-checkbox-input" checked />
           <span>DTCG token SSOT</span>
@@ -231,9 +231,9 @@ const FEATURED: readonly FeaturedEntry[] = [
     slug: 'skeleton',
     desc: 'Linear-gradient shimmer placeholder',
     render: () => (
-      <div class="docs-gallery-skeleton">
+      <div class="cu-row cu-gap-s cu-center docs-gallery-skeleton">
         <span class="creo-skeleton" data-shape="circle" style={{ width: '40px', height: '40px' }} />
-        <div class="docs-gallery-skeleton-lines">
+        <div class="cu-col cu-gap-xs docs-gallery-skeleton-lines">
           <span class="creo-skeleton" data-shape="text" data-size="l" />
           <span class="creo-skeleton" data-shape="text" style={{ width: '60%' }} />
         </div>
@@ -572,7 +572,7 @@ export default function ComponentsIndex() {
                 <div class="docs-gallery-preview" aria-hidden="true">
                   <div class="docs-gallery-specimen">{c.render()}</div>
                 </div>
-                <div class="docs-gallery-meta">
+                <div class="cu-col docs-gallery-meta">
                   <div class="cu-row cu-center cu-between docs-gallery-meta-head">
                     <span class="docs-gallery-name">{c.name}</span>
                     <span class="docs-gallery-arrow" aria-hidden="true">

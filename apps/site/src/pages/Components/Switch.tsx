@@ -71,7 +71,7 @@ export default function Switch() {
         <div class="docs-component-preview">
           <SwitchLivePreview />
           <div class="docs-preview-row-label">States</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <label class="creo-switch">
               <input type="checkbox" class="creo-switch-input" role="switch" aria-checked="false" />
               <span class="creo-switch-track">
@@ -215,7 +215,7 @@ function SwitchLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <label ref={selectable} class="creo-switch">
           <input
             type="checkbox"

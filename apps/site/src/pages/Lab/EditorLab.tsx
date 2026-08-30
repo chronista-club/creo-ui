@@ -175,7 +175,7 @@ function PlaygroundDemo() {
   })
 
   return (
-    <div class="docs-playground-stage">
+    <div class="cu-row cu-center docs-playground-stage">
       <article
         class="docs-playground-card"
         data-elevation={elevation()}
@@ -198,7 +198,7 @@ function PlaygroundDemo() {
           このカードの radius / padding / elevation / title / label visibility を Editor Mode
           で操作してみてください (<kbd>Ctrl+Shift+E</kbd>)。
         </p>
-        <div class="docs-playground-actions">
+        <div class="cu-row cu-gap-xs docs-playground-actions">
           <button type="button" class="creo-btn" data-variant="primary">
             Primary
           </button>

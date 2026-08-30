@@ -69,7 +69,7 @@ export default function Alert() {
           <AlertLivePreview />
           <div class="docs-preview-row-label">Variants</div>
           <div
-            class="docs-preview-grid"
+            class="cu-row cu-gap-s cu-center docs-preview-grid"
             style={{ 'grid-template-columns': '1fr', gap: 'var(--spacing-s)' }}
           >
             <div class="creo-alert" data-variant="info" role="status">
@@ -225,7 +225,7 @@ function AlertLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <div ref={selectable} class="creo-alert" data-variant={variant()} role={role()}>
           <span class="creo-alert-icon" aria-hidden="true">
             {icon()}

@@ -225,7 +225,7 @@ function TimelineLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <ol ref={selectable} class="creo-timeline" data-size={size() === 'm' ? undefined : size()}>
           <li
             class="creo-timeline-item"

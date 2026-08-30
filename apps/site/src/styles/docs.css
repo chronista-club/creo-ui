@@ -88,12 +88,9 @@ a:hover {
 
 .docs-shell {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .docs-body {
-  display: flex;
   flex: 1;
   min-height: 0;
 }
@@ -140,8 +137,6 @@ a:hover {
 .docs-main {
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
 }
 
 .docs-article {
@@ -230,9 +225,7 @@ a:hover {
 }
 
 .docs-hero-cta {
-  display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-s);
 }
 
 /* ============================================================
@@ -428,8 +421,6 @@ a:hover {
 }
 
 .docs-color-swatch-info {
-  display: flex;
-  flex-direction: column;
   gap: 2px;
   min-width: 0;
 }
@@ -483,8 +474,6 @@ a:hover {
 
 .docs-dim-visual-wrap {
   height: 48px;
-  display: flex;
-  align-items: center;
 }
 
 .docs-dim-visual--spacing {
@@ -652,9 +641,7 @@ a:hover {
 }
 
 .docs-theme-card-head {
-  display: flex;
   align-items: baseline;
-  gap: var(--spacing-xs);
 }
 
 .docs-theme-card-head h3 {
@@ -698,7 +685,6 @@ a:hover {
 }
 
 .docs-theme-preview-bar {
-  display: flex;
   gap: 4px;
 }
 
@@ -911,9 +897,6 @@ a:hover {
    ============================================================ */
 
 .docs-layers-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
   margin: var(--spacing-m) 0;
 }
 
@@ -1064,10 +1047,6 @@ a:hover {
    ============================================================ */
 
 .docs-pipeline-diagram {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-s);
   margin: var(--spacing-m) 0;
 }
 
@@ -1219,10 +1198,7 @@ a:hover {
 }
 
 .docs-preview-grid {
-  display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-s);
-  align-items: center;
 }
 
 .docs-preview-grid--cards {
@@ -1304,8 +1280,6 @@ a:hover {
 }
 
 .docs-playground-stage {
-  display: flex;
-  align-items: center;
   justify-content: center;
   min-height: 240px;
 }
@@ -1361,8 +1335,6 @@ a:hover {
 }
 
 .docs-playground-actions {
-  display: flex;
-  gap: var(--spacing-xs);
   margin-top: var(--spacing-xs);
 }
 
@@ -1383,9 +1355,6 @@ kbd {
    ============================================================ */
 
 .docs-frame-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-s);
   margin-bottom: var(--spacing-m);
   flex-wrap: wrap;
 }
@@ -1780,8 +1749,6 @@ kbd {
 }
 
 .docs-camera-probe-controls {
-  display: flex;
-  gap: var(--spacing-s);
   flex-wrap: wrap;
 }
 
@@ -1878,10 +1845,7 @@ kbd {
 }
 
 .docs-icons-category-head {
-  display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: var(--spacing-s);
   margin-bottom: var(--spacing-xs);
 }
 
@@ -1966,9 +1930,6 @@ kbd {
 }
 
 .docs-mediapipe-prompt {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
   align-items: flex-start;
 }
 
@@ -2041,8 +2002,8 @@ kbd {
    ============================================================ */
 
 .docs-main {
-  perspective: var(--frame-perspective-default);
-  perspective-origin: 50% 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .docs-article > section,
@@ -2246,9 +2207,6 @@ kbd {
 .docs-hero-floats {
   position: relative;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
 }
 
 .docs-hero-float {
@@ -2256,9 +2214,6 @@ kbd {
 }
 
 .docs-hero-float--card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
   box-shadow:
     inset 0 1px 0 var(--face-edge-light),
     0 18px 40px -20px var(--color-shadow-strong, rgba(0, 0, 0, 0.45));
@@ -2379,17 +2334,11 @@ kbd {
 }
 
 .docs-gallery-cluster {
-  display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  align-items: center;
   justify-content: center;
 }
 
 .docs-gallery-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
   align-items: flex-start;
 }
 
@@ -2399,8 +2348,6 @@ kbd {
 }
 
 .docs-gallery-meta {
-  display: flex;
-  flex-direction: column;
   gap: 2px;
   padding: var(--spacing-m);
 }
@@ -2466,17 +2413,11 @@ kbd {
 }
 
 .docs-gallery-skeleton {
-  display: flex;
-  gap: var(--spacing-s);
-  align-items: center;
   width: 100%;
   max-width: 240px;
 }
 
 .docs-gallery-skeleton-lines {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
   flex: 1;
 }
 

@@ -53,7 +53,7 @@ export default function Home() {
             token から生成するデザインシステムです。 Editor Mode protocol によって、デザイナーと AI
             エージェントが同じ surface 上で token を編集できます。
           </p>
-          <div class="docs-hero-cta">
+          <div class="cu-row cu-gap-s docs-hero-cta">
             <A class="creo-btn" data-variant="primary" href="/getting-started">
               Get started
             </A>
@@ -70,9 +70,9 @@ export default function Home() {
             gradient-hero token を canvas に、 specimen は素の .creo-* class (consumer)。 */}
         <div class="docs-hero-surface" aria-hidden="true">
           <div class="docs-hero-surface-glow" />
-          <div class="docs-hero-floats">
+          <div class="cu-col cu-gap-s docs-hero-floats">
             <article
-              class="creo-card docs-hero-float docs-hero-float--card"
+              class="cu-col cu-gap-s creo-card docs-hero-float docs-hero-float--card"
               data-variant="elevated"
             >
               <div class="cu-row cu-center cu-gap-s docs-hero-float-head">

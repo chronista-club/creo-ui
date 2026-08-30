@@ -79,7 +79,7 @@ export default function Drawer() {
         <div class="docs-component-preview">
           <DrawerLivePreview />
           <div class="docs-preview-row-label">Open drawer (modal)</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" onClick={openRight}>
               Right drawer
             </button>
@@ -297,7 +297,7 @@ function DrawerLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* inline 表示 (open attribute + position: static override) — modal でなく直接 view。
             width は right/left の data-size に追従、 height は stage 用に固定 */}
         <dialog
@@ -330,7 +330,7 @@ function DrawerLivePreview() {
           </footer>
         </dialog>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

@@ -236,7 +236,7 @@ function EmptyStateLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <div ref={selectable} class="creo-empty-state" data-size={size()}>
           <div class="creo-empty-state-icon" aria-hidden="true">
             {icon()}

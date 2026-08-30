@@ -70,7 +70,7 @@ export default function Checkbox() {
         <div class="docs-component-preview">
           <CheckboxLivePreview />
           <div class="docs-preview-row-label">States</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <label class="creo-checkbox">
               <input type="checkbox" class="creo-checkbox-input" />
               <span>Unchecked</span>
@@ -179,7 +179,7 @@ function CheckboxLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <label ref={selectable} class="creo-checkbox">
           <input
             type="checkbox"

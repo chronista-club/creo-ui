@@ -57,7 +57,7 @@ export default function Layers() {
 
       <section>
         <h2 class="docs-section-title">Layer hierarchy</h2>
-        <div class="docs-layers-stack">
+        <div class="cu-col cu-gap-s docs-layers-stack">
           <div class="docs-layer-card docs-layer-editor">
             <div class="docs-layer-tag">overlay</div>
             <div class="docs-layer-name">Editor Layer</div>

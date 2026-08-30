@@ -258,7 +258,7 @@ function ComboboxLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <div class="creo-form-field" style={{ width: '100%', 'max-width': '360px' }}>
           <label class="creo-form-field-label" for="combobox-playground">
             {label()}
@@ -284,7 +284,7 @@ function ComboboxLivePreview() {
           </datalist>
         </div>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

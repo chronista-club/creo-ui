@@ -67,7 +67,7 @@ export default function Badge() {
         <div class="docs-component-preview">
           <BadgeLivePreview />
           <div class="docs-preview-row-label">Variants</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <span class="creo-badge">Neutral</span>
             <span class="creo-badge" data-variant="brand">
               Brand
@@ -86,7 +86,7 @@ export default function Badge() {
             </span>
           </div>
           <div class="docs-preview-row-label">Use cases</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <span class="creo-badge" data-variant="brand">
               v0.14.0
             </span>
@@ -197,7 +197,7 @@ function BadgeLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <span
           ref={selectable}
           class="creo-badge"
