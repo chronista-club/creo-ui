@@ -208,7 +208,7 @@ export default function Typography() {
           35NF は Nerd Font glyph を内蔵するため、 icon glyph も同一 stack から供給される (専用 icon
           family は不要)。 mode / variant による font swap は廃止し、 app 全体を 1 font で統一する。
         </p>
-        <div class="docs-typo-table">
+        <div class="creo-col creo-gap-m docs-typo-table">
           <article class="docs-typo-row">
             <div class="docs-typo-meta">
               <code>typography.family.sans</code>

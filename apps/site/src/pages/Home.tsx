@@ -75,7 +75,7 @@ export default function Home() {
               class="creo-card docs-hero-float docs-hero-float--card"
               data-variant="elevated"
             >
-              <div class="docs-hero-float-head">
+              <div class="creo-row creo-center creo-gap-s docs-hero-float-head">
                 <span class="creo-avatar" data-size="m">
                   <span class="creo-avatar-initials">CL</span>
                   <span class="creo-avatar-status" data-status="online" />

@@ -337,18 +337,8 @@ a:hover {
   color: var(--color-text-tertiary);
 }
 
-.docs-footer-links {
-  display: flex;
-  gap: var(--spacing-m);
-}
-
 .docs-footer-links a {
   color: var(--color-text-secondary);
-}
-
-.docs-footer-meta {
-  display: flex;
-  gap: var(--spacing-xs);
 }
 
 /* ============================================================
@@ -523,12 +513,6 @@ a:hover {
 /* ============================================================
    Foundations / Typography
    ============================================================ */
-
-.docs-typo-table {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-m);
-}
 
 .docs-typo-row {
   display: grid;
@@ -1246,12 +1230,6 @@ a:hover {
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
 
-.docs-preview-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
-}
-
 /* 並び (flex / center / gap) は utility (.creo-row .creo-center .creo-gap-m) に委譲。
    ここに残すのは utility が持たないと決めた指定だけ (utility 層の trial、 2026-08-30)。 */
 .docs-preview-row {
@@ -1822,12 +1800,6 @@ kbd {
   display: block;
 }
 
-.docs-camera-probe-stats {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
 .docs-camera-probe-stats h4 {
   margin: 0;
   font-size: var(--typography-size-s);
@@ -2292,12 +2264,6 @@ kbd {
     0 18px 40px -20px var(--color-shadow-strong, rgba(0, 0, 0, 0.45));
 }
 
-.docs-hero-float-head {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-s);
-}
-
 .docs-hero-float-titles {
   min-width: 0;
   flex: 1;
@@ -2437,12 +2403,6 @@ kbd {
   flex-direction: column;
   gap: 2px;
   padding: var(--spacing-m);
-}
-
-.docs-gallery-meta-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .docs-gallery-name {
