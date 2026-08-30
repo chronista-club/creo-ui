@@ -1252,11 +1252,10 @@ a:hover {
   gap: var(--spacing-s);
 }
 
+/* 並び (flex / center / gap) は utility (.creo-row .creo-center .creo-gap-m) に委譲。
+   ここに残すのは utility が持たないと決めた指定だけ (utility 層の trial、 2026-08-30)。 */
 .docs-preview-row {
-  display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-m);
-  align-items: center;
 }
 
 .docs-preview-row--baseline {
