@@ -90,7 +90,7 @@ export default function Button() {
         <div class="docs-component-preview">
           <ButtonLivePreview />
           <div class="docs-preview-row-label">Variants × Sizes</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" data-size="s">
               Primary s
             </button>
@@ -138,7 +138,7 @@ export default function Button() {
             </button>
           </div>
           <div class="docs-preview-row-label">States</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" disabled>
               Disabled
             </button>
@@ -299,7 +299,7 @@ function CUButtonReactiveDemo() {
   }
 
   return (
-    <div class="docs-preview-grid">
+    <div class="cu-row cu-gap-s cu-center docs-preview-grid">
       <CUButton variant={primary() ? 'primary' : 'ghost'} onClick={() => setPrimary((v) => !v)}>
         variant: {primary() ? 'primary' : 'ghost'} (click)
       </CUButton>
@@ -383,7 +383,7 @@ function ButtonLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <CUButton
           ref={selectable}
           variant={variant()}

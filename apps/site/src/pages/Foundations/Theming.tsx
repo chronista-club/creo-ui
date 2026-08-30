@@ -207,7 +207,7 @@ export default function Theming() {
           <For each={FAMILIES}>
             {(f) => (
               <article class="docs-theme-card">
-                <header class="docs-theme-card-head">
+                <header class="cu-row cu-gap-xs docs-theme-card-head">
                   <h3>{f.family}</h3>
                   {'isDefault' in f && f.isDefault && (
                     <span class="docs-theme-default-badge">default</span>
@@ -253,7 +253,7 @@ body {
 function ThemePreview(props: { themeId: string; label: string }) {
   return (
     <div class="docs-theme-preview" data-theme={props.themeId}>
-      <div class="docs-theme-preview-bar">
+      <div class="cu-row docs-theme-preview-bar">
         <span class="docs-theme-preview-dot" style={{ background: 'var(--color-brand-primary)' }} />
         <span
           class="docs-theme-preview-dot"

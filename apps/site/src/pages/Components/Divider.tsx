@@ -220,7 +220,7 @@ function DividerLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* orientation で flex 方向を切替 — hr element は作り直さず attribute のみ変える */}
         <div
           style={{
@@ -245,7 +245,7 @@ function DividerLivePreview() {
           <span>Section B</span>
         </div>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

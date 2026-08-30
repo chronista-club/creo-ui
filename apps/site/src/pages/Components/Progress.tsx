@@ -153,7 +153,10 @@ export default function Progress() {
           </div>
 
           <div class="docs-preview-row-label">Spinner (inline)</div>
-          <div class="docs-preview-grid" style={{ 'align-items': 'center' }}>
+          <div
+            class="cu-row cu-gap-s cu-center docs-preview-grid"
+            style={{ 'align-items': 'center' }}
+          >
             <span class="creo-spinner" role="progressbar" aria-label="Loading" />
             <span>Loading…</span>
           </div>
@@ -265,7 +268,7 @@ function ProgressLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <div
           ref={selectable}
           class="creo-progress"

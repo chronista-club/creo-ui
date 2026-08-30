@@ -75,7 +75,7 @@ export default function Popover() {
         <div class="docs-component-preview">
           <PopoverLivePreview />
           <div class="docs-preview-row-label">Basic popover</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" popovertarget="pop-basic">
               Open popover
             </button>
@@ -98,7 +98,7 @@ export default function Popover() {
           </div>
 
           <div class="docs-preview-row-label">Sizes (s / m / l)</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-s">
               s
             </button>
@@ -249,7 +249,7 @@ function PopoverLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* popover 属性を使わない inline 表示 (position fallback を打ち消して flow 配置) */}
         <div
           class="creo-popover"

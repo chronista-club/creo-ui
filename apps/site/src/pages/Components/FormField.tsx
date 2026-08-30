@@ -206,7 +206,7 @@ function FormFieldLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <div ref={selectable} class="creo-form-field" style={{ 'min-width': '280px' }}>
           <label class="creo-form-field-label" for="form-field-playground">
             {label()}{' '}

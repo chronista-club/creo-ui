@@ -13,7 +13,7 @@ export default function EditorModeToggle() {
   const mode = useEditorMode()
   const on = () => mode() === 'on'
   return (
-    <div class="docs-preview-grid">
+    <div class="cu-row cu-gap-s cu-center docs-preview-grid">
       <CUButton
         variant="ghost"
         size="s"

@@ -42,7 +42,7 @@ export default function MultiPlatform() {
 
       <section>
         <h2 class="docs-section-title">Pipeline</h2>
-        <div class="docs-pipeline-diagram">
+        <div class="cu-col cu-center cu-gap-s docs-pipeline-diagram">
           <div class="docs-pipeline-step docs-pipeline-source">
             <div class="docs-pipeline-step-label">SSOT</div>
             <div class="docs-pipeline-step-name">{'tokens/**/*.json'}</div>

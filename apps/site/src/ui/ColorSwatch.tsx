@@ -17,7 +17,7 @@ export function ColorSwatch(props: ColorSwatchSpec): JSX.Element {
         style={{ background: `var(${props.cssVar})` }}
         aria-hidden="true"
       />
-      <div class="docs-color-swatch-info">
+      <div class="cu-col docs-color-swatch-info">
         <code class="docs-color-swatch-name">{props.name}</code>
         <code class="docs-color-swatch-var">{props.cssVar}</code>
         {props.hint && <span class="docs-color-swatch-hint">{props.hint}</span>}

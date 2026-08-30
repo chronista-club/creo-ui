@@ -76,7 +76,7 @@ export default function Radio() {
         <div class="docs-component-preview">
           <RadioLivePreview />
           <div class="docs-preview-row-label">Group (vertical)</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <label class="creo-radio">
               <input type="radio" class="creo-radio-input" name="theme-demo" value="light" />
               <span>Light</span>
@@ -91,7 +91,7 @@ export default function Radio() {
             </label>
           </div>
           <div class="docs-preview-row-label">Disabled</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <label class="creo-radio">
               <input type="radio" class="creo-radio-input" name="d-demo" disabled />
               <span>Disabled</span>
@@ -192,7 +192,7 @@ function RadioLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <label ref={selectable} class="creo-radio">
           <input
             type="radio"

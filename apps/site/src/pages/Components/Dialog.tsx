@@ -79,7 +79,7 @@ export default function Dialog() {
         <div class="docs-component-preview">
           <DialogLivePreview />
           <div class="docs-preview-row-label">Open as modal</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" onClick={openDefault}>
               Open default
             </button>
@@ -309,7 +309,7 @@ function DialogLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* inline 表示 (open attribute) — modal でなく直接 view */}
         <dialog
           ref={selectable}

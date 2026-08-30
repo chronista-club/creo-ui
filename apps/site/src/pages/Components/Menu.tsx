@@ -74,7 +74,7 @@ export default function Menu() {
         <div class="docs-component-preview">
           <MenuLivePreview />
           <div class="docs-preview-row-label">Basic menu</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="menu-basic">
               ⋯ Actions
             </button>
@@ -214,7 +214,7 @@ function MenuLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* popover を使わない inline 表示 (position fallback を打ち消して flow 配置) */}
         <div class="creo-menu" style={{ position: 'static' }} ref={selectable}>
           <Show when={showLabels()}>

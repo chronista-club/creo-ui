@@ -247,7 +247,7 @@ function StackLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* justify / align の効きを見せるため stage 内で幅・高さを確保 */}
         <div
           class="creo-stack"

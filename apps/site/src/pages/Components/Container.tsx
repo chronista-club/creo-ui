@@ -191,7 +191,7 @@ function ContainerLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* subtle bg = container の実 extent (max-width)、 内側 dashed box が padding を可視化 */}
         <div
           ref={selectable}
@@ -217,7 +217,7 @@ function ContainerLivePreview() {
           </div>
         </div>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

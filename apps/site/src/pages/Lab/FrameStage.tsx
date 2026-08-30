@@ -9,7 +9,7 @@ export function FrameStage() {
 
   return (
     <div>
-      <div class="docs-frame-controls">
+      <div class="cu-row cu-center cu-gap-s docs-frame-controls">
         <button
           type="button"
           class="creo-btn"
