@@ -27,8 +27,9 @@
  * 旧 panel が持っていた 3-scope field 一覧 / ThemeEditor / ExportBar は **一旦外した**
  * (`theme-editor.tsx` / `export-bar.tsx` は残置)。段階的に組み直す。
  */
-import { For, Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
+
 import type { JSX } from 'solid-js'
+import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { Portal } from 'solid-js/web'
 import { readClassDeclarations } from './class-overrides'
 import { componentDisplayName, componentIdOfElement, componentSelector } from './component-id'
@@ -131,7 +132,7 @@ const sectionStyle: JSX.CSSProperties = {
   gap: '6px',
 }
 
-const sectionTitleStyle: JSX.CSSProperties = {
+const _sectionTitleStyle: JSX.CSSProperties = {
   display: 'flex',
   'align-items': 'center',
   gap: '6px',

@@ -5,10 +5,11 @@
  * `useEditorFields()` / `useEditorValue<T>()` / `useEditorSelectable()` が
  * 使える。provider 自身が shortcut + selection handler を install / teardown する。
  */
-import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
+
 import type { JSX, ParentProps } from 'solid-js'
+import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
 import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
-import { BRAND_COLOR_VARS, SURFACE_COLOR_VARS, createOklchColorControl } from './brand-color'
+import { BRAND_COLOR_VARS, createOklchColorControl, SURFACE_COLOR_VARS } from './brand-color'
 import { type ClassOverrides, createClassOverrides } from './class-overrides'
 import { type ComponentFieldResolver, createComponentFieldResolver } from './component-fields'
 import { buildConsoleApi, installConsoleApi } from './console'

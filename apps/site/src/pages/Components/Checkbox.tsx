@@ -1,8 +1,8 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
+  EditorHostProvider,
+  EditorLayer,
   signalTarget,
   string,
   useEditorSelectable,

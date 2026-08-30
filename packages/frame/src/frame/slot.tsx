@@ -5,12 +5,12 @@
  * 適用。 reduce-motion 時は transition: none で即座 snap。
  */
 
-import { type JSX, createMemo } from 'solid-js'
+import { createMemo, type JSX } from 'solid-js'
 import { respectsReducedMotion } from '../motion/reduced-motion'
 import { duration, ease } from '../motion/tokens'
 import { useFrame } from './provider'
 import type { SlotPlacement } from './types'
-import { DEFAULT_PLACEMENT, buildTransformString, mergePlacement } from './utils'
+import { buildTransformString, DEFAULT_PLACEMENT, mergePlacement } from './utils'
 
 export interface FrameSlotProps {
   /** Slot 識別子 (Frame.slots の key と一致) */

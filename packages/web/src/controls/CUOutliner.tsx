@@ -1,14 +1,14 @@
-import { type Component, For, type JSX, createMemo, createSignal, splitProps } from 'solid-js'
+import { type Component, createMemo, createSignal, For, type JSX, splitProps } from 'solid-js'
 import {
-  type FlatRow,
-  type OutlinerNode,
   createNodeId,
+  type FlatRow,
   flattenVisible,
   indent,
   insertSiblingAfter,
   moveDown,
   moveUp,
   nextVisibleId,
+  type OutlinerNode,
   outdent,
   prevVisibleId,
   removeNode,
@@ -16,7 +16,7 @@ import {
   toggleCollapsed,
 } from './outliner-tree'
 
-export type { OutlinerNode, FlatRow } from './outliner-tree'
+export type { FlatRow, OutlinerNode } from './outliner-tree'
 
 export type CUOutlinerVariant = 'plain' | 'card'
 

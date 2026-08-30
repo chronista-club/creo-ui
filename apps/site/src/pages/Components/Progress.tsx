@@ -1,8 +1,8 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
+  EditorHostProvider,
+  EditorLayer,
   number,
   select,
   signalTarget,

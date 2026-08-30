@@ -1,15 +1,15 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
+  EditorHostProvider,
+  EditorLayer,
   select,
   signalTarget,
   string,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
-import { Show, createSignal } from 'solid-js'
+import { createSignal, Show } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
 import EditorModeToggle from '../../ui/EditorModeToggle'
 

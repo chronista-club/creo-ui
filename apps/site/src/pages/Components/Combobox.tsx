@@ -1,8 +1,9 @@
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
+  EditorHostProvider,
+  EditorLayer,
   select,
   signalTarget,
   string,
@@ -10,7 +11,6 @@ import {
   useEditorMode,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
-import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'

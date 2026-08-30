@@ -102,10 +102,10 @@
   font-weight: var(--typography-weight-semibold);
   line-height: 1;
   user-select: none;
-  transition: background-color var(--motion-mapping-toggle-duration)
-    var(--motion-mapping-toggle-easing), color var(--motion-mapping-toggle-duration)
-    var(--motion-mapping-toggle-easing), border-color var(--motion-mapping-toggle-duration)
-    var(--motion-mapping-toggle-easing);
+  transition:
+    background-color var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing),
+    color var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing),
+    border-color var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing);
   z-index: 1;
 }
 

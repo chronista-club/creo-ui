@@ -10,7 +10,7 @@ import {
   string,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
-import { Show, createSignal } from 'solid-js'
+import { createSignal, Show } from 'solid-js'
 
 export default function EditorLab() {
   return (

@@ -2,7 +2,7 @@
  * bun test packages/editor-host/src/oklch.test.ts
  */
 import { describe, expect, test } from 'bun:test'
-import { OKLCH_C_MAX, formatOklch, oklchTrackGradient, parseOklch } from './oklch'
+import { formatOklch, OKLCH_C_MAX, oklchTrackGradient, parseOklch } from './oklch'
 
 describe('parseOklch', () => {
   test('基本形 oklch(l c h)', () => {

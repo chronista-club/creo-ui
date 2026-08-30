@@ -1,8 +1,8 @@
-import { type Component, type JSX, type ValidComponent, createMemo, splitProps } from 'solid-js'
+import { type Component, createMemo, type JSX, splitProps, type ValidComponent } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import { type CUButtonOptions, cuButtonAttrs } from './button-attrs'
 
-export type { CUButtonVariant, CUButtonSize } from './button-attrs'
+export type { CUButtonSize, CUButtonVariant } from './button-attrs'
 
 export interface CUButtonProps
   extends CUButtonOptions,

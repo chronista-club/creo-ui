@@ -60,9 +60,9 @@
   cursor: pointer;
   border-radius: var(--_menu-item__radius, var(--radius-xs));
 
-  transition: background-color var(--motion-mapping-hover-duration)
-    var(--motion-mapping-hover-easing), color var(--motion-mapping-hover-duration)
-    var(--motion-mapping-hover-easing);
+  transition:
+    background-color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing),
+    color var(--motion-mapping-hover-duration) var(--motion-mapping-hover-easing);
 }
 
 .creo-menu-item:hover:not(:disabled),

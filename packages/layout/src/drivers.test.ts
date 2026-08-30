@@ -4,8 +4,8 @@
  */
 
 import { describe, expect, test } from 'bun:test'
-import { createTimeDriver, defaultCurve, jumpDriver, settleRelease } from './drivers'
 import type { TimeCurve } from './drivers'
+import { createTimeDriver, defaultCurve, jumpDriver, settleRelease } from './drivers'
 import { createLayoutEngine } from './engine'
 import { parseNotation } from './notation'
 import type { Layout } from './types'

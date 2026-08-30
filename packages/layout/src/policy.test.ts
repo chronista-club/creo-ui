@@ -3,8 +3,8 @@
  */
 
 import { describe, expect, test } from 'bun:test'
-import { createTimeDriver, jumpDriver } from './drivers'
 import type { TimeCurve } from './drivers'
+import { createTimeDriver, jumpDriver } from './drivers'
 import { createLayoutEngine } from './engine'
 import { parseNotation } from './notation'
 import { proposeLayout } from './policy'

@@ -1,6 +1,6 @@
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import { useEditorHost, useEditorMode } from '@chronista-club/creo-ui-editor-host'
 import { CreoIcon } from '@chronista-club/creo-ui-icons-web'
-import { CUButton } from '@chronista-club/creo-ui/controls'
 
 /**
  * Editor Mode の見た目 toggle (component ページ共通)。

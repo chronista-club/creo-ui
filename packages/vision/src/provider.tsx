@@ -7,9 +7,9 @@
 
 import {
   type Accessor,
-  type JSX,
   createContext,
   createSignal,
+  type JSX,
   onCleanup,
   onMount,
   useContext,

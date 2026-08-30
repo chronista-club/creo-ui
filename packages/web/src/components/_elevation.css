@@ -48,10 +48,10 @@
 
   /* ── drop shadow layers (per-theme shadow tint) ──────────────────── */
   --elevation-drop-1: 0 1px 2px 0 var(--color-shadow-base);
-  --elevation-drop-2: 0 4px 12px -2px var(--color-shadow-base), 0 2px 4px -3px
-    var(--color-shadow-base);
-  --elevation-drop-3: 0 14px 32px -8px var(--color-shadow-strong), 0 6px 12px -6px
-    var(--color-shadow-base);
+  --elevation-drop-2:
+    0 4px 12px -2px var(--color-shadow-base), 0 2px 4px -3px var(--color-shadow-base);
+  --elevation-drop-3:
+    0 14px 32px -8px var(--color-shadow-strong), 0 6px 12px -6px var(--color-shadow-base);
 
   /* ── composed elevation ladder (border-light + drop shadow) ───────── */
   --elevation-0: none;
@@ -65,10 +65,11 @@
   /* ── brand glow (box-shadow 版) ──────────────────────────────────── */
   /* focus ring policy と box-shadow を奪い合わない文脈 (card 等、 focus-visible
      selector 外の element) で使う。 button は下の filter 版を使うこと。 */
-  --elevation-glow-brand-subtle: 0 0 0 1px
-    color-mix(in oklch, var(--color-brand-primary) 20%, transparent), 0 2px 14px -4px
-    color-mix(in oklch, var(--color-brand-primary) 22%, transparent);
-  --elevation-glow-brand: 0 0 0 1px color-mix(in oklch, var(--color-brand-primary) 32%, transparent),
+  --elevation-glow-brand-subtle:
+    0 0 0 1px color-mix(in oklch, var(--color-brand-primary) 20%, transparent),
+    0 2px 14px -4px color-mix(in oklch, var(--color-brand-primary) 22%, transparent);
+  --elevation-glow-brand:
+    0 0 0 1px color-mix(in oklch, var(--color-brand-primary) 32%, transparent),
     0 4px 20px -4px color-mix(in oklch, var(--color-brand-primary) 30%, transparent);
 
   /* ── brand glow (filter: drop-shadow 版) ─────────────────────────── */

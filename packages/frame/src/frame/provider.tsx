@@ -6,10 +6,10 @@
 
 import {
   type Accessor,
-  type JSX,
   createContext,
   createMemo,
   createSignal,
+  type JSX,
   useContext,
 } from 'solid-js'
 import type { Frame, Gaze } from './types'
