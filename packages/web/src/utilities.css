@@ -1,0 +1,83 @@
+/**
+ * creo-ui — utilities.css
+ *
+ * **layer の粒度**: token (値) < **utility (単一 property の適用)** < component (まとまった UI)
+ * < shell (ページ骨格)。 utility は component より小さい粒度で、 既存の並びの隙間を埋める。
+ *
+ * 設計 SSOT: docs/design/utility-layer.md
+ *
+ * ## 範囲 — 「並べる」だけを持つ。「余白」は持たない
+ *
+ * `display:flex` / `align-items` / `gap` は **HTML の構造に対応する指定**で、 CSS に
+ * 切り出すと class を新設し続けることになる。 一方 padding / margin は
+ * `padding-bottom: var(--spacing-l)` と 1 行書けば済み、 多くは component が持つべきもの
+ * (`.creo-card` の内側余白は card が決める)。 実測でも padding は 23 種 / margin は 16 種に
+ * 分散しており、 utility 化すると一気に肥大する。
+ *
+ * **持たないもの** (Tailwind の再実装を避ける線引き): `relative` / `absolute` / `z-*` /
+ * `w-*` / `h-*` 等の汎用 CSS、 任意値記法、 色 utility (component が持つため)。
+ *
+ * ## 使い方
+ *
+ * ```html
+ * <div class="creo-row creo-center creo-gap-s">
+ *   <span class="creo-badge">New</span>
+ *   <span>並べるのは utility、 見た目は component</span>
+ * </div>
+ * ```
+ *
+ * ```js
+ * import '@chronista-club/creo-ui/tokens.css'      // 1. 値 (必須)
+ * import '@chronista-club/creo-ui/components.css'  // 2. component
+ * import '@chronista-club/creo-ui/utilities.css'   // 3. utility (任意)
+ * ```
+ *
+ * gap は creo-ui の **5 tier 語彙** (`xs / s / m / l / xl`) を使う。 数値ではないので
+ * token を変えれば追従する。 意味語彙 (`.creo-gap-sibling` 等) は必要になってから足す
+ * — token が `--layout-gap-sibling` → `var(--spacing-m)` の構造なので、 utility も
+ * **unit を土台に semantic を後から乗せる**形に揃える。
+ */
+
+/* ---------- 並び (主軸の方向) ---------- */
+
+.creo-row {
+  display: flex;
+}
+
+.creo-col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- 揃え ---------- */
+
+/* 交差軸の中央揃え。 主軸は .creo-between で別に指定する (軸を混ぜない) */
+.creo-center {
+  align-items: center;
+}
+
+.creo-between {
+  justify-content: space-between;
+}
+
+/* ---------- 間隔 (5 tier) ---------- */
+
+.creo-gap-xs {
+  gap: var(--spacing-xs);
+}
+
+.creo-gap-s {
+  gap: var(--spacing-s);
+}
+
+.creo-gap-m {
+  gap: var(--spacing-m);
+}
+
+.creo-gap-l {
+  gap: var(--spacing-l);
+}
+
+.creo-gap-xl {
+  gap: var(--spacing-xl);
+}

@@ -60,7 +60,7 @@ export default function Avatar() {
         <div class="docs-component-preview">
           <AvatarLivePreview />
           <div class="docs-preview-row-label">Sizes (initials fallback)</div>
-          <div class="docs-preview-row docs-preview-row--baseline">
+          <div class="creo-row creo-center creo-gap-m docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-size="s">
               <span class="creo-avatar-initials" role="img" aria-label="Mako">
                 M
@@ -83,7 +83,7 @@ export default function Avatar() {
             </span>
           </div>
           <div class="docs-preview-row-label">Shape × Size</div>
-          <div class="docs-preview-row docs-preview-row--baseline">
+          <div class="creo-row creo-center creo-gap-m docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-shape="circle" data-size="l">
               <span class="creo-avatar-initials" role="img" aria-label="Circle">
                 ●
@@ -101,7 +101,7 @@ export default function Avatar() {
             </span>
           </div>
           <div class="docs-preview-row-label">With status dot</div>
-          <div class="docs-preview-row docs-preview-row--baseline">
+          <div class="creo-row creo-center creo-gap-m docs-preview-row docs-preview-row--baseline">
             <span class="creo-avatar" data-size="l">
               <span class="creo-avatar-initials" role="img" aria-label="Online">
                 O
