@@ -64,7 +64,7 @@ owner が Editor Mode の梯子ノブで実ページ・実 font (Gen Interface J
 | **typography.size** (xs–xl) | 12 / 14 / 16 / 18 / 20 px | **13 / 15 / 17 / 18.5 / 20.5 px** (m=17 は Apple HIG body と一致) |
 | **radius** (xs–xl) | 4 / 8 / 15 / 22 / 28 px | **3.5 / 4 / 8 / 17.5 / 21.5 px** (シャープ寄り、card 系の印象が変わる) |
 
-title / body の semantic alias、component の使用箇所は token 参照なので自動追従。`radius.none` / `radius.full`、display / icon scale は据え置き。**migration**: 旧値に依存した見た目を保ちたい consumer は、自 app の `:root` で該当 `--typography-size-*` / `--radius-*` を旧値に上書きする (token 名は不変)。
+title / body の semantic alias、component の使用箇所は token 参照なので自動追従。`radius.none` / `radius.full`、display / icon scale は**値としては**据え置き。ただし `--typography-display-*` / `--typography-icon-*` の 10 変数は `calc(… * var(--typography-scale, 1))` にラップされる形へ emit が変わっている (`typography.scale` ノブに追従させるため)。**値は不変なので実害は無いが、diff を取ると変化として現れる** (consumer feedback により 2026-08-30 追記)。**migration**: 旧値に依存した見た目を保ちたい consumer は、自 app の `:root` で該当 `--typography-size-*` / `--radius-*` を旧値に上書きする (token 名は不変)。
 
 ### editor-host 0.7.0 — Discovery panel と選択の意味論 (#126, #127, #130)
 
