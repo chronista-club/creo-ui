@@ -60,6 +60,11 @@ jobs:
       - name: Tweak var 規約 check
         run: bun run check:tweak-vars
 
+      # WASM は npm の JS と同版でないと「型も build も通るのに実行時だけ壊れる」。
+      # tasks-vision は runtime に版を expose しないので静的に照合する。
+      - name: MediaPipe WASM 版 check
+        run: bun run check:mediapipe
+
       - name: Token diff (Swift / Rust generated は commit 対象)
         # tokens/ を編集した PR が Swift/Rust の generated 更新を
         # 忘れていないか検証する。Web の dist/ は gitignore なので対象外。
