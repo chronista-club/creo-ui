@@ -261,6 +261,39 @@ utility は「並べる」だけを持つ。余白・位置・寸法は従来ど
 | `.cu-center` で主軸が揃わない | `.cu-center` は `align-items` (交差軸) のみ。主軸は `.cu-between` か CSS で `justify-content` を書く |
 | utility が `components.css` に無い | 別ファイル。`utilities.css` を import する (component と別系統であることを構造で示すため意図的に分けている) |
 
+### trial の実測 (catalog site 全面適用後、2026-08-30)
+
+site (64 ページ) へ #167 / #169 で適用した結果。**docs.css 2,621 → 2,522 行 (99 行減)**、
+31 rule から並びの指定が消えた。
+
+| class | 使用 | 評価 |
+|---|---|---|
+| `cu-row` | **84** | 中核 |
+| `cu-center` | **76** | 中核 |
+| `cu-gap-s` | 45 | 定着 |
+| `cu-col` | 22 | 定着 |
+| `cu-gap-xs` | 10 | 定着 |
+| `cu-gap-m` | 8 | 定着 |
+| `cu-between` | 2 | 少ない |
+| **`cu-gap-l`** | **0** | **未使用** |
+| **`cu-gap-xl`** | **0** | **未使用** |
+
+`cu-row` + `cu-center` の 2 つで 160 箇所。事前実測 (anycreative.tech で `flex` 28 /
+`items-center` 26 が最多) の予測どおりだった。
+
+**`cu-gap-l` / `cu-gap-xl` は 1 度も使われていない。** 判断は保留 — サンプルが site 1 つ
+であること、5 tier を途中で切ると語彙の一貫性が崩れることの両方があるため。
+consumer での使用実績が出てから決める。
+
+**切り分けは実運用に耐えた。** 「container 側の指定 (`display:flex` / `align-items` /
+`gap`) は utility、親との関係 (`flex: 1`) と持たないと決めたもの (`min-height` /
+`flex-wrap` / `width`) は CSS」という線引きで 31 rule すべてを処理できた。
+
+**副次的に見つかったもの**: `.docs-color-swatch` / `.docs-dim-scale` /
+`.docs-typo-semantics` / `.docs-component-card` は `padding` + `background` + `border` +
+`border-radius` が `.creo-card` と完全一致 = **component の使い漏れ**。utility を当てようと
+して component 化の候補が見つかった形で、別途扱う。
+
 ### trial の評価軸
 
 定着したら `components.css` への同梱 (= 既定で使える) を検討する。判断材料:
