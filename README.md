@@ -113,6 +113,8 @@ bun run typecheck  # TS 型チェック
 bun run lint       # Biome lint
 bun run test:runtime # Editor Host / Layout / Web / Vision / Frame の既存テスト
 bun run test:components # Solid component の DOM・反応性・unmount 検査（Node 24）
+bun run build:packages # 各パッケージの JS・型・CSS を生成
+bun run test:packages  # build 後、tarball の単独導入・型・browser build・再導入を検査
 ```
 
 `test:runtime` は PR CI と共通の検証入口です。Frame はパッケージ固有の
@@ -120,7 +122,8 @@ bun run test:components # Solid component の DOM・反応性・unmount 検査�
 呼びます。各テストの失敗はコマンド全体の失敗として返ります。
 `test:components` は Vitest + Solid plugin + happy-dom で component を描画します。
 `typecheck` は md-view とこの描画テストも含みます。実ブラウザの描画・IME・読み上げは
-別途確認します。実行環境と検査範囲は [検証ガイド](docs/design/01-runtime-verification.md) を参照。
+別途確認します。Markdown の開発・ビルドにも隣接 repo や Rust / WASM は不要です。
+配布検査の詳細は [単独導入ガイド](docs/design/02-package-install.md)、実行環境と検査範囲は [検証ガイド](docs/design/01-runtime-verification.md) を参照。
 
 Swift / Rust の build は各 package 側で:
 

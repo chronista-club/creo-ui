@@ -2,6 +2,7 @@ import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 import solid from 'vite-plugin-solid'
+import manifest from './package.json' with { type: 'json' }
 
 export default defineConfig({
   plugins: [
@@ -16,7 +17,7 @@ export default defineConfig({
   build: {
     target: 'es2022',
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: resolve(import.meta.dirname, 'src/index.ts'),
       formats: ['es'],
       fileName: () => 'index.js',
     },
@@ -27,8 +28,7 @@ export default defineConfig({
         'solid-js/store',
         'solid-js/h',
         /^solid-js\/.+/,
-        'creo-views',
-        /^creo-views\/.+/,
+        ...Object.keys(manifest.dependencies),
       ],
     },
     sourcemap: true,

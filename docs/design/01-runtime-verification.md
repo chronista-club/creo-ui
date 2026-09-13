@@ -1,6 +1,6 @@
 # 01. Runtime の検証
 
-> **Status**: Draft
+> **Status**: Active
 > **Related**: `mem_1Cf1aYeoBAH5i4surBDEsT`（R01）
 > **対象**: `package.json`, `vitest.config.ts`, `tsconfig.test.json`, `tests/components/`, `.github/workflows/ci.yml`
 
@@ -21,17 +21,11 @@ component test は `tests/components/**/*.test.tsx` に置く。既存 Bun suite
 DOM 更新コードへ変換し、`resolve.dedupe` で workspace 内の Solid runtime を一つに揃える。
 テストを package の配布物や declaration build に含めない。
 
-## Markdown 型検査の前提
+## Markdown 型検査
 
-`md-view` が参照する `creo-views/md` の exports は sibling repo の `dist/` にある。
-新しい checkout では、先に `../creo-views` で `bun install --frozen-lockfile` と
-`bun run build` を実行する。Rust の `wasm32-unknown-unknown` target と `wasm-pack` が必要。
-その後で creo-ui の `bun install --frozen-lockfile` を実行する。`file:` 依存は
-インストール時のファイルを取り込むため、逆順では後から生成された `dist/` が届かない。
-生成済みのローカル `dist/` だけで通った型検査を、clean checkout の保証にしない。
-
-CI / editor-host 公開 / site 公開は `.github/actions/build-creo-views` で同じ
-WASM・TypeScript ビルドを実行する。sibling の配布依存そのものの解消は R02 で扱う。
+R02 で Markdown は公開済みの remark 系パッケージへ移行した。root の型検査に
+md-view も含め、sibling repo・WASM 生成物・site の型スタブは不要。
+配布物の検査は [02-package-install.md](02-package-install.md) を参照。
 
 ## 最初の contract fixture
 
@@ -61,11 +55,13 @@ Editor の global style 復元は R07 の対象なので、テスト間の隔離
 - Frame のテストを root から直接 `bun test packages/frame` で呼ばない。固有の DOM preload が読まれない。
 - Solid plugin を外すと JSX が React 向けに解釈され、描画テストの import が失敗する。
 - Vitest の対象に `packages/**/*.test.ts` を足さない。既存テストは `bun:test` を使用する。
-- md-view の sibling repo 依存は R02 で解消する。本変更は現在の型検査を CI へ接続する。
+- md-view は Markdown と HTML の扱い、描画差し替え、複数ビューの脚注を component test で検査する。
 
 ## Status log
 
 - 2026-09-13: R01-a で既存 runtime テストを PR CI に接続。R01-b で Solid 描画テストと md-view の型検査を追加。
+
+- 2026-09-14: R01 を nightly にマージ。R02 で Markdown の標準 parser 移行に合わせて実行前提を更新。
 
 ## 参照
 

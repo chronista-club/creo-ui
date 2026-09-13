@@ -17,21 +17,10 @@ jobs:
       run:
         working-directory: creo-ui
     steps:
-      # creo-ui は workspace 配下の `creo-ui/` に置く。 sibling として
-      # `creo-views/` も同階層に配置 — `packages/md-view/package.json` の
-      # `"creo-views": "file:../../../creo-views"` (md-view から 3 階層上 =
-      # workspace root) と整合する。 local dev (`~/repos/creo-ui` /
-      # `~/repos/creo-views`) と同 layout。
       - name: Checkout creo-ui
         uses: actions/checkout@v4
         with:
           path: creo-ui
-
-      - name: Checkout creo-views (sibling, required by packages/md-view)
-        uses: actions/checkout@v4
-        with:
-          repository: chronista-club/creo-views
-          path: creo-views
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -40,10 +29,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
-
-      - name: Prepare Markdown parser exports
-        # file: 依存は install 時の生成物を取り込むので、必ず先に build する。
-        uses: ./creo-ui/.github/actions/build-creo-views
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -64,6 +49,12 @@ jobs:
 
       - name: Build tokens (Web / Swift / Rust)
         run: bun run build
+
+      - name: Build package artifacts
+        run: bun run build:packages
+
+      - name: Packed consumer install / types / browser build / locked reinstall
+        run: bun run test:packages
 
       - name: Token pipeline invariants (transforms/pipeline.test.js + color-utils)
         run: bun run test:transforms
