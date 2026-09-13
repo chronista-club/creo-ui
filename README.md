@@ -111,7 +111,13 @@ bun install        # 依存関係のインストール
 bun run build      # 全 platform 向けに token を transform
 bun run typecheck  # TS 型チェック
 bun run lint       # Biome lint
+bun run test:runtime # Editor Host / Layout / Web / Vision / Frame の既存テスト
 ```
+
+`test:runtime` は PR CI と共通の検証入口です。Frame はパッケージ固有の
+`bunfig.toml` で DOM を初期化するため、内部で `packages/frame` の test script を
+呼びます。各テストの失敗はコマンド全体の失敗として返ります。
+Solid component の実描画・ブラウザでの操作検証は、この既存テスト群とは別に整備します。
 
 Swift / Rust の build は各 package 側で:
 

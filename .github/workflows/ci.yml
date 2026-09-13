@@ -46,6 +46,11 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Runtime tests (Editor Host / Layout / Web / Vision / Frame)
+        # Frame は package 内の bunfig.toml で DOM globals を preload する。
+        # root script が package 固有の実行環境を保ち、失敗を CI に返す。
+        run: bun run test:runtime
+
       - name: Build tokens (Web / Swift / Rust)
         run: bun run build
 

@@ -24,6 +24,7 @@
     "site:down": "podman compose down",
     "site:deploy": "bun run site:build && bunx wrangler deploy",
     "gen:themes": "bun scripts/generate-themes.mjs",
+    "test:runtime": "bun test packages/editor-host/src packages/layout/src packages/web/src packages/vision/src && bun run --cwd packages/frame test",
     "test:colors": "bun test transforms/color-utils.test.js",
     "test:transforms": "bun test transforms/",
     "check:drift": "bun scripts/check-docs-drift.mjs",
