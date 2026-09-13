@@ -7,9 +7,6 @@
 #   CLOUDFLARE_API_TOKEN  — "Edit Cloudflare Workers" template の API token
 #   CLOUDFLARE_ACCOUNT_ID — Cloudflare dashboard の Account ID
 #
-# site:build は sibling repo creo-views (PUBLIC) の WASM 成果物に依存するため、
-# creo-ui と creo-views を並列 checkout し、wasm-pack で先に creo-views を build する。
-# 依存関係の詳細: creo-memories mem_1Ccvacu4aEfmaHPzUonWkq
 
 name: Deploy site (doc.anycreative.tech)
 
@@ -27,24 +24,13 @@ jobs:
         with:
           path: creo-ui
 
-      # md-view の file:../../../creo-views が workspace root の sibling を指すため、
-      # creo-ui と並列の path に checkout する
-      - name: Checkout creo-views (sibling)
-        uses: actions/checkout@v4
-        with:
-          repository: chronista-club/creo-views
-          path: creo-views
-
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
-
-      - name: Prepare Markdown parser exports
-        uses: ./creo-ui/.github/actions/build-creo-views
 
       - name: Build site
         working-directory: creo-ui
         run: |
-          bun install
+          bun install --frozen-lockfile
           bun run site:build
 
       - name: Deploy to Cloudflare Workers

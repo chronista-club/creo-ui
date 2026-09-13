@@ -19,19 +19,10 @@ jobs:
       run:
         working-directory: creo-ui
     steps:
-      # creo-ui を nested path に checkout、 creo-views を sibling として
-      # 並行 checkout (packages/md-view の `file:../../../creo-views` 解決のため)。
-      # publish-icons-web.yml と同 layout。
       - name: Checkout creo-ui
         uses: actions/checkout@v4
         with:
           path: creo-ui
-
-      - name: Checkout creo-views (sibling, required by packages/md-view)
-        uses: actions/checkout@v4
-        with:
-          repository: chronista-club/creo-views
-          path: creo-views
 
       - uses: oven-sh/setup-bun@v2
         with:

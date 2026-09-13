@@ -1,7 +1,7 @@
 {
   "name": "creo-ui-md-view",
-  "version": "0.1.0",
-  "description": "creo-ui — Markdown renderer (SolidJS) consuming creo-views/md (WASM-backed mdast parser)",
+  "version": "0.2.0",
+  "description": "Token-aware, extensible SolidJS Markdown viewer powered by remark",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -32,8 +32,7 @@
     "markdown",
     "solid-js",
     "mdast",
-    "renderer",
-    "wasm"
+    "renderer"
   ],
   "publishConfig": {
     "access": "public"
@@ -47,7 +46,16 @@
     "solid-js": "^1.9.0"
   },
   "dependencies": {
-    "creo-views": "file:../../../creo-views"
+    "@types/hast": "^3.0.5",
+    "@types/mdast": "^4.0.4",
+    "hast-util-raw": "^9.1.0",
+    "hast-util-sanitize": "^5.0.2",
+    "mdast-util-to-hast": "^13.2.1",
+    "property-information": "^7.2.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
     "solid-js": "^1.9.15",

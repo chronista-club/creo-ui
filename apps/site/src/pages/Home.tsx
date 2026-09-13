@@ -26,8 +26,8 @@ const FEATURES = [
     cta: 'Playground →',
   },
   {
-    title: 'Content viewers (creo-views)',
-    body: 'Markdown (mdast) / Mermaid / 将来 image / pdf / kdl / json。 Rust = AST SSOT、 TypeScript = 型安全 renderer。',
+    title: 'Markdown viewer',
+    body: 'Markdown をトークンに沿って読みやすく表示。リンク・画像・コードの描画をアプリに合わせて差し替えられます。',
     href: '/content',
     cta: 'Content →',
   },

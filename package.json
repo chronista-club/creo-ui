@@ -13,7 +13,7 @@
     "build:web": "style-dictionary build --config transforms/config.web.js && bun scripts/build-web-components.mjs && bun run --cwd packages/web build:js",
     "build:swift": "style-dictionary build --config transforms/config.swift.js",
     "build:rust": "style-dictionary build --config transforms/config.rust.js",
-    "typecheck": "tsc --noEmit && bun run --cwd packages/md-view typecheck:build && tsc -p tsconfig.test.json --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json --noEmit",
     "lint": "biome check .",
     "format": "biome check . --write",
     "dev": "bun install --silent && bun run --cwd apps/site dev",
@@ -32,7 +32,8 @@
     "check:mediapipe": "bun scripts/check-mediapipe-version.mjs",
     "check:tweak-vars": "bun scripts/check-tweak-vars.mjs",
     "fetch:design": "bun scripts/fetch-creo-ui-design.mjs",
-    "diff:design": "bun scripts/diff-creo-ui-design.mjs"
+    "diff:design": "bun scripts/diff-creo-ui-design.mjs",
+    "test:packages": "node scripts/check-package-install.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.11",

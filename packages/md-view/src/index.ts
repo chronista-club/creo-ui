@@ -1,9 +1,16 @@
 /**
  * creo-ui-md-view — public API
  *
- * SolidJS Markdown renderer consuming creo-views/md (WASM mdast parser).
+ * Display-only Markdown component using the standard mdast ecosystem.
  */
 
-export type { MdNode } from 'creo-views/md'
+export type { Nodes as MdNode, Root as MarkdownRoot } from 'mdast'
 export { CreoMarkdown, type CreoMarkdownProps } from './component'
-export { renderNode } from './render'
+export {
+  type MarkdownCodeProps,
+  type MarkdownComponents,
+  type MarkdownImageProps,
+  type MarkdownLinkProps,
+  type MarkdownRenderOptions,
+  renderNode,
+} from './render'

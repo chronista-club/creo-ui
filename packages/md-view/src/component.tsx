@@ -1,15 +1,16 @@
 /**
  * <CreoMarkdown> — SolidJS Markdown renderer.
  *
- * Async parses text with creo-views/md (WASM), then renders mdast → JSX.
+ * Parses Markdown with remark, then renders sanitized HTML nodes as Solid JSX.
  * On parse error, shows fallback (default: inline error message).
  */
 
-import { type MdNode, parse } from 'creo-views/md'
+import type { Root } from 'mdast'
 import { type Component, createResource, type JSX, Show } from 'solid-js'
-import { renderNode } from './render'
+import { parseMarkdown } from './parse'
+import { type MarkdownRenderOptions, renderNode } from './render'
 
-export interface CreoMarkdownProps {
+export interface CreoMarkdownProps extends MarkdownRenderOptions {
   /** Markdown text to render. */
   text: string
   /** Custom class name on the outer wrapper. */
@@ -19,14 +20,14 @@ export interface CreoMarkdownProps {
   /** Render override on parse error. */
   fallback?: (err: string) => JSX.Element
   /** Lifecycle hook — receives the parsed AST (use for frontmatter access etc.). */
-  onAst?: (ast: MdNode) => void
+  onAst?: (ast: Root) => void
 }
 
 export const CreoMarkdown: Component<CreoMarkdownProps> = (props) => {
   const [ast] = createResource(
     () => props.text,
     async (text) => {
-      const tree = await parse(text)
+      const tree = parseMarkdown(text)
       props.onAst?.(tree)
       return tree
     },
@@ -45,7 +46,7 @@ export const CreoMarkdown: Component<CreoMarkdownProps> = (props) => {
           </Show>
         }
       >
-        {renderNode(ast() as MdNode)}
+        {renderNode(ast() as Root, props)}
       </Show>
     </div>
   )
