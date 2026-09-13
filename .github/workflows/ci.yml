@@ -37,6 +37,10 @@ jobs:
         with:
           bun-version: latest
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
@@ -50,6 +54,9 @@ jobs:
         # Frame は package 内の bunfig.toml で DOM globals を preload する。
         # root script が package 固有の実行環境を保ち、失敗を CI に返す。
         run: bun run test:runtime
+
+      - name: Solid component tests
+        run: bun run test:components
 
       - name: Build tokens (Web / Swift / Rust)
         run: bun run build

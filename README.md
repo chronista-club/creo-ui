@@ -112,12 +112,15 @@ bun run build      # 全 platform 向けに token を transform
 bun run typecheck  # TS 型チェック
 bun run lint       # Biome lint
 bun run test:runtime # Editor Host / Layout / Web / Vision / Frame の既存テスト
+bun run test:components # Solid component の DOM・反応性・unmount 検査（Node 24）
 ```
 
 `test:runtime` は PR CI と共通の検証入口です。Frame はパッケージ固有の
 `bunfig.toml` で DOM を初期化するため、内部で `packages/frame` の test script を
 呼びます。各テストの失敗はコマンド全体の失敗として返ります。
-Solid component の実描画・ブラウザでの操作検証は、この既存テスト群とは別に整備します。
+`test:components` は Vitest + Solid plugin + happy-dom で component を描画します。
+`typecheck` は md-view とこの描画テストも含みます。実ブラウザの描画・IME・読み上げは
+別途確認します。実行環境と検査範囲は [検証ガイド](docs/design/01-runtime-verification.md) を参照。
 
 Swift / Rust の build は各 package 側で:
 

@@ -13,7 +13,7 @@
     "build:web": "style-dictionary build --config transforms/config.web.js && bun scripts/build-web-components.mjs && bun run --cwd packages/web build:js",
     "build:swift": "style-dictionary build --config transforms/config.swift.js",
     "build:rust": "style-dictionary build --config transforms/config.rust.js",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && bun run --cwd packages/md-view typecheck:build && tsc -p tsconfig.test.json --noEmit",
     "lint": "biome check .",
     "format": "biome check . --write",
     "dev": "bun install --silent && bun run --cwd apps/site dev",
@@ -25,6 +25,7 @@
     "site:deploy": "bun run site:build && bunx wrangler deploy",
     "gen:themes": "bun scripts/generate-themes.mjs",
     "test:runtime": "bun test packages/editor-host/src packages/layout/src packages/web/src packages/vision/src && bun run --cwd packages/frame test",
+    "test:components": "vitest run",
     "test:colors": "bun test transforms/color-utils.test.js",
     "test:transforms": "bun test transforms/",
     "check:drift": "bun scripts/check-docs-drift.mjs",
@@ -34,9 +35,14 @@
     "diff:design": "bun scripts/diff-creo-ui-design.mjs"
   },
   "devDependencies": {
-    "style-dictionary": "^5.5.2",
+    "@biomejs/biome": "^2.5.11",
     "@typescript/typescript6": "^6.0.2",
+    "happy-dom": "^20.12.0",
+    "solid-js": "^1.9.15",
+    "style-dictionary": "^5.5.2",
     "typescript": "^7.0.2",
-    "@biomejs/biome": "^2.5.11"
+    "vite": "^8.2.2",
+    "vite-plugin-solid": "^2.11.14",
+    "vitest": "^5.0.0"
   }
 }
