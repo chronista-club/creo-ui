@@ -45,6 +45,9 @@ jobs:
       - name: Install dependencies (root workspace)
         run: bun install --frozen-lockfile
 
+      - name: Prepare Markdown parser exports
+        uses: ./creo-ui/.github/actions/build-creo-views
+
       - name: Typecheck
         run: bun run typecheck
 

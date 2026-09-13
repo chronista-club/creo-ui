@@ -21,6 +21,16 @@ component test は `tests/components/**/*.test.tsx` に置く。既存 Bun suite
 DOM 更新コードへ変換し、`resolve.dedupe` で workspace 内の Solid runtime を一つに揃える。
 テストを package の配布物や declaration build に含めない。
 
+## Markdown 型検査の前提
+
+`md-view` が参照する `creo-views/md` の exports は sibling repo の `dist/` にある。
+新しい checkout では、先に `../creo-views` で `bun install --frozen-lockfile` と
+`bun run build` を実行する。Rust の `wasm32-unknown-unknown` target と `wasm-pack` が必要。
+生成済みのローカル `dist/` だけで通った型検査を、clean checkout の保証にしない。
+
+CI / editor-host 公開 / site 公開は `.github/actions/build-creo-views` で同じ
+WASM・TypeScript ビルドを実行する。sibling の配布依存そのものの解消は R02 で扱う。
+
 ## 最初の contract fixture
 
 - Button: consumer の signal で loading を変更し、同一 DOM の disabled / aria-busy / click が追従する。

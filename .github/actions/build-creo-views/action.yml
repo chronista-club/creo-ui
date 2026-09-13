@@ -1,0 +1,31 @@
+name: Build creo-views
+description: Build the sibling parser's WASM and TypeScript exports before consuming md-view.
+
+# Requires Bun and a creo-views checkout at the workspace root.
+runs:
+  using: composite
+  steps:
+    - name: Setup Rust (wasm32)
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: wasm32-unknown-unknown
+
+    - name: Install wasm-pack
+      uses: taiki-e/install-action@v2
+      with:
+        tool: wasm-pack
+
+    - name: Cache cargo (creo-views wasm)
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/registry
+          creo-views/target
+        key: wasm-creo-views-${{ runner.os }}-${{ hashFiles('creo-views/Cargo.lock', 'creo-views/**/Cargo.toml') }}
+
+    - name: Build creo-views (wasm + ts)
+      shell: bash
+      working-directory: creo-views
+      run: |
+        bun install --frozen-lockfile
+        bun run build
