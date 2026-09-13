@@ -26,6 +26,8 @@ DOM 更新コードへ変換し、`resolve.dedupe` で workspace 内の Solid ru
 `md-view` が参照する `creo-views/md` の exports は sibling repo の `dist/` にある。
 新しい checkout では、先に `../creo-views` で `bun install --frozen-lockfile` と
 `bun run build` を実行する。Rust の `wasm32-unknown-unknown` target と `wasm-pack` が必要。
+その後で creo-ui の `bun install --frozen-lockfile` を実行する。`file:` 依存は
+インストール時のファイルを取り込むため、逆順では後から生成された `dist/` が届かない。
 生成済みのローカル `dist/` だけで通った型検査を、clean checkout の保証にしない。
 
 CI / editor-host 公開 / site 公開は `.github/actions/build-creo-views` で同じ

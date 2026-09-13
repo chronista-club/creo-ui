@@ -41,11 +41,12 @@ jobs:
         with:
           node-version: "24"
 
+      - name: Prepare Markdown parser exports
+        # file: 依存は install 時の生成物を取り込むので、必ず先に build する。
+        uses: ./creo-ui/.github/actions/build-creo-views
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
-
-      - name: Prepare Markdown parser exports
-        uses: ./creo-ui/.github/actions/build-creo-views
 
       - name: Typecheck
         run: bun run typecheck
