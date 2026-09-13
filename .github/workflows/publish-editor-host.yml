@@ -42,6 +42,9 @@ jobs:
           node-version: "24"
           registry-url: "https://registry.npmjs.org"
 
+      - name: Prepare Markdown parser exports
+        uses: ./creo-ui/.github/actions/build-creo-views
+
       - name: Install dependencies (root workspace)
         run: bun install --frozen-lockfile
 

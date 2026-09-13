@@ -37,6 +37,14 @@ jobs:
         with:
           bun-version: latest
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Prepare Markdown parser exports
+        # file: 依存は install 時の生成物を取り込むので、必ず先に build する。
+        uses: ./creo-ui/.github/actions/build-creo-views
+
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
@@ -45,6 +53,14 @@ jobs:
 
       - name: Lint
         run: bun run lint
+
+      - name: Runtime tests (Editor Host / Layout / Web / Vision / Frame)
+        # Frame は package 内の bunfig.toml で DOM globals を preload する。
+        # root script が package 固有の実行環境を保ち、失敗を CI に返す。
+        run: bun run test:runtime
+
+      - name: Solid component tests
+        run: bun run test:components
 
       - name: Build tokens (Web / Swift / Rust)
         run: bun run build
