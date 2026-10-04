@@ -1,8 +1,6 @@
 import {
   bind,
   boolean,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -34,11 +32,7 @@ const TOKENS = [
 
 export default function EmptyState() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.empty-state-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Empty state</h1>
@@ -54,9 +48,9 @@ export default function EmptyState() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground empty state の size / actions / icon / title /
-          description を即時編集できる。 Mode ON 中に playground を click するとその instance に
-          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          description を即時編集できる。 「画面から選ぶ」を押してから playground を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <EmptyStateLivePreview />
@@ -181,9 +175,7 @@ export default function EmptyState() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

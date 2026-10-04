@@ -1,7 +1,5 @@
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   useEditorSelectable,
@@ -48,11 +46,7 @@ const TOKENS = [
 
 export default function Breadcrumbs() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.breadcrumbs-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Breadcrumbs</h1>
@@ -68,9 +62,9 @@ export default function Breadcrumbs() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground breadcrumbs の size / separator
-          を即時編集できる。 Mode ON 中に playground breadcrumbs を click するとその instance に
-          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground breadcrumbs を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <BreadcrumbsLivePreview />
@@ -209,9 +203,7 @@ export default function Breadcrumbs() {
 </nav>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

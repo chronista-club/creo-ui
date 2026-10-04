@@ -38,14 +38,14 @@ export const messages = {
 
   /** Discovery section — このページに居る creo-ui component を並べて選ぶ */
   discovery: {
-    title: { ja: 'このページの component', en: 'Components on this page' },
+    title: { ja: '画面の部品', en: 'Components on screen' },
     empty: {
       ja: 'creo-ui component が見つかりません。',
       en: 'No creo-ui components found on this page.',
     },
     disabled: {
-      ja: 'component discovery は無効です (discoverComponents: false)。',
-      en: 'Component discovery is disabled (discoverComponents: false).',
+      ja: '画面の部品の自動検出は無効です。',
+      en: 'Automatic component discovery is disabled.',
     },
     pickHint: { ja: '選択してノブを出す', en: 'Select to load its knobs' },
     back: { ja: '戻る', en: 'Back' },
@@ -78,8 +78,8 @@ export const messages = {
       en: 'No fields bound to the current selection.',
     },
     noKnobsForComponent: {
-      ja: 'この component にはまだ調整ノブがありません (CSS 側に --_ tweak var が未定義)。',
-      en: 'This component has no knobs yet (no --_ tweak vars declared in its CSS).',
+      ja: 'この部品にはまだ調整項目がありません。',
+      en: 'This component has no adjustments yet.',
     },
     showAllFields: { ja: '全 tool field を表示', en: 'Show all tool fields' },
     // 3-scope sections (D-13)

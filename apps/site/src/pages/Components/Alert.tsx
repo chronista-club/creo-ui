@@ -1,7 +1,5 @@
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -40,11 +38,7 @@ const TOKENS = [
 
 export default function Alert() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.alert-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Alert</h1>
@@ -62,8 +56,9 @@ export default function Alert() {
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground alert の variant / strong / body
           を即時編集できる。 role は variant に応じて自動 (warning/error → "alert"、 info/success →
-          "status")。 Mode ON 中に playground alert を click するとその instance に field が絞られる
-          (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
+          "status")。 「画面から選ぶ」を押してから playground alert を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
         </p>
         <div class="docs-component-preview">
           <AlertLivePreview />
@@ -174,9 +169,7 @@ export default function Alert() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

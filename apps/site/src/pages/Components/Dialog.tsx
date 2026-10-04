@@ -1,7 +1,5 @@
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -51,11 +49,7 @@ export default function Dialog() {
   }
 
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.dialog-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Dialog</h1>
@@ -71,10 +65,10 @@ export default function Dialog() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground dialog の size / variant / title / body
-          を即時編集できる。 Mode ON 中に playground dialog を click するとその instance に field
-          が絞られる (selection)。 playground は inline 表示 (<code>&lt;dialog open&gt;</code>) で
-          modal を出さずに見せる、 真の modal は下の Open ボタンで試せる。{' '}
-          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground dialog を click するとその
+          instance に field が絞られる (selection)。 playground は inline 表示 (
+          <code>&lt;dialog open&gt;</code>) で modal を出さずに見せる、 真の modal は下の Open
+          ボタンで試せる。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <DialogLivePreview />
@@ -261,9 +255,7 @@ export default function Dialog() {
           </a>
         </p>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

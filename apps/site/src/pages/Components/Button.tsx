@@ -2,8 +2,6 @@ import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
   bind,
   boolean,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -56,11 +54,7 @@ const TOKENS = [
 
 export default function Button() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.button-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Button</h1>
@@ -76,9 +70,9 @@ export default function Button() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground button の variant / size / label / state
-          を即時編集できる。 Mode ON 中に playground button を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。{' '}
-          <br />
+          を即時編集できる。 「画面から選ぶ」を押してから playground button を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。 <br />
           padding / corner radius は編集対象にしていない。 button.css は上書き用の tweak var (
           <code>--_btn-pad-x</code> / <code>--_btn-pad-y</code> / <code>--_btn-radius</code>) を
           持っていて、 利用する app 側ではそれを使って自分の文脈に寄せられる。 ただしこの site が
@@ -278,9 +272,7 @@ const [primary, setPrimary] = createSignal(true)
           </a>
         </p>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
