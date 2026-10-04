@@ -1,8 +1,6 @@
 import {
   bind,
   boolean,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   useEditorSelectable,
@@ -56,11 +54,7 @@ const TOKENS = [
 
 export default function Table() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.table-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Table</h1>
@@ -77,9 +71,9 @@ export default function Table() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground table の variant / size / sticky-head
-          を即時編集できる。 Mode ON 中に playground table を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground table を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <TableLivePreview />
@@ -226,9 +220,7 @@ export default function Table() {
 </table>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

@@ -6,10 +6,10 @@
  * internal に隠蔽 (package 内部でのみ使われる)。
  */
 
+export type { EditorLayerProps, EditorSection } from './app-panel'
 // ---------- Binder (Target × Control conductor) ----------
 export type { Binder, BindOptions, Placement } from './binder'
 export { bind } from './binder'
-
 // ---------- Control (UI 操作体系) ----------
 export type {
   BooleanControl,

@@ -1,8 +1,6 @@
 import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -56,11 +54,7 @@ export default function Container() {
   )
 
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.container-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components — Layout</p>
         <h1>Container</h1>
@@ -77,9 +71,9 @@ export default function Container() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground container の size / padding / content
-          を即時編集できる。 Mode ON 中に playground container を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground container を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <ContainerLivePreview />
@@ -146,9 +140,7 @@ export default function Container() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

@@ -1,7 +1,5 @@
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -33,11 +31,7 @@ const TOKENS = [
 
 export default function Avatar() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.avatar-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Avatar</h1>
@@ -53,9 +47,9 @@ export default function Avatar() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground avatar の size / shape / initials
-          を即時編集できる。 Mode ON 中に playground avatar を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground avatar を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <AvatarLivePreview />
@@ -179,9 +173,7 @@ export default function Avatar() {
           </a>
         </p>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

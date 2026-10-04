@@ -422,3 +422,30 @@ src/
 ## License
 
 Apache-2.0 — [LICENSE](https://github.com/chronista-club/creo-ui/blob/main/LICENSE)
+
+## アプリ共通 Editor（0.9.0）
+
+アプリの root に Provider と Layer を一組配置します。各画面では `bind()` で調整項目を
+登録します。`<EditorLayer appName="My App" />` は「アプリ全体」「画面の各部」
+「変更した項目」を表示します。global 以外の登録項目も group ごとに見つけられます。
+
+「画面から選ぶ」を押した間だけクリックを選択として扱い、選択後は通常操作へ戻ります。
+**0.8.x の「Editor を開くとクリックが常時選択になる」挙動から変更されています。**
+Escape は選択操作のキャンセル、選択解除、Editor 終了の順です。
+
+consumer 固有の名前と反映範囲を指定するには、実際の Target ID を `sections` に渡します。
+
+```tsx
+<EditorLayer
+  appName="My App"
+  sections={[
+    { id: 'sidebar', label: 'Sidebar', fieldIds: ['sidebar.fontSize'],
+      scopeLabel: 'Sidebar のすべての項目' },
+  ]}
+/>
+```
+
+`EditorLayerProps` / `EditorSection` 型を公開しています。未登録の ID は表示されません。
+変更一覧の「既定値に戻す」は field.initial への復帰で、Undo 履歴ではありません。
+CSS component の調整は同種すべてに作用します。`selectionRoot` は選べる範囲を制限し、
+CSS の書き込み範囲は変更しません。

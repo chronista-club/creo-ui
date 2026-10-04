@@ -1,7 +1,5 @@
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -37,12 +35,7 @@ const TOKENS = [
 
 export default function Badge() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.badge-editor',
-        discoverTweaks: true,
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Badge</h1>
@@ -60,8 +53,8 @@ export default function Badge() {
           floating inspector panel から playground badge の variant (6 種) / text を即時編集できる。
           padding のノブは page 側の bind ではなく、 badge.css の private tweak var (
           <code>--_badge-*</code>) を editor が CSSOM から自動発見して生成 (F2b、 radius は
-          radius.full = 9999px が sentinel のため slider 化されない)。 Mode ON 中に playground badge
-          を click するとその instance に field が絞られる (selection)。{' '}
+          radius.full = 9999px が sentinel のため slider 化されない)。 「画面から選ぶ」を押してから
+          playground badge を click するとその instance に field が絞られる (selection)。{' '}
           <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
@@ -159,9 +152,7 @@ export default function Badge() {
 <span class="creo-badge" data-variant="info">New</span>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

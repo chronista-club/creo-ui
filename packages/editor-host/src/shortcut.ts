@@ -11,6 +11,7 @@ const DEFAULT_SHORTCUT: EditorShortcut = { ctrl: true, shift: true, key: 'e' }
 export interface ShortcutOptions {
   host: EditorHost
   shortcut?: EditorShortcut
+  cancelPicking?: () => boolean
 }
 
 export function installShortcut(opts: ShortcutOptions): () => void {
@@ -33,6 +34,7 @@ export function installShortcut(opts: ShortcutOptions): () => void {
       return
     }
     if (e.key === 'Escape' && host.mode() === 'on') {
+      if (opts.cancelPicking?.()) return
       // 2 段階退出: selection あれば解除、なければ mode OFF
       if (host.selection()) {
         host.clearSelection()

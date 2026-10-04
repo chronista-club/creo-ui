@@ -1,8 +1,6 @@
 import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -51,11 +49,7 @@ export default function Drawer() {
   }
 
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.drawer-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Drawer</h1>
@@ -72,8 +66,8 @@ export default function Drawer() {
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground drawer の placement / size / title / body
           を即時編集できる。 playground は inline 表示 (<code>&lt;dialog open&gt;</code>) で modal
-          を出さずに見せる — 真の modal は下の Open ボタンで試せる。 Mode ON 中に playground drawer
-          を click するとその instance に field が絞られる (selection)。{' '}
+          を出さずに見せる — 真の modal は下の Open ボタンで試せる。 「画面から選ぶ」を押してから
+          playground drawer を click するとその instance に field が絞られる (selection)。{' '}
           <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
@@ -238,9 +232,7 @@ export default function Drawer() {
 </dialog>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

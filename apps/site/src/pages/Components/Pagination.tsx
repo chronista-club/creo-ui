@@ -1,7 +1,5 @@
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   number,
   select,
   signalTarget,
@@ -58,11 +56,7 @@ const TOKENS = [
 
 export default function Pagination() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.pagination-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Pagination</h1>
@@ -79,9 +73,9 @@ export default function Pagination() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground pagination の variant / size / current page
-          を即時編集できる。 Mode ON 中に playground pagination を click するとその instance に
-          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground pagination を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <PaginationLivePreview />
@@ -301,9 +295,7 @@ export default function Pagination() {
 </nav>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

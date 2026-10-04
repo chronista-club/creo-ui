@@ -2,8 +2,6 @@ import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
   bind,
   boolean,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -45,11 +43,7 @@ const TOKENS = [
 
 export default function Combobox() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.combobox-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Combobox</h1>
@@ -66,9 +60,9 @@ export default function Combobox() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground combobox の variant / size / disabled / label /
-          placeholder を即時編集できる。 Mode ON 中に playground input を click するとその instance
-          に field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A>{' '}
-          の dogfood。
+          placeholder を即時編集できる。 「画面から選ぶ」を押してから playground input を click
+          するとその instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <ComboboxLivePreview />
@@ -201,9 +195,7 @@ export default function Combobox() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

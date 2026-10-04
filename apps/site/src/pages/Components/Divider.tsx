@@ -1,8 +1,6 @@
 import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   useEditorHost,
@@ -49,11 +47,7 @@ const TOKENS = [
 
 export default function Divider() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.divider-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components — Layout</p>
         <h1>Divider</h1>
@@ -69,9 +63,9 @@ export default function Divider() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground divider の orientation / thickness / spacing /
-          variant を即時編集できる。 Mode ON 中に playground divider を click するとその instance に
-          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          variant を即時編集できる。 「画面から選ぶ」を押してから playground divider を click
+          するとその instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <DividerLivePreview />
@@ -163,9 +157,7 @@ export default function Divider() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

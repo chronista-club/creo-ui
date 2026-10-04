@@ -1,8 +1,6 @@
 import {
   bind,
   boolean,
-  EditorHostProvider,
-  EditorLayer,
   signalTarget,
   string,
   useEditorSelectable,
@@ -44,11 +42,7 @@ const TOKENS = [
 
 export default function Switch() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.switch-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Switch</h1>
@@ -64,9 +58,9 @@ export default function Switch() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground switch の checked / disabled / label
-          を即時編集できる。 Mode ON 中に playground switch を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground switch を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <SwitchLivePreview />
@@ -176,9 +170,7 @@ export default function Switch() {
 </label>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

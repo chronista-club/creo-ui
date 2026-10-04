@@ -23,6 +23,8 @@ import { componentDisplayName } from './component-id'
 import type { EditorHost } from './types'
 
 export interface SelectionHandlersOptions {
+  enabled?: () => boolean
+  onSelected?: () => void
   host: EditorHost
   /** F2c: data-editor-fields 無しでも component を選択可能にする逆引き resolver */
   resolver?: ComponentFieldResolver
@@ -177,7 +179,7 @@ export function installSelectionHandlers(opts: SelectionHandlersOptions): () => 
   }
 
   const onMouseOver = (e: MouseEvent): void => {
-    if (host.mode() !== 'on') return
+    if (host.mode() !== 'on' || opts.enabled?.() === false) return
     const target = e.target as Element | null
     if (isInsideEditorLayer(target)) {
       host.setHover(null)
@@ -198,7 +200,7 @@ export function installSelectionHandlers(opts: SelectionHandlersOptions): () => 
   }
 
   const onClick = (e: MouseEvent): void => {
-    if (host.mode() !== 'on') return
+    if (host.mode() !== 'on' || opts.enabled?.() === false) return
     const target = e.target as Element | null
     if (isInsideEditorLayer(target)) return
     const found = findSelectable(target)
@@ -219,6 +221,8 @@ export function installSelectionHandlers(opts: SelectionHandlersOptions): () => 
       rect: found.element.getBoundingClientRect(),
     })
     updateObserved(found.element)
+    host.setHover(null)
+    opts.onSelected?.()
   }
 
   const onRerect = (): void => reRect()

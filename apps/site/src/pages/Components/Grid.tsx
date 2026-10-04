@@ -1,7 +1,5 @@
 import {
   bind,
-  EditorHostProvider,
-  EditorLayer,
   select,
   signalTarget,
   string,
@@ -46,11 +44,7 @@ export default function Grid() {
   )
 
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.grid-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components — Layout</p>
         <h1>Grid</h1>
@@ -67,8 +61,8 @@ export default function Grid() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground grid の columns / gap / cell 数 / cell text
-          を即時編集できる。 Mode ON 中に playground を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          を即時編集できる。 「画面から選ぶ」を押してから playground を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
           dogfood。
         </p>
         <div class="docs-component-preview">
@@ -175,9 +169,7 @@ export default function Grid() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

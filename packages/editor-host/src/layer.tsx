@@ -10,27 +10,15 @@
  * Mode OFF では `visibility: hidden`。Mode ON で floating panel 1 枚 +
  * selection outline を描画する (D-6 非侵襲 — Content の layout は一切変えない)。
  *
- * ## 現在の構成 — Discovery tree + drill-in
- *
- * panel は 2 view を selection state で切り替える:
- *
- * - **tree view** (選択なし): ページの実 DOM から作った creo component の
- *   instance ツリー (Outliner 的)。非 creo 要素は素通し、同 component の
- *   sibling は `×N` に畳む
- * - **detail view** (選択あり): 選んだ component のノブが並ぶ。← で tree へ戻る
- *
- * ツリーはナビゲーションで、編集は component scope のまま (`:root` 書き込み =
- * 全 instance に効く)。選んだ instance は outline の対象と fallback 解決の
- * 基準要素として使う。ページ上の要素クリックも同じ selection state に載るので、
- * どちらの入口から入っても detail view に着地する。
- *
- * 旧 panel が持っていた 3-scope field 一覧 / ThemeEditor / ExportBar は **一旦外した**
- * (`theme-editor.tsx` / `export-bar.tsx` は残置)。段階的に組み直す。
+ * アプリ全体 / 画面の各部 / 変更した項目のナビゲーションは app-panel.tsx。
+ * この module は floating panel の位置、DOM discovery、選択 outline を扱う。
+ * 画面からの選択は明示 picking 中のみ。component class の調整は同種すべてに効く。
  */
 
 import type { JSX } from 'solid-js'
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 import { Portal } from 'solid-js/web'
+import { AppEditorPanel, type EditorLayerProps } from './app-panel'
 import { readClassDeclarations } from './class-overrides'
 import { componentDisplayName, componentIdOfElement, componentSelector } from './component-id'
 import type { ComponentTreeNode } from './component-tree'
@@ -54,7 +42,8 @@ const layerRootStyle = (visible: boolean): JSX.CSSProperties => ({
 // 未ドラッグ時は右上 default (top=--editor-mode-dock-top / right=12px)。
 const panelBaseStyle: JSX.CSSProperties = {
   position: 'fixed',
-  width: 'var(--editor-mode-dock-width, 300px)',
+  width: 'min(var(--editor-mode-dock-width, 360px), calc(100vw - 24px))',
+  'box-sizing': 'border-box',
   'max-height': 'calc(100dvh - var(--editor-mode-dock-top, 0px) - 24px)',
   'overflow-y': 'auto',
   display: 'flex',
@@ -74,7 +63,7 @@ const dragHandleStyle = (dragging: boolean): JSX.CSSProperties => ({
   display: 'flex',
   'align-items': 'center',
   gap: '6px',
-  'font-size': '11px',
+  'font-size': '15px',
   'font-weight': '700',
   color: 'var(--color-text-primary)',
   cursor: dragging ? 'grabbing' : 'grab',
@@ -439,6 +428,7 @@ function GlobalGroup(props: {
           width: '100%',
           ...(props.accent ? { color: props.accent } : {}),
         }}
+        aria-expanded={open()}
         onClick={toggle}
       >
         <span>{open() ? '▾' : '▸'}</span>
@@ -602,7 +592,7 @@ const SIBLING_OUTLINE_MAX = 80
 
 // ---------- EditorLayer ----------
 
-export function EditorLayer(): JSX.Element {
+export function EditorLayer(props: EditorLayerProps = {}): JSX.Element {
   const host = useEditorHost()
   const mode = useEditorMode()
   const selection = useEditorSelection()
@@ -720,28 +710,6 @@ export function EditorLayer(): JSX.Element {
       .fields()
       .filter((f: EditorField) => idSet.has(f.id))
       .sort((a: EditorField, b: EditorField) => (a.order ?? 0) - (b.order ?? 0))
-  }
-
-  /** TOP semantic の framework knob (typography.scale 等)。両 view で常時見せる */
-  const globalFields = (): EditorField[] =>
-    host
-      .fields()
-      .filter((f: EditorField) => f.semantic === 'global')
-      .sort((a: EditorField, b: EditorField) => (a.order ?? 0) - (b.order ?? 0))
-
-  /** group 無しの global field (常時展開) */
-  const globalUngrouped = (): EditorField[] => globalFields().filter((f: EditorField) => !f.group)
-
-  /** group 付き global field (Size scale 等、折りたたみ単位)。挿入順を保つ */
-  const globalGroups = (): [string, EditorField[]][] => {
-    const m = new Map<string, EditorField[]>()
-    for (const f of globalFields()) {
-      if (!f.group) continue
-      const list = m.get(f.group)
-      if (list) list.push(f)
-      else m.set(f.group, [f])
-    }
-    return [...m.entries()]
   }
 
   /** 選択アンカーの祖先 creo component (近い順)。detail の breadcrumb に出す */
@@ -894,11 +862,14 @@ export function EditorLayer(): JSX.Element {
             <header style={panelHeaderStyle}>
               <div style={dragHandleStyle(dragging())} onPointerDown={onHandleDown}>
                 <span style={dotStyle('var(--editor-mode-axis-future)')} />
-                {t(messages.editorMode.label)} {t(messages.editorMode.on)}
+                {props.appName ?? t({ ja: 'このアプリ', en: 'This app' })} · Editor
                 <span style={gripStyle} aria-hidden="true">
                   ⠿
                 </span>
               </div>
+              <button type="button" style={backButtonStyle} onClick={() => host.disable()}>
+                {t({ ja: '閉じる', en: 'Close' })}
+              </button>
               <div style={panelHintStyle}>
                 <kbd style={kbdInlineStyle}>Esc</kbd>{' '}
                 {selection()
@@ -909,101 +880,85 @@ export function EditorLayer(): JSX.Element {
               </div>
             </header>
 
-            <Show
-              when={selection()}
-              fallback={
-                <section style={sectionStyle}>
-                  <GlobalGroup
-                    title={t(messages.discovery.title)}
-                    accent="var(--color-brand-primary)"
-                    count={tree().length}
-                    open={groupOpen('discovery')}
-                    onToggle={(o) => toggleGroup('discovery', o)}
-                  >
-                    <Show
-                      when={resolver}
-                      fallback={<p style={emptyHintStyle}>{t(messages.discovery.disabled)}</p>}
+            <AppEditorPanel {...props} onBrowse={refresh}>
+              <Show
+                when={selection()}
+                fallback={
+                  <section style={sectionStyle}>
+                    <GlobalGroup
+                      title={t(messages.discovery.title)}
+                      accent="var(--color-brand-primary)"
+                      count={tree().length}
+                      open={groupOpen('discovery')}
+                      onToggle={(o) => toggleGroup('discovery', o)}
                     >
                       <Show
-                        when={tree().length > 0}
-                        fallback={<p style={emptyHintStyle}>{t(messages.discovery.empty)}</p>}
+                        when={resolver}
+                        fallback={<p style={emptyHintStyle}>{t(messages.discovery.disabled)}</p>}
                       >
-                        <ul style={listStyle} onMouseLeave={() => hoverNode(null)}>
-                          <For each={tree()}>
-                            {(node) => (
-                              <TreeRow
-                                node={node}
-                                depth={0}
-                                onPick={pick}
-                                onHover={hoverNode}
-                                pickHint={t(messages.discovery.pickHint)}
-                              />
-                            )}
-                          </For>
-                        </ul>
+                        <Show
+                          when={tree().length > 0}
+                          fallback={<p style={emptyHintStyle}>{t(messages.discovery.empty)}</p>}
+                        >
+                          <ul style={listStyle} onMouseLeave={() => hoverNode(null)}>
+                            <For each={tree()}>
+                              {(node) => (
+                                <TreeRow
+                                  node={node}
+                                  depth={0}
+                                  onPick={pick}
+                                  onHover={hoverNode}
+                                  pickHint={t(messages.discovery.pickHint)}
+                                />
+                              )}
+                            </For>
+                          </ul>
+                        </Show>
                       </Show>
-                    </Show>
-                  </GlobalGroup>
-                </section>
-              }
-            >
-              {(sel) => (
-                <section style={sectionStyle}>
-                  <div style={{ display: 'flex', 'align-items': 'center', gap: '8px' }}>
-                    <button type="button" style={backButtonStyle} onClick={back}>
-                      ← {t(messages.discovery.back)}
-                    </button>
-                    <span style={detailTitleStyle}>{sel().targetId}</span>
-                  </div>
-                  {/* 祖先への梯子 — 入れ子の内側を選んだとき、親 component へ 1 click で上がる */}
-                  <Show when={ancestors().length > 0}>
-                    <div style={breadcrumbRowStyle}>
-                      <For each={ancestors()}>
-                        {(a) => (
-                          <button
-                            type="button"
-                            style={breadcrumbItemStyle}
-                            onClick={() => selectElement(a.element, a.componentId)}
-                          >
-                            ↑ {a.componentId}
-                          </button>
-                        )}
-                      </For>
-                    </div>
-                  </Show>
-                  <Show
-                    when={detailFields().length > 0}
-                    fallback={
-                      <p style={emptyHintStyle}>{t(messages.toolPanel.noKnobsForComponent)}</p>
-                    }
-                  >
-                    <For each={detailFields()}>{(field) => <FieldEditor field={field} />}</For>
-                  </Show>
-                  {/* 脱出ハッチ — ノブに無い property は class override で (まずノブ、無ければここ) */}
-                  <Show when={sel().componentId}>
-                    {(cid) => <OtherPropsSection componentId={cid()} />}
-                  </Show>
-                </section>
-              )}
-            </Show>
-
-            {/* Global fields (TOP semantic) — typography.scale 等、常時見える framework knob */}
-            <Show when={globalFields().length > 0}>
-              <section style={sectionStyle}>
-                <For each={globalUngrouped()}>{(field) => <FieldEditor field={field} />}</For>
-                <For each={globalGroups()}>
-                  {([title, fields]) => (
-                    <GlobalGroup
-                      title={title}
-                      open={groupOpen(title)}
-                      onToggle={(o) => toggleGroup(title, o)}
-                    >
-                      <For each={fields}>{(field) => <FieldEditor field={field} />}</For>
                     </GlobalGroup>
-                  )}
-                </For>
-              </section>
-            </Show>
+                  </section>
+                }
+              >
+                {(sel) => (
+                  <section style={sectionStyle}>
+                    <div style={{ display: 'flex', 'align-items': 'center', gap: '8px' }}>
+                      <button type="button" style={backButtonStyle} onClick={back}>
+                        ← {t({ ja: 'アプリ全体へ戻る', en: 'Back to application' })}
+                      </button>
+                      <span style={detailTitleStyle}>{sel().targetId}</span>
+                    </div>
+                    {/* 祖先への梯子 — 入れ子の内側を選んだとき、親 component へ 1 click で上がる */}
+                    <Show when={ancestors().length > 0}>
+                      <div style={breadcrumbRowStyle}>
+                        <For each={ancestors()}>
+                          {(a) => (
+                            <button
+                              type="button"
+                              style={breadcrumbItemStyle}
+                              onClick={() => selectElement(a.element, a.componentId)}
+                            >
+                              ↑ {a.componentId}
+                            </button>
+                          )}
+                        </For>
+                      </div>
+                    </Show>
+                    <Show
+                      when={detailFields().length > 0}
+                      fallback={
+                        <p style={emptyHintStyle}>{t(messages.toolPanel.noKnobsForComponent)}</p>
+                      }
+                    >
+                      <For each={detailFields()}>{(field) => <FieldEditor field={field} />}</For>
+                    </Show>
+                    {/* 脱出ハッチ — ノブに無い property は class override で (まずノブ、無ければここ) */}
+                    <Show when={sel().componentId}>
+                      {(cid) => <OtherPropsSection componentId={cid()} />}
+                    </Show>
+                  </section>
+                )}
+              </Show>
+            </AppEditorPanel>
           </div>
         </Show>
       </div>

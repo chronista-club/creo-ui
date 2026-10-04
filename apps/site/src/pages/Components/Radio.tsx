@@ -1,8 +1,6 @@
 import {
   bind,
   boolean,
-  EditorHostProvider,
-  EditorLayer,
   signalTarget,
   string,
   useEditorSelectable,
@@ -49,11 +47,7 @@ const TOKENS = [
 
 export default function Radio() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.radio-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Radio</h1>
@@ -69,9 +63,10 @@ export default function Radio() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground radio の checked / disabled / label
-          を即時編集できる。 Mode ON 中に playground radio を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood (group 全体は scope 大のため single radio で示す)。
+          を即時編集できる。 「画面から選ぶ」を押してから playground radio を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood (group 全体は scope
+          大のため single radio で示す)。
         </p>
         <div class="docs-component-preview">
           <RadioLivePreview />
@@ -153,9 +148,7 @@ export default function Radio() {
 </fieldset>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 

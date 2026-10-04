@@ -1,8 +1,6 @@
 import {
   bind,
   boolean,
-  EditorHostProvider,
-  EditorLayer,
   signalTarget,
   string,
   useEditorSelectable,
@@ -46,11 +44,7 @@ const TOKENS = [
 
 export default function Menu() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.menu-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Menu (Dropdown)</h1>
@@ -67,8 +61,8 @@ export default function Menu() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground menu の section label / separator / destructive
-          item / item label を即時編集できる。 Mode ON 中に playground menu を click するとその
-          instance に field が絞られる (selection)。{' '}
+          item / item label を即時編集できる。 「画面から選ぶ」を押してから playground menu を click
+          するとその instance に field が絞られる (selection)。{' '}
           <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
@@ -168,9 +162,7 @@ export default function Menu() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
