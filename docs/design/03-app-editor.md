@@ -1,6 +1,6 @@
 # 03. アプリ共通 Editor
 
-> **Status**: Draft
+> **Status**: Active
 > **Related**: `mem_1CfhYLwFUNkDpFgDaxw1z4`、[Editor Mode](editor-mode.md)
 > **対象**: `packages/editor-host/src/{app-panel,layer,provider,selection,shortcut}.tsx`（selection / shortcut は .ts）、`apps/site/src/App.tsx`
 
@@ -73,3 +73,5 @@ package build と tarball 導入検査を維持する。表示は site の実ブ
 
 - 2026-10-05: Chrome desktop / mobile で操作と表示を確認。旧 site の34ページに残った Provider / Layer 二重化を解消。runtime 406件・component 18件、35 exports の fresh / locked install を検証。
 - 2026-10-05: アプリ共通パネル、明示 picking、差分確認を追加。R03 の WIP テストは別ブランチに保持。
+
+- 2026-10-05: PR #173 / #174 を通して main に統合。editor-host-v0.9.0（6aa36a2）として release cut。
