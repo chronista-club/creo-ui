@@ -1,6 +1,5 @@
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   select,
@@ -10,7 +9,6 @@ import {
   useEditorMode,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
-import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
@@ -45,11 +43,7 @@ const TOKENS = [
 
 export default function Combobox() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.combobox-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Combobox</h1>
@@ -66,9 +60,9 @@ export default function Combobox() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground combobox の variant / size / disabled / label /
-          placeholder を即時編集できる。 Mode ON 中に playground input を click するとその instance
-          に field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A>{' '}
-          の dogfood。
+          placeholder を即時編集できる。 「画面から選ぶ」を押してから playground input を click
+          するとその instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <ComboboxLivePreview />
@@ -201,9 +195,7 @@ export default function Combobox() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -258,7 +250,7 @@ function ComboboxLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <div class="creo-form-field" style={{ width: '100%', 'max-width': '360px' }}>
           <label class="creo-form-field-label" for="combobox-playground">
             {label()}
@@ -284,7 +276,7 @@ function ComboboxLivePreview() {
           </datalist>
         </div>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

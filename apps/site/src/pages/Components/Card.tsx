@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   select,
@@ -41,11 +39,7 @@ const TOKENS = [
 
 export default function Card() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.card-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Card</h1>
@@ -60,14 +54,14 @@ export default function Card() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground card の variant / padding / interactive / title /
-          body を即時編集できる。 Mode ON 中に playground card を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          body を即時編集できる。 「画面から選ぶ」を押してから playground card を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <CardLivePreview />
           <div class="docs-preview-row-label">Variants</div>
-          <div class="docs-preview-grid docs-preview-grid--cards">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid docs-preview-grid--cards">
             <article class="creo-card" data-variant="default">
               <h4 style="margin: 0 0 8px 0; font-size: var(--typography-title-card); font-weight: var(--typography-weight-bold); line-height: var(--typography-line-height-tight);">
                 Default
@@ -94,7 +88,7 @@ export default function Card() {
             </article>
           </div>
           <div class="docs-preview-row-label">Paddings</div>
-          <div class="docs-preview-grid docs-preview-grid--cards">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid docs-preview-grid--cards">
             <article class="creo-card" data-padding="s">
               <code style="font-family: var(--typography-family-sans); font-size: var(--typography-size-xs);">
                 data-padding="s"
@@ -180,9 +174,7 @@ export default function Card() {
           </a>
         </p>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -236,7 +228,7 @@ function CardLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <article
           ref={selectable}
           class="creo-card"

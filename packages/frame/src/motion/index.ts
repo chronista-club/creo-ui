@@ -6,22 +6,22 @@
  * (詳細: docs/design/stack-adr.md)。
  */
 
-export { flip, measureRect, type FlipOptions } from './flip'
-export { morphFrame, measureSlots, type MorphFrameOptions } from './morph'
+export { type FlipOptions, flip, measureRect } from './flip'
+export { type MorphFrameOptions, measureSlots, morphFrame } from './morph'
+export { respectsReducedMotion, watchReducedMotion } from './reduced-motion'
 export {
-  ease,
-  duration,
-  easeFromCss,
-  durationFromCss,
-  type EasingName,
-  type DurationName,
-} from './tokens'
-export {
-  springCurve,
-  springEasing,
-  springPreset,
   type SpringCurve,
   type SpringOptions,
   type SpringPreset,
+  springCurve,
+  springEasing,
+  springPreset,
 } from './spring'
-export { respectsReducedMotion, watchReducedMotion } from './reduced-motion'
+export {
+  type DurationName,
+  duration,
+  durationFromCss,
+  type EasingName,
+  ease,
+  easeFromCss,
+} from './tokens'

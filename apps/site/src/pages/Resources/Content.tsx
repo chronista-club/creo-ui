@@ -1,73 +1,35 @@
-import { A } from '@solidjs/router'
 import { CreoMarkdown } from 'creo-ui-md-view'
 
 const SAMPLE_MD = `# Markdown showcase
 
-**creo-ui-md-view** が *creo-views/md* (WASM mdast parser) を消費して描画している demo。
-~~CDN の marked.js~~ ではなく、 自作 Rust crate の出力を SolidJS で render している。
+文章・表・引用・コードを **creo-ui のトークン**に沿って表示します。
 
-## 構造
+## 表とリスト
 
-| Layer | 実装 | サイズ |
-|---|---|---|
-| parser | wooorm/markdown-rs (Rust) | ~459 KB WASM |
-| AST | ts-rs auto-gen | 27 型 |
-| renderer | SolidJS (creo-ui-md-view) | ~9.7 KB |
+| 機能 | 表示 |
+| :--- | ---: |
+| CommonMark | 対応 |
+| GFM の表・タスクリスト | 対応 |
 
-## リスト
+- [x] 読みやすい文字組み
+- [x] アプリごとの描画差し替え
+- [ ] このあと読むこと
 
-- 通常 list item
-- **強調** + *イタリック* + \`inline code\` + [link](https://github.com/chronista-club/creo-views)
-  - ネストも OK
+> 表示するだけなら、Markdown の文字列を渡すだけです。
 
-1. 順序 list 1
-2. 順序 list 2
-
-## Task list (GFM)
-
-- [x] CommonMark + GFM
-- [x] Frontmatter / Admonition / WikiLink (拡張)
-- [ ] Mermaid SVG (Phase 0.2 予定、 stub あり)
-
-## Quote
-
-> mdast = Markdown Abstract Syntax Tree。
-> Rust が SSOT、 TypeScript が型安全に描画する。
+[使い始める](/getting-started) · ~~取り消し線~~ · \`inline code\`
 
 ## Code
 
-\`\`\`ts
-import { CreoMarkdown } from 'creo-ui-md-view'
-
-const App = () => <CreoMarkdown text="# hi" />
+\`\`\`tsx
+<CreoMarkdown text="# hello" />
 \`\`\`
 
-## Mermaid (placeholder until 0.2)
+## 脚注
 
-\`\`\`mermaid
-graph TD
-  A[parse] --> B[mdast]
-  B --> C[render]
-  C --> D[DOM]
-\`\`\`
+複数のビューを並べても脚注の参照先は各ビュー内に収まります。[^note]
 
-## Admonition
-
-:::tip
-Tip block — \`:::tip\` 拡張で paragraph と区別される。
-:::
-
-:::warning
-Warning block — token 経由で色が brand から semantic に切替わる。
-:::
-
-## Wiki link
-
-[[memory:1CYxbqacutvL4shGdsiA6u]] で creo-memories の memory を参照、 [[doc:editor-mode]] で内部 doc。
-
----
-
-End.
+[^note]: これは脚注です。
 `
 
 export default function Content() {
@@ -75,85 +37,48 @@ export default function Content() {
     <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Resources</p>
-        <h1>Content (Markdown)</h1>
+        <h1>Markdown viewer</h1>
         <p class="docs-page-lead">
-          <code>creo-ui-md-view</code> が{' '}
-          <a
-            href="https://github.com/chronista-club/creo-views"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <code>creo-views/md</code>
-          </a>{' '}
-          (WASM-backed mdast parser) を消費して描画する SolidJS renderer。{' '}
-          <strong>Rust が AST の SSOT</strong>、 TypeScript が型安全に描画。 docs site 自身もこの
-          component を dogfood 可能 (将来 docs/design/ MD を render に乗せる)。
+          <code>creo-ui-md-view</code> は Markdown の表示専用コンポーネントです。
+          文字列を渡すだけで表示でき、リンク・画像・コードの描画はアプリに合わせて差し替えられます。
         </p>
       </header>
-
-      <section>
-        <h2 class="docs-section-title">Pipeline</h2>
-        <pre class="docs-code">
-          <code>{`Markdown text
-   │
-   ▼
-[creo-md (Rust)]            wooorm/markdown-rs + 拡張 (Frontmatter/Admonition/WikiLink)
-   │  parse()
-   ▼
-mdast (AST)                 ts-rs 経由で TS 型 auto-gen (27 型)
-   │
-   ▼
-[creo-ui-md-view (Solid)]   <CreoMarkdown text={...} />
-   │  renderNode (22 node type 対応)
-   ▼
-DOM (token-aware)           creo-ui tokens.css に追従`}</code>
-        </pre>
-      </section>
-
       <section>
         <h2 class="docs-section-title">Live preview</h2>
         <div class="docs-component-preview docs-component-preview--md">
           <CreoMarkdown text={SAMPLE_MD} />
         </div>
         <p class="docs-page-helper">
-          theme switcher (Header 右上) で 8 theme 切替 → markdown も含めて全体が連動する。 Mermaid
-          block は Phase 0.2 で SVG render 予定 (<A href="/concepts/frame-system">Frame system</A>{' '}
-          の spatial canvas 拡張で描画)。
+          テーマを切り替えると、Markdown の文字・背景・罫線も追従します。
         </p>
       </section>
-
       <section>
         <h2 class="docs-section-title">使い方</h2>
         <pre class="docs-code">
           <code>{`import { CreoMarkdown } from 'creo-ui-md-view'
+import '@chronista-club/creo-ui/tokens.css'
 import 'creo-ui-md-view/styles.css'
 
-export const App = () => (
-  <CreoMarkdown
-    text="# hello\\n\\n**markdown**"
-    onAst={(ast) => {
-      // frontmatter / 全 mdast tree を consumer 側で受け取れる lifecycle hook
-      console.log(ast)
-    }}
-    fallback={(err) => <div>parse error: {err}</div>}
-  />
-)`}</code>
+<CreoMarkdown text="# hello" />
+
+// code は inline の場合も呼ばれます。
+<CreoMarkdown
+  text={markdown}
+  components={{
+    code: (props) => props.inline
+      ? <code>{props.code}</code>
+      : <pre data-language={props.language}>{props.code}</pre>,
+  }}
+/>`}</code>
         </pre>
       </section>
-
       <section>
-        <h2 class="docs-section-title">対応 node</h2>
+        <h2 class="docs-section-title">HTML と拡張</h2>
         <p class="docs-page-helper">
-          22 node type を網羅 — CommonMark + GFM + 3 拡張 (Frontmatter / Admonition / WikiLink)。
-          詳細は{' '}
-          <a
-            href="https://github.com/chronista-club/creo-ui/blob/main/packages/md-view/README.md"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            creo-ui-md-view/README.md
-          </a>{' '}
-          参照。
+          HTML は既定で文字として表示します。<code>allowHtml</code> を指定すると、 サニタイズ後の
+          HTML を表示します。Mermaid は通常のコードブロックとして表示され、 図にしたい場合は{' '}
+          <code>components.code</code> で描画を渡せます。 独自 WikiLink・admonition
+          記法は通常のリンク・引用へ移行してください。
         </p>
       </section>
     </>

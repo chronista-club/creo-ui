@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   number,
   select,
@@ -38,11 +36,7 @@ const TOKENS = [
 
 export default function Skeleton() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.skeleton-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Skeleton</h1>
@@ -60,14 +54,17 @@ export default function Skeleton() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground skeleton の shape / width / height
-          を即時編集できる。 Mode ON 中に playground skeleton を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground skeleton を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <SkeletonLivePreview />
           <div class="docs-preview-row-label">Shapes</div>
-          <div class="docs-preview-stack" style={{ width: '320px', gap: 'var(--spacing-s)' }}>
+          <div
+            class="cu-col cu-gap-s docs-preview-stack"
+            style={{ width: '320px', gap: 'var(--spacing-s)' }}
+          >
             <span class="creo-skeleton" data-shape="text" data-size="l" />
             <span class="creo-skeleton" data-shape="text" />
             <span class="creo-skeleton" data-shape="text" data-size="s" />
@@ -178,9 +175,7 @@ export default function Skeleton() {
 </article>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -219,7 +214,7 @@ function SkeletonLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <span
           ref={selectable}
           class="creo-skeleton"

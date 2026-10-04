@@ -1,6 +1,5 @@
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   select,
@@ -10,7 +9,6 @@ import {
   useEditorMode,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
-import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
@@ -47,11 +45,7 @@ const TOKENS = [
 
 export default function Accordion() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.accordion-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Accordion</h1>
@@ -68,9 +62,9 @@ export default function Accordion() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground accordion の variant / exclusive / open state /
-          title を即時編集できる。 Mode ON 中に playground accordion を click するとその instance に
-          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          title を即時編集できる。 「画面から選ぶ」を押してから playground accordion を click
+          するとその instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <AccordionLivePreview />
@@ -190,9 +184,7 @@ export default function Accordion() {
 <details class="creo-accordion" name="faq"><summary>...</summary>...</details>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -243,7 +235,7 @@ function AccordionLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* container は selection の ref と幅制約だけを持つ。 .creo-accordion は
             各 details 側 (= 1 disclosure) に付ける。 */}
         <div ref={selectable} style={{ width: '100%', 'max-width': '480px' }}>
@@ -283,7 +275,7 @@ function AccordionLivePreview() {
           </details>
         </div>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

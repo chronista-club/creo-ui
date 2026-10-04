@@ -5,18 +5,18 @@
  * docs/design/frame-system.md F-1〜F-3 の reference 実装。
  */
 
-export type { Frame, SlotPlacement, FrameTransition } from './types'
 export {
-  FrameProvider,
-  useFrame,
-  type FrameProviderProps,
   type FrameContextValue,
+  FrameProvider,
+  type FrameProviderProps,
+  useFrame,
 } from './provider'
 export { FrameSlot, type FrameSlotProps } from './slot'
+export type { Frame, FrameTransition, SlotPlacement } from './types'
 export {
+  buildTransformString,
   DEFAULT_PLACEMENT,
   formatLength,
   formatPerspective,
-  buildTransformString,
   mergePlacement,
 } from './utils'

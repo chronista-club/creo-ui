@@ -36,7 +36,7 @@ export function DimensionScale(props: {
             data-editor-selectable-id={t.editorField ? t.name : undefined}
           >
             <code class="docs-dim-name">{t.name}</code>
-            <div class="docs-dim-visual-wrap">
+            <div class="cu-row cu-center docs-dim-visual-wrap">
               {props.type === 'spacing' ? (
                 <div
                   class="docs-dim-visual docs-dim-visual--spacing"

@@ -13,7 +13,7 @@ export type CameraPermissionState = 'unknown' | 'granted' | 'denied' | 'pending'
  */
 export async function getCameraPermission(): Promise<CameraPermissionState> {
   if (typeof navigator === 'undefined') return 'unknown'
-  if (!navigator.permissions || !navigator.permissions.query) return 'unknown'
+  if (!navigator.permissions?.query) return 'unknown'
   try {
     // 'camera' は PermissionName の Permissions API 拡張 (lib.dom.d.ts のバージョンによる)
     const status = await navigator.permissions.query({

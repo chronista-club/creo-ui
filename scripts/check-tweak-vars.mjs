@@ -14,7 +14,7 @@
  *
  * 実行: bun scripts/check-tweak-vars.mjs
  */
-import { readFileSync, readdirSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 
 const ROOT = path.resolve(import.meta.dir, '..')

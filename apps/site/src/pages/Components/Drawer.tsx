@@ -1,6 +1,5 @@
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   select,
   signalTarget,
@@ -9,9 +8,8 @@ import {
   useEditorMode,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
-import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
-import { type JSX, createSignal } from 'solid-js'
+import { createSignal, type JSX } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
 
 const PROPS = [
@@ -51,11 +49,7 @@ export default function Drawer() {
   }
 
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.drawer-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Drawer</h1>
@@ -72,14 +66,14 @@ export default function Drawer() {
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground drawer の placement / size / title / body
           を即時編集できる。 playground は inline 表示 (<code>&lt;dialog open&gt;</code>) で modal
-          を出さずに見せる — 真の modal は下の Open ボタンで試せる。 Mode ON 中に playground drawer
-          を click するとその instance に field が絞られる (selection)。{' '}
+          を出さずに見せる — 真の modal は下の Open ボタンで試せる。 「画面から選ぶ」を押してから
+          playground drawer を click するとその instance に field が絞られる (selection)。{' '}
           <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <DrawerLivePreview />
           <div class="docs-preview-row-label">Open drawer (modal)</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" onClick={openRight}>
               Right drawer
             </button>
@@ -238,9 +232,7 @@ export default function Drawer() {
 </dialog>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -297,7 +289,7 @@ function DrawerLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* inline 表示 (open attribute + position: static override) — modal でなく直接 view。
             width は right/left の data-size に追従、 height は stage 用に固定 */}
         <dialog
@@ -330,7 +322,7 @@ function DrawerLivePreview() {
           </footer>
         </dialog>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

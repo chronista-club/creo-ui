@@ -7,61 +7,57 @@
  * 詳細は ../README.md と docs/design/vision-input.md。
  */
 
-// Types
-export type {
-  Point3D,
-  HandPinch,
-  HandPointing,
-  HeadPose,
-  FaceMesh,
-  GestureEvent,
-  VisionState,
-  VisionConfig,
-} from './types'
-
-// Source interface (plug-in基盤)
-export type { VisionSource, VisionListener, VisionUpdate } from './source'
-
-// Provider + hooks
 export {
-  VisionProvider,
-  useVision,
-  type VisionProviderProps,
-  type VisionContextValue,
-} from './provider'
-export {
-  useVisionState,
-  useHandPinch,
-  useHandPointing,
-  useHeadPose,
   useFaceMesh,
   useFacePresence,
   useGesture,
+  useHandPinch,
+  useHandPointing,
+  useHeadPose,
+  useVisionState,
 } from './hooks'
-
 // Permission helpers
 export {
+  type CameraPermissionState,
   getCameraPermission,
   requestCameraStream,
   stopCameraStream,
-  type CameraPermissionState,
 } from './permission'
 
-// Pure utilities
+// Provider + hooks
 export {
-  distance3D,
-  distance2D,
-  isPinchActive,
-  pinchCenter,
-  normalizeAngle,
-  clamp,
-  toViewportPixel,
-} from './utils'
-
+  useVision,
+  type VisionContextValue,
+  VisionProvider,
+  type VisionProviderProps,
+} from './provider'
 // Smoothing (One-Euro filter for jitter reduction)
 export {
+  applyGain,
   OneEuroFilter,
   Point3DSmoother,
-  applyGain,
   type SmoothingOptions,
 } from './smoothing'
+// Source interface (plug-in基盤)
+export type { VisionListener, VisionSource, VisionUpdate } from './source'
+// Types
+export type {
+  FaceMesh,
+  GestureEvent,
+  HandPinch,
+  HandPointing,
+  HeadPose,
+  Point3D,
+  VisionConfig,
+  VisionState,
+} from './types'
+// Pure utilities
+export {
+  clamp,
+  distance2D,
+  distance3D,
+  isPinchActive,
+  normalizeAngle,
+  pinchCenter,
+  toViewportPixel,
+} from './utils'

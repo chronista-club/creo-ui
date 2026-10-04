@@ -10,12 +10,8 @@
   color: var(--color-text-primary);
   /* font 一本化 (2026-07): root font は consumer の :root (唯一の sans stack) から
      継承する。 md-view 側で font-family を再宣言しない。 */
-  font-size: var(--typography-size-base);
+  font-size: var(--typography-size-m);
   line-height: var(--typography-line-height-normal);
-}
-
-.creo-md > * + * {
-  margin-top: var(--spacing-md);
 }
 
 /* Headings */
@@ -29,30 +25,30 @@
   font-weight: var(--typography-weight-bold);
   line-height: var(--typography-line-height-tight);
   margin-top: var(--spacing-xl);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-s);
 }
 
 .creo-md h1 {
-  font-size: var(--typography-size-3xl);
+  font-size: var(--typography-title-page);
 }
 .creo-md h2 {
-  font-size: var(--typography-size-2xl);
+  font-size: var(--typography-title-section);
 }
 .creo-md h3 {
-  font-size: var(--typography-size-xl);
+  font-size: var(--typography-title-subsection);
 }
 .creo-md h4 {
-  font-size: var(--typography-size-l);
+  font-size: var(--typography-title-card);
 }
 .creo-md h5 {
-  font-size: var(--typography-size-base);
+  font-size: var(--typography-size-m);
 }
 .creo-md h6 {
   font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
 }
 
-.creo-md p {
+.creo-md :where(p) {
   margin: 0;
 }
 
@@ -95,7 +91,7 @@
   background: var(--color-surface-bg-subtle);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-m);
-  padding: var(--spacing-md);
+  padding: var(--spacing-m);
   overflow-x: auto;
   line-height: var(--typography-line-height-normal);
 }
@@ -106,16 +102,15 @@
 }
 
 /* Blockquote */
-.creo-md blockquote {
+.creo-md :where(blockquote) {
   margin: 0;
-  padding-left: var(--spacing-md);
+  padding-left: var(--spacing-m);
   border-left: 3px solid var(--color-surface-border);
   color: var(--color-text-secondary);
 }
 
 /* Lists */
-.creo-md ul,
-.creo-md ol {
+.creo-md :where(ul, ol) {
   padding-left: var(--spacing-xl);
   margin: 0;
 }
@@ -127,7 +122,7 @@
 
 .creo-md-task {
   list-style: none;
-  margin-left: calc(-1 * var(--spacing-md));
+  margin-left: calc(-1 * var(--spacing-m));
   display: flex;
   align-items: baseline;
   gap: var(--spacing-xs);
@@ -165,7 +160,7 @@
 .creo-md-table th,
 .creo-md-table td {
   border: 1px solid var(--color-surface-border);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-s) var(--spacing-m);
   text-align: left;
 }
 
@@ -174,73 +169,25 @@
   font-weight: var(--typography-weight-bold);
 }
 
-/* Admonition */
-.creo-md-admonition {
-  border-left: 3px solid var(--color-brand-primary);
-  background: var(--color-surface-bg-subtle);
-  padding: var(--spacing-md);
-  border-radius: var(--radius-s);
-}
-
-.creo-md-admonition[data-kind="warning"] {
-  border-left-color: var(--color-semantic-warning);
-}
-.creo-md-admonition[data-kind="danger"] {
-  border-left-color: var(--color-semantic-error);
-}
-.creo-md-admonition[data-kind="tip"] {
-  border-left-color: var(--color-semantic-success);
-}
-.creo-md-admonition[data-kind="info"] {
-  border-left-color: var(--color-semantic-info);
-}
-
-.creo-md-admonition-title {
-  font-weight: var(--typography-weight-bold);
-  margin-bottom: var(--spacing-xs);
-}
-
-/* WikiLink */
-.creo-md-wikilink {
-  color: var(--color-brand-secondary);
-  text-decoration: none;
-  border-bottom: 1px dashed currentColor;
-}
-
-.creo-md-wikilink[data-link-type="creo"] {
-  color: var(--color-brand-primary);
-}
-
-/* Mermaid placeholder (Phase 0.1) */
-.creo-md-mermaid-placeholder {
-  border: 1px dashed var(--color-surface-border);
-  border-radius: var(--radius-m);
-  padding: var(--spacing-md);
-  background: var(--color-surface-bg-subtle);
-}
-
-.creo-md-mermaid-placeholder-label {
-  font-size: var(--typography-size-xs);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--spacing-xs);
-  font-style: italic;
-}
-
-.creo-md-mermaid-placeholder pre {
-  margin: 0;
-  background: transparent;
-  border: 0;
-  padding: 0;
-  font-size: var(--typography-size-s);
-}
-
 /* Error */
 .creo-md-error {
   color: var(--color-semantic-error);
   font-family: var(--typography-family-sans);
   font-size: var(--typography-size-s);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-s) var(--spacing-m);
   border: 1px solid var(--color-semantic-error);
   border-radius: var(--radius-s);
   background: var(--color-surface-bg-subtle);
+}
+
+/* Flow spacing has lower specificity than heading-specific margins. */
+.creo-md > * + * {
+  margin-block-start: var(--spacing-m);
+}
+
+.creo-md-table :is(th, td)[align="center"] {
+  text-align: center;
+}
+.creo-md-table :is(th, td)[align="right"] {
+  text-align: right;
 }

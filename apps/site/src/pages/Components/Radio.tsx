@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   signalTarget,
@@ -49,11 +47,7 @@ const TOKENS = [
 
 export default function Radio() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.radio-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Radio</h1>
@@ -69,14 +63,15 @@ export default function Radio() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground radio の checked / disabled / label
-          を即時編集できる。 Mode ON 中に playground radio を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood (group 全体は scope 大のため single radio で示す)。
+          を即時編集できる。 「画面から選ぶ」を押してから playground radio を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood (group 全体は scope
+          大のため single radio で示す)。
         </p>
         <div class="docs-component-preview">
           <RadioLivePreview />
           <div class="docs-preview-row-label">Group (vertical)</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <label class="creo-radio">
               <input type="radio" class="creo-radio-input" name="theme-demo" value="light" />
               <span>Light</span>
@@ -91,7 +86,7 @@ export default function Radio() {
             </label>
           </div>
           <div class="docs-preview-row-label">Disabled</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <label class="creo-radio">
               <input type="radio" class="creo-radio-input" name="d-demo" disabled />
               <span>Disabled</span>
@@ -153,9 +148,7 @@ export default function Radio() {
 </fieldset>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -192,7 +185,7 @@ function RadioLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <label ref={selectable} class="creo-radio">
           <input
             type="radio"

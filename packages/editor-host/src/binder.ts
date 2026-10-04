@@ -11,8 +11,9 @@
  *
  * 内部は EditorHost の register を使うが、consumer からは見えない抽象。
  */
-import { createSignal, onCleanup } from 'solid-js'
+
 import type { Accessor } from 'solid-js'
+import { createSignal, onCleanup } from 'solid-js'
 import type { Control } from './control'
 import { useEditorHost } from './provider'
 import type { Target } from './target'

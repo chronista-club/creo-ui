@@ -18,8 +18,9 @@
  * - persistence は無し (梯子ノブと同じ調整セッション用)。export は
  *   `cssFor()` が返す rule block を copy して component CSS への変更提案にする
  */
-import { createSignal } from 'solid-js'
+
 import type { Accessor } from 'solid-js'
+import { createSignal } from 'solid-js'
 import { componentSelector } from './component-id'
 
 export interface ClassDeclaration {

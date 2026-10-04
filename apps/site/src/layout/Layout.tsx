@@ -5,11 +5,11 @@ import Sidebar from './Sidebar'
 
 export default function Layout(props: { children?: JSX.Element }) {
   return (
-    <div class="docs-shell">
+    <div class="cu-col docs-shell">
       <Header />
-      <div class="docs-body">
+      <div class="cu-row docs-body">
         <Sidebar />
-        <main class="docs-main">
+        <main class="cu-col docs-main">
           <article class="docs-article">{props.children}</article>
           <Footer />
         </main>

@@ -1,7 +1,7 @@
 import { EditorHostProvider, EditorLayer } from '@chronista-club/creo-ui-editor-host'
 import { Navigate, Route, Router } from '@solidjs/router'
-import { lazy } from 'solid-js'
 import type { JSX } from 'solid-js'
+import { lazy } from 'solid-js'
 import Layout from './layout/Layout'
 
 // Editor Mode は site 全体で 1 host (一本化 2026-08-13)。どのページでも
@@ -14,12 +14,11 @@ function Root(props: { children?: JSX.Element }) {
         localStorageNamespace: 'creo-ui-site',
         // selectionRoot は指定しない (= body 全体)。site chrome (Header / Sidebar /
         // ThemeSwitcher) も creo component なので Editor の編集対象に含める
-        // (owner 判断 2026-08-14)。Editor Mode ON 中の nav click は選択になる
-        // (selection.ts が preventDefault) — 移動したいときは Esc で OFF に
+        // 通常の nav click はそのまま操作できる。「画面から選ぶ」の間だけ選択になる
       }}
     >
       <Layout>{props.children}</Layout>
-      <EditorLayer />
+      <EditorLayer appName="creo-ui" />
     </EditorHostProvider>
   )
 }

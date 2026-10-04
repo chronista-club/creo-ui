@@ -88,7 +88,7 @@ function toYaml(entries: Entry[], indent: number): string {
 
 function yamlKey(id: string): string {
   // dot-notation を安全に quote (yaml の key として単純な場合は quote 不要)
-  if (/^[A-Za-z_][\w.\-]*$/.test(id)) return id
+  if (/^[A-Za-z_][\w.-]*$/.test(id)) return id
   return JSON.stringify(id)
 }
 

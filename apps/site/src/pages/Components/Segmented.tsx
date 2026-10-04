@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   select,
@@ -46,11 +44,7 @@ const TOKENS = [
 
 export default function Segmented() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.segmented-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Segmented</h1>
@@ -67,9 +61,9 @@ export default function Segmented() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground segmented の selected / size / width / option
-          label を即時編集できる。 Mode ON 中に playground segmented を click するとその instance に
-          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          label を即時編集できる。 「画面から選ぶ」を押してから playground segmented を click
+          するとその instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <SegmentedLivePreview />
@@ -197,9 +191,7 @@ export default function Segmented() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -253,7 +245,7 @@ function SegmentedLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <div
           class="creo-segmented"
           data-size={size()}

@@ -1,6 +1,5 @@
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   select,
   signalTarget,
@@ -9,7 +8,6 @@ import {
   useEditorMode,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
-import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
@@ -56,11 +54,7 @@ export default function Container() {
   )
 
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.container-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components — Layout</p>
         <h1>Container</h1>
@@ -77,9 +71,9 @@ export default function Container() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground container の size / padding / content
-          を即時編集できる。 Mode ON 中に playground container を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground container を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <ContainerLivePreview />
@@ -146,9 +140,7 @@ export default function Container() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -191,7 +183,7 @@ function ContainerLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* subtle bg = container の実 extent (max-width)、 内側 dashed box が padding を可視化 */}
         <div
           ref={selectable}
@@ -217,7 +209,7 @@ function ContainerLivePreview() {
           </div>
         </div>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

@@ -1,6 +1,5 @@
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   select,
   signalTarget,
@@ -8,7 +7,6 @@ import {
   useEditorMode,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
-import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
@@ -49,11 +47,7 @@ const TOKENS = [
 
 export default function Divider() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.divider-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components — Layout</p>
         <h1>Divider</h1>
@@ -69,9 +63,9 @@ export default function Divider() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground divider の orientation / thickness / spacing /
-          variant を即時編集できる。 Mode ON 中に playground divider を click するとその instance に
-          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          variant を即時編集できる。 「画面から選ぶ」を押してから playground divider を click
+          するとその instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <DividerLivePreview />
@@ -163,9 +157,7 @@ export default function Divider() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -220,7 +212,7 @@ function DividerLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* orientation で flex 方向を切替 — hr element は作り直さず attribute のみ変える */}
         <div
           style={{
@@ -245,7 +237,7 @@ function DividerLivePreview() {
           <span>Section B</span>
         </div>
       </div>
-      <div class="docs-preview-grid">
+      <div class="cu-row cu-gap-s cu-center docs-preview-grid">
         <CUButton variant="ghost" size="s" pressed={mode() === 'on'} onClick={() => host.toggle()}>
           Editor Mode: {mode() === 'on' ? 'ON' : 'OFF'}
         </CUButton>

@@ -88,7 +88,7 @@ export default function Icons() {
       <For each={CATEGORIES}>
         {(cat) => (
           <section class="docs-icons-category">
-            <header class="docs-icons-category-head">
+            <header class="cu-row cu-between cu-gap-s docs-icons-category-head">
               <h3>{cat.name}</h3>
               <span class="docs-icons-source">{cat.source}</span>
             </header>

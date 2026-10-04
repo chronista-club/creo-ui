@@ -9,14 +9,14 @@
  * 検査軸:
  *   1. import specifier   — @chronista-club/* が packages/* の exports に実在するか
  *   2. .creo-* class      — components CSS に定義があるか
- *   3. CSS custom property — tokens.css / components.css / docs.css に定義があるか
+ *   3. CSS custom property — tokens.css / components.css / utilities.css / docs.css に定義があるか
  *   4. data-* 属性         — component CSS の [data-...] selector に **名前と値の組** が
  *                            実在するか (名前だけの照合では stepper の事故を拾えない)
  *
  * 前提: packages/web/dist/ が build 済みであること (`bun run build:web`)。
  * 実行: `bun run check:drift` (repo root)。drift があれば exit 1。
  */
-import { existsSync, readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 
 const ROOT = path.resolve(import.meta.dir, '..')
@@ -62,6 +62,9 @@ const componentCss = readdirSync(componentCssDir)
 const allCss = [
   componentCss,
   readFileSync(distCss, 'utf-8'),
+  // utility 層 (.cu-row / .creo-gap-* 等)。 component とは別系統で
+  // components/ の外に置いてあるため個別に読む (docs/design/utility-layer.md)
+  readFileSync(path.join(ROOT, 'packages/web/src/utilities.css'), 'utf-8'),
   readFileSync(path.join(ROOT, 'apps/site/src/styles/docs.css'), 'utf-8'),
 ].join('\n')
 

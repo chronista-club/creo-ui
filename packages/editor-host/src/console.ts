@@ -10,17 +10,17 @@
  * 側の bind() が SolidJS の provider context 内で実行される。
  */
 import { type Owner, runWithOwner } from 'solid-js'
-import { type BindOptions, type Binder, type Placement, bind } from './binder'
+import { type Binder, type BindOptions, bind } from './binder'
 import {
   type BooleanControl,
-  type ColorControl,
-  type NumberControl,
-  type SelectControl,
-  type StringControl,
   boolean as booleanControl,
+  type ColorControl,
   color,
+  type NumberControl,
   number,
   readonlyText,
+  type SelectControl,
+  type StringControl,
   select,
   string as stringControl,
 } from './control'
@@ -138,10 +138,7 @@ export interface ConsoleApi {
    * tokens/*.json の `$value` を書き換える。Vite plugin `creoTokensPlugin` が
    * 同 endpoint を listen している前提。production では fetch 失敗 or 404 が返る。
    */
-  commitToTokens(opts?: {
-    endpoint?: string
-    onlyChanged?: boolean
-  }): Promise<{
+  commitToTokens(opts?: { endpoint?: string; onlyChanged?: boolean }): Promise<{
     applied: { id: string; value: unknown; file: string }[]
     skipped: string[]
   }>

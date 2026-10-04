@@ -4,14 +4,15 @@
  * RIGHT region (panel) 向けは縦並び (`<FieldEditor>`)、TOP region (inline)
  * 向けは横並びコンパクト (`<FieldEditorInline>`) の 2 variants を提供。
  */
-import { For, Show } from 'solid-js'
+
 import type { JSX } from 'solid-js'
+import { For, Show } from 'solid-js'
 import { messages, useT } from './i18n'
 import {
+  formatOklch,
   OKLCH_C_MAX,
   type Oklch,
   type OklchChannel,
-  formatOklch,
   oklchTrackGradient,
   parseOklch,
 } from './oklch'
@@ -368,10 +369,7 @@ function OklchEditor(props: {
   )
 }
 
-function BooleanEditor(props: {
-  value: boolean
-  onChange: (v: boolean) => void
-}): JSX.Element {
+function BooleanEditor(props: { value: boolean; onChange: (v: boolean) => void }): JSX.Element {
   return (
     <div style={rowStyle}>
       <input
@@ -411,10 +409,7 @@ function SelectEditor(props: {
   )
 }
 
-function StringEditor(props: {
-  value: string
-  onChange: (v: string) => void
-}): JSX.Element {
+function StringEditor(props: { value: string; onChange: (v: string) => void }): JSX.Element {
   return (
     <div style={rowStyle}>
       <input

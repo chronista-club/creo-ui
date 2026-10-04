@@ -1,4 +1,4 @@
-import { type Component, For, Show, createMemo } from 'solid-js'
+import { type Component, createMemo, For, Show } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import styles from './CURail.module.css'
 import { type RailDef, railById, railsByOrder, selectRailId } from './railRegistry'

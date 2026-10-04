@@ -5,10 +5,19 @@
  * `useEditorFields()` / `useEditorValue<T>()` / `useEditorSelectable()` が
  * 使える。provider 自身が shortcut + selection handler を install / teardown する。
  */
-import { createContext, getOwner, onCleanup, onMount, useContext } from 'solid-js'
+
 import type { JSX, ParentProps } from 'solid-js'
+import {
+  createContext,
+  createEffect,
+  createSignal,
+  getOwner,
+  onCleanup,
+  onMount,
+  useContext,
+} from 'solid-js'
 import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
-import { BRAND_COLOR_VARS, SURFACE_COLOR_VARS, createOklchColorControl } from './brand-color'
+import { BRAND_COLOR_VARS, createOklchColorControl, SURFACE_COLOR_VARS } from './brand-color'
 import { type ClassOverrides, createClassOverrides } from './class-overrides'
 import { type ComponentFieldResolver, createComponentFieldResolver } from './component-fields'
 import { buildConsoleApi, installConsoleApi } from './console'
@@ -21,6 +30,17 @@ import type { EditorField, EditorHost, EditorHostConfig } from './types'
 import { installUrlSync, shareUrl } from './url-sync'
 
 const EditorHostContext = createContext<EditorHost>()
+
+const PickingContext = createContext<{
+  active: () => boolean
+  toggle: () => void
+  cancel: () => boolean
+}>()
+export function useEditorPicking() {
+  const context = useContext(PickingContext)
+  if (!context) throw new Error('EditorLayer must be inside EditorHostProvider')
+  return context
+}
 
 /** F2c resolver。`discoverComponents: false` のときは undefined */
 const ComponentResolverContext = createContext<ComponentFieldResolver | undefined>()
@@ -64,6 +84,25 @@ export interface EditorHostProviderProps {
 
 export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>): JSX.Element {
   const host = props.host ?? createEditorHost(props.config ?? {})
+  const [picking, setPicking] = createSignal(false)
+  const cancelPicking = (): boolean => {
+    const wasPicking = picking()
+    setPicking(false)
+    host.setHover(null)
+    return wasPicking
+  }
+  const pickingContext = {
+    active: picking,
+    cancel: cancelPicking,
+    toggle: () => {
+      host.clearSelection()
+      host.setHover(null)
+      setPicking((value) => !value)
+    },
+  }
+  createEffect(() => {
+    if (host.mode() === 'off') cancelPicking()
+  })
 
   // F2c: component field resolver。selection handler と <EditorLayer> の discovery
   // が同じ index を共有する必要があるので、component 本体で作って context で配る。
@@ -281,8 +320,16 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     const owner = getOwner()
     const uninstallers: Array<() => void> = []
 
-    uninstallers.push(installShortcut({ host, shortcut: props.config?.shortcut }))
-    uninstallers.push(installSelectionHandlers({ host, resolver, root: selectionRoot }))
+    uninstallers.push(installShortcut({ host, shortcut: props.config?.shortcut, cancelPicking }))
+    uninstallers.push(
+      installSelectionHandlers({
+        host,
+        resolver,
+        root: selectionRoot,
+        enabled: picking,
+        onSelected: cancelPicking,
+      }),
+    )
 
     // F4: URL sync (opt-in via config.urlSync)
     if (props.config?.urlSync) {
@@ -336,7 +383,7 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     <EditorHostContext.Provider value={host}>
       <ComponentResolverContext.Provider value={resolver}>
         <ClassOverridesContext.Provider value={classOverrides}>
-          {props.children}
+          <PickingContext.Provider value={pickingContext}>{props.children}</PickingContext.Provider>
         </ClassOverridesContext.Provider>
       </ComponentResolverContext.Provider>
     </EditorHostContext.Provider>

@@ -1,229 +1,133 @@
-/**
- * mdast → SolidJS JSX renderer.
- *
- * Walks the MdNode tree and emits Solid VDOM. Each node type maps to a
- * semantic HTML element with creo-md class hooks for styling.
- *
- * - Frontmatter is hidden (consumer reads via CreoMarkdownProps.onAst).
- * - Html is rendered with innerHTML — consumer is responsible for sanitization.
- * - Mermaid code blocks (lang="mermaid") render as <pre> placeholder until
- *   creo-views/mermaid Phase 0.2 lands.
- */
+/** Standard mdast → sanitized HTML tree → Solid components. */
+import type { Element, Nodes as HtmlNode } from 'hast'
+import { raw } from 'hast-util-raw'
+import { defaultSchema, sanitize } from 'hast-util-sanitize'
+import type { Nodes as MdNode } from 'mdast'
+import { toHast } from 'mdast-util-to-hast'
+import { find, html } from 'property-information'
+import { type Component, createUniqueId, For, type JSX } from 'solid-js'
+import { Dynamic } from 'solid-js/web'
 
-import type { MdNode } from 'creo-views/md'
-import { For, type JSX } from 'solid-js'
+export type MarkdownLinkProps = JSX.AnchorHTMLAttributes<HTMLAnchorElement>
+export type MarkdownImageProps = JSX.ImgHTMLAttributes<HTMLImageElement>
+export interface MarkdownCodeProps {
+  code: string
+  language?: string
+  inline: boolean
+}
+export interface MarkdownComponents {
+  a?: Component<MarkdownLinkProps>
+  img?: Component<MarkdownImageProps>
+  /** Replaces the whole code block (including pre), or the inline code element. */
+  code?: Component<MarkdownCodeProps>
+}
+export interface MarkdownRenderOptions {
+  /** Parse embedded HTML, then sanitize it. Default: display HTML as text. */
+  allowHtml?: boolean
+  components?: MarkdownComponents
+}
 
-export function renderNode(node: MdNode): JSX.Element {
-  switch (node.type) {
-    case 'Root':
-      return <For each={node.children}>{(child) => renderNode(child)}</For>
+function properties(node: Element): Record<string, unknown> {
+  const result: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(node.properties)) {
+    const info = find(html, key)
+    result[info.attribute] = Array.isArray(value)
+      ? value.join(info.commaSeparated ? ', ' : ' ')
+      : value
+  }
+  return result
+}
 
-    case 'Heading': {
-      const children = <For each={node.children}>{(c) => renderNode(c)}</For>
-      switch (node.depth) {
-        case 1:
-          return <h1>{children}</h1>
-        case 2:
-          return <h2>{children}</h2>
-        case 3:
-          return <h3>{children}</h3>
-        case 4:
-          return <h4>{children}</h4>
-        case 5:
-          return <h5>{children}</h5>
-        default:
-          return <h6>{children}</h6>
-      }
+function renderHtml(node: HtmlNode, options: MarkdownRenderOptions, inline = true): JSX.Element {
+  if (node.type === 'text') return node.value
+  if (node.type === 'root')
+    return <For each={node.children}>{(child) => renderHtml(child, options)}</For>
+  if (node.type !== 'element') return null
+  const attrs = properties(node)
+  const children = () => <For each={node.children}>{(child) => renderHtml(child, options)}</For>
+  if (
+    node.tagName === 'pre' &&
+    node.children.length === 1 &&
+    node.children[0].type === 'element' &&
+    node.children[0].tagName === 'code'
+  ) {
+    return renderHtml(node.children[0], options, false)
+  }
+  if (node.tagName === 'code') {
+    const language = node.properties.className?.toString().match(/(?:^|[, ])language-([^, ]+)/)?.[1]
+    const code = node.children.map((child) => (child.type === 'text' ? child.value : '')).join('')
+    if (options.components?.code)
+      return (
+        <Dynamic
+          component={options.components.code}
+          code={code}
+          language={language}
+          inline={inline}
+        />
+      )
+    return inline ? (
+      <code class="creo-md-inline-code">{code}</code>
+    ) : (
+      <pre class="creo-md-code">
+        <code data-lang={language}>{code}</code>
+      </pre>
+    )
+  }
+  if (node.tagName === 'a' && options.components?.a)
+    return (
+      <Dynamic component={options.components.a} {...attrs}>
+        {children()}
+      </Dynamic>
+    )
+  if (node.tagName === 'img') {
+    return <Dynamic component={options.components?.img ?? 'img'} {...attrs} loading="lazy" />
+  }
+  if (node.tagName === 'table') attrs.class = 'creo-md-table'
+  if (node.tagName === 'li' && node.properties.className?.toString().includes('task-list-item')) {
+    const checked = node.children.some(
+      (child) => child.type === 'element' && child.tagName === 'input' && child.properties.checked,
+    )
+    attrs.class = `creo-md-task${checked ? ' checked' : ''}`
+  }
+  return (
+    <Dynamic component={node.tagName as keyof JSX.IntrinsicElements} {...attrs}>
+      {children()}
+    </Dynamic>
+  )
+}
+
+/** Render standard mdast. Custom components receive sanitized attributes. */
+export function renderNode(node: MdNode, options: MarkdownRenderOptions = {}): JSX.Element {
+  const prefix = `creo-md-${createUniqueId()}-`
+  const html = toHast(node, {
+    clobberPrefix: '',
+    allowDangerousHtml: options.allowHtml,
+    handlers: options.allowHtml
+      ? undefined
+      : { html: (_state, element) => ({ type: 'text', value: element.value }) },
+  })
+  const tree = sanitize(options.allowHtml ? raw(html) : html, {
+    ...defaultSchema,
+    clobberPrefix: prefix,
+  })
+  // Scope IDs to this viewer, keeping fragment and accessibility references in sync.
+  const elements: Element[] = []
+  const collect = (current: HtmlNode) => {
+    if (current.type === 'element') elements.push(current)
+    if ('children' in current) current.children.forEach(collect)
+  }
+  collect(tree)
+  const ids = new Set(elements.map((element) => element.properties.id).filter(Boolean))
+  for (const element of elements) {
+    const href = element.properties.href
+    if (typeof href === 'string' && href.startsWith('#') && ids.has(prefix + href.slice(1))) {
+      element.properties.href = `#${prefix}${href.slice(1)}`
     }
-
-    case 'Paragraph':
-      return (
-        <p>
-          <For each={node.children}>{(c) => renderNode(c)}</For>
-        </p>
-      )
-
-    case 'Text':
-      return node.value
-
-    case 'Strong':
-      return (
-        <strong>
-          <For each={node.children}>{(c) => renderNode(c)}</For>
-        </strong>
-      )
-
-    case 'Emphasis':
-      return (
-        <em>
-          <For each={node.children}>{(c) => renderNode(c)}</For>
-        </em>
-      )
-
-    case 'Delete':
-      return (
-        <del>
-          <For each={node.children}>{(c) => renderNode(c)}</For>
-        </del>
-      )
-
-    case 'InlineCode':
-      return <code class="creo-md-inline-code">{node.value}</code>
-
-    case 'Code': {
-      // Mermaid block → placeholder (Phase 0.1)
-      if (node.lang === 'mermaid') {
-        return (
-          <div class="creo-md-mermaid-placeholder" data-lang="mermaid">
-            <div class="creo-md-mermaid-placeholder-label">
-              Mermaid diagram (renderer coming in 0.2)
-            </div>
-            <pre>
-              <code>{node.value}</code>
-            </pre>
-          </div>
-        )
-      }
-      return (
-        <pre class="creo-md-code">
-          <code data-lang={node.lang ?? undefined}>{node.value}</code>
-        </pre>
-      )
-    }
-
-    case 'Link':
-      return (
-        <a href={node.url} title={node.title ?? undefined}>
-          <For each={node.children}>{(c) => renderNode(c)}</For>
-        </a>
-      )
-
-    case 'Image':
-      return (
-        <img src={node.url} alt={node.alt ?? ''} title={node.title ?? undefined} loading="lazy" />
-      )
-
-    case 'BlockQuote':
-      return (
-        <blockquote>
-          <For each={node.children}>{(c) => renderNode(c)}</For>
-        </blockquote>
-      )
-
-    case 'List': {
-      const children = <For each={node.children}>{(c) => renderNode(c)}</For>
-      return node.ordered ? (
-        <ol start={node.start ?? undefined}>{children}</ol>
-      ) : (
-        <ul>{children}</ul>
-      )
-    }
-
-    case 'ListItem': {
-      const inner = <For each={node.children}>{(c) => renderNode(c)}</For>
-      // GFM task list — checked is null for non-task items
-      if (node.checked !== null) {
-        return (
-          <li class={`creo-md-task ${node.checked ? 'checked' : ''}`}>
-            <input type="checkbox" checked={node.checked} disabled />
-            {inner}
-          </li>
-        )
-      }
-      return <li>{inner}</li>
-    }
-
-    case 'ThematicBreak':
-      return <hr />
-
-    case 'Break':
-      return <br />
-
-    case 'Table': {
-      const align = node.align
-      const rows = node.children
-      const headRow = rows[0]
-      const bodyRows = rows.slice(1)
-      const alignStyle = (i: number): string | undefined => {
-        const a = align[i]
-        return a && a !== 'None' ? `text-align: ${a.toLowerCase()}` : undefined
-      }
-      return (
-        <table class="creo-md-table">
-          {headRow?.type === 'TableRow' && (
-            <thead>
-              <tr>
-                <For each={headRow.children}>
-                  {(cell, i) =>
-                    cell.type === 'TableCell' ? (
-                      <th style={alignStyle(i())}>
-                        <For each={cell.children}>{(c) => renderNode(c)}</For>
-                      </th>
-                    ) : null
-                  }
-                </For>
-              </tr>
-            </thead>
-          )}
-          <tbody>
-            <For each={bodyRows}>
-              {(row) =>
-                row.type === 'TableRow' ? (
-                  <tr>
-                    <For each={row.children}>
-                      {(cell, i) =>
-                        cell.type === 'TableCell' ? (
-                          <td style={alignStyle(i())}>
-                            <For each={cell.children}>{(c) => renderNode(c)}</For>
-                          </td>
-                        ) : null
-                      }
-                    </For>
-                  </tr>
-                ) : null
-              }
-            </For>
-          </tbody>
-        </table>
-      )
-    }
-
-    case 'TableRow':
-    case 'TableCell':
-      // Handled inside the Table case — should not be rendered standalone.
-      return null
-
-    case 'Html':
-      // Raw HTML — consumer must sanitize before passing to <CreoMarkdown>.
-      return <span class="creo-md-html-raw" innerHTML={node.value} />
-
-    case 'Frontmatter':
-      // Hidden in render output; consumer reads via onAst hook.
-      return null
-
-    case 'Admonition':
-      return (
-        <div class="creo-md-admonition" data-kind={node.kind}>
-          {node.title && <div class="creo-md-admonition-title">{node.title}</div>}
-          <div class="creo-md-admonition-body">
-            <For each={node.children}>{(c) => renderNode(c)}</For>
-          </div>
-        </div>
-      )
-
-    case 'WikiLink':
-      return (
-        <a class="creo-md-wikilink" data-link-type={node.link_type} href={`#${node.target}`}>
-          {node.label ?? node.target}
-        </a>
-      )
-
-    default: {
-      // Exhaustive check — TypeScript flags this if a new node variant is added
-      // upstream and not handled here.
-      const _exhaustive: never = node
-      void _exhaustive
-      return null
+    for (const key of ['ariaDescribedBy', 'ariaLabelledBy', 'headers', 'htmlFor']) {
+      const references = element.properties[key]
+      if (Array.isArray(references))
+        element.properties[key] = references.map((id) => (ids.has(prefix + id) ? prefix + id : id))
     }
   }
+  return renderHtml(tree, options)
 }

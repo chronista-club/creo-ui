@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   signalTarget,
@@ -8,7 +6,7 @@ import {
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
-import { Show, createSignal } from 'solid-js'
+import { createSignal, Show } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
 import EditorModeToggle from '../../ui/EditorModeToggle'
 
@@ -46,11 +44,7 @@ const TOKENS = [
 
 export default function Menu() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.menu-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Menu (Dropdown)</h1>
@@ -67,14 +61,14 @@ export default function Menu() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground menu の section label / separator / destructive
-          item / item label を即時編集できる。 Mode ON 中に playground menu を click するとその
-          instance に field が絞られる (selection)。{' '}
+          item / item label を即時編集できる。 「画面から選ぶ」を押してから playground menu を click
+          するとその instance に field が絞られる (selection)。{' '}
           <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <MenuLivePreview />
           <div class="docs-preview-row-label">Basic menu</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="menu-basic">
               ⋯ Actions
             </button>
@@ -168,9 +162,7 @@ export default function Menu() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -214,7 +206,7 @@ function MenuLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* popover を使わない inline 表示 (position fallback を打ち消して flow 配置) */}
         <div class="creo-menu" style={{ position: 'static' }} ref={selectable}>
           <Show when={showLabels()}>

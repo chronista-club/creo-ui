@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'bun:test'
 import {
-  type OutlinerNode,
   flattenVisible,
   indent,
   insertSiblingAfter,
   moveDown,
   moveUp,
   nextVisibleId,
+  type OutlinerNode,
   outdent,
   prevVisibleId,
   removeNode,

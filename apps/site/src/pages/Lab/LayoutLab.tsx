@@ -6,6 +6,16 @@
  * / propose + apply policy（LE-16、time driver = frame の springCurve が t を運ぶ）。
  */
 
+import type {
+  ApplyPolicy,
+  DominanceDirection,
+  DriverRun,
+  Layout,
+  PaneRef,
+  ResolvedMap,
+  Scene,
+  TransitionHandle,
+} from '@chronista-club/creo-ui-layout'
 import {
   admit,
   cloneLayout,
@@ -30,19 +40,9 @@ import {
   solo,
   unlock,
 } from '@chronista-club/creo-ui-layout'
-import type {
-  ApplyPolicy,
-  DominanceDirection,
-  DriverRun,
-  Layout,
-  PaneRef,
-  ResolvedMap,
-  Scene,
-  TransitionHandle,
-} from '@chronista-club/creo-ui-layout'
 import { PaneStage, useEngineResolved } from '@chronista-club/creo-ui-layout/solid'
 import { respectsReducedMotion, springCurve } from 'creo-ui-frame'
-import { For, Show, createMemo, createSignal } from 'solid-js'
+import { createMemo, createSignal, For, Show } from 'solid-js'
 
 const SCOPE = 'lab'
 

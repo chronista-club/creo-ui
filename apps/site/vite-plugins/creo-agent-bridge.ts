@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
+import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import type { IncomingMessage } from 'node:http'
 import { join, resolve } from 'node:path'
 import type { Plugin } from 'vite'

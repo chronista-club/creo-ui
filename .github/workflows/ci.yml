@@ -17,25 +17,18 @@ jobs:
       run:
         working-directory: creo-ui
     steps:
-      # creo-ui は workspace 配下の `creo-ui/` に置く。 sibling として
-      # `creo-views/` も同階層に配置 — `packages/md-view/package.json` の
-      # `"creo-views": "file:../../../creo-views"` (md-view から 3 階層上 =
-      # workspace root) と整合する。 local dev (`~/repos/creo-ui` /
-      # `~/repos/creo-views`) と同 layout。
       - name: Checkout creo-ui
         uses: actions/checkout@v4
         with:
           path: creo-ui
 
-      - name: Checkout creo-views (sibling, required by packages/md-view)
-        uses: actions/checkout@v4
-        with:
-          repository: chronista-club/creo-views
-          path: creo-views
-
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
@@ -46,8 +39,22 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Runtime tests (Editor Host / Layout / Web / Vision / Frame)
+        # Frame は package 内の bunfig.toml で DOM globals を preload する。
+        # root script が package 固有の実行環境を保ち、失敗を CI に返す。
+        run: bun run test:runtime
+
+      - name: Solid component tests
+        run: bun run test:components
+
       - name: Build tokens (Web / Swift / Rust)
         run: bun run build
+
+      - name: Build package artifacts
+        run: bun run build:packages
+
+      - name: Packed consumer install / types / browser build / locked reinstall
+        run: bun run test:packages
 
       - name: Token pipeline invariants (transforms/pipeline.test.js + color-utils)
         run: bun run test:transforms
@@ -59,6 +66,11 @@ jobs:
       # ここが崩れると Editor Mode の component 抽出が静かに壊れる。
       - name: Tweak var 規約 check
         run: bun run check:tweak-vars
+
+      # WASM は npm の JS と同版でないと「型も build も通るのに実行時だけ壊れる」。
+      # tasks-vision は runtime に版を expose しないので静的に照合する。
+      - name: MediaPipe WASM 版 check
+        run: bun run check:mediapipe
 
       - name: Token diff (Swift / Rust generated は commit 対象)
         # tokens/ を編集した PR が Swift/Rust の generated 更新を

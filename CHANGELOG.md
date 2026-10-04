@@ -5,6 +5,17 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## editor-host v0.9.0 (2026-10-05) — アプリ共通 Editor
+
+> **editor-host `0.9.0`** を release。web / layout / icons-web / rust は今回の Editor 出荷に不要なため据え置き。frame / vision / md-view の公開は今回行わない。
+
+- アプリ全体（文字・色・余白）/ 画面の各部 / 変更した項目へパネルを刷新。
+- `EditorLayer` の `appName` / `sections` と `EditorLayerProps` / `EditorSection` 型を追加。非 global の登録項目も一覧可能。
+- **操作変更**: Editor を開くだけではアプリのクリックを捕捉しない。「画面から選ぶ」を押して対象を一つ選ぶと、通常操作へ戻る。Escape は picking 解除 → 選択解除 → Editor 終了。
+- 編集対象の反映範囲を表示。既定値との差分と CSS override を確認・解除できる。
+- site の34ページに残っていたページ別 Provider / Layer を除き、root の一組へ統合。
+- 移行: `EditorLayer` をアプリに一つ置き、名前と必要な section を指定。CSS component の調整は同種すべてに作用する。詳細は editor-host README / design 03。
+
 ## editor-host v0.8.1 (2026-08-14) — Font size group を Global へ統合
 
 > **editor-host `0.8.1`** のみを release (patch)。web 0.30.0 ほか他 package は据え置き。
@@ -64,7 +75,7 @@ owner が Editor Mode の梯子ノブで実ページ・実 font (Gen Interface J
 | **typography.size** (xs–xl) | 12 / 14 / 16 / 18 / 20 px | **13 / 15 / 17 / 18.5 / 20.5 px** (m=17 は Apple HIG body と一致) |
 | **radius** (xs–xl) | 4 / 8 / 15 / 22 / 28 px | **3.5 / 4 / 8 / 17.5 / 21.5 px** (シャープ寄り、card 系の印象が変わる) |
 
-title / body の semantic alias、component の使用箇所は token 参照なので自動追従。`radius.none` / `radius.full`、display / icon scale は据え置き。**migration**: 旧値に依存した見た目を保ちたい consumer は、自 app の `:root` で該当 `--typography-size-*` / `--radius-*` を旧値に上書きする (token 名は不変)。
+title / body の semantic alias、component の使用箇所は token 参照なので自動追従。`radius.none` / `radius.full`、display / icon scale は**値としては**据え置き。ただし `--typography-display-*` / `--typography-icon-*` の 10 変数は `calc(… * var(--typography-scale, 1))` にラップされる形へ emit が変わっている (`typography.scale` ノブに追従させるため)。**値は不変なので実害は無いが、diff を取ると変化として現れる** (consumer feedback により 2026-08-30 追記)。**migration**: 旧値に依存した見た目を保ちたい consumer は、自 app の `:root` で該当 `--typography-size-*` / `--radius-*` を旧値に上書きする (token 名は不変)。
 
 ### editor-host 0.7.0 — Discovery panel と選択の意味論 (#126, #127, #130)
 

@@ -1,4 +1,4 @@
-import { For, createEffect, createSignal, onMount } from 'solid-js'
+import { createEffect, createSignal, For, onMount } from 'solid-js'
 
 const THEMES = [
   { id: 'mint-light', label: 'Creo (light)' },

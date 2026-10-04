@@ -12,7 +12,6 @@
     "noEmit": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "baseUrl": ".",
     "paths": {
       "@chronista-club/creo-ui-editor-host": ["../../packages/editor-host/src/index.ts"],
       "@chronista-club/creo-ui-layout": ["../../packages/layout/src/index.ts"],
@@ -24,7 +23,8 @@
       ],
       "creo-ui-vision": ["../../packages/vision/src/index.ts"],
       "creo-ui-vision/mock": ["../../packages/vision/src/mock.ts"],
-      "creo-ui-vision/mediapipe": ["../../packages/vision/src/mediapipe.ts"]
+      "creo-ui-vision/mediapipe": ["../../packages/vision/src/mediapipe.ts"],
+      "creo-ui-md-view": ["../../packages/md-view/src/index.ts"]
     }
   },
   "include": ["src"]

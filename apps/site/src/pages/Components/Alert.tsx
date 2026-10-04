@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   select,
   signalTarget,
@@ -40,11 +38,7 @@ const TOKENS = [
 
 export default function Alert() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.alert-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Alert</h1>
@@ -62,14 +56,15 @@ export default function Alert() {
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground alert の variant / strong / body
           を即時編集できる。 role は variant に応じて自動 (warning/error → "alert"、 info/success →
-          "status")。 Mode ON 中に playground alert を click するとその instance に field が絞られる
-          (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
+          "status")。 「画面から選ぶ」を押してから playground alert を click するとその instance に
+          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
+          dogfood。
         </p>
         <div class="docs-component-preview">
           <AlertLivePreview />
           <div class="docs-preview-row-label">Variants</div>
           <div
-            class="docs-preview-grid"
+            class="cu-row cu-gap-s cu-center docs-preview-grid"
             style={{ 'grid-template-columns': '1fr', gap: 'var(--spacing-s)' }}
           >
             <div class="creo-alert" data-variant="info" role="status">
@@ -174,9 +169,7 @@ export default function Alert() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -225,7 +218,7 @@ function AlertLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <div ref={selectable} class="creo-alert" data-variant={variant()} role={role()}>
           <span class="creo-alert-icon" aria-hidden="true">
             {icon()}

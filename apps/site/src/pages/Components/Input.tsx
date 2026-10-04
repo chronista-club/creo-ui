@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   select,
@@ -56,11 +54,7 @@ const TOKENS = [
 
 export default function Input() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.input-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Input</h1>
@@ -75,21 +69,21 @@ export default function Input() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground input の variant / size / placeholder / value /
-          disabled を即時編集できる。 Mode ON 中に playground input を click するとその instance に
-          field が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          disabled を即時編集できる。 「画面から選ぶ」を押してから playground input を click
+          するとその instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <InputLivePreview />
           <div class="docs-preview-row-label">Variants × Sizes</div>
-          <div class="docs-preview-stack">
+          <div class="cu-col cu-gap-s docs-preview-stack">
             <input class="creo-input" type="text" placeholder="Bordered s" data-size="s" />
             <input class="creo-input" type="text" placeholder="Bordered m (default)" />
             <input class="creo-input" type="text" placeholder="Bordered l" data-size="l" />
             <input class="creo-input" type="text" placeholder="Filled m" data-variant="filled" />
           </div>
           <div class="docs-preview-row-label">States</div>
-          <div class="docs-preview-stack">
+          <div class="cu-col cu-gap-s docs-preview-stack">
             <input
               class="creo-input"
               type="text"
@@ -162,9 +156,7 @@ export default function Input() {
           </a>
         </p>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -216,7 +208,7 @@ function InputLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <input
           ref={selectable}
           class="creo-input"

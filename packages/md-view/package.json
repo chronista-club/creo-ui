@@ -1,7 +1,7 @@
 {
   "name": "creo-ui-md-view",
-  "version": "0.1.0",
-  "description": "creo-ui — Markdown renderer (SolidJS) consuming creo-views/md (WASM-backed mdast parser)",
+  "version": "0.2.0",
+  "description": "Token-aware, extensible SolidJS Markdown viewer powered by remark",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -14,7 +14,10 @@
     "./styles.css": "./dist/styles.css",
     "./package.json": "./package.json"
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/chronista-club/creo-ui.git",
@@ -24,7 +27,13 @@
     "url": "https://github.com/chronista-club/creo-ui/issues"
   },
   "homepage": "https://github.com/chronista-club/creo-ui#readme",
-  "keywords": ["creo-ui", "markdown", "solid-js", "mdast", "renderer", "wasm"],
+  "keywords": [
+    "creo-ui",
+    "markdown",
+    "solid-js",
+    "mdast",
+    "renderer"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -37,14 +46,24 @@
     "solid-js": "^1.9.0"
   },
   "dependencies": {
-    "creo-views": "file:../../../creo-views"
+    "@types/hast": "^3.0.5",
+    "@types/mdast": "^4.0.4",
+    "hast-util-raw": "^9.1.0",
+    "hast-util-sanitize": "^5.0.2",
+    "mdast-util-to-hast": "^13.2.1",
+    "property-information": "^7.2.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
-    "solid-js": "^1.9.0",
-    "typescript": "^5.5.0",
-    "vite": "^5.4.0",
-    "vite-plugin-dts": "^4.2.0",
-    "vite-plugin-solid": "^2.10.0"
+    "solid-js": "^1.9.15",
+    "@typescript/typescript6": "^6.0.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "vite-plugin-dts": "^5.0.3",
+    "vite-plugin-solid": "^2.11.14"
   },
   "license": "Apache-2.0"
 }

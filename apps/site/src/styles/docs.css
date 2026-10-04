@@ -88,12 +88,9 @@ a:hover {
 
 .docs-shell {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .docs-body {
-  display: flex;
   flex: 1;
   min-height: 0;
 }
@@ -140,8 +137,6 @@ a:hover {
 .docs-main {
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
 }
 
 .docs-article {
@@ -189,7 +184,8 @@ a:hover {
   content: "";
   position: absolute;
   inset: -10% -20%;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       50% 60% at 20% 0%,
       color-mix(in oklab, var(--color-brand-primary) 12%, transparent),
       transparent 70%
@@ -229,9 +225,7 @@ a:hover {
 }
 
 .docs-hero-cta {
-  display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-s);
 }
 
 /* ============================================================
@@ -249,7 +243,9 @@ a:hover {
   background: var(--color-surface-surface);
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-l);
-  transition: border-color var(--motion-duration-fast), transform var(--motion-duration-fast);
+  transition:
+    border-color var(--motion-duration-fast),
+    transform var(--motion-duration-fast);
 }
 
 .docs-feature-card:hover {
@@ -334,18 +330,8 @@ a:hover {
   color: var(--color-text-tertiary);
 }
 
-.docs-footer-links {
-  display: flex;
-  gap: var(--spacing-m);
-}
-
 .docs-footer-links a {
   color: var(--color-text-secondary);
-}
-
-.docs-footer-meta {
-  display: flex;
-  gap: var(--spacing-xs);
 }
 
 /* ============================================================
@@ -435,8 +421,6 @@ a:hover {
 }
 
 .docs-color-swatch-info {
-  display: flex;
-  flex-direction: column;
   gap: 2px;
   min-width: 0;
 }
@@ -490,8 +474,6 @@ a:hover {
 
 .docs-dim-visual-wrap {
   height: 48px;
-  display: flex;
-  align-items: center;
 }
 
 .docs-dim-visual--spacing {
@@ -520,12 +502,6 @@ a:hover {
 /* ============================================================
    Foundations / Typography
    ============================================================ */
-
-.docs-typo-table {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-m);
-}
 
 .docs-typo-row {
   display: grid;
@@ -665,9 +641,7 @@ a:hover {
 }
 
 .docs-theme-card-head {
-  display: flex;
   align-items: baseline;
-  gap: var(--spacing-xs);
 }
 
 .docs-theme-card-head h3 {
@@ -711,7 +685,6 @@ a:hover {
 }
 
 .docs-theme-preview-bar {
-  display: flex;
   gap: 4px;
 }
 
@@ -924,9 +897,6 @@ a:hover {
    ============================================================ */
 
 .docs-layers-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
   margin: var(--spacing-m) 0;
 }
 
@@ -1077,10 +1047,6 @@ a:hover {
    ============================================================ */
 
 .docs-pipeline-diagram {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-s);
   margin: var(--spacing-m) 0;
 }
 
@@ -1172,7 +1138,9 @@ a:hover {
   border-radius: var(--radius-m);
   text-decoration: none;
   color: var(--color-text-primary);
-  transition: border-color var(--motion-duration-fast), transform var(--motion-duration-fast);
+  transition:
+    border-color var(--motion-duration-fast),
+    transform var(--motion-duration-fast);
 }
 
 .docs-component-card:hover {
@@ -1230,10 +1198,7 @@ a:hover {
 }
 
 .docs-preview-grid {
-  display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-s);
-  align-items: center;
 }
 
 .docs-preview-grid--cards {
@@ -1241,17 +1206,10 @@ a:hover {
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
 
-.docs-preview-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
-}
-
+/* 並び (flex / center / gap) は utility (.cu-row .cu-center .cu-gap-m) に委譲。
+   ここに残すのは utility が持たないと決めた指定だけ (utility 層の trial、 2026-08-30)。 */
 .docs-preview-row {
-  display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-m);
-  align-items: center;
 }
 
 .docs-preview-row--baseline {
@@ -1322,8 +1280,6 @@ a:hover {
 }
 
 .docs-playground-stage {
-  display: flex;
-  align-items: center;
   justify-content: center;
   min-height: 240px;
 }
@@ -1336,8 +1292,9 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-s);
-  transition: box-shadow var(--motion-duration-normal) var(--motion-easing-spring), transform
-    var(--motion-duration-normal) var(--motion-easing-spring);
+  transition:
+    box-shadow var(--motion-duration-normal) var(--motion-easing-spring),
+    transform var(--motion-duration-normal) var(--motion-easing-spring);
 }
 
 .docs-playground-card[data-elevation="flat"] {
@@ -1378,8 +1335,6 @@ a:hover {
 }
 
 .docs-playground-actions {
-  display: flex;
-  gap: var(--spacing-xs);
   margin-top: var(--spacing-xs);
 }
 
@@ -1400,9 +1355,6 @@ kbd {
    ============================================================ */
 
 .docs-frame-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-s);
   margin-bottom: var(--spacing-m);
   flex-wrap: wrap;
 }
@@ -1529,7 +1481,8 @@ kbd {
   height: 640px;
   transform-origin: top center;
   transform: rotateX(70deg);
-  background-image: repeating-linear-gradient(
+  background-image:
+    repeating-linear-gradient(
       to right,
       color-mix(in oklab, var(--color-brand-primary) 60%, transparent) 0 1.5px,
       transparent 1.5px 46px
@@ -1671,7 +1624,10 @@ kbd {
   font-size: 24px;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  transition: left 80ms linear, top 80ms linear, transform var(--motion-duration-fast) ease-out;
+  transition:
+    left 80ms linear,
+    top 80ms linear,
+    transform var(--motion-duration-fast) ease-out;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
   z-index: 10;
 }
@@ -1732,8 +1688,9 @@ kbd {
   justify-content: center;
   pointer-events: none;
   opacity: 0.18;
-  transition: opacity var(--motion-duration-fast) ease-out, background var(--motion-duration-fast)
-    ease-out;
+  transition:
+    opacity var(--motion-duration-fast) ease-out,
+    background var(--motion-duration-fast) ease-out;
   z-index: 1;
   padding-bottom: var(--spacing-m);
 }
@@ -1792,8 +1749,6 @@ kbd {
 }
 
 .docs-camera-probe-controls {
-  display: flex;
-  gap: var(--spacing-s);
   flex-wrap: wrap;
 }
 
@@ -1810,12 +1765,6 @@ kbd {
 
 .docs-camera-probe-video[data-active="true"] {
   display: block;
-}
-
-.docs-camera-probe-stats {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
 }
 
 .docs-camera-probe-stats h4 {
@@ -1896,10 +1845,7 @@ kbd {
 }
 
 .docs-icons-category-head {
-  display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: var(--spacing-s);
   margin-bottom: var(--spacing-xs);
 }
 
@@ -1938,8 +1884,9 @@ kbd {
   border: 1px solid var(--color-surface-border);
   border-radius: var(--radius-s);
   text-align: center;
-  transition: transform var(--motion-duration-normal) var(--motion-easing-spring), border-color
-    var(--motion-duration-normal);
+  transition:
+    transform var(--motion-duration-normal) var(--motion-easing-spring),
+    border-color var(--motion-duration-normal);
   color: var(--color-text-primary);
 }
 
@@ -1983,9 +1930,6 @@ kbd {
 }
 
 .docs-mediapipe-prompt {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
   align-items: flex-start;
 }
 
@@ -2058,8 +2002,8 @@ kbd {
    ============================================================ */
 
 .docs-main {
-  perspective: var(--frame-perspective-default);
-  perspective-origin: 50% 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .docs-article > section,
@@ -2081,18 +2025,25 @@ kbd {
 
 /* Feature cards — stronger lift on hover */
 .docs-feature-card {
-  transition: border-color 280ms, transform 280ms var(--motion-easing-spring), box-shadow 280ms;
+  transition:
+    border-color 280ms,
+    transform 280ms var(--motion-easing-spring),
+    box-shadow 280ms;
 }
 
 .docs-feature-card:hover {
   transform: translateY(-4px) translateZ(14px);
-  box-shadow: 0 16px 32px -10px color-mix(in oklab, var(--color-text-primary) 22%, transparent), 0
-    4px 8px -4px color-mix(in oklab, var(--color-text-primary) 12%, transparent);
+  box-shadow:
+    0 16px 32px -10px color-mix(in oklab, var(--color-text-primary) 22%, transparent),
+    0 4px 8px -4px color-mix(in oklab, var(--color-text-primary) 12%, transparent);
 }
 
 /* Component gallery cards */
 .docs-component-card {
-  transition: border-color 280ms, transform 280ms var(--motion-easing-spring), box-shadow 280ms;
+  transition:
+    border-color 280ms,
+    transform 280ms var(--motion-easing-spring),
+    box-shadow 280ms;
 }
 
 .docs-component-card:hover {
@@ -2111,7 +2062,9 @@ kbd {
 
 /* Theme preview cards */
 .docs-theme-card {
-  transition: transform 280ms var(--motion-easing-spring), box-shadow 280ms;
+  transition:
+    transform 280ms var(--motion-easing-spring),
+    box-shadow 280ms;
 }
 
 .docs-theme-card:hover {
@@ -2121,8 +2074,10 @@ kbd {
 
 /* Sidebar — subtle z-depth (active forward, inactive back) */
 .creo-sidenav-link {
-  transition: color var(--motion-duration-fast), background var(--motion-duration-fast), transform
-    200ms ease-out;
+  transition:
+    color var(--motion-duration-fast),
+    background var(--motion-duration-fast),
+    transform 200ms ease-out;
 }
 
 .creo-sidenav-link:hover {
@@ -2235,7 +2190,9 @@ kbd {
   border-radius: var(--radius-l);
   background: var(--color-gradient-hero);
   border: 1px solid color-mix(in oklch, var(--color-brand-primary) 22%, var(--color-surface-border));
-  box-shadow: inset 0 1px 0 var(--face-edge-light), 0 30px 60px -34px var(--face-glow-brand);
+  box-shadow:
+    inset 0 1px 0 var(--face-edge-light),
+    0 30px 60px -34px var(--face-glow-brand);
 }
 
 /* 抑制された brand glow — surface 上部から差す光 */
@@ -2250,9 +2207,6 @@ kbd {
 .docs-hero-floats {
   position: relative;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
 }
 
 .docs-hero-float {
@@ -2260,17 +2214,9 @@ kbd {
 }
 
 .docs-hero-float--card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
-  box-shadow: inset 0 1px 0 var(--face-edge-light), 0 18px 40px -20px
-    var(--color-shadow-strong, rgba(0, 0, 0, 0.45));
-}
-
-.docs-hero-float-head {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-s);
+  box-shadow:
+    inset 0 1px 0 var(--face-edge-light),
+    0 18px 40px -20px var(--color-shadow-strong, rgba(0, 0, 0, 0.45));
 }
 
 .docs-hero-float-titles {
@@ -2330,16 +2276,20 @@ kbd {
   text-decoration: none;
   color: var(--color-text-primary);
   box-shadow: inset 0 1px 0 var(--face-edge-light);
-  transition: border-color var(--motion-duration-normal), transform var(--motion-duration-normal)
-    var(--motion-easing-spring), box-shadow var(--motion-duration-normal);
+  transition:
+    border-color var(--motion-duration-normal),
+    transform var(--motion-duration-normal) var(--motion-easing-spring),
+    box-shadow var(--motion-duration-normal);
 }
 
 .docs-gallery-card:hover {
   text-decoration: none;
   border-color: var(--face-border-lum);
   transform: translateY(-3px);
-  box-shadow: inset 0 1px 0 var(--face-edge-light), 0 20px 44px -20px var(--face-glow-brand), 0 0 0
-    1px var(--face-glow-brand-soft);
+  box-shadow:
+    inset 0 1px 0 var(--face-edge-light),
+    0 20px 44px -20px var(--face-glow-brand),
+    0 0 0 1px var(--face-glow-brand-soft);
 }
 
 /* showcase canvas — 実 component を「標本」として展示する背景 */
@@ -2351,7 +2301,8 @@ kbd {
   justify-content: center;
   padding: var(--spacing-l) var(--spacing-m);
   border-bottom: 1px solid var(--color-surface-border-subtle);
-  background: radial-gradient(120% 90% at 50% -10%, var(--face-glow-brand-soft), transparent 62%),
+  background:
+    radial-gradient(120% 90% at 50% -10%, var(--face-glow-brand-soft), transparent 62%),
     var(--color-surface-bg-subtle);
   overflow: hidden;
 }
@@ -2383,17 +2334,11 @@ kbd {
 }
 
 .docs-gallery-cluster {
-  display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-xs);
-  align-items: center;
   justify-content: center;
 }
 
 .docs-gallery-stack {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-s);
   align-items: flex-start;
 }
 
@@ -2403,16 +2348,8 @@ kbd {
 }
 
 .docs-gallery-meta {
-  display: flex;
-  flex-direction: column;
   gap: 2px;
   padding: var(--spacing-m);
-}
-
-.docs-gallery-meta-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .docs-gallery-name {
@@ -2423,7 +2360,9 @@ kbd {
 
 .docs-gallery-arrow {
   color: var(--color-text-tertiary);
-  transition: transform var(--motion-duration-fast), color var(--motion-duration-fast);
+  transition:
+    transform var(--motion-duration-fast),
+    color var(--motion-duration-fast);
 }
 
 .docs-gallery-card:hover .docs-gallery-arrow {
@@ -2474,17 +2413,11 @@ kbd {
 }
 
 .docs-gallery-skeleton {
-  display: flex;
-  gap: var(--spacing-s);
-  align-items: center;
   width: 100%;
   max-width: 240px;
 }
 
 .docs-gallery-skeleton-lines {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
   flex: 1;
 }
 
@@ -2492,7 +2425,8 @@ kbd {
 
 .docs-component-preview {
   position: relative;
-  background: radial-gradient(100% 80% at 50% 0%, var(--face-glow-brand-soft), transparent 60%),
+  background:
+    radial-gradient(100% 80% at 50% 0%, var(--face-glow-brand-soft), transparent 60%),
     var(--color-surface-bg-subtle);
   box-shadow: inset 0 1px 0 var(--face-edge-light);
   /* overflow は付けない — Tooltip / Popover / Menu の hover-pop を clip しないため。

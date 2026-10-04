@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   select,
   signalTarget,
@@ -39,11 +37,7 @@ const TOKENS = [
 
 export default function Timeline() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.timeline-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Timeline</h1>
@@ -60,9 +54,9 @@ export default function Timeline() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground timeline の size / item variant / item title
-          を即時編集できる。 Mode ON 中に playground timeline を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground timeline を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <TimelineLivePreview />
@@ -186,9 +180,7 @@ export default function Timeline() {
 </ol>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -225,7 +217,7 @@ function TimelineLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <ol ref={selectable} class="creo-timeline" data-size={size() === 'm' ? undefined : size()}>
           <li
             class="creo-timeline-item"

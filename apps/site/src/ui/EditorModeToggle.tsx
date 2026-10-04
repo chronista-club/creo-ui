@@ -1,6 +1,6 @@
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import { useEditorHost, useEditorMode } from '@chronista-club/creo-ui-editor-host'
 import { CreoIcon } from '@chronista-club/creo-ui-icons-web'
-import { CUButton } from '@chronista-club/creo-ui/controls'
 
 /**
  * Editor Mode の見た目 toggle (component ページ共通)。
@@ -13,7 +13,7 @@ export default function EditorModeToggle() {
   const mode = useEditorMode()
   const on = () => mode() === 'on'
   return (
-    <div class="docs-preview-grid">
+    <div class="cu-row cu-gap-s cu-center docs-preview-grid">
       <CUButton
         variant="ghost"
         size="s"

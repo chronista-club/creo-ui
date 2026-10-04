@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   select,
@@ -9,7 +7,7 @@ import {
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
 import { A } from '@solidjs/router'
-import { Show, createSignal } from 'solid-js'
+import { createSignal, Show } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
 import EditorModeToggle from '../../ui/EditorModeToggle'
 
@@ -46,11 +44,7 @@ const TOKENS = [
 
 export default function Popover() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.popover-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Popover</h1>
@@ -68,14 +62,14 @@ export default function Popover() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground popover の size / header / footer / title / body
-          を即時編集できる。 Mode ON 中に playground popover を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground popover を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <PopoverLivePreview />
           <div class="docs-preview-row-label">Basic popover</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" popovertarget="pop-basic">
               Open popover
             </button>
@@ -98,7 +92,7 @@ export default function Popover() {
           </div>
 
           <div class="docs-preview-row-label">Sizes (s / m / l)</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="ghost" popovertarget="pop-s">
               s
             </button>
@@ -196,9 +190,7 @@ export default function Popover() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -249,7 +241,7 @@ function PopoverLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         {/* popover 属性を使わない inline 表示 (position fallback を打ち消して flow 配置) */}
         <div
           class="creo-popover"

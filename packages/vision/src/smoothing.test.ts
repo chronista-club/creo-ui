@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test'
-import { OneEuroFilter, Point3DSmoother, applyGain } from './smoothing'
+import { applyGain, OneEuroFilter, Point3DSmoother } from './smoothing'
 
 describe('OneEuroFilter', () => {
   it('returns the first value verbatim (priming)', () => {

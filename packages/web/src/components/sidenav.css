@@ -72,7 +72,9 @@
   font-size: var(--typography-size-s);
   color: var(--color-text-secondary);
   border-radius: var(--_sidenav__link-radius, var(--radius-s));
-  transition: color var(--motion-duration-fast), background var(--motion-duration-fast);
+  transition:
+    color var(--motion-duration-fast),
+    background var(--motion-duration-fast);
 }
 
 .creo-sidenav-link:hover {

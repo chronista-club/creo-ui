@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   number,
@@ -52,11 +50,7 @@ const TOKENS = [
 
 export default function Progress() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.progress-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Progress</h1>
@@ -73,8 +67,8 @@ export default function Progress() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground progress の variant / size / value (slider) /
-          indeterminate を即時編集できる。 Mode ON 中に playground progress を click するとその
-          instance に field が絞られる (selection)。{' '}
+          indeterminate を即時編集できる。 「画面から選ぶ」を押してから playground progress を click
+          するとその instance に field が絞られる (selection)。{' '}
           <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
@@ -153,7 +147,10 @@ export default function Progress() {
           </div>
 
           <div class="docs-preview-row-label">Spinner (inline)</div>
-          <div class="docs-preview-grid" style={{ 'align-items': 'center' }}>
+          <div
+            class="cu-row cu-gap-s cu-center docs-preview-grid"
+            style={{ 'align-items': 'center' }}
+          >
             <span class="creo-spinner" role="progressbar" aria-label="Loading" />
             <span>Loading…</span>
           </div>
@@ -217,9 +214,7 @@ export default function Progress() {
 </div>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -265,7 +260,7 @@ function ProgressLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <div
           ref={selectable}
           class="creo-progress"

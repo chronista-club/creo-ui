@@ -1,6 +1,5 @@
+import { CUButton } from '@chronista-club/creo-ui/controls'
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   select,
@@ -8,7 +7,6 @@ import {
   string,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
-import { CUButton } from '@chronista-club/creo-ui/controls'
 import { A } from '@solidjs/router'
 import { createSignal } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
@@ -56,11 +54,7 @@ const TOKENS = [
 
 export default function Button() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.button-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Button</h1>
@@ -76,9 +70,9 @@ export default function Button() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground button の variant / size / label / state
-          を即時編集できる。 Mode ON 中に playground button を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。{' '}
-          <br />
+          を即時編集できる。 「画面から選ぶ」を押してから playground button を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> も参照。 <br />
           padding / corner radius は編集対象にしていない。 button.css は上書き用の tweak var (
           <code>--_btn-pad-x</code> / <code>--_btn-pad-y</code> / <code>--_btn-radius</code>) を
           持っていて、 利用する app 側ではそれを使って自分の文脈に寄せられる。 ただしこの site が
@@ -90,7 +84,7 @@ export default function Button() {
         <div class="docs-component-preview">
           <ButtonLivePreview />
           <div class="docs-preview-row-label">Variants × Sizes</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" data-size="s">
               Primary s
             </button>
@@ -138,7 +132,7 @@ export default function Button() {
             </button>
           </div>
           <div class="docs-preview-row-label">States</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <button type="button" class="creo-btn" data-variant="primary" disabled>
               Disabled
             </button>
@@ -278,9 +272,7 @@ const [primary, setPrimary] = createSignal(true)
           </a>
         </p>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -299,7 +291,7 @@ function CUButtonReactiveDemo() {
   }
 
   return (
-    <div class="docs-preview-grid">
+    <div class="cu-row cu-gap-s cu-center docs-preview-grid">
       <CUButton variant={primary() ? 'primary' : 'ghost'} onClick={() => setPrimary((v) => !v)}>
         variant: {primary() ? 'primary' : 'ghost'} (click)
       </CUButton>
@@ -383,7 +375,7 @@ function ButtonLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <CUButton
           ref={selectable}
           variant={variant()}

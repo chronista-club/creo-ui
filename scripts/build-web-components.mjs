@@ -20,6 +20,11 @@ const COPY_FILES = [
     dest: path.join(ROOT, 'packages/web/dist/token-shim.css'),
     label: 'token-shim.css',
   },
+  {
+    src: path.join(ROOT, 'packages/web/src/utilities.css'),
+    dest: path.join(ROOT, 'packages/web/dist/utilities.css'),
+    label: 'utilities.css',
+  },
 ]
 
 const entries = await fs.readdir(SRC_DIR, { withFileTypes: true })

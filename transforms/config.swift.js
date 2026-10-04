@@ -144,7 +144,7 @@ export default {
           if (type === 'color') {
             try {
               colors.push(`    static let ${name} = ${swiftColorLiteral(raw)}${comment}`)
-            } catch (err) {
+            } catch (_err) {
               // gradient 等の複合値は一旦 String として emit (Phase 3 で LinearGradient 対応)
               strings.push(
                 `    public static let ${name}: String = ${JSON.stringify(String(raw))}${comment}`,

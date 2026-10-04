@@ -1,8 +1,8 @@
 import { A } from '@solidjs/router'
 import { FrameProvider, useFrame } from 'creo-ui-frame'
-import { VisionProvider, type VisionSource, useGesture, useHandPinch } from 'creo-ui-vision'
+import { useGesture, useHandPinch, VisionProvider, type VisionSource } from 'creo-ui-vision'
 import { createMockSource } from 'creo-ui-vision/mock'
-import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
+import { createEffect, createSignal, For, onCleanup, Show } from 'solid-js'
 import { FrameStage } from './FrameStage'
 import { dashboardFrame, readingFrame } from './frames'
 
@@ -172,7 +172,7 @@ function RealMediaPipeDemo() {
   return (
     <div class="docs-mediapipe-frame">
       <Show when={!enabled()}>
-        <div class="docs-mediapipe-prompt">
+        <div class="cu-col cu-gap-s docs-mediapipe-prompt">
           <h3 class="docs-mediapipe-prompt-title">Webcam を有効化</h3>
           <ul class="docs-bullet-list">
             <li>カメラへのアクセス許可を求めます (browser native dialog)</li>
@@ -460,7 +460,7 @@ function CameraProbe() {
 
   return (
     <div class="docs-camera-probe">
-      <div class="docs-camera-probe-controls">
+      <div class="cu-row cu-gap-s docs-camera-probe-controls">
         <button
           type="button"
           class="creo-btn"
@@ -498,7 +498,7 @@ function CameraProbe() {
         playsinline
       />
       <Show when={trackSettings()}>
-        <div class="docs-camera-probe-stats">
+        <div class="cu-col cu-gap-xs docs-camera-probe-stats">
           <h4>Active video track</h4>
           <p class="docs-camera-probe-stat-line">
             <strong>label:</strong> <code>{trackLabel()}</code>
@@ -525,7 +525,7 @@ function CameraProbe() {
         </div>
       </Show>
       <Show when={devices()}>
-        <div class="docs-camera-probe-stats">
+        <div class="cu-col cu-gap-xs docs-camera-probe-stats">
           <h4>Available video inputs ({devices()?.length})</h4>
           <ul class="docs-bullet-list">
             <For each={devices()}>
@@ -539,7 +539,7 @@ function CameraProbe() {
         </div>
       </Show>
       <Show when={assetLoads()}>
-        <div class="docs-camera-probe-stats">
+        <div class="cu-col cu-gap-xs docs-camera-probe-stats">
           <h4>MediaPipe asset loads ({assetLoads()?.length})</h4>
           <Show when={assetLoads()?.length === 0}>
             <p class="docs-page-helper">

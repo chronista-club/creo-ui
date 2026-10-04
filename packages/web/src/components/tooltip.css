@@ -37,7 +37,8 @@
   opacity: 0;
   pointer-events: none;
   z-index: 100;
-  transition: opacity var(--motion-mapping-dropdown-duration) var(--motion-mapping-dropdown-easing),
+  transition:
+    opacity var(--motion-mapping-dropdown-duration) var(--motion-mapping-dropdown-easing),
     transform var(--motion-mapping-dropdown-duration) var(--motion-mapping-dropdown-easing);
 }
 

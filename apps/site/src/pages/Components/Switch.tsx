@@ -1,6 +1,4 @@
 import {
-  EditorHostProvider,
-  EditorLayer,
   bind,
   boolean,
   signalTarget,
@@ -44,11 +42,7 @@ const TOKENS = [
 
 export default function Switch() {
   return (
-    <EditorHostProvider
-      config={{
-        localStorageNamespace: 'creo-ui-docs.switch-editor',
-      }}
-    >
+    <>
       <header class="docs-page-header">
         <p class="docs-page-eyebrow">Components</p>
         <h1>Switch</h1>
@@ -64,14 +58,14 @@ export default function Switch() {
         <p class="docs-page-helper">
           <kbd>Ctrl+Shift+E</kbd> (or <kbd>⌘+Shift+E</kbd>) か下の toggle で Editor Mode ON →
           floating inspector panel から playground switch の checked / disabled / label
-          を即時編集できる。 Mode ON 中に playground switch を click するとその instance に field
-          が絞られる (selection)。 <A href="/concepts/editor-mode">Editor Mode protocol</A> の
-          dogfood。
+          を即時編集できる。 「画面から選ぶ」を押してから playground switch を click するとその
+          instance に field が絞られる (selection)。{' '}
+          <A href="/concepts/editor-mode">Editor Mode protocol</A> の dogfood。
         </p>
         <div class="docs-component-preview">
           <SwitchLivePreview />
           <div class="docs-preview-row-label">States</div>
-          <div class="docs-preview-grid">
+          <div class="cu-row cu-gap-s cu-center docs-preview-grid">
             <label class="creo-switch">
               <input type="checkbox" class="creo-switch-input" role="switch" aria-checked="false" />
               <span class="creo-switch-track">
@@ -176,9 +170,7 @@ export default function Switch() {
 </label>`}</code>
         </pre>
       </section>
-
-      <EditorLayer />
-    </EditorHostProvider>
+    </>
   )
 }
 
@@ -215,7 +207,7 @@ function SwitchLivePreview() {
   return (
     <>
       <div class="docs-preview-row-label">Playground (Editor Mode)</div>
-      <div class="docs-playground-stage">
+      <div class="cu-row cu-center docs-playground-stage">
         <label ref={selectable} class="creo-switch">
           <input
             type="checkbox"

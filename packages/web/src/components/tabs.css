@@ -56,7 +56,8 @@
   cursor: pointer;
 
   position: relative;
-  transition: color var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing),
+  transition:
+    color var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing),
     background-color var(--motion-mapping-toggle-duration) var(--motion-mapping-toggle-easing);
 }
 

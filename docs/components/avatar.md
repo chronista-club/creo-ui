@@ -47,7 +47,7 @@ user / account / project 等の visual identity を **小さな円形 (または
 
 <!-- Initials fallback -->
 <span class="creo-avatar">
-  <span class="creo-avatar-initials" aria-label="Mako">M</span>
+  <span class="creo-avatar-initials" role="img" aria-label="Mako">M</span>
 </span>
 
 <!-- With status dot (online) -->
@@ -65,7 +65,9 @@ user / account / project 等の visual identity を **小さな円形 (または
 ## Accessibility
 
 - `<img>` には必ず `alt` 属性
-- initials fallback は `aria-label` で name を暗黙化 (M だけでは読まない)
+- initials fallback は **`role="img"` + `aria-label`** で name を暗黙化 (M だけでは読まない)。
+  `role` を省くと素の `<span>` は暗黙 role を持たないため **`aria-label` が無視され**、
+  screen reader は "M" をそのまま読む (2026-08-30 修正)
 - status dot は装飾なので `aria-hidden="true"`、状態は別途 text で伝える (e.g., `<span class="visually-hidden">オンライン</span>`)
 
 ## Related
