@@ -5,7 +5,9 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
-## editor-host Unreleased
+## editor-host v0.11.0 (2026-10-30) — 自前 panel から「画面から選ぶ」
+
+> **editor-host `0.11.0`** を release。publish 認証を npm Trusted Publishing (OIDC、#181) に切り替えてから最初の出荷。web / layout / icons-web / rust は据え置き。
 
 - `useEditorPicking` (active / toggle / cancel) と `installSelectionHandlers` / `SelectionHandlersOptions` を public export に。0.9.0 で click 捕捉が provider 内部の picking に移ったため、`EditorLayer` を使わず自前 panel を持つ consumer (VP) から「画面から選ぶ」を切り替えられるようにする (VP lead の依頼)。
 
