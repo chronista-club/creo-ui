@@ -41,7 +41,9 @@ jobs:
           set -euo pipefail
 
           npm_has() { npm view "$1@$2" version >/dev/null 2>&1; }
-          crates_has() { curl -sfo /dev/null "https://crates.io/api/v1/crates/$1/$2"; }
+          # crates.io API は User-Agent 無しを 403 で断る → 常に「無い」と誤判定して既公開版に
+          # publish を dispatch し `already exists` で落ちていた (2026-10-30 rust-v0.9.0 で実発生)
+          crates_has() { curl -sfo /dev/null -A "chronista-club/creo-ui release-tag (GitHub Actions)" "https://crates.io/api/v1/crates/$1/$2"; }
 
           release_one() {
             local prefix="$1" version="$2" workflow="$3" registry="$4" pkg="$5"

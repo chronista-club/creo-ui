@@ -92,9 +92,15 @@ curl -s https://doc.anycreative.tech/creo-ui/ | grep -oE 'assets/[^"]+\.css'
 
 ## Recovery
 
-- **publish が失敗した** (npm token 切れ等): tag は残っているので、原因解消後に
-  `gh workflow run publish-<pkg>.yml --ref <tag>` で再実行。あるいは次の main push
-  で release-tag.yml が registry 欠落を検出して自動再 dispatch する (self-healing)
+- **publish が失敗した**: tag は残っている。原因がどちら側かで再実行の ref が変わる
+  - **npmjs.com 側** (Trusted Publisher 未登録 → `E404`、登録の 2 日期限切れ等): 登録し直して
+    `gh workflow run publish-<pkg>.yml --ref <tag>` で再実行。あるいは次の main push で
+    release-tag.yml が registry 欠落を検出して自動再 dispatch する (self-healing)
+  - **workflow file 側** (認証方式の変更、toolchain の pin 等): **tag ref の再実行では直らない**
+    (tag が指す commit の workflow file は古いまま)。修正を nightly → main に入れ、
+    `git diff <tag> main -- packages/<pkg>` が空 (= 中身が tag と同一) であることを確認してから
+    `gh workflow run publish-<pkg>.yml --ref main` で publish する。provenance の commit だけが
+    main を指す。前例: editor-host 0.10.0 (2026-10-30、token publish → OIDC 切替)
 - **間違った内容を出荷した**: unpublish しない。修正を nightly に積み、patch bump
   して次の cut で前進 (roll-forward)
 - **tag だけ欠落** (歴史的な手動運用の名残): 該当 workflow を `gh workflow disable`
