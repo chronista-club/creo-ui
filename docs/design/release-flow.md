@@ -73,6 +73,33 @@ GitHub の再帰防止仕様により、Actions 内から `GITHUB_TOKEN` で pus
 では何もしない。publish が一度失敗した release も、次の main push で registry 欠落を
 検出して自動で再 dispatch される。
 
+### publish の認証は npm Trusted Publishing (OIDC) — token を持たない (2026-10-30)
+
+npm は 2025-09 の供給網攻撃 (Shai-Hulud) を受けて token publish を締める方針を出した: classic
+token の非推奨化、granular token の短命化、**2FA bypass の廃止**。CI から `NPM_TOKEN` で `npm publish`
+すると `EOTP` (one-time password 要求) で止まり、token を作り直しても同じ (editor-host 0.9.0 が
+10-05 から 4 回、0.10.0 が 10-30 に落ちた原因)。
+
+対応: npm publish workflow 4 本 (web / editor-host / layout / icons-web) を OIDC に切替。
+
+- workflow: `permissions: id-token: write` を足し、`NODE_AUTH_TOKEN` を外す。npm ≥ 11.5.1
+  (Node 24 同梱で満たす)
+- npmjs.com: package ごとに Trusted Publisher を登録 — GitHub Actions / organization
+  `chronista-club` / repository `creo-ui` / workflow file 名 (`publish-<pkg>.yml`) /
+  environment 空 / `npm publish` を許可。**登録は owner の作業**。登録後 2 日以内に初回
+  publish を通さないと期限切れになり再登録が要る。未登録のまま dispatch すると `E404`
+- provenance は public repo + OIDC で自動付与される。`package.json` の `repository.url` が
+  この repo と一致していないと publish が落ちる (4 package とも一致済み)
+- `release-tag.yml` の `--ref <tag>` dispatch は **tag 時点の workflow file** を使う。workflow
+  側の修正は tag ref の再実行では効かないので、recovery は skill の手順 (main から dispatch)
+
+### crates.io の存在照会には User-Agent が要る (2026-10-30)
+
+crates.io API は User-Agent 無しの request を 403 で断る。`release-tag.yml` の `crates_has` が
+`curl -sf` だけで照会していたため常に「無い」と判定し、既公開の rust 0.9.0 に publish を
+dispatch して `already exists` で落ちていた (main push のたびに失敗 run が 1 本増える)。
+`-A` を付けて 200 を返させる。
+
 ### 導入時の整合 (2026-07-30)
 
 - layout-v0.3.0 の tag 欠落を backfill (publish workflow を一時 disable して
