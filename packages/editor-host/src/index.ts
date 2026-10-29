@@ -121,6 +121,21 @@ export type { ConsoleApi } from './console'
 export { type CrossTabOptions, installCrossTabSync } from './cross-tab'
 // F3: Export
 export { type ExportFormat, type ExportOptions, exportSnapshot } from './export'
+// D-16: Editor Link — fields / selection / values / mode を外の相手 (VP hub 等) と往復
+export {
+  DEFAULT_LINK_URL,
+  installLink,
+  LINK_VERSION,
+  type LinkField,
+  type LinkInbound,
+  type LinkOptions,
+  type LinkOutbound,
+  type LinkSelection,
+  type LinkTransport,
+  parseInbound,
+  toLinkField,
+  toLinkSelection,
+} from './link'
 // Phase M6: OKLCH utilities (color editor / theme editor 向け)
 export {
   formatOklch,
@@ -137,6 +152,7 @@ export {
   shareUrl,
   type UrlSyncOptions,
 } from './url-sync'
+export { type WsLinkOptions, wsLink } from './ws-link'
 
 // ---------- Layout helpers ----------
 

@@ -5,6 +5,15 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## editor-host v0.10.0 (2026-10-30) — Editor Link (D-16)
+
+> **editor-host `0.10.0`** を release。VP 側 (hub) の開発が npm の版を参照できるようにするための cut。web / layout / icons-web / rust は今回据え置き — web は `web-v0.30.0` 以降に utility 層 (#166〜#169) 等の変更が main に積まれているが、その出荷判断は別途行う。
+
+- `config.link` で host を外の相手 (VP daemon の hub) と WebSocket で繋ぐ Editor Link を追加。fields / selection / values / mode を JSON で流し、set / mode を受ける。URL は固定 `ws://127.0.0.1:32000/link`、相手が居なければ静かに再接続を待つ。
+- `EditorHost` に `onModeChange` / `onFieldsChange` / `onSelectionChange` を追加 (Solid owner 無しで追える plain listener、値が変わった時だけ)。
+- export: `installLink` / `wsLink` / `toLinkField` / `toLinkSelection` / `parseInbound` / `DEFAULT_LINK_URL` / `LINK_VERSION` と Link の型。
+- site は dev のときだけ `link` を有効化。設計は `docs/design/editor-link.md`、横断 thread は creo-memories `editor-link`。
+
 ## editor-host v0.9.0 (2026-10-05) — アプリ共通 Editor
 
 > **editor-host `0.9.0`** を release。web / layout / icons-web / rust は今回の Editor 出荷に不要なため据え置き。frame / vision / md-view の公開は今回行わない。
