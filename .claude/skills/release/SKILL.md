@@ -60,6 +60,8 @@ gh pr create --base main --head nightly --title "release: nightly → main (<pkg
 ```
 
 - body に出荷対象と据え置き理由を明記 (①の判断表の結論)
+- **初回のみ**: 出荷する package の Trusted Publisher が npmjs.com に登録済みであること
+  (未登録だと publish が `E404` で落ちる。手順は [release-flow.md](../../../docs/design/release-flow.md))
 - CI 緑を確認して **必ず merge commit** (`gh pr merge --merge`) — squash しない
 - **merge した瞬間に publish まで自動で走る**。迷いがあるなら merge しない
 
