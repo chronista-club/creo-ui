@@ -237,6 +237,14 @@ creoEditor.share()   // 現 URL (更新済) を return
 
 同 origin の複数 tab で editor values を双方向 sync。デザイナが mobile と desktop の 2 tab で同時確認、slider 操作が両方に反映。
 
+### D-16. Editor Link — host を外の相手と繋ぐ
+
+```tsx
+<EditorHostProvider config={{ link: { app: 'Vantage Point' } }}>
+```
+
+fields / selection / values / mode を JSON で流し、set / mode を受けます。URL は固定（`ws://127.0.0.1:32000/link`）なので面の側は設定なし、相手（VP daemon の hub）が居なければ静かに待つだけです。相手がそれを何に写すか — 机の MIDI 機材、AI、別アプリ — は editor-host では決めません。wire の詳細は [docs/design/editor-link.md](../../docs/design/editor-link.md)。
+
 ## AI pair design with Claude (claude-in-chrome MCP)
 
 `window.creoEditor` が expose されると、**専用 MCP server なしで** Claude が editor を操作できる:

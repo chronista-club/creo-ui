@@ -24,6 +24,7 @@ import { buildConsoleApi, installConsoleApi } from './console'
 import { installCrossTabSync } from './cross-tab'
 import { exportSnapshot } from './export'
 import { createEditorHost } from './host'
+import { installLink } from './link'
 import { installSelectionHandlers } from './selection'
 import { installShortcut } from './shortcut'
 import type { EditorField, EditorHost, EditorHostConfig } from './types'
@@ -354,6 +355,12 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
           channel: props.config.crossTabChannel,
         }),
       )
+    }
+
+    // D-16: Editor Link (opt-in via config.link)。URL 固定なので true だけで繋がる。
+    if (props.config?.link) {
+      const linkOptions = props.config.link === true ? {} : props.config.link
+      uninstallers.push(installLink(host, linkOptions))
     }
 
     // F1: Console REPL — CLAUDE.md EH-6: dev 自動 expose / production は config で opt-out。

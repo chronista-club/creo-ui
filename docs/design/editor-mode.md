@@ -18,7 +18,7 @@
 
 ---
 
-## 2. 設計決定 (D-1 ~ D-13)
+## 2. 設計決定 (D-1 ~ D-16)
 
 | # | 項目 | 決定 |
 |---|------|------|
@@ -40,6 +40,7 @@
 
 | **D-14** | **調整ノブの書き込みは「値ベース」で判定する** — 現在値が SSOT 既定と同じなら `removeProperty`、既定以外のときだけ inline で書く。これで「未調整なら token emit (`rem` / `calc`) のまま = browser の font 設定追従が生きる」と「調整済みなら mount 時に復元される」が **1 本の条件で両立**する。時間ベースの判定 (register 時の初回適用だけ skip する) では、localStorage からの復元の一発まで捨ててしまい永続と両立しない (2026-08-14) |
 | **D-15** | **panel の開閉 state は panel 側が持つ** — accordion 個々が state を持つと、`host.fields()` の変化 (component 選択 = ノブの register) で group の DOM が作り直され、**選択のたび勝手に閉じる**。group 名を key にした表を panel が保持し、group には制御 props で渡す (2026-08-14) |
+| **D-16** | **Editor Link — host を外の相手と Editor protocol のまま繋ぐ** — fields / selection / values / mode を JSON で流し、set / mode を受ける。相手が何に写すか (机の MIDI 機材 / AI / 別アプリ) は creo-ui が知らない = **MIDI の語彙を持ち込まない**。URL は固定 `ws://127.0.0.1:32000/link`、相手は VP daemon の hub (mako 裁定 2026-10-30)。D-10 を「外部の誰でも」に一般化したもので、実体は cross-tab (F5) の一般化。SSOT は [editor-link.md](editor-link.md) |
 
 ## 3. 4 方向 Semantic Layout
 
@@ -698,6 +699,7 @@ Claude: (tokens リポジトリに PR を作成)
 - **tokens/editor-mode/**: Editor Layer 自身が consume する 5 カテゴリ token
 - **VP 設計 memo** (`~/repos/vantage-point/docs/design/05-pane-content-lane-smart-canvas.md`): D-1 "CreoUI delegation: schema owner = creo-memories" / D-12 "CreoUI schema 戦略 C (Co-design)" が Editor Mode の位置付けを支える上位決定
 - **既存 DevEditor** (`creo-memories/packages/creoui/src/components/DevEditor.tsx`): Phase 2 で Editor Mode protocol へ migration
+- **[Editor Link](editor-link.md)** (D-16): host を VP daemon の hub と繋ぐ wire の SSOT。机の MIDI 機材への写しは VP 側、機材契約は midistage design 03。横断 thread は creo-memories `editor-link`
 
 ---
 
@@ -787,3 +789,12 @@ creo-memories lead 判断 = EH-4)。
 2026-10-05: panel 情報構造とクリック選択の新しい契約は
 [design 03](03-app-editor.md) を参照。アプリ全体 / 画面の各部 / 変更した項目へ整理し、
 画面からの選択は明示的な picking 中だけに変更する。
+
+## Status update — Editor Link (D-16)
+
+2026-10-30: host を外の相手と Editor protocol のまま繋ぐ Link を追加 ([editor-link.md](editor-link.md))。
+発端は「Editor と机の MIDI 機材を連携したい」で、creo-ui が MIDI を知らずに済む形として
+**editor-host ⇄ VP daemon (常駐 WS、URL 固定)** に落ち着いた。host には Solid owner 無しで
+追える `onModeChange` / `onFieldsChange` / `onSelectionChange` を足し、site は dev のときだけ
+`config.link` で顔を出す。相手側 (VP hub) と midistage の adapter は各 repo の lane で進行中、
+実機は確認待ち。

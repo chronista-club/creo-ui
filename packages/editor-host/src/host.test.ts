@@ -217,3 +217,78 @@ describe('mcp', () => {
     expect(host.mcp.mode()).toBe('off')
   })
 })
+
+// ---------- Change listeners (Link / infra 用、Solid owner 不要) ----------
+
+describe('onModeChange', () => {
+  test('fires on enable / disable / toggle with the new mode', () => {
+    const host = createEditorHost()
+    const seen: string[] = []
+    host.onModeChange((m) => seen.push(m))
+    host.enable()
+    host.disable()
+    host.toggle()
+    expect(seen).toEqual(['on', 'off', 'on'])
+  })
+
+  test('does not fire when the mode does not change', () => {
+    const host = createEditorHost({ initialMode: 'on' })
+    const seen: string[] = []
+    host.onModeChange((m) => seen.push(m))
+    host.enable()
+    expect(seen).toEqual([])
+  })
+
+  test('unsubscribe stops notifications', () => {
+    const host = createEditorHost()
+    const seen: string[] = []
+    const off = host.onModeChange((m) => seen.push(m))
+    host.enable()
+    off()
+    host.disable()
+    expect(seen).toEqual(['on'])
+  })
+})
+
+describe('onFieldsChange', () => {
+  test('fires with the full list on register and on unregister', () => {
+    const host = createEditorHost()
+    const seen: string[][] = []
+    host.onFieldsChange((fields) => seen.push(fields.map((f) => f.id)))
+    const unregister = host.register([numberField({ id: 'a' }), numberField({ id: 'b' })])
+    host.register([numberField({ id: 'c' })])
+    unregister()
+    expect(seen).toEqual([['a', 'b'], ['a', 'b', 'c'], ['c']])
+  })
+
+  test('does not fire when nothing was added or removed', () => {
+    const host = createEditorHost()
+    host.register([numberField({ id: 'a' })])
+    const seen: number[] = []
+    host.onFieldsChange((fields) => seen.push(fields.length))
+    host.register([numberField({ id: 'a' })])
+    expect(seen).toEqual([])
+  })
+})
+
+describe('onSelectionChange', () => {
+  test('fires on select / clearSelection / disable', () => {
+    const host = createEditorHost({ initialMode: 'on' })
+    const seen: Array<string | null> = []
+    host.onSelectionChange((s) => seen.push(s?.targetId ?? null))
+    host.select({ targetId: 'card-1', fieldIds: ['a'], rect: makeRect() })
+    host.clearSelection()
+    host.select({ targetId: 'card-2', fieldIds: [], rect: makeRect() })
+    host.disable()
+    expect(seen).toEqual(['card-1', null, 'card-2', null])
+  })
+
+  test('does not fire when clearing an empty selection', () => {
+    const host = createEditorHost()
+    const seen: number[] = []
+    host.onSelectionChange(() => seen.push(1))
+    host.clearSelection()
+    host.disable()
+    expect(seen).toEqual([])
+  })
+})
