@@ -72,6 +72,21 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
   const subscribers = new Map<string, Set<(value: unknown) => void>>()
   /** 全 field の change を一括で購読する listeners (cross-tab / history / FLIP で使用) */
   const anyChangeListeners = new Set<(id: string, value: unknown) => void>()
+  /**
+   * mode / fields / selection の変化を Solid owner 無しで購読する listeners (Link 等の
+   * infra 用)。signal は provider の外からは追えないので、値が実際に変わった時だけ
+   * plain callback で知らせる。
+   */
+  const modeListeners = new Set<(mode: EditorMode) => void>()
+  const fieldsListeners = new Set<(fields: EditorField[]) => void>()
+  const selectionListeners = new Set<(selection: SelectionInfo | null) => void>()
+
+  function addListener<L>(set: Set<L>, listener: L): () => void {
+    set.add(listener)
+    return () => {
+      set.delete(listener)
+    }
+  }
 
   function notifySubscribers(id: string, value: unknown): void {
     const set = subscribers.get(id)
@@ -123,12 +138,19 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
     }
   }
 
+  function notifyFields(): void {
+    const list = fields()
+    for (const listener of fieldsListeners) listener(list)
+  }
+
   function register(newFields: EditorField[]): () => void {
     const ids = new Set(newFields.map((f) => f.id))
 
+    let added = 0
     setFields((prev) => {
       const existing = new Set(prev.map((f) => f.id))
       const addition = newFields.filter((f) => !existing.has(f.id))
+      added = addition.length
       return [...prev, ...addition]
     })
 
@@ -144,9 +166,16 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
       }
       return next
     })
+    if (added > 0) notifyFields()
 
     return () => {
-      setFields((prev) => prev.filter((f) => !ids.has(f.id)))
+      let removed = 0
+      setFields((prev) => {
+        const next = prev.filter((f) => !ids.has(f.id))
+        removed = prev.length - next.length
+        return next
+      })
+      if (removed > 0) notifyFields()
       // note: values / persisted entries は register-unregister で消さない
       // (再マウント時に保持したい)。完全削除が必要なら別 API (forget) を追加。
     }
@@ -154,12 +183,18 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
 
   // --- Selection ---
 
-  function select(info: SelectionInfo | null): void {
+  function applySelection(info: SelectionInfo | null): void {
+    if (info === selection()) return
     setSelectionSignal(info)
+    for (const listener of selectionListeners) listener(info)
+  }
+
+  function select(info: SelectionInfo | null): void {
+    applySelection(info)
   }
 
   function clearSelection(): void {
-    setSelectionSignal(null)
+    applySelection(null)
   }
 
   function setHover(info: SelectionInfo | null): void {
@@ -168,14 +203,20 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
 
   // --- Mode ---
 
+  function applyMode(next: EditorMode): void {
+    if (next === mode()) return
+    setMode(next)
+    for (const listener of modeListeners) listener(next)
+  }
+
   function enable(): void {
-    setMode('on')
+    applyMode('on')
   }
 
   function disable(): void {
-    setMode('off')
+    applyMode('off')
     // mode OFF で selection / hover も自動 clear (D-8: Layer 不可視、値は保持)
-    setSelectionSignal(null)
+    applySelection(null)
     setHoverSignal(null)
   }
 
@@ -218,6 +259,10 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
     select,
     clearSelection,
     setHover,
+
+    onModeChange: (listener) => addListener(modeListeners, listener),
+    onFieldsChange: (listener) => addListener(fieldsListeners, listener),
+    onSelectionChange: (listener) => addListener(selectionListeners, listener),
 
     mcp: {
       listFields,

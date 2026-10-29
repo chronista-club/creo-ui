@@ -6,6 +6,7 @@
  * accessor / signal は `./host.ts` 以降で個別に露出する。
  */
 import type { Accessor } from 'solid-js'
+import type { LinkOptions } from './link'
 
 // ---------- Semantic axes ----------
 
@@ -190,6 +191,14 @@ export interface EditorHostConfig {
    * cross-tab の custom channel 名 (default: namespace ベース)。
    */
   crossTabChannel?: string
+
+  /**
+   * Editor Link (D-16): fields / selection / values / mode を外の相手 (VP daemon の
+   * hub 等) と WebSocket で往復する。URL は固定 (`DEFAULT_LINK_URL`) なので
+   * `true` だけで繋がる。相手が居なければ静かに再接続を待つだけで、何も起きない。
+   * default: false。`{ app: '名札' }` で相手の一覧に出る名前を指定できる。
+   */
+  link?: boolean | LinkOptions
 }
 
 // ---------- MCP-ready subset ----------
@@ -260,6 +269,14 @@ export interface EditorHost {
   clearSelection(): void
   /** (internal) hover state を update。selection handler から呼ぶ */
   setHover(info: SelectionInfo | null): void
+
+  // --- Change listeners (Solid owner 無しで追える plain callback、Link 等の infra 用) ---
+  /** mode が実際に変わった時だけ呼ばれる */
+  onModeChange(listener: (mode: EditorMode) => void): () => void
+  /** register / unregister で一覧が実際に変わった時だけ、全 fields を渡して呼ばれる */
+  onFieldsChange(listener: (fields: EditorField[]) => void): () => void
+  /** selection が変わった時 (disable による clear も含む) に呼ばれる */
+  onSelectionChange(listener: (selection: SelectionInfo | null) => void): () => void
 
   // --- MCP ---
   readonly mcp: EditorHostMcpApi

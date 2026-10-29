@@ -15,6 +15,9 @@ function Root(props: { children?: JSX.Element }) {
         // selectionRoot は指定しない (= body 全体)。site chrome (Header / Sidebar /
         // ThemeSwitcher) も creo component なので Editor の編集対象に含める
         // 通常の nav click はそのまま操作できる。「画面から選ぶ」の間だけ選択になる
+        // D-16: dev では VP daemon の hub に Link で顔を出す (URL 固定、居なければ無音)。
+        // 公開 site は loopback に繋ぎに行かない
+        link: import.meta.env.DEV ? { app: 'creo-ui' } : undefined,
       }}
     >
       <Layout>{props.children}</Layout>
