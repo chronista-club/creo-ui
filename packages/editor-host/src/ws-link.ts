@@ -1,10 +1,11 @@
 /**
  * @chronista-club/creo-ui-editor-host — WebSocket transport for the Editor Link
  *
- * URL は固定 (`DEFAULT_LINK_URL`) が前提。相手 (VP daemon) が居なければ静かに
- * 再接続を繰り返すだけで、Content にも Editor にも影響しない (D-6)。閉じている
- * 間に送ったものは捨てる — open のたびに Link が hello + snapshot を送り直すので、
- * 相手はそこで追いつける。
+ * URL は固定 (`DEFAULT_LINK_URL`) が前提。相手 (VP daemon) が居なければ再接続を
+ * 繰り返すだけで、Content にも Editor にも影響しない (D-6)。JS からは何も出さないが、
+ * ブラウザ自身の接続エラーは console に出る (抑えられない)。閉じている間に送った
+ * ものは捨てる — open のたびに Link が hello + snapshot を送り直すので、相手は
+ * そこで追いつける。
  */
 import type { LinkTransport } from './link'
 

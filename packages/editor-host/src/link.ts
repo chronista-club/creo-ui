@@ -162,8 +162,9 @@ function generateSurfaceId(): string {
 
 /**
  * host を transport に繋ぐ。open のたびに hello + snapshot を送り、以後は変化を
- * 流す。相手から届いた set / mode は host に適用するが、その結果を相手へ
- * 返さない (echo loop 回避)。相手が確認したければ `get` で snapshot を引く。
+ * 流す。相手から届いた set / mode は host に適用するが、その結果 (set / mode そのもの)
+ * を相手へ返さない (echo loop 回避)。相手が確認したければ `get` で snapshot を引く。
+ * 適用の副作用で起きた selection の変化は返す (相手はそれを知らないため)。
  */
 export function installLink(host: EditorHost, opts: LinkOptions = {}): () => void {
   const transport = opts.transport ?? wsLink(opts.url ?? DEFAULT_LINK_URL)
@@ -221,8 +222,10 @@ export function installLink(host: EditorHost, opts: LinkOptions = {}): () => voi
     host.onFieldsChange((fields) => {
       send({ t: 'fields', fields: fields.map(toLinkField) })
     }),
+    // selection は相手からの適用中でも流す — 相手の `mode off` で消える selection は
+    // 相手が知らない副作用なので、止めると相手の状態が古いまま残る (review #178-1)
     host.onSelectionChange((selection) => {
-      if (!applyingRemote) send({ t: 'selection', selection: toLinkSelection(selection) })
+      send({ t: 'selection', selection: toLinkSelection(selection) })
     }),
     transport.onOpen(() => {
       sendHello()

@@ -263,6 +263,20 @@ describe('installLink / inbound', () => {
     expect(host.getValue('ghost')).toBeUndefined()
   })
 
+  test('remote mode off still reports the selection it cleared (review #178-1)', () => {
+    const host = createEditorHost({ initialMode: 'on' })
+    host.select({ targetId: 'card-1', fieldIds: ['a'], rect: makeRect() })
+    const fake = fakeTransport({ open: true })
+    installLink(host, { transport: fake.transport, app: 'x' })
+    fake.sent.length = 0
+
+    fake.receive({ t: 'mode', mode: 'off' })
+
+    expect(host.selection()).toBeNull()
+    // mode そのものは echo しないが、相手が知らない副作用 (selection の clear) は流す
+    expect(fake.sent).toEqual([{ t: 'selection', selection: null }])
+  })
+
   test('mode switches the host without echo', () => {
     const host = createEditorHost()
     const fake = fakeTransport({ open: true })

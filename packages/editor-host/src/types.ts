@@ -195,7 +195,9 @@ export interface EditorHostConfig {
   /**
    * Editor Link (D-16): fields / selection / values / mode を外の相手 (VP daemon の
    * hub 等) と WebSocket で往復する。URL は固定 (`DEFAULT_LINK_URL`) なので
-   * `true` だけで繋がる。相手が居なければ静かに再接続を待つだけで、何も起きない。
+   * `true` だけで繋がる。相手が居なければ再接続を待つだけで Editor / Content には
+   * 何も起きない (ブラウザ自身の WebSocket 接続エラーは console に出るので、
+   * dev や機材のある環境でだけ有効にする)。
    * default: false。`{ app: '名札' }` で相手の一覧に出る名前を指定できる。
    */
   link?: boolean | LinkOptions
