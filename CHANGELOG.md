@@ -9,7 +9,7 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **editor-host `0.9.0`** を release。web / layout / icons-web / rust は今回の Editor 出荷に不要なため据え置き。frame / vision / md-view の公開は今回行わない。
 
-- アプリ全体（文字・色・余白）/ 画面の各部 / 変更した項目へパネルを刷新。
+- アプリ全体（文字・色・余白）/ 画面の各部 / 変更した項目へパネルを刷新 (#173、release #174)。
 - `EditorLayer` の `appName` / `sections` と `EditorLayerProps` / `EditorSection` 型を追加。非 global の登録項目も一覧可能。
 - **操作変更**: Editor を開くだけではアプリのクリックを捕捉しない。「画面から選ぶ」を押して対象を一つ選ぶと、通常操作へ戻る。Escape は picking 解除 → 選択解除 → Editor 終了。
 - 編集対象の反映範囲を表示。既定値との差分と CSS override を確認・解除できる。
