@@ -1,3 +1,17 @@
+# npm への publish は Trusted Publishing (OIDC) で行う — token は使わない。
+#
+# 2FA bypass の無い token で CI から publish すると npm が one-time password を要求する
+# (EOTP。2026-10-05 / 10-30 に editor-host 0.9.0 / 0.10.0 が連続して落ちた原因。bypass 付き
+# token に替えた 10-30 06:28 JST の再実行は通った)。bypass 付き token には寿命があり、npm は
+# 2025-09 に bypass 廃止の方針を出しているので、token に依らない OIDC へ切替える。
+# 代わりに GitHub Actions の OIDC token で「この repo のこの workflow file からの
+# publish」を npmjs.com に信頼させる。npmjs.com 側の設定が無いと E404 で落ちる:
+#   package → Settings → Trusted Publisher → GitHub Actions
+#   organization: chronista-club / repository: creo-ui / workflow: <このファイル名> /
+#   environment: 空 / allowed: npm publish
+# 要件: `permissions: id-token: write` と npm ≥ 11.5.1 (Node 24 同梱で満たす)。
+# provenance は OIDC + public repo で自動付与 (package.json の repository.url が
+# この repo と一致していること)。設計: docs/design/release-flow.md
 name: Publish creo-ui to npm
 
 on:
@@ -11,6 +25,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write # OIDC (npm Trusted Publishing、冒頭コメント参照)
 
 jobs:
   publish:
@@ -46,6 +61,4 @@ jobs:
 
       - name: Publish to npm
         working-directory: creo-ui/packages/web
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public

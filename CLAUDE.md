@@ -141,7 +141,7 @@ bun run build        # 全 platform に反映
 - **rust** (ubuntu): `cargo build && cargo test` を `packages/rust` で。Rust 1.95 (ci.yml の toolchain も Cargo.toml も 1.95 で揃える、 mise の `[tools].rust` と SSOT)。
 - **swift** (macos-14): `swift build && swift test` を `packages/swift` で。
 
-`publish-web.yml` は `web-v*` tag push で npmjs.com へ `@chronista-club/creo-ui` を publish (要 `NPM_TOKEN` secret)。root で `bun run build:web` を実行してから `packages/web/` で `npm publish` する 2 段構え（path が root 相対のため）。
+`publish-web.yml` は `web-v*` tag push で npmjs.com へ `@chronista-club/creo-ui` を publish (認証は npm Trusted Publishing / OIDC で token 不要 — [docs/design/release-flow.md](./docs/design/release-flow.md))。root で `bun run build:web` を実行してから `packages/web/` で `npm publish` する 2 段構え（path が root 相対のため）。
 
 ## ブランチ運用 (nightly / main 二段、2026-06-16 に `n` → `nightly` rename)
 

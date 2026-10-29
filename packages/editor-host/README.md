@@ -382,6 +382,7 @@ Accessor として読み、`.set()` で書き、`.selectable()` で selection re
 | `useEditorSelection()` | `Accessor<SelectionInfo \| null>` |
 | `useEditorHover()` | `Accessor<SelectionInfo \| null>` |
 | `useEditorSelectable({ binders, id? })` | `ref={...}` 用 callback。binder 配列から `data-editor-fields` を set |
+| `useEditorPicking()` | 「画面から選ぶ」の `active() / toggle() / cancel()`。`EditorLayer` を使わず自前 panel を持つ consumer 向け（click は `active()` の間だけ捕捉、1 つ選ぶと終わる） |
 
 ### Theme meta
 
