@@ -37,9 +37,14 @@ const PickingContext = createContext<{
   toggle: () => void
   cancel: () => boolean
 }>()
+/**
+ * 「画面から選ぶ」(picking) の状態と切替。`active()` の間だけ click を選択として捕捉し、
+ * 1 つ選ぶと自動で終わる。`EditorLayer` を使わず自前の panel を持つ consumer
+ * (VP 等) が同じ入口を使うために export している。
+ */
 export function useEditorPicking() {
   const context = useContext(PickingContext)
-  if (!context) throw new Error('EditorLayer must be inside EditorHostProvider')
+  if (!context) throw new Error('useEditorPicking() must be called within <EditorHostProvider>')
   return context
 }
 

@@ -31,7 +31,14 @@ export { useEditorHover, useEditorMode, useEditorSelectable, useEditorSelection 
 // ---------- UI components ----------
 export { EditorLayer } from './layer'
 // ---------- Provider + hooks ----------
-export { EditorHostProvider, useComponentResolver, useEditorHost } from './provider'
+export {
+  EditorHostProvider,
+  useComponentResolver,
+  useEditorHost,
+  useEditorPicking,
+} from './provider'
+// 「画面から選ぶ」(picking) を自前 panel から使う consumer 向け (VP の依頼、2026-10-30)
+export { installSelectionHandlers, type SelectionHandlersOptions } from './selection'
 // ---------- Target (対象、データ源) ----------
 export type { Target } from './target'
 export {
