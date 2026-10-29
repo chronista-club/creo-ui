@@ -76,9 +76,11 @@ GitHub の再帰防止仕様により、Actions 内から `GITHUB_TOKEN` で pus
 ### publish の認証は npm Trusted Publishing (OIDC) — token を持たない (2026-10-30)
 
 npm は 2025-09 の供給網攻撃 (Shai-Hulud) を受けて token publish を締める方針を出した: classic
-token の非推奨化、granular token の短命化、**2FA bypass の廃止**。CI から `NPM_TOKEN` で `npm publish`
-すると `EOTP` (one-time password 要求) で止まり、token を作り直しても同じ (editor-host 0.9.0 が
-10-05 から 4 回、0.10.0 が 10-30 に落ちた原因)。
+token の非推奨化、granular token の短命化、**2FA bypass の廃止**。2FA bypass の無い token で CI から
+`npm publish` すると `EOTP` (one-time password 要求) で止まる (editor-host 0.9.0 が 10-05 から 4 回、
+0.10.0 が 10-30 に落ちた原因。bypass 付きの token に替えた 10-30 06:28 JST の再実行は通り、0.10.0 は
+token 経路で npm に出た)。bypass 付き token には寿命があり、bypass そのものも廃止予定なので、token に
+依らない OIDC へ切替える。**切替後の最初の publish の前に Trusted Publisher の登録が要る** (未登録は `E404`)。
 
 対応: npm publish workflow 4 本 (web / editor-host / layout / icons-web) を OIDC に切替。
 
