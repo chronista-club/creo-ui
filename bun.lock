@@ -38,9 +38,24 @@
         "vite-plugin-solid": "^2.11.14",
       },
     },
+    "packages/core": {
+      "name": "@chronista-club/creo-ui",
+      "version": "0.30.0",
+      "devDependencies": {
+        "@typescript/typescript6": "^6.0.2",
+        "solid-js": "^1.9.15",
+        "typescript": "^7.0.2",
+        "vite": "^8.2.2",
+        "vite-plugin-dts": "^5.0.3",
+        "vite-plugin-solid": "^2.11.14",
+      },
+      "peerDependencies": {
+        "solid-js": "^1.9.0",
+      },
+    },
     "packages/editor-host": {
       "name": "@chronista-club/creo-ui-editor-host",
-      "version": "0.9.0",
+      "version": "0.11.0",
       "devDependencies": {
         "@typescript/typescript6": "^6.0.2",
         "solid-js": "^1.9.15",
@@ -149,21 +164,6 @@
         "@mediapipe/tasks-vision",
       ],
     },
-    "packages/web": {
-      "name": "@chronista-club/creo-ui",
-      "version": "0.30.0",
-      "devDependencies": {
-        "@typescript/typescript6": "^6.0.2",
-        "solid-js": "^1.9.15",
-        "typescript": "^7.0.2",
-        "vite": "^8.2.2",
-        "vite-plugin-dts": "^5.0.3",
-        "vite-plugin-solid": "^2.11.14",
-      },
-      "peerDependencies": {
-        "solid-js": "^1.9.0",
-      },
-    },
   },
   "packages": {
     "@babel/code-frame": ["@babel/code-frame@7.29.0", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.28.5", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw=="],
@@ -226,7 +226,7 @@
 
     "@bundled-es-modules/memfs": ["@bundled-es-modules/memfs@4.17.0", "", { "dependencies": { "assert": "^2.1.0", "buffer": "^6.0.3", "events": "^3.3.0", "memfs": "^4.17.0", "path": "^0.12.7", "stream": "^0.0.3", "util": "^0.12.5" } }, "sha512-ykdrkEmQr9BV804yd37ikXfNnvxrwYfY9Z2/EtMHFEFadEjsQXJ1zL9bVZrKNLDtm91UdUOEHso6Aweg93K6xQ=="],
 
-    "@chronista-club/creo-ui": ["@chronista-club/creo-ui@workspace:packages/web"],
+    "@chronista-club/creo-ui": ["@chronista-club/creo-ui@workspace:packages/core"],
 
     "@chronista-club/creo-ui-editor-host": ["@chronista-club/creo-ui-editor-host@workspace:packages/editor-host"],
 

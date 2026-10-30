@@ -5,6 +5,14 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## Unreleased — repo 構成
+
+- **`packages/web` を `packages/core` に改名** (2026-10-30)。「creo-ui」が repo 全体と Web 本体 package の 2 つを指していて紛らわしかったため、本体の directory を役割の名前にした。
+  - **npm 名 `@chronista-club/creo-ui` は変更なし** — consumer の install / import には影響しない。
+  - release の単位名は platform 名の `web` のまま (tag `web-v*`・`publish-web.yml`・`build:web`)。
+  - `bun link` で手元の creo-ui をリンクしている場合は、`packages/core` で `bun link` をやり直す (旧 path を指す link は切れる)。
+  - この版より前の項目に出てくる `packages/web` は当時の path。
+
 ## editor-host v0.11.0 (2026-10-30) — 自前 panel から「画面から選ぶ」
 
 > **editor-host `0.11.0`** を release。publish 認証を npm Trusted Publishing (OIDC、#181) に切り替えてから最初の出荷。web / layout / icons-web / rust は据え置き。

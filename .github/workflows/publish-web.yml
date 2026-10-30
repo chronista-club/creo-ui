@@ -52,13 +52,13 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Build web tokens (from repo root)
-        # style-dictionary config の path (tokens/**, packages/web/dist/) は
+        # style-dictionary config の path (tokens/**, packages/core/dist/) は
         # repo root からの相対なので、root cwd で実行する必要あり
         run: bun run build:web
 
       - name: Verify dist/tokens.css exists
-        run: test -s packages/web/dist/tokens.css
+        run: test -s packages/core/dist/tokens.css
 
       - name: Publish to npm
-        working-directory: creo-ui/packages/web
+        working-directory: creo-ui/packages/core
         run: npm publish --access public

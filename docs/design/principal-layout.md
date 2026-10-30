@@ -78,7 +78,7 @@ Z 軸 (認知境界の積層、doc 29 §4) は creo-memories 固有の product �
 
 ### PL-7 — landing 先 = `creo-ui/shells` subpath、SolidJS reference 実装
 
-`packages/web/src/shells/` (CREO-84 Phase B、既に `CUPageShell` / `CUFacetGrid` が在る) に追加。fleetstage backstage は既に `creo-ui/shells` の `CUPageShell` を使用 — 同 family。SolidJS reference 実装を creo-ui に持ち、Swift / 他 framework は consumer 側 ([editor-mode.md](./editor-mode.md) EH-1/EH-2 方針と整合)。
+`packages/core/src/shells/` (CREO-84 Phase B、既に `CUPageShell` / `CUFacetGrid` が在る) に追加。fleetstage backstage は既に `creo-ui/shells` の `CUPageShell` を使用 — 同 family。SolidJS reference 実装を creo-ui に持ち、Swift / 他 framework は consumer 側 ([editor-mode.md](./editor-mode.md) EH-1/EH-2 方針と整合)。
 
 ### PL-8 — Rail 入場資格は consumer の product strategy
 

@@ -1,7 +1,7 @@
 /**
  * Web components bundler.
  *
- * `packages/web/src/components/*.css` を concat して `packages/web/dist/components.css` に出力。
+ * `packages/core/src/components/*.css` を concat して `packages/core/dist/components.css` に出力。
  * Style Dictionary (token 生成) の後に走らせる想定。`bun run build` に chained。
  *
  * 生成物は `creo-ui/components.css` として publish される (package.json の exports)。
@@ -10,19 +10,19 @@ import { promises as fs } from 'node:fs'
 import path from 'node:path'
 
 const ROOT = path.resolve(import.meta.dirname, '..')
-const SRC_DIR = path.join(ROOT, 'packages/web/src/components')
-const DIST_FILE = path.join(ROOT, 'packages/web/dist/components.css')
+const SRC_DIR = path.join(ROOT, 'packages/core/src/components')
+const DIST_FILE = path.join(ROOT, 'packages/core/dist/components.css')
 
 // 単体 CSS (component ではなく単発の別ファイル、shim 等) を dist/ に copy する list
 const COPY_FILES = [
   {
-    src: path.join(ROOT, 'packages/web/src/token-shim.css'),
-    dest: path.join(ROOT, 'packages/web/dist/token-shim.css'),
+    src: path.join(ROOT, 'packages/core/src/token-shim.css'),
+    dest: path.join(ROOT, 'packages/core/dist/token-shim.css'),
     label: 'token-shim.css',
   },
   {
-    src: path.join(ROOT, 'packages/web/src/utilities.css'),
-    dest: path.join(ROOT, 'packages/web/dist/utilities.css'),
+    src: path.join(ROOT, 'packages/core/src/utilities.css'),
+    dest: path.join(ROOT, 'packages/core/dist/utilities.css'),
     label: 'utilities.css',
   },
 ]
@@ -42,7 +42,7 @@ const header = [
   '/**',
   ' * creo-ui — components.css',
   ' *',
-  ' * Generated: concat of packages/web/src/components/*.css.',
+  ' * Generated: concat of packages/core/src/components/*.css.',
   ' * Requires tokens.css to be imported first (CSS variables).',
   ' *',
   ` * Bundled files: ${cssFiles.join(', ')}`,

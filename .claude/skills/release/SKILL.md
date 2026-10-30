@@ -19,7 +19,7 @@ owner (mako) のトリガーで開始する。cadence の定めは無い — 「
 ```bash
 git fetch origin
 git log --oneline main..origin/nightly          # 未 release commit の一覧
-git diff --stat main..origin/nightly -- packages/web packages/editor-host \
+git diff --stat main..origin/nightly -- packages/core packages/editor-host \
   packages/layout packages/icons-web packages/rust
 ```
 
@@ -27,7 +27,7 @@ git diff --stat main..origin/nightly -- packages/web packages/editor-host \
 
 | package | bump する条件 | 備考 |
 |---|---|---|
-| web (`@chronista-club/creo-ui`) | `packages/web` に実変更 | 主力。ほぼ毎回 |
+| web (`@chronista-club/creo-ui`) | `packages/core` に実変更 | 主力。ほぼ毎回 |
 | editor-host | `src` に実変更 **かつ** 出荷意図 | UX 刷新でも意図が無ければ据え置き可 |
 | layout / icons-web | 同上 | |
 | rust | generated の**値**が変わったとき | comment だけなら republish 不要 |
@@ -42,7 +42,7 @@ tag が無いもの」だけを出荷するので、**bump そのものが出荷
 ```bash
 git switch -c mako/release-<pkg>-<ver> origin/nightly
 # version 行だけを置換 (json 全体の再整形をしない — biome の format が壊れる)
-sed -i '' 's|"version": "X.Y.Z",|"version": "X.Y+1.0",|' packages/web/package.json
+sed -i '' 's|"version": "X.Y.Z",|"version": "X.Y+1.0",|' packages/core/package.json
 ```
 
 CHANGELOG.md の先頭に `## vX.Y.0 (YYYY-MM-DD) — <一言>` を追加:

@@ -23,17 +23,17 @@ const DIST_DESIGN = path.join(ROOT, 'dist-creo-ui-design')
 const PAIRS = [
   {
     label: 'tokens.css',
-    local: path.join(ROOT, 'packages/web/dist/tokens.css'),
+    local: path.join(ROOT, 'packages/core/dist/tokens.css'),
     release: path.join(DIST_DESIGN, 'web/tokens.css'),
   },
   {
     label: 'tokens.js',
-    local: path.join(ROOT, 'packages/web/dist/tokens.js'),
+    local: path.join(ROOT, 'packages/core/dist/tokens.js'),
     release: path.join(DIST_DESIGN, 'web/tokens.js'),
   },
   {
     label: 'tokens.d.ts',
-    local: path.join(ROOT, 'packages/web/dist/tokens.d.ts'),
+    local: path.join(ROOT, 'packages/core/dist/tokens.d.ts'),
     release: path.join(DIST_DESIGN, 'web/tokens.d.ts'),
   },
   {

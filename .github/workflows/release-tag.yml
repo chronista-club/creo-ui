@@ -74,7 +74,7 @@ jobs:
           jqv() { jq -r .version "$1"; }
 
           release_one web \
-            "$(jqv packages/web/package.json)" \
+            "$(jqv packages/core/package.json)" \
             publish-web.yml npm "@chronista-club/creo-ui"
 
           release_one editor-host \

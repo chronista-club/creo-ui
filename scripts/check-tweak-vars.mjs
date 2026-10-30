@@ -18,7 +18,7 @@ import { readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 
 const ROOT = path.resolve(import.meta.dir, '..')
-const CSS_DIR = path.join(ROOT, 'packages/web/src/components')
+const CSS_DIR = path.join(ROOT, 'packages/core/src/components')
 
 const files = readdirSync(CSS_DIR).filter((f) => f.endsWith('.css'))
 const sources = new Map(files.map((f) => [f, readFileSync(path.join(CSS_DIR, f), 'utf8')]))

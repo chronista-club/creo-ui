@@ -52,7 +52,7 @@ creo-ui の開発依存 13 種のうち **6 つが major 遅れ**になってい
 
 ### Requirements
 
-- **token 生成物は完全一致**。`packages/web/dist/tokens.{css,js,d.ts}`、`components.css`、`packages/swift/.../Tokens.swift`、`packages/rust/.../tokens.rs` は Style Dictionary と自前 script が出すもので Vite を経由しないため、1 文字も変わってはいけない
+- **token 生成物は完全一致**。`packages/core/dist/tokens.{css,js,d.ts}`、`components.css`、`packages/swift/.../Tokens.swift`、`packages/rust/.../tokens.rs` は Style Dictionary と自前 script が出すもので Vite を経由しないため、1 文字も変わってはいけない
 - **`.d.ts` は型の意味が一致**。7 package が出荷する型。`vite-plugin-dts` は 4.5.4 → 5.0.3 で中身が `unplugin-dts` に置き換わっており、ここが本タスク最大の未知。整形の差は許容するが、型そのものが変わったら回帰
 - **bundle (`.js`) は export surface が一致**。Vite 8 は Rolldown 化しており **chunk 名や出力形は変わって当然**。完全一致は求めず、export 名の集合が一致することを見る
 - `typecheck` / `lint` / `test` / `build` / `check:drift` / `check:tweak-vars` が通ること
@@ -191,7 +191,7 @@ tooling には 6 系の JS API を渡すという Microsoft 公式の移行手�
 
 ### 生成物を検証する手順 (次に依存を上げるとき)
 
-`packages/web/dist` は gitignore なので、**更新前に baseline を取らないと「変わっていないこと」を
+`packages/core/dist` は gitignore なので、**更新前に baseline を取らないと「変わっていないこと」を
 証明できない**。
 
 ```bash
@@ -204,7 +204,7 @@ done
 
 # ② 更新 → 再 build 後に照合
 #   token 生成物: 完全一致
-diff /tmp/creo-baseline/web/tokens.css packages/web/dist/tokens.css
+diff /tmp/creo-baseline/web/tokens.css packages/core/dist/tokens.css
 git diff --stat packages/swift packages/rust     # 空であること
 #   .d.ts: 並び順の差は許容。識別子の多重集合が一致すれば型は不変
 ```
