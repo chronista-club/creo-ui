@@ -206,7 +206,7 @@ export default function Principles() {
             <code>{'tokens/**/*.json'}</code> — DTCG SSOT。 全 platform token はここから生成。
           </li>
           <li>
-            <code>packages/web/src/components/*.css</code> — component class API の実装。 token を
+            <code>packages/core/src/components/*.css</code> — component class API の実装。 token を
             参照する側 — token 名 rename したら同 PR で sync。
           </li>
           <li>

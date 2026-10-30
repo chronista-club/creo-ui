@@ -50,7 +50,7 @@ import '@chronista-club/creo-ui/tokens.css'
 import { ColorThemesMintDarkBrandPrimary, SpacingM } from '@chronista-club/creo-ui/tokens.js'
 ```
 
-詳細は [`packages/web/README.md`](./packages/web/README.md) を参照してください。
+詳細は [`packages/core/README.md`](./packages/core/README.md) を参照してください。
 
 ### Apple (SwiftUI)
 
@@ -97,7 +97,7 @@ tokens/**/*.json  (W3C DTCG SSOT)
        │
        ▼
 Style Dictionary
-  ├─ transforms/config.web.js   ──► packages/web/dist/tokens.css (+ tokens.js / .d.ts)
+  ├─ transforms/config.web.js   ──► packages/core/dist/tokens.css (+ tokens.js / .d.ts)
   ├─ transforms/config.swift.js ──► packages/swift/Sources/CreoUI/Generated/Tokens.swift
   └─ transforms/config.rust.js  ──► packages/rust/src/generated/tokens.rs
 ```

@@ -1,6 +1,6 @@
 import { A } from '@solidjs/router'
-// `packages/web/package.json` から動的に読み (release 毎 stale 化を防止、build-time bake)
-import pkg from '../../../../packages/web/package.json'
+// `packages/core/package.json` から動的に読み (release 毎 stale 化を防止、build-time bake)
+import pkg from '../../../../packages/core/package.json'
 import ThemeSwitcher from './ThemeSwitcher'
 
 /**

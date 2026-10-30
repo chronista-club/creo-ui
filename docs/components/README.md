@@ -149,8 +149,8 @@ component ごとに s/m/l が何を参照するかは各 spec の Token referenc
 ## 新 component 追加手順
 
 1. `docs/components/<name>.md` に spec を書く (Purpose / Anatomy / Props / Token reference / A11y / Do-Don't / 使用例)
-2. `packages/web/src/components/<name>.css` に CSS を書く (全 token 経由、variant は data-*)
-3. `bun run build:web` で bundler が自動的に `packages/web/dist/components.css` に concat
+2. `packages/core/src/components/<name>.css` に CSS を書く (全 token 経由、variant は data-*)
+3. `bun run build:web` で bundler が自動的に `packages/core/dist/components.css` に concat
 4. web-demo で showcase section を増やして visual check
 5. commit 1 つ、`feat(components): <name> MVP`
 

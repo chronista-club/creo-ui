@@ -2,7 +2,7 @@
  * Style Dictionary config for Web platform.
  *
  * Generates CSS custom properties from W3C DTCG tokens.
- * Consumed by creo-ui (packages/web).
+ * Consumed by creo-ui (packages/core).
  *
  * Theme matrix (0.1.0+):
  *   tokens/color/themes/*.json には `color.themes.{theme-id}.*` path の
@@ -215,7 +215,7 @@ export default {
   platforms: {
     css: {
       transformGroup: 'css',
-      buildPath: 'packages/web/dist/',
+      buildPath: 'packages/core/dist/',
       files: [
         {
           destination: 'tokens.css',
@@ -225,7 +225,7 @@ export default {
     },
     js: {
       transformGroup: 'js',
-      buildPath: 'packages/web/dist/',
+      buildPath: 'packages/core/dist/',
       files: [
         {
           destination: 'tokens.js',

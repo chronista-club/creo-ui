@@ -13,7 +13,7 @@
  *   4. data-* 属性         — component CSS の [data-...] selector に **名前と値の組** が
  *                            実在するか (名前だけの照合では stepper の事故を拾えない)
  *
- * 前提: packages/web/dist/ が build 済みであること (`bun run build:web`)。
+ * 前提: packages/core/dist/ が build 済みであること (`bun run build:web`)。
  * 実行: `bun run check:drift` (repo root)。drift があれば exit 1。
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
@@ -24,10 +24,10 @@ const rel = (p) => path.relative(ROOT, p)
 
 // ---------- 収集: 実物 (SSOT 側) ----------
 
-const distCss = path.join(ROOT, 'packages/web/dist/tokens.css')
+const distCss = path.join(ROOT, 'packages/core/dist/tokens.css')
 if (!existsSync(distCss)) {
   console.error(
-    '✗ packages/web/dist/tokens.css がありません — 先に `bun run build:web` を実行してください',
+    '✗ packages/core/dist/tokens.css がありません — 先に `bun run build:web` を実行してください',
   )
   process.exit(2)
 }
@@ -54,7 +54,7 @@ for (const dir of readdirSync(path.join(ROOT, 'packages'), { withFileTypes: true
 }
 
 // 2/3. class と custom property の定義元 (component CSS + 生成 tokens + site 自身の CSS)
-const componentCssDir = path.join(ROOT, 'packages/web/src/components')
+const componentCssDir = path.join(ROOT, 'packages/core/src/components')
 const componentCss = readdirSync(componentCssDir)
   .filter((f) => f.endsWith('.css'))
   .map((f) => readFileSync(path.join(componentCssDir, f), 'utf-8'))
@@ -64,7 +64,7 @@ const allCss = [
   readFileSync(distCss, 'utf-8'),
   // utility 層 (.cu-row / .creo-gap-* 等)。 component とは別系統で
   // components/ の外に置いてあるため個別に読む (docs/design/utility-layer.md)
-  readFileSync(path.join(ROOT, 'packages/web/src/utilities.css'), 'utf-8'),
+  readFileSync(path.join(ROOT, 'packages/core/src/utilities.css'), 'utf-8'),
   readFileSync(path.join(ROOT, 'apps/site/src/styles/docs.css'), 'utf-8'),
 ].join('\n')
 
