@@ -122,4 +122,4 @@ dispatch して `already exists` で落ちていた (main push のたびに失�
 
 - 手順: [.claude/skills/release/SKILL.md](../../.claude/skills/release/SKILL.md)
 - ブランチ運用: CLAUDE.md「ブランチ運用」節
-- 実績記録: creo-memories (atlas `creoui`)
+- 実績記録: creo-memories (atlas `creo-ui`)
