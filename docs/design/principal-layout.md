@@ -1,6 +1,6 @@
 # Principal Layout — creo-ui Edge Ring + Rail System
 
-**Status**: creo-ui 側 (P-0〜P-1 + P-3) 実装済 — Edge Ring + Rail primitive 本体 (PR #48) + Z 軸 layer add-on。P-2 (creo-web consumer 移行) は creo-memories lead に handoff 済 (`mem_1CbDVwB81yzynrsF4WTKLx`)。fleetstage handoff (`mem_1CbCE1rdYJ4ySg87DF5hwa`) を起点に creo-ui lead が起こした設計 + 実装。CREO-84 Phase B の primitive スライス。
+**Status**: creo-ui 側 (P-0〜P-1 + P-3 + P-1.1) 実装済 — Edge Ring + Rail primitive 本体 (PR #48) + Z 軸 layer add-on + Rail の右 edge・peek 幅 (2026-11-05)。**最初の consumer は VP** (P-5、VP doc 87、2026-11-05 に mako GO)。P-2 (creo-web consumer 移行) は creo-memories lead に handoff 済 (`mem_1CbDVwB81yzynrsF4WTKLx`)、未着手。fleetstage handoff (`mem_1CbCE1rdYJ4ySg87DF5hwa`) を起点に creo-ui lead が起こした設計 + 実装。CREO-84 Phase B の primitive スライス。
 **Owners**: creo-ui (primitive schema + SolidJS reference 実装)、consumer apps (Rail registry 供給)
 **Scope**: 2D の基盤レイアウト primitive — 4 edge + center の Edge Ring と、left edge の Rail System。app に依存しない layout 機構のみを規定し、各 App は Rail registry を供給する。
 **Related**: [frame-system.md](./frame-system.md) (3D spatial morph、別 primitive), [editor-mode.md](./editor-mode.md), creo-memories doc 29 `29-3x3-frame.md` / doc 30 `30-principal-layout.md` (概念の起源)
@@ -68,9 +68,13 @@ primitive は Edge Ring + Rail 機構 **だけ** 提供する。**特定 App の
 
 selected Rail = `longestPrefixMatch(pathname, registry)`。click 由来の別 signal は持たない (route-由来 と click-由来 の 2 系統 state 競合を回避、doc 30 §6.4)。Rail column の icon click = その Rail の主 route へ navigate → route 変化で選択確定。
 
+**router を持たない consumer** (VP の webview 等) は、自分の状態を pseudo-route (`/lanes/<addr>`、`/settings/<section>` 等) に写して `pathname` に渡してよい。`onNavigate(route)` を受けたらその状態を更新し、更新後の pseudo-route が `pathname` として戻ってくる — この往復の中で「状態 → pathname」の写しが唯一の SSOT であることは route の場合と同じ。PL-4 が禁じるのは、pathname と別に「選択中 Rail」の signal を持つことだけ。
+
 ### PL-5 — peek = collapsed ⇄ expanded の 2 状態
 
 peek panel は **collapsed (細い/0) ⇄ expanded (~240px)**。default collapsed、選択中 Rail の route に居る時 auto expand (doc 29「ひょこっと = 在るが控えめ」、doc 30 §6.3)。「240px 固定常駐」にしない — peek 概念が実装されず常時居座りを再生産するため。
+
+expanded の**幅**は consumer が与えられる (`peekWidth`、既定 240px、2026-11-05 VP の要望)。2 状態であることは変えない — 変えられるのは開いた時の幅だけ。drag での resize と幅の永続は consumer の仕事で、primitive は決まった幅を受け取るだけ。drag の間は `resizing` を立てると幅の transition が止まる (止めないと spring が手に遅れて追従する)。
 
 ### PL-6 — 多層 Atlas / Z 軸は optional feature
 
@@ -99,9 +103,11 @@ doc 30 §6.2 の admission gate (「Rail = 記憶の相、first-class entity に
 
 **命名**: 既存 `creo-ui-frame` が "Frame" 語を持つため、本 primitive は別名で名乗る。handoff / doc 29/30 の placeholder 名 `<CreoFrame>` は採らない (衝突回避)。**確定 (v0.23.0、owner decision)**: **`<CUEdgeShell>`** (Edge Ring) + **`<CURail>`** (Rail System)。`CU*` prefix = creo-ui-shells primitive を ergonomics 優先で全 product 共通 vocabulary とする規約 (= import 1 行で primitive vs project-local を即判別)。旧 `Creo*` 名は 0.23.x / 0.24.x で alias re-export で keep、0.25.0 で撤去。brand "Creo Memories" / "Creo ID" は touch せず keep (component prefix と brand surface を意味的に分離)。
 
-## 5. Rail System (left edge)
+## 5. Rail System (left / right edge)
 
 Rail System = **Rail column (アイコン縦列) + peek panel (選択中 Rail の中身)**。
+
+置ける edge は横軸 (doc 29 §3.2 の 起点 ⇄ ツール) の両端: `region="leftEdge"` (既定、起点) と `region="rightEdge"` (ツール)。右では column と peek の並びと境界線を左右反転し、どちらの側でも peek は center に向かって開く。縦の edge (up / down) には置かない — Rail は縦列のアイコンなので横の端にしか立たない。左右に 1 本ずつ置く consumer (VP: 左 = Lanes / Actions / Settings、右 = PRs / Log) は、それぞれに別の registry を渡す。
 
 ### 5.1. データモデル
 
@@ -148,8 +154,10 @@ doc 29 §4 / doc 30 §5-6 の Z 軸 (認知境界の積層、cross-layer / in-la
 | **P-2** 📨 | creo-web を primitive の consumer に rewrite (既存 `RailSystem`/`EdgeFrame` を creo-ui primitive に置換、Memory/Atlas/Views registry を creo-web 側に)。creo-memories lead に handoff 済 (`mem_1CbDVwB81yzynrsF4WTKLx`) |
 | **P-3** ✅ | Z 軸 layer add-on (`layer.ts` — `createLayerStore` / `createLayerUrlSync` + `parseLayerParam`/`layerToParam`/`layerEqualsParam` の pure logic)。router-agnostic、opt-in の optional export |
 | **P-4** | fleetstage hq/backstage が consumer 化 (B、fleetstage lead 領分) |
+| **P-1.1** ✅ | `<CURail>` の `region` (`leftEdge` / `rightEdge`)・`peekWidth`・`resizing` (2026-11-05、VP の要望 ①②)。component test 5 cases (`tests/components/shells.test.tsx`) |
+| **P-5** 🚧 | **VP の額縁が consumer 化** (VP lead 領分、VP doc 87 / PR #1260、2026-11-05 mako GO)。`<CUEdgeShell>` に左右 2 本の `<CURail>`、選択は pseudo-route (PL-4)、center の配置は `creo-ui-layout`。shells の最初の consumer |
 
-P-0〜P-1 + P-3 が creo-ui primitive 本体 (creo-ui lead 領分、実装済)。P-2 / P-4 は consumer 移行 (別 repo / 別 lead)。各 Phase は独立に出荷可能な縦スライス。
+P-0〜P-1 + P-3 + P-1.1 が creo-ui primitive 本体 (creo-ui lead 領分、実装済)。P-2 / P-4 / P-5 は consumer 移行 (別 repo / 別 lead)。各 Phase は独立に出荷可能な縦スライス。
 
 ## 8. やってはいけない
 
@@ -158,7 +166,9 @@ P-0〜P-1 + P-3 が creo-ui primitive 本体 (creo-ui lead 領分、実装済)�
 - Principal Layout を `creo-ui-frame` の 3D Frame protocol の上に乗せる (PL-1 で否決、2D consumer に 3D 依存を持ち込む)
 - Z 軸 / 多層 Atlas API を primitive の core surface に出す (PL-6 — optional add-on に留める)
 - Edge Ring を `overflow:hidden` の rigid grid にする (PL-8 / doc 29 §3.5 — 羅針盤であって格子でない)
-- Rail 選択に route 以外の signal を作る (PL-4 — route が唯一の SSOT)
+- Rail 選択に route 以外の signal を作る (PL-4 — route が唯一の SSOT。router の無い consumer は pseudo-route を pathname に渡す)
+- peek の resize (drag の手触り) や幅の永続を primitive に持ち込む (PL-5 — primitive は決まった幅を受け取るだけ)
+- Rail を up / down edge に置く (`RailRegion` は横軸の両端だけ)
 - `creo-ui-frame` を rename する (別 primitive 方針で不要、既存 consumer の breaking change を避ける)
 
 ## 9. 関連
