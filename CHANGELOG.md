@@ -5,6 +5,13 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## web (core) Unreleased — Rail を右 edge にも、peek の幅を外から
+
+- `<CURail>` に `region` (`'leftEdge'` 既定 / `'rightEdge'`) を追加。右では column と peek の並び・境界線を左右反転し、peek は center 側に開く。型 `RailRegion` を export。
+- `<CURail>` に `peekWidth` (数値は px、文字列は CSS の長さ。既定 240px) と `resizing` (drag で resize している間 true にすると幅の transition を止める) を追加。resize と幅の永続は consumer 側。
+- router を持たない consumer は pseudo-route を `pathname` に渡してよいことを PL-4 に明記。
+- VP の額縁 (VP doc 87) が shells の最初の consumer になる (principal-layout.md P-5)。既存の使い方は変わらない (追加の prop はすべて任意)。
+
 ## Unreleased — repo 構成
 
 - **`packages/web` を `packages/core` に改名** (2026-10-30)。「creo-ui」が repo 全体と Web 本体 package の 2 つを指していて紛らわしかったため、本体の directory を役割の名前にした。
