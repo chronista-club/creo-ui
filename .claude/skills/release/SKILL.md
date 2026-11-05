@@ -89,7 +89,7 @@ curl -s https://doc.anycreative.tech/creo-ui/ | grep -oE 'assets/[^"]+\.css'
 
 ### ⑥ 記録
 
-- creo-memories に release の work log (`atlasId: creoui` — hyphen 無しに注意)
+- creo-memories に release の work log (`atlasId: creo-ui`。2026-11-04 に `creoui` から改名、旧名でも引ける)
 - demo stage を更新するなら `bun run site:up`
 
 ## Recovery
