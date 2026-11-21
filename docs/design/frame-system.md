@@ -185,6 +185,25 @@ Frame system では:
 
 `morphFrame()` は内部で `Promise.allSettled` を使用し、 cancel された animation (例: B-γ で in-flight setFrame 上書き、 Provider unmount 中の race condition) を **graceful skip** する設計。 caller は try/catch なしで `await morphFrame(...)` 可能、 戻り値の `Animation[]` は **完走した animation のみ** を含む。 仕様詳細は `morph.ts` JSDoc 参照。
 
+### Timeline — t を中心にした入れ子のアニメーション (T 系列、2026-11-22)
+
+Frame の中に Frame を入れ (画面の Frame の中に project の Frame)、それぞれが自分の動きを内包する。
+`setFrame` (CSS transition) と `morphFrame` (FLIP) は「A → B を一度走らせる」もので、途中の t に触れない。
+Timeline は **t (進み具合 0 → 1) を値として持つ**ので、スクラブ・逆再生・入れ子の合成ができる。
+実装は `packages/frame/src/timeline/`、試作の場は docs site の `/lab/frame-nest`。
+
+| ID | 決定 |
+|---|---|
+| **T-1** | Clip は「自分の t に対して part がどう動くか」(Pose の A → B) だけを持ち、どこで使われるかを知らない (使い回せる)。親は `children: [{ clip, at }]` で**子の t の始まりと終わりを自分の t のどこに置くか**を決める。調整は親にまとまる。区間は合成される: 親の絶対区間 [s, e] の中の at [a, b] は [s + a·(e − s), s + b·(e − s)]。root は全体 [0, 1] |
+| **T-2** | 時計は一番上に 1 つ。全 part を同じ長さの WAAPI Animation にし、区間は keyframe の offset に焼き込む (`[A@0, A@start, B@end, B@1]`、easing は start → end の間)。再生は合成スレッドに任せ、スクラブは pause + `currentTime`、逆再生は `playbackRate = -1` |
+| **T-3** | `TimelineInspector` は flatten した木を描くだけで状態を持たない (1 行 = 1 置き場、帯 = 絶対区間、塗り = local t)。帯のドラッグ (両端 = 伸び縮み、真ん中 = 平行移動) は `onPlace(key, at)` で返り、`setPlacement` で木に書き戻す。時間軸がそのまま調整の場になる |
+| **T-4** | reduced-motion では `play()` が再生せず行き先へ飛ぶ (不変条件 1)。`seek()` はそのまま効く (利用者が自分で動かす操作なので) |
+
+**3D との関係**: opacity を preserve-3d の箱にかけると中身が平らになるため、opacity は葉の part にだけかける。
+**入れないもの**: 子の t のどこからどこまでを使うか (切り出し、動画編集の in / out) は持たない。親の at と子の側の両方に調整が散らばるため (2026-11-22、mako)。
+**残り**: 配置は制約で解く方針 (Pose の B を、手書きの座標でなく制約の解から作る)。`setFrame` / `morphFrame` と
+Timeline のつなぎ方、FrameSlot の高さと `inert` はここで一緒に決める。
+
 ## 10. やってはいけない
 
 - 全 page を Frame で扱おうとしない (適用粒度の判断、 普通の SPA route で十分なケースも)

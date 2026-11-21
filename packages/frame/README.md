@@ -11,7 +11,8 @@
 |---|---|
 | `@chronista-club/creo-ui-frame/motion` | ✅ FLIP / spring (Hooke's law + WAAPI `linear()`) / token bridge / reduced-motion guard |
 | `@chronista-club/creo-ui-frame/frame` | ✅ FrameProvider / FrameSlot / useFrame / setFrame |
-| `@chronista-club/creo-ui-frame` (root) | ✅ frame + motion 統合 export |
+| `@chronista-club/creo-ui-frame/timeline` | ✅ Clip の木 / createTimeline (時計 1 つ、WAAPI) / TimelineInspector |
+| `@chronista-club/creo-ui-frame` (root) | ✅ frame + motion + timeline 統合 export |
 | `creo-ui-vision` 連結 | ✅ docs Playground で gesture (`useGesture('wave')` → `setFrame`) + spatial pinch bridge dogfood |
 | `morphFrame()` coordinator | ✅ Ship (`motion/morph.ts` — 複数 slot の atomic transition、 `flip()` 再利用、 reduced-motion guard 自動承継) |
 
@@ -218,6 +219,49 @@ const unsubscribe = watchReducedMotion((reduced) => {
 
 `flip()` は内部で自動 short-circuit — `prefers-reduced-motion: reduce` では `null` を返し animation skip。
 consumer は guard を毎回書かなくて良い。
+
+## Usage — Timeline (入れ子の t)
+
+Frame の中の Frame が、それぞれ自分の動きを持つ。子の t の始まりと終わりを、親の t のどこに置くかは親が決める
+(調整は親にまとまる)。時計は 1 つ (WAAPI)。スクラブ・逆再生ができ、`TimelineInspector` で時間軸として見て、
+帯をドラッグして置き場を直せる。
+
+```tsx
+import { type Clip, createTimeline, setPlacement, TimelineInspector } from '@chronista-club/creo-ui-frame/timeline'
+import { springEasing } from '@chronista-club/creo-ui-frame/motion'
+
+// 子は「自分の t でどう動くか」だけ。どこで使われるかは知らない
+const card: Clip = { id: 'card', parts: [{ target: 'ring', a: { opacity: 0 }, b: { opacity: 1 } }] }
+
+let tree: Clip = {
+  id: 'screen',
+  parts: [{ target: 'scene', a: {}, b: { rx: 58 } }],
+  // 親が置く: 全体の t の 0.2 → 0.6 の間に、card の t が 0 → 1 になる
+  children: [{ clip: card, at: [0.2, 0.6] }],
+}
+
+const tl = createTimeline(tree, {
+  duration: 900,
+  easing: springEasing('slow'),
+  resolve: (target) => stage.querySelector(`[data-part="${target}"]`),
+  onUpdate: setT, // seek・再生中の毎フレーム・終わり
+})
+
+tl.seek(0.5) // スクラブ
+await tl.play(1) // 再生 (play(0) で逆再生)。reduced-motion では行き先へ飛ぶ
+tl.update(nextTree) // 木を変えたら作り直す (t は保つ)
+
+// 帯をドラッグ → 親の置き場を書き換えて作り直す
+<TimelineInspector
+  clips={tl.clips}
+  t={t()}
+  onSeek={(v) => tl.seek(v)}
+  onPlace={(key, at) => tl.update((tree = setPlacement(tree, key, at)))}
+/>
+```
+
+同じ子を 2 か所に置くときは `{ clip: card, at: [...], key: 'card-2' }` で置き場の名前を分ける。
+opacity は葉の part にかける — `transform-style: preserve-3d` の箱を半透明にすると、ブラウザが中身を平らにする。
 
 ## Token bridge
 
