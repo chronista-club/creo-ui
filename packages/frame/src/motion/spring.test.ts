@@ -119,15 +119,20 @@ describe('springCurve — t 外部化 (LE-P3)', () => {
   })
 
   it('springEasing と同じ物理 — sample 一致 (重複実装ではなく同一の position 関数)', () => {
-    const curve = springCurve('gentle')
+    // springEasing は precision 0.01 で打ち切った curve を samples=60 で等間隔 sample し、
+    // 打ち切り時点の残りを i / 60 に比例して足している (0.3.1〜)
+    const curve = springCurve({ ...springPreset('gentle'), precision: 0.01 })
+    const residual = 1 - curve.position(curve.settleTime)
     const points = parseLinearEasing(springEasing('gentle'))
-    // springEasing は samples=60 で curve.position を等間隔 sample している
     for (const [i, expected] of [
       [0, points[0]],
       [30, points[30]],
       [59, points[59]],
     ] as [number, number][]) {
-      expect(curve.position((i / 60) * curve.settleTime)).toBeCloseTo(expected, 3)
+      expect(curve.position((i / 60) * curve.settleTime) + residual * (i / 60)).toBeCloseTo(
+        expected,
+        3,
+      )
     }
   })
 
@@ -138,5 +143,32 @@ describe('springCurve — t 外部化 (LE-P3)', () => {
       max = Math.max(max, curve.position(t))
     }
     expect(max).toBeGreaterThan(1)
+  })
+})
+
+describe('springEasing — 見える動きを duration 全体に配る (anycreative.tech の dogfood、改善 5)', () => {
+  // 'slow' を 60 sample (61 点) で。index 15 = duration の 25%、index 30 = 50%
+  it('目に見えない尾 (差 1% 未満) は引き伸ばさない — slow でも 25% の時点ではまだ半分に届かない', () => {
+    const points = parseLinearEasing(springEasing('slow'))
+    expect(points[15]!).toBeLessThan(0.5)
+    expect(points[30]!).toBeGreaterThan(0.6)
+    expect(points[30]!).toBeLessThan(0.95)
+  })
+
+  it('打ち切った時点の残り (1% 未満) を全体に配るので、最後に段差が出ない', () => {
+    const points = parseLinearEasing(springEasing('slow'))
+    const lastStep = points[points.length - 1]! - points[points.length - 2]!
+    expect(points[points.length - 1]).toBe(1)
+    expect(Math.abs(lastStep)).toBeLessThan(0.01)
+  })
+
+  it('precision を明示すれば従来どおり (0.001 まで引き伸ばす)', () => {
+    const points = parseLinearEasing(springEasing({ ...springPreset('slow'), precision: 0.001 }))
+    expect(points[15]!).toBeGreaterThan(0.6)
+  })
+
+  it('springCurve の settleTime は変えない (layout の scrub が使う)', () => {
+    const curve = springCurve('slow')
+    expect(Math.abs(curve.position(curve.settleTime) - 1)).toBeLessThan(0.001)
   })
 })

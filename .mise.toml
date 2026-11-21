@@ -32,6 +32,11 @@ run = "bun x style-dictionary build --config transforms/config.swift.js"
 description = "Build Rust tokens (committed to packages/rust/src/generated/)"
 run = "bun x style-dictionary build --config transforms/config.rust.js"
 
+[tasks."ci:swift"]
+description = "Swift の CI 相当 (build + test)。macOS runner は高いので GitHub Actions では回さず、手元で回す"
+dir = "packages/swift"
+run = ["swift build", "swift test"]
+
 [tasks.dev]
 description = "Run the creo-ui site dev server (apps/site)"
 dir = "apps/site"

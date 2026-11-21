@@ -61,9 +61,11 @@ bun run site:down      # 停止・削除
 # Rust (packages/rust で実行)
 cargo build && cargo test
 
-# Swift (packages/swift で実行)
-swift build && swift test
+# Swift (repo root で実行。packages/swift の build + test)
+mise run ci:swift
 ```
+
+**Swift は GitHub Actions で回さない**（2026-11-21）。macOS runner は高く、使用量の上限にすぐ届くため。`packages/swift` か、Swift の generated に効く `tokens/` / `transforms/config.swift.js` を変えたら、PR の前に手元の Mac で `mise run ci:swift` を通す。generated の commit 漏れは CI の Web job（Token diff）が見る。
 
 **重要**: `style-dictionary` の config path (`tokens/**`, `packages/*/dist/`) はすべて **repo root 相対**。したがって `bun run build*` は **必ず repo root で実行する**。`packages/core/` 内の `bun run build` も `../../transforms/config.web.js` を使って root 相対を維持している（publish workflow もこの前提）。
 
