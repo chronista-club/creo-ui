@@ -85,12 +85,12 @@ token name 変更 (例: v0.17 で `sm/md/lg` → `s/m/l`) は **ecosystem 全層
 - [ ] `bun test packages/editor-host/src` pass
 - [ ] `cd packages/frame && bun run test` pass
 - [ ] `cd packages/rust && cargo build` pass (mise rustc 1.95 必須、 local env が古いと skip しがち)
-- [ ] `cd packages/swift && swift build && swift test` pass (macOS のみ、 Linux 環境では skip)
+- [ ] `mise run ci:swift` pass (= `packages/swift` の `swift build && swift test`、macOS のみ)。**Swift は CI で回さないので、ここが唯一の確認** (2026-11-21〜)
 
 ### Verify (CI、 必須)
 
-- [ ] `gh run list --workflow ci.yml --limit 1` で CI 3 job 全 green 確認
-- [ ] **Swift build / Rust build は local で skip しがち** — CI fail を能動的に watch すること
+- [ ] `gh run list --workflow ci.yml --limit 1` で CI 2 job (Web / Rust) 全 green 確認
+- [ ] **Swift は CI に無い** (macOS runner の費用で 2026-11-21 に外した)。Swift に効く変更は上の `mise run ci:swift` を PR 前に通し、PR 本文に結果を書く
 
 ### Why this checklist exists (実例)
 
