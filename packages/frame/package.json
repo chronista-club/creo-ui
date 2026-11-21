@@ -1,5 +1,5 @@
 {
-  "name": "creo-ui-frame",
+  "name": "@chronista-club/creo-ui-frame",
   "version": "0.2.0",
   "description": "creo-ui — 3D Frame system runtime (Spatial Layout protocol + self-built motion engine)。 Frame morph / FLIP / spring / reduced-motion guard を提供。 docs/design/frame-system.md の P-3 reference 実装。",
   "type": "module",

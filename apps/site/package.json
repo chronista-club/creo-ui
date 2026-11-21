@@ -14,7 +14,7 @@
     "@solidjs/router": "^1.0.0",
     "@chronista-club/creo-ui-editor-host": "workspace:*",
     "@chronista-club/creo-ui-layout": "workspace:*",
-    "creo-ui-frame": "workspace:*",
+    "@chronista-club/creo-ui-frame": "workspace:*",
     "@chronista-club/creo-ui-icons-web": "workspace:*",
     "creo-ui-md-view": "workspace:*",
     "creo-ui-vision": "workspace:*",

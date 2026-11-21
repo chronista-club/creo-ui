@@ -41,7 +41,7 @@ import {
   unlock,
 } from '@chronista-club/creo-ui-layout'
 import { PaneStage, useEngineResolved } from '@chronista-club/creo-ui-layout/solid'
-import { respectsReducedMotion, springCurve } from 'creo-ui-frame'
+import { respectsReducedMotion, springCurve } from '@chronista-club/creo-ui-frame'
 import { createMemo, createSignal, For, Show } from 'solid-js'
 
 const SCOPE = 'lab'

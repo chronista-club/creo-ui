@@ -5,7 +5,7 @@ import {
   signalTarget,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
-import { type Frame, FrameProvider, useFrame } from 'creo-ui-frame'
+import { type Frame, FrameProvider, useFrame } from '@chronista-club/creo-ui-frame'
 import EditorModeToggle from './EditorModeToggle'
 
 /**
