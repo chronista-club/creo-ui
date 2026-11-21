@@ -198,6 +198,9 @@ el.animate([{ opacity: 0 }, { opacity: 1 }], {
 | `slow` | 80 | 16 | 1 | 大きな page transition / hero 演出 |
 | `tight` | 300 | 30 | 1 | chip / pill toggle 等 |
 
+`springEasing()` は、目標との差が 1% になった所までを `duration` に引き伸ばす (0.3.1〜)。それより先の
+目に見えない尾まで伸ばすと、見える動きが前半に詰まるため。`precision` で変えられる (0.3.0 までの形は `0.001`)。
+
 ### Reduced-motion guard
 
 ```ts
