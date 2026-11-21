@@ -7,6 +7,9 @@
  * onPlace を渡すと、帯をドラッグして親の置き場 (at) を直せる — 両端で伸び縮み、真ん中で平行移動。
  * 調整が親の時間軸に集まる。受け取った at は setPlacement で木に書き戻す。
  *
+ * イベントは on:pointer* (要素に直接付ける)。Solid の onPointer* は document への委譲になり、
+ * その登録がモジュールの読み込み時に走るので、DOM の無い環境 (SSR / test) で import だけで落ちる。
+ *
  * 見た目は creo-ui の token (--color-* / --spacing-* / --typography-*) に乗る。token が無くても読める既定値つき。
  */
 
@@ -175,10 +178,10 @@ export function TimelineInspector(props: TimelineInspectorProps): JSX.Element {
                   ...S.track,
                   cursor: props.onSeek ? 'ew-resize' : 'default',
                 }}
-                onPointerDown={onDown}
-                onPointerMove={onMove}
-                onPointerUp={onUp}
-                onPointerCancel={onUp}
+                on:pointerdown={onDown}
+                on:pointermove={onMove}
+                on:pointerup={onUp}
+                on:pointercancel={onUp}
               >
                 <div
                   data-band=""
@@ -188,7 +191,7 @@ export function TimelineInspector(props: TimelineInspectorProps): JSX.Element {
                     width: pct(c().end - c().start),
                     cursor: movable() ? 'grab' : 'inherit',
                   }}
-                  onPointerDown={grabBand(c, 'move')}
+                  on:pointerdown={grabBand(c, 'move')}
                 >
                   <div style={{ ...S.fill, width: pct(local()) }} />
                   {movable() && (
@@ -196,12 +199,12 @@ export function TimelineInspector(props: TimelineInspectorProps): JSX.Element {
                       <div
                         data-edge="start"
                         style={{ ...S.edge, left: '0' }}
-                        onPointerDown={grabBand(c, 'start')}
+                        on:pointerdown={grabBand(c, 'start')}
                       />
                       <div
                         data-edge="end"
                         style={{ ...S.edge, right: '0' }}
-                        onPointerDown={grabBand(c, 'end')}
+                        on:pointerdown={grabBand(c, 'end')}
                       />
                     </>
                   )}
