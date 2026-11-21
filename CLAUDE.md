@@ -65,7 +65,7 @@ cargo build && cargo test
 swift build && swift test
 ```
 
-**重要**: `style-dictionary` の config path (`tokens/**`, `packages/*/dist/`) はすべて **repo root 相対**。したがって `bun run build*` は **必ず repo root で実行する**。`packages/web/` 内の `bun run build` も `../../transforms/config.web.js` を使って root 相対を維持している（publish workflow もこの前提）。
+**重要**: `style-dictionary` の config path (`tokens/**`, `packages/*/dist/`) はすべて **repo root 相対**。したがって `bun run build*` は **必ず repo root で実行する**。`packages/core/` 内の `bun run build` も `../../transforms/config.web.js` を使って root 相対を維持している（publish workflow もこの前提）。
 
 ## アーキテクチャ
 
@@ -75,10 +75,12 @@ tokens/**/*.json  (W3C DTCG SSOT — 唯一の真実)
        ▼
 Style Dictionary v4  +  transforms/config.{web,swift,rust}.js
        │
-       ├─► packages/web/dist/tokens.{css,js,d.ts}       (gitignore, npm publish 成果物)
+       ├─► packages/core/dist/tokens.{css,js,d.ts}       (gitignore, npm publish 成果物)
        ├─► packages/swift/Sources/CreoUI/Generated/Tokens.swift  (git commit 対象)
        └─► packages/rust/src/generated/tokens.rs        (git commit 対象)
 ```
+
+**名前の対応 (2026-10-30)**: Web の本体 package は **directory `packages/core` = npm `@chronista-club/creo-ui`**。「creo-ui」は repo / design system 全体の名前、会話では本体を「core」と呼ぶ。release の単位名は platform 名の **`web`** のまま (tag `web-v*`・`publish-web.yml`・`build:web`・`config.web.js`、rust の `rust-v*` と同じ並び)。directory は 2026-10-30 に `packages/web` から改名 — CHANGELOG の過去の版に出てくる `packages/web` は当時の path。
 
 ### 3 層構造
 
@@ -141,7 +143,7 @@ bun run build        # 全 platform に反映
 - **rust** (ubuntu): `cargo build && cargo test` を `packages/rust` で。Rust 1.95 (ci.yml の toolchain も Cargo.toml も 1.95 で揃える、 mise の `[tools].rust` と SSOT)。
 - **swift** (macos-14): `swift build && swift test` を `packages/swift` で。
 
-`publish-web.yml` は `web-v*` tag push で npmjs.com へ `@chronista-club/creo-ui` を publish (認証は npm Trusted Publishing / OIDC で token 不要 — [docs/design/release-flow.md](./docs/design/release-flow.md))。root で `bun run build:web` を実行してから `packages/web/` で `npm publish` する 2 段構え（path が root 相対のため）。
+`publish-web.yml` は `web-v*` tag push で npmjs.com へ `@chronista-club/creo-ui` を publish (認証は npm Trusted Publishing / OIDC で token 不要 — [docs/design/release-flow.md](./docs/design/release-flow.md))。root で `bun run build:web` を実行してから `packages/core/` で `npm publish` する 2 段構え（path が root 相対のため）。
 
 ## ブランチ運用 (nightly / main 二段、2026-06-16 に `n` → `nightly` rename)
 
@@ -160,15 +162,15 @@ creo-memories / VP / fleetstage と parity の **「`nightly` = 開発 trunk (de
 ## やってはいけない
 
 - nightly 上の commit に直接 `*-v*` tag を打って出荷する (mid-cycle 出荷は 2026-07-30 に廃止。全出荷は main 経由 + `release-tag.yml` の自動 tag — [docs/design/release-flow.md](./docs/design/release-flow.md))。
-- 生成物 (`packages/web/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を手編集する。編集すべきは `tokens/` のみ。
+- 生成物 (`packages/core/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を手編集する。編集すべきは `tokens/` のみ。
 - `tokens/` の変更だけコミットして generated の更新を忘れる (Swift/Rust が古い値のまま残る)。
 - `style-dictionary build` を `packages/*/` の CWD で実行する (path が root 相対なので壊れる)。
 - `rust-version` と mise の Rust バージョンをズラす (CLAUDE.md の global 方針)。
 - Rust generated に inner attribute / inner doc を足す (`include!` 先では構文エラー)。
 - Editor Mode を **instance 名** (Studio / DevEditor / etc) で呼ぶ。Editor は **universal mode**、instance 化しない (`docs/design/editor-mode.md` D-1)。
 - Content Layer を Editor Mode が **押し退ける / layout 変える** 設計にする。非侵襲性 (D-6) は最上位原則。
-- Swift / Rust / 他 JS framework の **runtime 実装を本リポジトリに書く**。本 repo が持つ runtime は **SolidJS の reference 実装に限る** — 現状 `packages/{web (shells/controls), editor-host, frame, vision, md-view, icons-web}` が該当 (EH-1 / EH-2)。例外の判定は [docs/design/support-tiers.md](./docs/design/support-tiers.md) に従う (Support Tier 2 の platform は薄い wrapper のみ可 — ST-3)。
-  - web package の component layer は 2 段: **CSS-only component** (`components/*.css`、例 `button.css`) と、それを type-safe に wrap した **SolidJS primitive** (`shells/` = layout grammar、`controls/` = interactive control、例 `CUButton`)。新 interactive component は `controls/` に置き `@chronista-club/creo-ui/controls` で export する。
+- Swift / Rust / 他 JS framework の **runtime 実装を本リポジトリに書く**。本 repo が持つ runtime は **SolidJS の reference 実装に限る** — 現状 `packages/{core (shells/controls), editor-host, frame, vision, md-view, icons-web}` が該当 (EH-1 / EH-2)。例外の判定は [docs/design/support-tiers.md](./docs/design/support-tiers.md) に従う (Support Tier 2 の platform は薄い wrapper のみ可 — ST-3)。
+  - core package (`packages/core`) の component layer は 2 段: **CSS-only component** (`components/*.css`、例 `button.css`) と、それを type-safe に wrap した **SolidJS primitive** (`shells/` = layout grammar、`controls/` = interactive control、例 `CUButton`)。新 interactive component は `controls/` に置き `@chronista-club/creo-ui/controls` で export する。
 - `packages/editor-host/` を **SolidJS 以外の framework 対応で抽象化する**。SolidJS 一本で進める方針 (EH-2)。物理分離を急がない。
 - `creo-memories/packages/creoui` の DevEditor を直接触る。参考に留め、 **migration は creo-memories lead の判断** (EH-4)。
 - 専用 MCP server (`editor-host-mcp`) を実装する。**claude-in-chrome + `window.creoEditor` で代替可能** (EH-5)。Phase 2b は recipes / AI pair design docs に scope 縮小。

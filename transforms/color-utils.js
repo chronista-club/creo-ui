@@ -3,7 +3,7 @@
  *
  * OKLCH / sRGB / hex 間の変換と WCAG 計算ヘルパーをまとめる。pure JS、
  * external dep なし。transforms/config.{swift,rust}.js の custom format と
- * scripts/generate-themes.mjs から利用。将来 Phase 2 で packages/web に
+ * scripts/generate-themes.mjs から利用。将来 Phase 2 で packages/core に
  * TS 型付きで再 export する予定。
  *
  * References:

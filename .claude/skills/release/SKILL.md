@@ -19,20 +19,19 @@ owner (mako) のトリガーで開始する。cadence の定めは無い — 「
 ```bash
 git fetch origin
 git log --oneline main..origin/nightly          # 未 release commit の一覧
-git diff --stat main..origin/nightly -- packages/web packages/editor-host \
-  packages/layout packages/icons-web packages/rust
+git diff --stat main..origin/nightly -- packages/core packages/editor-host \
+  packages/layout packages/icons-web packages/frame packages/rust
 ```
 
 判断表 — 「変わった package ≠ bump する package」:
 
 | package | bump する条件 | 備考 |
 |---|---|---|
-| web (`@chronista-club/creo-ui`) | `packages/web` に実変更 | 主力。ほぼ毎回 |
+| web (`@chronista-club/creo-ui`) | `packages/core` に実変更 | 主力。ほぼ毎回 |
 | editor-host | `src` に実変更 **かつ** 出荷意図 | UX 刷新でも意図が無ければ据え置き可 |
-| layout / icons-web | 同上 | |
+| layout / icons-web / frame | 同上 | frame は `@chronista-club/creo-ui-frame`（2026-11-21 から出荷） |
 | rust | generated の**値**が変わったとき | comment だけなら republish 不要 |
 | swift | (publish 経路なし — generated の commit のみ) | |
-| frame | **publish workflow が無い** | bump しても出荷されない |
 
 bump しない package は version を触らない — `release-tag.yml` は「version が変わって
 tag が無いもの」だけを出荷するので、**bump そのものが出荷の指示書**になる。
@@ -42,7 +41,7 @@ tag が無いもの」だけを出荷するので、**bump そのものが出荷
 ```bash
 git switch -c mako/release-<pkg>-<ver> origin/nightly
 # version 行だけを置換 (json 全体の再整形をしない — biome の format が壊れる)
-sed -i '' 's|"version": "X.Y.Z",|"version": "X.Y+1.0",|' packages/web/package.json
+sed -i '' 's|"version": "X.Y.Z",|"version": "X.Y+1.0",|' packages/core/package.json
 ```
 
 CHANGELOG.md の先頭に `## vX.Y.0 (YYYY-MM-DD) — <一言>` を追加:
@@ -62,6 +61,9 @@ gh pr create --base main --head nightly --title "release: nightly → main (<pkg
 - body に出荷対象と据え置き理由を明記 (①の判断表の結論)
 - **初回のみ**: 出荷する package の Trusted Publisher が npmjs.com に登録済みであること
   (未登録だと publish が `E404` で落ちる。手順は [release-flow.md](../../../docs/design/release-flow.md))
+- **npm にまだ無い新しい package**: Trusted Publisher は既存 package の設定にしか登録できないので、
+  初回だけ owner が手元から `npm publish --access public` してから登録する。release-tag は版が
+  registry にあれば dispatch しないので、そのまま main に merge してよい (2026-11-21、frame 0.2.0)
 - CI 緑を確認して **必ず merge commit** (`gh pr merge --merge`) — squash しない
 - **merge した瞬間に publish まで自動で走る**。迷いがあるなら merge しない
 
@@ -89,7 +91,7 @@ curl -s https://doc.anycreative.tech/creo-ui/ | grep -oE 'assets/[^"]+\.css'
 
 ### ⑥ 記録
 
-- creo-memories に release の work log (`atlasId: creoui` — hyphen 無しに注意)
+- creo-memories に release の work log (`atlasId: creo-ui`。2026-11-04 に `creoui` から改名、旧名でも引ける)
 - demo stage を更新するなら `bun run site:up`
 
 ## Recovery

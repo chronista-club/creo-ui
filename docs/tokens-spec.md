@@ -44,8 +44,8 @@ tokens/
 
 | Platform | Build path | Format |
 |----------|-----------|--------|
-| Web CSS | `packages/web/dist/tokens.css` | `css/variables` |
-| Web JS | `packages/web/dist/tokens.js` + `.d.ts` | `javascript/es6` + `typescript/es6-declarations` |
+| Web CSS | `packages/core/dist/tokens.css` | `css/variables` |
+| Web JS | `packages/core/dist/tokens.js` + `.d.ts` | `javascript/es6` + `typescript/es6-declarations` |
 | Swift | `packages/swift/Sources/CreoUI/Generated/Tokens.swift` | custom `swift/creo-ui` |
 | Rust | `packages/rust/src/generated/tokens.rs` | custom `rust/creo-ui` |
 

@@ -28,11 +28,11 @@ xs  /  s  /  m  /  l  /  xl
 
 ## Token 追加・変更 flow
 
-1. **SSOT は `tokens/**/*.json`** のみ。 platform 別 generated 出力 (`packages/web/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を直接編集してはいけない。
+1. **SSOT は `tokens/**/*.json`** のみ。 platform 別 generated 出力 (`packages/core/dist/`, `packages/swift/Sources/CreoUI/Generated/`, `packages/rust/src/generated/`) を直接編集してはいけない。
 2. **Issue は creo-memories** で管理: タスク・TODO として起票し、 PR と pair にする (GitHub Issues は無効化済)。
 3. branch naming は memory slug ベースの `mako/{slug}` 形式。
 4. `tokens/<category>/<file>.json` を編集。 DTCG 準拠を維持、 3 階層まで dot-notation。
-5. **`bun run build` で全 platform 出力を再生成**。 Swift / Rust の generated は **commit 対象** (consumer は generated 前提で build する)、 Web の `packages/web/dist/` は **gitignore** (npm publish workflow が再生成)。
+5. **`bun run build` で全 platform 出力を再生成**。 Swift / Rust の generated は **commit 対象** (consumer は generated 前提で build する)、 Web の `packages/core/dist/` は **gitignore** (npm publish workflow が再生成)。
 6. `bun run typecheck && bun run lint && bun test` を通す。
 7. PR description に memory ID (creo-memories) を記載。
 8. Breaking change (既存 token の rename / 削除) は **必ず** [`CHANGELOG.md`](../CHANGELOG.md) に migration 記載 + [`docs/migration/v0.X-to-v0.Y.md`](./migration/) を新設、 consumer 視点で migration steps を articulate する。
@@ -52,13 +52,13 @@ token name 変更 (例: v0.17 で `sm/md/lg` → `s/m/l`) は **ecosystem 全層
 - [ ] `bun run build` 実行
 - [ ] `packages/swift/Sources/CreoUI/Generated/Tokens.swift` 更新確認
 - [ ] `packages/rust/src/generated/tokens.rs` 更新確認
-- (Web の `packages/web/dist/` は gitignore、 publish workflow で再生成)
+- (Web の `packages/core/dist/` は gitignore、 publish workflow で再生成)
 
 ### Layer C: Generated を参照する non-generated code (sweep 必須、 漏れやすい)
 
 「generated を import / use する code」 は build で更新されない、 **手動 sweep 必須**:
 
-- [ ] `packages/web/src/components/*.css` — `var(--*)` 参照
+- [ ] `packages/core/src/components/*.css` — `var(--*)` 参照
 - [ ] `packages/swift/Sources/CreoUI/Components/*.swift` — `CreoUITokens.*` 参照 (**production code**)
 - [ ] `packages/swift/Tests/**/*.swift` — `CreoUITokens.*` 参照 (**test code**)
 - [ ] `packages/rust/src/lib.rs` 等 non-generated rust — `tokens::*` 参照 (test assert を含む)
@@ -67,7 +67,7 @@ token name 変更 (例: v0.17 で `sm/md/lg` → `s/m/l`) は **ecosystem 全層
 
 ### Layer D: Documentation (Living docs sync、 原則 07)
 
-- [ ] `packages/{web,swift,rust,editor-host,frame,...}/README.md` — npm / SPM / crates.io 表示の consumer 入口
+- [ ] `packages/{core,swift,rust,editor-host,frame,...}/README.md` — npm / SPM / crates.io 表示の consumer 入口
 - [ ] `docs/components/*.md` — component spec
 - [ ] `docs/design/*.md` — ADR
 - [ ] `docs/migration/*.md` — migration guide
@@ -116,7 +116,7 @@ Chrome の CSS parser は `:root { ... }` block 内 prop 数が **150+ で block
 - [ ] `tokens/` 配下に新 token / alias を追加した
 - [ ] `bun run build:web` 後、 `dist/tokens.css` の `:root` block 数を確認:
   ```bash
-  grep -cE "^:root \{" packages/web/dist/tokens.css
+  grep -cE "^:root \{" packages/core/dist/tokens.css
   ```
 - [ ] 各 :root block の prop 数が **50 以下** (category 別 split で各 block 30-46 props が default、 余裕を持って 50 上限)
 - [ ] 例: typography category が 50 を超えそうなら `typography-base / typography-body / typography-display` 等のサブ split を検討
@@ -155,7 +155,7 @@ Chrome の CSS parser は `:root { ... }` block 内 prop 数が **150+ で block
 
 `tokens/`、 `packages/`、 `docs/` の **3 SSOT** は同期義務:
 
-- `tokens/` を変えたら `packages/web/src/components/*.css` の `var(--...)` ref も sync。
+- `tokens/` を変えたら `packages/core/src/components/*.css` の `var(--...)` ref も sync。
 - token を rename したら `docs/components/*.md` の token reference 表も sync。
 - 設計判断を変えたら `docs/design/*.md` の ADR も update (新 ADR 追加 or 既存 modify)。
 

@@ -190,7 +190,7 @@ theme と typography は独立 token category だが、cascade selector で組�
 
 - token SSOT: [`tokens/typography/family.json`](../../tokens/typography/family.json) (14 family token の正本)
 - emit 経路: [`transforms/config.web.js`](../../transforms/config.web.js) (Style Dictionary `css/creo-ui-themed` format)
-- 生成物: `packages/web/dist/tokens.css` (`--typography-family-*` の宣言、gitignore、npm publish 成果物)
+- 生成物: `packages/core/dist/tokens.css` (`--typography-family-*` の宣言、gitignore、npm publish 成果物)
 - dogfood viewer: [`apps/site/src/pages/Foundations/Typography.tsx`](../../apps/site/src/pages/Foundations/Typography.tsx) (typography 全 family の visible 確認)
 - 兄弟 doc: [theme-system.md](./theme-system.md), [principal-layout.md](./principal-layout.md), [identity.md](./identity.md), [editor-mode.md](./editor-mode.md), [frame-system.md](./frame-system.md), [stack-adr.md](./stack-adr.md)
 - CHANGELOG 関連 entries:

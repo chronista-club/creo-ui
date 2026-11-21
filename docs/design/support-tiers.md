@@ -2,7 +2,7 @@
 
 **Status**: Active (2026-07-31 owner 裁定で導入)
 **Scope**: 配布 platform / framework の対応方針 (packages/**、release-tag.yml、CLAUDE.md 規約)
-**Related**: [release-flow.md](./release-flow.md)、`packages/web/README.md` の「安定性 (public API)」節、creo-memories `mem_1CdaFhpv7H7r3bfkXP5eD2` (裁定)
+**Related**: [release-flow.md](./release-flow.md)、`packages/core/README.md` の「安定性 (public API)」節、creo-memories `mem_1CdaFhpv7H7r3bfkXP5eD2` (裁定)
 
 ---
 

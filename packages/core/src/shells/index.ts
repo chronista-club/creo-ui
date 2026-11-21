@@ -25,7 +25,7 @@
 export { CUEdgeShell } from './CUEdgeShell'
 export { CUFacetGrid } from './CUFacetGrid'
 export { CUPageShell } from './CUPageShell'
-export { CURail } from './CURail'
+export { CURail, type RailRegion } from './CURail'
 
 export {
   createLayerStore,

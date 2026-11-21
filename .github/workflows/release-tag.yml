@@ -74,7 +74,7 @@ jobs:
           jqv() { jq -r .version "$1"; }
 
           release_one web \
-            "$(jqv packages/web/package.json)" \
+            "$(jqv packages/core/package.json)" \
             publish-web.yml npm "@chronista-club/creo-ui"
 
           release_one editor-host \
@@ -84,6 +84,10 @@ jobs:
           release_one layout \
             "$(jqv packages/layout/package.json)" \
             publish-layout.yml npm "@chronista-club/creo-ui-layout"
+
+          release_one frame \
+            "$(jqv packages/frame/package.json)" \
+            publish-frame.yml npm "@chronista-club/creo-ui-frame"
 
           release_one icons-web \
             "$(jqv packages/icons-web/package.json)" \

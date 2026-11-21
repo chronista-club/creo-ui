@@ -169,3 +169,75 @@ describe('flip — reduced-motion short-circuit', () => {
     })
   })
 })
+
+/** getBoundingClientRect を固定値にする helper (happy-dom は 0 を返すため) */
+function withRect(el: HTMLElement, rect: Partial<DOMRect>): void {
+  Object.defineProperty(el, 'getBoundingClientRect', {
+    value: () => ({ left: 0, top: 0, width: 0, height: 0, ...rect }) as DOMRect,
+    configurable: true,
+  })
+}
+
+describe('flip — scale mode と基点 (anycreative.tech の dogfood で見つかった分)', () => {
+  beforeEach(() => {
+    _resetReducedMotionCache()
+  })
+
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  // 前: 左上 (100, 50)、200 × 40 / 後: 左上 (0, 0)、100 × 20 → 中心は (200, 70) → (50, 10)
+  const prev = { left: 100, top: 50, width: 200, height: 40 } as DOMRect
+  const next = { left: 0, top: 0, width: 100, height: 20 }
+
+  it("既定 ('xy') は左上の座標差で translate するので、基点を左上 (0 0) にする", () => {
+    const el = document.createElement('div')
+    withRect(el, next)
+    const { calls } = spyAnimate(el)
+    flip(el, prev)
+    const keyframes = calls[0]!.keyframes as Keyframe[]
+    expect(String(keyframes[0]!.transform)).toBe('translate(100px, 50px) scale(2, 2)')
+    expect(keyframes[0]!.transformOrigin).toBe('0 0')
+    expect(keyframes[1]!.transformOrigin).toBe('0 0')
+  })
+
+  it("'none' は scale せず、中心どうしを合わせる translate だけにする (文字が潰れない)", () => {
+    const el = document.createElement('div')
+    withRect(el, next)
+    const { calls } = spyAnimate(el)
+    flip(el, prev, { scale: 'none' })
+    const keyframes = calls[0]!.keyframes as Keyframe[]
+    expect(String(keyframes[0]!.transform)).toBe('translate(150px, 60px)')
+    expect(String(keyframes[1]!.transform)).toBe('translate(0, 0)')
+  })
+
+  it("'uniform' は縦横同じ比率 (面積比の平方根) で、中心を基点に scale する", () => {
+    const el = document.createElement('div')
+    withRect(el, next)
+    const { calls } = spyAnimate(el)
+    flip(el, prev, { scale: 'uniform' })
+    const keyframes = calls[0]!.keyframes as Keyframe[]
+    expect(String(keyframes[0]!.transform)).toBe('translate(150px, 60px) scale(2)')
+    expect(keyframes[0]!.transformOrigin).toBe('50% 50%')
+  })
+
+  it("'none' は中心が同じなら大きさが違っても動かさない (no-op)", () => {
+    const el = document.createElement('div')
+    withRect(el, { left: 50, top: 10, width: 100, height: 20 })
+    const { calls } = spyAnimate(el)
+    const result = flip(el, { left: 0, top: 0, width: 200, height: 40 } as DOMRect, {
+      scale: 'none',
+    })
+    expect(result).toBeNull()
+    expect(calls.length).toBe(0)
+  })
+
+  it("fill の既定は 'backwards' (終わった animation を要素に残さない)", () => {
+    const el = document.createElement('div')
+    withRect(el, next)
+    const { calls } = spyAnimate(el)
+    flip(el, prev)
+    expect((calls[0]!.options as KeyframeAnimationOptions).fill).toBe('backwards')
+  })
+})

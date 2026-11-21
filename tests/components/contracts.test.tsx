@@ -2,6 +2,7 @@
 import { createSignal, type JSX, onCleanup } from 'solid-js'
 import { render } from 'solid-js/web'
 import { afterEach, beforeEach, expect, test } from 'vitest'
+import { CUButton, CUOutliner, type OutlinerNode } from '../../packages/core/src/controls'
 import {
   bind,
   boolean,
@@ -11,7 +12,6 @@ import {
 } from '../../packages/editor-host/src'
 import type { ResolvedMap } from '../../packages/layout/src'
 import { PaneStage } from '../../packages/layout/src/solid'
-import { CUButton, CUOutliner, type OutlinerNode } from '../../packages/web/src/controls'
 
 const cleanups: Array<() => void> = []
 let originalStyle: string

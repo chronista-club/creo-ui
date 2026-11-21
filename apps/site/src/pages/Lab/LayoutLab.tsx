@@ -6,6 +6,7 @@
  * / propose + apply policy（LE-16、time driver = frame の springCurve が t を運ぶ）。
  */
 
+import { respectsReducedMotion, springCurve } from '@chronista-club/creo-ui-frame'
 import type {
   ApplyPolicy,
   DominanceDirection,
@@ -41,7 +42,6 @@ import {
   unlock,
 } from '@chronista-club/creo-ui-layout'
 import { PaneStage, useEngineResolved } from '@chronista-club/creo-ui-layout/solid'
-import { respectsReducedMotion, springCurve } from 'creo-ui-frame'
 import { createMemo, createSignal, For, Show } from 'solid-js'
 
 const SCOPE = 'lab'

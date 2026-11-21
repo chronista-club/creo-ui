@@ -156,7 +156,7 @@ createEffect(() => {
 ## Frame system との統合 (将来 P-5)
 
 ```tsx
-import { useFrame } from 'creo-ui-frame'
+import { useFrame } from '@chronista-club/creo-ui-frame'
 import { useGesture } from 'creo-ui-vision'
 
 const { setFrame } = useFrame()

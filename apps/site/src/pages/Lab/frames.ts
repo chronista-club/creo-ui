@@ -1,4 +1,4 @@
-import type { Frame } from 'creo-ui-frame'
+import type { Frame } from '@chronista-club/creo-ui-frame'
 
 export const dashboardFrame: Frame = {
   id: 'dashboard',

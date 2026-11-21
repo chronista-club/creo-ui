@@ -1,7 +1,7 @@
 # Utility 層 — creo-ui は「値の当て方」を持つべきか
 
 **Status**: SPEC 合意 → 最小実装を trial 中 (2026-08-30)
-**Scope**: `packages/web/src/utilities.css` (新設)、`packages/web/package.json` の exports、`scripts/build-web-components.mjs`
+**Scope**: `packages/core/src/utilities.css` (新設)、`packages/core/package.json` の exports、`scripts/build-web-components.mjs`
 **Related**: [tailwind-interop.md](./tailwind-interop.md)、creo-memories `creo-ui-as-independent-gui-library`
 
 ---
@@ -167,8 +167,8 @@ CSS に切り出すと class を新設し続けることになる。ここだけ
 
 | | 理由 |
 |---|---|
-| **✗ `packages/web/src/components/`** | ① `scripts/build-web-components.mjs` が `components/*.css` を concat するため `components.css` に混ざる ② `scripts/check-tweak-vars.mjs` が同 dir を走査して `.creo-<name>` を **component class として登録**するので、utility が component と誤認される |
-| **✓ `packages/web/src/utilities.css`** (単一ファイル) | component と別系統であることが構造で示せる。`check-tweak-vars` の走査対象外 |
+| **✗ `packages/core/src/components/`** | ① `scripts/build-web-components.mjs` が `components/*.css` を concat するため `components.css` に混ざる ② `scripts/check-tweak-vars.mjs` が同 dir を走査して `.creo-<name>` を **component class として登録**するので、utility が component と誤認される |
+| **✓ `packages/core/src/utilities.css`** (単一ファイル) | component と別系統であることが構造で示せる。`check-tweak-vars` の走査対象外 |
 
 export は `@chronista-club/creo-ui/utilities.css` を新設する (`package.json` の exports)。
 **trial なので独立 import にする** — 使わない consumer に影響せず、撤回も容易。

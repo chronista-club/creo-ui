@@ -1,5 +1,5 @@
+import { FrameProvider, FrameSlot, useFrame } from '@chronista-club/creo-ui-frame'
 import { A } from '@solidjs/router'
-import { FrameProvider, FrameSlot, useFrame } from 'creo-ui-frame'
 import { createSignal, onMount } from 'solid-js'
 import GazeLivePreview from '../../ui/GazeLivePreview'
 import { FrameStage } from './FrameStage'

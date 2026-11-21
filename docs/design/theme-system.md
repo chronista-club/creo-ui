@@ -100,7 +100,7 @@ flowchart TB
 
 ## 5. CSS 出力構造
 
-`packages/web/dist/tokens.css` は 1 ファイルに以下を concat:
+`packages/core/dist/tokens.css` は 1 ファイルに以下を concat:
 
 ```css
 /* 1) :root default = common + mint-dark */

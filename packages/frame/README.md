@@ -9,9 +9,9 @@
 
 | Surface | Status |
 |---|---|
-| `creo-ui-frame/motion` | ✅ FLIP / spring (Hooke's law + WAAPI `linear()`) / token bridge / reduced-motion guard |
-| `creo-ui-frame/frame` | ✅ FrameProvider / FrameSlot / useFrame / setFrame |
-| `creo-ui-frame` (root) | ✅ frame + motion 統合 export |
+| `@chronista-club/creo-ui-frame/motion` | ✅ FLIP / spring (Hooke's law + WAAPI `linear()`) / token bridge / reduced-motion guard |
+| `@chronista-club/creo-ui-frame/frame` | ✅ FrameProvider / FrameSlot / useFrame / setFrame |
+| `@chronista-club/creo-ui-frame` (root) | ✅ frame + motion 統合 export |
 | `creo-ui-vision` 連結 | ✅ docs Playground で gesture (`useGesture('wave')` → `setFrame`) + spatial pinch bridge dogfood |
 | `morphFrame()` coordinator | ✅ Ship (`motion/morph.ts` — 複数 slot の atomic transition、 `flip()` 再利用、 reduced-motion guard 自動承継) |
 
@@ -24,13 +24,13 @@ core 機能 (Frame morph engine) は creo-ui の哲学 (token SSOT / multi-platf
 ## Install
 
 ```sh
-bun add creo-ui-frame solid-js
+bun add @chronista-club/creo-ui-frame solid-js
 ```
 
 ## Usage — Frame protocol (Phase 3)
 
 ```tsx
-import { FrameProvider, FrameSlot, useFrame, type Frame } from 'creo-ui-frame'
+import { FrameProvider, FrameSlot, useFrame, type Frame } from '@chronista-club/creo-ui-frame'
 
 const dashboardFrame: Frame = {
   id: 'dashboard',
@@ -116,7 +116,7 @@ function GazeControl() {
 ### FLIP technique
 
 ```ts
-import { flip, measureRect } from 'creo-ui-frame/motion'
+import { flip, measureRect } from '@chronista-club/creo-ui-frame/motion'
 
 const el = document.querySelector('.box')!
 const prev = measureRect(el)
@@ -127,23 +127,53 @@ flip(el, prev, { duration: 220, easing: 'spring' })
 //   measure → invert → animate to identity transform
 ```
 
+大きさの違う要素の間を飛ばすときは `scale` で埋め方を選ぶ (0.3.0〜):
+
+| `scale` | 動き | 向いているもの |
+|---|---|---|
+| `'xy'` (既定) | 幅と高さを別々の比率で scale し、前の rect に左上を合わせて重ねる | 箱 (カード、パネル) |
+| `'uniform'` | 縦横同じ比率 (面積比の平方根) で、中心を基点に scale | 文字の大きさも変わる要素 |
+| `'none'` | scale せず、中心どうしを合わせて位置だけ動かす | 見た目の違う要素の間 (一覧の行 ⇄ 図のノード) |
+
+基点 (`transform-origin`) は keyframe に入るので、consumer が CSS で指定する必要はない。
+`fill` の既定は `'backwards'` で、終わった animation は要素に残らない (0.3.0〜。それまでは `'both'`)。
+
+### Morph — 場面の切り替えで、同じものを新しい位置へ
+
+```ts
+import { fadeIn, measureSlots, morphFrame, springEasing } from '@chronista-club/creo-ui-frame/motion'
+
+const before = measureSlots(collect(root))   // 切り替え前: 名前 → 要素 の位置
+switchView()                                 // DOM を入れ替える (Solid なら signal を書く)
+morphFrame(collect(root), before, {
+  duration: 560,
+  easing: springEasing('slow'),
+  scale: 'none',
+  enter: { duration: 320, delay: 220 },      // 前に無かった名前はフェードで出す ('fade' でも可)
+})
+for (const el of root.querySelectorAll('[data-fade]')) fadeIn(el, { delay: 220 })  // 線や札など
+```
+
+切り替えで DOM から外れた要素 (exit) は animate できないので扱わない。実例: anycreative.tech の
+Projects の List ⇄ Structure (`src/lib/structure/morph.ts`)。
+
 ### Easing / duration token bridge
 
 ```ts
-import { ease, duration } from 'creo-ui-frame/motion'
+import { ease, duration } from '@chronista-club/creo-ui-frame/motion'
 
 const easing = ease('spring')        // 'cubic-bezier(0.2, 0.8, 0.2, 1)'
 const ms = duration('normal')        // 220
 
 // CSS variable から runtime 取得 (theme 切替に追従可能)
-import { easeFromCss, durationFromCss } from 'creo-ui-frame/motion'
+import { easeFromCss, durationFromCss } from '@chronista-club/creo-ui-frame/motion'
 const dynEasing = easeFromCss('spring')   // CSS var '--motion-easing-spring' を読む
 ```
 
 ### Spring physics
 
 ```ts
-import { springEasing, springPreset } from 'creo-ui-frame/motion'
+import { springEasing, springPreset } from '@chronista-club/creo-ui-frame/motion'
 
 // 慣習 5 preset (gentle / wobbly / stiff / slow / tight) — 最短記述
 const easing = springEasing('gentle')
@@ -171,7 +201,7 @@ el.animate([{ opacity: 0 }, { opacity: 1 }], {
 ### Reduced-motion guard
 
 ```ts
-import { respectsReducedMotion, watchReducedMotion } from 'creo-ui-frame/motion'
+import { respectsReducedMotion, watchReducedMotion } from '@chronista-club/creo-ui-frame/motion'
 
 if (respectsReducedMotion()) {
   // user preferred reduce — skip animation, instant snap

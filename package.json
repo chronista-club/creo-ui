@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "bun run build:web && bun run build:swift && bun run build:rust",
-    "build:web": "style-dictionary build --config transforms/config.web.js && bun scripts/build-web-components.mjs && bun run --cwd packages/web build:js",
+    "build:web": "style-dictionary build --config transforms/config.web.js && bun scripts/build-web-components.mjs && bun run --cwd packages/core build:js",
     "build:swift": "style-dictionary build --config transforms/config.swift.js",
     "build:rust": "style-dictionary build --config transforms/config.rust.js",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.test.json --noEmit",
@@ -24,7 +24,7 @@
     "site:down": "podman compose down",
     "site:deploy": "bun run site:build && bunx wrangler deploy",
     "gen:themes": "bun scripts/generate-themes.mjs",
-    "test:runtime": "bun test packages/editor-host/src packages/layout/src packages/web/src packages/vision/src && bun run --cwd packages/frame test",
+    "test:runtime": "bun test packages/editor-host/src packages/layout/src packages/core/src packages/vision/src && bun run --cwd packages/frame test",
     "test:components": "vitest run",
     "test:colors": "bun test transforms/color-utils.test.js",
     "test:transforms": "bun test transforms/",
