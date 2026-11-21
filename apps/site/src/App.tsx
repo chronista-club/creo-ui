@@ -98,6 +98,7 @@ const EditorLab = lazy(() => import('./pages/Lab/EditorLab'))
 const FrameLab = lazy(() => import('./pages/Lab/FrameLab'))
 const VisionLab = lazy(() => import('./pages/Lab/VisionLab'))
 const LayoutLab = lazy(() => import('./pages/Lab/LayoutLab'))
+const FrameNestLab = lazy(() => import('./pages/Lab/FrameNestLab'))
 const GettingStarted = lazy(() => import('./pages/GettingStarted'))
 
 export default function App() {
@@ -167,6 +168,7 @@ export default function App() {
       <Route path="/content" component={Content} />
       <Route path="/lab/editor" component={EditorLab} />
       <Route path="/lab/frame" component={FrameLab} />
+      <Route path="/lab/frame-nest" component={FrameNestLab} />
       <Route path="/lab/vision" component={VisionLab} />
       <Route path="/lab/layout" component={LayoutLab} />
       {/* 旧 /playground は Editor lab へ redirect (既存リンク保護) */}

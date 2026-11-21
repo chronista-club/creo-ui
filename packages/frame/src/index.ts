@@ -10,3 +10,6 @@ export * from './frame/index'
 
 // Motion engine — Frame protocol が内部で使う、 consumer も直接呼べる
 export * from './motion/index'
+
+// Timeline — t を中心にした入れ子のアニメーション (Clip の木 + 時計 1 つ + 時間軸の表示)
+export * from './timeline/index'
