@@ -5,6 +5,16 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## frame v0.3.0 (unreleased) — 使いながら直す: flip の基点、scale の選択、enter
+
+anycreative.tech の Projects (List ⇄ Structure の組み替え) で初めて本番に使い、見つかったものを直す。frame は 0.2.0 (2026-11-21) が npm 初出荷。
+
+- **fix**: `flip()` は左上の座標差で translate するのに、基点 (`transform-origin`) が要素の既定 (中央) のままだったので、scale が 1 でないと動き出しの位置がずれていた。基点を keyframe に入れる
+- `FlipOptions.scale` (`'xy'` 既定 / `'uniform'` / `'none'`) を追加。`'xy'` は幅と高さを別々に scale するので文字が潰れる — 文字には `'uniform'` か `'none'` を。型 `FlipScale` を export
+- `MorphFrameOptions.enter` (`'none'` 既定 / `'fade'` / `FadeInOptions`) を追加。前に無かった slot をフェードで出す。単体の `fadeIn()` と型 `FadeInOptions` も export
+- **behavior change**: `fill` の既定を `'both'` → `'backwards'` に。終点は identity なので見た目は変わらないが、終わった animation が要素に残らなくなる。`'both'` が要るなら明示する
+- 全 package の `repository.url` を `git+https://...` に (npm publish が normalize の警告を出していた)
+
 ## web (core) Unreleased — Rail を右 edge にも、peek の幅を外から
 
 - `<CURail>` に `region` (`'leftEdge'` 既定 / `'rightEdge'`) を追加。右では column と peek の並び・境界線を左右反転し、peek は center 側に開く。型 `RailRegion` を export。

@@ -13,12 +13,51 @@
  */
 
 import { type FlipOptions, flip } from './flip'
+import { respectsReducedMotion } from './reduced-motion'
+import { type EasingName, ease } from './tokens'
 
 /**
  * morphFrame の挙動オプション。 全 slot に同一値を適用 (per-slot 差分が必要なら
  * caller 側で flip() を直接呼ぶ)。 形は FlipOptions と同一。
  */
-export type MorphFrameOptions = FlipOptions
+export type MorphFrameOptions = FlipOptions & {
+  /**
+   * prev rect の無い slot (切り替えで新しく現れた要素) をどう出すか。default 'none' (触らない)
+   *
+   * - 'fade': fadeIn() で出す (duration / delay は fadeIn の既定)
+   * - FadeInOptions: その設定で fadeIn() する
+   *
+   * 消える側 (exit) は扱わない — 切り替えで DOM から外れた要素は animate できないため。
+   */
+  enter?: 'none' | 'fade' | FadeInOptions
+}
+
+/** fadeIn() の設定 */
+export interface FadeInOptions {
+  /** ms、default 220 */
+  duration?: number
+  /** ms、default 0。delay 中は opacity 0 のまま (fill backwards) */
+  delay?: number
+  /** token name か任意の CSS easing、default 'out' */
+  easing?: string | EasingName
+}
+
+const KNOWN_EASINGS: ReadonlySet<string> = new Set(['linear', 'in', 'out', 'in-out', 'spring'])
+
+/**
+ * 要素を opacity 0 → 1 で出す。morph と一緒に、片方の場面にしか無いもの (線、札、説明文) を出すとき用。
+ * reduced-motion のときは何もしない (null)。終わった animation は要素に残さない (fill backwards)。
+ */
+export function fadeIn(el: HTMLElement, options: FadeInOptions = {}): Animation | null {
+  if (respectsReducedMotion()) return null
+  const easing = options.easing ?? 'out'
+  return el.animate([{ opacity: 0 }, { opacity: 1 }], {
+    duration: options.duration ?? 220,
+    delay: options.delay ?? 0,
+    easing: KNOWN_EASINGS.has(easing) ? ease(easing as EasingName) : easing,
+    fill: 'backwards',
+  })
+}
 
 /**
  * 複数 element の現在 rect を一括 measure (FLIP の measure step、 まとめて版)。
@@ -71,10 +110,14 @@ export function morphFrame(
 ): Promise<Animation[]> {
   const animations: Animation[] = []
 
+  const { enter = 'none', ...flipOptions } = options
   for (const [name, el] of elementsByName) {
     const prev = prevRects.get(name)
-    if (!prev) continue
-    const anim = flip(el, prev, options)
+    const anim = prev
+      ? flip(el, prev, flipOptions)
+      : enter === 'none'
+        ? null
+        : fadeIn(el, enter === 'fade' ? {} : enter)
     if (anim) animations.push(anim)
   }
 

@@ -127,6 +127,36 @@ flip(el, prev, { duration: 220, easing: 'spring' })
 //   measure → invert → animate to identity transform
 ```
 
+大きさの違う要素の間を飛ばすときは `scale` で埋め方を選ぶ (0.3.0〜):
+
+| `scale` | 動き | 向いているもの |
+|---|---|---|
+| `'xy'` (既定) | 幅と高さを別々の比率で scale し、前の rect に左上を合わせて重ねる | 箱 (カード、パネル) |
+| `'uniform'` | 縦横同じ比率 (面積比の平方根) で、中心を基点に scale | 文字の大きさも変わる要素 |
+| `'none'` | scale せず、中心どうしを合わせて位置だけ動かす | 見た目の違う要素の間 (一覧の行 ⇄ 図のノード) |
+
+基点 (`transform-origin`) は keyframe に入るので、consumer が CSS で指定する必要はない。
+`fill` の既定は `'backwards'` で、終わった animation は要素に残らない (0.3.0〜。それまでは `'both'`)。
+
+### Morph — 場面の切り替えで、同じものを新しい位置へ
+
+```ts
+import { fadeIn, measureSlots, morphFrame, springEasing } from '@chronista-club/creo-ui-frame/motion'
+
+const before = measureSlots(collect(root))   // 切り替え前: 名前 → 要素 の位置
+switchView()                                 // DOM を入れ替える (Solid なら signal を書く)
+morphFrame(collect(root), before, {
+  duration: 560,
+  easing: springEasing('slow'),
+  scale: 'none',
+  enter: { duration: 320, delay: 220 },      // 前に無かった名前はフェードで出す ('fade' でも可)
+})
+for (const el of root.querySelectorAll('[data-fade]')) fadeIn(el, { delay: 220 })  // 線や札など
+```
+
+切り替えで DOM から外れた要素 (exit) は animate できないので扱わない。実例: anycreative.tech の
+Projects の List ⇄ Structure (`src/lib/structure/morph.ts`)。
+
 ### Easing / duration token bridge
 
 ```ts

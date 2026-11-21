@@ -32,7 +32,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/chronista-club/creo-ui.git",
+    "url": "git+https://github.com/chronista-club/creo-ui.git",
     "directory": "packages/core"
   },
   "bugs": {

@@ -6,8 +6,14 @@
  * (詳細: docs/design/stack-adr.md)。
  */
 
-export { type FlipOptions, flip, measureRect } from './flip'
-export { type MorphFrameOptions, measureSlots, morphFrame } from './morph'
+export { type FlipOptions, type FlipScale, flip, measureRect } from './flip'
+export {
+  type FadeInOptions,
+  fadeIn,
+  type MorphFrameOptions,
+  measureSlots,
+  morphFrame,
+} from './morph'
 export { respectsReducedMotion, watchReducedMotion } from './reduced-motion'
 export {
   type SpringCurve,
