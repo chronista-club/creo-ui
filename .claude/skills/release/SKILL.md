@@ -79,12 +79,16 @@ npm view @chronista-club/creo-ui version             # registry 反映
 
 ### ⑤ site 配信
 
-`deploy-site.yml` が main push で発火するが、**CLOUDFLARE_API_TOKEN /
-CLOUDFLARE_ACCOUNT_ID secrets が未登録の間は fail する** (owner の登録待ち)。
-その場合は local fallback:
+`deploy-site.yml` が main push で発火し、`cf deploy` で配る（secrets
+`CLOUDFLARE_API_TOKEN` / `CLOUDFLARE_ACCOUNT_ID` は 1Password
+`CreoMemories/shared-cloudflare` の `cfworker_token` / `account_id`）。
+CI が落ちたときの local fallback:
 
 ```bash
-bun run site:deploy        # 要 wrangler OAuth (bunx wrangler whoami で確認)
+# 要 `cf auth login`、または token を env で渡す
+CLOUDFLARE_API_TOKEN=$(op read 'op://CreoMemories/shared-cloudflare/cfworker_token') \
+CLOUDFLARE_ACCOUNT_ID=$(op read 'op://CreoMemories/shared-cloudflare/account_id') \
+  bun run site:deploy
 # 検証: 配信 CSS に新規変更が載っているか
 curl -s https://doc.anycreative.tech/creo-ui/ | grep -oE 'assets/[^"]+\.css'
 ```
