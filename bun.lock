@@ -22,11 +22,11 @@
       "dependencies": {
         "@chronista-club/creo-ui": "workspace:*",
         "@chronista-club/creo-ui-editor-host": "workspace:*",
+        "@chronista-club/creo-ui-frame": "workspace:*",
         "@chronista-club/creo-ui-icons-web": "workspace:*",
         "@chronista-club/creo-ui-layout": "workspace:*",
         "@mediapipe/tasks-vision": "^1.0.1",
         "@solidjs/router": "^1.0.0",
-        "creo-ui-frame": "workspace:*",
         "creo-ui-md-view": "workspace:*",
         "creo-ui-vision": "workspace:*",
         "solid-js": "^1.9.15",
@@ -69,7 +69,7 @@
       },
     },
     "packages/frame": {
-      "name": "creo-ui-frame",
+      "name": "@chronista-club/creo-ui-frame",
       "version": "0.2.0",
       "devDependencies": {
         "@happy-dom/global-registrator": "^20.12.0",
@@ -229,6 +229,8 @@
     "@chronista-club/creo-ui": ["@chronista-club/creo-ui@workspace:packages/core"],
 
     "@chronista-club/creo-ui-editor-host": ["@chronista-club/creo-ui-editor-host@workspace:packages/editor-host"],
+
+    "@chronista-club/creo-ui-frame": ["@chronista-club/creo-ui-frame@workspace:packages/frame"],
 
     "@chronista-club/creo-ui-icons-web": ["@chronista-club/creo-ui-icons-web@workspace:packages/icons-web"],
 
@@ -465,8 +467,6 @@
     "confbox": ["confbox@0.2.4", "", {}, "sha512-ysOGlgTFbN2/Y6Cg3Iye8YKulHw+R2fNXHrgSmXISQdMnomY6eNDprVdW9R5xBguEqI954+S6709UyiO7B+6OQ=="],
 
     "convert-source-map": ["convert-source-map@2.0.0", "", {}, "sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg=="],
-
-    "creo-ui-frame": ["creo-ui-frame@workspace:packages/frame"],
 
     "creo-ui-md-view": ["creo-ui-md-view@workspace:packages/md-view"],
 

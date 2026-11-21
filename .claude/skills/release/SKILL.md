@@ -20,7 +20,7 @@ owner (mako) のトリガーで開始する。cadence の定めは無い — 「
 git fetch origin
 git log --oneline main..origin/nightly          # 未 release commit の一覧
 git diff --stat main..origin/nightly -- packages/core packages/editor-host \
-  packages/layout packages/icons-web packages/rust
+  packages/layout packages/icons-web packages/frame packages/rust
 ```
 
 判断表 — 「変わった package ≠ bump する package」:
@@ -29,10 +29,9 @@ git diff --stat main..origin/nightly -- packages/core packages/editor-host \
 |---|---|---|
 | web (`@chronista-club/creo-ui`) | `packages/core` に実変更 | 主力。ほぼ毎回 |
 | editor-host | `src` に実変更 **かつ** 出荷意図 | UX 刷新でも意図が無ければ据え置き可 |
-| layout / icons-web | 同上 | |
+| layout / icons-web / frame | 同上 | frame は `@chronista-club/creo-ui-frame`（2026-11-21 から出荷） |
 | rust | generated の**値**が変わったとき | comment だけなら republish 不要 |
 | swift | (publish 経路なし — generated の commit のみ) | |
-| frame | **publish workflow が無い** | bump しても出荷されない |
 
 bump しない package は version を触らない — `release-tag.yml` は「version が変わって
 tag が無いもの」だけを出荷するので、**bump そのものが出荷の指示書**になる。

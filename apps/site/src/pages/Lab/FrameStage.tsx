@@ -1,4 +1,4 @@
-import { FrameSlot, useFrame } from 'creo-ui-frame'
+import { FrameSlot, useFrame } from '@chronista-club/creo-ui-frame'
 
 /**
  * dashboard / reading の 2 frame を切替える共有 stage (FrameLab / VisionLab 共用)。

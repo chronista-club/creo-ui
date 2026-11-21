@@ -85,6 +85,10 @@ jobs:
             "$(jqv packages/layout/package.json)" \
             publish-layout.yml npm "@chronista-club/creo-ui-layout"
 
+          release_one frame \
+            "$(jqv packages/frame/package.json)" \
+            publish-frame.yml npm "@chronista-club/creo-ui-frame"
+
           release_one icons-web \
             "$(jqv packages/icons-web/package.json)" \
             publish-icons-web.yml npm "@chronista-club/creo-ui-icons-web"

@@ -1,5 +1,5 @@
+import { FrameProvider, useFrame } from '@chronista-club/creo-ui-frame'
 import { A } from '@solidjs/router'
-import { FrameProvider, useFrame } from 'creo-ui-frame'
 import { useGesture, useHandPinch, VisionProvider, type VisionSource } from 'creo-ui-vision'
 import { createMockSource } from 'creo-ui-vision/mock'
 import { createEffect, createSignal, For, onCleanup, Show } from 'solid-js'

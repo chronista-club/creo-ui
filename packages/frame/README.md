@@ -24,13 +24,13 @@ core 機能 (Frame morph engine) は creo-ui の哲学 (token SSOT / multi-platf
 ## Install
 
 ```sh
-bun add creo-ui-frame solid-js
+bun add @chronista-club/creo-ui-frame solid-js
 ```
 
 ## Usage — Frame protocol (Phase 3)
 
 ```tsx
-import { FrameProvider, FrameSlot, useFrame, type Frame } from 'creo-ui-frame'
+import { FrameProvider, FrameSlot, useFrame, type Frame } from '@chronista-club/creo-ui-frame'
 
 const dashboardFrame: Frame = {
   id: 'dashboard',
@@ -116,7 +116,7 @@ function GazeControl() {
 ### FLIP technique
 
 ```ts
-import { flip, measureRect } from 'creo-ui-frame/motion'
+import { flip, measureRect } from '@chronista-club/creo-ui-frame/motion'
 
 const el = document.querySelector('.box')!
 const prev = measureRect(el)
@@ -130,20 +130,20 @@ flip(el, prev, { duration: 220, easing: 'spring' })
 ### Easing / duration token bridge
 
 ```ts
-import { ease, duration } from 'creo-ui-frame/motion'
+import { ease, duration } from '@chronista-club/creo-ui-frame/motion'
 
 const easing = ease('spring')        // 'cubic-bezier(0.2, 0.8, 0.2, 1)'
 const ms = duration('normal')        // 220
 
 // CSS variable から runtime 取得 (theme 切替に追従可能)
-import { easeFromCss, durationFromCss } from 'creo-ui-frame/motion'
+import { easeFromCss, durationFromCss } from '@chronista-club/creo-ui-frame/motion'
 const dynEasing = easeFromCss('spring')   // CSS var '--motion-easing-spring' を読む
 ```
 
 ### Spring physics
 
 ```ts
-import { springEasing, springPreset } from 'creo-ui-frame/motion'
+import { springEasing, springPreset } from '@chronista-club/creo-ui-frame/motion'
 
 // 慣習 5 preset (gentle / wobbly / stiff / slow / tight) — 最短記述
 const easing = springEasing('gentle')
@@ -171,7 +171,7 @@ el.animate([{ opacity: 0 }, { opacity: 1 }], {
 ### Reduced-motion guard
 
 ```ts
-import { respectsReducedMotion, watchReducedMotion } from 'creo-ui-frame/motion'
+import { respectsReducedMotion, watchReducedMotion } from '@chronista-club/creo-ui-frame/motion'
 
 if (respectsReducedMotion()) {
   // user preferred reduce — skip animation, instant snap
