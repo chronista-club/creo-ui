@@ -20,6 +20,7 @@ export default defineConfig({
         index: resolve(__dirname, 'src/index.ts'),
         'frame/index': resolve(__dirname, 'src/frame/index.ts'),
         'motion/index': resolve(__dirname, 'src/motion/index.ts'),
+        'timeline/index': resolve(__dirname, 'src/timeline/index.ts'),
       },
       formats: ['es'],
     },

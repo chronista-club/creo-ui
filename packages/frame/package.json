@@ -19,6 +19,10 @@
       "types": "./dist/motion/index.d.ts",
       "import": "./dist/motion/index.js"
     },
+    "./timeline": {
+      "types": "./dist/timeline/index.d.ts",
+      "import": "./dist/timeline/index.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
