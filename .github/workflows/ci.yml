@@ -116,16 +116,7 @@ jobs:
         working-directory: packages/rust
         run: cargo test --features ratatui --verbose
 
-  swift:
-    name: Swift build
-    runs-on: macos-14
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Build
-        working-directory: packages/swift
-        run: swift build
-
-      - name: Test
-        working-directory: packages/swift
-        run: swift test
+  # Swift (packages/swift) は GitHub Actions では回さない (2026-11-21、mako)。macOS runner は高く、
+  # 使用量の上限にすぐ届くため。同じ確認 (swift build + swift test) は手元の Mac で `mise run ci:swift`。
+  # tokens/ から生成する Swift の generated が commit 漏れしていないかは、上の Web job の
+  # 「Token diff」(ubuntu) が引き続き見る。
