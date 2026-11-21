@@ -30,3 +30,6 @@ history.txt
 
 # Vantage Point lane workspaces (project-local lane refactor)
 .vp/
+
+# cf CLI の生成物 (Build Output / 型)
+.cloudflare/

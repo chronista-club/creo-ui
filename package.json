@@ -22,7 +22,7 @@
     "site:dev": "CREO_SITE_HTTP=1 bun run dev",
     "site:up": "bun run site:build && podman compose up -d --build --force-recreate",
     "site:down": "podman compose down",
-    "site:deploy": "bun run site:build && bunx wrangler deploy",
+    "site:deploy": "bun run site:build && bun run --cwd apps/site deploy",
     "gen:themes": "bun scripts/generate-themes.mjs",
     "test:runtime": "bun test packages/editor-host/src packages/layout/src packages/core/src packages/vision/src && bun run --cwd packages/frame test",
     "test:components": "vitest run",
