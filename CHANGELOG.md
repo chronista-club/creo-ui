@@ -5,6 +5,12 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## frame v0.4.1 (2026-11-22) — timeline を DOM の無い環境から import できるように
+
+> **frame `0.4.1`** を release。web / editor-host / layout / icons-web / rust は変更なしで据え置き。
+
+- **fix**: 0.4.0 で、root や `/timeline` を window の無い環境 (SSR、DOM の無い test) で import すると、読み込みだけで `window is not defined` で落ちていた。`TimelineInspector` のイベントを `on:pointer*` (要素に直接付ける) にし、読み込み時に document へ委譲を登録しないようにする (#201)。API と挙動は変わらない
+
 ## frame v0.4.0 (2026-11-22) — timeline: 入れ子の Frame を t で動かす
 
 > **frame `0.4.0`** を release。web / editor-host / layout / icons-web / rust は変更なしで据え置き。
