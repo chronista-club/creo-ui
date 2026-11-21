@@ -2520,3 +2520,154 @@ kbd {
     transition: none !important;
   }
 }
+
+/* ============================================================
+   Lab — Frame in Frame — t (spike)
+   画面の Frame の中に project の Frame。1 本の t で親子を動かす試作。
+   ============================================================ */
+
+.docs-ft-scrub {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  flex: 1;
+  min-width: 220px;
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.docs-ft-scrub input {
+  flex: 1;
+}
+
+.docs-ft-stage {
+  height: 440px;
+  perspective: 1000px;
+  perspective-origin: 50% 40%;
+  touch-action: none;
+  cursor: grab;
+}
+
+.docs-ft-hint {
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+/* 3D の箱は全部 preserve-3d でつなぐ (どこかで切れると、その先が平らになる) */
+.docs-ft-orbit,
+.docs-ft-scene,
+.docs-ft-place,
+.docs-ft-face {
+  transform-style: preserve-3d;
+}
+
+.docs-ft-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+}
+
+.docs-ft-scene {
+  position: absolute;
+  inset: 0;
+}
+
+.docs-ft-ground {
+  position: absolute;
+  left: -300px;
+  top: -240px;
+  width: 600px;
+  height: 480px;
+  background-image:
+    linear-gradient(
+      color-mix(in oklab, var(--color-brand-primary) 18%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--color-brand-primary) 18%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 40px 40px;
+  mask-image: radial-gradient(closest-side, #000 55%, transparent);
+}
+
+.docs-ft-line {
+  position: absolute;
+  left: 0;
+  top: -0.75px;
+  height: 1.5px;
+  transform-origin: 0 50%;
+  background: color-mix(in oklab, var(--color-brand-primary) 55%, transparent);
+}
+
+/* 親 (画面) が動かすのはこの箱の位置と向きだけ */
+.docs-ft-place {
+  position: absolute;
+  left: -100px;
+  top: -30px;
+  width: 200px;
+}
+
+/* 子 (project) の中身。各 part は子の t で動く */
+.docs-ft-card {
+  position: relative;
+  height: 60px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+.docs-ft-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid
+    color-mix(in oklab, var(--color-brand-primary) 60%, var(--color-surface-border));
+  border-radius: 999px;
+  background: var(--color-surface-surface);
+}
+
+.docs-ft-name {
+  position: relative;
+  font-weight: 600;
+  font-size: var(--typography-size-s);
+}
+
+.docs-ft-badge {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--color-surface-border);
+  color: var(--color-text-secondary);
+}
+
+.docs-ft-catch {
+  position: relative;
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.docs-ft-knobs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--spacing-m);
+}
+
+.docs-ft-knobs-after {
+  margin-block-start: var(--spacing-m);
+}
+
+.docs-ft-knob {
+  display: grid;
+  gap: 4px;
+  font-size: var(--typography-size-xs);
+  color: var(--color-text-secondary);
+}
