@@ -90,6 +90,9 @@ token 経路で npm に出た)。bypass 付き token には寿命があり、byp
   `chronista-club` / repository `creo-ui` / workflow file 名 (`publish-<pkg>.yml`) /
   environment 空 / `npm publish` を許可。**登録は owner の作業**。登録後 2 日以内に初回
   publish を通さないと期限切れになり再登録が要る。未登録のまま dispatch すると `E404`
+- **npm にまだ無い新しい package** は登録先の設定画面が無い。初回だけ owner が手元から token
+  (2FA) で publish し、その後に登録する。初回の版には provenance が付かないが、次の版から OIDC で付く
+  (2026-11-21、`@chronista-club/creo-ui-frame` 0.2.0 で発生)
 - provenance は public repo + OIDC で自動付与される。`package.json` の `repository.url` が
   この repo と一致していないと publish が落ちる (4 package とも一致済み)
 - `release-tag.yml` の `--ref <tag>` dispatch は **tag 時点の workflow file** を使う。workflow
