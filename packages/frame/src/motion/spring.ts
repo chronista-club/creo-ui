@@ -17,7 +17,11 @@ export interface SpringOptions {
   mass?: number
   /** Initial velocity v0、 default 0 */
   initialVelocity?: number
-  /** 安定とみなす閾値 (|x - 1| < precision)、 default 0.001 */
+  /**
+   * 安定とみなす閾値 (|x - 1| < precision)。default は springCurve が 0.001、springEasing が 0.01。
+   * springEasing はここまでを duration に引き伸ばすので、小さくすると目に見えない尾まで伸ばし、
+   * 見える動きが前半に詰まる (0.3.0 までの既定 0.001 で起きていた)
+   */
   precision?: number
   /** Sample 数 (linear() に出す keyframe 数)、 default 60 */
   samples?: number
@@ -107,14 +111,18 @@ export function springEasing(options?: SpringOptions): string
 export function springEasing(arg?: SpringPreset | SpringOptions): string {
   const options: SpringOptions = typeof arg === 'string' ? SPRING_PRESETS[arg] : (arg ?? {})
   const samples = options.samples ?? 60
-  const { position, settleTime } = springCurve(options)
+  // easing は「どこまでを duration に引き伸ばすか」が見た目を決める。目に見えない尾 (差 1% 未満) まで
+  // 伸ばすと、見える動きが前半に詰まるので、既定は 1% で打ち切る (springCurve の既定 0.001 とは別)
+  const { position, settleTime } = springCurve({ ...options, precision: options.precision ?? 0.01 })
+  // 打ち切った時点の残り (< precision) は、最後に跳ばずに全体へ少しずつ配る (t / T に比例)
+  const residual = 1 - position(settleTime)
 
   // Sample position から linear() の keyframe 列を作る
   // linear() syntax: linear(0, 0.1, 0.3, ..., 1) — 等間隔 sample
   const points: number[] = []
   for (let i = 0; i <= samples; i++) {
     const t = (i / samples) * settleTime
-    points.push(position(t))
+    points.push(position(t) + residual * (i / samples))
   }
 
   // 最終値は 1 に丸める (overshoot 残存対策)

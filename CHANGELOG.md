@@ -5,7 +5,12 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
-## frame v0.3.0 (unreleased) — 使いながら直す: flip の基点、scale の選択、enter
+## frame v0.3.1 (unreleased) — spring の動きを duration 全体に配る
+
+- **behavior change**: `springEasing()` は差が 1% (`precision` の既定 0.01) になった所までを duration に引き伸ばす。0.3.0 までは 0.1% まで伸ばしていて、目に見えない尾が長く、見える動きが前半に詰まっていた (`slow` を 560ms で使うと 280ms で 97%、今は 77%)。打ち切った時点の残りは最後に跳ばず、全体へ少しずつ配る。従来の形が要るなら `precision: 0.001` を明示する
+- `springCurve()` (layout の scrub が使う) の既定 precision は 0.001 のまま
+
+## frame v0.3.0 (2026-11-21) — 使いながら直す: flip の基点、scale の選択、enter
 
 anycreative.tech の Projects (List ⇄ Structure の組み替え) で初めて本番に使い、見つかったものを直す。frame は 0.2.0 (2026-11-21) が npm 初出荷。
 
