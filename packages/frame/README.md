@@ -9,9 +9,9 @@
 
 | Surface | Status |
 |---|---|
-| `creo-ui-frame/motion` | ✅ FLIP / spring (Hooke's law + WAAPI `linear()`) / token bridge / reduced-motion guard |
-| `creo-ui-frame/frame` | ✅ FrameProvider / FrameSlot / useFrame / setFrame |
-| `creo-ui-frame` (root) | ✅ frame + motion 統合 export |
+| `@chronista-club/creo-ui-frame/motion` | ✅ FLIP / spring (Hooke's law + WAAPI `linear()`) / token bridge / reduced-motion guard |
+| `@chronista-club/creo-ui-frame/frame` | ✅ FrameProvider / FrameSlot / useFrame / setFrame |
+| `@chronista-club/creo-ui-frame` (root) | ✅ frame + motion 統合 export |
 | `creo-ui-vision` 連結 | ✅ docs Playground で gesture (`useGesture('wave')` → `setFrame`) + spatial pinch bridge dogfood |
 | `morphFrame()` coordinator | ✅ Ship (`motion/morph.ts` — 複数 slot の atomic transition、 `flip()` 再利用、 reduced-motion guard 自動承継) |
 
