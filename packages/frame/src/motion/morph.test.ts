@@ -6,7 +6,8 @@
  */
 
 import { afterEach, describe, expect, it } from 'bun:test'
-import { measureSlots, morphFrame } from './morph'
+import { fadeIn, measureSlots, morphFrame } from './morph'
+import { _resetReducedMotionCache } from './reduced-motion'
 
 /** getBoundingClientRect / animate を持つ最小 mock (no-DOM tests 用) */
 function mockElement(rect: Partial<DOMRect> = {}): HTMLElement {
@@ -268,5 +269,63 @@ describe('morphFrame — cancel / rejection graceful skip', () => {
     const result = await morphFrame(elements, prevRects)
     // 1 件 (fulfilled のみ) が返る
     expect(result.length).toBe(1)
+  })
+})
+
+/** animate の keyframes を記録する spy (enter / fadeIn の検証用) */
+function recordAnimate(el: HTMLElement): Keyframe[][] {
+  const calls: Keyframe[][] = []
+  el.animate = ((keyframes: Keyframe[]) => {
+    calls.push(keyframes)
+    return { finished: Promise.resolve() } as Animation
+  }) as HTMLElement['animate']
+  return calls
+}
+
+describe('morphFrame — enter (前に無かった slot)', () => {
+  afterEach(() => {
+    _resetReducedMotionCache()
+    document.body.innerHTML = ''
+  })
+
+  it("enter: 'fade' なら、prev rect の無い slot を opacity 0 → 1 で出す", async () => {
+    const el = document.createElement('div')
+    document.body.appendChild(el)
+    const calls = recordAnimate(el)
+    const result = await morphFrame(new Map([['new', el]]), new Map(), { enter: 'fade' })
+    expect(calls.length).toBe(1)
+    expect(calls[0]![0]!.opacity).toBe(0)
+    expect(calls[0]![1]!.opacity).toBe(1)
+    expect(result.length).toBe(1)
+  })
+
+  it('enter を指定しなければ、prev rect の無い slot には触らない (従来どおり)', async () => {
+    const el = document.createElement('div')
+    document.body.appendChild(el)
+    const calls = recordAnimate(el)
+    await morphFrame(new Map([['new', el]]), new Map())
+    expect(calls.length).toBe(0)
+  })
+})
+
+describe('fadeIn', () => {
+  afterEach(() => {
+    _resetReducedMotionCache()
+    document.body.innerHTML = ''
+  })
+
+  it('opacity 0 → 1 を fill backwards で再生する (delay 中も 0 のまま)', () => {
+    const el = document.createElement('div')
+    const opts: KeyframeAnimationOptions[] = []
+    el.animate = ((keyframes: Keyframe[], o: KeyframeAnimationOptions) => {
+      opts.push(o)
+      expect(keyframes[0]!.opacity).toBe(0)
+      return { finished: Promise.resolve() } as Animation
+    }) as HTMLElement['animate']
+    const anim = fadeIn(el, { duration: 300, delay: 100 })
+    expect(anim).not.toBeNull()
+    expect(opts[0]!.duration).toBe(300)
+    expect(opts[0]!.delay).toBe(100)
+    expect(opts[0]!.fill).toBe('backwards')
   })
 })
