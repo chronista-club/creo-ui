@@ -5,7 +5,19 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
-## frame v0.3.1 (unreleased) — spring の動きを duration 全体に配る
+## frame v0.4.0 (2026-11-22) — timeline: 入れ子の Frame を t で動かす
+
+> **frame `0.4.0`** を release。web / editor-host / layout / icons-web / rust は変更なしで据え置き。
+
+Frame の中に Frame を入れ、それぞれが自分の動きを持つための層を足す (#198)。`setFrame` (CSS transition) と `morphFrame` (FLIP) は A → B を一度走らせるだけで途中の t に触れないので、t (進み具合 0 → 1) を値として持つ。新しい入口は **`@chronista-club/creo-ui-frame/timeline`** (root からも export)。既存の `/frame` / `/motion` は変わらない。
+
+- `Clip` — 自分の t に対して part がどう動くか (`Pose` の A → B) だけを持つ。親は `children: [{ clip, at }]` で、子の t の始まりと終わりを自分の t のどこに置くかを決める。区間は合成される (abs = s + a·(e − s))
+- `createTimeline(root, { duration, resolve, easing?, t?, onUpdate? })` — 時計 1 つ。全 part を同じ長さの WAAPI Animation にし、区間は keyframe の offset に焼き込む。`seek` / `play(0 | 1)` (逆再生) / `stop` / `update` (t を保って作り直す) / `cancel`。reduced-motion では `play` が行き先へ飛ぶ
+- `<TimelineInspector>` — 木を時間軸として描く。`onSeek` で t、`onPlace` で帯をドラッグして置き場を直す (両端 = 伸び縮み、真ん中 = 平行移動)
+- 純関数: `flattenClip` / `localT` / `poseKeyframes` / `bakeKeyframes` / `setPlacement` / `dragPlacement`
+- 設計は `docs/design/frame-system.md` の「Timeline (T 系列)」
+
+## frame v0.3.1 (2026-11-21) — spring の動きを duration 全体に配る
 
 - **behavior change**: `springEasing()` は差が 1% (`precision` の既定 0.01) になった所までを duration に引き伸ばす。0.3.0 までは 0.1% まで伸ばしていて、目に見えない尾が長く、見える動きが前半に詰まっていた (`slow` を 560ms で使うと 280ms で 97%、今は 77%)。打ち切った時点の残りは最後に跳ばず、全体へ少しずつ配る。従来の形が要るなら `precision: 0.001` を明示する
 - `springCurve()` (layout の scrub が使う) の既定 precision は 0.001 のまま
