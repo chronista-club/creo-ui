@@ -38,6 +38,7 @@ export {
   parseLayerParam,
 } from './layer'
 export {
+  type RailAnchor,
   type RailAspect,
   type RailDef,
   railById,
