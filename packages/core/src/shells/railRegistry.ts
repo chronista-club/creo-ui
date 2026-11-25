@@ -17,6 +17,9 @@ import type { Component } from 'solid-js'
 /** 記憶/情報の相 — App が定義する分類。primitive は意味づけしない (PL-8) */
 export type RailAspect = string
 
+/** Rail column 内の上下どちらの起点に置くか (既定: `'top'`) */
+export type RailAnchor = 'top' | 'bottom'
+
 /**
  * RailDef — Rail registry の 1 entry。
  *
@@ -36,8 +39,10 @@ export interface RailDef {
   peek: Component
   /** Rail column での表示順 */
   order: number
-  /** App 定義の分類 (任意、primitive は解釈しない) */
+  /** App 定義の分類 (任意、primitive は意味づけしない) */
   aspect?: RailAspect
+  /** Rail column 内の上下どちらの起点に置くか (既定: `'top'`) */
+  anchor?: RailAnchor
 }
 
 /** order 昇順に並べた registry のコピーを返す (元配列は破壊しない) */

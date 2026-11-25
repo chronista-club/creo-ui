@@ -38,11 +38,15 @@ anycreative.tech の Projects (List ⇄ Structure の組み替え) で初めて�
 - **behavior change**: `fill` の既定を `'both'` → `'backwards'` に。終点は identity なので見た目は変わらないが、終わった animation が要素に残らなくなる。`'both'` が要るなら明示する
 - 全 package の `repository.url` を `git+https://...` に (npm publish が normalize の警告を出していた)
 
-## web (core) Unreleased — Rail を右 edge にも、peek の幅を外から
+## web (core) v0.31.0 (2026-11-25) — Principal Layout Rail 共進化: 右 edge / 可変 peekWidth / slim 折りたたみ / 3 起点 slot
 
-- `<CURail>` に `region` (`'leftEdge'` 既定 / `'rightEdge'`) を追加。右では column と peek の並び・境界線を左右反転し、peek は center 側に開く。型 `RailRegion` を export。
-- `<CURail>` に `peekWidth` (数値は px、文字列は CSS の長さ。既定 240px) と `resizing` (drag で resize している間 true にすると幅の transition を止める) を追加。resize と幅の永続は consumer 側。
-- router を持たない consumer は pseudo-route を `pathname` に渡してよいことを PL-4 に明記。
+> **web `0.31.0`** を release。editor-host `0.11.0` / frame `0.4.1` / layout `0.3.0` / icons-web `0.0.1` / rust `0.9.0` は据え置き。
+
+- `<CURail>` に `region` (`'leftEdge'` 既定 / `'rightEdge'`) を追加 (#188)。右では column と peek の並び・境界線を左右反転し、peek は center 側に開く。型 `RailRegion` を export。
+- `<CURail>` に `peekWidth` (数値は px、文字列は CSS の長さ。既定 240px) と `resizing` (drag で resize している間 true にすると幅の transition を止める) を追加 (#188)。resize と幅の永続は consumer 側。
+- `<CURail>` に `peekOpen` (既定 `true`。`false` の間は選択中 Rail の `aria-current="page"` を保ったまま peek だけ畳む slim 表示)、`keepPeeksMounted` (既定 `false`。`true` のとき開いている間は全 Rail の peek を mount したまま選択外を `hidden` で隠す)、`columnCenter` / `columnBottom` / `peekFooter` slot を追加。
+- `RailDef` に `anchor?: 'top' | 'bottom'` (既定 `'top'`) を追加し、型 `RailAnchor` を export。`'bottom'` の Rail は column 下端 (`.anchor-bottom`) に配置される。
+- router を持たない consumer は pseudo-route を `pathname` に渡してよいことを PL-4 に明記 (#188)。
 - VP の額縁 (VP doc 87) が shells の最初の consumer になる (principal-layout.md P-5)。既存の使い方は変わらない (追加の prop はすべて任意)。
 
 ## Unreleased — repo 構成
