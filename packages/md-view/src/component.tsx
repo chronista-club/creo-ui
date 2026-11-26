@@ -5,8 +5,9 @@
  * On parse error, shows fallback (default: inline error message).
  */
 
+import type { JSX } from '@solidjs/web'
 import type { Root } from 'mdast'
-import { type Component, createResource, type JSX, Show } from 'solid-js'
+import { type Component, createMemo, Errored, Loading } from 'solid-js'
 import { parseMarkdown } from './parse'
 import { type MarkdownRenderOptions, renderNode } from './render'
 
@@ -24,30 +25,27 @@ export interface CreoMarkdownProps extends MarkdownRenderOptions {
 }
 
 export const CreoMarkdown: Component<CreoMarkdownProps> = (props) => {
-  const [ast] = createResource(
-    () => props.text,
-    async (text) => {
-      const tree = parseMarkdown(text)
-      props.onAst?.(tree)
-      return tree
-    },
-  )
+  const ast = createMemo(async () => {
+    const tree = parseMarkdown(props.text)
+    props.onAst?.(tree)
+    return tree
+  })
   return (
     <div class={`creo-md ${props.class ?? ''}`.trim()}>
-      <Show
-        when={ast.state === 'ready'}
-        fallback={
-          <Show when={ast.error} fallback={props.loading ?? null}>
-            {props.fallback?.(String(ast.error)) ?? (
+      <Errored
+        fallback={(err) => {
+          const msg = err() instanceof Error ? (err() as Error).message : String(err())
+          return (
+            props.fallback?.(msg) ?? (
               <div class="creo-md-error" role="alert">
-                Markdown parse error: {String(ast.error)}
+                Markdown parse error: {msg}
               </div>
-            )}
-          </Show>
-        }
+            )
+          )
+        }}
       >
-        {renderNode(ast() as Root, props)}
-      </Show>
+        <Loading fallback={props.loading ?? null}>{renderNode(ast(), props)}</Loading>
+      </Errored>
     </div>
   )
 }

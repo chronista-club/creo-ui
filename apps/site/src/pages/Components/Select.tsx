@@ -1,5 +1,5 @@
-import { A } from '@solidjs/router'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
+import { A } from '../../ui/RouterLink'
 
 const PROPS = [
   {

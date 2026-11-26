@@ -1,5 +1,5 @@
-import { type Component, createMemo, For, type JSX, Show } from 'solid-js'
-import { Dynamic } from 'solid-js/web'
+import { Dynamic, type JSX } from '@solidjs/web'
+import { type Component, createMemo, For, Show } from 'solid-js'
 import styles from './CURail.module.css'
 import { type RailDef, railById, railsByOrder, selectRailId } from './railRegistry'
 import type { EdgeRegion } from './regions'

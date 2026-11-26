@@ -70,15 +70,19 @@ export interface LayerUrlSyncPorts {
  */
 export function createLayerUrlSync(store: LayerStore, ports: LayerUrlSyncPorts): void {
   // URL → store
-  createEffect(() => {
-    const fromUrl = parseLayerParam(ports.readParam())
-    if (fromUrl !== store.layer()) store.setLayer(fromUrl)
-  })
+  createEffect(
+    () => parseLayerParam(ports.readParam()),
+    (fromUrl) => {
+      if (fromUrl !== store.layer()) store.setLayer(fromUrl)
+    },
+  )
   // store → URL
-  createEffect(() => {
-    const current = store.layer()
-    if (!layerEqualsParam(current, ports.readParam())) {
-      ports.writeParam(layerToParam(current))
-    }
-  })
+  createEffect(
+    () => store.layer(),
+    (current) => {
+      if (!layerEqualsParam(current, ports.readParam())) {
+        ports.writeParam(layerToParam(current))
+      }
+    },
+  )
 }

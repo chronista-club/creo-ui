@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "^1.0.1",
-    "@solidjs/router": "^1.0.0",
+    "@solidjs/router": "^2.0.1",
     "@chronista-club/creo-ui-editor-host": "workspace:*",
     "@chronista-club/creo-ui-layout": "workspace:*",
     "@chronista-club/creo-ui-frame": "workspace:*",
@@ -20,14 +20,15 @@
     "creo-ui-md-view": "workspace:*",
     "creo-ui-vision": "workspace:*",
     "@chronista-club/creo-ui": "workspace:*",
-    "solid-js": "^1.9.15"
+    "@solidjs/web": "^2.0.4",
+    "solid-js": "^2.0.4"
   },
   "devDependencies": {
+    "@solidjs/vite-plugin": "^3.0.1",
     "@vitejs/plugin-basic-ssl": "^2.3.0",
     "cf": "^1.0.0-rc.2",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
-    "vite-plugin-solid": "^2.11.14",
     "wrangler": "^4.166.0"
   }
 }

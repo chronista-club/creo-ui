@@ -1,6 +1,6 @@
 {
   "name": "@chronista-club/creo-ui-icons-web",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "creo-ui — Iconify-based icon adapter for SolidJS web apps. Universal semantic registry with curated 9-set Iconify lineup (mingcute/iconoir/ph/svg-spinners/codicon/simple-icons/flagpack/noto/bi).",
   "type": "module",
   "main": "./dist/index.js",
@@ -74,17 +74,19 @@
     "prepublishOnly": "bun run build"
   },
   "peerDependencies": {
-    "solid-js": "^1.9.0",
+    "@solidjs/web": "^2.0.0",
+    "solid-js": "^2.0.0",
     "iconify-icon": "^3.0.0"
   },
   "devDependencies": {
-    "solid-js": "^1.9.15",
+    "@solidjs/vite-plugin": "^3.0.1",
+    "@solidjs/web": "^2.0.4",
+    "solid-js": "^2.0.4",
     "iconify-icon": "^3.0.2",
     "@typescript/typescript6": "^6.0.2",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
-    "vite-plugin-dts": "^5.0.3",
-    "vite-plugin-solid": "^2.11.14"
+    "vite-plugin-dts": "^5.0.3"
   },
   "license": "Apache-2.0"
 }

@@ -1,11 +1,12 @@
 // iconify-icon Web Component を side-effect import して customElements.define() を実行。
 // これが無いと <iconify-icon> は browser に未知の要素として無視される。
 import 'iconify-icon'
-import type { Component, JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import type { Component } from 'solid-js'
 import type { IconName } from './types'
 
 // SolidJS は標準 HTML 要素しか型を持たないので、 iconify-icon の attribute を module augmentation で declare。
-declare module 'solid-js' {
+declare module '@solidjs/web' {
   namespace JSX {
     interface IntrinsicElements {
       'iconify-icon': {
@@ -19,7 +20,7 @@ declare module 'solid-js' {
         style?: JSX.CSSProperties | string
         class?: string
         title?: string
-      } & Pick<JSX.HTMLAttributes<HTMLElement>, 'id' | 'classList' | 'ref'>
+      } & Pick<JSX.HTMLAttributes<HTMLElement>, 'id' | 'ref'>
     }
   }
 }

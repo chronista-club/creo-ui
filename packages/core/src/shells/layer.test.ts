@@ -6,7 +6,7 @@
  */
 
 import { describe, expect, test } from 'bun:test'
-import { createRoot } from 'solid-js'
+import { createRoot, flush } from 'solid-js'
 import { createLayerStore, layerEqualsParam, layerToParam, parseLayerParam } from './layer'
 
 describe('parseLayerParam', () => {
@@ -57,9 +57,11 @@ describe('createLayerStore', () => {
       expect(store.layer()).toBe('atl_a')
 
       store.setLayer('atl_b')
+      flush()
       expect(store.layer()).toBe('atl_b')
 
       store.setLayer(undefined)
+      flush()
       expect(store.layer()).toBeUndefined()
 
       dispose()

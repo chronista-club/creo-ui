@@ -1,5 +1,5 @@
-import { A } from '@solidjs/router'
 import { For } from 'solid-js'
+import { A } from '../../ui/RouterLink'
 import { DimensionScale, type DimensionToken } from '../../ui/TokenList'
 
 // ============================================================

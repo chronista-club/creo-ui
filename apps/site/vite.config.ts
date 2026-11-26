@@ -1,6 +1,6 @@
+import solid from '@solidjs/vite-plugin'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import { defineConfig } from 'vite'
-import solid from 'vite-plugin-solid'
 import { creoAgentBridge } from './vite-plugins/creo-agent-bridge'
 
 // HTTPS is enabled so that visionOS Safari (and iOS Safari) accepts

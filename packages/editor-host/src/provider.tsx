@@ -6,14 +6,15 @@
  * 使える。provider 自身が shortcut + selection handler を install / teardown する。
  */
 
-import type { JSX, ParentProps } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import {
   createContext,
   createEffect,
   createSignal,
   getOwner,
   onCleanup,
-  onMount,
+  onSettled,
+  type ParentProps,
   useContext,
 } from 'solid-js'
 import { autoDiscover, autoDiscoverTweaks } from './auto-discover'
@@ -30,13 +31,13 @@ import { installShortcut } from './shortcut'
 import type { EditorField, EditorHost, EditorHostConfig } from './types'
 import { installUrlSync, shareUrl } from './url-sync'
 
-const EditorHostContext = createContext<EditorHost>()
+const EditorHostContext = createContext<EditorHost | null>(null)
 
 const PickingContext = createContext<{
   active: () => boolean
   toggle: () => void
   cancel: () => boolean
-}>()
+} | null>(null)
 /**
  * 「画面から選ぶ」(picking) の状態と切替。`active()` の間だけ click を選択として捕捉し、
  * 1 つ選ぶと自動で終わる。`EditorLayer` を使わず自前の panel を持つ consumer
@@ -49,17 +50,17 @@ export function useEditorPicking() {
 }
 
 /** F2c resolver。`discoverComponents: false` のときは undefined */
-const ComponentResolverContext = createContext<ComponentFieldResolver | undefined>()
+const ComponentResolverContext = createContext<ComponentFieldResolver | null>(null)
 
 /** 脱出ハッチ (class の任意 property override)。provider が 1 個生成して配る */
-const ClassOverridesContext = createContext<ClassOverrides>()
+const ClassOverridesContext = createContext<ClassOverrides | null>(null)
 
 /**
  * class override 管理を取得。`<EditorLayer>` の「他の property」section が使う。
  * provider 外では undefined。
  */
 export function useClassOverrides(): ClassOverrides | undefined {
-  return useContext(ClassOverridesContext)
+  return useContext(ClassOverridesContext) ?? undefined
 }
 
 /**
@@ -67,7 +68,7 @@ export function useClassOverrides(): ClassOverrides | undefined {
  * `<EditorLayer>` の discovery section が component 一覧を引くのに使う。
  */
 export function useComponentResolver(): ComponentFieldResolver | undefined {
-  return useContext(ComponentResolverContext)
+  return useContext(ComponentResolverContext) ?? undefined
 }
 
 /**
@@ -90,9 +91,11 @@ export interface EditorHostProviderProps {
 
 export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>): JSX.Element {
   const host = props.host ?? createEditorHost(props.config ?? {})
+  let isPicking = false
   const [picking, setPicking] = createSignal(false)
   const cancelPicking = (): boolean => {
-    const wasPicking = picking()
+    const wasPicking = isPicking
+    isPicking = false
     setPicking(false)
     host.setHover(null)
     return wasPicking
@@ -103,12 +106,16 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
     toggle: () => {
       host.clearSelection()
       host.setHover(null)
-      setPicking((value) => !value)
+      isPicking = !isPicking
+      setPicking(isPicking)
     },
   }
-  createEffect(() => {
-    if (host.mode() === 'off') cancelPicking()
-  })
+  createEffect(
+    () => host.mode(),
+    (m) => {
+      if (m === 'off') cancelPicking()
+    },
+  )
 
   // F2c: component field resolver。selection handler と <EditorLayer> の discovery
   // が同じ index を共有する必要があるので、component 本体で作って context で配る。
@@ -322,8 +329,8 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
   const unregisterFramework = host.register([...frameworkFields, ...surfaceTokenFields])
   onCleanup(unregisterFramework)
 
-  onMount(() => {
-    const owner = getOwner()
+  onSettled(() => {
+    const owner = ownerAtSetup
     const uninstallers: Array<() => void> = []
 
     uninstallers.push(installShortcut({ host, shortcut: props.config?.shortcut, cancelPicking }))
@@ -386,20 +393,32 @@ export function EditorHostProvider(props: ParentProps<EditorHostProviderProps>):
       uninstallers.push(installConsoleApi(api, consoleName))
     }
 
-    onCleanup(() => {
+    return () => {
       for (const un of uninstallers.reverse()) un()
-    })
+    }
   })
 
-  return (
-    <EditorHostContext.Provider value={host}>
-      <ComponentResolverContext.Provider value={resolver}>
-        <ClassOverridesContext.Provider value={classOverrides}>
-          <PickingContext.Provider value={pickingContext}>{props.children}</PickingContext.Provider>
-        </ClassOverridesContext.Provider>
-      </ComponentResolverContext.Provider>
-    </EditorHostContext.Provider>
-  )
+  return EditorHostContext({
+    value: host,
+    get children() {
+      return ComponentResolverContext({
+        value: resolver ?? null,
+        get children() {
+          return ClassOverridesContext({
+            value: classOverrides,
+            get children() {
+              return PickingContext({
+                value: pickingContext,
+                get children() {
+                  return props.children
+                },
+              })
+            },
+          })
+        },
+      })
+    },
+  })
 }
 
 /**

@@ -1,5 +1,5 @@
 // R02: standard AST rendering must work without the old parser runtime.
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import { expect, test } from 'vitest'
 import { renderNode } from '../../packages/md-view/src/render'
 

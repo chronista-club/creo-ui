@@ -1,4 +1,4 @@
-import { render } from 'solid-js/web'
+import { render } from '@solidjs/web'
 import '@chronista-club/creo-ui/tokens.css'
 import '@chronista-club/creo-ui/components.css'
 import '@chronista-club/creo-ui/utilities.css'

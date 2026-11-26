@@ -1,6 +1,6 @@
-import { A } from '@solidjs/router'
-import type { JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import GazeLivePreview from '../../ui/GazeLivePreview'
+import { A } from '../../ui/RouterLink'
 
 export default function FrameSystem() {
   return (

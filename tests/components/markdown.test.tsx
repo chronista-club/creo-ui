@@ -1,6 +1,6 @@
 // R02: mem_1Cf1aYkR2EcfhbdmQxpVSx
-import { createSignal, type JSX } from 'solid-js'
-import { render } from 'solid-js/web'
+import { type JSX, render } from '@solidjs/web'
+import { createSignal } from 'solid-js'
 import { afterEach, expect, test, vi } from 'vitest'
 import { CreoMarkdown } from '../../packages/md-view/src'
 
