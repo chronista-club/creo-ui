@@ -1,5 +1,6 @@
-import { A } from '@solidjs/router'
-import { For, type JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { For } from 'solid-js'
+import { A } from '../../ui/RouterLink'
 
 interface ComponentEntry {
   name: string

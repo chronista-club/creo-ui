@@ -94,7 +94,7 @@ export function bind<T>(opts: BindOptions<T>): Binder<T> {
     }
   })()
 
-  const [sig, setSig] = createSignal<T>(initialValue)
+  const [sig, setSig] = createSignal<T>(() => initialValue, { ownedWrite: true })
 
   // target → signal: target が subscribe 提供するなら直接 hook
   let unsubTarget: (() => void) | undefined
@@ -132,7 +132,8 @@ export function bind<T>(opts: BindOptions<T>): Binder<T> {
     unsubTarget?.()
   })
 
-  const binder = sig as Binder<T>
+  const binder = ((...args: unknown[]) =>
+    (sig as (...a: unknown[]) => T)(...args)) as unknown as Binder<T>
   binder.set = (v: T): void => {
     // 経路: binder.set → host.setValue → apply (target.set + signal mirror)
     host.setValue<T>(target.id, v)

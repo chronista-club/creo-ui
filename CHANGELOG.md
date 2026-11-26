@@ -5,6 +5,16 @@ package 別 version (web / swift / rust / editor-host) は独立に bump され�
 
 > **命名について**: 本 project は 2026-07-09 に `creoui` → **`creo-ui`** へ rename した (下記 Unreleased 参照)。**それ以前の version エントリは release 当時の名称 (`creoui` / `Creoui`) を史実として保持**しており、意図的に書き換えていない。
 
+## SolidJS 2.0 移行 (2026-11-26) — web v0.32.0 / editor-host v0.12.0 / layout v0.4.0 / icons-web v0.1.0 / frame v0.5.0
+
+> **web `0.32.0`** / **editor-host `0.12.0`** / **layout `0.4.0`** / **icons-web `0.1.0`** / **frame `0.5.0`** を release。rust `0.9.0` は変更なしで据え置き。
+
+- **breaking**: 全 Web package (`@chronista-club/creo-ui` / `editor-host` / `layout` / `icons-web` / `frame` / `vision` / `md-view`) を **SolidJS 2.0** (`solid-js@^2.0.4` / `@solidjs/web@^2.0.4` / `@solidjs/vite-plugin@^3.0.1`) に移行。
+  - `peerDependencies` を `"solid-js": "^2.0.0"` + `"@solidjs/web": "^2.0.0"` に更新。
+  - JSX / DOM 型定義を `@solidjs/web` (`"jsxImportSource": "@solidjs/web"`) へ移行。`icons-web` の `<iconify-icon>` IntrinsicElements 宣言も `@solidjs/web` 対象に更新。
+  - `splitProps` → `omit`、1 引数 `createEffect` → 2 引数 `(compute, apply)`、`onMount` → `onSettled`、`<Ctx.Provider>` → `<Ctx>`、`<Index>` → `<For keyed={false}>`、`createResource` → async `createMemo` + `<Loading>` / `<Errored>` に移行。
+  - `apps/site` も `@solidjs/router@^2.0.1` (`createRouter` ベース) と SolidJS 2.0 へ移行。
+
 ## frame v0.4.1 (2026-11-22) — timeline を DOM の無い環境から import できるように
 
 > **frame `0.4.1`** を release。web / editor-host / layout / icons-web / rust は変更なしで据え置き。

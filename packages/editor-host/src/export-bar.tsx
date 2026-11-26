@@ -4,7 +4,8 @@
  * 現 editor state を clipboard へ copy する minimal utility。
  * Apple HIG 路線 (d) pipeline の UI 部。format select + Copy button + 短時間 feedback。
  */
-import { createSignal, For, type JSX, Show } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { createSignal, For, Show } from 'solid-js'
 import { type ExportFormat, exportSnapshot } from './export'
 import type { LocalizedText } from './i18n'
 import { messages, useT } from './i18n'

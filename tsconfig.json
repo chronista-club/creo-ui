@@ -17,7 +17,7 @@
     "sourceMap": true,
     "types": [],
     "jsx": "preserve",
-    "jsxImportSource": "solid-js"
+    "jsxImportSource": "@solidjs/web"
   },
   "include": ["packages/*/src/**/*.ts", "packages/*/src/**/*.tsx", "transforms/**/*.js"],
   "exclude": [

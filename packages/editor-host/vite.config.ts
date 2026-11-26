@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
+import solid from '@solidjs/vite-plugin'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import solid from 'vite-plugin-solid'
 
 export default defineConfig({
   plugins: [
@@ -21,7 +21,7 @@ export default defineConfig({
       fileName: () => 'index.js',
     },
     rollupOptions: {
-      external: ['solid-js', 'solid-js/web', 'solid-js/store', 'solid-js/h', /^solid-js\/.+/],
+      external: ['solid-js', '@solidjs/web', '@solidjs/signals', /^solid-js\/.+/, /^@solidjs\/.+/],
     },
     sourcemap: true,
     emptyOutDir: true,

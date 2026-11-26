@@ -12,7 +12,7 @@
  *   ephemeral 移動できる（engine.moveFloat への配線は consumer）
  */
 
-import type { JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { For, onCleanup } from 'solid-js'
 import type { PaneRef, ResolvedMap, ResolvedPane } from '../types'
 
@@ -94,7 +94,9 @@ export function PaneStage(props: PaneStageProps): JSX.Element {
 
   return (
     <div
-      ref={stageEl}
+      ref={(el) => {
+        stageEl = el
+      }}
       class={props.class}
       style={{ position: 'relative', width: '100%', height: '100%' }}
     >

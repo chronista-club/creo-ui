@@ -11,8 +11,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
+    "jsxImportSource": "@solidjs/web",
     "paths": {
+      "@solidjs/router": ["../../node_modules/@solidjs/router/dist/index.d.ts"],
       "@chronista-club/creo-ui-editor-host": ["../../packages/editor-host/src/index.ts"],
       "@chronista-club/creo-ui-layout": ["../../packages/layout/src/index.ts"],
       "@chronista-club/creo-ui-layout/solid": ["../../packages/layout/src/solid/index.ts"],

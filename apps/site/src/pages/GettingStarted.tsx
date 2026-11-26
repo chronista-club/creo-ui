@@ -1,4 +1,4 @@
-import { A } from '@solidjs/router'
+import { A } from '../ui/RouterLink'
 
 export default function GettingStarted() {
   return (

@@ -5,10 +5,10 @@ import {
   string,
   useEditorSelectable,
 } from '@chronista-club/creo-ui-editor-host'
-import { A } from '@solidjs/router'
 import { createSignal, Show } from 'solid-js'
 import { PropsTable, TokensTable } from '../../ui/DocsTables'
 import EditorModeToggle from '../../ui/EditorModeToggle'
+import { A } from '../../ui/RouterLink'
 
 const PROPS = [
   {

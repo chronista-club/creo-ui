@@ -7,8 +7,8 @@ import {
   type Timeline,
   TimelineInspector,
 } from '@chronista-club/creo-ui-frame'
-import { A } from '@solidjs/router'
-import { createSignal, For, onCleanup, onMount } from 'solid-js'
+import { createSignal, For, onSettled } from 'solid-js'
+import { A } from '../../ui/RouterLink'
 
 /**
  * Frame in Frame — t（進み具合 0→1）を中心にした入れ子のアニメーションの試作。
@@ -167,7 +167,7 @@ export default function FrameNestLab() {
   let stage: HTMLDivElement | undefined
   let tl: Timeline | undefined
 
-  onMount(() => {
+  onSettled(() => {
     tl = createTimeline(tree(), {
       duration: duration(),
       easing: springEasing('slow'),
@@ -175,8 +175,8 @@ export default function FrameNestLab() {
       onUpdate: setT,
     })
     setClips(tl.clips)
+    return () => tl?.cancel()
   })
-  onCleanup(() => tl?.cancel())
 
   /** 宣言から Animation を作り直す。t は保つ */
   const rebuild = () => {
@@ -313,7 +313,9 @@ export default function FrameNestLab() {
 
         <div
           class="docs-frame-stage docs-ft-stage"
-          ref={stage}
+          ref={(el) => {
+            stage = el
+          }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}

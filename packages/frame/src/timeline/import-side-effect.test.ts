@@ -8,8 +8,8 @@
 
 import { describe, expect, it } from 'bun:test'
 import { resolve } from 'node:path'
+import solid from '@solidjs/vite-plugin'
 import { build, type Rollup } from 'vite'
-import solid from 'vite-plugin-solid'
 
 describe('timeline — import に副作用が無い', () => {
   it('inspector のビルド出力に delegateEvents の呼び出しが無い', async () => {
@@ -21,7 +21,7 @@ describe('timeline — import に副作用が無い', () => {
         write: false,
         minify: false,
         lib: { entry: resolve(import.meta.dir, 'inspector.tsx'), formats: ['es'] },
-        rollupOptions: { external: [/^solid-js/] },
+        rollupOptions: { external: [/^solid-js/, /^@solidjs\//] },
       },
     })) as Rollup.RollupOutput[]
     const code = out

@@ -1,4 +1,5 @@
-import { type Component, createMemo, createSignal, For, type JSX, splitProps } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { type Component, createMemo, createSignal, For, omit } from 'solid-js'
 import {
   createNodeId,
   type FlatRow,
@@ -77,7 +78,8 @@ export interface CUOutlinerProps
  *   <CUOutliner nodes={nodes()} onChange={setNodes} variant="card" guides />
  */
 export const CUOutliner: Component<CUOutlinerProps> = (props) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'nodes',
     'defaultNodes',
     'onChange',
@@ -88,19 +90,19 @@ export const CUOutliner: Component<CUOutlinerProps> = (props) => {
     'showAdd',
     'addLabel',
     'class',
-  ])
+  )
 
-  const [internal, setInternal] = createSignal<OutlinerNode[]>(local.defaultNodes ?? [])
+  const [internal, setInternal] = createSignal<OutlinerNode[]>(props.defaultNodes ?? [])
   // controlled なら props、 uncontrolled なら内部 signal。 props.nodes の有無で毎回判定するので
   // 途中で controlled に切り替わっても追従する。
-  const nodes = (): OutlinerNode[] => local.nodes ?? internal()
+  const nodes = (): OutlinerNode[] => props.nodes ?? internal()
   const rows = createMemo<FlatRow[]>(() => flattenVisible(nodes()))
 
   /** 木を差し替える。 同一参照 (= 操作が成立しなかった) なら false を返す */
   const commit = (next: OutlinerNode[]): boolean => {
     if (next === nodes()) return false
-    if (local.nodes === undefined) setInternal(next)
-    local.onChange?.(next)
+    if (props.nodes === undefined) setInternal(next)
+    props.onChange?.(next)
     return true
   }
 
@@ -183,9 +185,9 @@ export const CUOutliner: Component<CUOutlinerProps> = (props) => {
 
   return (
     <div
-      class={local.class ? `creo-outliner ${local.class}` : 'creo-outliner'}
-      data-variant={local.variant}
-      data-guides={local.guides ? '' : undefined}
+      class={props.class ? `creo-outliner ${props.class}` : 'creo-outliner'}
+      data-variant={props.variant}
+      data-guides={props.guides ? '' : undefined}
       role="tree"
       {...rest}
     >
@@ -199,7 +201,7 @@ export const CUOutliner: Component<CUOutlinerProps> = (props) => {
             style={{ '--outliner-depth': String(row.depth) }}
             role="treeitem"
             aria-level={row.depth + 1}
-            aria-expanded={row.hasChildren ? !row.node.collapsed : undefined}
+            aria-expanded={row.hasChildren ? (!row.node.collapsed ? 'true' : 'false') : undefined}
           >
             <button
               type="button"
@@ -219,13 +221,13 @@ export const CUOutliner: Component<CUOutlinerProps> = (props) => {
             <input
               class="creo-outliner-text"
               value={row.node.text}
-              placeholder={local.placeholder ?? '思いついたことを書く'}
+              placeholder={props.placeholder ?? '思いついたことを書く'}
               onInput={(e) => commit(setText(nodes(), row.node.id, e.currentTarget.value))}
               onKeyDown={(e) => onKeyDown(e, row)}
             />
 
-            {local.renderMeta ? (
-              <span class="creo-outliner-meta">{local.renderMeta(row.node)}</span>
+            {props.renderMeta ? (
+              <span class="creo-outliner-meta">{props.renderMeta(row.node)}</span>
             ) : (
               row.node.meta && <span class="creo-outliner-meta">{row.node.meta}</span>
             )}
@@ -233,9 +235,9 @@ export const CUOutliner: Component<CUOutlinerProps> = (props) => {
         )}
       </For>
 
-      {local.showAdd !== false && (
+      {props.showAdd !== false && (
         <button type="button" class="creo-outliner-add" onClick={appendRow}>
-          ＋ {local.addLabel ?? '追加'}
+          ＋ {props.addLabel ?? '追加'}
         </button>
       )}
     </div>

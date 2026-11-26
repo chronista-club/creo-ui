@@ -1,7 +1,7 @@
 import { FrameProvider, FrameSlot, useFrame } from '@chronista-club/creo-ui-frame'
-import { A } from '@solidjs/router'
-import { createSignal, onMount } from 'solid-js'
+import { createSignal, onSettled } from 'solid-js'
 import GazeLivePreview from '../../ui/GazeLivePreview'
+import { A } from '../../ui/RouterLink'
 import { FrameStage } from './FrameStage'
 import { dashboardFrame, readingFrame } from './frames'
 
@@ -105,7 +105,7 @@ function ModelFrameStage() {
   const { setFrame, currentFrameId } = useFrame()
   const [supportsModel, setSupportsModel] = createSignal<boolean | null>(null)
 
-  onMount(() => {
+  onSettled(() => {
     // visionOS Safari 26+ でのみ true、 他 browser では undefined
     setSupportsModel(typeof window !== 'undefined' && 'HTMLModelElement' in window)
   })

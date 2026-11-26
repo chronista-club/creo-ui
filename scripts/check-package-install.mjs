@@ -71,7 +71,7 @@ for (const directory of readdirSync(join(root, 'packages'))) {
 }
 assert.ok(namespaces.length > 0, 'No public JS exports found')
 // Exact build-tool versions from this checkout; the consumer has no workspace/src aliases.
-for (const tool of ['typescript', 'vite', 'solid-js']) {
+for (const tool of ['typescript', 'vite', 'solid-js', '@solidjs/web']) {
   dependencies[tool] = json(join(root, 'node_modules', tool, 'package.json')).version
 }
 writeJson(join(consumer, 'package.json'), {
@@ -90,7 +90,7 @@ writeJson(join(consumer, 'tsconfig.json'), {
     skipLibCheck: false,
     lib: ['ES2022', 'DOM'],
     jsx: 'preserve',
-    jsxImportSource: 'solid-js',
+    jsxImportSource: '@solidjs/web',
   },
   include: ['main.ts', 'assets.d.ts'],
 })

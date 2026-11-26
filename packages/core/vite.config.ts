@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
+import solid from '@solidjs/vite-plugin'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import solid from 'vite-plugin-solid'
 
 /**
  * creo-ui — JS bundle config (Solid component shells)
@@ -50,7 +50,7 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
-      external: ['solid-js', 'solid-js/web', 'solid-js/store', /^solid-js\/.+/],
+      external: ['solid-js', '@solidjs/web', '@solidjs/signals', /^solid-js\/.+/, /^@solidjs\/.+/],
       output: {
         preserveModules: false,
         entryFileNames: '[name].js',
