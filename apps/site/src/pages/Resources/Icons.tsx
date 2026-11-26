@@ -10,8 +10,8 @@ import {
   STATUS,
   SYSTEM,
 } from '@chronista-club/creo-ui-icons-web'
-import { A } from '@solidjs/router'
 import { For } from 'solid-js'
+import { A } from '../../ui/RouterLink'
 
 interface CategorySpec {
   name: string

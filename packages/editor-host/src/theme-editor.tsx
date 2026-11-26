@@ -8,7 +8,7 @@
  * 将来の拡張: swatch クリックで OKLCH 編集 (Phase M6)、custom theme 保存。
  */
 
-import type { JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { For } from 'solid-js'
 import { useEditorHost } from './provider'
 import { DEFAULT_THEME_ID, SWATCH_ROWS, THEME_INFO } from './theme-info'

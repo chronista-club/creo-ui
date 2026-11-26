@@ -9,8 +9,8 @@ import {
   signalTarget,
   string,
 } from '@chronista-club/creo-ui-editor-host'
-import { A } from '@solidjs/router'
 import { createSignal, Show } from 'solid-js'
+import { A } from '../../ui/RouterLink'
 
 export default function EditorLab() {
   return (

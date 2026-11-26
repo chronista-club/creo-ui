@@ -15,9 +15,8 @@
  * 画面からの選択は明示 picking 中のみ。component class の調整は同種すべてに効く。
  */
 
-import type { JSX } from 'solid-js'
+import { type JSX, Portal } from '@solidjs/web'
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
-import { Portal } from 'solid-js/web'
 import { AppEditorPanel, type EditorLayerProps } from './app-panel'
 import { readClassDeclarations } from './class-overrides'
 import { componentDisplayName, componentIdOfElement, componentSelector } from './component-id'
@@ -26,7 +25,7 @@ import { FieldEditor } from './fields'
 import { useEditorHover, useEditorMode, useEditorSelection } from './hooks'
 import { messages, useT } from './i18n'
 import { useClassOverrides, useComponentResolver, useEditorHost } from './provider'
-import type { EditorField } from './types'
+import type { EditorField, SelectionInfo } from './types'
 
 // ---------- Styles ----------
 
@@ -428,7 +427,7 @@ function GlobalGroup(props: {
           width: '100%',
           ...(props.accent ? { color: props.accent } : {}),
         }}
-        aria-expanded={open()}
+        aria-expanded={open() ? 'true' : 'false'}
         onClick={toggle}
       >
         <span>{open() ? '▾' : '▸'}</span>
@@ -619,13 +618,19 @@ export function EditorLayer(props: EditorLayerProps = {}): JSX.Element {
   const toggleGroup = (key: string, open: boolean): void => {
     setOpenGroups((prev) => ({ ...prev, [key]: open }))
   }
-  createEffect(() => {
-    if (mode() === 'on') setOpenGroups({})
-  })
+  createEffect(
+    () => mode(),
+    (m) => {
+      if (m === 'on') setOpenGroups({})
+    },
+  )
 
-  createEffect(() => {
-    if (mode() === 'on' && !selection()) refresh()
-  })
+  createEffect(
+    () => [mode(), selection()] as const,
+    ([m, sel]) => {
+      if (m === 'on' && !sel) refresh()
+    },
+  )
 
   const syncRect = (): void => {
     const sel = host.selection()
@@ -675,8 +680,7 @@ export function EditorLayer(props: EditorLayerProps = {}): JSX.Element {
   // rect は scroll / resize / 選択変更で引き直す。
   const [siblingRects, setSiblingRects] = createSignal<DOMRect[]>([])
 
-  const syncSiblings = (): void => {
-    const sel = host.selection()
+  const syncSiblingsFor = (sel: SelectionInfo | null | undefined): void => {
     if (!sel?.componentId || typeof document === 'undefined') {
       setSiblingRects([])
       return
@@ -694,11 +698,16 @@ export function EditorLayer(props: EditorLayerProps = {}): JSX.Element {
     }
   }
 
-  createEffect(() => {
-    // 選択 (componentId) が変わったら sibling を引き直す
-    void selection()?.componentId
-    syncSiblings()
-  })
+  const syncSiblings = (): void => {
+    syncSiblingsFor(host.selection())
+  }
+
+  createEffect(
+    () => selection(),
+    (sel) => {
+      syncSiblingsFor(sel)
+    },
+  )
 
   // ---- Detail: 選択中 component のノブ + 祖先への梯子 ----
 
@@ -727,15 +736,18 @@ export function EditorLayer(props: EditorLayerProps = {}): JSX.Element {
     syncRect()
     syncSiblings()
   }
-  createEffect(() => {
-    if (mode() !== 'on') return
-    window.addEventListener('scroll', syncAll, true)
-    window.addEventListener('resize', syncAll)
-    onCleanup(() => {
-      window.removeEventListener('scroll', syncAll, true)
-      window.removeEventListener('resize', syncAll)
-    })
-  })
+  createEffect(
+    () => mode(),
+    (m) => {
+      if (m !== 'on') return
+      window.addEventListener('scroll', syncAll, true)
+      window.addEventListener('resize', syncAll)
+      return () => {
+        window.removeEventListener('scroll', syncAll, true)
+        window.removeEventListener('resize', syncAll)
+      }
+    },
+  )
 
   // ---- ドラッグ移動 (位置は localStorage 永続化) ----
   // pos = null なら右上 default 配置、掴んで動かすと {x,y} (viewport 座標) に切替。

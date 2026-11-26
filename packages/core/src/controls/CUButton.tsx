@@ -1,5 +1,5 @@
-import { type Component, createMemo, type JSX, splitProps, type ValidComponent } from 'solid-js'
-import { Dynamic } from 'solid-js/web'
+import { Dynamic, type JSX, type ValidComponent } from '@solidjs/web'
+import { type Component, createMemo, omit } from 'solid-js'
 import { type CUButtonOptions, cuButtonAttrs } from './button-attrs'
 
 export type { CUButtonSize, CUButtonVariant } from './button-attrs'
@@ -42,7 +42,8 @@ export interface CUButtonProps
  *   <CUButton as={A} href="/sessions" variant="secondary">Sessions</CUButton>
  */
 export const CUButton: Component<CUButtonProps> = (props) => {
-  const [local, rest] = splitProps(props, [
+  const rest = omit(
+    props,
     'variant',
     'size',
     'pressed',
@@ -53,13 +54,13 @@ export const CUButton: Component<CUButtonProps> = (props) => {
     'type',
     'disabled',
     'children',
-  ])
+  )
 
-  const attrs = createMemo(() => cuButtonAttrs(local))
+  const attrs = createMemo(() => cuButtonAttrs(props))
   // native <button> = as も href も無いとき。disabled / type は native のみ有効。
-  const isNativeButton = () => local.as == null && local.href == null
-  const component = (): ValidComponent => local.as ?? (local.href != null ? 'a' : 'button')
-  const inert = () => local.disabled === true || local.loading === true
+  const isNativeButton = () => props.as == null && props.href == null
+  const component = (): ValidComponent => props.as ?? (props.href != null ? 'a' : 'button')
+  const inert = () => props.disabled === true || props.loading === true
 
   return (
     <Dynamic
@@ -70,13 +71,13 @@ export const CUButton: Component<CUButtonProps> = (props) => {
       data-loading={attrs()['data-loading']}
       aria-pressed={attrs()['aria-pressed']}
       aria-busy={attrs()['aria-busy']}
-      href={local.href}
-      type={isNativeButton() ? (local.type ?? 'button') : undefined}
+      href={props.href}
+      type={isNativeButton() ? (props.type ?? 'button') : undefined}
       disabled={isNativeButton() ? inert() : undefined}
       aria-disabled={!isNativeButton() && inert() ? 'true' : undefined}
       {...rest}
     >
-      {local.children}
+      {props.children}
     </Dynamic>
   )
 }

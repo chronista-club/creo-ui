@@ -9,9 +9,9 @@
  * 他 browser では子 `<img>` (子 element として書く) が graceful fallback として render される。
  */
 
-import 'solid-js'
+import '@solidjs/web'
 
-declare module 'solid-js' {
+declare module '@solidjs/web' {
   namespace JSX {
     interface ModelElementAttributes extends HTMLAttributes<HTMLElement> {
       /**

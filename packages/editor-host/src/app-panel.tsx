@@ -1,5 +1,6 @@
 /** Application-wide navigation. DOM discovery remains an optional input to this panel. */
-import { createEffect, createMemo, createSignal, For, type JSX, Show } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { createEffect, createMemo, createSignal, For, Show } from 'solid-js'
 import { FieldEditor } from './fields'
 import { useT } from './i18n'
 import { useClassOverrides, useEditorHost, useEditorPicking } from './provider'
@@ -132,11 +133,12 @@ export function AppEditorPanel(
     }
     return [...groups].map(([label, fields]) => ({ label, fields }))
   })
-  const changes = () =>
-    fields().filter(
-      (field) =>
-        field.type !== 'readonly-text' && !Object.is(host.getValue(field.id), field.initial),
+  const changes = () => {
+    const vals = host.values()
+    return fields().filter(
+      (field) => field.type !== 'readonly-text' && !Object.is(vals[field.id], field.initial),
     )
+  }
   const cssChanges = () =>
     Object.entries(overrides?.overrides() ?? {}).flatMap(([component, values]) =>
       Object.entries(values).map(([property, value]) => ({ component, property, value })),
@@ -149,18 +151,24 @@ export function AppEditorPanel(
     setView(next)
     if (next === 'parts') props.onBrowse()
   }
-  createEffect(() => {
-    if (host.selection()) {
-      setView('app')
-      setSectionId(null)
-    }
-  })
-  createEffect(() => {
-    if (host.mode() === 'off') {
-      setView('app')
-      setSectionId(null)
-    }
-  })
+  createEffect(
+    () => host.selection(),
+    (sel) => {
+      if (sel) {
+        setView('app')
+        setSectionId(null)
+      }
+    },
+  )
+  createEffect(
+    () => host.mode(),
+    (m) => {
+      if (m === 'off') {
+        setView('app')
+        setSectionId(null)
+      }
+    },
+  )
   const scopeFor = (field: EditorField) =>
     (props.sections ?? []).find((section) => section.fieldIds.includes(field.id))?.scopeLabel ??
     (field.scope === 'component'
@@ -203,7 +211,7 @@ export function AppEditorPanel(
       <button
         type="button"
         style={{ ...action, color: 'var(--color-brand-primary)' }}
-        aria-pressed={picking.active()}
+        aria-pressed={picking.active() ? 'true' : 'false'}
         onClick={picking.toggle}
       >
         {picking.active() ? t(copy.cancel) : `↗ ${t(copy.pick)}`}
@@ -265,7 +273,7 @@ export function AppEditorPanel(
                             {t(copy.scope)} · {scopeFor(field)}
                           </p>
                           <div style={{ ...muted, 'overflow-wrap': 'anywhere' }}>
-                            {String(field.initial)} → {String(host.getValue(field.id))}
+                            {String(field.initial)} → {String(host.values()[field.id])}
                           </div>
                           <button
                             type="button"

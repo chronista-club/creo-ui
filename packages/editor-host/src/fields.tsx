@@ -5,7 +5,7 @@
  * 向けは横並びコンパクト (`<FieldEditorInline>`) の 2 variants を提供。
  */
 
-import type { JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
 import { For, Show } from 'solid-js'
 import { messages, useT } from './i18n'
 import {

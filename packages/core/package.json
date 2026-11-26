@@ -1,6 +1,6 @@
 {
   "name": "@chronista-club/creo-ui",
-  "version": "0.31.0",
+  "version": "0.32.0",
   "description": "creo-ui — Web package (design tokens + components.css + Solid shell/control primitives)",
   "type": "module",
   "main": "./dist/shells/index.js",
@@ -56,15 +56,17 @@
     "typecheck:build": "tsc -p tsconfig.build.json --noEmit"
   },
   "peerDependencies": {
-    "solid-js": "^1.9.0"
+    "@solidjs/web": "^2.0.0",
+    "solid-js": "^2.0.0"
   },
   "devDependencies": {
-    "solid-js": "^1.9.15",
+    "@solidjs/vite-plugin": "^3.0.1",
+    "@solidjs/web": "^2.0.4",
+    "solid-js": "^2.0.4",
     "@typescript/typescript6": "^6.0.2",
     "typescript": "^7.0.2",
     "vite": "^8.2.2",
-    "vite-plugin-dts": "^5.0.3",
-    "vite-plugin-solid": "^2.11.14"
+    "vite-plugin-dts": "^5.0.3"
   },
   "license": "Apache-2.0"
 }

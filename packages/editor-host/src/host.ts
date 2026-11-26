@@ -62,11 +62,22 @@ function applyCssVar<T>(field: EditorField<T>, value: T): void {
 export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
   const namespace = config.localStorageNamespace ?? DEFAULT_NAMESPACE
 
-  const [mode, setMode] = createSignal<EditorMode>(config.initialMode ?? 'off')
-  const [fields, setFields] = createSignal<EditorField[]>([])
-  const [values, setValues] = createSignal<Record<string, unknown>>({})
-  const [selection, setSelectionSignal] = createSignal<SelectionInfo | null>(null)
-  const [hover, setHoverSignal] = createSignal<SelectionInfo | null>(null)
+  let currentMode: EditorMode = config.initialMode ?? 'off'
+  let currentFields: EditorField[] = []
+  let currentValues: Record<string, unknown> = {}
+  let currentSelection: SelectionInfo | null = null
+
+  const [mode, setMode] = createSignal<EditorMode>(currentMode, {
+    ownedWrite: true,
+  })
+  const [fields, setFields] = createSignal<EditorField[]>(currentFields, { ownedWrite: true })
+  const [values, setValues] = createSignal<Record<string, unknown>>(currentValues, {
+    ownedWrite: true,
+  })
+  const [selection, setSelectionSignal] = createSignal<SelectionInfo | null>(currentSelection, {
+    ownedWrite: true,
+  })
+  const [hover, setHoverSignal] = createSignal<SelectionInfo | null>(null, { ownedWrite: true })
 
   /** field id → value change listeners */
   const subscribers = new Map<string, Set<(value: unknown) => void>>()
@@ -97,17 +108,18 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
   }
 
   function getField(id: string): EditorField | undefined {
-    return fields().find((f) => f.id === id)
+    return currentFields.find((f) => f.id === id)
   }
 
   function getValue<T>(id: string): T | undefined {
-    return values()[id] as T | undefined
+    return currentValues[id] as T | undefined
   }
 
   function setValue<T>(id: string, value: T, options?: { silent?: boolean }): void {
     const field = getField(id) as EditorField<T> | undefined
     if (!field) return
-    setValues((prev) => ({ ...prev, [id]: value }))
+    currentValues = { ...currentValues, [id]: value }
+    setValues(currentValues)
     applyCssVar(field, value)
     field.apply?.(value)
     writePersisted(namespace, field, value)
@@ -139,43 +151,42 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
   }
 
   function notifyFields(): void {
-    const list = fields()
+    const list = currentFields
     for (const listener of fieldsListeners) listener(list)
   }
 
   function register(newFields: EditorField[]): () => void {
     const ids = new Set(newFields.map((f) => f.id))
 
-    let added = 0
-    setFields((prev) => {
-      const existing = new Set(prev.map((f) => f.id))
-      const addition = newFields.filter((f) => !existing.has(f.id))
-      added = addition.length
-      return [...prev, ...addition]
-    })
+    const existing = new Set(currentFields.map((f) => f.id))
+    const addition = newFields.filter((f) => !existing.has(f.id))
+    const added = addition.length
+    if (added > 0) {
+      currentFields = [...currentFields, ...addition]
+      setFields(currentFields)
+    }
 
-    setValues((prev) => {
-      const next = { ...prev }
-      for (const field of newFields) {
-        if (next[field.id] !== undefined) continue
-        const persisted = readPersisted(namespace, field)
-        const initial = persisted !== undefined ? persisted : field.initial
-        next[field.id] = initial
-        applyCssVar(field, initial)
-        field.apply?.(initial)
-      }
-      return next
-    })
+    const next = { ...currentValues }
+    for (const field of newFields) {
+      if (next[field.id] !== undefined) continue
+      const persisted = readPersisted(namespace, field)
+      const initial = persisted !== undefined ? persisted : field.initial
+      next[field.id] = initial
+      applyCssVar(field, initial)
+      field.apply?.(initial)
+    }
+    currentValues = next
+    setValues(currentValues)
     if (added > 0) notifyFields()
 
     return () => {
-      let removed = 0
-      setFields((prev) => {
-        const next = prev.filter((f) => !ids.has(f.id))
-        removed = prev.length - next.length
-        return next
-      })
-      if (removed > 0) notifyFields()
+      const nextFields = currentFields.filter((f) => !ids.has(f.id))
+      const removed = currentFields.length - nextFields.length
+      if (removed > 0) {
+        currentFields = nextFields
+        setFields(currentFields)
+        notifyFields()
+      }
       // note: values / persisted entries は register-unregister で消さない
       // (再マウント時に保持したい)。完全削除が必要なら別 API (forget) を追加。
     }
@@ -184,7 +195,8 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
   // --- Selection ---
 
   function applySelection(info: SelectionInfo | null): void {
-    if (info === selection()) return
+    if (info === currentSelection) return
+    currentSelection = info
     setSelectionSignal(info)
     for (const listener of selectionListeners) listener(info)
   }
@@ -204,7 +216,8 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
   // --- Mode ---
 
   function applyMode(next: EditorMode): void {
-    if (next === mode()) return
+    if (next === currentMode) return
+    currentMode = next
     setMode(next)
     for (const listener of modeListeners) listener(next)
   }
@@ -221,7 +234,7 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
   }
 
   function toggle(): void {
-    if (mode() === 'on') {
+    if (currentMode === 'on') {
       disable()
     } else {
       enable()
@@ -231,7 +244,7 @@ export function createEditorHost(config: EditorHostConfig = {}): EditorHost {
   // --- MCP ---
 
   function listFields(filter?: { semantic?: EditorSemantic; role?: EditorRole }): EditorField[] {
-    let list = fields()
+    let list = currentFields
     if (filter?.semantic) list = list.filter((f) => f.semantic === filter.semantic)
     if (filter?.role) list = list.filter((f) => f.role === filter.role)
     return list

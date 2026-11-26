@@ -7,13 +7,14 @@
  * onPlace を渡すと、帯をドラッグして親の置き場 (at) を直せる — 両端で伸び縮み、真ん中で平行移動。
  * 調整が親の時間軸に集まる。受け取った at は setPlacement で木に書き戻す。
  *
- * イベントは on:pointer* (要素に直接付ける)。Solid の onPointer* は document への委譲になり、
+ * イベントは ref で要素に直接付ける (addEventListener)。Solid の onPointer* は document への委譲になり、
  * その登録がモジュールの読み込み時に走るので、DOM の無い環境 (SSR / test) で import だけで落ちる。
  *
  * 見た目は creo-ui の token (--color-* / --spacing-* / --typography-*) に乗る。token が無くても読める既定値つき。
  */
 
-import { Index, type JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { For } from 'solid-js'
 import { type DragHandle, dragPlacement, type FlatClip, localT } from './clip'
 
 export interface TimelineInspectorProps {
@@ -162,8 +163,8 @@ export function TimelineInspector(props: TimelineInspectorProps): JSX.Element {
 
   return (
     <div class={props.class} style={S.root} data-timeline-inspector="">
-      {/* Index: 置き直すたびに clips は作り直されるが、行の DOM は保つ (ドラッグ中の pointer capture を失わない) */}
-      <Index each={props.clips}>
+      {/* For keyed={false}: 置き直すたびに clips は作り直されるが、行の DOM は保つ (ドラッグ中の pointer capture を失わない) */}
+      <For each={props.clips} keyed={false}>
         {(c) => {
           const local = (): number => localT(props.t, c().start, c().end)
           const movable = (): boolean => !!props.onPlace && c().depth > 0
@@ -173,17 +174,22 @@ export function TimelineInspector(props: TimelineInspectorProps): JSX.Element {
                 {c().clip.label ?? c().key}
               </span>
               <div
+                ref={(el) => {
+                  el.addEventListener('pointerdown', onDown)
+                  el.addEventListener('pointermove', onMove)
+                  el.addEventListener('pointerup', onUp)
+                  el.addEventListener('pointercancel', onUp)
+                }}
                 data-track=""
                 style={{
                   ...S.track,
                   cursor: props.onSeek ? 'ew-resize' : 'default',
                 }}
-                on:pointerdown={onDown}
-                on:pointermove={onMove}
-                on:pointerup={onUp}
-                on:pointercancel={onUp}
               >
                 <div
+                  ref={(el) => {
+                    el.addEventListener('pointerdown', grabBand(c, 'move'))
+                  }}
                   data-band=""
                   style={{
                     ...S.window,
@@ -191,20 +197,23 @@ export function TimelineInspector(props: TimelineInspectorProps): JSX.Element {
                     width: pct(c().end - c().start),
                     cursor: movable() ? 'grab' : 'inherit',
                   }}
-                  on:pointerdown={grabBand(c, 'move')}
                 >
                   <div style={{ ...S.fill, width: pct(local()) }} />
                   {movable() && (
                     <>
                       <div
+                        ref={(el) => {
+                          el.addEventListener('pointerdown', grabBand(c, 'start'))
+                        }}
                         data-edge="start"
                         style={{ ...S.edge, left: '0' }}
-                        on:pointerdown={grabBand(c, 'start')}
                       />
                       <div
+                        ref={(el) => {
+                          el.addEventListener('pointerdown', grabBand(c, 'end'))
+                        }}
                         data-edge="end"
                         style={{ ...S.edge, right: '0' }}
-                        on:pointerdown={grabBand(c, 'end')}
                       />
                     </>
                   )}
@@ -215,7 +224,7 @@ export function TimelineInspector(props: TimelineInspectorProps): JSX.Element {
             </div>
           )
         }}
-      </Index>
+      </For>
     </div>
   )
 }

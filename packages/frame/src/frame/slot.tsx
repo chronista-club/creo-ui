@@ -5,7 +5,8 @@
  * 適用。 reduce-motion 時は transition: none で即座 snap。
  */
 
-import { createMemo, type JSX } from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { createMemo } from 'solid-js'
 import { respectsReducedMotion } from '../motion/reduced-motion'
 import { duration, ease } from '../motion/tokens'
 import { useFrame } from './provider'

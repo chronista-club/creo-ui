@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For, onMount } from 'solid-js'
+import { createEffect, createSignal, For, onSettled } from 'solid-js'
 
 const THEMES = [
   { id: 'mint-light', label: 'Creo (light)' },
@@ -18,7 +18,7 @@ const STORAGE_KEY = 'creo-ui-docs.theme'
 export default function ThemeSwitcher() {
   const [theme, setTheme] = createSignal<ThemeId>('mint-dark')
 
-  onMount(() => {
+  onSettled(() => {
     if (typeof window === 'undefined') return
     const saved = window.localStorage.getItem(STORAGE_KEY) as ThemeId | null
     if (saved && THEMES.some((t) => t.id === saved)) {
@@ -26,13 +26,16 @@ export default function ThemeSwitcher() {
     }
   })
 
-  createEffect(() => {
-    if (typeof document === 'undefined') return
-    document.documentElement.setAttribute('data-theme', theme())
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem(STORAGE_KEY, theme())
-    }
-  })
+  createEffect(
+    () => theme(),
+    (current) => {
+      if (typeof document === 'undefined') return
+      document.documentElement.setAttribute('data-theme', current)
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(STORAGE_KEY, current)
+      }
+    },
+  )
 
   return (
     <label>

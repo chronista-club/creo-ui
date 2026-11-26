@@ -4,14 +4,8 @@
  * `<LocaleProvider>` で現 locale を closure 化し、子 subtree が `useLocale()` /
  * `useT()` で読める。SSR / Node 環境では `navigator` を touch しない。
  */
-import {
-  type Accessor,
-  createContext,
-  createSignal,
-  type JSX,
-  type Setter,
-  useContext,
-} from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { type Accessor, createContext, createSignal, type Setter, useContext } from 'solid-js'
 import type { Locale } from './types'
 
 interface LocaleContextValue {
@@ -19,7 +13,7 @@ interface LocaleContextValue {
   setLocale: Setter<Locale>
 }
 
-const LocaleContext = createContext<LocaleContextValue | undefined>(undefined)
+const LocaleContext = createContext<LocaleContextValue | null>(null)
 
 /**
  * browser `navigator.language` から Locale を推定。
@@ -41,9 +35,12 @@ export interface LocaleProviderProps {
 
 export function LocaleProvider(props: LocaleProviderProps): JSX.Element {
   const [locale, setLocale] = createSignal<Locale>(props.initial ?? detectLocale())
-  return (
-    <LocaleContext.Provider value={{ locale, setLocale }}>{props.children}</LocaleContext.Provider>
-  )
+  return LocaleContext({
+    value: { locale, setLocale },
+    get children() {
+      return props.children
+    },
+  })
 }
 
 /**

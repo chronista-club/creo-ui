@@ -1,12 +1,12 @@
 /** Standard mdast → sanitized HTML tree → Solid components. */
+import { Dynamic, type JSX } from '@solidjs/web'
 import type { Element, Nodes as HtmlNode } from 'hast'
 import { raw } from 'hast-util-raw'
 import { defaultSchema, sanitize } from 'hast-util-sanitize'
 import type { Nodes as MdNode } from 'mdast'
 import { toHast } from 'mdast-util-to-hast'
 import { find, html } from 'property-information'
-import { type Component, createUniqueId, For, type JSX } from 'solid-js'
-import { Dynamic } from 'solid-js/web'
+import { type Component, createUniqueId, For } from 'solid-js'
 
 export type MarkdownLinkProps = JSX.AnchorHTMLAttributes<HTMLAnchorElement>
 export type MarkdownImageProps = JSX.ImgHTMLAttributes<HTMLImageElement>

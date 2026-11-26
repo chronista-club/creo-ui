@@ -1,7 +1,7 @@
 import { EditorHostProvider, EditorLayer } from '@chronista-club/creo-ui-editor-host'
-import { Navigate, Route, Router } from '@solidjs/router'
-import type { JSX } from 'solid-js'
-import { lazy } from 'solid-js'
+import { createRouter, useNavigate } from '@solidjs/router'
+import type { JSX } from '@solidjs/web'
+import { lazy, onSettled } from 'solid-js'
 import Layout from './layout/Layout'
 
 // Editor Mode は site 全体で 1 host (一本化 2026-08-13)。どのページでも
@@ -101,79 +101,88 @@ const LayoutLab = lazy(() => import('./pages/Lab/LayoutLab'))
 const FrameNestLab = lazy(() => import('./pages/Lab/FrameNestLab'))
 const GettingStarted = lazy(() => import('./pages/GettingStarted'))
 
+function RedirectToEditorLab() {
+  const navigate = useNavigate()
+  onSettled(() => navigate('/creo-ui/lab/editor', { replace: true }))
+  return null
+}
+
+// base: doc.anycreative.tech の hub 配下 /creo-ui/ で配信 (vite.config.ts の base と対)
+const Router = createRouter({
+  base: '/creo-ui',
+  routes: [
+    { path: '/', component: Home },
+    { path: '/getting-started', component: GettingStarted },
+    { path: '/foundations', component: Principles },
+    { path: '/foundations/principles', component: Principles },
+    { path: '/foundations/color', component: Color },
+    { path: '/foundations/typography', component: Typography },
+    { path: '/foundations/spacing', component: Spacing },
+    { path: '/foundations/radius', component: Radius },
+    { path: '/foundations/shadow', component: Shadow },
+    { path: '/foundations/theming', component: Theming },
+    { path: '/foundations/focus-ring', component: FocusRing },
+    { path: '/foundations/motion', component: Motion },
+    { path: '/foundations/concentric-corner', component: ConcentricCorner },
+    { path: '/foundations/density', component: Density },
+    { path: '/foundations/iconography', component: Iconography },
+    { path: '/foundations/kinetic-typography', component: KineticTypography },
+    { path: '/concepts', component: FrameSystem },
+    { path: '/concepts/frame-system', component: FrameSystem },
+    { path: '/concepts/editor-mode', component: EditorMode },
+    { path: '/concepts/layers', component: Layers },
+    { path: '/concepts/multi-platform', component: MultiPlatform },
+    { path: '/editor-mode', component: EditorMode },
+    { path: '/components', component: ComponentsIndex },
+    { path: '/components/button', component: Button },
+    { path: '/components/input', component: Input },
+    { path: '/components/card', component: Card },
+    { path: '/components/avatar', component: Avatar },
+    { path: '/components/dialog', component: Dialog },
+    { path: '/components/checkbox', component: Checkbox },
+    { path: '/components/radio', component: Radio },
+    { path: '/components/switch', component: Switch },
+    { path: '/components/badge', component: Badge },
+    { path: '/components/tooltip', component: Tooltip },
+    { path: '/components/alert', component: Alert },
+    { path: '/components/tabs', component: Tabs },
+    { path: '/components/breadcrumbs', component: Breadcrumbs },
+    { path: '/components/menu', component: Menu },
+    { path: '/components/pagination', component: Pagination },
+    { path: '/components/table', component: Table },
+    { path: '/components/timeline', component: Timeline },
+    { path: '/components/stepper', component: Stepper },
+    { path: '/components/progress', component: Progress },
+    { path: '/components/skeleton', component: Skeleton },
+    { path: '/components/form-field', component: FormField },
+    { path: '/components/segmented', component: Segmented },
+    { path: '/components/toast', component: Toast },
+    { path: '/components/accordion', component: Accordion },
+    { path: '/components/outliner', component: Outliner },
+    { path: '/components/popover', component: Popover },
+    { path: '/components/drawer', component: Drawer },
+    { path: '/components/empty-state', component: EmptyState },
+    { path: '/components/combobox', component: Combobox },
+    { path: '/components/select', component: Select },
+    { path: '/components/header', component: Header },
+    { path: '/components/error-boundary', component: ErrorBoundary },
+    { path: '/components/stack', component: Stack },
+    { path: '/components/grid', component: Grid },
+    { path: '/components/container', component: Container },
+    { path: '/components/divider', component: Divider },
+    { path: '/icons', component: Icons },
+    { path: '/content', component: Content },
+    { path: '/lab/editor', component: EditorLab },
+    { path: '/lab/frame', component: FrameLab },
+    { path: '/lab/frame-nest', component: FrameNestLab },
+    { path: '/lab/vision', component: VisionLab },
+    { path: '/lab/layout', component: LayoutLab },
+    // 旧 /playground は Editor lab へ redirect (既存リンク保護)
+    { path: '/playground', component: RedirectToEditorLab },
+    { path: '*404', component: Stub },
+  ],
+})
+
 export default function App() {
-  return (
-    // base: doc.anycreative.tech の hub 配下 /creo-ui/ で配信 (vite.config.ts の base と対)
-    <Router base="/creo-ui" root={Root}>
-      <Route path="/" component={Home} />
-      <Route path="/getting-started" component={GettingStarted} />
-      <Route path="/foundations" component={Principles} />
-      <Route path="/foundations/principles" component={Principles} />
-      <Route path="/foundations/color" component={Color} />
-      <Route path="/foundations/typography" component={Typography} />
-      <Route path="/foundations/spacing" component={Spacing} />
-      <Route path="/foundations/radius" component={Radius} />
-      <Route path="/foundations/shadow" component={Shadow} />
-      <Route path="/foundations/theming" component={Theming} />
-      <Route path="/foundations/focus-ring" component={FocusRing} />
-      <Route path="/foundations/motion" component={Motion} />
-      <Route path="/foundations/concentric-corner" component={ConcentricCorner} />
-      <Route path="/foundations/density" component={Density} />
-      <Route path="/foundations/iconography" component={Iconography} />
-      <Route path="/foundations/kinetic-typography" component={KineticTypography} />
-      <Route path="/concepts" component={FrameSystem} />
-      <Route path="/concepts/frame-system" component={FrameSystem} />
-      <Route path="/concepts/editor-mode" component={EditorMode} />
-      <Route path="/concepts/layers" component={Layers} />
-      <Route path="/concepts/multi-platform" component={MultiPlatform} />
-      <Route path="/editor-mode" component={EditorMode} />
-      <Route path="/components" component={ComponentsIndex} />
-      <Route path="/components/button" component={Button} />
-      <Route path="/components/input" component={Input} />
-      <Route path="/components/card" component={Card} />
-      <Route path="/components/avatar" component={Avatar} />
-      <Route path="/components/dialog" component={Dialog} />
-      <Route path="/components/checkbox" component={Checkbox} />
-      <Route path="/components/radio" component={Radio} />
-      <Route path="/components/switch" component={Switch} />
-      <Route path="/components/badge" component={Badge} />
-      <Route path="/components/tooltip" component={Tooltip} />
-      <Route path="/components/alert" component={Alert} />
-      <Route path="/components/tabs" component={Tabs} />
-      <Route path="/components/breadcrumbs" component={Breadcrumbs} />
-      <Route path="/components/menu" component={Menu} />
-      <Route path="/components/pagination" component={Pagination} />
-      <Route path="/components/table" component={Table} />
-      <Route path="/components/timeline" component={Timeline} />
-      <Route path="/components/stepper" component={Stepper} />
-      <Route path="/components/progress" component={Progress} />
-      <Route path="/components/skeleton" component={Skeleton} />
-      <Route path="/components/form-field" component={FormField} />
-      <Route path="/components/segmented" component={Segmented} />
-      <Route path="/components/toast" component={Toast} />
-      <Route path="/components/accordion" component={Accordion} />
-      <Route path="/components/outliner" component={Outliner} />
-      <Route path="/components/popover" component={Popover} />
-      <Route path="/components/drawer" component={Drawer} />
-      <Route path="/components/empty-state" component={EmptyState} />
-      <Route path="/components/combobox" component={Combobox} />
-      <Route path="/components/select" component={Select} />
-      <Route path="/components/header" component={Header} />
-      <Route path="/components/error-boundary" component={ErrorBoundary} />
-      <Route path="/components/stack" component={Stack} />
-      <Route path="/components/grid" component={Grid} />
-      <Route path="/components/container" component={Container} />
-      <Route path="/components/divider" component={Divider} />
-      <Route path="/icons" component={Icons} />
-      <Route path="/content" component={Content} />
-      <Route path="/lab/editor" component={EditorLab} />
-      <Route path="/lab/frame" component={FrameLab} />
-      <Route path="/lab/frame-nest" component={FrameNestLab} />
-      <Route path="/lab/vision" component={VisionLab} />
-      <Route path="/lab/layout" component={LayoutLab} />
-      {/* 旧 /playground は Editor lab へ redirect (既存リンク保護) */}
-      <Route path="/playground" component={() => <Navigate href="/lab/editor" />} />
-      <Route path="*" component={Stub} />
-    </Router>
-  )
+  return <Router>{(props) => <Root>{props.children}</Root>}</Router>
 }

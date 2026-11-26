@@ -1,8 +1,8 @@
 import { FrameProvider, useFrame } from '@chronista-club/creo-ui-frame'
-import { A } from '@solidjs/router'
 import { useGesture, useHandPinch, VisionProvider, type VisionSource } from 'creo-ui-vision'
 import { createMockSource } from 'creo-ui-vision/mock'
 import { createEffect, createSignal, For, onCleanup, Show } from 'solid-js'
+import { A } from '../../ui/RouterLink'
 import { FrameStage } from './FrameStage'
 import { dashboardFrame, readingFrame } from './frames'
 
@@ -285,18 +285,21 @@ function SpatialPinchBridge() {
   const { setFrame } = useFrame()
   let prevActive = false
 
-  createEffect(() => {
-    const cur = pinch()?.active ?? false
-    if (cur && !prevActive) {
-      const x = pinch()?.x
-      if (x !== undefined) {
-        if (x < 0.4) setFrame('dashboard')
-        else if (x > 0.6) setFrame('reading')
-        // dead-band (0.4 ≤ x ≤ 0.6): 何もしない
+  createEffect(
+    () => pinch(),
+    (p) => {
+      const cur = p?.active ?? false
+      if (cur && !prevActive) {
+        const x = p?.x
+        if (x !== undefined) {
+          if (x < 0.4) setFrame('dashboard')
+          else if (x > 0.6) setFrame('reading')
+          // dead-band (0.4 ≤ x ≤ 0.6): 何もしない
+        }
       }
-    }
-    prevActive = cur
-  })
+      prevActive = cur
+    },
+  )
 
   return null
 }
@@ -490,7 +493,9 @@ function CameraProbe() {
         </pre>
       </Show>
       <video
-        ref={videoEl}
+        ref={(el) => {
+          videoEl = el
+        }}
         class="docs-camera-probe-video"
         data-active={previewStream() !== null}
         autoplay

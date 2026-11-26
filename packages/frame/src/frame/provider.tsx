@@ -4,14 +4,8 @@
  * 子の <FrameSlot> が現 Frame の slot 配置を購読、 setFrame(id) で morph trigger。
  */
 
-import {
-  type Accessor,
-  createContext,
-  createMemo,
-  createSignal,
-  type JSX,
-  useContext,
-} from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { type Accessor, createContext, createMemo, createSignal, useContext } from 'solid-js'
 import type { Frame, Gaze } from './types'
 import { DEFAULT_GAZE, formatGaze, formatPerspective } from './utils'
 
@@ -36,7 +30,7 @@ export interface FrameContextValue {
   setGaze: (gaze: Gaze | undefined) => void
 }
 
-const FrameCtx = createContext<FrameContextValue>()
+const FrameCtx = createContext<FrameContextValue | null>(null)
 
 export interface FrameProviderProps {
   /** 利用可能な Frame 一覧 */
@@ -98,7 +92,7 @@ export function FrameProvider(props: FrameProviderProps): JSX.Element {
   const perspectiveOrigin = createMemo(() => formatGaze(gaze()))
 
   return (
-    <FrameCtx.Provider value={ctx}>
+    <FrameCtx value={ctx}>
       <div
         class={`creo-frame-root ${props.class ?? ''}`.trim()}
         data-frame={currentId()}
@@ -111,7 +105,7 @@ export function FrameProvider(props: FrameProviderProps): JSX.Element {
       >
         {props.children}
       </div>
-    </FrameCtx.Provider>
+    </FrameCtx>
   )
 }
 

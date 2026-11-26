@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
+import solid from '@solidjs/vite-plugin'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import solid from 'vite-plugin-solid'
 
 export default defineConfig({
   plugins: [
@@ -26,9 +26,10 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'solid-js',
-        'solid-js/web',
-        'solid-js/store',
+        '@solidjs/web',
+        '@solidjs/signals',
         /^solid-js\/.+/,
+        /^@solidjs\/.+/,
         '@mediapipe/tasks-vision',
       ],
       output: {

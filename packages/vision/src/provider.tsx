@@ -5,15 +5,8 @@
  * (useHandPinch / useHeadPose / 等) が context 経由で signal を購読する。
  */
 
-import {
-  type Accessor,
-  createContext,
-  createSignal,
-  type JSX,
-  onCleanup,
-  onMount,
-  useContext,
-} from 'solid-js'
+import type { JSX } from '@solidjs/web'
+import { type Accessor, createContext, createSignal, onSettled, useContext } from 'solid-js'
 import type { VisionSource } from './source'
 import type {
   FaceMesh,
@@ -36,7 +29,7 @@ export interface VisionContextValue {
   stop: () => void
 }
 
-const VisionCtx = createContext<VisionContextValue>()
+const VisionCtx = createContext<VisionContextValue | null>(null)
 
 export interface VisionProviderProps {
   source: VisionSource
@@ -93,7 +86,7 @@ export function VisionProvider(props: VisionProviderProps): JSX.Element {
     stop,
   }
 
-  onMount(() => {
+  onSettled(() => {
     const unsubscribe = props.source.on((update) => {
       switch (update.type) {
         case 'hand-pinch':
@@ -121,13 +114,13 @@ export function VisionProvider(props: VisionProviderProps): JSX.Element {
       void start()
     }
 
-    onCleanup(() => {
+    return () => {
       unsubscribe()
       props.source.stop()
-    })
+    }
   })
 
-  return <VisionCtx.Provider value={ctx}>{props.children}</VisionCtx.Provider>
+  return <VisionCtx value={ctx}>{props.children}</VisionCtx>
 }
 
 export function useVision(): VisionContextValue {

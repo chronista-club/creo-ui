@@ -1,7 +1,6 @@
 // Principal Layout の Rail (docs/design/principal-layout.md §5)。VP の額縁 (doc 87) の要望:
 // 右 edge にも置ける / peek の幅を外から与える / drag 中は幅の transition を止める。
-import type { JSX } from 'solid-js'
-import { render } from 'solid-js/web'
+import { type JSX, render } from '@solidjs/web'
 import { afterEach, expect, test } from 'vitest'
 import { CURail } from '../../packages/core/src/shells'
 import type { RailDef } from '../../packages/core/src/shells/railRegistry'

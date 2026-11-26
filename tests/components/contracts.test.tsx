@@ -1,6 +1,6 @@
 // R01: mem_1Cf1aYeoBAH5i4surBDEsT
-import { createSignal, type JSX, onCleanup } from 'solid-js'
-import { render } from 'solid-js/web'
+import { type JSX, render } from '@solidjs/web'
+import { createSignal, flush, onCleanup } from 'solid-js'
 import { afterEach, beforeEach, expect, test } from 'vitest'
 import { CUButton, CUOutliner, type OutlinerNode } from '../../packages/core/src/controls'
 import {
@@ -51,6 +51,7 @@ test('Button は consumer の signal 変更を同じ DOM の属性と操作へ�
   expect(clicks).toBe(1)
 
   setLoading(true)
+  flush()
   expect(container.querySelector('button')).toBe(button)
   expect(button.disabled).toBe(true)
   expect(button.getAttribute('aria-busy')).toBe('true')
@@ -58,6 +59,7 @@ test('Button は consumer の signal 変更を同じ DOM の属性と操作へ�
   expect(clicks).toBe(1)
 
   setLoading(false)
+  flush()
   expect(button.disabled).toBe(false)
   button.click()
   expect(clicks).toBe(2)
@@ -69,9 +71,11 @@ test('Outliner は入力を controlled な consumer の木へ返し、外部更�
   const input = container.querySelector('input')!
   input.value = '編集後'
   input.dispatchEvent(new InputEvent('input', { bubbles: true }))
+  flush()
   expect(nodes()[0].text).toBe('編集後')
 
   setNodes([{ id: 'note', text: 'consumer から更新' }])
+  flush()
   expect(container.querySelector('input')?.value).toBe('consumer から更新')
 })
 
@@ -103,11 +107,13 @@ test('Provider 内の binding が Target・Host・DOM を更新し、unmount で
   const button = container.querySelector('button')!
   expect(button.textContent).toBe('false')
   button.click()
+  flush()
   expect(target.get()).toBe(true)
   expect(readHostValue()).toBe(true)
   expect(button.textContent).toBe('true')
 
   setVisible(false)
+  flush()
   expect(registered()).toBe(false)
   expect(container.querySelector('button')).toBeNull()
 })
@@ -131,7 +137,9 @@ test('PaneStage は配置変更と非表示をまたいで pane 内の DOM と�
   const input = container.querySelector('input')!
   input.value = '作業中の入力'
   setResolved({})
+  flush()
   setResolved(shown)
+  flush()
 
   expect(container.querySelector('input')).toBe(input)
   expect(input.value).toBe('作業中の入力')
